@@ -1,0 +1,543 @@
+// UD-Ops Workspace — Prisma Schema v1.0
+// 언더독스 교육 기획 자동화 웹앱
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────
+// [AUTH] 사용자 및 역할
+// ─────────────────────────────────────────
+
+enum UserRole {
+  PM
+  DIRECTOR
+  CM
+  FM
+  COACH
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  role      UserRole @default(PM)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  projects      Project[]
+  taskAssignees TaskAssignee[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────
+// [B] 코치 데이터
+// ─────────────────────────────────────────
+
+enum CoachTier {
+  TIER1
+  TIER2
+  TIER3
+}
+
+enum CoachCategory {
+  PARTNER_COACH
+  COACH
+  GLOBAL_COACH
+  CONSULTANT
+  INVESTOR
+}
+
+enum TaxType {
+  BUSINESS
+  OTHER
+}
+
+model Coach {
+  id               String        @id @default(cuid())
+  githubId         Int?          @unique
+  name             String
+  email            String?
+  phone            String?
+  gender           String?
+  location         String?
+  regions          String[]
+  organization     String?
+  position         String?
+  industries       String[]
+  expertise        String[]
+  roles            String[]
+  overseas         Boolean       @default(false)
+  overseasDetail   String?
+  toolsSkills      String?       @db.Text
+  intro            String?       @db.Text
+  careerHistory    String?       @db.Text
+  education        String?
+  underdogsHistory String?       @db.Text
+  currentWork      String?       @db.Text
+  careerYears      Int?
+  careerYearsRaw   String?
+  photoUrl         String?
+  businessType     String?
+  country          String        @default("한국")
+  language         String[]      @default(["한국어"])
+  hasStartup       Boolean       @default(false)
+  isActive         Boolean       @default(true)
+  mainField        String?
+  category         CoachCategory @default(COACH)
+  tier             CoachTier     @default(TIER2)
+
+  // 단가
+  lectureRateMain    Int?
+  lectureRateSub     Int?
+  coachRateMain      Int?
+  coachRateSub       Int?
+  specialLectureRate Int?
+  dailyRateCoach     Int?
+  dailyRateLecture   Int?
+  taxType            TaxType @default(BUSINESS)
+  needTransport      Boolean @default(false)
+  transportEstimate  Int?
+  needAccomm         Boolean @default(false)
+  accommEstimate     Int?
+
+  // 역량
+  satisfactionAvg    Float?
+  collaborationCount Int     @default(0)
+  impactMethodLevel  String?
+  lectureStyle       String?
+  hasInvestExp       Boolean @default(false)
+
+  // 가용성
+  availableDays  String[]
+  blockedPeriods Json?
+  onlineAvailable Boolean @default(true)
+  minLeadTimeDays Int     @default(7)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  coachAssignments CoachAssignment[]
+  satisfactionLogs SatisfactionLog[]
+}
+
+// ─────────────────────────────────────────
+// [C] 교육 모듈
+// ─────────────────────────────────────────
+
+enum ModuleCategory {
+  TECH_EDU
+  STARTUP_EDU
+  CAPSTONE
+  MENTORING
+  NETWORKING
+  EVENT
+  ACTION_WEEK
+  SPECIAL_LECTURE
+}
+
+enum DeliveryMethod {
+  LECTURE
+  WORKSHOP
+  PRACTICE
+  MENTORING
+  MIXED
+  ACTION_WEEK
+  ONLINE
+}
+
+enum Difficulty {
+  INTRO
+  MID
+  ADVANCED
+}
+
+model Module {
+  id              String         @id @default(cuid())
+  moduleCode      String         @unique
+  name            String
+  category        ModuleCategory
+  keywordTags     String[]
+  method          DeliveryMethod
+  durationHours   Float
+  minParticipants Int            @default(5)
+  maxParticipants Int            @default(50)
+  difficulty      Difficulty     @default(INTRO)
+
+  objectives  String[]
+  contents    String[]
+  practices   String[]
+  equipment   String[]
+  outputs     String[]
+
+  targetStages  String[]
+  targetPresets String[]
+
+  impactQ54Mapping String[]
+  skills5D         String[]
+  acttTargets      String[]
+  aiRatio          Int     @default(0)
+  expertRatio      Int     @default(100)
+
+  prerequisites String[]
+  outcomeTypes  String[]
+  conversionRates Json?
+  conversionBasis String?
+
+  isTheory  Boolean @default(false)
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  curriculumItems CurriculumItem[]
+}
+
+// ─────────────────────────────────────────
+// [A] 프로젝트 (RFP 기반)
+// ─────────────────────────────────────────
+
+enum ProjectStatus {
+  DRAFT
+  PROPOSAL
+  SUBMITTED
+  IN_PROGRESS
+  COMPLETED
+  LOST
+}
+
+enum ProjectType {
+  B2G
+  B2B
+}
+
+model Project {
+  id            String        @id @default(cuid())
+  name          String
+  client        String
+  projectType   ProjectType   @default(B2G)
+  status        ProjectStatus @default(DRAFT)
+
+  totalBudgetVat   Int?
+  supplyPrice      Int?
+
+  projectStartDate DateTime?
+  projectEndDate   DateTime?
+  eduStartDate     DateTime?
+  eduEndDate       DateTime?
+
+  rfpRaw     String? @db.Text
+  rfpParsed  Json?
+  impactGoal String? @db.Text
+  logicModel Json?
+  evalCriteria Json?
+  constraints  Json?
+  kpiTargets   Json?
+  kpiActuals   Json?
+  sroiCountry  String @default("한국")
+  sroiForecast Json?
+  sroiActual   Json?
+
+  pmId String?
+  pm   User?   @relation(fields: [pmId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  curriculum       CurriculumItem[]
+  coachAssignments CoachAssignment[]
+  budget           Budget?
+  tasks            Task[]
+  expenses         Expense[]
+  participants     Participant[]
+  proposalSections ProposalSection[]
+}
+
+// ─────────────────────────────────────────
+// [C] 커리큘럼 아이템
+// ─────────────────────────────────────────
+
+model CurriculumItem {
+  id        String  @id @default(cuid())
+  projectId String
+  moduleId  String?
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  module    Module? @relation(fields: [moduleId], references: [id])
+
+  sessionNo     Int
+  track         String?
+  title         String
+  date          DateTime?
+  startTime     String?
+  endTime       String?
+  durationHours Float
+  venue         String?
+  isOnline      Boolean @default(false)
+  isTheory      Boolean @default(false)
+  isActionWeek  Boolean @default(false)
+
+  assignedCoachId String?
+  coachRole       String?
+  order           Int
+  notes           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId, sessionNo])
+}
+
+// ─────────────────────────────────────────
+// [B] 코치 배정
+// ─────────────────────────────────────────
+
+enum AssignmentRole {
+  MAIN_COACH
+  SUB_COACH
+  LECTURER
+  SUB_LECTURER
+  SPECIAL_LECTURER
+  JUDGE
+  PM_OPS
+}
+
+model CoachAssignment {
+  id        String         @id @default(cuid())
+  projectId String
+  coachId   String
+  project   Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  coach     Coach          @relation(fields: [coachId], references: [id])
+
+  role           AssignmentRole
+  sessions       Int    @default(1)
+  hoursPerSession Float  @default(5)
+  totalHours     Float?
+  agreedRate     Int?
+  totalFee       Int?
+  taxRate        Float?
+  netFee         Int?
+  confirmed      Boolean @default(false)
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([projectId, coachId, role])
+}
+
+// ─────────────────────────────────────────
+// [D] 예산
+// ─────────────────────────────────────────
+
+model Budget {
+  id        String  @id @default(cuid())
+  projectId String  @unique
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  pcTotal    Int   @default(0)
+  acTotal    Int   @default(0)
+  margin     Int   @default(0)
+  marginRate Float @default(0)
+
+  items     BudgetItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum BudgetItemType {
+  PC
+  AC
+}
+
+model BudgetItem {
+  id       String         @id @default(cuid())
+  budgetId String
+  budget   Budget         @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+
+  wbsCode   String
+  type      BudgetItemType
+  category  String
+  name      String
+  unit      String?
+  unitPrice Int
+  quantity  Float
+  amount    Int
+  notes     String?
+
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// [운영] 실지출 / 태스크 / 참여자
+// ─────────────────────────────────────────
+
+model Expense {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  wbsCode     String
+  category    String
+  description String
+  amount      Int
+  paidAt      DateTime
+  receipt     String?
+  notes       String?
+  createdAt   DateTime @default(now())
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  projectId   String
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String?    @db.Text
+  status      TaskStatus @default(TODO)
+  dueDate     DateTime?
+  dDay        Int?
+  category    String?
+  assignees   TaskAssignee[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model TaskAssignee {
+  taskId String
+  userId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@id([taskId, userId])
+}
+
+model Participant {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String
+  email       String?
+  phone       String?
+  track       String?
+  team        String?
+  stage       String?
+  attendances Json?
+  attendanceRate Float @default(0)
+  graduated   Boolean  @default(false)
+  absenceCount Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────
+// [제안서] 섹션
+// ─────────────────────────────────────────
+
+model ProposalSection {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sectionNo Int
+  title     String
+  content   String  @db.Text
+  version   Int     @default(1)
+  isApproved Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([projectId, sectionNo, version])
+}
+
+// ─────────────────────────────────────────
+// [마스터] 비용 기준 / SROI 프록시 / 대상자 프리셋
+// ─────────────────────────────────────────
+
+model CostStandard {
+  id          String         @id @default(cuid())
+  wbsCode     String         @unique
+  type        BudgetItemType
+  category    String
+  name        String
+  description String?
+  unit        String
+  unitPrice   Int
+  notes       String?
+  isActive    Boolean        @default(true)
+  updatedAt   DateTime       @updatedAt
+}
+
+model SroiProxy {
+  id               String   @id @default(cuid())
+  country          String
+  impactType       String
+  subType          String
+  formula          String
+  proxyKrw         Int
+  unit             String
+  contributionRate Float?
+  isActive         Boolean  @default(true)
+  updatedAt        DateTime @updatedAt
+
+  @@unique([country, impactType, subType])
+}
+
+model TargetPreset {
+  id              String @id @default(cuid())
+  name            String @unique
+  lectureRatio    Int
+  workshopRatio   Int
+  mentoringRatio  Int
+  practiceRatio   Int
+  networkingRatio Int
+  curriculumBias  Json
+  tone            String
+  description     String?
+}
+
+model SatisfactionLog {
+  id          String   @id @default(cuid())
+  coachId     String
+  coach       Coach    @relation(fields: [coachId], references: [id])
+  projectName String
+  role        String
+  score       Float
+  comment     String?
+  loggedAt    DateTime @default(now())
+}

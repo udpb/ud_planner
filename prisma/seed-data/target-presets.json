@@ -1,0 +1,122 @@
+[
+  {
+    "name": "예비창업자",
+    "lectureRatio": 40,
+    "workshopRatio": 30,
+    "mentoringRatio": 10,
+    "practiceRatio": 15,
+    "networkingRatio": 5,
+    "tone": "쉬운",
+    "description": "아이디어 검증~팀 빌딩 단계. 강의/워크숍 비중 높음",
+    "curriculumBias": {
+      "preferModules": ["STARTUP_EDU", "NETWORKING"],
+      "avoidModules": ["ACTION_WEEK"],
+      "actionWeekWarning": false
+    }
+  },
+  {
+    "name": "초기창업자 (MVP 이전)",
+    "lectureRatio": 25,
+    "workshopRatio": 35,
+    "mentoringRatio": 20,
+    "practiceRatio": 15,
+    "networkingRatio": 5,
+    "tone": "실무",
+    "description": "MVP 설계~고객 발견 단계",
+    "curriculumBias": {
+      "preferModules": ["STARTUP_EDU", "CAPSTONE", "MENTORING"],
+      "avoidModules": [],
+      "actionWeekWarning": true
+    }
+  },
+  {
+    "name": "초기창업자 (MVP 이후)",
+    "lectureRatio": 15,
+    "workshopRatio": 30,
+    "mentoringRatio": 25,
+    "practiceRatio": 20,
+    "networkingRatio": 10,
+    "tone": "실무",
+    "description": "PMF 검증~초기 매출 단계",
+    "curriculumBias": {
+      "preferModules": ["MENTORING", "ACTION_WEEK", "CAPSTONE"],
+      "avoidModules": [],
+      "actionWeekWarning": true
+    }
+  },
+  {
+    "name": "성장기 스타트업",
+    "lectureRatio": 10,
+    "workshopRatio": 25,
+    "mentoringRatio": 35,
+    "practiceRatio": 20,
+    "networkingRatio": 10,
+    "tone": "전략",
+    "description": "스케일업·투자 유치 단계",
+    "curriculumBias": {
+      "preferModules": ["MENTORING", "ACTION_WEEK", "SPECIAL_LECTURE"],
+      "avoidModules": ["TECH_EDU"],
+      "actionWeekWarning": true
+    }
+  },
+  {
+    "name": "청년/대학생 창업",
+    "lectureRatio": 35,
+    "workshopRatio": 30,
+    "mentoringRatio": 10,
+    "practiceRatio": 20,
+    "networkingRatio": 5,
+    "tone": "친근",
+    "description": "교과 연계·창업 동아리 지원",
+    "curriculumBias": {
+      "preferModules": ["STARTUP_EDU", "CAPSTONE", "TECH_EDU"],
+      "avoidModules": [],
+      "actionWeekWarning": false
+    }
+  },
+  {
+    "name": "소셜벤처/임팩트 창업",
+    "lectureRatio": 30,
+    "workshopRatio": 30,
+    "mentoringRatio": 20,
+    "practiceRatio": 15,
+    "networkingRatio": 5,
+    "tone": "실무",
+    "description": "사회적 가치 측정·임팩트 비즈니스 모델",
+    "curriculumBias": {
+      "preferModules": ["STARTUP_EDU", "MENTORING", "NETWORKING"],
+      "avoidModules": [],
+      "actionWeekWarning": true
+    }
+  },
+  {
+    "name": "기술창업 (딥테크)",
+    "lectureRatio": 30,
+    "workshopRatio": 25,
+    "mentoringRatio": 25,
+    "practiceRatio": 15,
+    "networkingRatio": 5,
+    "tone": "기술심화",
+    "description": "R&D 상업화·기술 사업화",
+    "curriculumBias": {
+      "preferModules": ["TECH_EDU", "MENTORING", "CAPSTONE"],
+      "avoidModules": [],
+      "actionWeekWarning": true
+    }
+  },
+  {
+    "name": "글로벌 진출",
+    "lectureRatio": 20,
+    "workshopRatio": 30,
+    "mentoringRatio": 30,
+    "practiceRatio": 10,
+    "networkingRatio": 10,
+    "tone": "전략",
+    "description": "해외 시장 진출·글로벌 액셀러레이팅",
+    "curriculumBias": {
+      "preferModules": ["MENTORING", "SPECIAL_LECTURE", "NETWORKING"],
+      "avoidModules": [],
+      "actionWeekWarning": true
+    }
+  }
+]

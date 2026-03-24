@@ -1,0 +1,110 @@
+[
+  {
+    "country": "한국",
+    "impactType": "교육",
+    "subType": "창업가 역량 강화 교육 (회·명)",
+    "formula": "대학원 1학점 등록금 × 0.3",
+    "proxyKrw": 150000,
+    "unit": "/회·명",
+    "contributionRate": 0.3
+  },
+  {
+    "country": "한국",
+    "impactType": "교육",
+    "subType": "해커톤/캡스톤 참가 (회·명)",
+    "formula": "교육 프록시 × 2.0 (실전경험 프리미엄)",
+    "proxyKrw": 300000,
+    "unit": "/회·명",
+    "contributionRate": 0.35
+  },
+  {
+    "country": "한국",
+    "impactType": "교육",
+    "subType": "Action Week 참가 (회·명)",
+    "formula": "부트캠프 시장가 × 0.5",
+    "proxyKrw": 500000,
+    "unit": "/회·명",
+    "contributionRate": 0.4
+  },
+  {
+    "country": "한국",
+    "impactType": "창업전환",
+    "subType": "MVP 출시 (팀)",
+    "formula": "초기 투자 유치 비용 절감 대리값",
+    "proxyKrw": 5000000,
+    "unit": "/팀",
+    "contributionRate": 0.35
+  },
+  {
+    "country": "한국",
+    "impactType": "창업전환",
+    "subType": "법인 설립 (팀)",
+    "formula": "법인 설립 컨설팅 시장가",
+    "proxyKrw": 3000000,
+    "unit": "/팀",
+    "contributionRate": 0.4
+  },
+  {
+    "country": "한국",
+    "impactType": "투자",
+    "subType": "IR 피칭 역량 향상 (명)",
+    "formula": "IR 컨설팅 시장가 × 0.2",
+    "proxyKrw": 200000,
+    "unit": "/명",
+    "contributionRate": 0.25
+  },
+  {
+    "country": "한국",
+    "impactType": "투자",
+    "subType": "투자 유치 성공 (건)",
+    "formula": "투자금 × 3% (중개 수수료 대리값)",
+    "proxyKrw": 3000000,
+    "unit": "/건 (억당)",
+    "contributionRate": 0.2
+  },
+  {
+    "country": "한국",
+    "impactType": "고용",
+    "subType": "창업팀 고용 창출 (인·월)",
+    "formula": "국민취업지원제도 지원금",
+    "proxyKrw": 500000,
+    "unit": "/인·월",
+    "contributionRate": 0.3
+  },
+  {
+    "country": "한국",
+    "impactType": "네트워크",
+    "subType": "네트워킹 이벤트 참가 (명)",
+    "formula": "비즈니스 클럽 연회비 ÷ 12",
+    "proxyKrw": 50000,
+    "unit": "/명",
+    "contributionRate": 0.2
+  },
+  {
+    "country": "인도네시아",
+    "impactType": "교육",
+    "subType": "창업가 역량 강화 교육 (회·명)",
+    "formula": "현지 직업훈련 일당 대리값",
+    "proxyKrw": 30000,
+    "unit": "/회·명",
+    "contributionRate": 0.3
+  },
+  {
+    "country": "인도네시아",
+    "impactType": "창업전환",
+    "subType": "MVP 출시 (팀)",
+    "formula": "현지 스타트업 컨설팅 시장가",
+    "proxyKrw": 1500000,
+    "unit": "/팀",
+    "contributionRate": 0.35
+  },
+  {
+    "country": "일본",
+    "impactType": "교육",
+    "subType": "창업가 역량 강화 교육 (회·명)",
+    "formula": "일본 사회인 교육 시장가 × 0.25",
+    "proxyKrw": 180000,
+    "unit": "/회·명",
+    "contributionRate": 0.3
+  }
+]
