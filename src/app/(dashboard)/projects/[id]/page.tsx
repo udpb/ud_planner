@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
+import { ProjectEditForm } from './project-edit-form'
+import { CoachAssign } from './coach-assign'
+import { ProjectAiWrapper } from './project-ai-wrapper'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,6 +35,7 @@ async function getProject(id: string) {
         orderBy: [{ dueDate: 'asc' }, { createdAt: 'desc' }],
         take: 10,
       },
+      proposalSections: { orderBy: { sectionNo: 'asc' } },
       _count: { select: { participants: true } },
     },
   })
@@ -59,13 +63,17 @@ export default async function ProjectDetailPage({
     <div className="flex flex-col overflow-hidden">
       <Header title={project.name} />
       <div className="flex-1 overflow-y-auto p-6">
+        {/* 2-컬럼 레이아웃: 왼쪽 메인, 오른쪽 AI 패널 */}
+        <div className="flex gap-6">
+          <div className="min-w-0 flex-1">
         {/* 헤더 요약 */}
         <div className="mb-6 flex flex-wrap items-start gap-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Badge>{STATUS_LABEL[project.status]}</Badge>
               <Badge variant="outline">{project.projectType}</Badge>
               <span className="text-sm text-muted-foreground">{project.client}</span>
+              <ProjectEditForm project={project} />
             </div>
             <h2 className="mt-1 text-xl font-bold">{project.name}</h2>
           </div>
@@ -104,6 +112,10 @@ export default async function ProjectDetailPage({
             <Card>
               <CardHeader className="flex flex-row items-center justify-between py-3">
                 <CardTitle className="text-sm">배정 코치</CardTitle>
+                <CoachAssign
+                  projectId={project.id}
+                  assignedCoachIds={project.coachAssignments.map((a) => a.coach.id)}
+                />
               </CardHeader>
               <CardContent className="p-0">
                 {project.coachAssignments.length === 0 ? (
@@ -299,6 +311,17 @@ export default async function ProjectDetailPage({
             </Card>
           </TabsContent>
         </Tabs>
+          </div>{/* end main col */}
+
+          {/* AI 사이드 패널 */}
+          <ProjectAiWrapper
+            projectId={project.id}
+            initialRfpParsed={project.rfpParsed as any}
+            initialLogicModel={project.logicModel as any}
+            curriculum={project.curriculum}
+            proposalSections={project.proposalSections}
+          />
+        </div>{/* end 2-col */}
       </div>
     </div>
   )

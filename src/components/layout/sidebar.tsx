@@ -32,9 +32,11 @@ export function Sidebar() {
   return (
     <aside className="flex h-screen w-60 flex-col border-r bg-sidebar">
       {/* 로고 */}
-      <div className="flex h-14 items-center border-b px-4">
-        <span className="text-lg font-bold tracking-tight">UD Ops</span>
-        <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
+      <div className="flex h-14 items-center border-b border-sidebar-border px-4">
+        <span className="text-lg font-extrabold tracking-tight text-sidebar-foreground">
+          UD<span className="text-primary">·</span>Ops
+        </span>
+        <span className="ml-2 rounded bg-primary px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground uppercase tracking-wider">
           Workspace
         </span>
       </div>

@@ -1,16 +1,20 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Nanum_Gothic, Nanum_Gothic_Coding } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const nanumGothic = Nanum_Gothic({
+  variable: '--font-sans',
   subsets: ['latin'],
+  weight: ['400', '700', '800'],
+  display: 'swap',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const nanumCoding = Nanum_Gothic_Coding({
+  variable: '--font-mono',
   subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -20,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="ko" className={`${nanumGothic.variable} ${nanumCoding.variable} h-full antialiased`}>
       <body className="min-h-full">
         {children}
         <Toaster richColors position="top-right" />

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
+import { ModuleForm } from './module-form'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: '교육 모듈' }
@@ -59,6 +60,7 @@ export default async function ModulesPage({
       <Header title="교육 모듈" />
       <div className="flex-1 overflow-y-auto p-6">
         <div className="mb-4 flex flex-wrap items-center gap-3">
+          <ModuleForm />
           <form className="flex flex-1 items-center gap-2">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
