@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="ko" class="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>underdogs. · AI Solopreneur &amp; AX Consultant Recruiting 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --or:#FF8204;--or2:#FFA40D;
+  --bk:#000;--dk:#373938;--cy:#06A9D0;
+  --wh:#fff;
+  --bg:#F7F7F7;
+  --text:#1A1A1A;--text2:#555;--text3:#888;
+  --bd:rgba(0,0,0,.09);
+  --card:#fff;
+  --dl-h:52px;
+  --nav-h:60px;
+}
+html{scroll-behavior:smooth}
+
+/* FONTS */
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Poppins','Nanum Gothic','Apple SD Gothic Neo',sans-serif;
+  line-height:1.75;font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  overflow-wrap:break-word;
+}
+/* Korean text gets keep-all; English mode removes it */
+html.ko body{ word-break:keep-all }
+html.en body{ word-break:normal }
+
+/* Korean-only / English-only visibility */
+.lang-en{ display:none }
+html.en .lang-ko{ display:none }
+html.en .lang-en{ display:block }
+html.en .lang-en.flex{ display:flex }
+html.en .lang-en.grid{ display:grid }
+html.en .lang-en.inline-flex{ display:inline-flex }
+
+/* ============================
+   DEADLINE BAR
+   ============================ */
+.dl-bar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--dl-h);
+  background:#000;
+  display:flex;align-items:center;justify-content:center;
+  gap:20px;
+  border-bottom:1px solid rgba(255,130,4,.25);
+}
+.dl-bar-text{
+  font-size:15px;font-weight:700;color:rgba(255,255,255,.75);
+  letter-spacing:-.1px;
+}
+.dl-bar-text strong{
+  color:var(--or);font-size:17px;font-weight:800;
+}
+.dl-bar-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--or);color:#fff;
+  padding:8px 22px;border-radius:8px;
+  font-family:inherit;font-size:14px;font-weight:800;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:background .2s,transform .2s;
+  white-space:nowrap;
+}
+.dl-bar-btn:hover{background:var(--or2);transform:translateY(-1px)}
+
+/* ============================
+   NAV
+   ============================ */
+nav{
+  position:fixed;top:var(--dl-h);left:0;right:0;z-index:100;
+  height:var(--nav-h);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 40px;
+  background:rgba(255,255,255,.93);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);
+}
+.n-logo{font-size:18px;font-weight:800;color:var(--bk);letter-spacing:-.3px;font-family:'Poppins',sans-serif}
+.n-logo span{color:var(--or)}
+.n-right{display:flex;align-items:center;gap:20px}
+.n-right a{
+  color:var(--text2);text-decoration:none;
+  font-size:14px;font-weight:600;transition:color .2s;
+}
+.n-right a:hover{color:var(--bk)}
+.n-apply{
+  background:var(--or)!important;color:#fff!important;
+  padding:9px 24px;border-radius:8px;font-size:14px!important;font-weight:700!important;
+  transition:background .2s,transform .15s!important;
+}
+.n-apply:hover{background:var(--or2)!important;transform:translateY(-1px)!important}
+
+/* Lang toggle */
+.lang-toggle{
+  display:flex;align-items:center;
+  border:1px solid var(--bd);border-radius:8px;overflow:hidden;
+}
+.lang-btn{
+  padding:5px 13px;font-size:12px;font-weight:800;
+  background:transparent;border:none;cursor:pointer;
+  color:var(--text3);font-family:'Poppins',sans-serif;
+  letter-spacing:.5px;transition:all .2s;
+}
+.lang-btn.active{background:var(--or);color:#fff}
+.lang-btn+.lang-btn{border-left:1px solid var(--bd)}
+
+/* ============================
+   HERO
+   ============================ */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  position:relative;overflow:hidden;
+  padding-top:calc(var(--dl-h) + var(--nav-h) + 60px);
+  padding-bottom:80px;padding-left:24px;padding-right:24px;
+  background:#000;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 45%,rgba(255,130,4,.09),transparent 68%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 60% 50% at 50% 45%,black,transparent);
+}
+.hero-inner{position:relative;z-index:2;max-width:780px;margin:0 auto}
+
+.hero-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(255,130,4,.3);
+  padding:7px 22px;border-radius:100px;
+  font-size:13px;font-weight:700;color:var(--or);
+  letter-spacing:.3px;margin-bottom:28px;
+}
+.hero h1{
+  font-size:clamp(32px,5.5vw,58px);font-weight:800;
+  line-height:1.2;margin-bottom:22px;letter-spacing:-.5px;
+  color:#fff;
+}
+.hero h1 em{font-style:normal;color:var(--or)}
+.hero .sub{
+  font-size:17px;color:rgba(255,255,255,.45);
+  line-height:1.85;margin-bottom:40px;
+}
+.hero .sub strong{color:rgba(255,255,255,.78);font-weight:700}
+.hero-nums{
+  display:flex;justify-content:center;gap:48px;
+  margin-bottom:44px;flex-wrap:wrap;
+}
+.hn{text-align:center}
+.hn-v{font-size:34px;font-weight:800;color:var(--or);font-family:'Poppins',sans-serif}
+.hn-l{font-size:13px;color:rgba(255,255,255,.3);margin-top:4px}
+.hero-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.hb{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 36px;border-radius:10px;
+  font-size:16px;font-weight:800;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .25s;font-family:inherit;
+}
+.hb-or{background:var(--or);color:#fff}
+.hb-or:hover{background:var(--or2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,130,4,.3)}
+.hb-gh{
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.65);
+  border:1px solid rgba(255,255,255,.14);
+}
+.hb-gh:hover{background:rgba(255,255,255,.12)}
+.hero-dead{font-size:14px;color:rgba(255,255,255,.2)}
+.hero-dead strong{color:var(--or)}
+
+/* ============================
+   NOTICE BAR
+   ============================ */
+.notice-bar{
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  padding:32px 24px;text-align:center;background:#fff;
+}
+.notice-bar p{
+  font-size:16px;color:var(--text2);
+  max-width:660px;margin:0 auto;line-height:1.85;
+}
+.notice-bar strong{color:var(--or);font-weight:800}
+.notice-bar em{font-style:normal;color:var(--text);font-weight:700}
+
+/* ============================
+   SHARED SECTION STYLES
+   ============================ */
+.container{max-width:920px;margin:0 auto;padding:0 24px}
+.sec-label{
+  font-size:11px;font-weight:800;color:var(--or);
+  letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:10px;font-family:'Poppins',sans-serif;
+}
+
+/* ============================
+   TRACK INTRO + CLICK HINT
+   ============================ */
+.track-intro{
+  text-align:center;
+  padding:72px 24px 0;
+  background:#fff;
+}
+.track-intro h2{
+  font-size:clamp(26px,3.5vw,38px);font-weight:800;
+  line-height:1.25;letter-spacing:-.4px;color:var(--text);
+  margin-bottom:12px;
+}
+.track-intro p{font-size:17px;color:var(--text2);margin-bottom:32px}
+
+.click-hint{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:16px;font-weight:800;color:#fff;
+  background:var(--or);
+  padding:14px 28px;border-radius:12px;
+  margin-bottom:40px;
+  box-shadow:0 4px 20px rgba(255,130,4,.35);
+  animation:hintPulse 2.2s ease-in-out infinite;
+}
+@keyframes hintPulse{
+  0%,100%{transform:scale(1);box-shadow:0 4px 20px rgba(255,130,4,.35)}
+  50%{transform:scale(1.03);box-shadow:0 6px 28px rgba(255,130,4,.5)}
+}
+
+/* ============================
+   TABS
+   ============================ */
+.tabs-wrap{background:#fff;padding:0 24px 0}
+.tabs-container{max-width:920px;margin:0 auto}
+.tabs{
+  display:flex;
+  border:1px solid var(--bd);border-radius:14px;overflow:hidden;
+  background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.tab{
+  flex:1;padding:28px 24px 24px;text-align:center;
+  cursor:pointer;transition:all .3s;position:relative;background:#fff;
+}
+.tab+.tab{border-left:1px solid var(--bd)}
+.tab:hover{background:#FAFAFA}
+.tab.active{background:rgba(255,130,4,.04)}
+.tab.active.cy-active{background:rgba(6,169,208,.04)}
+.tab-badge{
+  display:inline-block;font-size:10px;font-weight:800;
+  letter-spacing:1.5px;padding:4px 12px;border-radius:6px;
+  margin-bottom:10px;text-transform:uppercase;
+  font-family:'Poppins',sans-serif;
+}
+.tab:first-child .tab-badge{background:rgba(255,130,4,.12);color:var(--or)}
+.tab:last-child .tab-badge{background:rgba(6,169,208,.1);color:var(--cy)}
+.tab h3{
+  font-size:20px;font-weight:800;margin-bottom:5px;color:var(--text);
+}
+.tab p{font-size:14px;color:var(--text3);margin-bottom:8px}
+.tab .tab-limit{
+  font-size:13px;font-weight:800;color:var(--or);margin-bottom:14px;
+}
+.tab:last-child .tab-limit{color:var(--cy)}
+.tab-see{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:13px;font-weight:800;
+  padding:7px 18px;border-radius:100px;
+  background:rgba(255,130,4,.1);color:var(--or);
+  transition:background .2s;
+}
+.tab:last-child .tab-see{background:rgba(6,169,208,.1);color:var(--cy)}
+.tab:hover .tab-see,.tab.active .tab-see{background:rgba(255,130,4,.18)}
+.tab:last-child:hover .tab-see,.tab:last-child.active .tab-see{background:rgba(6,169,208,.18)}
+.tab.active::after{
+  content:'';position:absolute;bottom:0;left:15%;right:15%;
+  height:3px;background:var(--or);border-radius:2px 2px 0 0;
+}
+.tab.active.cy-active::after{background:var(--cy)}
+
+/* ============================
+   PANELS
+   ============================ */
+.panels-wrap{background:var(--bg);padding:0 24px 96px}
+.panels-container{max-width:920px;margin:0 auto;padding-top:44px}
+.panel{display:none}.panel.active{display:block}
+
+/* PROGRAM HEADER */
+.prog-hd{
+  border:1px solid var(--bd);border-radius:14px;overflow:hidden;
+  margin-bottom:24px;background:var(--card);
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.prog-hd-top{padding:28px 32px}
+.prog-hd-top h2{
+  font-size:22px;font-weight:800;margin-bottom:6px;color:var(--text);
+}
+.prog-hd-top h2 .ac{color:var(--or)}
+.prog-hd-top h2 .ac2{color:var(--cy)}
+.prog-hd-top p{font-size:14px;color:var(--text3)}
+.prog-goal{
+  padding:18px 32px;background:#FAFAFA;
+  border-top:1px solid var(--bd);
+  font-size:15px;font-weight:700;color:var(--text2);
+}
+.prog-goal span{color:var(--or)}
+.prog-goal .cyn{color:var(--cy)}
+
+/* INFO GRID */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.ig{
+  border:1px solid var(--bd);border-radius:12px;
+  padding:20px 22px;background:var(--card);
+}
+.ig-label{
+  font-size:11px;font-weight:700;color:var(--text3);
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:5px;font-family:'Poppins',sans-serif;
+}
+.ig-val{font-size:15px;font-weight:800;color:var(--text)}
+
+/* CLAUDE CODE REQUIREMENT */
+.req-box{
+  display:flex;align-items:flex-start;gap:14px;
+  border:1px solid rgba(255,130,4,.3);border-radius:12px;
+  padding:18px 22px;
+  background:rgba(255,130,4,.04);
+  margin:16px 0 28px;
+}
+.req-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+.req-text{font-size:14px;color:var(--text2);line-height:1.7}
+.req-text strong{color:var(--or);font-weight:800}
+
+/* TIMELINE */
+.tl-label{margin-top:44px}
+.tl{margin:20px 0;display:flex;flex-direction:column}
+.tl-item{
+  display:flex;align-items:stretch;
+  border:1px solid var(--bd);border-bottom:none;background:var(--card);
+}
+.tl-item:first-child{border-radius:12px 12px 0 0}
+.tl-item:last-child{border-bottom:1px solid var(--bd);border-radius:0 0 12px 12px}
+.tl-date{
+  width:120px;padding:16px;
+  border-right:1px solid var(--bd);
+  font-size:13px;font-weight:700;color:var(--or);
+  flex-shrink:0;display:flex;align-items:center;
+  font-family:'Poppins',sans-serif;
+}
+.tl-date.cy-date{color:var(--cy)}
+.tl-body{padding:16px 20px;flex:1}
+.tl-title{font-size:15px;font-weight:800;color:var(--text)}
+.tl-desc{font-size:13px;color:var(--text3);margin-top:3px}
+
+/* STAGE BLOCKS */
+.stg-block{
+  border:1px solid var(--bd);border-radius:14px;overflow:hidden;
+  margin-bottom:20px;background:var(--card);
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.stg-hd{
+  display:flex;align-items:center;gap:12px;
+  padding:20px 28px;border-bottom:1px solid var(--bd);background:#FAFAFA;
+}
+.stg-badge{
+  padding:5px 14px;border-radius:8px;
+  font-size:11px;font-weight:800;letter-spacing:.5px;flex-shrink:0;
+  font-family:'Poppins',sans-serif;
+}
+.stg-badge.or{background:rgba(255,130,4,.1);color:var(--or)}
+.stg-badge.bk{background:#1A1A1A;color:#fff}
+.stg-badge.cy{background:rgba(6,169,208,.1);color:var(--cy)}
+.stg-name{font-size:17px;font-weight:800;color:var(--text)}
+.stg-body{padding:28px}
+.stg-body>p{
+  font-size:15px;color:var(--text2);
+  line-height:1.85;margin-bottom:20px;
+}
+.stg-body>p:last-child{margin-bottom:0}
+
+/* MISSION GRID */
+.missions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.mi{
+  border:1px solid var(--bd);border-radius:10px;
+  padding:18px 12px;text-align:center;background:#FAFAFA;
+  transition:all .2s;
+}
+.mi:hover{border-color:rgba(255,130,4,.3);transform:translateY(-2px);background:#fff}
+.mi-day{
+  font-size:11px;font-weight:800;color:var(--or);
+  letter-spacing:1px;margin-bottom:6px;
+  font-family:'Poppins',sans-serif;
+}
+.mi-title{font-size:13px;font-weight:700;line-height:1.45;color:var(--text)}
+.mi-note{margin-top:16px;font-size:13px;color:var(--text3);font-style:italic}
+
+/* CADENCE — 7 day */
+.cadence{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:6px;margin:16px 0;
+}
+.cd{
+  border:1px solid var(--bd);border-radius:10px;
+  padding:14px 6px;text-align:center;background:#FAFAFA;
+}
+.cd.hl{background:rgba(255,130,4,.05);border-color:rgba(255,130,4,.22)}
+.cd-day{font-size:12px;font-weight:800;margin-bottom:5px;color:var(--text);font-family:'Poppins',sans-serif}
+.cd.hl .cd-day{color:var(--or)}
+.cd-act{font-size:11px;color:var(--text3);line-height:1.4}
+
+/* AX DAYS */
+.ax-days{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.ax-d{border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:#FAFAFA}
+.ax-d-hd{
+  padding:16px;border-bottom:1px solid var(--bd);
+  text-align:center;background:rgba(6,169,208,.05);
+}
+.ax-d-hd .d-num{font-size:20px;font-weight:800;color:var(--text);font-family:'Poppins',sans-serif}
+.ax-d-hd .d-date{font-size:12px;color:var(--text3);margin-top:2px;font-family:'Poppins',sans-serif}
+.ax-d-body{padding:18px}
+.ax-d-body h5{font-size:14px;font-weight:800;color:var(--cy);margin-bottom:6px}
+.ax-d-body p{font-size:13px;color:var(--text2);line-height:1.65}
+
+/* BENEFITS */
+.bens{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.ben{
+  border:1px solid var(--bd);border-radius:14px;
+  padding:26px 22px;background:var(--card);transition:all .25s;
+}
+.ben:hover{border-color:rgba(0,0,0,.14);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.ben.featured{border-color:rgba(6,169,208,.3);background:rgba(6,169,208,.02)}
+.ben.featured:hover{box-shadow:0 4px 16px rgba(6,169,208,.1)}
+.ben-icon{font-size:26px;margin-bottom:12px}
+.ben h4{font-size:15px;font-weight:800;margin-bottom:6px;color:var(--text)}
+.ben h4.cy-h{color:var(--cy)}
+.ben p{font-size:13px;color:var(--text2);line-height:1.75}
+.ben p strong{color:var(--text);font-weight:700}
+
+/* WHO */
+.who-list{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+.who{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 22px;
+  border:1px solid var(--bd);border-radius:12px;
+  background:var(--card);transition:border-color .2s;
+}
+.who:hover{border-color:rgba(255,130,4,.25)}
+.who-ck{
+  width:24px;height:24px;border-radius:7px;
+  background:rgba(255,130,4,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;margin-top:1px;
+  color:var(--or);font-weight:800;
+}
+.who-ck.cy-ck{background:rgba(6,169,208,.08);color:var(--cy)}
+.who h4{font-size:14px;font-weight:800;margin-bottom:3px;color:var(--text)}
+.who p{font-size:13px;color:var(--text3);line-height:1.65}
+
+/* PANEL CTA */
+.panel-cta{margin-top:52px;text-align:center}
+.panel-cta a{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:16px 44px;border-radius:10px;
+  font-size:17px;font-weight:800;text-decoration:none;
+  background:var(--or);color:#fff;
+  transition:all .25s;font-family:inherit;
+}
+.panel-cta a:hover{background:var(--or2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,130,4,.3)}
+.panel-cta a.cy-btn{background:var(--cy)}
+.panel-cta a.cy-btn:hover{background:#059ab8;box-shadow:0 8px 24px rgba(6,169,208,.3)}
+
+/* ============================
+   CTA SECTION
+   ============================ */
+.cta-section{
+  padding:100px 0;text-align:center;
+  background:#000;position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;left:50%;bottom:0;
+  transform:translateX(-50%);
+  width:700px;height:500px;
+  background:radial-gradient(ellipse,rgba(255,130,4,.06),transparent 70%);
+  pointer-events:none;
+}
+.cta-inner{
+  position:relative;z-index:2;
+  max-width:660px;margin:0 auto;padding:0 24px;
+}
+.cta-inner h2{
+  font-size:clamp(28px,4.5vw,44px);font-weight:800;
+  margin-bottom:14px;color:#fff;letter-spacing:-.3px;
+}
+.cta-inner h2 em{font-style:normal;color:var(--or)}
+.cta-inner>p{
+  color:rgba(255,255,255,.4);font-size:17px;
+  margin-bottom:40px;
+}
+.cta-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.cc{
+  border:1px solid rgba(255,255,255,.1);border-radius:16px;
+  padding:32px 24px;text-align:center;
+  transition:all .3s;cursor:pointer;
+  text-decoration:none;color:#fff;display:block;
+  background:rgba(255,255,255,.03);
+}
+.cc:first-child:hover{border-color:rgba(255,130,4,.45);transform:translateY(-4px);background:rgba(255,255,255,.05)}
+.cc:last-child:hover{border-color:rgba(6,169,208,.45);transform:translateY(-4px);background:rgba(255,255,255,.05)}
+.cc-badge{
+  font-size:10px;font-weight:800;letter-spacing:1.5px;
+  padding:4px 12px;border-radius:6px;
+  display:inline-block;margin-bottom:12px;
+  font-family:'Poppins',sans-serif;
+}
+.cc:first-child .cc-badge{background:rgba(255,130,4,.15);color:var(--or)}
+.cc:last-child .cc-badge{background:rgba(6,169,208,.15);color:var(--cy)}
+.cc h3{font-size:22px;font-weight:800;margin-bottom:6px}
+.cc-limit{font-size:13px;font-weight:700;margin-bottom:18px}
+.cc:first-child .cc-limit{color:var(--or)}
+.cc:last-child .cc-limit{color:var(--cy)}
+.cc-cta-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:15px;font-weight:800;
+  padding:11px 28px;border-radius:8px;
+  background:var(--or);color:#fff;transition:background .2s;
+}
+.cc:last-child .cc-cta-btn{background:var(--cy)}
+.cta-dead{font-size:13px;color:rgba(255,255,255,.25)}
+.cta-dead strong{color:var(--or)}
+
+/* ============================
+   FOOTER
+   ============================ */
+footer{
+  border-top:1px solid var(--bd);
+  padding:40px;text-align:center;background:#fff;
+}
+footer .fl{font-size:17px;font-weight:800;margin-bottom:6px;color:var(--text);font-family:'Poppins',sans-serif}
+footer .fl span{color:var(--or)}
+footer p{font-size:12px;color:var(--text3)}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+@media(max-width:900px){
+  .cadence{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:768px){
+  .dl-bar{gap:12px;padding:0 16px}
+  .dl-bar-text{font-size:13px}
+  .dl-bar-text strong{font-size:15px}
+  nav{padding:0 20px}
+  .n-right a:not(.n-apply):not(.lang-toggle){display:none}
+  .tabs{flex-direction:column}
+  .tab+.tab{border-left:none;border-top:1px solid var(--bd)}
+  .info-grid,.bens,.cta-cards{grid-template-columns:1fr}
+  .missions{grid-template-columns:1fr 1fr}
+  .cadence{grid-template-columns:repeat(4,1fr)}
+  .ax-days{grid-template-columns:1fr}
+  .tl-date{width:96px;font-size:12px}
+  .prog-hd-top,.prog-goal,.stg-body{padding:20px}
+  .stg-hd{padding:16px 20px}
+  .click-hint{font-size:14px;padding:12px 22px}
+}
+@media(max-width:480px){
+  .cadence{grid-template-columns:repeat(3,1fr)}
+  .dl-bar{flex-direction:column;gap:6px;height:auto;padding:10px 16px}
+  :root{--dl-h:72px}
+}
+
+/* ANIM */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.anim{opacity:0;animation:fadeUp .45s ease forwards}
+.d1{animation-delay:.07s}.d2{animation-delay:.14s}
+.d3{animation-delay:.21s}.d4{animation-delay:.28s}
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     DEADLINE BAR
+     ============================== -->
+<div class="dl-bar">
+  <span class="dl-bar-text lang-ko">
+    모집 마감&nbsp;<strong>4월 5일 (일)</strong>&nbsp;까지
+  </span>
+  <span class="dl-bar-text lang-en" style="display:none">
+    Applications close&nbsp;<strong>April 5 (Sun)</strong>
+  </span>
+  <a href="https://forms.gle/rEU9sCP8Qgpvzp3k8"
+     target="_blank" class="dl-bar-btn">
+    <span class="lang-ko">지원하기 →</span>
+    <span class="lang-en" style="display:none">Apply Now →</span>
+  </a>
+</div>
+
+<!-- ==============================
+     NAV
+     ============================== -->
+<nav>
+  <div class="n-logo">underdogs<span>.</span></div>
+  <div class="n-right">
+    <a href="#programs" class="lang-ko">프로그램</a>
+    <a href="#programs" class="lang-en" style="display:none">Programs</a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')">KO</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="https://forms.gle/rEU9sCP8Qgpvzp3k8"
+       target="_blank" class="n-apply">
+      <span class="lang-ko">지원하기 →</span>
+      <span class="lang-en" style="display:none">Apply →</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ==============================
+     HERO
+     ============================== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+
+    <!-- KO HERO -->
+    <div class="lang-ko">
+      <div class="hero-chip anim">언더독스 코치 전용 · 실전 창업 &amp; 컨설팅 · 5주 무료</div>
+      <h1 class="anim d1">
+        AI로 <em>내 사업</em>을 시작하거나,<br>
+        <em>진짜 컨설턴트</em>로 성장하거나.
+      </h1>
+      <p class="sub anim d2">
+        코칭 그 이상을 원하는 분들을 위한 프로그램입니다.<br>
+        <strong>직접 프로덕트를 만들어 첫 매출을 내고 싶은 분</strong>,<br>
+        <strong>기업 컨설턴트로 전문가 레벨에서 일하고 싶은 분</strong>을 찾습니다.
+      </p>
+      <div class="hero-nums anim d3">
+        <div class="hn"><div class="hn-v">각 10명</div><div class="hn-l">트랙별 모집</div></div>
+        <div class="hn"><div class="hn-v">5주</div><div class="hn-l">프로그램 기간</div></div>
+        <div class="hn"><div class="hn-v">무료</div><div class="hn-l">전액 지원</div></div>
+      </div>
+      <div class="hero-btns anim d4">
+        <a href="https://forms.gle/rEU9sCP8Qgpvzp3k8" target="_blank" class="hb hb-or">지원하기 →</a>
+        <a href="#programs" class="hb hb-gh">프로그램 보기</a>
+      </div>
+      <p class="hero-dead anim d4">모집 마감: <strong>4월 5일 (일)</strong></p>
+    </div>
+
+    <!-- EN HERO -->
+    <div class="lang-en" style="display:none">
+      <div class="hero-chip anim">For Underdogs Coaches · Real Startup &amp; Consulting · 5 Weeks Free</div>
+      <h1 class="anim d1">
+        Build <em>Your Business</em> with AI,<br>
+        or Grow into a <em>Real Consultant</em>.
+      </h1>
+      <p class="sub anim d2">
+        A program for coaches who want more than coaching.<br>
+        For those who want to <strong>build real products and generate revenue</strong>,<br>
+        or work as <strong>expert-level business consultants</strong>.
+      </p>
+      <div class="hero-nums anim d3">
+        <div class="hn"><div class="hn-v">10 Each</div><div class="hn-l">Per Track</div></div>
+        <div class="hn"><div class="hn-v">5 Wks</div><div class="hn-l">Program Duration</div></div>
+        <div class="hn"><div class="hn-v">Free</div><div class="hn-l">Fully Funded</div></div>
+      </div>
+      <div class="hero-btns anim d4">
+        <a href="https://forms.gle/rEU9sCP8Qgpvzp3k8" target="_blank" class="hb hb-or">Apply Now →</a>
+        <a href="#programs" class="hb hb-gh">View Programs</a>
+      </div>
+      <p class="hero-dead anim d4">Deadline: <strong>April 5 (Sun)</strong></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==============================
+     NOTICE BAR
+     ============================== -->
+<div class="notice-bar">
+  <p class="lang-ko">
+    각 트랙 <em>10명만 선발</em>하며, 5주간 <strong>온전히 몰입할 수 있는 분</strong>만 지원해 주세요.
+  </p>
+  <p class="lang-en" style="display:none">
+    <em>Only 10 participants per track.</em> Apply only if you can <strong>fully commit for 5 weeks</strong>.
+  </p>
+</div>
+
+<!-- ==============================
+     PROGRAMS
+     ============================== -->
+<div id="programs">
+
+  <!-- Track intro -->
+  <div class="track-intro">
+    <h2 class="lang-ko">나에게 맞는 트랙을 선택하세요</h2>
+    <h2 class="lang-en" style="display:none">Choose Your Track</h2>
+
+    <p class="lang-ko">AI 솔로프러너 또는 AX 컨설턴트 — 아래 탭을 눌러 자세한 내용을 확인하세요.</p>
+    <p class="lang-en" style="display:none">AI Solopreneur or AX Consultant — Click a tab below to learn more.</p>
+
+    <div class="click-hint lang-ko">👇 탭을 클릭해 각 트랙 자세히 보기</div>
+    <div class="click-hint lang-en" style="display:none">👇 Click a tab to explore each track</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-wrap">
+    <div class="tabs-container">
+      <div class="tabs" id="tabs">
+        <div class="tab active" onclick="sw(0)">
+          <div class="tab-badge">TRACK A</div>
+          <h3 class="lang-ko">AI 솔로프러너</h3>
+          <h3 class="lang-en" style="display:none">AI Solopreneur</h3>
+          <p class="lang-ko">내 프로덕트를 만들고 첫 매출까지</p>
+          <p class="lang-en" style="display:none">Build your product &amp; make your first sale</p>
+          <div class="tab-limit lang-ko">10명 한정</div>
+          <div class="tab-limit lang-en" style="display:none">Limited to 10</div>
+          <div class="tab-see lang-ko">자세히 보기 →</div>
+          <div class="tab-see lang-en" style="display:none">Learn More →</div>
+        </div>
+        <div class="tab" onclick="sw(1)">
+          <div class="tab-badge">TRACK B</div>
+          <h3 class="lang-ko">AX 컨설턴트</h3>
+          <h3 class="lang-en" style="display:none">AX Consultant</h3>
+          <p class="lang-ko">실전 기업 컨설턴트로 레벨업</p>
+          <p class="lang-en" style="display:none">Level up to real corporate consultant</p>
+          <div class="tab-limit lang-ko">10명 한정</div>
+          <div class="tab-limit lang-en" style="display:none">Limited to 10</div>
+          <div class="tab-see lang-ko">자세히 보기 →</div>
+          <div class="tab-see lang-en" style="display:none">Learn More →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panels -->
+  <div class="panels-wrap">
+    <div class="panels-container">
+
+      <!-- ===== PANEL A ===== -->
+      <div class="panel active" id="pA">
+
+        <!-- KO Panel A -->
+        <div class="lang-ko">
+          <div class="prog-hd">
+            <div class="prog-hd-top">
+              <h2><span class="ac">AI 솔로프러너</span> 육성 프로그램</h2>
+              <p>사전 교육 → 본교육 연속 진행 · 총 5주</p>
+            </div>
+            <div class="prog-goal">목표: <span>Claude Code로 나만의 프로덕트를 직접 만들고, 실제 시장에서 첫 번째 매출을 만들어낸다.</span></div>
+          </div>
+          <div class="info-grid">
+            <div class="ig"><div class="ig-label">모집 인원</div><div class="ig-val">10명</div></div>
+            <div class="ig"><div class="ig-label">기간</div><div class="ig-val">4/6 (월) ~ 5/8 (금)</div></div>
+            <div class="ig"><div class="ig-label">방식</div><div class="ig-val">LMS + Discord · 온라인</div></div>
+            <div class="ig"><div class="ig-label">핵심 도구</div><div class="ig-val">Claude Code 기반</div></div>
+          </div>
+          <div class="req-box">
+            <div class="req-icon">⚠️</div>
+            <div class="req-text">
+              <strong>Claude Code Pro 플랜 이상 본인 구독 필요</strong>합니다.<br>
+              원활한 개발 경험을 위해 <strong>Max 플랜을 권장</strong>합니다. (프로그램 지원 항목에 포함되지 않음)
+            </div>
+          </div>
+        </div>
+
+        <!-- EN Panel A header -->
+        <div class="lang-en" style="display:none">
+          <div class="prog-hd">
+            <div class="prog-hd-top">
+              <h2><span class="ac">AI Solopreneur</span> Accelerator</h2>
+              <p>Pre-training → Main program · 5 weeks total</p>
+            </div>
+            <div class="prog-goal">Goal: <span>Use Claude Code to build your own product and generate your first real revenue in the market.</span></div>
+          </div>
+          <div class="info-grid">
+            <div class="ig"><div class="ig-label">Capacity</div><div class="ig-val">10 participants</div></div>
+            <div class="ig"><div class="ig-label">Period</div><div class="ig-val">Apr 6 (Mon) ~ May 8 (Fri)</div></div>
+            <div class="ig"><div class="ig-label">Format</div><div class="ig-val">LMS + Discord · Online</div></div>
+            <div class="ig"><div class="ig-label">Core Tool</div><div class="ig-val">Claude Code</div></div>
+          </div>
+          <div class="req-box">
+            <div class="req-icon">⚠️</div>
+            <div class="req-text">
+              <strong>Claude Code Pro plan or higher required</strong> (your own subscription).<br>
+              <strong>Max plan is recommended</strong> for the best development experience. (Not covered by the program)
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="sec-label tl-label lang-ko">일정</div>
+        <div class="sec-label tl-label lang-en" style="display:block">Schedule</div>
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-date">3/30 ~ 4/5</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">모집 기간</div>
+              <div class="tl-title lang-en" style="display:none">Application Period</div>
+              <div class="tl-desc lang-ko">4/5 (일) 마감</div>
+              <div class="tl-desc lang-en" style="display:none">Closes April 5 (Sun)</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4/6 (Mon)</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">선발 합격 · 개별 통보</div>
+              <div class="tl-title lang-en" style="display:none">Accepted applicants notified individually</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4/6 ~ 4/16</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">사전 교육 (Stage 2)</div>
+              <div class="tl-title lang-en" style="display:none">Pre-Training (Stage 2)</div>
+              <div class="tl-desc lang-ko">바이브코딩 실전 플로우 · 일별 미션 · 프로토타입 제작</div>
+              <div class="tl-desc lang-en" style="display:none">Vibe coding workflow · Daily missions · Prototype development</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4/17 (Fri) 7PM</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">OT — 프로그램 안내 &amp; 현황 공유</div>
+              <div class="tl-title lang-en" style="display:none">OT — Program Orientation &amp; Kickoff</div>
+              <div class="tl-desc lang-ko">온라인 · 약 1시간</div>
+              <div class="tl-desc lang-en" style="display:none">Online · Approx. 1 hour</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4/18 (Sat) 1PM</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">본교육 집중 프로그램</div>
+              <div class="tl-title lang-en" style="display:none">Main Intensive Program</div>
+              <div class="tl-desc lang-ko">매출 전략 · 케이스 스터디 · 프로덕트 설계 · 온라인 3시간</div>
+              <div class="tl-desc lang-en" style="display:none">Revenue strategy · Case studies · Product design · Online 3 hrs</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4/20 ~ 5/8</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">액션위크 — 3주간 실전</div>
+              <div class="tl-title lang-en" style="display:none">Action Weeks — 3 Weeks of Execution</div>
+              <div class="tl-desc lang-ko">월/목 코호트 세션 · 주간 목표 실행</div>
+              <div class="tl-desc lang-en" style="display:none">Mon/Thu cohort sessions · Weekly goal execution</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">5/8 (Fri)</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">최종 마감 · 산출물 제출</div>
+              <div class="tl-title lang-en" style="display:none">Final Deadline · Submit Deliverables</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="stg-block">
+          <div class="stg-hd">
+            <div class="stg-badge or">
+              <span class="lang-ko">사전 교육</span>
+              <span class="lang-en" style="display:none">Pre-Training</span>
+            </div>
+            <div class="stg-name lang-ko">Stage 2 — 바이브코딩으로 프로덕트 만들기</div>
+            <div class="stg-name lang-en" style="display:none">Stage 2 — Build Your Product with Vibe Coding</div>
+          </div>
+          <div class="stg-body">
+            <p class="lang-ko">
+              바이브코딩 사용법과 실전 플로우를 학습하고, 일별 미션을 수행하며 실전 작동하는
+              프로토타입을 만듭니다. Claude Code를 기반으로 시스템 아키텍처를 설계하고,
+              외부 툴과 서비스를 연동해 진짜 프로덕트를 빌딩합니다.
+            </p>
+            <p class="lang-en" style="display:none">
+              Learn vibe coding techniques and real-world workflows. Complete daily missions to build a working prototype.
+              Design system architecture with Claude Code and integrate external tools and services to ship a real product.
+            </p>
+            <div class="sec-label lang-ko">일별 미션 예시</div>
+            <div class="sec-label lang-en" style="display:block">Daily Mission Examples</div>
+            <div class="missions">
+              <div class="mi">
+                <div class="mi-day">DAY 1</div>
+                <div class="mi-title lang-ko">문제 정의 &amp; 고객 탐색</div>
+                <div class="mi-title lang-en" style="display:none">Problem Definition &amp; Customer Discovery</div>
+              </div>
+              <div class="mi">
+                <div class="mi-day">DAY 2</div>
+                <div class="mi-title lang-ko">PRD 작성</div>
+                <div class="mi-title lang-en" style="display:none">Write Your PRD</div>
+              </div>
+              <div class="mi">
+                <div class="mi-day">DAY 3</div>
+                <div class="mi-title lang-ko">시스템 아키텍처 설계</div>
+                <div class="mi-title lang-en" style="display:none">System Architecture Design</div>
+              </div>
+              <div class="mi">
+                <div class="mi-day">DAY 4</div>
+                <div class="mi-title lang-ko">Admin / DB 스키마 세팅</div>
+                <div class="mi-title lang-en" style="display:none">Admin / DB Schema Setup</div>
+              </div>
+              <div class="mi">
+                <div class="mi-day">DAY 5</div>
+                <div class="mi-title lang-ko">프론트엔드 개발 &amp; 배포</div>
+                <div class="mi-title lang-en" style="display:none">Frontend Dev &amp; Deployment</div>
+              </div>
+              <div class="mi">
+                <div class="mi-day">DAY 6+</div>
+                <div class="mi-title lang-ko">개선 · 보완 → MVP 완성</div>
+                <div class="mi-title lang-en" style="display:none">Improve &amp; Iterate → MVP</div>
+              </div>
+            </div>
+            <p class="mi-note lang-ko">* 자기 미션의 예시이며, 실제 미션은 진행 시 안내됩니다.</p>
+            <p class="mi-note lang-en" style="display:none">* Example missions only. Actual missions will be shared during the program.</p>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="stg-block">
+          <div class="stg-hd">
+            <div class="stg-badge bk">
+              <span class="lang-ko">본교육</span>
+              <span class="lang-en" style="display:none">Main Program</span>
+            </div>
+            <div class="stg-name lang-ko">Stage 3 — 첫 매출 만들기</div>
+            <div class="stg-name lang-en" style="display:none">Stage 3 — Make Your First Sale</div>
+          </div>
+          <div class="stg-body">
+            <p class="lang-ko">
+              만든 프로덕트를 시장에 내놓고 실전 매출을 만드는 3주 과정입니다.
+            </p>
+            <p class="lang-ko">
+              단순히 파는 것에 그치지 않습니다.
+              <strong>에이전트를 만들어 내 캐파를 최대한 확장</strong>하고,
+              그 시간을 <strong>고객에 더 집중</strong>합니다.
+              재구매율과 전환율 같은
+              <strong style="color:var(--or)">의미있는 지표를 직접 올리는 것</strong>이 이 단계의 목표입니다.
+            </p>
+            <p class="lang-en" style="display:none">
+              A 3-week journey to take your product to market and generate real revenue.
+            </p>
+            <p class="lang-en" style="display:none">
+              Not just selling. <strong>Build agents to scale your capacity</strong>,
+              then spend that time <strong>focusing on customers</strong>.
+              The goal is to <strong style="color:var(--or)">move meaningful metrics</strong>
+              like repeat purchase rate and conversion rate.
+            </p>
+            <div class="sec-label lang-ko" style="margin-top:20px">주간 리듬 (월 ~ 일)</div>
+            <div class="sec-label lang-en" style="display:block;margin-top:20px">Weekly Rhythm (Mon – Sun)</div>
+            <div class="cadence">
+              <div class="cd hl">
+                <div class="cd-day lang-ko">월</div>
+                <div class="cd-day lang-en" style="display:none">Mon</div>
+                <div class="cd-act lang-ko">목표 설정 + 코호트</div>
+                <div class="cd-act lang-en" style="display:none">Set Goals + Cohort</div>
+              </div>
+              <div class="cd">
+                <div class="cd-day lang-ko">화</div>
+                <div class="cd-day lang-en" style="display:none">Tue</div>
+                <div class="cd-act lang-ko">개인 실전</div>
+                <div class="cd-act lang-en" style="display:none">Solo Execution</div>
+              </div>
+              <div class="cd">
+                <div class="cd-day lang-ko">수</div>
+                <div class="cd-day lang-en" style="display:none">Wed</div>
+                <div class="cd-act lang-ko">개인 실전</div>
+                <div class="cd-act lang-en" style="display:none">Solo Execution</div>
+              </div>
+              <div class="cd hl">
+                <div class="cd-day lang-ko">목</div>
+                <div class="cd-day lang-en" style="display:none">Thu</div>
+                <div class="cd-act lang-ko">목표 점검 + 코호트</div>
+                <div class="cd-act lang-en" style="display:none">Review Goals + Cohort</div>
+              </div>
+              <div class="cd">
+                <div class="cd-day lang-ko">금</div>
+                <div class="cd-day lang-en" style="display:none">Fri</div>
+                <div class="cd-act lang-ko">개인 실전</div>
+                <div class="cd-act lang-en" style="display:none">Solo Execution</div>
+              </div>
+              <div class="cd">
+                <div class="cd-day lang-ko">토</div>
+                <div class="cd-day lang-en" style="display:none">Sat</div>
+                <div class="cd-act lang-ko">개인 실전</div>
+                <div class="cd-act lang-en" style="display:none">Solo Execution</div>
+              </div>
+              <div class="cd">
+                <div class="cd-day lang-ko">일</div>
+                <div class="cd-day lang-en" style="display:none">Sun</div>
+                <div class="cd-act lang-ko">개인 실전</div>
+                <div class="cd-act lang-en" style="display:none">Solo Execution</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits A -->
+        <div class="sec-label lang-ko" style="margin-top:52px">얻어가는 것</div>
+        <div class="sec-label lang-en" style="display:block;margin-top:52px">What You'll Gain</div>
+        <div class="bens">
+          <div class="ben">
+            <div class="ben-icon">🚀</div>
+            <h4 class="lang-ko">실전 창업 경험</h4>
+            <h4 class="lang-en" style="display:none">Real Startup Experience</h4>
+            <p class="lang-ko">아이디어 → 프로덕트 → 시장 검증 → 첫 매출까지 압축적인 솔로프러너 경험</p>
+            <p class="lang-en" style="display:none">Idea → Product → Market validation → First revenue — a compressed solopreneur journey</p>
+          </div>
+          <div class="ben">
+            <div class="ben-icon">🤖</div>
+            <h4 class="lang-ko">AI 프로덕트 빌딩 역량</h4>
+            <h4 class="lang-en" style="display:none">AI Product Building Skills</h4>
+            <p class="lang-ko">Claude Code + 시스템 아키텍처 + 에이전트 구축 + 외부 서비스 연동</p>
+            <p class="lang-en" style="display:none">Claude Code + System architecture + Agent development + External integrations</p>
+          </div>
+          <div class="ben">
+            <div class="ben-icon">📊</div>
+            <h4 class="lang-ko">의미있는 비즈니스 지표</h4>
+            <h4 class="lang-en" style="display:none">Meaningful Business Metrics</h4>
+            <p class="lang-ko">첫 매출, 전환율, 재구매율 — 실전 시장에서 검증된 데이터를 손에 쥡니다</p>
+            <p class="lang-en" style="display:none">First sale, conversion rate, repeat rate — real data validated in the market</p>
+          </div>
+          <div class="ben">
+            <div class="ben-icon">🎯</div>
+            <h4 class="lang-ko">프로그램 공동 설계자</h4>
+            <h4 class="lang-en" style="display:none">Program Co-Designer</h4>
+            <p class="lang-ko">피드백이 즉시 프로그램에 반영. 이후 관련 교육 투자 기회 부여</p>
+            <p class="lang-en" style="display:none">Your feedback shapes the program. Future education investment opportunities</p>
+          </div>
+        </div>
+
+        <!-- Who A -->
+        <div class="sec-label lang-ko" style="margin-top:52px">이런 분을 찾습니다</div>
+        <div class="sec-label lang-en" style="display:block;margin-top:52px">Who We're Looking For</div>
+        <div class="who-list">
+          <div class="who">
+            <div class="who-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">본인만의 사업 아이디어가 있는 분</h4>
+              <h4 class="lang-en" style="display:none">You have a business idea you're ready to commit to</h4>
+              <p class="lang-ko">5주 기간 내에 하나를 선택해 끝까지 밀고 나갈 의지가 있는 분</p>
+              <p class="lang-en" style="display:none">Ready to pick one idea and push it through for 5 weeks</p>
+            </div>
+          </div>
+          <div class="who">
+            <div class="who-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">사전 교육 기간(4/6~4/16) 참여 가능한 분</h4>
+              <h4 class="lang-en" style="display:none">Available for pre-training (Apr 6–16)</h4>
+              <p class="lang-ko">일별 미션 수행이 가능해야 합니다</p>
+              <p class="lang-en" style="display:none">Must be able to complete daily missions during pre-training</p>
+            </div>
+          </div>
+          <div class="who">
+            <div class="who-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">OT · 본교육 · 코호트 일정 참석 가능한 분</h4>
+              <h4 class="lang-en" style="display:none">Can attend OT, main program, and cohort sessions</h4>
+              <p class="lang-ko">4/17 OT · 4/18 본교육 · 월/목 코호트 세션 필수</p>
+              <p class="lang-en" style="display:none">Apr 17 OT · Apr 18 main program · Mon/Thu cohort required</p>
+            </div>
+          </div>
+          <div class="who">
+            <div class="who-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">5주간 온전히 몰입할 의지가 있는 분</h4>
+              <h4 class="lang-en" style="display:none">Willing to go all-in for 5 weeks</h4>
+              <p class="lang-ko">서로 자극하며 실전 매출까지 만들어보겠다는 의지</p>
+              <p class="lang-en" style="display:none">Driven to push each other and make real revenue happen</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-cta">
+          <a href="https://forms.gle/rEU9sCP8Qgpvzp3k8" target="_blank">
+            <span class="lang-ko">TRACK A 지원하기 →</span>
+            <span class="lang-en" style="display:none">Apply for TRACK A →</span>
+          </a>
+        </div>
+      </div><!-- /pA -->
+
+      <!-- ===== PANEL B ===== -->
+      <div class="panel" id="pB">
+
+        <!-- KO Panel B header -->
+        <div class="lang-ko">
+          <div class="prog-hd">
+            <div class="prog-hd-top">
+              <h2><span class="ac2">AX 컨설턴트</span> 실전 역량 강화</h2>
+              <p>3일 집중 교육 + 5주 실전 기업 컨설팅</p>
+            </div>
+            <div class="prog-goal">목표: <span class="cyn">실전 기업에 AX 과제를 진단하고, 의미있는 산출물을 도출하는 진짜 컨설턴트가 된다.</span></div>
+          </div>
+          <div class="info-grid">
+            <div class="ig"><div class="ig-label">모집 인원</div><div class="ig-val">10명</div></div>
+            <div class="ig"><div class="ig-label">교육</div><div class="ig-val">4/14~16 오프라인 3일</div></div>
+            <div class="ig"><div class="ig-label">프로젝트</div><div class="ig-val">4월 말 ~ 5월 말 (5주)</div></div>
+            <div class="ig"><div class="ig-label">팀 구성</div><div class="ig-val">2인 1팀 · 기업 1사 전담</div></div>
+          </div>
+          <div class="req-box">
+            <div class="req-icon">⚠️</div>
+            <div class="req-text">
+              <strong>Claude Code Pro 플랜 이상 본인 구독 필요</strong>합니다.<br>
+              원활한 컨설팅 작업을 위해 <strong>Max 플랜을 권장</strong>합니다. (프로그램 지원 항목에 포함되지 않음)
+            </div>
+          </div>
+        </div>
+
+        <!-- EN Panel B header -->
+        <div class="lang-en" style="display:none">
+          <div class="prog-hd">
+            <div class="prog-hd-top">
+              <h2><span class="ac2">AX Consultant</span> Real-World Training</h2>
+              <p>3-day intensive + 5-week live consulting engagement</p>
+            </div>
+            <div class="prog-goal">Goal: <span class="cyn">Diagnose real AX challenges in businesses and deliver meaningful outcomes as a genuine consultant.</span></div>
+          </div>
+          <div class="info-grid">
+            <div class="ig"><div class="ig-label">Capacity</div><div class="ig-val">10 participants</div></div>
+            <div class="ig"><div class="ig-label">Training</div><div class="ig-val">Apr 14–16, 3-day offline</div></div>
+            <div class="ig"><div class="ig-label">Project</div><div class="ig-val">Late Apr ~ Late May (5 wks)</div></div>
+            <div class="ig"><div class="ig-label">Team</div><div class="ig-val">2 people · 1 company each</div></div>
+          </div>
+          <div class="req-box">
+            <div class="req-icon">⚠️</div>
+            <div class="req-text">
+              <strong>Claude Code Pro plan or higher required</strong> (your own subscription).<br>
+              <strong>Max plan is recommended</strong> for smooth consulting work. (Not covered by the program)
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline B -->
+        <div class="sec-label tl-label lang-ko">일정</div>
+        <div class="sec-label tl-label lang-en" style="display:block">Schedule</div>
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-date">~ 4/5 (Sun)</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">모집 마감</div>
+              <div class="tl-title lang-en" style="display:none">Application Deadline</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4/6 (Mon)</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">선발 합격 · 개별 통보</div>
+              <div class="tl-title lang-en" style="display:none">Accepted applicants notified</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date cy-date">4/14 ~ 4/16</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">오프라인 3일 집중 교육</div>
+              <div class="tl-title lang-en" style="display:none">3-Day Offline Intensive</div>
+              <div class="tl-desc lang-ko">09:30~12:00 · 종로구 돈화문로 88-1, UD빌딩 지하1층 · 강사: 박정훈 대표(와트니컴퍼니)</div>
+              <div class="tl-desc lang-en" style="display:none">09:30~12:00 · 88-1 Donhwamun-ro, Jongno-gu, UD Bldg B1 · Instructor: CEO Park Jeong-hun (Whatney Company)</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">4월 4주차</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">팀-기업 매칭 &amp; 킥오프</div>
+              <div class="tl-title lang-en" style="display:none">Team–Company Matching &amp; Kickoff</div>
+              <div class="tl-desc lang-ko">2인 1팀 구성 · 언더독스 알라딘 기업 배정</div>
+              <div class="tl-desc lang-en" style="display:none">2-person teams · Underdogs Aladdin company assignment</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date cy-date">4월 말 ~ 5월 말</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">실전 프로젝트 수행 (5주)</div>
+              <div class="tl-title lang-en" style="display:none">Live Project Execution (5 weeks)</div>
+              <div class="tl-desc lang-ko">문제 진단 → 솔루션 설계 → 결과물 도출 · 매주 월요일 워크숍</div>
+              <div class="tl-desc lang-en" style="display:none">Problem diagnosis → Solution design → Deliverables · Monday workshops</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">6월 1주차</div>
+            <div class="tl-body">
+              <div class="tl-title lang-ko">최종 발표</div>
+              <div class="tl-title lang-en" style="display:none">Final Presentation</div>
+              <div class="tl-desc lang-ko">의뢰인 참석 및 결과물 발표</div>
+              <div class="tl-desc lang-en" style="display:none">Client attendance &amp; deliverable presentation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-day block -->
+        <div class="stg-block">
+          <div class="stg-hd">
+            <div class="stg-badge cy">
+              <span class="lang-ko">집중 교육</span>
+              <span class="lang-en" style="display:none">Intensive</span>
+            </div>
+            <div class="stg-name lang-ko">3일 오프라인 · 박정훈 대표(와트니컴퍼니)</div>
+            <div class="stg-name lang-en" style="display:none">3-Day Offline · CEO Park Jeong-hun (Whatney Company)</div>
+          </div>
+          <div class="stg-body">
+            <p class="lang-ko">
+              실전 비즈니스 문제를 AI로 해결하는 '문제 해결형 PO'를 양성하는
+              3일 집중 과정입니다.
+            </p>
+            <p class="lang-en" style="display:none">
+              A 3-day intensive designed to develop "problem-solving POs"
+              who tackle real business challenges using AI.
+            </p>
+            <div class="ax-days">
+              <div class="ax-d">
+                <div class="ax-d-hd">
+                  <div class="d-num">Day 1</div>
+                  <div class="d-date lang-ko">4/14 (화) 09:30~12:00</div>
+                  <div class="d-date lang-en" style="display:none">Apr 14 (Tue) 09:30~12:00</div>
+                </div>
+                <div class="ax-d-body">
+                  <h5 class="lang-ko">문제 정의</h5>
+                  <h5 class="lang-en" style="display:none">Problem Definition</h5>
+                  <p class="lang-ko">비즈니스 인터뷰 설계 및 실행, 기획 문제 선택, 다음 단계 설정</p>
+                  <p class="lang-en" style="display:none">Business interview design &amp; execution, problem framing, next steps</p>
+                </div>
+              </div>
+              <div class="ax-d">
+                <div class="ax-d-hd">
+                  <div class="d-num">Day 2</div>
+                  <div class="d-date lang-ko">4/15 (수) 09:30~12:00</div>
+                  <div class="d-date lang-en" style="display:none">Apr 15 (Wed) 09:30~12:00</div>
+                </div>
+                <div class="ax-d-body">
+                  <h5 class="lang-ko">솔루션 설계</h5>
+                  <h5 class="lang-en" style="display:none">Solution Design</h5>
+                  <p class="lang-ko">실전 사례 연구, 가성비 기반 AI 툴 선택, 기획·설계 가치 증명</p>
+                  <p class="lang-en" style="display:none">Real case studies, cost-effective AI tool selection, proving design value</p>
+                </div>
+              </div>
+              <div class="ax-d">
+                <div class="ax-d-hd">
+                  <div class="d-num">Day 3</div>
+                  <div class="d-date lang-ko">4/16 (목) 09:30~12:00</div>
+                  <div class="d-date lang-en" style="display:none">Apr 16 (Thu) 09:30~12:00</div>
+                </div>
+                <div class="ax-d-body">
+                  <h5 class="lang-ko">품질 관리</h5>
+                  <h5 class="lang-en" style="display:none">Quality Management</h5>
+                  <p class="lang-ko">3단계 의뢰인 인터뷰, 데이터 기반 가설 검증, 킥오프 준비</p>
+                  <p class="lang-en" style="display:none">3-stage client interviews, data-based hypothesis validation, kickoff prep</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-week project -->
+        <div class="stg-block">
+          <div class="stg-hd">
+            <div class="stg-badge cy">
+              <span class="lang-ko">실전 프로젝트</span>
+              <span class="lang-en" style="display:none">Live Project</span>
+            </div>
+            <div class="stg-name lang-ko">5주 기업 컨설팅</div>
+            <div class="stg-name lang-en" style="display:none">5-Week Corporate Consulting</div>
+          </div>
+          <div class="stg-body">
+            <p class="lang-ko">
+              2인 1팀으로 언더독스 알라딘 기업에 배정받아 실전 AX 과제를 수행합니다.
+              매주 월요일 오전 UD빌딩 지하1층에서 진행되는 워크숍에서 진행 점검과 그룹 코칭이 이루어집니다.
+            </p>
+            <p class="lang-en" style="display:none">
+              Assigned as a 2-person team to an Underdogs Aladdin company, you'll execute a real AX project.
+              Weekly Monday morning workshops at Sarangbang include progress reviews and group coaching.
+            </p>
+          </div>
+        </div>
+
+        <!-- Benefits B -->
+        <div class="sec-label lang-ko" style="margin-top:52px">얻어가는 것 — 이게 핵심입니다</div>
+        <div class="sec-label lang-en" style="display:block;margin-top:52px">What You'll Gain — The Big Ones</div>
+        <div class="bens">
+          <div class="ben featured">
+            <div class="ben-icon">💼</div>
+            <h4 class="cy-h lang-ko">실전 프로젝트 우선 배정</h4>
+            <h4 class="cy-h lang-en" style="display:none">Priority Project Placement</h4>
+            <p class="lang-ko">수료 시 올해 <strong>무신사, 네이버, 카카오, 현대자동차, 오아시스마켓</strong> 등 언더독스 AX 사업에 우선 투자</p>
+            <p class="lang-en" style="display:none">After completion, priority placement in this year's Underdogs AX projects — including <strong>Musinsa, Naver, Kakao, Hyundai, and Oasis Market</strong></p>
+          </div>
+          <div class="ben featured">
+            <div class="ben-icon">💰</div>
+            <h4 class="cy-h lang-ko">코치보다 높은 컨설턴트 단가</h4>
+            <h4 class="cy-h lang-en" style="display:none">Higher Rates Than Coaching</h4>
+            <p class="lang-ko">실전 프로젝트는 별도 컨설팅 단가 책정. 컨설턴트로 활동할 수 있는 명확한 경로</p>
+            <p class="lang-en" style="display:none">Real projects are priced separately as consulting fees. A clear path to work as a consultant</p>
+          </div>
+          <div class="ben">
+            <div class="ben-icon">🎯</div>
+            <h4 class="lang-ko">실전 컨설팅 경험</h4>
+            <h4 class="lang-en" style="display:none">Real Consulting Experience</h4>
+            <p class="lang-ko">5주간 실전 기업 문제를 해결하며 압축적인 성장과 성공 경험 확보</p>
+            <p class="lang-en" style="display:none">5 weeks of solving live business problems — compressed growth and proven success</p>
+          </div>
+          <div class="ben">
+            <div class="ben-icon">🧠</div>
+            <h4 class="lang-ko">전문가 네트워크 정착</h4>
+            <h4 class="lang-en" style="display:none">Expert Network Access</h4>
+            <p class="lang-ko">박정훈 대표의 그룹 코칭과 3단계 의뢰인 인터뷰를 통한 컨설팅 전문 역량 습득</p>
+            <p class="lang-en" style="display:none">Group coaching with CEO Park Jeong-hun and 3-stage client interview methodology for consulting mastery</p>
+          </div>
+        </div>
+
+        <!-- Who B -->
+        <div class="sec-label lang-ko" style="margin-top:52px">이런 분을 찾습니다</div>
+        <div class="sec-label lang-en" style="display:block;margin-top:52px">Who We're Looking For</div>
+        <div class="who-list">
+          <div class="who">
+            <div class="who-ck cy-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">AI 개발 도구를 다룰 수 있는 분 (필수)</h4>
+              <h4 class="lang-en" style="display:none">Can work with AI dev tools (required)</h4>
+              <p class="lang-ko">Claude Code, Cursor 등 AI 코드 도구 활용 가능한 분</p>
+              <p class="lang-en" style="display:none">Proficient with Claude Code, Cursor, or similar AI coding tools</p>
+            </div>
+          </div>
+          <div class="who">
+            <div class="who-ck cy-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">비즈니스 감각과 커뮤니케이션 역량이 있는 분</h4>
+              <h4 class="lang-en" style="display:none">Business acumen + strong communication</h4>
+              <p class="lang-ko">인터뷰로 핵심을 끌어내고 문서로 정리할 수 있는 분</p>
+              <p class="lang-en" style="display:none">Able to extract key insights through interviews and document them clearly</p>
+            </div>
+          </div>
+          <div class="who">
+            <div class="who-ck cy-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">오프라인 3일 교육 참석 가능한 분</h4>
+              <h4 class="lang-en" style="display:none">Available for the 3-day offline intensive</h4>
+              <p class="lang-ko">4/14~16 매일 09:30~12:00 · 종로구 돈화문로 88-1, UD빌딩 지하1층</p>
+              <p class="lang-en" style="display:none">Apr 14–16, daily 09:30~12:00 · 88-1 Donhwamun-ro, Jongno-gu, UD Bldg B1</p>
+            </div>
+          </div>
+          <div class="who">
+            <div class="who-ck cy-ck">✓</div>
+            <div>
+              <h4 class="lang-ko">5주간 기업 프로젝트에 몰입 가능한 분</h4>
+              <h4 class="lang-en" style="display:none">Can commit to 5 weeks of a corporate project</h4>
+              <p class="lang-ko">매주 월요일 워크숍 + 기업과 직접 소통</p>
+              <p class="lang-en" style="display:none">Weekly Monday workshops + direct communication with the company</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-cta">
+          <a href="https://forms.gle/rEU9sCP8Qgpvzp3k8" target="_blank" class="cy-btn">
+            <span class="lang-ko">TRACK B 지원하기 →</span>
+            <span class="lang-en" style="display:none">Apply for TRACK B →</span>
+          </a>
+        </div>
+      </div><!-- /pB -->
+
+    </div><!-- /panels-container -->
+  </div><!-- /panels-wrap -->
+</div><!-- /programs -->
+
+<!-- ==============================
+     CTA
+     ============================== -->
+<section class="cta-section" id="apply">
+  <div class="cta-inner">
+    <h2 class="lang-ko">각 <em>10명</em>만 선발합니다.</h2>
+    <h2 class="lang-en" style="display:none">Only <em>10 Spots</em> Per Track.</h2>
+    <p class="lang-ko">5주간 몰입할 준비가 되셨나요?</p>
+    <p class="lang-en" style="display:none">Ready to commit for 5 weeks?</p>
+    <div class="cta-cards">
+      <a class="cc" href="https://forms.gle/rEU9sCP8Qgpvzp3k8" target="_blank">
+        <div class="cc-badge">TRACK A</div>
+        <h3 class="lang-ko">AI 솔로프러너</h3>
+        <h3 class="lang-en" style="display:none">AI Solopreneur</h3>
+        <div class="cc-limit lang-ko">10명 한정</div>
+        <div class="cc-limit lang-en" style="display:none">Limited to 10</div>
+        <div class="cc-cta-btn">
+          <span class="lang-ko">지원하기 →</span>
+          <span class="lang-en" style="display:none">Apply →</span>
+        </div>
+      </a>
+      <a class="cc" href="https://forms.gle/rEU9sCP8Qgpvzp3k8" target="_blank">
+        <div class="cc-badge">TRACK B</div>
+        <h3 class="lang-ko">AX 컨설턴트</h3>
+        <h3 class="lang-en" style="display:none">AX Consultant</h3>
+        <div class="cc-limit lang-ko">10명 한정</div>
+        <div class="cc-limit lang-en" style="display:none">Limited to 10</div>
+        <div class="cc-cta-btn">
+          <span class="lang-ko">지원하기 →</span>
+          <span class="lang-en" style="display:none">Apply →</span>
+        </div>
+      </a>
+    </div>
+    <p class="cta-dead lang-ko">모집 마감: <strong>4월 5일 (일)</strong> · 합격 통보: 4월 6일 (월)</p>
+    <p class="cta-dead lang-en" style="display:none">Deadline: <strong>April 5 (Sun)</strong> · Notifications: April 6 (Mon)</p>
+  </div>
+</section>
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer>
+  <div class="fl">underdogs<span>.</span></div>
+  <p>© 2026 underdogs. All rights reserved.</p>
+</footer>
+
+<script>
+/* ---- Language Toggle ---- */
+function setLang(l) {
+  const root = document.documentElement;
+  root.className = l;
+  root.lang = l === 'ko' ? 'ko' : 'en';
+
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === l);
+  });
+
+  // Toggle all lang-ko / lang-en blocks
+  document.querySelectorAll('.lang-ko').forEach(el => {
+    el.style.display = l === 'ko' ? '' : 'none';
+  });
+  document.querySelectorAll('.lang-en').forEach(el => {
+    // Restore proper display type
+    const tag = el.tagName.toLowerCase();
+    const isInline = ['span', 'a', 'strong', 'em'].includes(tag);
+    el.style.display = l === 'en' ? (isInline ? 'inline' : 'block') : 'none';
+  });
+}
+
+/* ---- Tab Switch ---- */
+function sw(i) {
+  document.querySelectorAll('.tab').forEach((t, j) => {
+    t.classList.toggle('active', j === i);
+    if (j === 1) t.classList.toggle('cy-active', j === i);
+  });
+  document.querySelectorAll('.panel').forEach((p, j) => {
+    p.classList.toggle('active', j === i);
+  });
+  // Smooth scroll to panel area
+  setTimeout(() => {
+    document.querySelector('.panels-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+/* ---- Scroll Animations ---- */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(x => {
+    if (x.isIntersecting) {
+      x.target.style.animation = 'fadeUp .4s ease forwards';
+      x.target.style.opacity = '1';
+    }
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll(
+  '.prog-hd,.stg-block,.ben,.who,.tl-item,.ax-d,.cc,.notice-bar,.ig,.req-box'
+).forEach(el => {
+  el.style.opacity = '0';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>

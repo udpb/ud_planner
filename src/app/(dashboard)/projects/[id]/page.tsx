@@ -2,18 +2,30 @@ import { Header } from '@/components/layout/header'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent } from '@/components/ui/card'
 import { ProjectEditForm } from './project-edit-form'
 import { CoachAssign } from './coach-assign'
-import { ProjectAiWrapper } from './project-ai-wrapper'
+import { BudgetDashboard } from './budget-dashboard'
+import { CurriculumBoard } from './curriculum-board'
+import { PipelineNav, type PipelineStep } from './pipeline-nav'
+import { StepRfp } from './step-rfp'
+import { StepImpact } from './step-impact'
+import { StepProposal } from './step-proposal'
+import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
 const STATUS_LABEL: Record<string, string> = {
   DRAFT: '기획중', PROPOSAL: '제안서', SUBMITTED: '제출완료',
   IN_PROGRESS: '운영중', COMPLETED: '완료', LOST: '미수주',
+}
+const STATUS_COLOR: Record<string, string> = {
+  DRAFT: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+  PROPOSAL: 'bg-blue-100 text-blue-800 border-blue-200',
+  SUBMITTED: 'bg-violet-100 text-violet-800 border-violet-200',
+  IN_PROGRESS: 'bg-green-100 text-green-800 border-green-200',
+  COMPLETED: 'bg-gray-100 text-gray-700 border-gray-200',
+  LOST: 'bg-red-100 text-red-700 border-red-200',
 }
 const ROLE_LABEL: Record<string, string> = {
   MAIN_COACH: '메인 코치', SUB_COACH: '보조 코치', LECTURER: '강사(메인)',
@@ -33,7 +45,7 @@ async function getProject(id: string) {
       tasks: {
         where: { status: { not: 'DONE' } },
         orderBy: [{ dueDate: 'asc' }, { createdAt: 'desc' }],
-        take: 10,
+        take: 20,
       },
       proposalSections: { orderBy: { sectionNo: 'asc' } },
       _count: { select: { participants: true } },
@@ -49,279 +61,275 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProjectDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ step?: string }>
 }) {
   const { id } = await params
+  const { step = 'rfp' } = await searchParams
   const project = await getProject(id)
   if (!project) notFound()
 
   const totalCoachFee = project.coachAssignments.reduce((s, a) => s + (a.totalFee ?? 0), 0)
   const marginRate = project.budget?.marginRate ?? 0
 
+  const steps: PipelineStep[] = [
+    {
+      key: 'rfp',
+      label: 'RFP 분석',
+      sublabel: project.rfpParsed ? '완료' : '미완료',
+      done: !!project.rfpParsed,
+    },
+    {
+      key: 'impact',
+      label: '임팩트 설계',
+      sublabel: project.logicModel ? '완료' : '미완료',
+      done: !!project.logicModel,
+    },
+    {
+      key: 'curriculum',
+      label: '커리큘럼',
+      sublabel: project.curriculum.length > 0 ? `${project.curriculum.length}회차` : '미작성',
+      done: project.curriculum.length > 0,
+    },
+    {
+      key: 'coaches',
+      label: '코치 배정',
+      sublabel: project.coachAssignments.length > 0 ? `${project.coachAssignments.length}명` : '미배정',
+      done: project.coachAssignments.length > 0,
+    },
+    {
+      key: 'budget',
+      label: '예산',
+      sublabel: project.budget
+        ? `마진 ${marginRate.toFixed(1)}%`
+        : '미작성',
+      done: !!project.budget,
+    },
+    {
+      key: 'proposal',
+      label: '제안서',
+      sublabel: project.proposalSections.length > 0
+        ? `${project.proposalSections.length}/7 섹션`
+        : '미생성',
+      done: project.proposalSections.length >= 7,
+    },
+  ]
+
   return (
     <div className="flex flex-col overflow-hidden">
       <Header title={project.name} />
-      <div className="flex-1 overflow-y-auto p-6">
-        {/* 2-컬럼 레이아웃: 왼쪽 메인, 오른쪽 AI 패널 */}
-        <div className="flex gap-6">
-          <div className="min-w-0 flex-1">
-        {/* 헤더 요약 */}
-        <div className="mb-6 flex flex-wrap items-start gap-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <Badge>{STATUS_LABEL[project.status]}</Badge>
-              <Badge variant="outline">{project.projectType}</Badge>
-              <span className="text-sm text-muted-foreground">{project.client}</span>
-              <ProjectEditForm project={project} />
+
+      {/* Sticky top bar: project meta + pipeline */}
+      <div className="sticky top-0 z-20 border-b bg-background">
+        {/* Project meta strip */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b px-6 py-2.5">
+          <span
+            className={cn(
+              'rounded-full border px-2.5 py-0.5 text-xs font-medium',
+              STATUS_COLOR[project.status],
+            )}
+          >
+            {STATUS_LABEL[project.status]}
+          </span>
+          <Badge variant="outline" className="text-xs">{project.projectType}</Badge>
+          <span className="text-sm text-muted-foreground">{project.client}</span>
+
+          <div className="ml-auto flex items-center gap-5">
+            <div className="text-sm">
+              <span className="text-muted-foreground">총 예산 </span>
+              <span className="font-semibold">
+                {project.totalBudgetVat ? `${(project.totalBudgetVat / 1e8).toFixed(2)}억` : '—'}
+              </span>
             </div>
-            <h2 className="mt-1 text-xl font-bold">{project.name}</h2>
-          </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p className="text-xs text-muted-foreground">총 예산</p>
-              <p className="text-base font-bold">
-                {project.totalBudgetVat
-                  ? `${(project.totalBudgetVat / 1e8).toFixed(2)}억`
-                  : '—'}
-              </p>
+            <div className="text-sm">
+              <span className="text-muted-foreground">코치 </span>
+              <span className="font-semibold">
+                {totalCoachFee > 0 ? `${(totalCoachFee / 10000).toFixed(0)}만원` : '—'}
+              </span>
             </div>
-            <div>
-              <p className="text-xs text-muted-foreground">코치 사례비</p>
-              <p className="text-base font-bold">
-                {totalCoachFee > 0 ? `${(totalCoachFee / 10000).toFixed(0)}만` : '—'}
-              </p>
+            <div className="text-sm">
+              <span className="text-muted-foreground">마진 </span>
+              <span
+                className={cn(
+                  'font-semibold',
+                  marginRate > 0 && marginRate < 10
+                    ? 'text-red-600'
+                    : marginRate >= 10
+                      ? 'text-green-600'
+                      : '',
+                )}
+              >
+                {marginRate > 0 ? `${marginRate.toFixed(1)}%` : '—'}
+              </span>
             </div>
-            <div>
-              <p className="text-xs text-muted-foreground">마진율</p>
-              <p className="text-base font-bold">{marginRate > 0 ? `${marginRate.toFixed(1)}%` : '—'}</p>
-            </div>
+            <ProjectEditForm project={project} />
           </div>
         </div>
 
-        <Tabs defaultValue="coaches">
-          <TabsList>
-            <TabsTrigger value="coaches">코치 배정 ({project.coachAssignments.length})</TabsTrigger>
-            <TabsTrigger value="curriculum">커리큘럼 ({project.curriculum.length})</TabsTrigger>
-            <TabsTrigger value="budget">예산</TabsTrigger>
-            <TabsTrigger value="tasks">태스크 ({project.tasks.length})</TabsTrigger>
-          </TabsList>
+        {/* Pipeline stepper */}
+        <div className="px-6">
+          <PipelineNav steps={steps} current={step} />
+        </div>
+      </div>
 
-          {/* ── 코치 배정 탭 ── */}
-          <TabsContent value="coaches" className="mt-4">
+      {/* Step content */}
+      <div className="flex-1 overflow-y-auto p-6">
+
+        {/* ── Step 1: RFP 분석 ── */}
+        {step === 'rfp' && (
+          <StepRfp
+            projectId={project.id}
+            initialParsed={project.rfpParsed as any}
+          />
+        )}
+
+        {/* ── Step 2: 임팩트 설계 ── */}
+        {step === 'impact' && (
+          <StepImpact
+            projectId={project.id}
+            rfpParsed={project.rfpParsed as any}
+            initialLogicModel={project.logicModel as any}
+          />
+        )}
+
+        {/* ── Step 3: 커리큘럼 ── */}
+        {step === 'curriculum' && (
+          <CurriculumBoard
+            projectId={project.id}
+            initialItems={project.curriculum.map((c) => ({
+              id: c.id,
+              sessionNo: c.sessionNo,
+              title: c.title,
+              durationHours: c.durationHours,
+              lectureMinutes: (c as any).lectureMinutes ?? 15,
+              practiceMinutes: (c as any).practiceMinutes ?? 35,
+              isTheory: c.isTheory,
+              isActionWeek: c.isActionWeek,
+              isCoaching1on1: (c as any).isCoaching1on1 ?? false,
+              isLocked: (c as any).isLocked ?? false,
+              date: c.date,
+              venue: c.venue,
+              isOnline: c.isOnline,
+              notes: c.notes,
+              order: c.order,
+            }))}
+          />
+        )}
+
+        {/* ── Step 4: 코치 배정 ── */}
+        {step === 'coaches' && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-semibold">코치 배정</h3>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  역할과 사례비를 설정하고 코치를 확정합니다.
+                </p>
+              </div>
+              <CoachAssign
+                projectId={project.id}
+                assignedCoachIds={project.coachAssignments.map((a) => a.coach.id)}
+              />
+            </div>
+
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between py-3">
-                <CardTitle className="text-sm">배정 코치</CardTitle>
-                <CoachAssign
-                  projectId={project.id}
-                  assignedCoachIds={project.coachAssignments.map((a) => a.coach.id)}
-                />
-              </CardHeader>
               <CardContent className="p-0">
                 {project.coachAssignments.length === 0 ? (
-                  <p className="py-8 text-center text-sm text-muted-foreground">배정된 코치가 없습니다.</p>
+                  <div className="flex h-40 flex-col items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <p>배정된 코치가 없습니다.</p>
+                    <p className="text-xs">위 버튼으로 코치를 추가하세요.</p>
+                  </div>
                 ) : (
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b bg-muted/40">
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">코치</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">역할</th>
-                        <th className="px-4 py-2 text-right font-medium text-muted-foreground">세션수</th>
-                        <th className="px-4 py-2 text-right font-medium text-muted-foreground">단가(시간당)</th>
-                        <th className="px-4 py-2 text-right font-medium text-muted-foreground">총 사례비</th>
-                        <th className="px-4 py-2 text-center font-medium text-muted-foreground">확정</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">코치</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">소속</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">역할</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">세션수</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">단가(시간)</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">총 사례비</th>
+                        <th className="px-4 py-2.5 text-center font-medium text-muted-foreground">확정</th>
                       </tr>
                     </thead>
                     <tbody>
                       {project.coachAssignments.map((a) => (
                         <tr key={a.id} className="border-b last:border-0 hover:bg-muted/30">
                           <td className="px-4 py-3 font-medium">{a.coach.name}</td>
-                          <td className="px-4 py-3 text-muted-foreground">{ROLE_LABEL[a.role]}</td>
+                          <td className="px-4 py-3 text-muted-foreground text-xs">{a.coach.organization ?? '—'}</td>
+                          <td className="px-4 py-3">
+                            <Badge variant="outline" className="text-xs">{ROLE_LABEL[a.role]}</Badge>
+                          </td>
                           <td className="px-4 py-3 text-right tabular-nums">{a.sessions}회</td>
-                          <td className="px-4 py-3 text-right tabular-nums">
+                          <td className="px-4 py-3 text-right tabular-nums text-xs">
                             {a.agreedRate ? `${a.agreedRate.toLocaleString()}원` : '—'}
                           </td>
-                          <td className="px-4 py-3 text-right tabular-nums font-medium">
+                          <td className="px-4 py-3 text-right tabular-nums font-semibold">
                             {a.totalFee ? `${a.totalFee.toLocaleString()}원` : '—'}
                           </td>
-                          <td className="px-4 py-3 text-center">
+                          <td className="px-4 py-3 text-center text-base">
                             {a.confirmed ? '✅' : '⏳'}
                           </td>
                         </tr>
                       ))}
                     </tbody>
-                  </table>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* ── 커리큘럼 탭 ── */}
-          <TabsContent value="curriculum" className="mt-4">
-            <Card>
-              <CardContent className="p-0">
-                {project.curriculum.length === 0 ? (
-                  <p className="py-8 text-center text-sm text-muted-foreground">커리큘럼이 없습니다.</p>
-                ) : (
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b bg-muted/40">
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">회차</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">세션명</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">일시</th>
-                        <th className="px-4 py-2 text-right font-medium text-muted-foreground">시간</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">장소</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">비고</th>
+                    <tfoot>
+                      <tr className="border-t bg-muted/20">
+                        <td colSpan={5} className="px-4 py-2.5 text-right text-sm font-medium text-muted-foreground">
+                          합계
+                        </td>
+                        <td className="px-4 py-2.5 text-right tabular-nums font-bold text-primary">
+                          {totalCoachFee.toLocaleString()}원
+                        </td>
+                        <td />
                       </tr>
-                    </thead>
-                    <tbody>
-                      {project.curriculum.map((c) => (
-                        <tr
-                          key={c.id}
-                          className={`border-b last:border-0 hover:bg-muted/30 ${c.isActionWeek ? 'bg-amber-50' : ''}`}
-                        >
-                          <td className="px-4 py-3 tabular-nums">{c.sessionNo}회차</td>
-                          <td className="px-4 py-3 font-medium">
-                            {c.title}
-                            {c.isTheory && (
-                              <Badge variant="outline" className="ml-2 text-xs">이론</Badge>
-                            )}
-                            {c.isActionWeek && (
-                              <Badge className="ml-2 text-xs bg-amber-500">Action Week</Badge>
-                            )}
-                          </td>
-                          <td className="px-4 py-3 text-muted-foreground text-xs tabular-nums">
-                            {c.date ? c.date.toLocaleDateString('ko') : '—'}
-                            {c.startTime && ` ${c.startTime}`}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">{c.durationHours}h</td>
-                          <td className="px-4 py-3 text-muted-foreground">
-                            {c.isOnline ? '온라인' : (c.venue ?? '—')}
-                          </td>
-                          <td className="px-4 py-3 text-xs text-muted-foreground">{c.notes ?? ''}</td>
-                        </tr>
-                      ))}
-                    </tbody>
+                    </tfoot>
                   </table>
                 )}
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* ── 예산 탭 ── */}
-          <TabsContent value="budget" className="mt-4">
-            {!project.budget ? (
-              <Card>
-                <CardContent className="py-10 text-center text-sm text-muted-foreground">
-                  예산이 설정되지 않았습니다.
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                <div className="grid grid-cols-4 gap-4">
-                  {[
-                    { label: 'PC (인건비성)', value: project.budget.pcTotal },
-                    { label: 'AC (사업실비)', value: project.budget.acTotal },
-                    { label: '마진', value: project.budget.margin },
-                    { label: '마진율', value: null, rate: project.budget.marginRate },
-                  ].map(({ label, value, rate }) => (
-                    <Card key={label}>
-                      <CardContent className="py-4 text-center">
-                        <p className="text-xs text-muted-foreground">{label}</p>
-                        <p className="mt-1 text-lg font-bold">
-                          {rate !== undefined
-                            ? `${rate.toFixed(1)}%`
-                            : value
-                            ? `${(value / 10000).toFixed(0)}만원`
-                            : '—'}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-                <Card>
-                  <CardContent className="p-0">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b bg-muted/40">
-                          <th className="px-4 py-2 text-left font-medium text-muted-foreground">WBS 코드</th>
-                          <th className="px-4 py-2 text-left font-medium text-muted-foreground">항목</th>
-                          <th className="px-4 py-2 text-left font-medium text-muted-foreground">유형</th>
-                          <th className="px-4 py-2 text-right font-medium text-muted-foreground">단가</th>
-                          <th className="px-4 py-2 text-right font-medium text-muted-foreground">수량</th>
-                          <th className="px-4 py-2 text-right font-medium text-muted-foreground">금액</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {project.budget.items.map((item) => (
-                          <tr key={item.id} className="border-b last:border-0">
-                            <td className="px-4 py-2.5 font-mono text-xs text-muted-foreground">{item.wbsCode}</td>
-                            <td className="px-4 py-2.5">{item.name}</td>
-                            <td className="px-4 py-2.5">
-                              <Badge variant={item.type === 'PC' ? 'default' : 'secondary'}>{item.type}</Badge>
-                            </td>
-                            <td className="px-4 py-2.5 text-right tabular-nums">{item.unitPrice.toLocaleString()}</td>
-                            <td className="px-4 py-2.5 text-right tabular-nums">{item.quantity}</td>
-                            <td className="px-4 py-2.5 text-right tabular-nums font-medium">{item.amount.toLocaleString()}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </TabsContent>
-
-          {/* ── 태스크 탭 ── */}
-          <TabsContent value="tasks" className="mt-4">
-            <Card>
-              <CardContent className="p-0">
-                {project.tasks.length === 0 ? (
-                  <p className="py-8 text-center text-sm text-muted-foreground">미완료 태스크가 없습니다.</p>
-                ) : (
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b bg-muted/40">
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">제목</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">카테고리</th>
-                        <th className="px-4 py-2 text-left font-medium text-muted-foreground">상태</th>
-                        <th className="px-4 py-2 text-right font-medium text-muted-foreground">마감일</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {project.tasks.map((t) => (
-                        <tr key={t.id} className="border-b last:border-0 hover:bg-muted/30">
-                          <td className="px-4 py-3 font-medium">{t.title}</td>
-                          <td className="px-4 py-3 text-muted-foreground">{t.category ?? '—'}</td>
-                          <td className="px-4 py-3">
-                            <Badge variant={t.status === 'BLOCKED' ? 'destructive' : 'outline'}>
-                              {t.status}
-                            </Badge>
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums text-xs">
-                            {t.dueDate ? t.dueDate.toLocaleDateString('ko') : '—'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-          </div>{/* end main col */}
-
-          {/* AI 사이드 패널 */}
-          <ProjectAiWrapper
+        {/* ── Step 5: 예산 ── */}
+        {step === 'budget' && (
+          <BudgetDashboard
             projectId={project.id}
-            initialRfpParsed={project.rfpParsed as any}
-            initialLogicModel={project.logicModel as any}
-            curriculum={project.curriculum}
-            proposalSections={project.proposalSections}
+            initialBudget={project.budget ? {
+              pcTotal: project.budget.pcTotal,
+              acTotal: project.budget.acTotal,
+              margin: project.budget.margin,
+              marginRate: project.budget.marginRate,
+              marginWarning: project.budget.marginRate < 10,
+              supplyPrice: project.supplyPrice ?? 0,
+              totalBudgetVat: project.totalBudgetVat ?? 0,
+            } : null}
+            initialPcItems={[]}
+            initialAcItems={project.budget?.items.filter((i) => i.type === 'AC').map((i) => ({
+              id: i.id,
+              wbsCode: i.wbsCode,
+              category: i.category,
+              name: i.name,
+              unit: i.unit ?? '',
+              unitPrice: i.unitPrice,
+              quantity: i.quantity,
+              amount: i.amount,
+              isEstimated: i.notes?.includes('추정') ?? false,
+            })) ?? []}
           />
-        </div>{/* end 2-col */}
+        )}
+
+        {/* ── Step 6: 제안서 ── */}
+        {step === 'proposal' && (
+          <StepProposal
+            projectId={project.id}
+            hasLogicModel={!!project.logicModel}
+            initialSections={project.proposalSections as any}
+          />
+        )}
+
       </div>
     </div>
   )

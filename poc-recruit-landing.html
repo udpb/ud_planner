@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>underdogs. · AI 솔로프러너 · AX 컨설턴트 모집</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --or:#FF8204;--or2:#FFA40D;
+  --bk:#000;--dk:#373938;--gy:#D8D4D7;--cy:#06A9D0;
+  --wh:#FFF;--bg:#FAFAFA;--bg2:#F2F1F3;
+  --t1:#1A1A1A;--t2:#666;--t3:#999;
+  --bd:#E5E3E6;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bk);color:var(--wh);font-family:'Nanum Gothic','Apple SD Gothic Neo',sans-serif;line-height:1.7;font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;justify-content:space-between;align-items:center;padding:0 32px;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+.n-logo{font-size:15px;font-weight:800;color:var(--wh)}
+.n-logo span{color:var(--or)}
+.n-right{display:flex;align-items:center;gap:20px}
+.n-right a{color:rgba(255,255,255,.4);text-decoration:none;font-size:12px;font-weight:700;transition:color .2s}
+.n-right a:hover{color:var(--wh)}
+.n-apply{background:var(--or)!important;color:var(--wh)!important;padding:7px 18px;border-radius:8px;font-size:12px!important}
+.n-apply:hover{background:var(--or2)!important}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:100px 24px 80px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(255,130,4,.06),transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 60% 50% at 50% 45%,black,transparent)}
+.hero-inner{position:relative;z-index:2;max-width:720px}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,130,4,.25);padding:5px 16px;border-radius:100px;font-size:11px;font-weight:700;color:var(--or);letter-spacing:.5px;margin-bottom:24px}
+.hero h1{font-size:clamp(28px,5vw,46px);font-weight:800;line-height:1.25;margin-bottom:16px;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--or)}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:36px}
+.hero .sub strong{color:rgba(255,255,255,.7)}
+.hero-nums{display:flex;justify-content:center;gap:40px;margin-bottom:40px;flex-wrap:wrap}
+.hn{text-align:center}
+.hn-v{font-size:28px;font-weight:800;color:var(--or)}
+.hn-l{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px}
+.hero-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.hb{display:inline-flex;align-items:center;gap:6px;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:800;text-decoration:none;border:none;cursor:pointer;transition:all .25s;font-family:inherit}
+.hb-or{background:var(--or);color:var(--wh)}.hb-or:hover{background:var(--or2);transform:translateY(-2px)}
+.hb-gh{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1)}.hb-gh:hover{background:rgba(255,255,255,.1)}
+.hero-dead{margin-top:32px;font-size:12px;color:rgba(255,255,255,.2)}
+.hero-dead strong{color:var(--or)}
+
+/* NOTICE */
+.notice-bar{border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:28px 24px;text-align:center;background:rgba(255,130,4,.03)}
+.notice-bar p{font-size:14px;color:rgba(255,255,255,.45);max-width:600px;margin:0 auto;line-height:1.7}
+.notice-bar strong{color:var(--or)}
+.notice-bar em{font-style:normal;color:rgba(255,255,255,.7)}
+
+/* SHARED */
+section{padding:80px 0}
+.container{max-width:880px;margin:0 auto;padding:0 24px}
+.sec-label{font-size:10.5px;font-weight:800;color:var(--or);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.sec-title{font-size:clamp(22px,3.5vw,32px);font-weight:800;line-height:1.2;margin-bottom:8px;letter-spacing:-.3px}
+.sec-sub{color:rgba(255,255,255,.35);font-size:14px;max-width:520px;line-height:1.7;margin-bottom:40px}
+.sec-divider{height:1px;background:rgba(255,255,255,.06);margin:80px 0}
+
+/* TABS */
+.tabs{display:flex;gap:0;border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:48px;background:rgba(255,255,255,.02)}
+.tab{flex:1;padding:28px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative}
+.tab+.tab{border-left:1px solid rgba(255,255,255,.06)}
+.tab.active{background:rgba(255,130,4,.06)}
+.tab.active.cy-active{background:rgba(6,169,208,.04)}
+.tab-badge{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:1px;padding:3px 10px;border-radius:5px;margin-bottom:8px;text-transform:uppercase}
+.tab:first-child .tab-badge{background:rgba(255,130,4,.12);color:var(--or)}
+.tab:last-child .tab-badge{background:rgba(6,169,208,.1);color:var(--cy)}
+.tab h3{font-size:17px;font-weight:800;margin-bottom:2px}
+.tab p{font-size:11.5px;color:rgba(255,255,255,.3)}
+.tab .tab-limit{margin-top:8px;font-size:12px;font-weight:800;color:var(--or)}
+.tab:last-child .tab-limit{color:var(--cy)}
+.tab.active::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--or);border-radius:1px}
+.tab.active.cy-active::after{background:var(--cy)}
+
+/* PANELS */
+.panel{display:none}.panel.active{display:block}
+
+/* PROGRAM HEADER */
+.prog-hd{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:32px}
+.prog-hd-top{padding:28px 32px}
+.prog-hd-top h2{font-size:22px;font-weight:800;margin-bottom:4px}
+.prog-hd-top h2 .ac{color:var(--or)}.prog-hd-top h2 .ac2{color:var(--cy)}
+.prog-hd-top p{font-size:13px;color:rgba(255,255,255,.35)}
+.prog-goal{padding:18px 32px;background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.06);font-size:14px;font-weight:700;color:rgba(255,255,255,.55)}
+.prog-goal span{color:var(--or)}.prog-goal .cyn{color:var(--cy)}
+
+/* INFO GRID */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.ig{border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,.02)}
+.ig-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.ig-val{font-size:14px;font-weight:700}
+
+/* TIMELINE */
+.tl{margin:32px 0;display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;align-items:stretch;border:1px solid rgba(255,255,255,.06);border-bottom:none;background:rgba(255,255,255,.015)}
+.tl-item:first-child{border-radius:12px 12px 0 0}
+.tl-item:last-child{border-bottom:1px solid rgba(255,255,255,.06);border-radius:0 0 12px 12px}
+.tl-date{width:110px;padding:14px 16px;border-right:1px solid rgba(255,255,255,.06);font-size:12px;font-weight:700;color:var(--or);flex-shrink:0;display:flex;align-items:center}
+.tl-date.cy-date{color:var(--cy)}
+.tl-body{padding:14px 18px;flex:1}
+.tl-title{font-size:13.5px;font-weight:800}
+.tl-desc{font-size:12px;color:rgba(255,255,255,.35);margin-top:2px}
+
+/* STAGE BLOCKS */
+.stg-block{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.stg-hd{display:flex;align-items:center;gap:12px;padding:20px 28px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}
+.stg-badge{padding:5px 14px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.5px;flex-shrink:0}
+.stg-badge.or{background:rgba(255,130,4,.12);color:var(--or)}
+.stg-badge.bk{background:rgba(255,255,255,.08);color:var(--wh)}
+.stg-badge.cy{background:rgba(6,169,208,.12);color:var(--cy)}
+.stg-name{font-size:16px;font-weight:800}
+.stg-body{padding:24px 28px}
+.stg-body>p{font-size:13.5px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:20px}
+
+/* MISSION GRID */
+.missions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.mi{border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px 14px;text-align:center;background:rgba(255,255,255,.015);transition:all .2s}
+.mi:hover{border-color:rgba(255,130,4,.2);transform:translateY(-2px)}
+.mi-day{font-size:10px;font-weight:800;color:var(--or);letter-spacing:1px;margin-bottom:4px}
+.mi-title{font-size:12px;font-weight:700;line-height:1.35}
+.mi-note{margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.25);font-style:italic}
+
+/* ACTION WEEK CADENCE */
+.cadence{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:16px 0}
+.cd{border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 8px;text-align:center;background:rgba(255,255,255,.015)}
+.cd.hl{background:rgba(255,130,4,.06);border-color:rgba(255,130,4,.15)}
+.cd-day{font-size:11.5px;font-weight:800;margin-bottom:2px}
+.cd.hl .cd-day{color:var(--or)}
+.cd-act{font-size:10.5px;color:rgba(255,255,255,.3);line-height:1.35}
+
+/* AX DAY CARDS */
+.ax-days{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.ax-d{border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.015)}
+.ax-d-hd{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);text-align:center;background:rgba(6,169,208,.04)}
+.ax-d-hd .d-num{font-size:18px;font-weight:800}
+.ax-d-hd .d-date{font-size:10.5px;color:rgba(255,255,255,.3)}
+.ax-d-body{padding:16px}
+.ax-d-body h5{font-size:13px;font-weight:800;color:var(--cy);margin-bottom:4px}
+.ax-d-body p{font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.55}
+
+/* BENEFITS */
+.bens{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.ben{border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:24px 22px;background:rgba(255,255,255,.015);transition:all .25s}
+.ben:hover{border-color:rgba(255,255,255,.12);transform:translateY(-2px)}
+.ben.featured{border-color:rgba(6,169,208,.25);background:rgba(6,169,208,.03)}
+.ben-icon{font-size:24px;margin-bottom:10px}
+.ben h4{font-size:14px;font-weight:800;margin-bottom:4px}
+.ben h4.cy-h{color:var(--cy)}
+.ben p{font-size:12px;color:rgba(255,255,255,.35);line-height:1.6}
+.ben p strong{color:rgba(255,255,255,.6)}
+
+/* WHO */
+.who-list{display:flex;flex-direction:column;gap:8px;margin:20px 0}
+.who{display:flex;align-items:flex-start;gap:12px;padding:16px 20px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.015)}
+.who-ck{width:22px;height:22px;border-radius:6px;background:rgba(255,130,4,.08);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--or)}
+.who-ck.cy-ck{background:rgba(6,169,208,.08);color:var(--cy)}
+.who h4{font-size:13px;font-weight:700;margin-bottom:1px}
+.who p{font-size:11.5px;color:rgba(255,255,255,.3);line-height:1.5}
+
+/* CTA */
+.cta-section{padding:100px 0;text-align:center;position:relative;border-top:1px solid rgba(255,255,255,.06)}
+.cta-section::before{content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(255,130,4,.04),transparent 70%);pointer-events:none}
+.cta-inner{position:relative;z-index:2;max-width:600px;margin:0 auto;padding:0 24px}
+.cta-inner h2{font-size:clamp(24px,4vw,34px);font-weight:800;margin-bottom:12px}
+.cta-inner h2 em{font-style:normal;color:var(--or)}
+.cta-inner>p{color:rgba(255,255,255,.3);font-size:14px;margin-bottom:36px}
+.cta-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.cc{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 20px;text-align:center;transition:all .3s;cursor:pointer;text-decoration:none;color:var(--wh);display:block}
+.cc:hover{border-color:rgba(255,130,4,.3);transform:translateY(-4px);background:rgba(255,255,255,.02)}
+.cc:last-child:hover{border-color:rgba(6,169,208,.3)}
+.cc-badge{font-size:10px;font-weight:800;letter-spacing:1px;padding:3px 10px;border-radius:5px;display:inline-block;margin-bottom:10px}
+.cc:first-child .cc-badge{background:rgba(255,130,4,.12);color:var(--or)}
+.cc:last-child .cc-badge{background:rgba(6,169,208,.12);color:var(--cy)}
+.cc h3{font-size:18px;font-weight:800;margin-bottom:4px}
+.cc-limit{font-size:12px;font-weight:700;margin-bottom:10px}
+.cc:first-child .cc-limit{color:var(--or)}
+.cc:last-child .cc-limit{color:var(--cy)}
+.cc-arrow{font-size:20px;opacity:.3;transition:opacity .3s}
+.cc:hover .cc-arrow{opacity:1}
+.cta-dead{font-size:12px;color:rgba(255,255,255,.2)}.cta-dead strong{color:var(--or)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.06);padding:32px;text-align:center}
+footer .fl{font-size:14px;font-weight:800;margin-bottom:4px}
+footer .fl span{color:var(--or)}
+footer p{font-size:11px;color:rgba(255,255,255,.15)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .n-right a:not(.n-apply){display:none}
+  .tabs{flex-direction:column}.tab+.tab{border-left:none;border-top:1px solid rgba(255,255,255,.06)}
+  .info-grid,.bens,.cta-cards{grid-template-columns:1fr}
+  .missions{grid-template-columns:1fr 1fr}
+  .cadence{grid-template-columns:repeat(3,1fr)}
+  .ax-days{grid-template-columns:1fr}
+  .tl-date{width:90px;font-size:11px}
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.anim{opacity:0;animation:fadeUp .45s ease forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="n-logo">underdogs<span>.</span></div>
+  <div class="n-right">
+    <a href="#programs">프로그램</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzveasn_Mib-kZ0x4jTRkuQFHFx8dL0HKYHHgheGKPWO18Xg/viewform" target="_blank" class="n-apply">지원하기 →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-chip anim">코치 도전 · 무료 · 실전 프로그램</div>
+    <h1 class="anim d1">AI로 <em>내 사업</em>을 만들거나,<br><em>진짜 컨설턴트</em>로 성장하거나.</h1>
+    <p class="sub anim d2">코치 교육이 아닙니다.<br><strong>직접 프로덕트를 만들어 매출을 내고 싶은 분</strong>,<br><strong>기업 컨설턴트로 전문가 레벨에서 일하려는 분</strong>을 위한 프로그램입니다.</p>
+    <div class="hero-nums anim d3">
+      <div class="hn"><div class="hn-v">10+10</div><div class="hn-l">모집 인원</div></div>
+      <div class="hn"><div class="hn-v">5주</div><div class="hn-l">프로그램 기간</div></div>
+      <div class="hn"><div class="hn-v">무료</div><div class="hn-l">전액 지원</div></div>
+    </div>
+    <div class="hero-btns anim d4">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzveasn_Mib-kZ0x4jTRkuQFHFx8dL0HKYHHgheGKPWO18Xg/viewform" target="_blank" class="hb hb-or">지원하기 →</a>
+      <a href="#programs" class="hb hb-gh">프로그램 보기</a>
+    </div>
+    <p class="hero-dead anim d4">모집 마감: <strong>4월 5일 (일)</strong></p>
+  </div>
+</section>
+
+<!-- NOTICE -->
+<div class="notice-bar">
+  <p>이 프로그램은 <strong>언더독스 코치 중 사업을 직접 하고 싶거나, 컨설턴트로 성장하고 싶은 분</strong>을 위한 것입니다.<br>각 <em>10명만 선발</em>하며, 5주간 <strong>한 몰입이 가능한 분만</strong> 지원해 주세요.</p>
+</div>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="container">
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" onclick="sw(0)">
+        <div class="tab-badge">TRACK A</div>
+        <h3>AI 솔로프러너</h3>
+        <p>내 프로덕트를 만들고 매출까지</p>
+        <div class="tab-limit">10명 한정 </div>
+      </div>
+      <div class="tab" onclick="sw(1)">
+        <div class="tab-badge">TRACK B</div>
+        <h3>AX 컨설턴트</h3>
+        <p>실전 기업컨설턴트로 레벨업</p>
+        <div class="tab-limit">10명 한정 </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL A ===== -->
+    <div class="panel active" id="pA">
+
+      <div class="prog-hd">
+        <div class="prog-hd-top">
+          <h2><span class="ac">AI 솔로프러너</span> 육성 프로그램</h2>
+          <p>사전 교육 → 본교육 연속 진행 · 이 5주</p>
+        </div>
+        <div class="prog-goal">목표: <span>Claude Code로 실전 작동하는 프로덕트를 만들고, 시장에서 첫 매출을 만든다.</span></div>
+      </div>
+
+      <div class="info-grid">
+        <div class="ig"><div class="ig-label">모집 인원</div><div class="ig-val">10명</div></div>
+        <div class="ig"><div class="ig-label">기간</div><div class="ig-val">4/6 (월) ~ 5/8 (금)</div></div>
+        <div class="ig"><div class="ig-label">이용</div><div class="ig-val">LMS + Discord · 온라인</div></div>
+        <div class="ig"><div class="ig-label">핵심 도구</div><div class="ig-val">Claude Code 기반</div></div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="sec-label" style="margin-top:40px">일정 </div>
+      <div class="tl">
+        <div class="tl-item"><div class="tl-date">3/30 ~ 4/5</div><div class="tl-body"><div class="tl-title">모집 기간</div><div class="tl-desc">4/5 (일) 마감</div></div></div>
+        <div class="tl-item"><div class="tl-date">4/6 (월)</div><div class="tl-body"><div class="tl-title">선발 합격 · 개별 통보</div></div></div>
+        <div class="tl-item"><div class="tl-date">4/6 ~ 4/16</div><div class="tl-body"><div class="tl-title">사전 교육 (Stage 2)</div><div class="tl-desc">바이브코딩 실전 플로우 · 일별 미션 · 프로토 하이픽셀 제작</div></div></div>
+        <div class="tl-item"><div class="tl-date">4/17 (금) 19시</div><div class="tl-body"><div class="tl-title">OT — 프로그램 안내 &amp; 현황 공유 </div><div class="tl-desc">온라인 · 1시간</div></div></div>
+        <div class="tl-item"><div class="tl-date">4/18 (토) 13시</div><div class="tl-body"><div class="tl-title">본교육 집중 프로그램</div><div class="tl-desc">매출 전략 · 케이스 스터디 · 프로덕트 설계 · 온라인 3시간</div></div></div>
+        <div class="tl-item"><div class="tl-date">4/20 ~ 5/8</div><div class="tl-body"><div class="tl-title">액션위크 — 3주간 실전</div><div class="tl-desc">월/목 코호트 세션 · 금요 1:1 코칭</div></div></div>
+        <div class="tl-item"><div class="tl-date">5/8 (금)</div><div class="tl-body"><div class="tl-title">최종 마감</div><div class="tl-desc">최종 산출물 제출</div></div></div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="stg-block">
+        <div class="stg-hd"><div class="stg-badge or">사전 교육</div><div class="stg-name">Stage 2 — 바이브코딩으로 프로덕트 만들기</div></div>
+        <div class="stg-body">
+          <p>바이브코딩 사용법과 실전 플로우를 학습하고, 일별 미션을 수행하며 실전 작동하는 프로토 하이픽셀을 만듭니다. Claude Code를 기반으로 시스템 아키텍처를 설계하고, 외부 툴/서비스를 연동해 진짜 프로덕트를 빌딩합니다.</p>
+          <div class="sec-label">일별 미션 예시</div>
+          <div class="missions">
+            <div class="mi"><div class="mi-day">DAY 1</div><div class="mi-title">문제 정의<br>&amp; 고객 탐색</div></div>
+            <div class="mi"><div class="mi-day">DAY 2</div><div class="mi-title">PRD<br>작성</div></div>
+            <div class="mi"><div class="mi-day">DAY 3</div><div class="mi-title">시스템 아키텍처<br>설계</div></div>
+            <div class="mi"><div class="mi-day">DAY 4</div><div class="mi-title">Admin / DB<br>스키마 세팅</div></div>
+            <div class="mi"><div class="mi-day">DAY 5</div><div class="mi-title">프론트 엔드<br>&amp; 배포</div></div>
+            <div class="mi"><div class="mi-day">DAY 6+</div><div class="mi-title">개선 · 보완<br>→ MVP 완성</div></div>
+          </div>
+          <p class="mi-note">* 자기 미션의 예시이며, 실제 미션은 진행 시 안내됩니다.</p>
+        </div>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="stg-block">
+        <div class="stg-hd"><div class="stg-badge bk">본교육</div><div class="stg-name">Stage 3 — 첫 매출 만들기</div></div>
+        <div class="stg-body">
+          <p>만든 프로덕트를 시장에 내놓고, 실전 매출을 만드는 3주 과정입니다.</p>
+          <p>단순히 파는 것에 그치지 않습니다. <strong style="color:var(--wh)">에이전트를 만들어 내 캐파를 최대한 확장</strong>하고, 그 시간을 <strong style="color:var(--wh)">고객에 더 집중</strong>합니다. 재구매율, 전환율 같은 <strong style="color:var(--or)">의미있는 지표를 직접 올리는 것</strong>이 이 단계의 목표입니다.</p>
+
+          <div class="sec-label" style="margin-top:24px">액션위크 주간 리듬</div>
+          <div class="cadence">
+            <div class="cd hl"><div class="cd-day">월</div><div class="cd-act">목표 설정<br>+ 코호트</div></div>
+            <div class="cd"><div class="cd-day">화</div><div class="cd-act">개인 실전</div></div>
+            <div class="cd"><div class="cd-day">수</div><div class="cd-act">개인 실전</div></div>
+            <div class="cd hl"><div class="cd-day">목</div><div class="cd-act">목표 점검<br>+ 코호트</div></div>
+            <div class="cd"><div class="cd-day">금</div><div class="cd-act">개인 실전<br>+ 1:1 코칭</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benefits -->
+      <div class="sec-label" style="margin-top:48px">얻어가는 것</div>
+      <div class="bens">
+        <div class="ben"><div class="ben-icon">🚀</div><h4>실전 창업 경험</h4><p>아이디어 → 프로덕트 → 시장 검증 → 첫 매출까지 압축적 솔로프러너 사전 </p></div>
+        <div class="ben"><div class="ben-icon">🤖</div><h4>AI 프로덕트 빌딩 역량</h4><p>Claude Code + 시스템 아키텍처 설계 + 에이전트 구축 + 외부 서비스 연동</p></div>
+        <div class="ben"><div class="ben-icon">📊</div><h4>의미있는 비즈니스 지표</h4><p>첫 매출, 전환율, 재구매율 — 실전 시장에서 검증된 데이터를 손에 쥡니다</p></div>
+        <div class="ben"><div class="ben-icon">🎯</div><h4>프로그램 공동 설계자</h4><p>피드백이 즉시 프로그램에 반영. 이후 관련 교육 투자 기회 부여</p></div>
+      </div>
+
+      <!-- Who -->
+      <div class="sec-label" style="margin-top:48px">이런 분을 찾습니다</div>
+      <div class="who-list">
+        <div class="who"><div class="who-ck">✓</div><div><h4>본인만의 사업 아이디어가 있는 분</h4><p>5주 기간 내에 하나를 선택해 진행할 의향이 있는 분</p></div></div>
+        <div class="who"><div class="who-ck">✓</div><div><h4>사전 교육 기간 시간투자가 가능한 분</h4><p>4/6~4/16 동안 일별 미션 수행이 가능해야 합니다</p></div></div>
+        <div class="who"><div class="who-ck">✓</div><div><h4>OT, 본교육, 액션위크 일정에 참여 가능한 분</h4><p>4/17 OT · 4/18 본교육 · 월/목 코호트 필수</p></div></div>
+        <div class="who"><div class="who-ck">✓</div><div><h4>5주간 한 몰입 의지가 있는 분</h4><p>서로 배우고 자극하며, 실전 매출까지 만들어보겠다는 의지</p></div></div>
+      </div>
+
+      <div style="margin-top:40px;text-align:center">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzveasn_Mib-kZ0x4jTRkuQFHFx8dL0HKYHHgheGKPWO18Xg/viewform" target="_blank" class="hb hb-or" style="display:inline-flex">TRACK A 지원하기 →</a>
+      </div>
+    </div>
+
+    <!-- ===== PANEL B ===== -->
+    <div class="panel" id="pB">
+
+      <div class="prog-hd">
+        <div class="prog-hd-top">
+          <h2><span class="ac2">AX 컨설턴트</span> 실전 역량 강화</h2>
+          <p>3일 집중 교육 + 5주 실전 기업 컨설팅</p>
+        </div>
+        <div class="prog-goal">목표: <span class="cyn">실전 기업에 AX 과제를 진단하고, 의미있는 산출물을 도출하는 진짜 컨설턴트가 된다.</span></div>
+      </div>
+
+      <div class="info-grid">
+        <div class="ig"><div class="ig-label">모집 인원</div><div class="ig-val">10명</div></div>
+        <div class="ig"><div class="ig-label">교육</div><div class="ig-val">4/14~16 오프라인 3일</div></div>
+        <div class="ig"><div class="ig-label">프로젝트</div><div class="ig-val">4월 말 ~ 5월 말 (5주)</div></div>
+        <div class="ig"><div class="ig-label">팀 구성</div><div class="ig-val">2인 1팀 · 기업 1사 전담</div></div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="sec-label" style="margin-top:40px">일정 </div>
+      <div class="tl">
+        <div class="tl-item"><div class="tl-date">~ 4/5 (일)</div><div class="tl-body"><div class="tl-title">모집 마감</div></div></div>
+        <div class="tl-item"><div class="tl-date">4/6 (월)</div><div class="tl-body"><div class="tl-title">선발 합격 · 개별 통보</div></div></div>
+        <div class="tl-item"><div class="tl-date cy-date">4/14 ~ 4/16</div><div class="tl-body"><div class="tl-title">오프라인 3일 집중 교육</div><div class="tl-desc">09:30~12:00 · 사랑방 B1 · 강사: 박시탁 대표</div></div></div>
+        <div class="tl-item"><div class="tl-date">4월 4주차</div><div class="tl-body"><div class="tl-title">팀-기업 매칭 &amp; 킥오프</div><div class="tl-desc">2인 1팀 구성 · 언더독스 알라딘 기업 배정 </div></div></div>
+        <div class="tl-item"><div class="tl-date cy-date">4월 말 ~ 5월 말</div><div class="tl-body"><div class="tl-title">실전 프로젝트 수행 (5주)</div><div class="tl-desc">문제 진단 → 솔루션 설계 → 결과물 도출 · 매주 월요일 워크숍</div></div></div>
+        <div class="tl-item"><div class="tl-date">6월 1주차</div><div class="tl-body"><div class="tl-title">최종 발표</div><div class="tl-desc">의뢰인 참석 및 결과물 발표</div></div></div>
+      </div>
+
+      <!-- 3-Day Education -->
+      <div class="stg-block">
+        <div class="stg-hd"><div class="stg-badge cy">집중 교육</div><div class="stg-name">3일 오프라인 · 박시탁 대표</div></div>
+        <div class="stg-body">
+          <p>실전 비즈니스 문제를 AI로 해결하는 '문제 해결형 PO'를 양성하는 3일 집중 과정입니다.</p>
+          <div class="ax-days">
+            <div class="ax-d"><div class="ax-d-hd"><div class="d-num">Day 1</div><div class="d-date">4/14 (화) 09:30~12:00</div></div><div class="ax-d-body"><h5>문제 정의</h5><p>비즈니스 인터뷰 설계/실행, 기획 문제 선택, 지면 다음 설정 </p></div></div>
+            <div class="ax-d"><div class="ax-d-hd"><div class="d-num">Day 2</div><div class="d-date">4/15 (수) 09:30~12:00</div></div><div class="ax-d-body"><h5>솔루션 설계</h5><p>실전 사례 연구, 가성비 기반 AI 툴 선택, 기획/설계 가치 증명</p></div></div>
+            <div class="ax-d"><div class="ax-d-hd"><div class="d-num">Day 3</div><div class="d-date">4/16 (목) 09:30~12:00</div></div><div class="ax-d-body"><h5>품질 관리</h5><p>3단계 의뢰인 인터뷰, 데이터 기반 가설 검증, 킥오프 준비</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project -->
+      <div class="stg-block">
+        <div class="stg-hd"><div class="stg-badge cy">실전 프로젝트</div><div class="stg-name">5주 기업 컨설팅</div></div>
+        <div class="stg-body">
+          <p>2인 1팀으로 언더독스 알라딘 기업에 배정받아, 실전 AX 과제를 수행합니다. 매주 월요일 오전 사랑방 장소 워크숍에서 진행 점검과 그룹 코칭이 이루어집니다.</p>
+        </div>
+      </div>
+
+      <!-- Benefits -->
+      <div class="sec-label" style="margin-top:48px">얻어가는 것 — 이게 핵심입니다</div>
+      <div class="bens">
+        <div class="ben featured"><div class="ben-icon">💼</div><h4 class="cy-h">실전 프로젝트 우선 배정 </h4><p>수료시 올해 <strong>무신사, 네이버, 카카오, 현대자동차, 오아시스마켓</strong> 등 언더독스 AX 사업에 우선 투자</p></div>
+        <div class="ben featured"><div class="ben-icon">💰</div><h4 class="cy-h">코치보다 높은 컨설턴트 단가</h4><p>실전 프로젝트는 별도 컨설팅 단가 책정. 컨설턴트로 활동할 수 있는 경로</p></div>
+        <div class="ben"><div class="ben-icon">🎯</div><h4>실전 컨설팅 경험</h4><p>5주간 실전 기업 문제를 해결하며 압축적 성장과 성공 경험 확보</p></div>
+        <div class="ben"><div class="ben-icon">🧠</div><h4>전문가 네트워크 정착</h4><p>박시탁 대표의 그룹 코칭과 3단계 의뢰인 인터뷰를 통한 컨설팅 전문 역량 습득</p></div>
+      </div>
+
+      <!-- Who -->
+      <div class="sec-label" style="margin-top:48px">이런 분을 찾습니다</div>
+      <div class="who-list">
+        <div class="who"><div class="who-ck cy-ck">✓</div><div><h4>AI 개발 도구를 다룰 수 있는 분 (필수)</h4><p>Claude Code, Cursor 등 AI 코드 도구 활용 가능</p></div></div>
+        <div class="who"><div class="who-ck cy-ck">✓</div><div><h4>비즈니스 감각 + 커뮤니케이션</h4><p>대화 인터뷰로 핵심포인트를 끌어내고 문서로 정리할 수 있는 분</p></div></div>
+        <div class="who"><div class="who-ck cy-ck">✓</div><div><h4>오프라인 3일 교육 참석 가능</h4><p>4/14~16 매일 09:30~12:00 사랑방 장소</p></div></div>
+        <div class="who"><div class="who-ck cy-ck">✓</div><div><h4>5주간 기업 프로젝트에 몰입 가능</h4><p>매주 월요일 워크숍 + 기업 직접 소통</p></div></div>
+      </div>
+
+      <div style="margin-top:40px;text-align:center">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzveasn_Mib-kZ0x4jTRkuQFHFx8dL0HKYHHgheGKPWO18Xg/viewform" target="_blank" class="hb hb-or" style="display:inline-flex;background:var(--cy)">TRACK B 지원하기 →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="apply">
+  <div class="cta-inner">
+    <h2>각 <em>10명</em>만 선발합니다.</h2>
+    <p>5주간 몰입할 준비가 되셨나요?</p>
+    <div class="cta-cards">
+      <a class="cc" href="https://docs.google.com/forms/d/e/1FAIpQLSfzveasn_Mib-kZ0x4jTRkuQFHFx8dL0HKYHHgheGKPWO18Xg/viewform" target="_blank">
+        <div class="cc-badge">TRACK A</div>
+        <h3>AI 솔로프러너</h3>
+        <div class="cc-limit">10명 한정 </div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a class="cc" href="https://docs.google.com/forms/d/e/1FAIpQLSfzveasn_Mib-kZ0x4jTRkuQFHFx8dL0HKYHHgheGKPWO18Xg/viewform" target="_blank">
+        <div class="cc-badge">TRACK B</div>
+        <h3>AX 컨설턴트</h3>
+        <div class="cc-limit">10명 한정 </div>
+        <div class="cc-arrow">→</div>
+      </a>
+    </div>
+    <p class="cta-dead">모집 마감: <strong>4월 5일 (일)</strong> · 선발 합격: 4월 6일 (월)</p>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">underdogs<span>.</span></div>
+  <p>© 2026 underdogs. All rights reserved.</p>
+</footer>
+
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>{
+    t.classList.toggle('active',j===i);
+    if(j===1) t.classList.toggle('cy-active',j===i);
+  });
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.animation='fadeUp .4s ease forwards';x.target.style.opacity='1'}})},{threshold:.05});
+document.querySelectorAll('.prog-hd,.stg-block,.ben,.who,.tl-item,.ax-d,.cc,.notice-bar').forEach(el=>{el.style.opacity='0';obs.observe(el)});
+</script>
+</body>
+</html>

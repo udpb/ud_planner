@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(req: NextRequest) {
   try {
-    const { projectId, summary, objectives } = await req.json()
+    const { projectId, summary, objectives, impactGoal } = await req.json()
 
     if (!summary || !objectives?.length) {
       return NextResponse.json({ error: '사업 요약과 목표가 필요합니다.' }, { status: 400 })
     }
 
-    const logicModel = await buildLogicModel(summary, objectives)
+    const logicModel = await buildLogicModel(summary, objectives, impactGoal ?? '')
 
     if (projectId) {
       await prisma.project.update({

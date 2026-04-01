@@ -9,6 +9,35 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 export const metadata = { title: '프로젝트' }
 
+const PIPELINE_STEPS = [
+  { key: 'rfp', label: 'RFP' },
+  { key: 'impact', label: '임팩트' },
+  { key: 'curriculum', label: '커리큘럼' },
+  { key: 'coaches', label: '코치' },
+  { key: 'budget', label: '예산' },
+  { key: 'proposal', label: '제안서' },
+]
+
+function PipelineDots({ rfp, impact, curriculum, coaches, budget, proposal }: {
+  rfp: boolean; impact: boolean; curriculum: boolean
+  coaches: boolean; budget: boolean; proposal: boolean
+}) {
+  const done = [rfp, impact, curriculum, coaches, budget, proposal]
+  const completedCount = done.filter(Boolean).length
+  return (
+    <div className="flex items-center gap-1.5">
+      {PIPELINE_STEPS.map((s, i) => (
+        <div
+          key={s.key}
+          title={s.label}
+          className={`h-2 w-2 rounded-full ${done[i] ? 'bg-green-500' : 'bg-gray-200'}`}
+        />
+      ))}
+      <span className="ml-1 text-xs text-muted-foreground tabular-nums">{completedCount}/6</span>
+    </div>
+  )
+}
+
 const STATUS_LABEL: Record<string, string> = {
   DRAFT: '기획중',
   PROPOSAL: '제안서',
@@ -45,9 +74,12 @@ async function getProjects(params: SearchParams) {
       totalBudgetVat: true,
       eduStartDate: true,
       eduEndDate: true,
+      rfpParsed: true,
+      logicModel: true,
+      budget: { select: { id: true } },
       pm: { select: { name: true } },
       _count: {
-        select: { coachAssignments: true, participants: true },
+        select: { coachAssignments: true, curriculum: true, proposalSections: true },
       },
     },
     orderBy: { updatedAt: 'desc' },
@@ -102,17 +134,17 @@ export default async function ProjectsPage({
                     <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">발주기관</th>
                     <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">유형</th>
                     <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">상태</th>
+                    <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">기획 진행률</th>
                     <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">교육기간</th>
                     <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">예산(VAT포함)</th>
                     <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">코치</th>
-                    <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">참여자</th>
                     <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">PM</th>
                   </tr>
                 </thead>
                 <tbody>
                   {projects.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="py-12 text-center text-muted-foreground">
+                      <td colSpan={8} className="py-12 text-center text-muted-foreground">
                         프로젝트가 없습니다.{' '}
                         <Link href="/projects/new" className="underline">새 프로젝트 만들기</Link>
                       </td>
@@ -134,6 +166,16 @@ export default async function ProjectsPage({
                             {STATUS_LABEL[p.status]}
                           </Badge>
                         </td>
+                        <td className="px-4 py-3">
+                          <PipelineDots
+                            rfp={!!p.rfpParsed}
+                            impact={!!p.logicModel}
+                            curriculum={p._count.curriculum > 0}
+                            coaches={p._count.coachAssignments > 0}
+                            budget={!!p.budget}
+                            proposal={p._count.proposalSections >= 7}
+                          />
+                        </td>
                         <td className="px-4 py-3 text-muted-foreground tabular-nums text-xs">
                           {p.eduStartDate && p.eduEndDate
                             ? `${p.eduStartDate.toLocaleDateString('ko')} ~ ${p.eduEndDate.toLocaleDateString('ko')}`
@@ -146,9 +188,6 @@ export default async function ProjectsPage({
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
                           {p._count.coachAssignments}명
-                        </td>
-                        <td className="px-4 py-3 text-right tabular-nums">
-                          {p._count.participants}명
                         </td>
                         <td className="px-4 py-3 text-muted-foreground">
                           {p.pm?.name ?? '—'}

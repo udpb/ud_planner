@@ -205,23 +205,35 @@ export async function buildLogicModel(
 }
 
 // ─── 커리큘럼 자동 추천 ───────────────────────────────────
+export interface CurriculumSession {
+  sessionNo: number
+  title: string
+  category: string
+  method: string
+  durationHours: number
+  // 세션 내 시간 구성 (분 단위)
+  lectureMinutes: number    // 기본 15분
+  practiceMinutes: number   // 기본 35분
+  isTheory: boolean
+  isActionWeek: boolean
+  isCoaching1on1: boolean   // Action Week 페어 1:1 코칭 세션
+  objectives: string[]
+  recommendedExpertise: string[]
+  notes: string
+}
+
+export interface CurriculumInsight {
+  type: 'info' | 'tip' | 'asset'
+  message: string
+}
+
 export interface CurriculumSuggestion {
-  sessions: Array<{
-    sessionNo: number
-    title: string
-    category: string
-    method: string
-    durationHours: number
-    isTheory: boolean
-    isActionWeek: boolean
-    objectives: string[]
-    recommendedExpertise: string[]
-    notes: string
-  }>
+  sessions: CurriculumSession[]
   totalHours: number
   actionWeekRatio: number
   theoryRatio: number
   rationale: string
+  insights: CurriculumInsight[]  // 기획자에게 전달할 안내/제안 (강제 아님)
 }
 
 export async function suggestCurriculum(
@@ -235,7 +247,8 @@ export async function suggestCurriculum(
     messages: [
       {
         role: 'user',
-        content: `당신은 언더독스 교육 기획 전문가입니다. IMPACT 방법론(역추적→Action Week 중심)을 기반으로 최적의 커리큘럼을 설계하세요.
+        content: `당신은 언더독스 교육 기획 전문가입니다. IMPACT 방법론(역추적→Action Week 중심)을 기반으로 최적의 커리큘럼 초안을 설계하세요.
+이 결과물은 기획자가 자유롭게 수정할 수 있는 초안입니다. 강제 규칙이 아닌 효과적인 설계안을 제시하세요.
 
 사업명: ${rfpParsed.projectName}
 대상: ${rfpParsed.targetAudience} (${rfpParsed.targetCount}명)
@@ -245,11 +258,15 @@ export async function suggestCurriculum(
 핵심 아웃풋: ${logicModel.output.join(', ')}
 기간: ${rfpParsed.eduStartDate} ~ ${rfpParsed.eduEndDate}
 
-IMPACT 방법론 원칙:
-- 이론 강의는 최소화 (30% 이하)
-- Action Week(실전 실행 주간) 반드시 포함
-- 멘토링/코칭 세션 필수
-- 참여자 주도 실습 위주
+세션 구성 기본 원칙 (기획자가 수정 가능한 기본값):
+- 일반 세션: 강의 15분 + 실습 35분 (총 50분) 구성. lectureMinutes=15, practiceMinutes=35
+- Action Week 세션: 실전 실행 중심. lectureMinutes=0, practiceMinutes=0 (별도 안내)
+- 1:1 코칭 세션: Action Week가 포함된 주에는 1:1 온라인 코칭 세션을 페어로 배치 권장. isCoaching1on1=true
+
+IMPACT 방법론 권장사항 (기획자 참고용):
+- 이론 위주 세션보다 실습/워크숍 위주 설계 권장
+- Action Week(실전 실행 주간)는 학습 효과를 높이는 핵심 요소
+- Action Week 직후 1:1 온라인 코칭으로 실행 결과 리뷰 권장
 
 반드시 아래 JSON만 반환하세요:
 {
@@ -258,19 +275,28 @@ IMPACT 방법론 원칙:
       "sessionNo": 1,
       "title": "세션 제목",
       "category": "STARTUP_EDU|TECH_EDU|MENTORING|ACTION_WEEK|NETWORKING|SPECIAL_LECTURE",
-      "method": "WORKSHOP|LECTURE|PRACTICE|MENTORING|ACTION_WEEK|MIXED",
+      "method": "WORKSHOP|LECTURE|PRACTICE|MENTORING|ACTION_WEEK|MIXED|ONLINE",
       "durationHours": 시간수,
+      "lectureMinutes": 15,
+      "practiceMinutes": 35,
       "isTheory": false,
       "isActionWeek": false,
+      "isCoaching1on1": false,
       "objectives": ["목표1"],
       "recommendedExpertise": ["창업 일반", "BM검증"],
-      "notes": "세부 안내"
+      "notes": "세부 안내 및 기획자 참고사항"
     }
   ],
   "totalHours": 총시간,
   "actionWeekRatio": Action Week 비율(0~100),
   "theoryRatio": 이론 비율(0~100),
-  "rationale": "커리큘럼 설계 근거 2~3문장"
+  "rationale": "커리큘럼 설계 근거 2~3문장",
+  "insights": [
+    {
+      "type": "tip|info|asset",
+      "message": "기획자에게 전달할 안내 메시지"
+    }
+  ]
 }`,
       },
     ],

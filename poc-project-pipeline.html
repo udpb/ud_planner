@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UD Ops — 프로젝트 파이프라인 UI 목업</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+  * { font-family: 'Nanum Gothic', sans-serif; }
+  :root { --ud-orange: #FF8204; }
+  .bg-primary { background-color: var(--ud-orange); }
+  .text-primary { color: var(--ud-orange); }
+  .border-primary { border-color: var(--ud-orange); }
+  .bg-primary\/10 { background-color: rgba(255,130,4,0.10); }
+  .bg-primary\/5 { background-color: rgba(255,130,4,0.05); }
+  .text-primary\/70 { color: rgba(255,130,4,0.70); }
+  .shadow-primary\/40 { box-shadow: 0 1px 3px rgba(255,130,4,0.40); }
+  .step-btn { transition: all 0.15s ease; }
+  .step-btn:hover { background: #f3f4f6; }
+  .step-btn.active { background: rgba(255,130,4,0.10); }
+  [data-step] { display: none; }
+  [data-step].active { display: block; }
+  .logic-card { transition: all 0.2s; }
+  .logic-card:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<!-- App Shell -->
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="flex w-[220px] shrink-0 flex-col bg-[#373938] text-white">
+    <div class="flex h-14 items-center gap-2.5 border-b border-white/10 px-5">
+      <span class="text-lg font-extrabold tracking-tight" style="color:#FF8204">UD</span>
+      <span class="text-sm font-bold text-white/80">Ops Workspace</span>
+    </div>
+    <nav class="flex-1 space-y-0.5 p-3 pt-4 text-sm">
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">📊 대시보드</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md bg-white/15 px-3 py-2 font-semibold text-white">📁 프로젝트</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">🧑 코치 DB</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">📚 교육모듈</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">💬 피드백</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">💰 예산기준</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">📈 SROI</a>
+      <a href="#" class="flex items-center gap-2.5 rounded-md px-3 py-2 text-white/60 hover:bg-white/10 hover:text-white">⚙️ 설정</a>
+    </nav>
+    <div class="border-t border-white/10 p-4 text-xs text-white/40">v5.0</div>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex flex-1 flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="flex h-14 items-center border-b bg-white px-6">
+      <h1 class="text-base font-bold">네이버 라운드업 리그 2025</h1>
+    </header>
+
+    <!-- Sticky top bar: meta + pipeline -->
+    <div class="z-20 border-b bg-white shadow-sm">
+
+      <!-- Project meta strip -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b px-6 py-2.5">
+        <span class="rounded-full border border-blue-200 bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">제안서</span>
+        <span class="rounded border border-gray-200 bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-600">창업교육</span>
+        <span class="text-sm text-gray-500">네이버 커넥트재단</span>
+        <div class="ml-auto flex items-center gap-5 text-sm">
+          <div><span class="text-gray-400">총 예산 </span><span class="font-semibold">3.00억</span></div>
+          <div><span class="text-gray-400">코치 </span><span class="font-semibold">2,850만원</span></div>
+          <div><span class="text-gray-400">마진 </span><span class="font-semibold text-green-600">14.9%</span></div>
+          <button class="rounded-md border border-gray-200 px-3 py-1 text-xs text-gray-600 hover:bg-gray-50">수정</button>
+        </div>
+      </div>
+
+      <!-- Pipeline stepper -->
+      <div class="flex items-center gap-0 overflow-x-auto px-6 py-1">
+        <button onclick="goStep('rfp')" data-key="rfp" class="step-btn active flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold" style="background:rgba(255,130,4,0.10); color:#FF8204">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FF8204] text-xs font-bold text-white">1</span>
+          <div class="text-left">
+            <div class="leading-tight">RFP 분석</div>
+            <div class="mt-0.5 text-[11px]" style="color:rgba(255,130,4,0.7)">완료</div>
+          </div>
+        </button>
+        <div class="mx-1 h-px w-6 shrink-0 bg-green-200"></div>
+
+        <button onclick="goStep('impact')" data-key="impact" class="step-btn flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-400">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white">✓</span>
+          <div class="text-left">
+            <div class="leading-tight text-gray-600">임팩트 설계</div>
+            <div class="mt-0.5 text-[11px] text-gray-400">완료</div>
+          </div>
+        </button>
+        <div class="mx-1 h-px w-6 shrink-0 bg-green-200"></div>
+
+        <button onclick="goStep('curriculum')" data-key="curriculum" class="step-btn flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-400">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white">✓</span>
+          <div class="text-left">
+            <div class="leading-tight text-gray-600">커리큘럼</div>
+            <div class="mt-0.5 text-[11px] text-gray-400">12회차</div>
+          </div>
+        </button>
+        <div class="mx-1 h-px w-6 shrink-0 bg-green-200"></div>
+
+        <button onclick="goStep('coaches')" data-key="coaches" class="step-btn flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-400">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white">✓</span>
+          <div class="text-left">
+            <div class="leading-tight text-gray-600">코치 배정</div>
+            <div class="mt-0.5 text-[11px] text-gray-400">5명</div>
+          </div>
+        </button>
+        <div class="mx-1 h-px w-6 shrink-0 bg-gray-200"></div>
+
+        <button onclick="goStep('budget')" data-key="budget" class="step-btn flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-400">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-xs font-bold text-gray-500">5</span>
+          <div class="text-left">
+            <div class="leading-tight text-gray-600">예산</div>
+            <div class="mt-0.5 text-[11px] text-gray-400">미작성</div>
+          </div>
+        </button>
+        <div class="mx-1 h-px w-6 shrink-0 bg-gray-200"></div>
+
+        <button onclick="goStep('proposal')" data-key="proposal" class="step-btn flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-400">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-xs font-bold text-gray-500">6</span>
+          <div class="text-left">
+            <div class="leading-tight text-gray-600">제안서</div>
+            <div class="mt-0.5 text-[11px] text-gray-400">미생성</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step Content -->
+    <div class="flex-1 overflow-y-auto bg-gray-50 p-6">
+
+      <!-- Step 1: RFP -->
+      <div data-step="rfp" class="active">
+        <div class="grid gap-6 md:grid-cols-2">
+          <!-- Left: parser -->
+          <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-400">RFP 업로드 &amp; 파싱</p>
+            <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div class="mb-3 flex items-center gap-2 text-sm font-semibold">
+                📄 RFP 파싱
+                <span class="ml-auto text-green-500">✅</span>
+              </div>
+              <!-- Tabs -->
+              <div class="mb-3 flex rounded-md border border-gray-200 p-0.5 text-xs">
+                <button class="flex-1 rounded py-1 text-gray-400 hover:text-gray-600">PDF 업로드</button>
+                <button class="flex-1 rounded bg-[#FF8204] py-1 font-medium text-white">텍스트 붙여넣기</button>
+              </div>
+              <textarea class="w-full rounded-md border border-gray-200 bg-gray-50 p-2.5 text-xs text-gray-500 focus:outline-none" rows="6" placeholder="제안요청서 전문을 여기에 붙여넣으세요...">2025 네이버 커넥트재단 스타트업 라운드업 리그 제안요청서
+
+사업개요: 초기 스타트업 창업팀 역량 강화를 위한 12주 집중 육성 프로그램
+예산: 3억 3천만원(VAT포함)
+모집 인원: Track A 30팀, Track B 20팀
+평가기준: 프로그램 설계 30점 / 코치 역량 25점 / 성과관리 25점 / 가격 20점</textarea>
+              <div class="mt-2 flex items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-3 py-2">
+                <span class="text-xs text-gray-500">📎 RFP_네이버라운드업리그2025.pdf (842 KB)</span>
+                <button class="ml-auto text-gray-400 text-xs hover:text-red-400">✕</button>
+              </div>
+              <button class="mt-3 w-full rounded-md bg-[#FF8204] py-2 text-sm font-medium text-white hover:opacity-90">Claude로 재파싱</button>
+            </div>
+          </div>
+
+          <!-- Right: result -->
+          <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-400">파싱 결과</p>
+            <div class="space-y-4">
+              <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm space-y-4">
+                <div>
+                  <p class="mb-1 text-xs text-gray-400">요약</p>
+                  <p class="text-sm leading-relaxed">초기 스타트업 50팀(Track A/B) 대상 12주 집중 창업교육 프로그램. 코칭 역량과 성과 관리 비중이 높아 검증된 코치 풀 구성이 핵심.</p>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                  <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs">초기창업</span>
+                  <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs">예비창업</span>
+                  <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs">글로벌트랙</span>
+                </div>
+                <div>
+                  <p class="mb-1.5 text-xs text-gray-400">목표</p>
+                  <ul class="space-y-1">
+                    <li class="flex gap-2 text-sm"><span class="mt-0.5 shrink-0" style="color:#FF8204">·</span>창업팀 BM 고도화 및 투자유치 역량 강화</li>
+                    <li class="flex gap-2 text-sm"><span class="mt-0.5 shrink-0" style="color:#FF8204">·</span>글로벌 시장 진출 가능성 검증 및 네트워크 구축</li>
+                    <li class="flex gap-2 text-sm"><span class="mt-0.5 shrink-0" style="color:#FF8204">·</span>성과 측정 체계(ACTT) 기반 정량적 성장 입증</li>
+                  </ul>
+                </div>
+                <div>
+                  <p class="mb-1.5 text-xs text-gray-400">평가항목</p>
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between text-xs"><span>프로그램 설계</span><span class="font-mono font-medium" style="color:#FF8204">30점</span></div>
+                    <div class="flex items-center justify-between text-xs"><span>코치 역량</span><span class="font-mono font-medium" style="color:#FF8204">25점</span></div>
+                    <div class="flex items-center justify-between text-xs"><span>성과관리</span><span class="font-mono font-medium" style="color:#FF8204">25점</span></div>
+                    <div class="flex items-center justify-between text-xs"><span>가격</span><span class="font-mono font-medium" style="color:#FF8204">20점</span></div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="rounded-md bg-gray-50 p-2 text-center"><p class="text-[11px] text-gray-400">예산(VAT포함)</p><p class="mt-0.5 text-sm font-bold">3.30억</p></div>
+                  <div class="rounded-md bg-gray-50 p-2 text-center"><p class="text-[11px] text-gray-400">참여인원</p><p class="mt-0.5 text-sm font-bold">50팀</p></div>
+                  <div class="rounded-md bg-gray-50 p-2 text-center"><p class="text-[11px] text-gray-400">평가항목</p><p class="mt-0.5 text-sm font-bold">4개</p></div>
+                </div>
+              </div>
+              <button onclick="goStep('impact')" class="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF8204] py-2.5 text-sm font-semibold text-white hover:opacity-90">
+                임팩트 설계로 이동 →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Impact -->
+      <div data-step="impact">
+        <div class="space-y-6">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h3 class="text-base font-semibold">임팩트 로직 모델</h3>
+              <p class="mt-0.5 text-sm text-gray-500">투입 → 활동 → 산출 → 성과 → 임팩트 체계를 설계합니다.</p>
+            </div>
+            <button class="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50 shadow-sm">
+              🧠 Logic Model 재생성
+            </button>
+          </div>
+
+          <!-- Impact goal -->
+          <div class="rounded-lg border-l-4 p-4" style="border-color:#FF8204; background:rgba(255,130,4,0.05)">
+            <p class="text-[11px] font-bold uppercase tracking-widest" style="color:rgba(255,130,4,0.7)">Impact Goal</p>
+            <p class="mt-1 text-base font-semibold">초기 창업팀이 검증 가능한 비즈니스 모델을 갖추고 투자 유치 또는 지속가능한 매출 성장을 달성한다</p>
+          </div>
+
+          <!-- Chain -->
+          <div class="grid grid-cols-5 gap-3">
+            <div class="logic-card rounded-lg border border-gray-200 bg-gray-50 p-3">
+              <p class="mb-2 text-[11px] font-bold uppercase tracking-wide text-gray-400">투입</p>
+              <ul class="space-y-1.5 text-xs text-gray-700">
+                <li>· 전문 코치 5명</li>
+                <li>· 12주 교육 예산 3억</li>
+                <li>· DOGS 진단 도구</li>
+                <li>· 네이버 네트워크</li>
+              </ul>
+            </div>
+            <div class="logic-card rounded-lg border border-blue-200 bg-blue-50 p-3">
+              <p class="mb-2 text-[11px] font-bold uppercase tracking-wide text-blue-600">활동</p>
+              <ul class="space-y-1.5 text-xs text-gray-700">
+                <li>· 주 1회 그룹 세션</li>
+                <li>· 격주 1:1 코칭</li>
+                <li>· Action Week 3회</li>
+                <li>· 중간/최종 피칭</li>
+              </ul>
+            </div>
+            <div class="logic-card rounded-lg border border-cyan-200 bg-cyan-50 p-3">
+              <p class="mb-2 text-[11px] font-bold uppercase tracking-wide text-cyan-600">산출</p>
+              <ul class="space-y-1.5 text-xs text-gray-700">
+                <li>· 교육 50팀×12회</li>
+                <li>· 코칭 50팀×6회</li>
+                <li>· BM 캔버스 50건</li>
+                <li>· 수료율 80% 이상</li>
+              </ul>
+            </div>
+            <div class="logic-card rounded-lg border border-violet-200 bg-violet-50 p-3">
+              <p class="mb-2 text-[11px] font-bold uppercase tracking-wide text-violet-600">성과</p>
+              <ul class="space-y-1.5 text-xs text-gray-700">
+                <li>· ACTT 역량 +30%</li>
+                <li>· 매출 발생 팀 30%</li>
+                <li>· 투자유치 팀 10%</li>
+                <li>· 글로벌 진출 5팀</li>
+              </ul>
+            </div>
+            <div class="logic-card rounded-lg border border-orange-200 bg-orange-50 p-3">
+              <p class="mb-2 text-[11px] font-bold uppercase tracking-wide text-orange-600">임팩트</p>
+              <ul class="space-y-1.5 text-xs text-gray-700">
+                <li>· 창업 생태계 활성화</li>
+                <li>· 양질의 일자리 창출</li>
+                <li>· 기술 혁신 촉진</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex justify-between">
+            <button onclick="goStep('rfp')" class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-100">← RFP 분석</button>
+            <button onclick="goStep('curriculum')" class="flex items-center gap-2 rounded-lg bg-[#FF8204] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">커리큘럼 설계로 이동 →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Curriculum -->
+      <div data-step="curriculum">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold">커리큘럼</h3>
+              <p class="mt-0.5 text-sm text-gray-500">이론 3회 연속 시 경고, Action Week 삽입을 권장합니다.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm hover:bg-gray-50">✨ AI 커리큘럼 설계</button>
+              <button class="rounded-md bg-[#FF8204] px-3 py-1.5 text-xs font-medium text-white hover:opacity-90">+ 세션 추가</button>
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400 w-10">No.</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">세션명</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">유형</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">시간</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">비고</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">01</td>
+                  <td class="px-4 py-3 font-medium">오리엔테이션 &amp; DOGS 진단</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">이론</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">3h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">DOGS LV.0 포함</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">02</td>
+                  <td class="px-4 py-3 font-medium">BM 분석 &amp; 시장 검증</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">이론</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">3h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400"></td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">03</td>
+                  <td class="px-4 py-3 font-medium">고객 인터뷰 &amp; 가설 검증</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">이론</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">3h</td>
+                  <td class="px-4 py-3 text-xs text-orange-500">⚠ 이론 3회 연속</td>
+                </tr>
+                <tr class="border-b bg-orange-50 hover:bg-orange-100">
+                  <td class="px-4 py-3 font-mono text-xs text-orange-400">04</td>
+                  <td class="px-4 py-3 font-medium text-orange-700">🏃 Action Week #1 — 실전 고객 인터뷰</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-orange-200 px-2 py-0.5 text-xs font-semibold text-orange-700">Action Week</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums text-orange-600">1w</td>
+                  <td class="px-4 py-3 text-xs text-orange-500">인터뷰 5건 이상</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">05</td>
+                  <td class="px-4 py-3 font-medium">피봇 &amp; BM 고도화</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700">1:1코칭</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">2h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">팀당 40분</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">06</td>
+                  <td class="px-4 py-3 font-medium">글로벌 시장 진출 전략</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">이론</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">3h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">특강 연사 초청</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">07</td>
+                  <td class="px-4 py-3 font-medium">투자자 관점 피칭 전략</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">이론</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">3h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400"></td>
+                </tr>
+                <tr class="border-b bg-orange-50 hover:bg-orange-100">
+                  <td class="px-4 py-3 font-mono text-xs text-orange-400">08</td>
+                  <td class="px-4 py-3 font-medium text-orange-700">🏃 Action Week #2 — 중간 피칭 데이</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-orange-200 px-2 py-0.5 text-xs font-semibold text-orange-700">Action Week</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums text-orange-600">1d</td>
+                  <td class="px-4 py-3 text-xs text-orange-500">외부 심사위원 4명</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">09</td>
+                  <td class="px-4 py-3 font-medium">IR 자료 제작 워크숍</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">실습</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">4h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400"></td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">10</td>
+                  <td class="px-4 py-3 font-medium">팀별 1:1 심층 코칭</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700">1:1코칭</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">2h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400"></td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-mono text-xs text-gray-400">11</td>
+                  <td class="px-4 py-3 font-medium">네트워킹 &amp; 멘토링 데이</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">실습</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">4h</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">네이버 임직원 참여</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-orange-50">
+                  <td class="px-4 py-3 font-mono text-xs text-orange-400">12</td>
+                  <td class="px-4 py-3 font-medium text-orange-700">🏁 데모데이 — 최종 피칭</td>
+                  <td class="px-4 py-3"><span class="rounded-full bg-orange-200 px-2 py-0.5 text-xs font-semibold text-orange-700">Action Week</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums text-orange-600">1d</td>
+                  <td class="px-4 py-3 text-xs text-orange-500">투자자 초청</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="border-t bg-gray-50">
+                  <td colspan="2" class="px-4 py-2.5 text-xs font-medium text-gray-400">합계</td>
+                  <td class="px-4 py-2.5 text-xs text-gray-500">이론 6 / AW 3 / 코칭 2 / 실습 1</td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-sm font-bold" style="color:#FF8204">36h</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Coaches -->
+      <div data-step="coaches">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold">코치 배정</h3>
+              <p class="mt-0.5 text-sm text-gray-500">역할과 사례비를 설정하고 코치를 확정합니다.</p>
+            </div>
+            <button class="rounded-md bg-[#FF8204] px-3 py-1.5 text-sm font-medium text-white hover:opacity-90">+ 코치 추가</button>
+          </div>
+
+          <div class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">코치</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">소속</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">역할</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">세션수</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">단가(시간)</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">총 사례비</th>
+                  <th class="px-4 py-2.5 text-center text-xs font-medium text-gray-400">확정</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-semibold">김창업</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">스파크랩</td>
+                  <td class="px-4 py-3"><span class="rounded-full border border-gray-200 px-2 py-0.5 text-xs">메인 코치</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">8회</td>
+                  <td class="px-4 py-3 text-right tabular-nums text-xs">70,000원</td>
+                  <td class="px-4 py-3 text-right tabular-nums font-semibold">5,600,000원</td>
+                  <td class="px-4 py-3 text-center">✅</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-semibold">이성장</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">본엔젤스</td>
+                  <td class="px-4 py-3"><span class="rounded-full border border-gray-200 px-2 py-0.5 text-xs">보조 코치</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">6회</td>
+                  <td class="px-4 py-3 text-right tabular-nums text-xs">50,000원</td>
+                  <td class="px-4 py-3 text-right tabular-nums font-semibold">3,000,000원</td>
+                  <td class="px-4 py-3 text-center">✅</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-semibold">박글로벌</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">500 Startups</td>
+                  <td class="px-4 py-3"><span class="rounded-full border border-gray-200 px-2 py-0.5 text-xs">특강 연사</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">1회</td>
+                  <td class="px-4 py-3 text-right tabular-nums text-xs">200,000원</td>
+                  <td class="px-4 py-3 text-right tabular-nums font-semibold">1,600,000원</td>
+                  <td class="px-4 py-3 text-center">⏳</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-semibold">최투자</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">카카오벤처스</td>
+                  <td class="px-4 py-3"><span class="rounded-full border border-gray-200 px-2 py-0.5 text-xs">심사위원</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">2회</td>
+                  <td class="px-4 py-3 text-right tabular-nums text-xs">—</td>
+                  <td class="px-4 py-3 text-right tabular-nums font-semibold">—</td>
+                  <td class="px-4 py-3 text-center">⏳</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3 font-semibold">한운영</td>
+                  <td class="px-4 py-3 text-xs text-gray-400">언더독스</td>
+                  <td class="px-4 py-3"><span class="rounded-full border border-gray-200 px-2 py-0.5 text-xs">운영 PM</span></td>
+                  <td class="px-4 py-3 text-right tabular-nums">12회</td>
+                  <td class="px-4 py-3 text-right tabular-nums text-xs">28,000원</td>
+                  <td class="px-4 py-3 text-right tabular-nums font-semibold">18,650,000원</td>
+                  <td class="px-4 py-3 text-center">✅</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="border-t bg-gray-50">
+                  <td colspan="5" class="px-4 py-2.5 text-right text-sm font-medium text-gray-400">합계</td>
+                  <td class="px-4 py-2.5 text-right tabular-nums font-bold" style="color:#FF8204">28,850,000원</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Budget -->
+      <div data-step="budget">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-semibold">예산</h3>
+              <p class="mt-0.5 text-sm text-gray-500">PC(사례비) + AC(직접비) + 마진 구조로 산정합니다.</p>
+            </div>
+            <button class="rounded-md bg-[#FF8204] px-3 py-1.5 text-sm font-medium text-white hover:opacity-90">+ 항목 추가</button>
+          </div>
+
+          <!-- Summary cards -->
+          <div class="grid grid-cols-4 gap-3">
+            <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm text-center">
+              <p class="text-xs text-gray-400">공급가액</p>
+              <p class="mt-1 text-xl font-bold">3.00억</p>
+            </div>
+            <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm text-center">
+              <p class="text-xs text-gray-400">사업비(PC+AC)</p>
+              <p class="mt-1 text-xl font-bold">2.55억</p>
+            </div>
+            <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm text-center">
+              <p class="text-xs text-gray-400">마진</p>
+              <p class="mt-1 text-xl font-bold text-green-600">14.9%</p>
+            </div>
+            <div class="rounded-xl border border-orange-200 bg-orange-50 p-4 shadow-sm text-center">
+              <p class="text-xs text-orange-600">총액(VAT포함)</p>
+              <p class="mt-1 text-xl font-bold" style="color:#FF8204">3.30억</p>
+            </div>
+          </div>
+
+          <!-- Budget table -->
+          <div class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">WBS</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">카테고리</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-400">항목명</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">단가</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">수량</th>
+                  <th class="px-4 py-2.5 text-right text-xs font-medium text-gray-400">금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b bg-blue-50/50">
+                  <td class="px-4 py-2 font-mono text-xs text-blue-500">PC</td>
+                  <td class="px-4 py-2 text-xs text-blue-600 font-semibold" colspan="4">코치 사례비</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs font-semibold text-blue-600">28,850,000</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-2 font-mono text-xs text-gray-400">AC01</td>
+                  <td class="px-4 py-2 text-xs text-gray-500">강의비</td>
+                  <td class="px-4 py-2 text-xs">특강 연사 (A급)</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">500,000</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">2</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs font-medium">1,000,000</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-2 font-mono text-xs text-gray-400">AC02</td>
+                  <td class="px-4 py-2 text-xs text-gray-500">교육비</td>
+                  <td class="px-4 py-2 text-xs">교육 운영비 (장소/기자재)</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">2,000,000</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">12</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs font-medium">24,000,000</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-2 font-mono text-xs text-gray-400">AC03</td>
+                  <td class="px-4 py-2 text-xs text-gray-500">식음료</td>
+                  <td class="px-4 py-2 text-xs">중식 제공</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">15,000</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">600</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs font-medium">9,000,000</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-2 font-mono text-xs text-gray-400">AC04</td>
+                  <td class="px-4 py-2 text-xs text-gray-500">인쇄</td>
+                  <td class="px-4 py-2 text-xs">워크북 제작</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">8,000</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">60</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs font-medium">480,000</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-2 font-mono text-xs text-gray-400">AC05</td>
+                  <td class="px-4 py-2 text-xs text-gray-500">영상</td>
+                  <td class="px-4 py-2 text-xs">데모데이 촬영</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">3,000,000</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs">1</td>
+                  <td class="px-4 py-2 text-right tabular-nums text-xs font-medium">3,000,000</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="border-t bg-gray-50">
+                  <td colspan="5" class="px-4 py-2.5 text-right text-sm font-medium text-gray-400">소계</td>
+                  <td class="px-4 py-2.5 text-right tabular-nums font-bold" style="color:#FF8204">66,330,000원</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Margin warning bar -->
+          <div class="flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3">
+            <span class="text-green-500">✅</span>
+            <p class="text-sm text-green-700">마진율 <strong>14.9%</strong>으로 권장 범위(10~20%) 내에 있습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: Proposal -->
+      <div data-step="proposal">
+        <div class="space-y-6">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h3 class="text-base font-semibold">제안서 생성</h3>
+              <p class="mt-0.5 text-sm text-gray-500">AI가 Logic Model과 커리큘럼을 기반으로 7개 섹션의 제안서를 작성합니다.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="rounded-full border border-gray-200 px-2.5 py-0.5 font-mono text-xs">2 / 7</span>
+              <button class="flex items-center gap-1.5 rounded-md bg-[#FF8204] px-3 py-1.5 text-sm font-medium text-white hover:opacity-90">✨ 전체 생성</button>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="h-1.5 rounded-full bg-gray-100 overflow-hidden">
+            <div class="h-full rounded-full bg-[#FF8204]" style="width:28.6%"></div>
+          </div>
+
+          <!-- Sections grid -->
+          <div class="grid gap-4 sm:grid-cols-2">
+            <!-- Done -->
+            <div class="rounded-xl border border-green-200 bg-green-50/30 shadow-sm overflow-hidden">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-green-500 shrink-0">✅</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 1</p>
+                    <p class="text-sm font-semibold">사업 추진 배경 및 필요성</p>
+                  </div>
+                </div>
+                <button class="rounded-md px-2.5 py-1 text-xs text-gray-400 hover:bg-gray-100">재생성</button>
+              </div>
+              <div class="border-t px-4 pb-4 pt-3 text-xs text-gray-500 leading-relaxed line-clamp-3">
+                국내 창업 생태계는 지속적으로 성장하고 있으나, 초기 창업팀의 높은 실패율(3년 내 70% 이상)은 여전히 해결되지 않은 과제입니다. 특히 BM 검증과 고객 개발 역량 부재가 주요 원인으로 꼽히고 있습니다...
+              </div>
+            </div>
+
+            <!-- Done -->
+            <div class="rounded-xl border border-green-200 bg-green-50/30 shadow-sm overflow-hidden">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-green-500 shrink-0">✅</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 2</p>
+                    <p class="text-sm font-semibold">사업 목표 및 추진 전략</p>
+                  </div>
+                </div>
+                <button class="rounded-md px-2.5 py-1 text-xs text-gray-400 hover:bg-gray-100">재생성</button>
+              </div>
+              <div class="border-t px-4 pb-4 pt-3 text-xs text-gray-500 leading-relaxed line-clamp-3">
+                본 사업의 핵심 목표는 50개 초기 창업팀의 BM 고도화 및 실행 역량 강화입니다. ACTT 지표 기준 평균 30% 이상 역량 향상과 참여팀 30%의 매출 발생을 달성하고자 합니다...
+              </div>
+            </div>
+
+            <!-- Pending -->
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-gray-300 shrink-0">○</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 3</p>
+                    <p class="text-sm font-semibold text-gray-600">임팩트 로직 모델</p>
+                  </div>
+                </div>
+                <button class="rounded-md border border-gray-200 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50">생성</button>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-gray-300 shrink-0">○</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 4</p>
+                    <p class="text-sm font-semibold text-gray-600">교육 커리큘럼 및 운영 계획</p>
+                  </div>
+                </div>
+                <button class="rounded-md border border-gray-200 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50">생성</button>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-gray-300 shrink-0">○</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 5</p>
+                    <p class="text-sm font-semibold text-gray-600">코치 및 전문가 구성</p>
+                  </div>
+                </div>
+                <button class="rounded-md border border-gray-200 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50">생성</button>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-gray-300 shrink-0">○</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 6</p>
+                    <p class="text-sm font-semibold text-gray-600">성과 지표 및 평가 계획</p>
+                  </div>
+                </div>
+                <button class="rounded-md border border-gray-200 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50">생성</button>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm sm:col-span-2">
+              <div class="flex items-start justify-between gap-2 px-4 py-3">
+                <div class="flex items-start gap-2">
+                  <span class="mt-0.5 text-gray-300 shrink-0">○</span>
+                  <div>
+                    <p class="font-mono text-[11px] text-gray-400">섹션 7</p>
+                    <p class="text-sm font-semibold text-gray-600">추진 일정 및 예산 계획</p>
+                  </div>
+                </div>
+                <button class="rounded-md border border-gray-200 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50">생성</button>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="goStep('budget')" class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-gray-500 hover:bg-gray-100">← 예산으로 돌아가기</button>
+        </div>
+      </div>
+
+    </div><!-- end step content -->
+  </div><!-- end main -->
+</div><!-- end shell -->
+
+<script>
+const STEPS = ['rfp','impact','curriculum','coaches','budget','proposal']
+
+function goStep(key) {
+  // Hide all steps
+  document.querySelectorAll('[data-step]').forEach(el => el.classList.remove('active'))
+  // Deactivate all buttons
+  document.querySelectorAll('[data-key]').forEach(btn => {
+    btn.classList.remove('active','font-semibold')
+    btn.style.color = ''
+    btn.style.background = ''
+    const circle = btn.querySelector('span')
+    if (circle && !circle.textContent.includes('✓')) {
+      circle.style.background = ''
+      circle.style.color = ''
+      circle.style.boxShadow = ''
+    }
+  })
+
+  // Activate step content
+  const content = document.querySelector(`[data-step="${key}"]`)
+  if (content) content.classList.add('active')
+
+  // Activate nav button
+  const btn = document.querySelector(`[data-key="${key}"]`)
+  if (btn) {
+    btn.classList.add('active','font-semibold')
+    btn.style.color = '#FF8204'
+    btn.style.background = 'rgba(255,130,4,0.10)'
+    const circle = btn.querySelector('span')
+    if (circle && !circle.textContent.includes('✓')) {
+      circle.style.background = '#FF8204'
+      circle.style.color = 'white'
+      circle.style.boxShadow = '0 1px 3px rgba(255,130,4,0.4)'
+    }
+  }
+}
+</script>
+</body>
+</html>

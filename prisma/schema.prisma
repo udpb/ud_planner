@@ -273,6 +273,11 @@ model Project {
   pmId String?
   pm   User?   @relation(fields: [pmId], references: [id])
 
+  isBidWon        Boolean?
+  techEvalScore   Float?
+  bidNotes        String?  @db.Text
+  feedbackApplied Boolean  @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -312,6 +317,13 @@ model CurriculumItem {
   coachRole       String?
   order           Int
   notes           String?
+
+  // 세션 내 시간 구성 (분 단위, 기본: 강의 15분 + 실습 35분)
+  lectureMinutes  Int     @default(15)
+  practiceMinutes Int     @default(35)
+  // 1:1 코칭 세션 여부 (Action Week 페어 세션)
+  isCoaching1on1  Boolean @default(false)
+  isLocked        Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -540,4 +552,101 @@ model SatisfactionLog {
   score       Float
   comment     String?
   loggedAt    DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// [PRD v5.0 신규] IMPACT 방법론, 어드민 설정 테이블
+// ─────────────────────────────────────────
+
+model ImpactModule {
+  id              String   @id @default(cuid())
+  stage           String
+  stageOrder      Int
+  moduleOrder     Int
+  moduleCode      String   @unique
+  moduleName      String
+  coreQuestion    String
+  workshopOutputs String[]
+  durationMinutes Int      @default(50)
+  sixRolesTarget  String[]
+  isActive        Boolean  @default(true)
+
+  contentMappings ContentMapping[]
+}
+
+model Content {
+  id              String   @id @default(cuid())
+  legacyCode      Int      @unique
+  name            String
+  format          String
+  category        String
+  targetAudience  String[]
+  businessField   String[]
+  startupStage    String[]
+  deliveryMethod  String?
+  sixRolesTarget  String[]
+  learningType    String?
+  impactExpect    String?
+  prerequisites   Int[]
+  pptUrl          String?
+  vodUrl          String?
+  description     String?  @db.Text
+  isActive        Boolean  @default(true)
+
+  contentMappings ContentMapping[]
+}
+
+model ContentMapping {
+  id              String       @id @default(cuid())
+  impactModuleId  String
+  impactModule    ImpactModule @relation(fields: [impactModuleId], references: [id])
+  contentId       String
+  content         Content      @relation(fields: [contentId], references: [id])
+  fitScore        Int          @default(3)
+  notes           String?
+
+  @@unique([impactModuleId, contentId])
+}
+
+model DesignRule {
+  id          String   @id @default(cuid())
+  ruleCode    String   @unique
+  name        String
+  description String?
+  ruleType    String
+  threshold   Float
+  action      String
+  message     String
+  category    String
+  priority    Int      @default(5)
+  isActive    Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+}
+
+model AudienceProfile {
+  id                 String   @id @default(cuid())
+  name               String   @unique
+  targetAudience     String[]
+  businessFields     String[]
+  startupStages      String[]
+
+  formatWeights      Json
+  impactStageWeights Json
+  fieldWeights       Json
+
+  recommendedPattern String?
+  notes              String?
+}
+
+model WeightSuggestion {
+  id             String    @id @default(cuid())
+  category       String
+  targetField    String
+  currentValue   Float
+  suggestedValue Float
+  evidenceJson   Json
+  status         String    @default("PENDING")
+  adminNote      String?
+  createdAt      DateTime  @default(now())
+  resolvedAt     DateTime?
 }
