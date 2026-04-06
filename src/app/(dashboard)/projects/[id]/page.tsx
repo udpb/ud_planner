@@ -11,6 +11,8 @@ import { PipelineNav, type PipelineStep } from './pipeline-nav'
 import { StepRfp } from './step-rfp'
 import { StepImpact } from './step-impact'
 import { StepProposal } from './step-proposal'
+import { PlanningScorecard } from '@/components/projects/planning-scorecard'
+import { calculatePlanningScore } from '@/lib/planning-score'
 import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -73,6 +75,20 @@ export default async function ProjectDetailPage({
 
   const totalCoachFee = project.coachAssignments.reduce((s, a) => s + (a.totalFee ?? 0), 0)
   const marginRate = project.budget?.marginRate ?? 0
+
+  // 기획 품질 스코어 계산
+  const planningScore = calculatePlanningScore({
+    rfpParsed: project.rfpParsed,
+    logicModel: project.logicModel,
+    curriculumCount: project.curriculum.length,
+    curriculumItems: project.curriculum.map((c) => ({
+      isTheory: c.isTheory,
+      isActionWeek: c.isActionWeek,
+    })),
+    coachAssignmentCount: project.coachAssignments.length,
+    budget: project.budget ? { marginRate: project.budget.marginRate } : null,
+    proposalSectionCount: project.proposalSections.length,
+  })
 
   const steps: PipelineStep[] = [
     {
@@ -174,6 +190,9 @@ export default async function ProjectDetailPage({
         </div>
       </div>
 
+      {/* Planning quality scorecard */}
+      <PlanningScorecard score={planningScore} />
+
       {/* Step content */}
       <div className="flex-1 overflow-y-auto p-6">
 
@@ -215,6 +234,11 @@ export default async function ProjectDetailPage({
               notes: c.notes,
               order: c.order,
             }))}
+            rfpKeywords={(project.rfpParsed as any)?.keywords ?? []}
+            rfpObjectives={(project.rfpParsed as any)?.objectives ?? []}
+            logicModelActivities={(project.logicModel as any)?.activity ?? []}
+            supplyPrice={project.supplyPrice ?? 0}
+            coachAssignmentCount={project.coachAssignments.length}
           />
         )}
 
@@ -327,6 +351,7 @@ export default async function ProjectDetailPage({
             projectId={project.id}
             hasLogicModel={!!project.logicModel}
             initialSections={project.proposalSections as any}
+            evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
           />
         )}
 

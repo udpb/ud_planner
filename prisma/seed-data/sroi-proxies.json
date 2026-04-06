@@ -1,110 +1,50 @@
 [
-  {
-    "country": "한국",
-    "impactType": "교육",
-    "subType": "창업가 역량 강화 교육 (회·명)",
-    "formula": "대학원 1학점 등록금 × 0.3",
-    "proxyKrw": 150000,
-    "unit": "/회·명",
-    "contributionRate": 0.3
-  },
-  {
-    "country": "한국",
-    "impactType": "교육",
-    "subType": "해커톤/캡스톤 참가 (회·명)",
-    "formula": "교육 프록시 × 2.0 (실전경험 프리미엄)",
-    "proxyKrw": 300000,
-    "unit": "/회·명",
-    "contributionRate": 0.35
-  },
-  {
-    "country": "한국",
-    "impactType": "교육",
-    "subType": "Action Week 참가 (회·명)",
-    "formula": "부트캠프 시장가 × 0.5",
-    "proxyKrw": 500000,
-    "unit": "/회·명",
-    "contributionRate": 0.4
-  },
-  {
-    "country": "한국",
-    "impactType": "창업전환",
-    "subType": "MVP 출시 (팀)",
-    "formula": "초기 투자 유치 비용 절감 대리값",
-    "proxyKrw": 5000000,
-    "unit": "/팀",
-    "contributionRate": 0.35
-  },
-  {
-    "country": "한국",
-    "impactType": "창업전환",
-    "subType": "법인 설립 (팀)",
-    "formula": "법인 설립 컨설팅 시장가",
-    "proxyKrw": 3000000,
-    "unit": "/팀",
-    "contributionRate": 0.4
-  },
-  {
-    "country": "한국",
-    "impactType": "투자",
-    "subType": "IR 피칭 역량 향상 (명)",
-    "formula": "IR 컨설팅 시장가 × 0.2",
-    "proxyKrw": 200000,
-    "unit": "/명",
-    "contributionRate": 0.25
-  },
-  {
-    "country": "한국",
-    "impactType": "투자",
-    "subType": "투자 유치 성공 (건)",
-    "formula": "투자금 × 3% (중개 수수료 대리값)",
-    "proxyKrw": 3000000,
-    "unit": "/건 (억당)",
-    "contributionRate": 0.2
-  },
-  {
-    "country": "한국",
-    "impactType": "고용",
-    "subType": "창업팀 고용 창출 (인·월)",
-    "formula": "국민취업지원제도 지원금",
-    "proxyKrw": 500000,
-    "unit": "/인·월",
-    "contributionRate": 0.3
-  },
-  {
-    "country": "한국",
-    "impactType": "네트워크",
-    "subType": "네트워킹 이벤트 참가 (명)",
-    "formula": "비즈니스 클럽 연회비 ÷ 12",
-    "proxyKrw": 50000,
-    "unit": "/명",
-    "contributionRate": 0.2
-  },
-  {
-    "country": "인도네시아",
-    "impactType": "교육",
-    "subType": "창업가 역량 강화 교육 (회·명)",
-    "formula": "현지 직업훈련 일당 대리값",
-    "proxyKrw": 30000,
-    "unit": "/회·명",
-    "contributionRate": 0.3
-  },
-  {
-    "country": "인도네시아",
-    "impactType": "창업전환",
-    "subType": "MVP 출시 (팀)",
-    "formula": "현지 스타트업 컨설팅 시장가",
-    "proxyKrw": 1500000,
-    "unit": "/팀",
-    "contributionRate": 0.35
-  },
-  {
-    "country": "일본",
-    "impactType": "교육",
-    "subType": "창업가 역량 강화 교육 (회·명)",
-    "formula": "일본 사회인 교육 시장가 × 0.25",
-    "proxyKrw": 180000,
-    "unit": "/회·명",
-    "contributionRate": 0.3
-  }
+  {"country": "한국", "impactType": "교육", "subType": "육성교육", "formula": "참여자수(명) × 교육횟수(회) × proxy", "proxyKrw": 156000, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법+시장접근법", "source": "udimpact 내부 프로그램 평균 단가", "isRate": false},
+  {"country": "한국", "impactType": "교육", "subType": "육성교육(VOD)", "formula": "참여자수(명) × 교육횟수(개) × proxy", "proxyKrw": 66000, "unit": "/개·명", "contributionRate": null, "methodology": "시장접근법", "source": "외부 유사프로그램 평균 시장가격", "isRate": false},
+  {"country": "한국", "impactType": "교육", "subType": "코칭", "formula": "참여자수(명) × 코칭횟수(회) × proxy", "proxyKrw": 300000, "unit": "/회·명", "contributionRate": null, "methodology": "시장접근법", "source": "정부 창업지원사업 내 전문가 멘토 예산", "isRate": false},
+  {"country": "한국", "impactType": "교육", "subType": "해커톤", "formula": "참여자수(명) × 진행일수(일) × proxy", "proxyKrw": 457000, "unit": "/일·명", "contributionRate": null, "methodology": "비용접근법+시장접근법", "source": "udimpact + 외부 유사프로그램 평균", "isRate": false},
+  {"country": "한국", "impactType": "교육", "subType": "해커톤(사업계획서)", "formula": "참여자수(명) × 1건 × proxy", "proxyKrw": 358000, "unit": "/건·명", "contributionRate": null, "methodology": "시장접근법", "source": "외부 유사프로그램 평균 시장가격", "isRate": false},
+  {"country": "한국", "impactType": "창업전환", "subType": "창업전환", "formula": "창업전환인원(명) × proxy × 12개월", "proxyKrw": 2500000, "unit": "/월·명", "contributionRate": null, "methodology": "이익접근법", "source": "사회적기업 1인 인건비 정부 지원금 단가", "isRate": false},
+  {"country": "한국", "impactType": "경제부가가치", "subType": "창업팀 매출성과(부가가치율)", "formula": "매출액합계(원) × 부가가치율", "proxyKrw": 0, "unit": "%", "contributionRate": 0.4375, "methodology": "이익접근법", "source": "한국은행 산업연관표 스타트업 주요업종 평균", "isRate": true},
+  {"country": "한국", "impactType": "경제부가가치", "subType": "창업팀 매출성과(예측용)", "formula": "소규모사업자 평균매출 통계", "proxyKrw": 250000000, "unit": "원", "contributionRate": null, "methodology": "시장접근법(예측시)", "source": "정부기관 발표 통계", "isRate": false},
+  {"country": "한국", "impactType": "고용가치", "subType": "창업팀 신규채용", "formula": "신규고용인원(명) × proxy × 12개월", "proxyKrw": 3200000, "unit": "/월·명", "contributionRate": null, "methodology": "이익접근법", "source": "고용노동부 2024 월임금총액(실질)", "isRate": false},
+  {"country": "한국", "impactType": "투자", "subType": "투자유치(기여율)", "formula": "투자유치금액합계(원) × 기여율", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "교육 성과기여도 조사 최소 비율", "isRate": true},
+  {"country": "한국", "impactType": "투자", "subType": "투자유치(예측용)", "formula": "초기 스타트업 시드투자 평균", "proxyKrw": 360000000, "unit": "원", "contributionRate": null, "methodology": "시장접근법", "source": "매쉬업벤처스, 뉴패러다임인베스트먼트 평균", "isRate": false},
+  {"country": "한국", "impactType": "투자", "subType": "사업화자금 유치(기여율)", "formula": "사업화자금합계(원) × 기여율", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "교육 성과기여도 조사 최소 비율", "isRate": true},
+  {"country": "한국", "impactType": "투자", "subType": "사업화자금 유치(예측용)", "formula": "TIPS 평균 지원금", "proxyKrw": 500000000, "unit": "원", "contributionRate": null, "methodology": "시장접근법", "source": "TIPS 7320억원/1442개사", "isRate": false},
+  {"country": "한국", "impactType": "생태계", "subType": "창업코치 육성", "formula": "육성인원(명) × 교육횟수(회) × proxy", "proxyKrw": 156000, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법+시장접근법", "source": "udimpact 내부 프로그램 평균 단가", "isRate": false},
+  {"country": "한국", "impactType": "생태계", "subType": "지역경제 활성화", "formula": "행사 참여자수(명) × proxy", "proxyKrw": 52000, "unit": "/명", "contributionRate": null, "methodology": "비용접근법+시장접근법", "source": "한국관광공사 지역축제 1인당 경제파급효과", "isRate": false},
+  {"country": "한국", "impactType": "생태계", "subType": "공간 조성", "formula": "제공면적(평) × proxy × 제공기간(월)", "proxyKrw": 20000, "unit": "/월·평", "contributionRate": null, "methodology": "시장접근법", "source": "정부기관 입주공간 임차료 평균", "isRate": false},
+
+  {"country": "인도네시아", "impactType": "교육", "subType": "육성교육", "formula": "IDR 1,000,000 × 0.085", "proxyKrw": 85000, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법", "source": "현지 직업훈련 일당", "isRate": false},
+  {"country": "인도네시아", "impactType": "교육", "subType": "육성교육(VOD)", "formula": "한국과 동일", "proxyKrw": 66000, "unit": "/개·명", "contributionRate": null, "methodology": "시장접근법", "source": "글로벌 VOD 평균가", "isRate": false},
+  {"country": "인도네시아", "impactType": "교육", "subType": "코칭", "formula": "IDR 2,000,000 × 0.085", "proxyKrw": 170000, "unit": "/회·명", "contributionRate": null, "methodology": "시장접근법", "source": "현지 멘토 시장가", "isRate": false},
+  {"country": "인도네시아", "impactType": "교육", "subType": "해커톤", "formula": "IDR 3,000,000 × 0.085", "proxyKrw": 255000, "unit": "/일·명", "contributionRate": null, "methodology": "비용접근법", "source": "현지 해커톤 평균", "isRate": false},
+  {"country": "인도네시아", "impactType": "창업전환", "subType": "창업전환", "formula": "IDR 18,000,000 × 0.085", "proxyKrw": 1530000, "unit": "/월·명", "contributionRate": null, "methodology": "이익접근법", "source": "현지 인건비 기준", "isRate": false},
+  {"country": "인도네시아", "impactType": "경제부가가치", "subType": "창업팀 매출성과(부가가치율)", "formula": "매출액 × 100%", "proxyKrw": 0, "unit": "%", "contributionRate": 1.0, "methodology": "이익접근법", "source": "개발도상국 100% 적용", "isRate": true},
+  {"country": "인도네시아", "impactType": "고용가치", "subType": "창업팀 신규채용", "formula": "IDR 18,000,000 × 0.085", "proxyKrw": 1530000, "unit": "/월·명", "contributionRate": null, "methodology": "이익접근법", "source": "현지 임금 기준", "isRate": false},
+  {"country": "인도네시아", "impactType": "투자", "subType": "투자유치(기여율)", "formula": "투자금 × 20%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "글로벌 공통 20%", "isRate": true},
+  {"country": "인도네시아", "impactType": "투자", "subType": "사업화자금 유치(기여율)", "formula": "사업화자금 × 20%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "글로벌 공통 20%", "isRate": true},
+  {"country": "인도네시아", "impactType": "생태계", "subType": "창업코치 육성", "formula": "IDR 1,000,000 × 0.085", "proxyKrw": 85000, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법", "source": "현지 교육 평균", "isRate": false},
+
+  {"country": "일본", "impactType": "교육", "subType": "육성교육", "formula": "JPY 환산 후 보정", "proxyKrw": 241280, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법+시장접근법", "source": "일본 사회인 교육 시장가 × 0.25", "isRate": false},
+  {"country": "일본", "impactType": "교육", "subType": "육성교육(VOD)", "formula": "한국과 동일", "proxyKrw": 66000, "unit": "/개·명", "contributionRate": null, "methodology": "시장접근법", "source": "글로벌 VOD 평균가", "isRate": false},
+  {"country": "일본", "impactType": "교육", "subType": "코칭", "formula": "JPY 40,000 × 9.285", "proxyKrw": 371000, "unit": "/회·명", "contributionRate": null, "methodology": "시장접근법", "source": "일본 전문가 멘토 시장가", "isRate": false},
+  {"country": "일본", "impactType": "교육", "subType": "해커톤", "formula": "육성교육proxy × (457/156)", "proxyKrw": 706000, "unit": "/일·명", "contributionRate": null, "methodology": "비용접근법", "source": "비례 환산", "isRate": false},
+  {"country": "일본", "impactType": "교육", "subType": "해커톤(사업계획서)", "formula": "JPY avg(30~75k) × 9.285", "proxyKrw": 479000, "unit": "/건·명", "contributionRate": null, "methodology": "시장접근법", "source": "외부 유사프로그램", "isRate": false},
+  {"country": "일본", "impactType": "창업전환", "subType": "창업전환", "formula": "JPY 179,360 × 9.285", "proxyKrw": 1665000, "unit": "/월·명", "contributionRate": null, "methodology": "이익접근법", "source": "일본 인건비 기준", "isRate": false},
+  {"country": "일본", "impactType": "경제부가가치", "subType": "창업팀 매출성과(부가가치율)", "formula": "매출액 × 43.75%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.4375, "methodology": "이익접근법", "source": "산업연관표 평균", "isRate": true},
+  {"country": "일본", "impactType": "경제부가가치", "subType": "창업팀 매출성과(예측용)", "formula": "JPY 11,400,000 × 9.285", "proxyKrw": 105849000, "unit": "원", "contributionRate": null, "methodology": "시장접근법", "source": "일본 정부 통계", "isRate": false},
+  {"country": "일본", "impactType": "고용가치", "subType": "창업팀 신규채용", "formula": "JPY 279,900 × 9.285", "proxyKrw": 2598000, "unit": "/월·명", "contributionRate": null, "methodology": "이익접근법", "source": "일본 임금 통계", "isRate": false},
+  {"country": "일본", "impactType": "투자", "subType": "투자유치(기여율)", "formula": "투자금 × 20%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "글로벌 공통 20%", "isRate": true},
+  {"country": "일본", "impactType": "투자", "subType": "투자유치(예측용)", "formula": "JPY 5000만 × 9.285", "proxyKrw": 464250000, "unit": "원", "contributionRate": null, "methodology": "시장접근법", "source": "초기 시드투자 평균", "isRate": false},
+  {"country": "일본", "impactType": "투자", "subType": "사업화자금 유치(기여율)", "formula": "사업화자금 × 20%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "글로벌 공통 20%", "isRate": true},
+  {"country": "일본", "impactType": "생태계", "subType": "창업코치 육성", "formula": "JPY 환산 후 보정", "proxyKrw": 241280, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법", "source": "일본 교육 평균", "isRate": false},
+
+  {"country": "인도", "impactType": "교육", "subType": "육성교육", "formula": "INR avg(6~12k) × 16.39", "proxyKrw": 147000, "unit": "/회·명", "contributionRate": null, "methodology": "비용접근법", "source": "현지 직업훈련 시장가", "isRate": false},
+  {"country": "인도", "impactType": "교육", "subType": "육성교육(VOD)", "formula": "한국과 동일", "proxyKrw": 66000, "unit": "/개·명", "contributionRate": null, "methodology": "시장접근법", "source": "글로벌 VOD 평균가", "isRate": false},
+  {"country": "인도", "impactType": "교육", "subType": "코칭", "formula": "INR avg(5~10k) × 16.39", "proxyKrw": 122000, "unit": "/회·명", "contributionRate": null, "methodology": "시장접근법", "source": "인도 멘토 시장가", "isRate": false},
+  {"country": "인도", "impactType": "교육", "subType": "해커톤", "formula": "육성교육proxy × (457/156)", "proxyKrw": 430000, "unit": "/일·명", "contributionRate": null, "methodology": "비용접근법", "source": "비례 환산", "isRate": false},
+  {"country": "인도", "impactType": "투자", "subType": "투자유치(기여율)", "formula": "투자금 × 20%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "글로벌 공통 20%", "isRate": true},
+  {"country": "인도", "impactType": "투자", "subType": "사업화자금 유치(기여율)", "formula": "사업화자금 × 20%", "proxyKrw": 0, "unit": "%", "contributionRate": 0.20, "methodology": "이익접근법", "source": "글로벌 공통 20%", "isRate": true}
 ]

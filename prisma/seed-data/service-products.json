@@ -1,0 +1,19 @@
+[
+  {"code": "DOGS-LV0", "name": "DOGS 진단 + 해설 강의", "category": "DOGS", "basePrice": 150000, "unit": "인", "discountTiers": {"group": 0.4, "repeat": 0.4, "vip": 0.6}, "description": "업무 성향 진단 LV.0"},
+  {"code": "DOGS-LV1", "name": "DOGS + 팀빌딩 워크숍", "category": "DOGS", "basePrice": 350000, "unit": "인", "discountTiers": {"group": 0.4, "repeat": 0.4, "vip": 0.6}, "description": "LV.1: 진단 + 팀빌딩"},
+  {"code": "DOGS-LV2-1", "name": "DOGS + 온보딩 워크숍", "category": "DOGS", "basePrice": 590000, "unit": "인", "discountTiers": {"group": 0.4, "repeat": 0.4, "vip": 0.6}, "description": "LV.2-1"},
+  {"code": "DOGS-LV2-2", "name": "DOGS + 조직문화 워크숍", "category": "DOGS", "basePrice": 790000, "unit": "인", "discountTiers": {"group": 0.4, "repeat": 0.4, "vip": 0.6}, "description": "LV.2-2"},
+  {"code": "DOGS-LV2-3", "name": "DOGS + 리더십 워크숍 (코칭2회)", "category": "DOGS", "basePrice": 990000, "unit": "인", "discountTiers": {"group": 0.4, "repeat": 0.4, "vip": 0.6}, "description": "LV.2-3"},
+
+  {"code": "VOD-STARTUP-FULL", "name": "창업시리즈 패키지", "category": "VOD", "basePrice": 173600, "unit": "건", "discountTiers": null, "description": "66차시, 2개월"},
+  {"code": "VOD-STARTUP-BASIC", "name": "기초 스타트업 A to Z", "category": "VOD", "basePrice": 163800, "unit": "건", "discountTiers": null, "description": "21차시, 2개월"},
+  {"code": "VOD-STARTUP-INTRO", "name": "창업시리즈 기초편", "category": "VOD", "basePrice": 25200, "unit": "건", "discountTiers": null, "description": "5차시, 1개월"},
+
+  {"code": "BE-MKT", "name": "마케팅 전략 패키지", "category": "BEYOND_EDU", "basePrice": 2500000, "unit": "건", "discountTiers": null, "description": "50%는 실비"},
+  {"code": "BE-BRAND", "name": "브랜드 구축 패키지", "category": "BEYOND_EDU", "basePrice": 5000000, "unit": "건", "discountTiers": null, "description": "50%는 실비"},
+  {"code": "BE-BOOST", "name": "비즈니스 부스팅 패키지", "category": "BEYOND_EDU", "basePrice": 10000000, "unit": "건", "discountTiers": null, "description": "50%는 실비"},
+
+  {"code": "SV-KPI", "name": "SV 지표 설정", "category": "SV_IMPACT", "basePrice": 2500000, "unit": "건", "discountTiers": null, "description": "1개월"},
+  {"code": "SV-DATA", "name": "데이터 분석 및 성과 도출", "category": "SV_IMPACT", "basePrice": 5000000, "unit": "건", "discountTiers": null, "description": ""},
+  {"code": "SV-REPORT", "name": "임팩트 리포트 제작", "category": "SV_IMPACT", "basePrice": 10000000, "unit": "건", "discountTiers": null, "description": ""}
+]

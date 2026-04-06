@@ -15,9 +15,20 @@ export const CLAUDE_MODEL = 'claude-sonnet-4-6'
 function safeParseJson<T>(raw: string, label: string): T {
   // 마크다운 펜스 제거
   let s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
-  // 첫 { ~ 마지막 } 추출
-  const start = s.indexOf('{')
-  const end = s.lastIndexOf('}')
+  // { } 또는 [ ] 중 먼저 나오는 것을 기준으로 자동 감지
+  const objStart = s.indexOf('{')
+  const arrStart = s.indexOf('[')
+  let start: number
+  let end: number
+  if (arrStart !== -1 && (objStart === -1 || arrStart < objStart)) {
+    // 배열이 먼저 → [ ] 추출
+    start = arrStart
+    end = s.lastIndexOf(']')
+  } else {
+    // 객체가 먼저 → { } 추출
+    start = objStart
+    end = s.lastIndexOf('}')
+  }
   if (start === -1 || end === -1 || end <= start) {
     throw new Error(`[${label}] AI 응답에서 JSON을 찾을 수 없습니다. 응답 일부: ${s.slice(0, 200)}`)
   }

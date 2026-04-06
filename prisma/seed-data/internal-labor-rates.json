@@ -1,0 +1,20 @@
+[
+  {"gradeCode": "B2G-CEO", "gradeName": "CEO/책임연구원", "category": "B2G", "hourlyRate": 37059, "dailyRate": 352943, "monthlyRate": 7411808, "source": "기획재정부 학술연구용역인건비 기준단가 2024"},
+  {"gradeCode": "B2G-DIR", "gradeName": "이사/본부장/책임연구원", "category": "B2G", "hourlyRate": 37059, "dailyRate": 352943, "monthlyRate": 7411808, "source": "기획재정부"},
+  {"gradeCode": "B2G-SD", "gradeName": "팀장/SD/연구원", "category": "B2G", "hourlyRate": 28416, "dailyRate": 270632, "monthlyRate": 5683276, "source": "기획재정부"},
+  {"gradeCode": "B2G-PM", "gradeName": "PM/Director/연구원", "category": "B2G", "hourlyRate": 28416, "dailyRate": 270632, "monthlyRate": 5683276, "source": "기획재정부"},
+  {"gradeCode": "B2G-MGR", "gradeName": "Manager/연구보조원", "category": "B2G", "hourlyRate": 18995, "dailyRate": 180908, "monthlyRate": 3799078, "source": "기획재정부"},
+  {"gradeCode": "B2G-INT", "gradeName": "Intern/보조원", "category": "B2G", "hourlyRate": 14247, "dailyRate": 135686, "monthlyRate": 2849404, "source": "기획재정부"},
+
+  {"gradeCode": "B2B-CEO", "gradeName": "대표", "category": "B2B", "hourlyRate": 75000, "dailyRate": 750000, "monthlyRate": 15000000, "source": "언더독스 자체 기준단가 2024"},
+  {"gradeCode": "B2B-DIR", "gradeName": "이사/본부장", "category": "B2B", "hourlyRate": 50000, "dailyRate": 500000, "monthlyRate": 10000000, "source": "언더독스"},
+  {"gradeCode": "B2B-SD", "gradeName": "팀장/SD", "category": "B2B", "hourlyRate": 40000, "dailyRate": 400000, "monthlyRate": 8000000, "source": "언더독스"},
+  {"gradeCode": "B2B-PM", "gradeName": "PM/디렉터", "category": "B2B", "hourlyRate": 30000, "dailyRate": 300000, "monthlyRate": 6000000, "source": "언더독스"},
+  {"gradeCode": "B2B-MGR", "gradeName": "매니저", "category": "B2B", "hourlyRate": 20000, "dailyRate": 200000, "monthlyRate": 4000000, "source": "언더독스"},
+
+  {"gradeCode": "INT-PARTNER", "gradeName": "파트너 (내부)", "category": "INTERNAL", "hourlyRate": 48000, "dailyRate": 480000, "monthlyRate": 0, "source": "킥오프시트 1-1-1 탭"},
+  {"gradeCode": "INT-SD", "gradeName": "시니어디렉터 (내부)", "category": "INTERNAL", "hourlyRate": 36000, "dailyRate": 360000, "monthlyRate": 0, "source": "킥오프시트"},
+  {"gradeCode": "INT-DIR", "gradeName": "디렉터 (내부)", "category": "INTERNAL", "hourlyRate": 30000, "dailyRate": 300000, "monthlyRate": 0, "source": "킥오프시트"},
+  {"gradeCode": "INT-MGR", "gradeName": "매니저 (내부)", "category": "INTERNAL", "hourlyRate": 24000, "dailyRate": 240000, "monthlyRate": 0, "source": "킥오프시트"},
+  {"gradeCode": "INT-CLEVEL", "gradeName": "C레벨 (내부)", "category": "INTERNAL", "hourlyRate": 72000, "dailyRate": 720000, "monthlyRate": 0, "source": "킥오프시트"}
+]

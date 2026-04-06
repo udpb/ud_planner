@@ -2,9 +2,10 @@
 ## PRD & 기능명세서 v5.0
 ### "최소 인풋, 최고 품질, 스스로 진화하는 언더독스 기획 엔진"
 
-**작성일:** 2026-03-29
+**작성일:** 2026-03-29  **최종 업데이트:** 2026-04-01
 **기준 코드베이스:** ud-ops-workspace (Next.js/PostgreSQL) + underdogs-coach-finder (React/Vite/Firebase/JSON)
 **아키텍처 철학:** 3-Layer Optimization Engine (지식 DB → 설계 엔진 → 학습 루프)
+**개발 원칙:** UI/UX 플로우 우선 → 기능 채우기 순서 (기능보다 플로우가 명확해야 기능이 의미있음)
 
 ---
 
@@ -136,9 +137,9 @@ Admin이 코드 없이 CRUD하는 4가지 마스터 데이터. 이 데이터가 
 
 | DB | 역할 | 현재 상태 |
 |---|---|---|
-| IMPACT 모듈 라이브러리 | 18모듈 뼈대 + 300+ 콘텐츠 매핑 | 미구현 (Module 테이블은 있으나 2계층 구조 아님) |
-| 설계 규칙 & 가중치 | 커리큘럼 흐름 룰, 대상별 가중치 | 미구현 |
-| 비용 기준 단가 | WBS 단가표 | CostStandard 모델 있음 (seed 데이터 필요) |
+| IMPACT 모듈 라이브러리 | 18모듈 뼈대 + 300+ 콘텐츠 매핑 | 미구현 (Module 테이블은 있으나 2계층 구조 아님. Content 모델 Phase 4 예정) |
+| 설계 규칙 & 가중치 | 커리큘럼 흐름 룰, 대상별 가중치 | 미구현 (Rule 로직은 프롬프트에만 존재) |
+| 비용 기준 단가 | WBS 단가표 | CostStandard 모델 있음 — **시드 데이터 입력 필요** |
 | 과거 제안서 & 실적 | 학습 루프 원천 | 미구현 (Project 모델로 대체 가능) |
 
 ### Layer 2: 설계 엔진 (AI 조립)
@@ -171,6 +172,57 @@ Admin 승인 Review Panel → Layer 1 가중치 자동 반영
 ---
 
 ## 3. 기능 명세 (Feature Specifications)
+
+---
+
+### F0. 기획 파이프라인 UI ✅ **구현 완료 (2026-04-01)**
+
+**핵심 원칙:** 기능을 먼저 채우는 게 아니라 실제 업무 플로우를 UI에 먼저 구현.
+
+#### F0.1 6단계 파이프라인 네비게이터
+
+프로젝트 상세 페이지(`/projects/[id]`)는 탭 기반 → **URL 기반 스텝 라우팅**으로 재설계됨.
+
+```
+?step=rfp → ?step=impact → ?step=curriculum → ?step=coaches → ?step=budget → ?step=proposal
+```
+
+**스텝별 완료 판정 기준:**
+
+| 스텝 | 완료 조건 | 표시 |
+|------|-----------|------|
+| RFP 분석 | `project.rfpParsed` 존재 | 초록 체크 |
+| 임팩트 설계 | `project.logicModel` 존재 | 초록 체크 |
+| 커리큘럼 | `curriculum.length > 0` | 초록 체크 |
+| 코치 배정 | `coachAssignments.length > 0` | 초록 체크 |
+| 예산 | `budget` 존재 | 초록 체크 |
+| 제안서 | `proposalSections.length >= 7` | 초록 체크 |
+
+**구현 파일:**
+- `src/app/(dashboard)/projects/[id]/pipeline-nav.tsx` — PipelineNav 컴포넌트
+- `src/app/(dashboard)/projects/[id]/step-rfp.tsx` — RFP 분석 풀너비 뷰 (2컬럼: 업로드 | 결과)
+- `src/app/(dashboard)/projects/[id]/step-impact.tsx` — Logic Model 생성 + 5컬럼 체인 그리드
+- `src/app/(dashboard)/projects/[id]/step-proposal.tsx` — 7섹션 제안서 카드 그리드
+- `src/app/(dashboard)/projects/[id]/page.tsx` — 파이프라인 레이아웃 (searchParams.step 라우팅)
+
+#### F0.2 프로젝트 목록 진행률 도트
+
+`/projects` 목록 테이블에 "기획 진행률" 컬럼 추가:
+- 6개 도트 (●●●○○○ 형태), 각 도트 = 파이프라인 스텝 완료 여부
+- hover 시 스텝 이름 tooltip
+
+#### F0.3 UI 레이아웃 구조
+
+```
+[Header: 프로젝트명]
+[Sticky Top Bar]
+  ├── 프로젝트 메타 스트립: 상태배지 | 유형 | 클라이언트 | 총예산 | 코치비 | 마진율 | 수정버튼
+  └── PipelineNav: ①RFP — ②임팩트 — ③커리큘럼 — ④코치 — ⑤예산 — ⑥제안서
+[Step Content: 풀너비]
+  각 스텝이 URL param 기반으로 렌더링됨
+```
+
+> **삭제된 파일 (dead code):** `ai-panel.tsx`, `project-ai-wrapper.tsx` — 파이프라인 스텝들에 기능이 분산됨
 
 ---
 
@@ -354,6 +406,11 @@ const RULES: DesignRule[] = [
 - `SUGGEST` 위반 시: 사이드 패널에 제안 노출
 
 #### F4.2 IMPACT 2계층 모듈 구조
+
+> **⚠️ 구현 상태:** `Content` 모델은 현재 Prisma 스키마에 없음.
+> - `importContents()` 함수는 `/api/admin/import/route.ts`에서 **임시 제거됨** (2026-04-01)
+> - `Content` 모델은 Phase 4에서 `ImpactModule` + `ContentMapping`과 함께 스키마에 추가 예정
+> - 현재 `Module` 테이블(하이레벨 카테고리)이 임시 대체 역할
 
 **Prisma 스키마 추가 (기존 Module 테이블 확장):**
 
@@ -962,27 +1019,36 @@ model PastProposal {
 
 ## 5. 실행 로드맵 (Action Plan)
 
-### Phase 1: 코어 방어 + 예산 엔진 (2주)
+### Phase 1: 코어 방어 + 예산 엔진 (진행 중)
+
+> **🗓 2026-04-01 현재 상태:** UI 플로우 우선 완료. 기능 미구현 항목 남음.
 
 **개발자 작업:**
 
-1. **`src/middleware.ts` 생성** — NextAuth 미들웨어로 라우트 보호
-2. **`scripts/migrate-coaches-json.ts`** — coach-finder JSON → PostgreSQL 마이그레이션
-3. **`src/lib/curriculum-rules.ts`** — Rule Engine 구현 (R-001~R-004)
-4. **`POST /api/budget/calculate`** — 예산 산출 API 구현
-5. **`src/app/(dashboard)/projects/[id]/budget-dashboard.tsx`** — 예산 UI 구현
-6. **`src/lib/claude.ts` 버그 수정** — safeParseJson 배열 감지 로직 추가
-7. **Zustand useBudgetStore** — 예산-커리큘럼-코치 실시간 연동
+1. **`src/middleware.ts` 생성** — NextAuth 미들웨어로 라우트 보호 ← **미완료**
+2. **`scripts/migrate-coaches-json.ts`** — coach-finder JSON → PostgreSQL 마이그레이션 ← **미완료**
+3. **`src/lib/curriculum-rules.ts`** — Rule Engine 구현 (R-001~R-004) ← **미완료**
+4. **`POST /api/budget/calculate`** — 예산 산출 API 구현 ✅ (파일 존재, 연동 테스트 필요)
+5. **`src/app/(dashboard)/projects/[id]/budget-dashboard.tsx`** — 예산 UI 구현 ✅ 완료
+6. **`src/app/(dashboard)/projects/[id]/curriculum-board.tsx`** — 커리큘럼 보드 UI ✅ 완료
+7. **파이프라인 UI** — 6단계 스텝 네비게이터 + 각 스텝 컴포넌트 ✅ 완료 (F0 참조)
+8. **`src/lib/claude.ts` 버그 수정** — safeParseJson 배열 감지 로직 추가 ← **미완료**
+9. **Zustand useBudgetStore** — 예산-커리큘럼-코치 실시간 연동 ← **미완료**
+10. **`/api/admin/import`** — 엑셀 임포트 API ✅ 완료 (contents 타입 제외)
 
 **PM/운영 작업:**
-- `CostStandard` 기준 단가표 시드 데이터 입력 (현재 비어있음)
+- `CostStandard` 기준 단가표 시드 데이터 입력 (현재 비어있음) ← **필수**
+- `SroiProxy` 시드 데이터 입력 (현재 비어있음) ← **필수**
 - coaches_db.json 정리 및 마이그레이션 검토
 
 **완료 기준:**
 - [ ] 로그인 없이는 대시보드 접근 불가
+- [x] 파이프라인 6단계 UI로 프로젝트 기획 플로우 확인 가능
+- [x] 예산 탭(스텝)에서 PC/AC 항목 표시 확인
+- [x] 커리큘럼 보드에서 세션 추가/순서 변경 동작
 - [ ] 커리큘럼 이론 비율 30% 초과 시 API가 422 반환
 - [ ] Action Week 없는 커리큘럼 저장 불가
-- [ ] 예산 탭에서 PC/AC/마진율 자동 계산 확인
+- [ ] CostStandard 시드 데이터 입력 후 예산 자동 계산 확인
 
 ---
 
@@ -1327,57 +1393,30 @@ COACH_FINDER_APP_URL=       # coach-finder 앱 URL (Deep Link용, 통합 전 단
 | 만족도 | 교육 만족도 | PM | 설문 |
 | 알럼나이 | 수료 후 장기 임팩트 추적 | 랩스 | 설문 |
 
-#### DB 모델 추가 필요 항목 (Phase 3)
+#### DB 모델 — 구현 완료 (v5.1, 2026-04-06)
 
-```prisma
-// ACTT 역량 측정 (사전·사후)
-model ActtRecord {
-  id            String   @id @default(cuid())
-  participantId String
-  participant   Participant @relation(...)
-  projectId     String
-  timing        String   // 'PRE' | 'POST'
-  scores        Json     // {A: number, C: number, T: number, T2: number} 각 0~5
-  totalScore    Float
-  createdAt     DateTime @default(now())
-}
+> Prisma 스키마에 아래 모델들이 추가됨. 시드 데이터는 `prisma/seed-data/survey-templates.json`에 문항 전체 정의.
 
-// 창업현황 (사전·사후)
-model StartupStatusRecord {
-  id            String   @id @default(cuid())
-  participantId String
-  participant   Participant @relation(...)
-  projectId     String
-  timing        String   // 'PRE' | 'POST'
-  data          Json     // {revenue, teamSize, fundingAmount, stage, ...}
-  createdAt     DateTime @default(now())
-}
+| 모델 | 역할 | 관계 |
+|------|------|------|
+| `Applicant` | 참여자 지원서 (28개 산업분류, 신청서 전체) | Project 1:N |
+| `DogsResult` | DOGS 24문항 결과 (4점 리커트, D/O/G/S 점수) | Participant 1:N |
+| `ActtResult` | ACTT 15문항 사전/사후 (5점 리커트, 5개 역량 도메인별 점수) | Participant 1:N, timing=PRE/POST |
+| `StartupStatusRecord` | 창업현황 사전/사후 (매출/고용/투자/특허 등 12항목) | Participant 1:N, timing=PRE/POST |
+| `StartupDiagnosis` | 창업현황 진단 루브릭 (12항목 5레벨 + 주관식 4개) | Participant 1:1 |
+| `SatisfactionResponse` | 만족도 응답 (10개 섹션 47문항, 세션별+최종) | Participant N:1, Project N:1 |
+| `CoachingJournal` | 코칭일지 (목표/활동/진단/액션플랜) | Project N:1, Participant N:1 |
+| `AlumniRecord` | 알럼나이 연 1회 추적 (활동상태/매출/투자/고용 등 16항목) | Participant 1:N, surveyYear |
+| `InternalLaborRate` | 내부 인건비 단가 (B2G/B2B/INTERNAL 16개 등급) | 독립 마스터 |
+| `ServiceProduct` | 서비스 상품 카탈로그 (DOGS/VOD/BeyondEdu/SV Impact 14종) | 독립 마스터 |
 
-// 알럼나이 추적
-model AlumnaeRecord {
-  id            String   @id @default(cuid())
-  participantId String
-  participant   Participant @relation(...)
-  surveyedAt    DateTime
-  monthsAfter   Int      // 수료 후 몇 개월 후 조사 (6, 12, 24)
-  data          Json     // {isOperating, revenue, teamSize, investmentReceived, ...}
-  createdAt     DateTime @default(now())
-}
-
-// DOGS 성향 진단
-model DogsRecord {
-  id            String   @id @default(cuid())
-  participantId String
-  participant   Participant @relation(...)
-  projectId     String
-  d             Int      // Doer 점수
-  o             Int      // Observer 점수
-  g             Int      // Generator 점수
-  s             Int      // Supporter 점수
-  dominantType  String   // 'D' | 'O' | 'G' | 'S'
-  createdAt     DateTime @default(now())
-}
-```
+**시드 데이터 파일 목록:**
+- `prisma/seed-data/cost-standards.json` — 76개 (AC 직접비 + PC 외부인건비 + CF 코치파인더 단가)
+- `prisma/seed-data/sroi-proxies.json` — 46개 (16종 × 4개국, methodology/source/isRate 필드 포함)
+- `prisma/seed-data/internal-labor-rates.json` — 16개 (B2G 6 + B2B 5 + INTERNAL 5)
+- `prisma/seed-data/service-products.json` — 14개 (DOGS 5 + VOD 3 + BeyondEdu 3 + SV Impact 3)
+- `prisma/seed-data/survey-templates.json` — DOGS 24Q + ACTT 15Q + 창업현황 12항목 + 진단 루브릭 12항목 + 만족도 47문항 + 알럼나이 16항목
+- `prisma/seed-data/industry-categories.json` — 28개 산업분류
 
 ---
 
@@ -1554,7 +1593,96 @@ function autoFillSroiInputs(project: Project, participants: Participant[]) {
 
 ### 10.3 알럼나이 추적 자동화
 
-수료 후 6개월 / 12개월 / 24개월 시점에 자동 설문 발송:
-- 수료 처리 시 `AlumnaeSchedule` 레코드 자동 생성
+수료 후 연 1회(매년 1/15~25) 자동 설문 발송:
+- 수료 처리 시 알럼나이 대상 자동 등록
 - Cron 또는 Vercel Cron으로 해당 날짜에 이메일 발송
-- 응답 데이터 → `AlumnaeRecord` 저장 → Layer 3 학습 루프 반영
+- 응답 데이터 → `AlumniRecord` 저장 → Layer 3 학습 루프 반영
+
+---
+
+## 11. 인프라 결정 사항 (2026-04-06 확정)
+
+### 11.1 DB 환경
+
+- **개발**: Docker Compose (로컬 PostgreSQL)
+- **프로덕션**: Google Cloud SQL (PostgreSQL)
+- **Coach Finder 통합**: UD-Ops가 마더 사이트, Coach Finder는 하위 사이트. 동일 PostgreSQL DB 공유, Coach Finder UI는 UD-Ops 내부 라우트(`/coaches/*`)로 통합
+
+### 11.2 인증 전략
+
+- **개발 중**: 인증 없이 진행 (middleware.ts 미적용)
+- **프로덕션**: NextAuth Google OAuth, `@udimpact.ai` 도메인 제한
+
+### 11.3 코치 단가 우선순위
+
+**Coach Finder의 RATE_TABLE이 최종 단가.** 킥오프 시트 4-1/4-2 탭은 UD 내부 인력 단가 및 외부 견적 참고용.
+
+---
+
+## 12. 업무 프로세스 표준화 2026 — 시스템 반영 사항
+
+> `ud 업무 프로세스 표준화_2026 ver.xlsx` 분석 결과. Cell 기반 경영 체계로 전환된 2026 운영 프로세스를 UD-Ops에 반영.
+
+### 12.1 Cell 경영 체계 핵심
+
+- **사업이익 KPI**: 1인당 기여이익 1.2~1.8억원 목표
+- **실비율 목표**: 60% → 55% 감축
+- **CL(Cell Leader)→CEO 직접 보고**: 주간 정기 미팅 + 대시보드 기반
+- **예산 검토 필수 게이트**: D-2까지 Flex 예산검토 요청 → CSO 리뷰
+
+### 12.2 영업 파이프라인 (시스템 반영 대상)
+
+```
+리드 확보 (인바운드/아웃바운드)
+  → SQL 세일즈 (영업관리 대시보드)
+  → 기회 전환 (입찰/영업 제안)
+  → 수주 → 사업 PM 배정 → 프로젝트 세팅
+```
+
+**UD-Ops 반영 포인트:**
+- 영업 대시보드 필요 (현재 미구현, Slack + Google Sheets 분산)
+- SQL → 기회 전환율 20%, 영업 수주율 60%, 입찰 수주율 20% 기준
+- 제안서 정기 회고: 월별 대표 2건 선정 + 개선 반영
+
+### 12.3 프로젝트 라이프사이클 (시스템 반영 대상)
+
+```
+01 수주사업 세팅 (PM 배정, 채널 개설, 다운로드 미팅)
+02 계약/대가 수령 (이행보증보험, 선금/중도금/잔금)
+03 프로젝트 세팅 (총괄시트, 투입인력, KPI/임팩트 확정, 예산 확정)
+04 프로젝트 점검 (킥오프 → 중간랩업 → 최종랩업, 주간 대시보드)
+05 협력사 관리 (등록 → 계약 → 검수 → 대가지급)
+06 교육 관리 (교육생/코치/알럼나이)
+07 프로젝트 종료 (결산 → 종료)
+```
+
+### 12.4 자동화 백로그 — UD-Ops로 흡수 가능 항목
+
+| 우선순위 | 항목 | UD-Ops 대응 기능 |
+|---------|------|-----------------|
+| 1 | 교육사업 운영 ADMIN 서비스 | UD-Ops 자체 (파이프라인 UI) |
+| 1 | 코칭일지 기록 | `CoachingJournal` 모델 + UI |
+| 1 | 액션코치 내부평가 | `SatisfactionLog` + 평가 UI |
+| 1 | 영업/입찰 히스토리 기록 | Project 모델 확장 (영업 단계 추가) |
+| 2 | 지원서 데이터 저장 | `Applicant` 모델 (구현 완료) |
+| 2 | 심사평가 결과취합 | `Applicant.evaluationScores` JSON |
+| 3 | 결과보고서 자동 작성 | 제안서 생성 + Export Mapper 확장 |
+| 4 | 프로젝트별 수익률 자동계산 | Budget Engine (구현 완료) |
+
+### 12.5 내부 사업성 검토 표준 구조
+
+```
+R (총 예산, VAT 포함) = R' × 1.1
+R' (공급가액/매출) = R / 1.1
+IC (전사 운영비) = R' × 15%
+IDC (본부 운영비) = R' × 1.5%
+DR (사업 예산) = R' - IC - IDC = R' × 83.5%
+PC (인건비) = Σ(인원 × 시간 × 시급)
+AC (사업 실비) = Σ(단가 × 수량)
+OR (영업이익) = DR - PC - AC
+영업이익률 = OR / R' × 100%
+```
+
+**SAP 계정 매핑:** 41910000 (매출), 94308000 (PC/인건비), 69004999 (AC/사업실비)
+
+**다부서 협업 사업:** 주관부서 + 협업부서 각각 사업성 검토 → 종합 탭 취합 → 전 그룹장 1차 승인 → FM 예산 검토

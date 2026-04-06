@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { suggestCurriculum, CurriculumSession, CurriculumInsight } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
+import { validateCurriculumRules } from '@/lib/curriculum-rules'
 
 // Action Week 세션이 있는 주에 1:1 온라인 코칭 세션을 페어로 추가
 function injectCoachingPairs(sessions: CurriculumSession[]): {
@@ -137,6 +138,38 @@ export async function POST(req: NextRequest) {
       allInsights.unshift({
         type: 'info',
         message: `Action Week ${addedPairs}회에 맞춰 1:1 온라인 코칭 세션 ${addedPairs}회가 자동으로 추가되었습니다. 필요에 따라 삭제하거나 날짜를 조정하세요.`,
+      })
+    }
+
+    // Rule Engine 검증 (R-001 ~ R-004)
+    const ruleResult = validateCurriculumRules(
+      sessionsWithCoaching.map((s) => ({
+        sessionNo: s.sessionNo,
+        isTheory: s.isTheory,
+        isActionWeek: s.isActionWeek,
+        category: s.category,
+        method: s.method,
+      }))
+    )
+
+    // BLOCK 위반 시 422 반환 (DB 저장하지 않음)
+    if (!ruleResult.passed) {
+      return NextResponse.json(
+        {
+          error: 'RULE_VIOLATION',
+          message: '커리큘럼 설계 규칙을 충족하지 못합니다. 수정 후 다시 시도해주세요.',
+          violations: ruleResult.violations,
+          curriculum: { ...curriculum, sessions: sessionsWithCoaching, insights: allInsights },
+        },
+        { status: 422 }
+      )
+    }
+
+    // WARN/SUGGEST 위반은 insights에 추가하여 기획자에게 안내
+    for (const v of ruleResult.violations) {
+      allInsights.push({
+        type: v.action === 'WARN' ? 'tip' : 'info',
+        message: `[${v.ruleId}] ${v.message}`,
       })
     }
 

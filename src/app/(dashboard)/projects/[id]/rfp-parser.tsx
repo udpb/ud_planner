@@ -25,7 +25,7 @@ interface RfpParsed {
 interface Props {
   projectId: string
   initialParsed?: any
-  onParsed?: (parsed: RfpParsed) => void
+  onParsed?: (parsed: RfpParsed, questions: any[], completeness: any) => void
 }
 
 export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
@@ -82,7 +82,7 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
       if (!res.ok) throw new Error(data.error)
 
       setResult(data.parsed)
-      onParsed?.(data.parsed)   // ← 부모(Wrapper)에 즉시 전달
+      onParsed?.(data.parsed, data.questions ?? [], data.completeness ?? null)
       setExpanded(false)
       setText('')
       setFile(null)

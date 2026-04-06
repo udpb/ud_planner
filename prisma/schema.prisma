@@ -288,6 +288,9 @@ model Project {
   expenses         Expense[]
   participants     Participant[]
   proposalSections ProposalSection[]
+  applicants       Applicant[]
+  satisfactionResponses SatisfactionResponse[]
+  coachingJournals CoachingJournal[]
 }
 
 // ─────────────────────────────────────────
@@ -476,6 +479,14 @@ model Participant {
   absenceCount Int     @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  dogsResults          DogsResult[]
+  acttResults          ActtResult[]
+  startupStatusRecords StartupStatusRecord[]
+  startupDiagnosis     StartupDiagnosis[]
+  satisfactionResponses SatisfactionResponse[]
+  coachingJournals     CoachingJournal[]
+  alumniRecords        AlumniRecord[]
 }
 
 // ─────────────────────────────────────────
@@ -524,6 +535,9 @@ model SroiProxy {
   proxyKrw         Int
   unit             String
   contributionRate Float?
+  methodology      String?
+  source           String?
+  isRate           Boolean  @default(false)
   isActive         Boolean  @default(true)
   updatedAt        DateTime @updatedAt
 
@@ -649,4 +663,225 @@ model WeightSuggestion {
   adminNote      String?
   createdAt      DateTime  @default(now())
   resolvedAt     DateTime?
+}
+
+// ─────────────────────────────────────────
+// [v5.1 신규] 내부 인건비 단가 · 서비스 상품
+// ─────────────────────────────────────────
+
+model InternalLaborRate {
+  id          String @id @default(cuid())
+  gradeCode   String @unique
+  gradeName   String
+  category    String // B2G | B2B | INTERNAL
+  hourlyRate  Int
+  dailyRate   Int
+  monthlyRate Int
+  source      String?
+}
+
+model ServiceProduct {
+  id            String @id @default(cuid())
+  code          String @unique
+  name          String
+  category      String // DOGS | VOD | BEYOND_EDU | SV_IMPACT
+  basePrice     Int
+  unit          String
+  discountTiers Json?
+  description   String?
+}
+
+// ─────────────────────────────────────────
+// [v5.1 신규] 참여자 데이터 수집 (DOGS, ACTT, 창업현황, 만족도, 알럼나이)
+// ─────────────────────────────────────────
+
+// 참여자 지원서 (신청 정보)
+model Applicant {
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // ID 식별
+  name          String
+  teamName      String?
+  email         String
+  phone         String?
+
+  // 기본 정보
+  gender        String?
+  nationality   String?  @default("대한민국")
+  residence     String?
+  birthDate     DateTime?
+  affiliation   String?
+  jobMajor      String?
+  education     String?
+
+  // 창업 정보
+  orgType       String?   // 예비창업(개인)/예비창업(팀)/개인사업자/법인사업자
+  companyName   String?
+  industry      String?   // 28개 산업분류 중 하나
+  problemToSolve String?  @db.Text
+  itemIntro     String?   @db.Text
+  businessLocation String?
+  startupStage  String?   // 아이디어/MVP/매출발생/투자유치완료 등
+  teamSize      Int?
+  teamMembers   String?
+  certifications String[]
+  currentRevenue Float?
+  lastYearRevenue Float?
+  motivation    String?   @db.Text
+  referralSource String[]
+
+  // 심사
+  evaluationScores Json?
+  selectionResult  String? // PENDING | PASSED | FAILED
+
+  // 수료
+  graduated     Boolean  @default(false)
+  participantId String?  // 선발 후 Participant 레코드 연결
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+}
+
+// DOGS 성향 진단 결과
+model DogsResult {
+  id            String   @id @default(cuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  projectId     String
+
+  dogsType      String?  // D | O | G | S (최종 유형)
+  answers       Json     // {q1: 1~4, q2: 1~4, ..., q24: 1~4}
+  scores        Json?    // {D: 점수, O: 점수, G: 점수, S: 점수}
+
+  createdAt     DateTime @default(now())
+
+  @@unique([participantId, projectId])
+}
+
+// ACTT 실행역량 진단 (사전/사후)
+model ActtResult {
+  id            String   @id @default(cuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  projectId     String
+  timing        String   // PRE | POST
+
+  answers       Json     // {q1: 1~5, ..., q15: 1~5}
+  domainScores  Json?    // {goalOrientation: avg, marketAwareness: avg, problemSolving: avg, experimentation: avg, persistence: avg}
+  totalScore    Float?
+
+  createdAt     DateTime @default(now())
+
+  @@unique([participantId, projectId, timing])
+}
+
+// 창업현황 (사전/사후)
+model StartupStatusRecord {
+  id            String   @id @default(cuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  projectId     String
+  timing        String   // PRE | POST
+
+  orgType       String?
+  cumulativeRevenue Float?
+  bepAchieved   Boolean?
+  teamSize      Int?
+  patents       String?
+  investorName  String?
+  investAmount  Float?
+  govSupport    String?
+  privateSupport String?
+  needs         String[]
+
+  createdAt     DateTime @default(now())
+
+  @@unique([participantId, projectId, timing])
+}
+
+// 창업현황 진단 (사전, 루브릭 12항목)
+model StartupDiagnosis {
+  id            String   @id @default(cuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  projectId     String
+
+  scores        Json     // {problemDefinition: 1~5, solutionDiff: 1~5, ..., irReadiness: 1~5}
+  consultingNeeds String[]
+  biggestChallenge String? @db.Text
+  programGoal     String? @db.Text
+  coachRequest    String? @db.Text
+
+  createdAt     DateTime @default(now())
+
+  @@unique([participantId, projectId])
+}
+
+// 만족도 응답 (세션별 + 최종)
+model SatisfactionResponse {
+  id            String   @id @default(cuid())
+  participantId String?
+  participant   Participant? @relation(fields: [participantId], references: [id], onDelete: SetNull)
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  sessionId     String?  // CurriculumItem.id (회차별인 경우)
+  timing        String   // SESSION | FINAL
+  section       String   // overall | coaching | lecture | specialLecture | content | consulting | networking | popupEvent | demoDay | other
+
+  responses     Json     // {q1: 5, q2: "텍스트", ...}
+  coachName     String?  // 코칭 만족도 시 코치명
+
+  createdAt     DateTime @default(now())
+
+  @@index([projectId, timing])
+}
+
+// 코칭일지
+model CoachingJournal {
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  participantId String?
+  participant   Participant? @relation(fields: [participantId], references: [id], onDelete: SetNull)
+  coachName     String
+  sessionDate   DateTime
+  goals         String?  @db.Text
+  activities    String?  @db.Text
+  diagnosis     String?  @db.Text
+  actionPlan    String?  @db.Text
+  stage         String?
+  photoUrl      String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// 알럼나이 추적
+model AlumniRecord {
+  id            String   @id @default(cuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  surveyYear    Int
+
+  activityStatus   String?
+  startupIntent    String?
+  dropoutReasons   String[]
+  cumulativeRevenue Float?
+  bepAchieved      Boolean?
+  teamSize         Int?
+  patents          String?
+  investStatus     String?
+  supportPrograms  String?
+  alumniNeeds      String[]
+  concerns         String[]
+  phone            String?
+
+  createdAt     DateTime @default(now())
+
+  @@unique([participantId, surveyYear])
 }
