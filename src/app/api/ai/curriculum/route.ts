@@ -118,12 +118,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'RFP 파싱 결과와 Logic Model이 필요합니다.' }, { status: 400 })
     }
 
-    const moduleCodes = await prisma.module.findMany({
+    // IMPACT 18모듈 DB 로드 (Claude 프롬프트에 컨텍스트로 주입)
+    const impactModules = await prisma.impactModule.findMany({
       where: { isActive: true },
-      select: { moduleCode: true },
+      orderBy: [{ stageOrder: 'asc' }, { moduleOrder: 'asc' }],
+      select: {
+        moduleCode: true,
+        moduleName: true,
+        coreQuestion: true,
+        workshopOutputs: true,
+        durationMinutes: true,
+        stage: true,
+      },
     })
 
-    const curriculum = await suggestCurriculum(rfpParsed, logicModel, moduleCodes.map((m) => m.moduleCode))
+    const curriculum = await suggestCurriculum(rfpParsed, logicModel, impactModules)
 
     // Action Week 페어 1:1 코칭 자동 주입
     const { sessions: sessionsWithCoaching, addedPairs } = injectCoachingPairs(curriculum.sessions)
@@ -193,6 +202,7 @@ export async function POST(req: NextRequest) {
           isTheory: s.isTheory,
           isActionWeek: s.isActionWeek,
           isCoaching1on1: s.isCoaching1on1,
+          impactModuleCode: s.impactModuleCode ?? null,
           notes: s.notes,
           order: i,
         })),

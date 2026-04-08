@@ -7,6 +7,7 @@ import targetPresets from './seed-data/target-presets.json'
 import modules from './seed-data/modules.json'
 import internalLaborRates from './seed-data/internal-labor-rates.json'
 import serviceProducts from './seed-data/service-products.json'
+import impactModules from './seed-data/impact-modules.json'
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
 const prisma = new PrismaClient({ adapter })
@@ -86,7 +87,37 @@ async function main() {
   }
   console.log(`    ${serviceProducts.length}개 완료`)
 
-  // ── 7. 관리자 계정 (개발용) ──
+  // ── 7. IMPACT 18모듈 (실제 PPTX 기반) ──
+  console.log('  ▸ IMPACT 모듈 (ImpactModule)')
+  for (const item of impactModules as any[]) {
+    await prisma.impactModule.upsert({
+      where: { moduleCode: item.moduleCode },
+      update: {
+        stage: item.stage,
+        stageOrder: item.stageOrder,
+        moduleOrder: item.moduleOrder,
+        moduleName: item.moduleName,
+        coreQuestion: item.coreQuestion,
+        workshopOutputs: item.workshopOutputs,
+        durationMinutes: item.durationMinutes,
+        sixRolesTarget: item.sixRolesTarget,
+      },
+      create: {
+        stage: item.stage,
+        stageOrder: item.stageOrder,
+        moduleOrder: item.moduleOrder,
+        moduleCode: item.moduleCode,
+        moduleName: item.moduleName,
+        coreQuestion: item.coreQuestion,
+        workshopOutputs: item.workshopOutputs,
+        durationMinutes: item.durationMinutes,
+        sixRolesTarget: item.sixRolesTarget,
+      },
+    })
+  }
+  console.log(`    ${impactModules.length}개 완료`)
+
+  // ── 8. 관리자 계정 (개발용) ──
   console.log('  ▸ 관리자 계정')
   await prisma.user.upsert({
     where: { email: 'admin@underdogs.co.kr' },
@@ -106,6 +137,7 @@ async function main() {
   console.log(`   Module: ${modules.length}개`)
   console.log(`   InternalLaborRate: ${internalLaborRates.length}개`)
   console.log(`   ServiceProduct: ${serviceProducts.length}개`)
+  console.log(`   ImpactModule: ${impactModules.length}개`)
 }
 
 main()
