@@ -1,11 +1,12 @@
 # UD-Ops Workspace + Coach Finder 통합 시스템
-## PRD & 기능명세서 v5.0
+## PRD & 기능명세서 v5.1
 ### "최소 인풋, 최고 품질, 스스로 진화하는 언더독스 기획 엔진"
 
-**작성일:** 2026-03-29  **최종 업데이트:** 2026-04-01
+**작성일:** 2026-03-29  **최종 업데이트:** 2026-04-06
 **기준 코드베이스:** ud-ops-workspace (Next.js/PostgreSQL) + underdogs-coach-finder (React/Vite/Firebase/JSON)
 **아키텍처 철학:** 3-Layer Optimization Engine (지식 DB → 설계 엔진 → 학습 루프)
 **개발 원칙:** UI/UX 플로우 우선 → 기능 채우기 순서 (기능보다 플로우가 명확해야 기능이 의미있음)
+**핵심 전환 (v5.1):** "데이터 입력 도구" → "공동 기획자(Co-planner)" — AI가 질문하고, PM이 판단하고, 함께 좋은 기획을 만든다
 
 ---
 
@@ -1019,36 +1020,49 @@ model PastProposal {
 
 ## 5. 실행 로드맵 (Action Plan)
 
-### Phase 1: 코어 방어 + 예산 엔진 (진행 중)
+### Phase 1: 코어 방어 + 예산 엔진 + 기획 품질 UI ✅ (대부분 완료)
 
-> **🗓 2026-04-01 현재 상태:** UI 플로우 우선 완료. 기능 미구현 항목 남음.
+> **🗓 2026-04-06 현재 상태:** DB 세팅, 시드 적재, UI 재설계 6건, Coach 800명 마이그레이션 완료.
 
 **개발자 작업:**
 
-1. **`src/middleware.ts` 생성** — NextAuth 미들웨어로 라우트 보호 ← **미완료**
-2. **`scripts/migrate-coaches-json.ts`** — coach-finder JSON → PostgreSQL 마이그레이션 ← **미완료**
-3. **`src/lib/curriculum-rules.ts`** — Rule Engine 구현 (R-001~R-004) ← **미완료**
-4. **`POST /api/budget/calculate`** — 예산 산출 API 구현 ✅ (파일 존재, 연동 테스트 필요)
-5. **`src/app/(dashboard)/projects/[id]/budget-dashboard.tsx`** — 예산 UI 구현 ✅ 완료
-6. **`src/app/(dashboard)/projects/[id]/curriculum-board.tsx`** — 커리큘럼 보드 UI ✅ 완료
-7. **파이프라인 UI** — 6단계 스텝 네비게이터 + 각 스텝 컴포넌트 ✅ 완료 (F0 참조)
-8. **`src/lib/claude.ts` 버그 수정** — safeParseJson 배열 감지 로직 추가 ← **미완료**
-9. **Zustand useBudgetStore** — 예산-커리큘럼-코치 실시간 연동 ← **미완료**
-10. **`/api/admin/import`** — 엑셀 임포트 API ✅ 완료 (contents 타입 제외)
+1. **`src/middleware.ts` 생성** — NextAuth 미들웨어로 라우트 보호 ← **미완료 (개발 중 인증 없이 진행 결정)**
+2. **`scripts/migrate-coaches-json.ts`** — coach-finder JSON → PostgreSQL 마이그레이션 ✅ **800명 에러 0**
+3. **`src/lib/curriculum-rules.ts`** — Rule Engine 구현 (R-001~R-004) ✅ **완료 + API 연결**
+4. **`POST /api/budget/calculate`** — 예산 산출 API ✅ 완료
+5. **`budget-dashboard.tsx`** — 예산 UI ✅ 완료
+6. **`curriculum-board.tsx`** — 커리큘럼 보드 ✅ **재설계: 실시간 Rule 가드레일 + 비용 미리보기 + DataFlow**
+7. **파이프라인 UI** ✅ 완료 + **기획 품질 스코어카드 추가**
+8. **`src/lib/claude.ts` 버그 수정** ✅ **safeParseJson 배열 감지 로직 완료**
+9. **Zustand useBudgetStore** ← **미완료** (커리큘럼 비용 미리보기로 부분 대체)
+10. **`/api/admin/import`** ✅ 완료
 
-**PM/운영 작업:**
-- `CostStandard` 기준 단가표 시드 데이터 입력 (현재 비어있음) ← **필수**
-- `SroiProxy` 시드 데이터 입력 (현재 비어있음) ← **필수**
-- coaches_db.json 정리 및 마이그레이션 검토
+**시드 데이터 (전부 적재 완료):**
+- CostStandard: 76개 (AC+PC+CF단가)
+- SroiProxy: 45개 (16종×4국)
+- InternalLaborRate: 16개 (B2G+B2B+내부)
+- ServiceProduct: 14개 (DOGS/VOD/BeyondEdu/SV)
+- ImpactModule: 18개 (실제 PPTX 기반)
+- Coach: 800명 (coaches_db.json 마이그레이션)
+
+**UI/UX 기획 품질 재설계 (6건 완료):**
+1. ✅ RFP 인텔리전스 — 3컬럼 인라인 편집 + AI 질문 + 완전성 점수
+2. ✅ 스텝 간 데이터 흐름 — DataFlowBanner 키워드/배점 반영 실시간 표시
+3. ✅ 기획 품질 스코어카드 — 7카테고리 70점, 행동 제안
+4. ✅ 임팩트 설계 워크숍 — 3개 목표 후보 + SROI 힌트 + 2단계 플로우
+5. ✅ 커리큘럼 디자이너 — 실시간 Rule 가드레일 + 비용 미리보기
+6. ✅ 제안서 어시스턴트 — 인라인 편집 + 평가 시뮬레이션
 
 **완료 기준:**
-- [ ] 로그인 없이는 대시보드 접근 불가
 - [x] 파이프라인 6단계 UI로 프로젝트 기획 플로우 확인 가능
-- [x] 예산 탭(스텝)에서 PC/AC 항목 표시 확인
-- [x] 커리큘럼 보드에서 세션 추가/순서 변경 동작
-- [ ] 커리큘럼 이론 비율 30% 초과 시 API가 422 반환
-- [ ] Action Week 없는 커리큘럼 저장 불가
-- [ ] CostStandard 시드 데이터 입력 후 예산 자동 계산 확인
+- [x] 예산 탭에서 PC/AC 항목 표시
+- [x] 커리큘럼 보드에서 세션 추가/순서 변경 + Rule 실시간 검증
+- [x] 커리큘럼 이론 비율 30% 초과 시 API가 422 반환
+- [x] Action Week 없는 커리큘럼 저장 불가
+- [x] CostStandard 시드 76개 적재 완료
+- [x] Coach 800명 PostgreSQL 마이그레이션 완료
+- [x] 제안서 섹션 인라인 편집 + 평가 시뮬레이션
+- [ ] RBAC (개발 중 미적용 — 프로덕션 시 NextAuth 활성화)
 
 ---
 
@@ -1686,3 +1700,199 @@ OR (영업이익) = DR - PC - AC
 **SAP 계정 매핑:** 41910000 (매출), 94308000 (PC/인건비), 69004999 (AC/사업실비)
 
 **다부서 협업 사업:** 주관부서 + 협업부서 각각 사업성 검토 → 종합 탭 취합 → 전 그룹장 1차 승인 → FM 예산 검토
+
+---
+
+## 13. IMPACT 창업방법론 (교육 콘텐츠 기반, 2026-04-06 학습)
+
+> IMPACT PPTX 18개 + CORE 4개 실제 분석 결과. `ImpactModule` 테이블에 시드 적재 완료.
+
+### 13.1 IMPACT 구조
+
+**CORE (선수 4모듈)** → **IMPACT (본과 6단계 × 3모듈 = 18모듈, 54문항)** → **MVP 실행** → **산업분석**
+
+포맷: 15분 강의 + 35분 워크숍 (ACT Canvas 3문항/모듈). 러닝 예시: "당당식단" 전 모듈 공통.
+
+### 13.2 IMPACT 6단계 (I-M-P-A-C-T)
+
+| 단계 | 이름 | 모듈 | 핵심 |
+|------|------|------|------|
+| **I** - Ideation | 나 자신 | I-1 의지와 목적, I-2 마인드셋, I-3 역량과 자원 | Why Digging, HEL Loop, MILES |
+| **M** - Market | 고객과 문제 | M-1 고객 정의, M-2 문제 발견, M-3 문제 검증 | Early Adopter, JTBD, Mom Test |
+| **P** - Product | 솔루션 | P-1 핵심가치, P-2 솔루션 설계, P-3 프로토타입 | VP Canvas, Walking Skeleton, Vibe Coding |
+| **A** - Acquisition | 시장 진입 | A-1 MVP 설계, A-2 고객 획득, A-3 가격/전환 | MVP 3유형, Traction, Pricing 3-Lens |
+| **C** - Commercial | 사업화 | C-1 시장/경쟁, C-2 비즈니스 모델, C-3 IR | Bottom-Up GTM, Unit Economics, 12-Slide Deck |
+| **T** - Team | 조직과 성장 | T-1 비전/미션/CV, T-2 조직 구조, T-3 성장 로드맵 | Golden Circle, Vesting, KPI Dashboard |
+
+### 13.3 ACTT + 5D 진단 체계
+
+- **ACTT** (5가지 실행 습관): Goal → Environment → Problem → eXecution → Routinization (각 1-5점, 목표 4+)
+- **5D** (AI시대 스킬셋): Domain, AI, Global, Data, Finance (각 1-5점, 목표 4+)
+- ACTT = 엔진, 5D = 내비게이션 + 연료
+- 자립 기준: ACTT 평균 4+ AND 5D 평균 4+
+
+### 13.4 시스템 반영 (다음 스프린트)
+
+- [ ] 제안서 AI 프롬프트에 IMPACT 방법론 구체적 반영
+- [ ] 커리큘럼 AI 생성 시 18모듈 컨텍스트 제공 (모듈별 핵심질문/프레임워크/산출물)
+- [ ] 운영 구조 템플릿에 ACTT/5D 진단 연계
+
+---
+
+## 14. 제안서 AI 생성 전략 (2026-04-06 수주 제안서 2건 분석 기반)
+
+> 청년마을(60p) + 재창업(63p) 수주 제안서 분석. 제안서 AI 프롬프트에 반영 예정.
+
+### 14.1 제안서 구조 공식
+
+```
+I. 일반 현황 (회사 소개, 조직, 실적, 재무)
+II. 기본 계획 (배경, 전략, 인력, 로드맵, 기대성과)
+III. 수행 계획 (세부 실행 — 제안서의 핵심, 가장 분량 많음)
+IV. 사업 관리 (품질보증, 보고, 안전)
+V. 기타 추가 제안 (RFP 범위 밖 3~4건 보너스 — 핵심 차별화)
+```
+
+### 14.2 반복되는 키 메시지 패턴
+
+| 패턴 | AI가 생성 시 적용 방법 |
+|------|---------------------|
+| "국내 최초" | 언더독스가 해당 분야에서 처음 시도하는 요소 강조 |
+| 정량 포화 | "많은" → "291명", "다양한" → "50개 기업 파트너" |
+| 4중 지원 체계 | 코치 1명이 아닌 전문멘토+컨설턴트+전담코치+동료 레이어 |
+| Section V 보너스 | RFP에 없는 추가 제안 3-4건 자동 생성 |
+| 실행 보장 | "실행을 보장하는 코칭 중심의 체계적인 교육" |
+| 자체 도구 브랜딩 | ACT-PRENEURSHIP, DOGS, 6 Dimension — 항상 고유 명칭 |
+
+### 14.3 페이지 설계 공식 (one-page-one-thesis)
+
+```
+[컬러 헤더 바]
+[서브헤더]
+[ONE BOLD 선언적 헤드라인]
+[구조화된 시각 자료]
+```
+
+### 14.4 운영 구조 표현
+
+```
+대표 (최상단) → 사업PM (본부장급, 전담) → 기능별 리더 → 전국 코치진 (300명 pool)
+```
+→ "전담" 역할 반복 강조, 실제 사진/이름 사용
+
+### 14.5 예산 표현
+
+- 예산은 주인공이 아님 — 마지막, 담백하게
+- "프로그램 투입 비율 91.2%" 효율성 프레이밍
+- 실비율 60% 이하 강조
+
+### 14.6 pgvector/RAG 판단
+
+현재 시점에서 RAG 불필요:
+- IMPACT 18모듈 → 프롬프트 컨텍스트로 충분 (데이터 소량)
+- 과거 제안서 2건 → 패턴 이미 메모리에 학습
+- **Phase 4에서 과거 제안서 10건+ 축적 시 pgvector 도입 적합**
+
+---
+
+## 15. Planning Agent 시스템 (2026-04-07 신규 결정)
+
+> **별도 상세 문서:** `PLANNING_AGENT_ROADMAP.md` 참조 (실행 시 사용)
+
+### 15.1 핵심 전환
+
+기존 PRD v5.0의 "AI가 도와주는 도구" → **"AI 공동기획자(Co-planner)"**
+
+| 측면 | Before | After |
+|------|--------|-------|
+| AI 역할 | 검색/생성 도구 | PM 의도까지 캡처하는 공동기획자 |
+| 인터랙션 | 1-shot 호출 | 5-10턴 대화형 인터뷰 |
+| 품질 목표 | 보통 PM 수준 | 시니어 PM 수준 (95%+) |
+| 학습 | 없음 | PMFeedback 기반 자기개선 루프 |
+
+### 15.2 인터뷰 설계 원칙
+
+- **자유 답변** (객관식 ❌)
+- **예시 4-5개 제공** — 답변이 어려운 PM 도움
+- **"잘 모름" 답변 가능** — Agent가 다른 각도로 재질문
+- **진짜 Agent 루프** — state + reasoning + tools + termination
+
+### 15.3 신규 데이터 모델
+
+```
+PlanningIntent {
+  rfpFacts: { ... }            // RFP에서 추출 (객관)
+  strategicContext: {           // PM 인터뷰에서 캡처 (주관)
+    whyUs, clientHiddenWants, mustNotFail,
+    competitorWeakness, internalAdvantage,
+    riskFactors, decisionMakers, pastSimilarProjects
+  }
+  derivedStrategy: {            // Agent가 종합 후 도출
+    keyMessages, differentiators, coachProfile,
+    sectionVBonus, riskMitigation
+  }
+  completeness, confidence
+}
+
+AgentSession { history, status }
+PMFeedback { action, reason, patternLearned }
+
+Coach 풍부화 필드:
+  domainTags, skillTags, strengthSummary,
+  idealProjectTypes, searchKeywords, enrichedAt
+```
+
+### 15.4 5단계 추천 엔진
+
+| Stage | 작업 |
+|-------|------|
+| 0 (1회성) | 800명 코치 데이터 풍부화 (Claude 호출, ~$8) |
+| 1 | PlanningIntent → Claude → 검색 쿼리 풍부화 |
+| 2 | PostgreSQL 정형 필터 (800 → ~200) |
+| 3 | 정형 점수 (200 → Top 50) |
+| 4 | Claude 의미적 재랭킹 (50 → Top 10 + 이유) |
+| 5 | 4중 지원 체계 매핑 + PMFeedback 처리 |
+
+### 15.5 격리 모듈 전략 (인지부하 관리)
+
+**원칙:** Phase 6 전까지 기존 코드 손대지 않음
+
+```
+src/lib/planning-agent/         # 격리된 Agent 로직
+src/app/(lab)/agent-test/       # 격리된 테스트 UI
+src/app/(lab)/coach-finder/     # 격리된 Coach Finder UI
+src/app/api/agent/              # 격리된 API
+```
+
+각 Phase 끝마다 사용자 직접 검증 → 다음 진행.
+
+### 15.6 6-Phase 로드맵 (12일 분량)
+
+| Phase | 일수 | 영향 | 산출물 |
+|-------|------|------|--------|
+| 1. Agent 로직 | Day 1-2 | **0** | 7개 신규 파일 |
+| 1.5 테스트 UI | Day 2-3 | 0 (신규 라우트) | 채팅 UI |
+| 2. 스키마 추가 | Day 3-4 | 최소 (마이그레이션) | 3개 모델 |
+| 3. 코치 풍부화 | Day 4-5 | 최소 (컬럼 추가) | 800명 1회 처리 |
+| 4. 추천 엔진 | Day 5-7 | 0 (격리 API) | 5단계 추천 |
+| 5. UI 임베드 | Day 7-9 | 0 (격리 라우트) | Coach Finder |
+| 6. 통합 | Day 9-12 | **여기서 통합** | 메인 파이프라인 |
+
+### 15.7 품질 등급 (Phase 6에서 추가)
+
+| 등급 | 점수 | 의미 |
+|------|------|------|
+| C | 50점 이하 | 사람이 처음 그릴 수준 |
+| B | 50-70 | 보통 PM 수준 |
+| **A** | **70-85** | **시니어 PM 수준 ← 우리 목표** |
+| S | 85+ | "와, 이런 건 생각 못했네" — 진짜 차별화 |
+
+각 등급별 부족한 부분 자동 안내.
+
+### 15.8 핵심 원칙 (반복)
+
+1. **격리 우선** — Phase 6 전까지 기존 코드 손대지 않음
+2. **검증 후 전진** — 각 Phase 끝에 사용자 검증
+3. **자유 답변** — 객관식 ❌
+4. **진짜 Agent** — 단발 호출 ❌
+5. **품질 목표** — 시니어 PM 수준 95%+
