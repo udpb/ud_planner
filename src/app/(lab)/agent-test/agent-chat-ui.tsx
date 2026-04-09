@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Send, Loader2, RotateCcw, Download, SkipForward, FileText, MessageSquare, Users } from 'lucide-react'
+import { Send, Loader2, RotateCcw, Download, SkipForward, FileText, MessageSquare, Users, Upload } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // ─────────────────────────────────────────
@@ -51,6 +51,31 @@ function StartForm({
 }) {
   const [channel, setChannel] = useState<ChannelType>('bid')
   const [rfpText, setRfpText] = useState('')
+  const [pdfUploading, setPdfUploading] = useState(false)
+  const [pdfError, setPdfError] = useState('')
+  const [pdfFilename, setPdfFilename] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  async function handlePdfUpload(file: File) {
+    setPdfUploading(true)
+    setPdfError('')
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fetch('/api/agent/extract-pdf', {
+        method: 'POST',
+        body: formData,
+      })
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.error ?? 'PDF 추출 실패')
+      setRfpText(result.text)
+      setPdfFilename(result.filename)
+    } catch (e: any) {
+      setPdfError(e.message)
+    } finally {
+      setPdfUploading(false)
+    }
+  }
   const [leadJson, setLeadJson] = useState(JSON.stringify({
     clientName: '경주화백컨벤션센터',
     clientType: '기관',
@@ -163,8 +188,50 @@ function StartForm({
               <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2 block">
                 RFP 텍스트 (최소 100자)
               </label>
+
+              {/* PDF 업로드 */}
+              <div className="mb-2 flex items-center gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,application/pdf"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) handlePdfUpload(file)
+                    if (e.target) e.target.value = ''
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                  disabled={pdfUploading || loading}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {pdfUploading ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> PDF 추출 중...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-3.5 w-3.5" /> PDF 업로드
+                    </>
+                  )}
+                </Button>
+                {pdfFilename && !pdfUploading && (
+                  <span className="text-[10px] text-muted-foreground truncate">
+                    📄 {pdfFilename}
+                  </span>
+                )}
+              </div>
+              {pdfError && (
+                <p className="mb-2 text-[10px] text-destructive">{pdfError}</p>
+              )}
+
               <Textarea
-                placeholder="RFP 전문을 붙여넣으세요..."
+                placeholder="RFP 전문을 붙여넣거나 PDF를 업로드하세요..."
                 value={rfpText}
                 onChange={(e) => setRfpText(e.target.value)}
                 className="h-64 text-xs font-mono"

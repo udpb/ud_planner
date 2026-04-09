@@ -422,6 +422,8 @@ export interface AgentState {
   currentQuestion: Question | null
   /** 이미 물어본 질문 ID들 (중복 방지) */
   askedQuestionIds: string[]
+  /** 질문별 재질문 횟수 — 1번 재질문 후엔 그대로 받아들이기 */
+  followupCountByQuestion: Record<string, number>
   createdAt: string
   updatedAt: string
 }

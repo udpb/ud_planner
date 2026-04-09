@@ -43,3 +43,10 @@ next-env.d.ts
 /src/generated/prisma
 
 .vercel
+
+# Claude Code local settings (personal permissions, not shared)
+.claude/settings.local.json
+
+# Planning Agent test scenario debug outputs
+scripts/test-output-*.json
+scripts/test-output-*.log

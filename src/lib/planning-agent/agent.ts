@@ -29,6 +29,7 @@ import {
   setStatus,
   setIntent,
   updateSession,
+  incrementFollowupCount,
 } from './state'
 import {
   decideNextQuestion,
@@ -39,7 +40,6 @@ import {
 import {
   updateIntentSlot,
   updateIntentSlots,
-  isInterviewComplete,
   finalizeIntent,
   incrementTurn,
 } from './intent-schema'
@@ -162,32 +162,47 @@ async function processUserAnswer(
     return await progressToNextQuestion(state, userMessage)
   }
 
-  // 3. 답변 품질 평가 — 너무 빈약하면 재질문
+  // 3. 답변 품질 평가 — 너무 빈약하면 재질문 (단, 1번까지만)
+  const followupCount = state.followupCountByQuestion[currentQuestion.id] ?? 0
   const isAnswerTooWeak =
     !extraction.quality.hasSubstance &&
     extraction.quality.needsFollowup &&
-    state.askedQuestionIds.filter((id) => id === currentQuestion.id).length < 2 // 같은 질문 2번 이상은 안 함
+    followupCount < 1 // 1번 재질문 후엔 그대로 받아들이기
 
   if (isAnswerTooWeak) {
     return await askFollowup(state, userMessage)
   }
 
-  // 4. 슬롯 업데이트 (primary + secondary 모두)
+  // hasSubstance가 false라도 followupCount >= 1이면 그대로 진행 (무한 askFollowup 방지)
+  // → 빈 슬롯으로 진행되며, 나중에 derivedStrategy 종합 시 빈 슬롯은 무시
+
+  // 4. 슬롯 업데이트
+  // - primary: 항상 저장 (단, hasSubstance=false면 빈약한 답변이라 슬롯 안 채움)
+  // - secondary: confidence='high'만 받음 (PM 깊이 있는 사고를 위해 명시적 질문은 한 번씩 다 던져야 함)
   const updates: Partial<typeof state.intent.strategicContext> = {}
-  if (extraction.primaryValue) {
+
+  // primary 처리: hasSubstance=true 이거나, 이미 1번 재질문 후 (followupCount >= 1) 인 경우만 저장
+  // → "잘 모름" 류의 빈약한 답변이 슬롯에 저장되는 것 방지
+  const shouldStorePrimary =
+    extraction.primaryValue &&
+    extraction.primaryValue.trim().length >= 5 &&
+    (extraction.quality.hasSubstance || followupCount >= 1)
+
+  if (shouldStorePrimary) {
     if (currentQuestion.slot === 'riskFactors') {
-      // 배열 필드는 split 처리
       updates.riskFactors = parseArrayValue(extraction.primaryValue)
     } else {
       updates[currentQuestion.slot] = extraction.primaryValue as any
     }
   }
+
+  // secondary 처리: confidence='high'만, 그리고 의미 있는 길이일 때만
   for (const sec of extraction.secondarySlots ?? []) {
-    if (sec.confidence === 'low') continue
+    if (sec.confidence !== 'high') continue
+    if (!sec.value || sec.value.trim().length < 10) continue
     if (sec.slot === 'riskFactors') {
       updates.riskFactors = [...(updates.riskFactors ?? []), ...parseArrayValue(sec.value)]
     } else {
-      // primary가 이미 있으면 덮어쓰지 않음
       if (!updates[sec.slot]) {
         updates[sec.slot] = sec.value as any
       }
@@ -209,15 +224,10 @@ async function progressToNextQuestion(
   state: AgentState,
   _lastUserMessage: string,
 ): Promise<AgentTurnOutput> {
-  // 인터뷰 완료 체크
-  if (isInterviewComplete(state.intent.strategicContext)) {
-    return await finalizeAndComplete(state)
-  }
-
-  // 다음 질문 결정
+  // 인터뷰 완료 체크는 "더 물을 질문이 없을 때"로만 함
+  // (slot이 채워졌어도 명시적 질문은 한 번씩 다 던짐 — PM 깊이 우선)
   const nextQuestion = decideNextQuestion(state.intent, state.askedQuestionIds)
   if (!nextQuestion) {
-    // 더 물을 게 없음 → 종료
     return await finalizeAndComplete(state)
   }
 
@@ -248,6 +258,9 @@ async function askFollowup(
   if (!currentQuestion) {
     return await progressToNextQuestion(state, userAnswer)
   }
+
+  // 재질문 카운트 증가 (재질문 한도 추적용)
+  state = incrementFollowupCount(state, currentQuestion.id)
 
   try {
     const followup = await generateFollowupQuestion(

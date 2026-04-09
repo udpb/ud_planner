@@ -43,6 +43,7 @@ export function createSession(
     status: options.status ?? 'preprocessing',
     currentQuestion: null,
     askedQuestionIds: [],
+    followupCountByQuestion: {},
     createdAt: now,
     updatedAt: now,
   }
@@ -140,6 +141,23 @@ export function clearCurrentQuestion(state: AgentState): AgentState {
   return {
     ...state,
     currentQuestion: null,
+    updatedAt: new Date().toISOString(),
+  }
+}
+
+/**
+ * 특정 질문의 재질문 카운트 증가.
+ */
+export function incrementFollowupCount(
+  state: AgentState,
+  questionId: string,
+): AgentState {
+  return {
+    ...state,
+    followupCountByQuestion: {
+      ...state.followupCountByQuestion,
+      [questionId]: (state.followupCountByQuestion[questionId] ?? 0) + 1,
+    },
     updatedAt: new Date().toISOString(),
   }
 }

@@ -205,7 +205,11 @@ import { isSlotFilled } from './intent-schema'
 
 /**
  * 다음에 물어볼 질문 결정.
- * Phase 1: 결정론적 — DEFAULT_QUESTION_ORDER 순서대로, 이미 채워진 슬롯은 스킵.
+ * Phase 1: 결정론적 — DEFAULT_QUESTION_ORDER 순서대로, 이미 *물어본* 질문만 스킵.
+ *
+ * 중요: secondary slot 추출로 슬롯이 채워졌더라도 명시적 질문은 한 번씩 다 던진다.
+ * PM이 "이미 답변했음"이라고 답해도 상관없음 — 깊이 있는 사고 유도가 목적.
+ *
  * Phase 2+: Claude 기반 동적 우선순위 가능.
  */
 export function decideNextQuestion(
@@ -213,7 +217,6 @@ export function decideNextQuestion(
   askedQuestionIds: string[],
 ): Question | null {
   for (const slot of DEFAULT_QUESTION_ORDER) {
-    if (isSlotFilled(intent.strategicContext, slot)) continue
     const q = getQuestionForSlot(slot)
     if (!q) continue
     if (askedQuestionIds.includes(q.id)) continue
