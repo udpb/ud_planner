@@ -123,6 +123,66 @@ function buildRenewalBrief(ctx: RenewalContext): string {
 }
 
 // ─────────────────────────────────────────
+// 0.5. 전략적 반응 프롬프트
+//    — PM의 답변 후 Agent가 분석하고 연결해서 반응
+// ─────────────────────────────────────────
+
+/**
+ * PM의 답변 후, 다음 질문으로 넘어가기 전에 Agent가 전략적 반응을 생성.
+ * "조용히 기록" → "분석하고 연결하고 제안" 으로 전환.
+ */
+export function buildStrategicReactionPrompt(
+  pmAnswer: string,
+  currentSlot: string,
+  intent: PartialPlanningIntent,
+  nextQuestion: Question | null,
+): string {
+  const rfpBrief = buildRfpIntelligenceBrief(intent)
+
+  const slotLabels: Record<string, string> = {
+    participationDecision: '참여 결정/경쟁력',
+    clientHiddenWants: '클라이언트 진짜 의도',
+    mustNotFail: '절대 실패 금지 지점',
+    competitorWeakness: '경쟁사/약점',
+    riskFactors: '위험 요소',
+    decisionMakers: '의사결정자/선정 패턴',
+    pastSimilarProjects: '과거 유사 경험',
+  }
+
+  const currentSlotLabel = slotLabels[currentSlot] ?? currentSlot
+  const nextSlotLabel = nextQuestion
+    ? (slotLabels[nextQuestion.slot] ?? nextQuestion.slot)
+    : null
+
+  return `당신은 한국 교육 사업 입찰에서 10년 이상 경험을 가진 시니어 사업 기획 컨설턴트입니다.
+PM이 "${currentSlotLabel}" 질문에 답변했습니다. PM의 답변에 전략적으로 반응하세요.
+
+═══════════════════════════════════════
+${rfpBrief ? rfpBrief + '\n═══════════════════════════════════════\n' : ''}
+[PM의 답변 — "${currentSlotLabel}" 슬롯]
+${pmAnswer}
+═══════════════════════════════════════
+
+[반응 규칙]
+1. PM이 말한 내용을 인정하고 분석하세요 (2-3문장)
+2. RFP/프로젝트 맥락의 구체적 사실(사업명, 대상자, 예산, 평가배점 등)과 PM 답변을 연결하세요
+3. 전략적 시사점이 있으면 짧게 언급하세요 (예: "~가 관건이에요", "~를 활용할 수 있겠네요")
+4. ${nextSlotLabel ? `마지막 문장에서 "${nextSlotLabel}" 주제로 자연스럽게 전환하세요 (직접 질문하지 말고, "그럼 이제 ~를 살펴보죠" 정도)` : '자연스럽게 마무리하세요'}
+
+[톤]
+- 자신감 있는 동료 컨설턴트 (선언형 "~합니다", "~이에요")
+- 존댓말 사용
+- 과도한 칭찬 금지 ("정말 훌륭한 답변입니다!" 같은 표현 금지)
+- "좋습니다", "좋은 포인트예요" 정도는 OK
+- 일반론 금지 — 이 프로젝트에 특화된 반응만
+
+[출력]
+- 한국어 plain text, 2-4문장
+- JSON 아님, 마크다운 아님, 그냥 자연어 텍스트
+- 줄바꿈 없이 하나의 문단으로`
+}
+
+// ─────────────────────────────────────────
 // 1. 슬롯 추출 프롬프트
 // ─────────────────────────────────────────
 

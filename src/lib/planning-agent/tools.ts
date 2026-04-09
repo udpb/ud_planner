@@ -21,6 +21,7 @@ import {
   buildSynthesisPrompt,
   buildFollowupSuggestionPrompt,
   buildRfpIntelligenceBrief,
+  buildStrategicReactionPrompt,
 } from './prompts'
 
 // ─────────────────────────────────────────
@@ -70,7 +71,6 @@ export async function extractSlotFromAnswer(
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: 2048,
-    json_mode: true,
     messages: [
       {
         role: 'user',
@@ -102,7 +102,6 @@ export async function generateFollowupQuestion(
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: 512,
-    json_mode: true,
     messages: [
       {
         role: 'user',
@@ -131,8 +130,7 @@ export async function synthesizeStrategy(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 32000, // Pro: thinking ~20K + output ~12K = 32K 필요
-    json_mode: true,   // Gemini JSON 모드 강제 — 마크다운 출력 방지
+    max_tokens: 8192,
     messages: [
       {
         role: 'user',
@@ -158,6 +156,37 @@ export async function synthesizeStrategy(
     budgetGuideline: result.budgetGuideline,
     riskMatrix: result.riskMatrix,
   }
+}
+
+// ─────────────────────────────────────────
+// Tool 3.5: 전략적 반응 생성
+// ─────────────────────────────────────────
+
+/**
+ * PM의 답변 후, 다음 질문 전에 Agent가 전략적으로 반응하는 텍스트 생성.
+ * 설문 느낌을 없애고 시니어 컨설턴트와의 전략 대화 느낌을 줌.
+ * plain text 반환 (JSON 아님).
+ */
+export async function generateStrategicReaction(
+  pmAnswer: string,
+  currentSlot: string,
+  intent: PartialPlanningIntent,
+  nextQuestion: Question | null,
+): Promise<string> {
+  const prompt = buildStrategicReactionPrompt(pmAnswer, currentSlot, intent, nextQuestion)
+
+  const msg = await anthropic.messages.create({
+    model: CLAUDE_MODEL,
+    max_tokens: 512,
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+  })
+
+  return (msg.content[0] as any).text.trim()
 }
 
 // ─────────────────────────────────────────

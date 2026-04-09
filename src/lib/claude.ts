@@ -1,3 +1,4 @@
+import Anthropic from '@anthropic-ai/sdk'
 import {
   buildBrandContext,
   buildImpactModulesContext,
@@ -6,99 +7,14 @@ import {
 } from './ud-brand'
 
 // ────────────────────────────────────────────────────────────────
-// LLM 백엔드: Google Gemini (REST 직접 호출, SDK 의존성 없음)
-//
-// 호환성: Anthropic SDK의 messages.create() shape를 그대로 노출
-// → 기존 호출 사이트 (parseRfp, extractSlotFromAnswer, synthesizeStrategy 등)
-//   를 변경하지 않고 백엔드만 교체.
-//
-// 응답 shape: { content: [{ text: string }] } — Anthropic과 동일
+// LLM 백엔드: Anthropic Claude (네이티브 SDK)
 // ────────────────────────────────────────────────────────────────
 
-// gemini-3.1-pro-preview: 최신 Pro 모델, 깊은 추론 + 한국어 강점
-// thinking 허용 (Pro는 thinking 비활성화 불가, 대신 깊이 있는 분석)
-export const CLAUDE_MODEL = 'gemini-3.1-pro-preview'
+export const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+})
 
-interface AnthropicLikeRequest {
-  model: string
-  max_tokens: number
-  messages: Array<{ role: 'user' | 'assistant'; content: string }>
-  /** true로 설정하면 Gemini responseMimeType='application/json' 강제 */
-  json_mode?: boolean
-}
-
-interface AnthropicLikeResponse {
-  content: Array<{ text: string }>
-}
-
-async function geminiGenerate(req: AnthropicLikeRequest): Promise<AnthropicLikeResponse> {
-  const apiKey = process.env.GEMINI_API_KEY
-  if (!apiKey) {
-    throw new Error('[claude.ts] GEMINI_API_KEY 환경변수가 설정되지 않았습니다')
-  }
-
-  // Anthropic messages → Gemini contents 변환
-  const contents = req.messages.map((m) => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: m.content }],
-  }))
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${req.model}:generateContent?key=${apiKey}`
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents,
-      generationConfig: {
-        maxOutputTokens: req.max_tokens,
-        temperature: 0.7,
-        // Pro 모델: thinking 허용 (깊은 추론). Flash: thinking 비활성화 (토큰 절약).
-        ...(req.model.includes('flash')
-          ? { thinkingConfig: { thinkingBudget: 0 } }
-          : {}),
-        // JSON 모드: 프롬프트가 길어져도 확실히 JSON만 반환
-        ...(req.json_mode ? { responseMimeType: 'application/json' } : {}),
-      },
-    }),
-  })
-
-  if (!res.ok) {
-    const errBody = await res.text().catch(() => '')
-    throw new Error(`[Gemini] HTTP ${res.status}: ${errBody.slice(0, 500)}`)
-  }
-
-  const data = (await res.json()) as any
-
-  // Gemini 응답에서 텍스트 추출
-  // 정상: candidates[0].content.parts[*].text
-  // finishReason가 'MAX_TOKENS' / 'SAFETY' 등이면 텍스트가 없을 수 있음
-  const candidate = data?.candidates?.[0]
-  if (!candidate) {
-    throw new Error(`[Gemini] 응답에 candidates가 없음: ${JSON.stringify(data).slice(0, 300)}`)
-  }
-
-  const parts = candidate?.content?.parts ?? []
-  const text = parts.map((p: any) => p.text ?? '').join('')
-
-  if (!text) {
-    const finishReason = candidate.finishReason ?? 'UNKNOWN'
-    throw new Error(`[Gemini] 빈 응답 (finishReason: ${finishReason})`)
-  }
-
-  return { content: [{ text }] }
-}
-
-/**
- * Anthropic SDK 호환 객체.
- * 기존 호출 사이트는 anthropic.messages.create({...}) 그대로 사용.
- * 내부적으로 Gemini REST API 호출.
- */
-export const anthropic = {
-  messages: {
-    create: geminiGenerate,
-  },
-}
+export const CLAUDE_MODEL = 'claude-sonnet-4-6'
 
 /**
  * Claude가 반환한 텍스트에서 JSON 객체를 안전하게 추출.
@@ -162,7 +78,6 @@ export async function parseRfp(text: string): Promise<RfpParsed> {
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: 4096,
-    json_mode: true,
     messages: [
       {
         role: 'user',

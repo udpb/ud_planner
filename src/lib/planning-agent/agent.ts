@@ -36,6 +36,7 @@ import {
   extractSlotFromAnswer,
   synthesizeStrategy,
   generateFollowupQuestion,
+  generateStrategicReaction,
 } from './tools'
 import {
   updateIntentSlot,
@@ -246,7 +247,7 @@ async function processUserAnswer(
 
 async function progressToNextQuestion(
   state: AgentState,
-  _lastUserMessage: string,
+  lastUserMessage: string,
 ): Promise<AgentTurnOutput> {
   // 인터뷰 완료 체크는 "더 물을 질문이 없을 때"로만 함
   // (slot이 채워졌어도 명시적 질문은 한 번씩 다 던짐 — PM 깊이 우선)
@@ -255,8 +256,31 @@ async function progressToNextQuestion(
     return await finalizeAndComplete(state)
   }
 
+  // 전략적 반응 생성 — PM의 답변에 대해 Agent가 분석/연결/시사점을 보여줌
+  const previousSlot = state.currentQuestion?.slot ?? ''
+  let reactionText = ''
+  if (previousSlot && lastUserMessage && lastUserMessage !== '(건너뜀)') {
+    try {
+      reactionText = await generateStrategicReaction(
+        lastUserMessage,
+        previousSlot,
+        state.intent,
+        nextQuestion,
+      )
+    } catch (err: any) {
+      // 반응 생성 실패 시 조용히 진행 — 핵심 플로우를 막지 않음
+      console.error('[Agent] Strategic reaction failed:', err.message)
+    }
+  }
+
   // 다음 질문 메시지 생성 (RFP 맥락 주입)
   const questionMsg = buildQuestionMessage(nextQuestion, state.intent)
+
+  // 전략적 반응이 있으면 질문 앞에 prepend
+  if (reactionText) {
+    questionMsg.content = reactionText + '\n\n' + questionMsg.content
+  }
+
   state = clearCurrentQuestion(state)
   state = appendMessage(state, questionMsg)
   state = setCurrentQuestion(state, nextQuestion)
@@ -350,7 +374,7 @@ async function finalizeAndComplete(state: AgentState): Promise<AgentTurnOutput> 
   try {
     derivedStrategy = await synthesizeStrategy(state.intent, state.history)
   } catch (err: any) {
-    console.error('[Agent] Strategy synthesis failed:', err.message)
+    console.error('[Agent] Strategy synthesis failed:', err.message, err.status ?? '', JSON.stringify(err.error ?? '').slice(0, 300))
     // 실패해도 빈 전략으로 종료
     derivedStrategy = {
       keyMessages: [],
@@ -410,13 +434,16 @@ function buildWelcomeMessage(intent: PartialPlanningIntent): string {
   else if (intent.leadContext) projectName = intent.leadContext.clientName
   else if (intent.renewalContext) projectName = intent.renewalContext.previousProjectName
 
-  return `안녕하세요. 언더독스 사업 기획 공동기획자입니다.
+  // RFP 핵심 분석을 먼저 공유 — "먼저 제시"
+  const rfpBrief = buildRfpIntelligenceBrief(intent)
 
-[${channelLabel}] **${projectName}** 사업의 기획을 도와드리겠습니다.
+  return `**${projectName}** 사업 RFP를 분석했습니다.
 
-이제부터 7개 정도의 핵심 질문을 드릴 거예요. 각 질문에 자유롭게 답변해주시면 됩니다. 답변이 어려우면 "잘 모름"이라고 답하셔도 OK — 다른 각도로 다시 물어볼게요.
+${rfpBrief}
 
-목표는 "PM이 충분히 고민하고 구조적으로 끄집어낼 수 있도록" 도와드리는 거예요. 시작하겠습니다.`
+---
+
+위 분석을 바탕으로 수주 전략을 함께 잡아보겠습니다. 몇 가지 핵심 질문을 드릴 건데, 정답을 찾는 게 아니라 PM의 판단과 감을 끌어내는 게 목적이에요. 편하게 답변해주세요.`
 }
 
 function buildQuestionMessage(question: Question, intent: PartialPlanningIntent): Message {
@@ -424,14 +451,8 @@ function buildQuestionMessage(question: Question, intent: PartialPlanningIntent)
   const prompt = question.prompt[channel]
   const examples = question.examples[channel]
 
-  // RFP 맥락을 질문 앞에 삽입 — Agent가 RFP를 "읽고" 묻는 느낌
-  const rfpBrief = buildRfpIntelligenceBrief(intent)
-  let content = ''
-  if (rfpBrief) {
-    content += rfpBrief + '\n\n---\n\n'
-  }
-
-  content += prompt + '\n'
+  // RFP 브리프는 첫 질문에만 (반복 방지)
+  let content = prompt + '\n'
 
   if (examples && examples.length > 0) {
     content += '\n💡 답변 예시:\n'
