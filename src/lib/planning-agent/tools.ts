@@ -130,7 +130,7 @@ export async function synthesizeStrategy(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 8192,
+    max_tokens: 16384, // 11섹션 JSON은 ~12K 토큰. Sonnet max output = 16384.
     messages: [
       {
         role: 'user',

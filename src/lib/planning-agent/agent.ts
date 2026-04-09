@@ -36,7 +36,6 @@ import {
   extractSlotFromAnswer,
   synthesizeStrategy,
   generateFollowupQuestion,
-  generateStrategicReaction,
 } from './tools'
 import {
   updateIntentSlot,
@@ -237,8 +236,9 @@ async function processUserAnswer(
     return await askDeepFollowup(state, extraction.quality.deepFollowupQuestion!, currentQuestion)
   }
 
-  // 6. 다음 질문 또는 종료
-  return await progressToNextQuestion(state, userMessage)
+  // 6. 다음 질문 또는 종료 (전략적 반응을 extraction에서 가져와서 전달 — 추가 API 호출 없음)
+  const reaction = extraction.strategicReaction ?? ''
+  return await progressToNextQuestion(state, userMessage, reaction)
 }
 
 // ─────────────────────────────────────────
@@ -247,38 +247,20 @@ async function processUserAnswer(
 
 async function progressToNextQuestion(
   state: AgentState,
-  lastUserMessage: string,
+  _lastUserMessage: string,
+  reactionText?: string,
 ): Promise<AgentTurnOutput> {
-  // 인터뷰 완료 체크는 "더 물을 질문이 없을 때"로만 함
-  // (slot이 채워졌어도 명시적 질문은 한 번씩 다 던짐 — PM 깊이 우선)
   const nextQuestion = decideNextQuestion(state.intent, state.askedQuestionIds)
   if (!nextQuestion) {
     return await finalizeAndComplete(state)
   }
 
-  // 전략적 반응 생성 — PM의 답변에 대해 Agent가 분석/연결/시사점을 보여줌
-  const previousSlot = state.currentQuestion?.slot ?? ''
-  let reactionText = ''
-  if (previousSlot && lastUserMessage && lastUserMessage !== '(건너뜀)') {
-    try {
-      reactionText = await generateStrategicReaction(
-        lastUserMessage,
-        previousSlot,
-        state.intent,
-        nextQuestion,
-      )
-    } catch (err: any) {
-      // 반응 생성 실패 시 조용히 진행 — 핵심 플로우를 막지 않음
-      console.error('[Agent] Strategic reaction failed:', err.message)
-    }
-  }
-
-  // 다음 질문 메시지 생성 (RFP 맥락 주입)
+  // 다음 질문 메시지 생성
   const questionMsg = buildQuestionMessage(nextQuestion, state.intent)
 
-  // 전략적 반응이 있으면 질문 앞에 prepend
+  // 전략적 반응이 있으면 질문 앞에 prepend (extraction에서 이미 생성됨 — 추가 API 호출 없음)
   if (reactionText) {
-    questionMsg.content = reactionText + '\n\n' + questionMsg.content
+    questionMsg.content = reactionText + '\n\n---\n\n' + questionMsg.content
   }
 
   state = clearCurrentQuestion(state)
@@ -490,11 +472,15 @@ function buildCompletionMessage(intent: PartialPlanningIntent): string {
       if (ds.rfpAnalysis.clientIntentInference) {
         summary += `발주기관 의도: ${ds.rfpAnalysis.clientIntentInference}\n`
       }
-      if (ds.rfpAnalysis.evalCriteriaStrategy?.length > 0) {
+      if (ds.rfpAnalysis.evalCriteriaStrategy) {
         summary += `\n평가배점 공략:\n`
-        ds.rfpAnalysis.evalCriteriaStrategy.forEach((e) => {
-          summary += `  · ${e.item}(${e.score}점) → ${e.emphasis}\n`
-        })
+        if (typeof ds.rfpAnalysis.evalCriteriaStrategy === 'string') {
+          summary += `${ds.rfpAnalysis.evalCriteriaStrategy}\n`
+        } else {
+          ds.rfpAnalysis.evalCriteriaStrategy.forEach((e: any) => {
+            summary += `  · ${e.item}(${e.score}점) → ${e.emphasis}\n`
+          })
+        }
       }
       if (ds.rfpAnalysis.hiddenRequirements?.length > 0) {
         summary += `\n숨은 요구: ${ds.rfpAnalysis.hiddenRequirements.join(' / ')}\n`

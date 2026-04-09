@@ -19,8 +19,8 @@ for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
   if (!process.env[k]) process.env[k] = v
 }
 
-import { runAgentTurn } from '../src/lib/planning-agent/agent'
-import type { AgentState, ChannelInput } from '../src/lib/planning-agent/types'
+// 동적 import — env 로딩 후 실행
+let runAgentTurn: any
 
 const RFP = `계원예술대학교 세대융합창업 프로그램 운영 과업지시서.
 과업예산: 6000만원(VAT포함). 기간: 2025.11~12월. 대상: 청년(만39세이하)+시니어(만50세이상).
@@ -41,6 +41,9 @@ const ANSWERS = [
 ]
 
 async function main() {
+  const agent = await import('../src/lib/planning-agent/agent')
+  runAgentTurn = agent.runAgentTurn
+
   console.log('▶ 품질 테스트 시작 (계원예대 세대융합)')
   const t0 = Date.now()
 
@@ -50,11 +53,26 @@ async function main() {
   let state: AgentState = output.state
   console.log('  parseRfp ✅:', state.intent.bidContext?.rfpFacts?.projectName)
 
-  for (let i = 0; i < ANSWERS.length && !output.isComplete; i++) {
-    output = await runAgentTurn({ state, userMessage: ANSWERS[i] })
-    state = output.state
-    process.stdout.write(`턴${i + 1} `)
+  const maxTurns = 20
+  let turnCount = 0
+  let answerIdx = 0
+  while (!output.isComplete && turnCount < maxTurns) {
+    // 준비된 답변이 없으면 기본 답변으로 대체
+    const answer = answerIdx < ANSWERS.length ? ANSWERS[answerIdx] : '구체적인 건 아직 정해지지 않았지만 방향성은 맞다고 봅니다.'
+    answerIdx++
+    try {
+      output = await runAgentTurn({ state, userMessage: answer })
+      state = output.state
+      turnCount++
+      process.stdout.write(`턴${turnCount} `)
+    } catch (err: any) {
+      console.error(`\n❌ 턴${turnCount + 1} 실패:`, err.message?.slice(0, 200))
+      break
+    }
   }
+  console.log(`\nisComplete: ${output.isComplete}`)
+  console.log(`derivedStrategy null?: ${state.intent.derivedStrategy === null}`)
+  console.log(`derivedStrategy keys: ${state.intent.derivedStrategy ? Object.keys(state.intent.derivedStrategy).join(', ') : 'null'}`)
 
   const ds = state.intent.derivedStrategy
   console.log(`\n\n▶ 결과 (${((Date.now() - t0) / 1000).toFixed(1)}초)`)

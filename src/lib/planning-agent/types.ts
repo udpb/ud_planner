@@ -301,7 +301,8 @@ export interface DerivedStrategy {
 
   // ── NEW: RFP 심층 분석 ──
   rfpAnalysis?: {
-    evalCriteriaStrategy: Array<{
+    /** 배점별 공략 (텍스트 형식 — "항목: 강조점" 한 문단) */
+    evalCriteriaStrategy: string | Array<{
       item: string
       score: number
       pageAllocation: string
@@ -542,6 +543,8 @@ export interface SlotExtraction {
     /** worthDigging=true일 때, 구체적으로 어떤 각도로 파고들지 */
     deepFollowupQuestion?: string
   }
+  /** PM 답변에 대한 전략적 반응 (2-3문장, 한국어, 빈 답변이면 빈 문자열) */
+  strategicReaction?: string
 }
 
 // ═════════════════════════════════════════

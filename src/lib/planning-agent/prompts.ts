@@ -300,7 +300,8 @@ deepFollowupQuestion (worthDigging=true일 때만):
     "followupSuggestion": "재질문 시 어떤 각도로 물을지 (선택)",
     "worthDigging": true | false,
     "deepFollowupQuestion": "hasSubstance=true이고 worthDigging=true일 때, PM 답변을 인용하며 더 파고드는 질문 (선택)"
-  }
+  },
+  "strategicReaction": "PM 답변에 대한 전략적 반응 2-3문장. RFP 맥락과 연결하고, 시사점 짧게 언급. 자연어 한국어, 과도한 칭찬 금지, 일반론 금지. 빈약한 답변이면 빈 문자열."
 }`
 }
 
@@ -433,75 +434,46 @@ ${buildBrandContext()}
 ═══════════════════════════════════════
 ${channelSpecificInstruction}
 
-[출력 JSON — 모든 필드를 채우세요. 각 텍스트 필드는 최소 2-3문장 이상.]
+[출력 JSON — 간결하되 핵심을 놓치지 마세요. 각 필드 1-2문장. 토큰 절약 중요.]
 
 {
-  "keyMessages": [
-    "이 사업의 핵심 맥락에 맞춘 메시지 1 (일반 브랜드 소개 아님, 이 RFP의 평가항목/목표에 직결되는 메시지)",
-    "메시지 2", "메시지 3"
-  ],
-  "differentiators": [
-    "이 사업에서 경쟁사 대비 구체적 우위 1",
-    "우위 2", "우위 3"
-  ],
-  "coachProfile": "이 사업의 대상/도메인에 최적화된 코치 요건 (2-3문장)",
-  "sectionVBonus": ["이 사업 특성에 맞는 추가 제안 1", "추가 제안 2"],
-  "riskMitigation": ["PM이 실제로 짚은 리스크에 대한 구체 대응 1", "대응 2"],
+  "keyMessages": ["이 사업 맥락의 메시지 1 (1문장)", "메시지 2", "메시지 3"],
+  "differentiators": ["경쟁사 대비 우위 1 (1문장)", "우위 2"],
+  "coachProfile": "이 사업에 맞는 코치 요건 (1-2문장)",
+  "sectionVBonus": ["추가 제안 1 (1문장)"],
+  "riskMitigation": ["PM이 짚은 리스크 대응 1 (1문장)"],
 
   "rfpAnalysis": {
-    "evalCriteriaStrategy": [
-      {
-        "item": "평가항목명",
-        "score": 점수,
-        "pageAllocation": "제안서 내 할당 페이지 수와 구성 (예: '12-15p, 사례 3건 + 체계도 1장')",
-        "emphasis": "이 항목에서 가장 강조할 포인트 (2-3문장)",
-        "evidenceNeeded": "뒷받침할 근거/자료 (구체적으로)"
-      }
-    ],
-    "clientIntentInference": "발주기관이 이 사업을 왜 이렇게 설계했는지, 어떤 성과를 내야 하는 사람인지 깊이 추론 (3-5문장)",
-    "hiddenRequirements": ["RFP에 안 쓰여있지만 읽히는 요구 1", "요구 2"],
-    "clarificationNeeded": ["발주기관에 확인할 사항 1", "사항 2"]
+    "evalCriteriaStrategy": "배점별 공략을 한 문단으로 정리 (항목: 강조점 형식)",
+    "clientIntentInference": "발주기관 의도 추론 (2-3문장)",
+    "hiddenRequirements": ["숨은 요구 1", "숨은 요구 2"],
+    "clarificationNeeded": ["확인 필요 사항 1"]
   },
 
   "positioning": {
-    "oneLiner": "이 사업을 위한 원라인 포지셔닝 (이 사업 특화, 일반 회사소개 아님)",
-    "whyUnderdogs": "왜 이 사업에 언더독스가 적임자인지 (이 사업의 구체 요건 ↔ 우리 역량 매칭, 3-5문장)",
-    "competitiveMap": "예상 경쟁 구도와 우리 포지션 분석 (2-3문장)"
+    "oneLiner": "이 사업 특화 포지셔닝 (1문장)",
+    "whyUnderdogs": "왜 우리인가 (2-3문장)",
+    "competitiveMap": "경쟁 구도 (1-2문장)"
   },
 
   "curriculumDirection": {
-    "designPrinciple": "커리큘럼 설계 핵심 원칙 (이 대상, 이 기간, 이 예산에 맞춘)",
-    "impactEmphasis": ["강조할 IMPACT 단계와 이유"],
-    "weeklyOutline": [
-      {"week": "1주", "focus": "주제", "keyActivity": "핵심 활동"},
-      {"week": "2주", "focus": "주제", "keyActivity": "핵심 활동"}
-    ],
-    "formatMix": "교육 형태 비율과 근거 (예: 이론 20% / 워크숍 40% / Action Week 25% / 코칭 15%)"
+    "designPrinciple": "설계 핵심 원칙 (1-2문장)",
+    "impactEmphasis": ["강조 IMPACT 단계"],
+    "weeklyOutline": [{"week": "1주", "focus": "주제", "keyActivity": "활동"}],
+    "formatMix": "교육 형태 비율 (1문장)"
   },
 
   "evalStrategy": {
-    "pageDistribution": [
-      {"section": "섹션명", "pages": "배분 페이지", "reason": "이유"}
-    ],
-    "presentationTips": ["발표/면접 시 강조할 포인트 1", "포인트 2"]
+    "pageDistribution": [{"section": "섹션", "pages": "N페이지", "reason": "이유"}],
+    "presentationTips": ["발표 팁 1"]
   },
 
   "budgetGuideline": {
-    "overallApproach": "예산 활용 대방향 (2-3문장)",
-    "majorCategories": [
-      {"category": "비목", "allocation": "금액 또는 비율", "rationale": "근거"}
-    ]
+    "overallApproach": "예산 방향 (1-2문장)",
+    "majorCategories": [{"category": "비목", "allocation": "비율", "rationale": "근거"}]
   },
 
-  "riskMatrix": [
-    {
-      "risk": "리스크명",
-      "probability": "high|medium|low",
-      "impact": "high|medium|low",
-      "mitigation": "구체 대응 방안 (2-3문장)",
-      "owner": "담당 (PM/운영팀/코치 등)"
-    }
-  ]
+  "riskMatrix": [{"risk": "리스크", "probability": "medium", "impact": "high", "mitigation": "대응 (1문장)", "owner": "담당"}]
 }`
 }
 

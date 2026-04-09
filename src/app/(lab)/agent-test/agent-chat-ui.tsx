@@ -591,34 +591,137 @@ export function AgentChatUI() {
         </div>
 
         {finalIntent?.derivedStrategy && (
-          <div>
+          <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">
               🎯 도출된 전략
             </h3>
-            <Card>
-              <CardContent className="p-3 text-xs space-y-2">
-                {finalIntent.derivedStrategy.keyMessages?.length > 0 && (
-                  <div>
-                    <p className="font-medium text-[10px] uppercase text-muted-foreground mb-1">
-                      Key Messages
-                    </p>
-                    <ul className="space-y-0.5">
-                      {finalIntent.derivedStrategy.keyMessages.slice(0, 3).map((m: string, i: number) => (
-                        <li key={i} className="text-[11px]">· {m}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {finalIntent.derivedStrategy.coachProfile && (
-                  <div>
-                    <p className="font-medium text-[10px] uppercase text-muted-foreground mb-1">
-                      Coach Profile
-                    </p>
-                    <p className="text-[11px]">{finalIntent.derivedStrategy.coachProfile}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+
+            {/* 포지셔닝 */}
+            {finalIntent.derivedStrategy.positioning && (
+              <Card>
+                <CardContent className="p-3 text-xs space-y-1">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground">포지셔닝</p>
+                  <p className="text-[11px] font-semibold">{finalIntent.derivedStrategy.positioning.oneLiner}</p>
+                  {finalIntent.derivedStrategy.positioning.whyUnderdogs && (
+                    <p className="text-[11px] text-muted-foreground mt-1">{finalIntent.derivedStrategy.positioning.whyUnderdogs}</p>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* 키 메시지 */}
+            {finalIntent.derivedStrategy.keyMessages?.length > 0 && (
+              <Card>
+                <CardContent className="p-3 text-xs space-y-1">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground">Key Messages</p>
+                  <ul className="space-y-1">
+                    {finalIntent.derivedStrategy.keyMessages.map((m: string, i: number) => (
+                      <li key={i} className="text-[11px]">· {m}</li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* RFP 심층 분석 */}
+            {finalIntent.derivedStrategy.rfpAnalysis && (
+              <Card>
+                <CardContent className="p-3 text-xs space-y-2">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground">RFP 심층 분석</p>
+                  {finalIntent.derivedStrategy.rfpAnalysis.clientIntentInference && (
+                    <div>
+                      <p className="text-[10px] text-muted-foreground">발주기관 의도</p>
+                      <p className="text-[11px]">{finalIntent.derivedStrategy.rfpAnalysis.clientIntentInference}</p>
+                    </div>
+                  )}
+                  {finalIntent.derivedStrategy.rfpAnalysis.hiddenRequirements?.length > 0 && (
+                    <div>
+                      <p className="text-[10px] text-muted-foreground">숨은 요구</p>
+                      <ul className="space-y-0.5">
+                        {finalIntent.derivedStrategy.rfpAnalysis.hiddenRequirements.map((r: string, i: number) => (
+                          <li key={i} className="text-[11px]">· {r}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {finalIntent.derivedStrategy.rfpAnalysis.evalCriteriaStrategy && (
+                    <div>
+                      <p className="text-[10px] text-muted-foreground">배점 공략</p>
+                      {typeof finalIntent.derivedStrategy.rfpAnalysis.evalCriteriaStrategy === 'string' ? (
+                        <p className="text-[11px]">{finalIntent.derivedStrategy.rfpAnalysis.evalCriteriaStrategy}</p>
+                      ) : (
+                        finalIntent.derivedStrategy.rfpAnalysis.evalCriteriaStrategy.map((e: any, i: number) => (
+                          <div key={i} className="rounded border p-1.5 mt-1 bg-muted/30">
+                            <p className="text-[11px] font-medium">{e.item} {e.score ? `(${e.score}점)` : ''} → {e.pageAllocation}</p>
+                            <p className="text-[10px] text-muted-foreground">{e.emphasis}</p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* 커리큘럼 방향 */}
+            {finalIntent.derivedStrategy.curriculumDirection && (
+              <Card>
+                <CardContent className="p-3 text-xs space-y-1">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground">커리큘럼 방향</p>
+                  <p className="text-[11px]">{finalIntent.derivedStrategy.curriculumDirection.designPrinciple}</p>
+                  {finalIntent.derivedStrategy.curriculumDirection.weeklyOutline?.map((w: any, i: number) => (
+                    <div key={i} className="text-[11px] flex gap-1">
+                      <span className="font-medium text-primary shrink-0">[{w.week}]</span>
+                      <span>{w.focus} — {w.keyActivity}</span>
+                    </div>
+                  ))}
+                  {finalIntent.derivedStrategy.curriculumDirection.formatMix && (
+                    <p className="text-[10px] text-muted-foreground mt-1">{finalIntent.derivedStrategy.curriculumDirection.formatMix}</p>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* 예산 가이드 */}
+            {finalIntent.derivedStrategy.budgetGuideline && (
+              <Card>
+                <CardContent className="p-3 text-xs space-y-1">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground">예산 가이드</p>
+                  <p className="text-[11px]">{finalIntent.derivedStrategy.budgetGuideline.overallApproach}</p>
+                  {finalIntent.derivedStrategy.budgetGuideline.majorCategories?.map((c: any, i: number) => (
+                    <div key={i} className="text-[11px]">· {c.category}: {c.allocation}</div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* 리스크 매트릭스 */}
+            {finalIntent.derivedStrategy.riskMatrix?.length > 0 && (
+              <Card>
+                <CardContent className="p-3 text-xs space-y-1">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground">리스크 매트릭스</p>
+                  {finalIntent.derivedStrategy.riskMatrix.map((r: any, i: number) => (
+                    <div key={i} className="rounded border p-1.5 mt-1 bg-muted/30">
+                      <div className="flex items-center gap-1 mb-0.5">
+                        <Badge variant="outline" className="text-[9px] h-4">{r.probability}/{r.impact}</Badge>
+                        <span className="text-[11px] font-medium">{r.risk}</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground">{r.mitigation}</p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* 코치 프로필 */}
+            {finalIntent.derivedStrategy.coachProfile && (
+              <Card>
+                <CardContent className="p-3 text-xs">
+                  <p className="font-medium text-[10px] uppercase text-muted-foreground mb-1">코치 프로필</p>
+                  <p className="text-[11px]">{finalIntent.derivedStrategy.coachProfile}</p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
       </div>
