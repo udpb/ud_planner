@@ -43,6 +43,7 @@ import {
   finalizeIntent,
   incrementTurn,
 } from './intent-schema'
+import { buildRfpIntelligenceBrief } from './prompts'
 
 // ─────────────────────────────────────────
 // 메인 함수
@@ -105,8 +106,8 @@ async function startNewSession(
     return await finalizeAndComplete(state)
   }
 
-  // 5. 첫 질문 메시지 생성
-  const questionMsg = buildQuestionMessage(firstQuestion, intent.channel.type)
+  // 5. 첫 질문 메시지 생성 (RFP 맥락 주입)
+  const questionMsg = buildQuestionMessage(firstQuestion, intent)
   state = appendMessage(state, questionMsg)
   state = setCurrentQuestion(state, firstQuestion)
   state = setStatus(state, 'interviewing')
@@ -181,30 +182,34 @@ async function processUserAnswer(
   // - secondary: confidence='high'만 받음 (PM 깊이 있는 사고를 위해 명시적 질문은 한 번씩 다 던져야 함)
   const updates: Partial<typeof state.intent.strategicContext> = {}
 
+  // LLM이 list형 슬롯(riskFactors)에서 string 대신 array를 반환할 수 있음
+  // → primaryValue/secondaryValue를 안전하게 string으로 정규화
+  const primaryValueStr = normalizeToString(extraction.primaryValue)
+
   // primary 처리: hasSubstance=true 이거나, 이미 1번 재질문 후 (followupCount >= 1) 인 경우만 저장
   // → "잘 모름" 류의 빈약한 답변이 슬롯에 저장되는 것 방지
   const shouldStorePrimary =
-    extraction.primaryValue &&
-    extraction.primaryValue.trim().length >= 5 &&
+    primaryValueStr.trim().length >= 5 &&
     (extraction.quality.hasSubstance || followupCount >= 1)
 
   if (shouldStorePrimary) {
     if (currentQuestion.slot === 'riskFactors') {
-      updates.riskFactors = parseArrayValue(extraction.primaryValue)
+      updates.riskFactors = parseArrayValue(primaryValueStr)
     } else {
-      updates[currentQuestion.slot] = extraction.primaryValue as any
+      updates[currentQuestion.slot] = primaryValueStr as any
     }
   }
 
   // secondary 처리: confidence='high'만, 그리고 의미 있는 길이일 때만
   for (const sec of extraction.secondarySlots ?? []) {
     if (sec.confidence !== 'high') continue
-    if (!sec.value || sec.value.trim().length < 10) continue
+    const secValueStr = normalizeToString(sec.value)
+    if (secValueStr.trim().length < 10) continue
     if (sec.slot === 'riskFactors') {
-      updates.riskFactors = [...(updates.riskFactors ?? []), ...parseArrayValue(sec.value)]
+      updates.riskFactors = [...(updates.riskFactors ?? []), ...parseArrayValue(secValueStr)]
     } else {
       if (!updates[sec.slot]) {
-        updates[sec.slot] = sec.value as any
+        updates[sec.slot] = secValueStr as any
       }
     }
   }
@@ -231,9 +236,8 @@ async function progressToNextQuestion(
     return await finalizeAndComplete(state)
   }
 
-  // 다음 질문 메시지 생성
-  const channel = state.intent.channel.type
-  const questionMsg = buildQuestionMessage(nextQuestion, channel)
+  // 다음 질문 메시지 생성 (RFP 맥락 주입)
+  const questionMsg = buildQuestionMessage(nextQuestion, state.intent)
   state = clearCurrentQuestion(state)
   state = appendMessage(state, questionMsg)
   state = setCurrentQuestion(state, nextQuestion)
@@ -295,10 +299,10 @@ async function finalizeAndComplete(state: AgentState): Promise<AgentTurnOutput> 
   state = setStatus(state, 'synthesizing')
   state = updateSession(state)
 
-  // derivedStrategy 종합 (Claude 호출)
+  // derivedStrategy 종합 (LLM 호출 — 대화 원문 포함)
   let derivedStrategy
   try {
-    derivedStrategy = await synthesizeStrategy(state.intent)
+    derivedStrategy = await synthesizeStrategy(state.intent, state.history)
   } catch (err: any) {
     console.error('[Agent] Strategy synthesis failed:', err.message)
     // 실패해도 빈 전략으로 종료
@@ -369,11 +373,19 @@ function buildWelcomeMessage(intent: PartialPlanningIntent): string {
 목표는 "PM이 충분히 고민하고 구조적으로 끄집어낼 수 있도록" 도와드리는 거예요. 시작하겠습니다.`
 }
 
-function buildQuestionMessage(question: Question, channel: PartialPlanningIntent['channel']['type']): Message {
+function buildQuestionMessage(question: Question, intent: PartialPlanningIntent): Message {
+  const channel = intent.channel.type
   const prompt = question.prompt[channel]
   const examples = question.examples[channel]
 
-  let content = prompt + '\n'
+  // RFP 맥락을 질문 앞에 삽입 — Agent가 RFP를 "읽고" 묻는 느낌
+  const rfpBrief = buildRfpIntelligenceBrief(intent)
+  let content = ''
+  if (rfpBrief) {
+    content += rfpBrief + '\n\n---\n\n'
+  }
+
+  content += prompt + '\n'
 
   if (examples && examples.length > 0) {
     content += '\n💡 답변 예시:\n'
@@ -392,31 +404,102 @@ function buildCompletionMessage(intent: PartialPlanningIntent): string {
   const turns = intent.metadata.turnsCompleted
 
   let summary = `인터뷰가 완료되었습니다. 🎯\n\n`
-  summary += `📊 **결과 요약**\n`
-  summary += `- 진행 턴: ${turns}회\n`
-  summary += `- 완전성: ${completeness}/100 (${intent.metadata.confidence})\n`
+  summary += `📊 **결과 요약** — ${turns}턴, 완전성 ${completeness}/100 (${intent.metadata.confidence})\n`
 
   if (intent.derivedStrategy) {
     const ds = intent.derivedStrategy
+
+    // 포지셔닝
+    if (ds.positioning?.oneLiner) {
+      summary += `\n🎯 **포지셔닝**\n${ds.positioning.oneLiner}\n`
+    }
+    if (ds.positioning?.whyUnderdogs) {
+      summary += `\n${ds.positioning.whyUnderdogs}\n`
+    }
+
+    // RFP 심층 분석
+    if (ds.rfpAnalysis) {
+      summary += `\n📋 **RFP 심층 분석**\n`
+      if (ds.rfpAnalysis.clientIntentInference) {
+        summary += `발주기관 의도: ${ds.rfpAnalysis.clientIntentInference}\n`
+      }
+      if (ds.rfpAnalysis.evalCriteriaStrategy?.length > 0) {
+        summary += `\n평가배점 공략:\n`
+        ds.rfpAnalysis.evalCriteriaStrategy.forEach((e) => {
+          summary += `  · ${e.item}(${e.score}점) → ${e.emphasis}\n`
+        })
+      }
+      if (ds.rfpAnalysis.hiddenRequirements?.length > 0) {
+        summary += `\n숨은 요구: ${ds.rfpAnalysis.hiddenRequirements.join(' / ')}\n`
+      }
+    }
+
+    // 커리큘럼 방향
+    if (ds.curriculumDirection) {
+      summary += `\n📚 **커리큘럼 방향**\n`
+      summary += `설계 원칙: ${ds.curriculumDirection.designPrinciple}\n`
+      if (ds.curriculumDirection.weeklyOutline?.length > 0) {
+        ds.curriculumDirection.weeklyOutline.forEach((w) => {
+          summary += `  [${w.week}] ${w.focus} — ${w.keyActivity}\n`
+        })
+      }
+      if (ds.curriculumDirection.formatMix) {
+        summary += `형태: ${ds.curriculumDirection.formatMix}\n`
+      }
+    }
+
+    // 키 메시지
     if (ds.keyMessages.length > 0) {
-      summary += `\n🔑 **도출된 키 메시지** (${ds.keyMessages.length}개)\n`
-      ds.keyMessages.slice(0, 3).forEach((m, i) => {
+      summary += `\n🔑 **키 메시지** (${ds.keyMessages.length}개)\n`
+      ds.keyMessages.forEach((m, i) => {
         summary += `   ${i + 1}. ${m}\n`
       })
     }
-    if (ds.coachProfile) {
-      summary += `\n👤 **이상적 코치 프로필**\n   ${ds.coachProfile}\n`
+
+    // 예산
+    if (ds.budgetGuideline?.overallApproach) {
+      summary += `\n💰 **예산 가이드**: ${ds.budgetGuideline.overallApproach}\n`
     }
-    if (ds.sectionVBonus.length > 0) {
-      summary += `\n🎁 **추가 제안 아이디어** (${ds.sectionVBonus.length}개)\n`
-      ds.sectionVBonus.slice(0, 3).forEach((b, i) => {
-        summary += `   ${i + 1}. ${b}\n`
+
+    // 리스크 매트릭스
+    if (ds.riskMatrix && ds.riskMatrix.length > 0) {
+      summary += `\n⚠️ **리스크 매트릭스** (${ds.riskMatrix.length}개)\n`
+      ds.riskMatrix.forEach((r) => {
+        summary += `  · [${r.probability}/${r.impact}] ${r.risk} → ${r.mitigation.slice(0, 80)}\n`
       })
     }
   }
 
   summary += `\n이 결과는 코치 추천 + 제안서 생성에 활용됩니다.`
   return summary
+}
+
+// ─────────────────────────────────────────
+// 헬퍼: LLM 응답 정규화
+// ─────────────────────────────────────────
+
+/**
+ * LLM이 string 슬롯에 대해 array/object를 반환할 수 있음 (특히 list-like 의미일 때).
+ * 안전하게 string으로 정규화. null/undefined는 빈 문자열.
+ */
+function normalizeToString(value: unknown): string {
+  if (value == null) return ''
+  if (typeof value === 'string') return value
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value)
+  if (Array.isArray(value)) {
+    return value
+      .map((v) => normalizeToString(v))
+      .filter((s) => s.length > 0)
+      .join(' / ')
+  }
+  if (typeof value === 'object') {
+    try {
+      return JSON.stringify(value)
+    } catch {
+      return ''
+    }
+  }
+  return String(value)
 }
 
 // ─────────────────────────────────────────

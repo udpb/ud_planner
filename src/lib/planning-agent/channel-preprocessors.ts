@@ -85,6 +85,17 @@ export function generateVerificationChecklist(
         status: 'pending',
       })
     }
+  } else {
+    // 과업지시서/공고 단계라 평가 배점이 본 문서에 없는 경우
+    // → 별도 평가요령 PDF 확인 필수 (P0 우선순위)
+    points.push({
+      id: `vp-eval-missing-${Date.now()}`,
+      category: '평가배점',
+      priority: 'high',
+      question: '본 문서에 평가 배점이 명시되어 있지 않습니다 (과업지시서/공고일 가능성). 별도 "제안서 평가표" 또는 "평가 요령" 문서가 첨부되었는지, 어떤 항목이 몇 점인지 즉시 확인 필요.',
+      rationale: '평가 기준 없이는 제안서 챕터별 분량/우선순위를 정할 수 없음. 과업지시서는 거의 항상 평가요령이 별도 문서로 옴.',
+      status: 'pending',
+    })
   }
 
   // 2. 예산 — VAT 포함/제외 명확한지

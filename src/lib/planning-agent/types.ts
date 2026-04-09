@@ -292,16 +292,74 @@ export interface StrategicContext {
 // ═════════════════════════════════════════
 
 export interface DerivedStrategy {
-  /** 제안서 키 메시지 3-5개 */
+  // ── 기존 필드 (호환성 유지) ──
   keyMessages: string[]
-  /** 차별화 포인트 */
   differentiators: string[]
-  /** 이상적인 코치 프로필 (한 문장) */
   coachProfile: string
-  /** RFP 범위 외 추가 제안 아이디어 (Section V 보너스) */
   sectionVBonus: string[]
-  /** 위험 대응 방안 */
   riskMitigation: string[]
+
+  // ── NEW: RFP 심층 분석 ──
+  rfpAnalysis?: {
+    evalCriteriaStrategy: Array<{
+      item: string
+      score: number
+      pageAllocation: string
+      emphasis: string
+      evidenceNeeded: string
+    }>
+    clientIntentInference: string
+    hiddenRequirements: string[]
+    clarificationNeeded: string[]
+  }
+
+  // ── NEW: 전략적 포지셔닝 ──
+  positioning?: {
+    oneLiner: string
+    whyUnderdogs: string
+    competitiveMap: string
+  }
+
+  // ── NEW: 커리큘럼 설계 방향 ──
+  curriculumDirection?: {
+    designPrinciple: string
+    impactEmphasis: string[]
+    weeklyOutline: Array<{
+      week: string
+      focus: string
+      keyActivity: string
+    }>
+    formatMix: string
+  }
+
+  // ── NEW: 평가 전략 ──
+  evalStrategy?: {
+    pageDistribution: Array<{
+      section: string
+      pages: string
+      reason: string
+    }>
+    presentationTips: string[]
+  }
+
+  // ── NEW: 예산 가이드라인 ──
+  budgetGuideline?: {
+    overallApproach: string
+    majorCategories: Array<{
+      category: string
+      allocation: string
+      rationale: string
+    }>
+  }
+
+  // ── NEW: 리스크 매트릭스 ──
+  riskMatrix?: Array<{
+    risk: string
+    probability: 'high' | 'medium' | 'low'
+    impact: 'high' | 'medium' | 'low'
+    mitigation: string
+    owner: string
+  }>
 }
 
 // ═════════════════════════════════════════

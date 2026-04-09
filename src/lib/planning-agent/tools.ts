@@ -13,12 +13,14 @@ import type {
   DerivedStrategy,
   ProjectChannel,
   StrategicSlot,
+  Message,
 } from './types'
 import { summarizeIntent } from './intent-schema'
 import {
   buildSlotExtractionPrompt,
   buildSynthesisPrompt,
   buildFollowupSuggestionPrompt,
+  buildRfpIntelligenceBrief,
 } from './prompts'
 
 // ─────────────────────────────────────────
@@ -68,6 +70,7 @@ export async function extractSlotFromAnswer(
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: 2048,
+    json_mode: true,
     messages: [
       {
         role: 'user',
@@ -99,6 +102,7 @@ export async function generateFollowupQuestion(
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: 512,
+    json_mode: true,
     messages: [
       {
         role: 'user',
@@ -116,16 +120,19 @@ export async function generateFollowupQuestion(
 // ─────────────────────────────────────────
 
 /**
- * 인터뷰가 충분히 진행됐을 때 → strategicContext + 채널 컨텍스트 종합 → DerivedStrategy 생성.
+ * 인터뷰가 충분히 진행됐을 때 → 전체 정보 종합 → 풍부한 DerivedStrategy 생성.
+ * conversationHistory를 받아서 PM의 원문 뉘앙스까지 반영.
  */
 export async function synthesizeStrategy(
   intent: PartialPlanningIntent,
+  conversationHistory?: Message[],
 ): Promise<DerivedStrategy> {
-  const prompt = buildSynthesisPrompt(intent)
+  const prompt = buildSynthesisPrompt(intent, conversationHistory)
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 4096,
+    max_tokens: 32000, // Pro: thinking ~20K + output ~12K = 32K 필요
+    json_mode: true,   // Gemini JSON 모드 강제 — 마크다운 출력 방지
     messages: [
       {
         role: 'user',
@@ -137,13 +144,19 @@ export async function synthesizeStrategy(
   const raw = (msg.content[0] as any).text.trim()
   const result = safeParseJson<DerivedStrategy>(raw, 'synthesizeStrategy')
 
-  // 기본값 보정
+  // 기본값 보정 (기존 필드 + 새 필드)
   return {
     keyMessages: result.keyMessages ?? [],
     differentiators: result.differentiators ?? [],
     coachProfile: result.coachProfile ?? '',
     sectionVBonus: result.sectionVBonus ?? [],
     riskMitigation: result.riskMitigation ?? [],
+    rfpAnalysis: result.rfpAnalysis,
+    positioning: result.positioning,
+    curriculumDirection: result.curriculumDirection,
+    evalStrategy: result.evalStrategy,
+    budgetGuideline: result.budgetGuideline,
+    riskMatrix: result.riskMatrix,
   }
 }
 
