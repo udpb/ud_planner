@@ -194,9 +194,17 @@ async function processUserAnswer(
 
   if (shouldStorePrimary) {
     if (currentQuestion.slot === 'riskFactors') {
-      updates.riskFactors = parseArrayValue(primaryValueStr)
+      // 꼬리질문 후 답변이면 기존 배열에 추가
+      const existing = state.intent.strategicContext.riskFactors ?? []
+      updates.riskFactors = [...existing, ...parseArrayValue(primaryValueStr)]
     } else {
-      updates[currentQuestion.slot] = primaryValueStr as any
+      // 꼬리질문 후 답변이면 기존 값에 append (구분선으로)
+      const existingVal = (state.intent.strategicContext as any)[currentQuestion.slot]
+      if (followupCount >= 1 && existingVal && typeof existingVal === 'string' && existingVal.trim().length > 5) {
+        updates[currentQuestion.slot] = `${existingVal}\n\n[추가 — 꼬리질문 답변]\n${primaryValueStr}` as any
+      } else {
+        updates[currentQuestion.slot] = primaryValueStr as any
+      }
     }
   }
 
@@ -217,7 +225,18 @@ async function processUserAnswer(
   const newIntent = updateIntentSlots(state.intent, updates)
   state = setIntent(state, newIntent)
 
-  // 5. 다음 질문 또는 종료
+  // 5. 꼬리질문 — 답변이 있지만 더 파면 가치 있을 때 (1회 한도)
+  const shouldDeepDig =
+    extraction.quality.worthDigging &&
+    extraction.quality.hasSubstance &&
+    extraction.quality.deepFollowupQuestion &&
+    followupCount < 1 // weak followup과 같은 카운터 공유 — 질문당 총 1회
+
+  if (shouldDeepDig) {
+    return await askDeepFollowup(state, extraction.quality.deepFollowupQuestion!, currentQuestion)
+  }
+
+  // 6. 다음 질문 또는 종료
   return await progressToNextQuestion(state, userMessage)
 }
 
@@ -288,6 +307,33 @@ async function askFollowup(
     // 재질문 생성 실패 → 그냥 다음 질문으로
     console.error('[Agent] Followup generation failed:', err.message)
     return await progressToNextQuestion(state, userAnswer)
+  }
+}
+
+// ─────────────────────────────────────────
+// 꼬리질문 (답변이 있지만 더 파고들 가치가 있을 때)
+// ─────────────────────────────────────────
+
+async function askDeepFollowup(
+  state: AgentState,
+  deepQuestion: string,
+  currentQuestion: Question,
+): Promise<AgentTurnOutput> {
+  // 카운트 증가 (weak followup과 공유 — 질문당 총 1회)
+  state = incrementFollowupCount(state, currentQuestion.id)
+
+  const followupMsg = createMessage(
+    'agent',
+    `좋은 포인트입니다. 여기서 한 가지 더 여쭤볼게요:\n\n${deepQuestion}`,
+    { questionId: currentQuestion.id },
+  )
+  state = appendMessage(state, followupMsg)
+  state = updateSession(state)
+
+  return {
+    state,
+    agentMessage: followupMsg,
+    isComplete: false,
   }
 }
 

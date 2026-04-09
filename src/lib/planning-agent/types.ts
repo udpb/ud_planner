@@ -537,6 +537,10 @@ export interface SlotExtraction {
     hasSubstance: boolean         // 실질 내용 vs 회피/모호함
     needsFollowup: boolean
     followupSuggestion?: string   // 어떻게 다시 물을지
+    /** 답변에 의미있는 정보가 있지만, 더 파면 가치가 있는 포인트가 있는가? */
+    worthDigging?: boolean
+    /** worthDigging=true일 때, 구체적으로 어떤 각도로 파고들지 */
+    deepFollowupQuestion?: string
   }
 }
 

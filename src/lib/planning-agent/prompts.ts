@@ -198,6 +198,18 @@ needsFollowup (재질문 필요):
   - false: hasSubstance가 true이거나, PM이 정말 모르는 영역일 때
   - 주의: hasSubstance=true면 needsFollowup은 거의 항상 false. 답변이 짧아도 정보가 있으면 통과시키세요.
 
+worthDigging (꼬리질문 가치 — hasSubstance=true일 때만 판단):
+  - true: 답변에 정보가 있지만, 한 단계 더 파면 제안서에 결정적으로 유용한 구체 사례/숫자/교훈이 나올 것 같을 때
+    예: "50플러스재단 경험이 있어서 참여" → 경험에서 구체적으로 뭘 배웠는지 파고들면 가치 있음
+    예: "상상우리가 경쟁사" → 구체적으로 어떤 점에서 우리가 이기는지 파고들면 차별점이 날카로워짐
+  - false: 이미 충분히 구체적이거나, 더 파봤자 새로운 정보가 나오기 어려울 때
+  - 주의: hasSubstance=false이면 worthDigging은 항상 false (빈약한 답변은 재질문, 꼬리질문이 아님)
+
+deepFollowupQuestion (worthDigging=true일 때만):
+  - PM의 답변에서 가장 흥미로운 실마리를 잡아서 RFP 맥락과 연결한 구체적 질문
+  - 예: "50플러스재단에서 시니어-청년 매칭할 때 가장 어려웠던 점이 뭐였나요? 이번 세대융합 프로그램에서 그 교훈을 어떻게 적용하실 건가요?"
+  - 반드시 PM의 원래 답변 내용을 인용하면서 물어야 함 (연결감)
+
 ═══════════════════════════════════════
 [가능한 슬롯 키]
 - participationDecision: 왜 들어가는가 + 우리 경쟁력
@@ -225,7 +237,9 @@ needsFollowup (재질문 필요):
     "isActionable": true | false,
     "hasSubstance": true | false,
     "needsFollowup": true | false,
-    "followupSuggestion": "재질문 시 어떤 각도로 물을지 (선택)"
+    "followupSuggestion": "재질문 시 어떤 각도로 물을지 (선택)",
+    "worthDigging": true | false,
+    "deepFollowupQuestion": "hasSubstance=true이고 worthDigging=true일 때, PM 답변을 인용하며 더 파고드는 질문 (선택)"
   }
 }`
 }
