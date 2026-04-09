@@ -19,8 +19,11 @@ type Message = {
   timestamp: string
 }
 
+// AgentState는 서버 shape을 그대로 보관. stateless API를 위해 통째로 서버로 다시 전송.
+// intent 안의 bidContext/leadContext/renewalContext 등 모든 필드를 투명하게 유지해야 함.
 type AgentState = {
   sessionId: string
+  projectId?: string
   status: string
   history: Message[]
   intent: {
@@ -33,7 +36,16 @@ type AgentState = {
       unfilledSlots: string[]
     }
     derivedStrategy: any | null
+    // 채널별 컨텍스트 (서버에서 세팅된 그대로 유지)
+    bidContext?: any
+    leadContext?: any
+    renewalContext?: any
   }
+  currentQuestion: any | null
+  askedQuestionIds: string[]
+  followupCountByQuestion: Record<string, number>
+  createdAt: string
+  updatedAt: string
 }
 
 type ChannelType = 'bid' | 'lead' | 'renewal'
@@ -60,6 +72,9 @@ function StartForm({
     setPdfUploading(true)
     setPdfError('')
     try {
+      // 서버 사이드 추출 (/api/agent/extract-pdf)
+      // - 검증: pdfjs-dist legacy + DOMMatrix polyfill로 4개 실제 RFP PDF 100% 성공
+      // - 큰 PDF(60+ 페이지)도 서버에서 처리하는 게 안정적
       const formData = new FormData()
       formData.append('file', file)
       const res = await fetch('/api/agent/extract-pdf', {
@@ -69,9 +84,9 @@ function StartForm({
       const result = await res.json()
       if (!res.ok) throw new Error(result.error ?? 'PDF 추출 실패')
       setRfpText(result.text)
-      setPdfFilename(result.filename)
+      setPdfFilename(`${result.filename} (${result.numPages}p, ${result.length}자)`)
     } catch (e: any) {
-      setPdfError(e.message)
+      setPdfError(e.message ?? 'PDF 추출 실패')
     } finally {
       setPdfUploading(false)
     }
@@ -332,11 +347,13 @@ export function AgentChatUI() {
     setLoading(true)
     setError('')
     try {
+      // Stateless API: state 전체를 body에 포함해서 전송
+      // (Next.js dev Fast Refresh로 인한 in-memory Map 리셋 문제 회피)
       const res = await fetch('/api/agent/respond', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sessionId: state.sessionId,
+          state,
           userMessage: skip ? undefined : input,
           skipCurrentQuestion: skip || undefined,
         }),
