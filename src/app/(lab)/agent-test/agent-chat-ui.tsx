@@ -310,6 +310,8 @@ export function AgentChatUI() {
   const [isComplete, setIsComplete] = useState(false)
   const [finalIntent, setFinalIntent] = useState<any>(null)
   const [error, setError] = useState('')
+  const [proposalLoading, setProposalLoading] = useState(false)
+  const [proposalError, setProposalError] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // 자동 스크롤
@@ -391,6 +393,41 @@ export function AgentChatUI() {
     a.download = `planning-intent-${state?.sessionId.slice(0, 8)}.json`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  async function handleGenerateProposal() {
+    if (!finalIntent && !state?.intent) return
+    setProposalLoading(true)
+    setProposalError('')
+    try {
+      const res = await fetch('/api/agent/generate-proposal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ intent: finalIntent ?? state?.intent }),
+      })
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.error)
+
+      // 마크다운으로 조합 후 다운로드
+      let md = `# ${state?.intent.bidContext?.rfpFacts?.projectName ?? '제안서'} — 초안\n\n`
+      md += `> Planning Agent에 의해 자동 생성된 초안입니다. 검토 및 수정이 필요합니다.\n\n---\n\n`
+      for (const section of result.sections) {
+        md += `## ${section.no}. ${section.title}\n\n${section.content}\n\n---\n\n`
+      }
+      md += `\n총 ${result.totalLength.toLocaleString()}자\n`
+
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `proposal-draft-${state?.sessionId.slice(0, 8)}.md`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (e: any) {
+      setProposalError(e.message)
+    } finally {
+      setProposalLoading(false)
+    }
   }
 
   // 시작 전: 폼 표시
@@ -506,15 +543,27 @@ export function AgentChatUI() {
         )}
 
         {isComplete && (
-          <div className="border-t px-6 py-4 bg-green-50">
+          <div className="border-t px-6 py-4 bg-green-50 space-y-3">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-green-800">
-                ✅ 인터뷰 완료! 최종 PlanningIntent를 다운로드해서 검증하세요.
+                ✅ 인터뷰 완료!
               </p>
-              <Button onClick={handleDownloadIntent} className="gap-2">
-                <Download className="h-4 w-4" /> Intent JSON 다운로드
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={handleDownloadIntent} variant="outline" size="sm" className="gap-1.5">
+                  <Download className="h-3.5 w-3.5" /> Intent JSON
+                </Button>
+                <Button onClick={handleGenerateProposal} disabled={proposalLoading} className="gap-1.5">
+                  {proposalLoading ? (
+                    <><Loader2 className="h-3.5 w-3.5 animate-spin" /> 제안서 생성 중...</>
+                  ) : (
+                    <><FileText className="h-3.5 w-3.5" /> 제안서 초안 생성</>
+                  )}
+                </Button>
+              </div>
             </div>
+            {proposalError && (
+              <p className="text-xs text-destructive">{proposalError}</p>
+            )}
           </div>
         )}
       </div>
