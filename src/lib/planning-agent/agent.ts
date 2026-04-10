@@ -36,6 +36,7 @@ import {
   extractSlotFromAnswer,
   synthesizeStrategy,
   generateFollowupQuestion,
+  generateDynamicQuestions,
 } from './tools'
 import {
   updateIntentSlot,
@@ -94,7 +95,13 @@ async function startNewSession(
   // 2. 세션 생성
   let state = createSession(intent, { projectId, status: 'preprocessing' })
 
-  // 3. 첫 안내 메시지 (Agent가 PM에게 인사 + 채널 확인)
+  // 2.5. RFP 기반 동적 질문 생성 (1회 LLM 호출 — 실패 시 고정 질문 fallback)
+  const dynamicPrompts = await generateDynamicQuestions(intent)
+  if (Object.keys(dynamicPrompts).length > 0) {
+    state = { ...state, dynamicQuestionPrompts: dynamicPrompts }
+  }
+
+  // 3. 첫 안내 메시지 (Agent가 PM에게 인사 + RFP 분석 공유)
   const welcomeContent = buildWelcomeMessage(intent)
   const welcomeMsg = createMessage('agent', welcomeContent)
   state = appendMessage(state, welcomeMsg)
@@ -107,7 +114,7 @@ async function startNewSession(
   }
 
   // 5. 첫 질문 메시지 생성 (RFP 맥락 주입)
-  const questionMsg = buildQuestionMessage(firstQuestion, intent)
+  const questionMsg = buildQuestionMessage(firstQuestion, state)
   state = appendMessage(state, questionMsg)
   state = setCurrentQuestion(state, firstQuestion)
   state = setStatus(state, 'interviewing')
@@ -256,7 +263,7 @@ async function progressToNextQuestion(
   }
 
   // 다음 질문 메시지 생성
-  const questionMsg = buildQuestionMessage(nextQuestion, state.intent)
+  const questionMsg = buildQuestionMessage(nextQuestion, state)
 
   // 전략적 반응이 있으면 질문 앞에 prepend (extraction에서 이미 생성됨 — 추가 API 호출 없음)
   if (reactionText) {
@@ -428,15 +435,18 @@ ${rfpBrief}
 위 분석을 바탕으로 수주 전략을 함께 잡아보겠습니다. 몇 가지 핵심 질문을 드릴 건데, 정답을 찾는 게 아니라 PM의 판단과 감을 끌어내는 게 목적이에요. 편하게 답변해주세요.`
 }
 
-function buildQuestionMessage(question: Question, intent: PartialPlanningIntent): Message {
-  const channel = intent.channel.type
-  const prompt = question.prompt[channel]
+function buildQuestionMessage(question: Question, state: AgentState): Message {
+  const channel = state.intent.channel.type
+
+  // 동적 질문이 있으면 사용, 없으면 고정 질문 fallback
+  const dynamicPrompt = state.dynamicQuestionPrompts?.[question.slot]
+  const prompt = dynamicPrompt || question.prompt[channel]
   const examples = question.examples[channel]
 
-  // RFP 브리프는 첫 질문에만 (반복 방지)
   let content = prompt + '\n'
 
-  if (examples && examples.length > 0) {
+  // 동적 질문에는 예시 생략 (이미 RFP 맥락이 포함됨)
+  if (!dynamicPrompt && examples && examples.length > 0) {
     content += '\n💡 답변 예시:\n'
     examples.forEach((ex, i) => {
       content += `   ${i + 1}. ${ex}\n`

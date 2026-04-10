@@ -123,6 +123,56 @@ function buildRenewalBrief(ctx: RenewalContext): string {
 }
 
 // ─────────────────────────────────────────
+// 0.3. 동적 질문 생성 프롬프트
+//    — RFP 파싱 후 1회 호출 → 7개 질문을 RFP 맞춤형으로 리프레이밍
+// ─────────────────────────────────────────
+
+/**
+ * 세션 시작 시 1회 호출. RFP 내용을 반영하여 7개 질문을 맞춤형으로 생성.
+ * 고정 질문의 "구조"(슬롯, 목적)는 유지하되, 문구가 이 프로젝트에 특화됨.
+ */
+export function buildDynamicQuestionsPrompt(
+  intent: PartialPlanningIntent,
+): string {
+  const rfpBrief = buildRfpIntelligenceBrief(intent)
+
+  return `당신은 한국 교육 사업 입찰 전문 컨설턴트입니다.
+아래 RFP를 분석한 후, PM에게 물어볼 7개 질문을 생성하세요.
+각 질문은 이 RFP에 특화된 구체적 내용이어야 합니다 (일반적 질문 금지).
+
+═══════════════════════════════════════
+${rfpBrief}
+═══════════════════════════════════════
+
+[질문 생성 규칙]
+각 슬롯별로 1개의 질문을 생성하세요.
+- RFP의 구체 수치(예산, 인원, 배점, 기간)를 질문에 직접 인용하세요
+- "이 RFP에서 ~가 눈에 띄는데" 식으로 Agent의 분석을 먼저 제시하고 질문하세요
+- PM이 구체적으로 대답하도록 유도하는 좁은 질문이어야 합니다
+- 한국어 존댓말, 2-4문장
+
+[7개 슬롯과 목적]
+1. participationDecision: 왜 이 입찰에 들어가는가, 우리 경쟁력
+2. clientHiddenWants: 발주기관이 RFP에 안 쓴 진짜 의도
+3. mustNotFail: 이 사업에서 절대 실패하면 안 되는 것
+4. competitorWeakness: 예상 경쟁사와 그들의 약점
+5. riskFactors: 외적/내적 리스크
+6. decisionMakers: 평가위원/의사결정자 성향과 패턴
+7. pastSimilarProjects: 과거 유사 사업 경험과 교훈
+
+[출력 JSON]
+{
+  "participationDecision": "RFP 특화 질문 (2-4문장)",
+  "clientHiddenWants": "RFP 특화 질문",
+  "mustNotFail": "RFP 특화 질문",
+  "competitorWeakness": "RFP 특화 질문",
+  "riskFactors": "RFP 특화 질문",
+  "decisionMakers": "RFP 특화 질문",
+  "pastSimilarProjects": "RFP 특화 질문"
+}`
+}
+
+// ─────────────────────────────────────────
 // 0.5. 전략적 반응 프롬프트
 //    — PM의 답변 후 Agent가 분석하고 연결해서 반응
 // ─────────────────────────────────────────

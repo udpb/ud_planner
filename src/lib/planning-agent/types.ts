@@ -483,6 +483,8 @@ export interface AgentState {
   askedQuestionIds: string[]
   /** 질문별 재질문 횟수 — 1번 재질문 후엔 그대로 받아들이기 */
   followupCountByQuestion: Record<string, number>
+  /** RFP 기반 동적 질문 프롬프트 — slot → 리프레이밍된 질문 텍스트 */
+  dynamicQuestionPrompts?: Record<string, string>
   createdAt: string
   updatedAt: string
 }

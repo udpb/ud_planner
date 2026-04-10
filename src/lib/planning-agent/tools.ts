@@ -22,6 +22,7 @@ import {
   buildFollowupSuggestionPrompt,
   buildRfpIntelligenceBrief,
   buildStrategicReactionPrompt,
+  buildDynamicQuestionsPrompt,
 } from './prompts'
 
 // ─────────────────────────────────────────
@@ -187,6 +188,33 @@ export async function generateStrategicReaction(
   })
 
   return (msg.content[0] as any).text.trim()
+}
+
+// ─────────────────────────────────────────
+// Tool 3.7: 동적 질문 생성 (세션 시작 시 1회)
+// ─────────────────────────────────────────
+
+/**
+ * RFP 파싱 후 7개 질문을 프로젝트 맞춤형으로 리프레이밍.
+ * 실패 시 빈 객체 반환 → 기존 고정 질문으로 fallback.
+ */
+export async function generateDynamicQuestions(
+  intent: PartialPlanningIntent,
+): Promise<Record<string, string>> {
+  const prompt = buildDynamicQuestionsPrompt(intent)
+
+  try {
+    const msg = await anthropic.messages.create({
+      model: CLAUDE_MODEL,
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: prompt }],
+    })
+    const raw = (msg.content[0] as any).text.trim()
+    return safeParseJson<Record<string, string>>(raw, 'generateDynamicQuestions')
+  } catch (err: any) {
+    console.error('[generateDynamicQuestions] 실패, 고정 질문으로 fallback:', err.message)
+    return {}
+  }
 }
 
 // ─────────────────────────────────────────
