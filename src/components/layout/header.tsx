@@ -1,6 +1,6 @@
 'use client'
 
-import { Bell } from 'lucide-react'
+import { Bell, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -11,12 +11,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useSession, signOut } from 'next-auth/react'
 
 interface HeaderProps {
   title?: string
 }
 
 export function Header({ title }: HeaderProps) {
+  const { data: session } = useSession()
+  const user = session?.user
+  const initials = user?.name
+    ? user.name.slice(0, 2).toUpperCase()
+    : user?.email?.slice(0, 2).toUpperCase() ?? 'PM'
+
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background px-6">
       <h1 className="text-base font-semibold">{title}</h1>
@@ -29,15 +36,22 @@ export function Header({ title }: HeaderProps) {
         <DropdownMenu>
           <DropdownMenuTrigger className="h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
-              <AvatarImage src="" />
-              <AvatarFallback className="text-xs">PM</AvatarFallback>
+              <AvatarImage src={user?.image ?? ''} />
+              <AvatarFallback className="text-xs">{initials}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>내 계정</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              <div className="flex flex-col">
+                <span>{user?.name ?? '사용자'}</span>
+                <span className="text-xs font-normal text-muted-foreground">{user?.email}</span>
+              </div>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>프로필</DropdownMenuItem>
-            <DropdownMenuItem>로그아웃</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/login' })}>
+              <LogOut className="mr-2 h-4 w-4" />
+              로그아웃
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

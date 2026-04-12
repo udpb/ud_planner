@@ -35,6 +35,7 @@ model User {
   sessions      Session[]
   projects      Project[]
   taskAssignees TaskAssignee[]
+  agentSessions AgentSession[]
 }
 
 model Account {
@@ -291,6 +292,7 @@ model Project {
   applicants       Applicant[]
   satisfactionResponses SatisfactionResponse[]
   coachingJournals CoachingJournal[]
+  agentSessions    AgentSession[]
 }
 
 // ─────────────────────────────────────────
@@ -887,4 +889,76 @@ model AlumniRecord {
   createdAt     DateTime @default(now())
 
   @@unique([participantId, surveyYear])
+}
+
+// ─────────────────────────────────────────
+// [Planning Agent] Phase 2 — 세션 영속화
+// ─────────────────────────────────────────
+
+enum AgentSessionStatus {
+  IDLE
+  PREPROCESSING
+  INTERVIEWING
+  SYNTHESIZING
+  COMPLETED
+  PAUSED
+}
+
+model AgentSession {
+  id           String             @id @default(cuid())
+  projectId    String?
+  project      Project?           @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  pmId         String?
+  pm           User?              @relation(fields: [pmId], references: [id], onDelete: SetNull)
+
+  channel      String             // bid | lead | renewal
+  status       AgentSessionStatus @default(IDLE)
+  stateJson    Json               // AgentState 전체 (history, intent, questions 등)
+
+  turnsCompleted Int              @default(0)
+  completeness   Float            @default(0)
+
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  planningIntent PlanningIntentRecord?
+  pmFeedbacks    PMFeedback[]
+
+  @@index([projectId])
+  @@index([pmId])
+}
+
+model PlanningIntentRecord {
+  id           String       @id @default(cuid())
+  sessionId    String       @unique
+  session      AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  projectId    String?
+
+  intentJson   Json         // PlanningIntent 전체
+  completeness Float        @default(0)
+  confidence   String       @default("low") // low | medium | high
+  version      Int          @default(1)
+
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([projectId])
+}
+
+model PMFeedback {
+  id           String       @id @default(cuid())
+  sessionId    String
+  session      AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  pmId         String?
+
+  // PM이 Agent 산출물에 대해 남긴 피드백
+  targetType   String       // intent | strategy | question | overall
+  targetField  String?      // 구체적 필드명 (예: "keyMessages", "coachProfile")
+  rating       Int?         // 1-5
+  comment      String?      @db.Text
+  correction   String?      @db.Text // PM이 직접 수정한 값
+
+  createdAt    DateTime     @default(now())
+
+  @@index([sessionId])
 }
