@@ -1,18 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Loader2, Brain, ArrowRight, ArrowLeft, Pencil, Check, X,
-  Target, Sparkles, TrendingUp, Award, HelpCircle, BarChart3,
+  Target, Sparkles, TrendingUp, Award, HelpCircle, BarChart3, Save,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
+import { toast } from 'sonner'
 
 interface GoalCandidate {
   goal: string
@@ -109,9 +109,41 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
   const [editingIndex, setEditingIndex] = useState<number>(-1)
   const [editValue, setEditValue] = useState('')
 
+  // 저장 상태
+  const [isDirty, setIsDirty] = useState(false)
+  const [saving, setSaving] = useState(false)
+
   const router = useRouter()
   const pathname = usePathname()
   const flowItems = analyzeKeywordFlow(rfpParsed, logicModel)
+
+  // 브라우저 이탈 경고
+  useEffect(() => {
+    if (!isDirty) return
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault() }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [isDirty])
+
+  // DB 저장
+  const saveToDb = useCallback(async () => {
+    if (!logicModel) return
+    setSaving(true)
+    try {
+      const res = await fetch(`/api/projects/${projectId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logicModel, impactGoal: confirmedGoal }),
+      })
+      if (!res.ok) throw new Error('저장 실패')
+      setIsDirty(false)
+      toast.success('Logic Model 저장 완료')
+    } catch (e: any) {
+      toast.error(e.message)
+    } finally {
+      setSaving(false)
+    }
+  }, [logicModel, confirmedGoal, projectId])
 
   // --- Phase 1: Suggest impact goals ---
   async function suggestGoals() {
@@ -188,13 +220,16 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
       return updated
     })
     setEditingKey(null)
+    setIsDirty(true)
   }
   function addItem(key: string) {
     setLogicModel((prev: any) => ({ ...prev, [key]: [...(prev[key] ?? []), ''] }))
     startEdit(key, logicModel[key]?.length ?? 0, '')
+    setIsDirty(true)
   }
   function removeItem(key: string, index: number) {
     setLogicModel((prev: any) => ({ ...prev, [key]: prev[key].filter((_: any, i: number) => i !== index) }))
+    setIsDirty(true)
   }
 
   // ============================================================
@@ -324,6 +359,12 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
               <Button variant="ghost" size="sm" onClick={() => setPhase('goal')} className="gap-1 text-xs">
                 <Pencil className="h-3 w-3" /> 목표 변경
               </Button>
+              {isDirty && (
+                <Button onClick={saveToDb} disabled={saving} variant="outline" size="sm" className="gap-1.5">
+                  {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                  {saving ? '저장 중...' : '저장'}
+                </Button>
+              )}
               <Button onClick={generateModel} disabled={loadingModel} variant={logicModel ? 'outline' : 'default'} className="gap-2" size="sm">
                 {loadingModel ? <><Loader2 className="h-4 w-4 animate-spin" /> 생성 중...</>
                   : <><Brain className="h-4 w-4" /> {logicModel ? 'Logic Model 재생성' : 'Logic Model 생성'}</>}
@@ -374,12 +415,28 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
                 ))}
               </div>
 
+              {/* 미저장 알림 */}
+              {isDirty && (
+                <p className="text-xs text-amber-600 flex items-center gap-1">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+                  수정사항이 저장되지 않았습니다
+                </p>
+              )}
+
               {/* Nav buttons */}
               <div className="flex justify-between">
                 <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => router.push(`${pathname}?step=rfp`)}>
                   <ArrowLeft className="h-4 w-4" /> RFP 분석
                 </Button>
-                <Button size="sm" className="gap-2" onClick={() => router.push(`${pathname}?step=curriculum`)}>
+                <Button
+                  size="sm"
+                  className="gap-2"
+                  disabled={saving}
+                  onClick={async () => {
+                    if (isDirty) await saveToDb()
+                    router.push(`${pathname}?step=curriculum`)
+                  }}
+                >
                   커리큘럼 설계로 이동 <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
