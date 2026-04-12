@@ -222,7 +222,9 @@ export function buildImpactModulesContext(modules: ImpactModuleContext[]): strin
 
   const stageOrder = ['I', 'M', 'P', 'A', 'C', 'T']
   const lines: string[] = []
-  lines.push('[IMPACT 18모듈 라이브러리 — 세션 설계 시 이 모듈에 매핑하세요]')
+  lines.push('[IMPACT 18모듈 라이브러리 — 참고 자산 (강제 아님, 가중치 부여)]')
+  lines.push('이 모듈들은 언더독스의 자체 방법론입니다. 세션 설계 시 참고하되,')
+  lines.push('더 효과적인 외부 사례나 최신 트렌드가 있으면 적극 결합하세요.')
   lines.push('')
 
   for (const code of stageOrder) {
@@ -238,11 +240,11 @@ export function buildImpactModulesContext(modules: ImpactModuleContext[]): strin
     lines.push('')
   }
 
-  lines.push('규칙:')
-  lines.push('- 각 세션의 objectives에 해당 IMPACT 모듈의 핵심 질문을 반영')
-  lines.push('- 가능하면 세션 1개 = 모듈 1개 또는 같은 단계 모듈 2-3개 묶음')
+  lines.push('활용 가이드:')
+  lines.push('- IMPACT 모듈의 핵심 질문은 좋은 출발점 — 세션 목표에 반영하면 효과적')
+  lines.push('- 매핑 가능한 세션은 impactModuleCode에 기록, 새로운 세션은 null')
   lines.push('- 세션 title은 모듈명을 그대로 쓰지 말고 사업 맥락에 맞게 변형')
-  lines.push('- impactModuleCode 필드에 매핑된 모듈 코드(예: "I-1") 기록')
+  lines.push('- 이 모듈에 없는 새로운 접근이 더 효과적이라면 과감히 제안하세요')
 
   return lines.join('\n')
 }

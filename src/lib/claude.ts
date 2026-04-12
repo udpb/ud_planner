@@ -167,33 +167,260 @@ export async function suggestImpactGoal(
 }
 
 // ─── 임팩트 역추적 (Logic Model) ──────────────────────────
+
+/** Logic Model 항목 — ID와 SROI 힌트를 포함한 구조화된 형태 */
+export interface LogicModelItem {
+  id: string           // 예: "OC-1", "AC-2"
+  text: string         // 항목 내용
+  sroiProxy?: string   // SROI 프록시 유형 (예: "교육훈련 임팩트", "고용 창출")
+  estimatedValue?: string // 추정 임팩트 가치 (예: "인당 3.2M원")
+  linkedTo?: string[]  // 연결된 상위/하위 항목 ID (예: outcome의 경우 어떤 output에서 오는지)
+}
+
 export interface LogicModel {
-  impact: string[]
-  outcome: string[]
-  output: string[]
-  activity: string[]
-  input: string[]
   impactGoal: string
+  impact: LogicModelItem[]
+  outcome: LogicModelItem[]
+  output: LogicModelItem[]
+  activity: LogicModelItem[]
+  input: LogicModelItem[]
+  /** LLM이 추가로 제안하는 외부 인사이트 */
+  externalInsights: Array<{
+    type: 'trend' | 'benchmark' | 'tip'
+    source: string      // 어디서 온 인사이트인지 (예: "OECD 청년 창업 교육 가이드라인")
+    message: string
+    relevantLayer: 'impact' | 'outcome' | 'output' | 'activity' | 'input'
+  }>
+}
+
+// ─── 외부 리서치 (티키타카 파이프라인) ────────────────────
+//
+// Step A: generateResearchPrompts() → PM이 외부 LLM에 복사 → 결과 수집
+// Step B: 수집된 리서치를 buildLogicModel/suggestCurriculum/generateProposalSection에 주입
+// → 토큰 절약 + 일관성 + PM 컨트롤
+
+/** PM이 외부 LLM에 복사할 리서치 프롬프트 */
+export interface ResearchPrompt {
+  id: string
+  category: 'policy' | 'market' | 'benchmark' | 'audience' | 'operation'
+  title: string
+  description: string
+  prompt: string
+  usedIn: string[]
+}
+
+/** PM이 외부 LLM에서 가져온 리서치 결과 */
+export interface ExternalResearch {
+  promptId: string
+  category: string
+  content: string
+  source?: string
+  attachedAt: string
+}
+
+/**
+ * RFP 정보를 기반으로 외부 LLM용 리서치 프롬프트를 생성합니다.
+ * 템플릿 기반 → API 호출 없음 → 토큰 비용 0.
+ */
+export function generateResearchPrompts(
+  rfpParsed: RfpParsed,
+  impactGoal?: string,
+): ResearchPrompt[] {
+  const { projectName, targetAudience, objectives, keywords, region, client } = rfpParsed
+  const field = keywords?.slice(0, 3).join(', ') || '교육 사업'
+  const year = new Date().getFullYear()
+
+  return [
+    {
+      id: 'policy',
+      category: 'policy',
+      title: '정책/제도 동향',
+      description: '"추진 배경 및 필요성"의 정책 맥락 근거',
+      usedIn: ['proposal-1', 'logicModel'],
+      prompt: `다음 사업과 관련된 ${year}년 최신 정책 동향을 조사해주세요.
+
+사업명: ${projectName}
+발주기관: ${client}
+지역: ${region || '전국'}
+분야: ${field}
+
+조사 항목:
+1. 이 사업과 직접 관련된 정부/지자체 정책 방향 (최근 1-2년)
+2. 관련 법령/제도 변화 (구체적 법령명과 시행일)
+3. 정부 예산/지원 추이 (증가/감소 트렌드, 가능하면 수치)
+4. 이 사업이 "지금" 필요한 정책적 근거
+
+형식: 번호 매기고, 출처/근거를 함께. 핵심만 300~500자.`,
+    },
+    {
+      id: 'market',
+      category: 'market',
+      title: '시장/트렌드 데이터',
+      description: '정량 근거 + 트렌드 (Logic Model, 제안서 전반)',
+      usedIn: ['logicModel', 'proposal-1', 'proposal-2'],
+      prompt: `다음 분야의 ${year}년 최신 시장 동향과 트렌드를 조사해주세요.
+
+분야: ${field}
+대상: ${targetAudience}
+지역: ${region || '전국'}
+${impactGoal ? `임팩트 목표: ${impactGoal}` : ''}
+
+조사 항목:
+1. ${field} 분야 시장 규모 및 성장 추이 (수치 포함)
+2. ${year}년 주요 트렌드 3가지 (AI 활용, 디지털 전환, 글로벌화 등)
+3. 주목받는 새로운 접근법/방법론
+4. ${targetAudience} 관련 최신 통계/연구 데이터
+
+형식: 번호 + 수치/출처 포함. 핵심만 300~500자.`,
+    },
+    {
+      id: 'benchmark',
+      category: 'benchmark',
+      title: '타 기관 우수 사례',
+      description: '차별화 전략과 벤치마킹 (커리큘럼, 운영 설계)',
+      usedIn: ['logicModel', 'proposal-2', 'curriculum'],
+      prompt: `다음 사업과 유사한 타 기관/해외 우수 사례를 조사해주세요.
+
+사업 목표: ${objectives.join('; ')}
+대상: ${targetAudience}
+유형: 교육/육성 프로그램
+
+조사 항목:
+1. 국내 유사 사업 우수 사례 2개 (기관명, 사업명, 핵심 성과 수치)
+2. 해외 벤치마크 1-2개 (교육 설계나 임팩트 측정 방법 중심)
+3. 각 사례의 핵심 성공 요인 / 차별점
+4. 우리가 참고할 만한 구체적 운영 방식이나 커리큘럼 구성
+
+형식: 사례별 구분, 핵심만. 400~600자.`,
+    },
+    {
+      id: 'audience',
+      category: 'audience',
+      title: '대상자 인사이트',
+      description: '대상자 맞춤 설계 근거 (커리큘럼, 코치 구성)',
+      usedIn: ['curriculum', 'proposal-4', 'proposal-5'],
+      prompt: `다음 교육 대상자에 대한 심층 인사이트를 조사해주세요.
+
+대상: ${targetAudience}
+${region ? `지역: ${region}` : ''}
+사업 목표: ${objectives.slice(0, 2).join('; ')}
+
+조사 항목:
+1. ${targetAudience}의 주요 어려움/장벽 (최근 조사/통계 기반)
+2. 교육 프로그램에서 가장 원하는 것 (실용성, 네트워킹, 자격 등)
+3. 교육 이탈/중도포기 주요 원인과 검증된 방지 전략
+4. 이 대상에게 효과적인 교육 방법론 (PBL, 코칭, 플립러닝 등)
+
+형식: 번호 + 근거/출처 포함. 핵심만 300~500자.`,
+    },
+    {
+      id: 'operation',
+      category: 'operation',
+      title: '운영 노하우 & 리스크',
+      description: '실행 계획/예산/평가 설계에 활용',
+      usedIn: ['proposal-6', 'proposal-7', 'curriculum'],
+      prompt: `다음 유형의 사업 운영 노하우와 리스크를 정리해주세요.
+
+사업 유형: ${projectName} (교육/육성)
+규모: ${rfpParsed.targetCount ? `${rfpParsed.targetCount}명` : '소규모'}
+기간: ${rfpParsed.projectStartDate || '미정'} ~ ${rfpParsed.projectEndDate || '미정'}
+${rfpParsed.totalBudgetVat ? `예산: ${(rfpParsed.totalBudgetVat / 10000).toLocaleString()}만원` : ''}
+
+조사 항목:
+1. 이 유형 사업의 흔한 운영 리스크 3가지 + 대응 전략
+2. 참여자 모집/유지율을 높이는 검증된 방법
+3. 발주기관이 중시하는 성과 지표와 보고 형식
+4. 예산 집행 주의점 (실비 비율, 인건비 구조)
+
+형식: 핵심만, 번호 정리. 300~500자.`,
+    },
+  ]
+}
+
+/**
+ * 수집된 외부 리서치를 프롬프트에 주입할 수 있는 형태로 포맷팅.
+ * 카테고리별로 묶어서 간결하게 정리.
+ */
+export function formatExternalResearch(research: ExternalResearch[]): string {
+  if (!research?.length) return ''
+  const grouped = research.reduce((acc, r) => {
+    const key = r.category
+    if (!acc[key]) acc[key] = []
+    acc[key].push(r)
+    return acc
+  }, {} as Record<string, ExternalResearch[]>)
+
+  const LABELS: Record<string, string> = {
+    policy: '정책/제도 동향',
+    market: '시장/트렌드',
+    benchmark: '타 기관 사례',
+    audience: '대상자 인사이트',
+    operation: '운영 노하우',
+  }
+
+  const sections = Object.entries(grouped).map(([cat, items]) =>
+    `[${LABELS[cat] || cat}]\n${items.map(i => i.content).join('\n')}`
+  )
+
+  return `\n═══════════════════════════════════════
+[PM이 수집한 외부 리서치 — 반드시 활용하세요]
+═══════════════════════════════════════
+${sections.join('\n\n')}\n`
+}
+
+// 하위 호환: 기존 string[] 형식을 새 형식으로 변환
+function normalizeLogicModelLayer(items: any[], prefix: string): LogicModelItem[] {
+  if (!items?.length) return []
+  // 이미 새 형식이면 그대로
+  if (typeof items[0] === 'object' && items[0].id) return items as LogicModelItem[]
+  // 기존 string[] 형식 → 변환
+  return items.map((item: any, i: number) => ({
+    id: `${prefix}-${i + 1}`,
+    text: typeof item === 'string' ? item : (item as any).text ?? '',
+  }))
+}
+
+export function normalizeLogicModel(raw: any): LogicModel {
+  return {
+    impactGoal: raw.impactGoal ?? '',
+    impact: normalizeLogicModelLayer(raw.impact, 'IM'),
+    outcome: normalizeLogicModelLayer(raw.outcome, 'OC'),
+    output: normalizeLogicModelLayer(raw.output, 'OP'),
+    activity: normalizeLogicModelLayer(raw.activity, 'AC'),
+    input: normalizeLogicModelLayer(raw.input, 'IN'),
+    externalInsights: raw.externalInsights ?? [],
+  }
 }
 
 /**
  * 기획자가 확인/편집한 impactGoal을 받아 역추적으로 Logic Model을 생성.
- * impactGoal을 직접 받으므로 AI가 임의로 바꾸지 않음.
+ *
+ * 티키타카 모드: externalResearch가 제공되면 PM이 수집한 리서치를 주입하고,
+ * LLM에게 외부 인사이트 생성을 요청하지 않음 → 토큰 절약 + 품질 향상.
  */
 export async function buildLogicModel(
   rfpSummary: string,
   objectives: string[],
   confirmedImpactGoal: string,
+  externalResearch?: ExternalResearch[],
 ): Promise<LogicModel> {
+  const hasResearch = externalResearch && externalResearch.length > 0
+  const researchContext = hasResearch ? formatExternalResearch(externalResearch) : ''
+
+  // 리서치 유무에 따라 프롬프트 분기 → 토큰 절약
+  const insightInstruction = hasResearch
+    ? `6. 위 [PM이 수집한 외부 리서치]를 Logic Model 설계에 반드시 반영하세요. externalInsights는 빈 배열로 두세요 (이미 PM이 수집 완료).`
+    : `6. externalInsights에 이 Logic Model을 더 강화할 수 있는 외부 트렌드/벤치마크/운영 팁을 3~5개 추가하세요.`
+
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 4096,
+    max_tokens: hasResearch ? 3072 : 4096, // 리서치 있으면 인사이트 생성 불필요 → 토큰 절약
     messages: [
       {
         role: 'user',
-        content: `당신은 소셜임팩트 전문가입니다.
-기획자가 확정한 임팩트 목표를 기준으로, 그 목표를 달성하기 위해 필요한 것들을 역추적하여 Logic Model을 JSON으로 반환하세요.
-
+        content: `당신은 소셜임팩트 전문가이자 교육 프로그램 설계 컨설턴트입니다.
+기획자가 확정한 임팩트 목표를 기준으로 역추적하여 Logic Model을 생성하세요.
+${researchContext}
 [확정된 임팩트 목표]
 "${confirmedImpactGoal}"
 
@@ -202,27 +429,40 @@ export async function buildLogicModel(
 
 역추적 원칙:
 1. impactGoal은 반드시 위 확정 목표 문장을 그대로 사용
-2. impact: 임팩트 목표가 달성되면 나타나는 장기 사회변화 (2~3개)
-3. outcome: 그 변화를 만들기 위해 참여자에게 일어나야 하는 변화 (3~4개)
-4. output: outcome을 만들기 위한 직접 산출물·수치 (3~4개)
-5. activity: output을 만들기 위한 구체적 교육 활동 — Action Week 반드시 포함 (4~6개)
-6. input: 활동 실행에 필요한 자원 (3~4개)
+2. 각 계층의 항목에 고유 ID를 부여하세요 (IM-1, OC-1, OP-1, AC-1, IN-1 형식)
+3. outcome/output 항목에는 SROI 프록시 유형과 추정 임팩트 가치를 포함하세요
+4. linkedTo로 항목 간 인과관계를 연결하세요 (예: OC-1은 OP-1, OP-2에서 도출)
+5. activity에 Action Week를 반드시 포함하세요
+${insightInstruction}
 
 반드시 아래 JSON만 반환하세요:
 {
   "impactGoal": "${confirmedImpactGoal}",
-  "impact": ["장기적 사회변화 1", "장기적 사회변화 2"],
-  "outcome": ["참여자 변화 1", "참여자 변화 2", "참여자 변화 3"],
-  "output": ["직접 산출물+수치 1", "직접 산출물 2", "직접 산출물 3"],
-  "activity": ["핵심 활동 1", "Action Week: 실전 실행 주간", "핵심 활동 3", "핵심 활동 4"],
-  "input": ["필요 자원 1", "필요 자원 2", "필요 자원 3"]
+  "impact": [
+    {"id": "IM-1", "text": "장기적 사회변화", "sroiProxy": "사회적 가치 유형", "estimatedValue": "추정 가치"}
+  ],
+  "outcome": [
+    {"id": "OC-1", "text": "참여자 변화", "sroiProxy": "프록시 유형", "estimatedValue": "인당 추정 가치", "linkedTo": ["OP-1", "OP-2"]}
+  ],
+  "output": [
+    {"id": "OP-1", "text": "직접 산출물+수치", "linkedTo": ["AC-1", "AC-2"]}
+  ],
+  "activity": [
+    {"id": "AC-1", "text": "핵심 활동", "linkedTo": ["IN-1"]},
+    {"id": "AC-3", "text": "Action Week: 실전 실행 주간", "linkedTo": ["IN-1", "IN-2"]}
+  ],
+  "input": [
+    {"id": "IN-1", "text": "필요 자원"}
+  ],
+  "externalInsights": []
 }`,
       },
     ],
   })
 
   const raw = (msg.content[0] as any).text.trim()
-  return safeParseJson<LogicModel>(raw, 'buildLogicModel')
+  const parsed = safeParseJson<any>(raw, 'buildLogicModel')
+  return normalizeLogicModel(parsed)
 }
 
 // ─── 커리큘럼 자동 추천 ───────────────────────────────────
@@ -241,8 +481,10 @@ export interface CurriculumSession {
   objectives: string[]
   recommendedExpertise: string[]
   notes: string
-  // IMPACT 18모듈 매핑 (예: "I-1", "M-2") — AI가 자동 매핑
+  // IMPACT 18모듈 매핑 (예: "I-1", "M-2") — 참고용 가이드
   impactModuleCode?: string | null
+  // Logic Model 항목 연결 (예: ["OC-1", "OP-2"]) — 이 세션이 어떤 outcome/output에 기여하는지
+  logicModelLinks?: string[]
 }
 
 export interface CurriculumInsight {
@@ -262,9 +504,21 @@ export interface CurriculumSuggestion {
 export async function suggestCurriculum(
   rfpParsed: RfpParsed,
   logicModel: LogicModel,
-  impactModules: ImpactModuleContext[] = []
+  impactModules: ImpactModuleContext[] = [],
+  externalResearch?: ExternalResearch[],
 ): Promise<CurriculumSuggestion> {
   const impactContext = buildImpactModulesContext(impactModules)
+  const hasResearch = externalResearch && externalResearch.length > 0
+  const researchContext = hasResearch ? formatExternalResearch(externalResearch) : ''
+
+  // Logic Model 항목을 텍스트로 변환 (새/구 형식 모두 대응)
+  const formatItems = (items: any[]) =>
+    items.map((item: any) => {
+      if (typeof item === 'string') return item
+      const parts = [item.id ? `[${item.id}]` : '', item.text]
+      if (item.sroiProxy) parts.push(`(SROI: ${item.sroiProxy})`)
+      return parts.filter(Boolean).join(' ')
+    }).join(', ')
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
@@ -272,9 +526,13 @@ export async function suggestCurriculum(
     messages: [
       {
         role: 'user',
-        content: `당신은 언더독스 교육 기획 전문가입니다. 언더독스의 자체 IMPACT 창업방법론(6단계 18모듈, 54문항)을 기반으로 최적의 커리큘럼 초안을 설계하세요.
-
-이 결과물은 기획자가 자유롭게 수정할 수 있는 초안입니다. 강제 규칙이 아닌 효과적인 설계안을 제시하세요.
+        content: `당신은 창업 교육 프로그램 설계 전문가입니다.
+${researchContext}
+중요한 원칙:
+1. 아래 [참고 자산]의 IMPACT 방법론은 **가이드**입니다. 강제가 아닙니다.
+2. IMPACT 모듈에 가중치를 주되, ${hasResearch ? '위 [PM이 수집한 외부 리서치]를 적극 반영하여' : '최신 교육 트렌드, 해외 우수 프로그램 사례를 결합하여'} 더 나은 커리큘럼을 설계하세요.
+3. "이 사업에 이런 새로운 접근도 고려해볼 만합니다" 같은 창의적 제안을 insights에 포함하세요.
+4. 각 세션이 Logic Model의 어떤 outcome/output에 기여하는지 명시하세요 (logicModelLinks).
 
 ═══════════════════════════════════════
 사업 정보
@@ -282,37 +540,34 @@ export async function suggestCurriculum(
 사업명: ${rfpParsed.projectName}
 대상: ${rfpParsed.targetAudience} (${rfpParsed.targetCount}명)
 단계: ${rfpParsed.targetStage.join(', ')}
-임팩트 목표: ${logicModel.impactGoal}
-핵심 아웃컴: ${logicModel.outcome.join(', ')}
-핵심 아웃풋: ${logicModel.output.join(', ')}
 기간: ${rfpParsed.eduStartDate} ~ ${rfpParsed.eduEndDate}
 
 ═══════════════════════════════════════
-${impactContext}
+Logic Model (커리큘럼이 달성해야 할 것)
 ═══════════════════════════════════════
+임팩트 목표: ${logicModel.impactGoal}
+Outcome (참여자 변화): ${formatItems(logicModel.outcome)}
+Output (직접 산출물): ${formatItems(logicModel.output)}
+Activity (핵심 활동): ${formatItems(logicModel.activity)}
 
-세션 구성 기본 원칙:
-- 일반 세션: 강의 15분 + 실습 35분 (총 50분). lectureMinutes=15, practiceMinutes=35
-- Action Week 세션: 실전 실행 중심. lectureMinutes=0, practiceMinutes=0 (별도 안내)
-- 1:1 코칭 세션: Action Week 직후 페어로 배치 권장. isCoaching1on1=true
-- 각 세션은 IMPACT 18모듈 중 하나에 매핑되어야 함 (impactModuleCode 필드)
-- 사업 대상 단계(예비/초기/Seed 등)에 맞춰 IMPACT 단계의 무게중심을 조정
-  · 예비창업: I, M, P 단계 비중↑
-  · 초기/Seed: A, C 단계 비중↑
-  · Pre-A 이상: C, T 단계 비중↑
+═══════════════════════════════════════
+[참고 자산] 언더독스 IMPACT 방법론 (가이드, 강제 아님)
+═══════════════════════════════════════
+${impactContext || 'IMPACT 6단계: I(Ideation) → M(Market) → P(Product) → A(Acquisition) → C(Commercial) → T(Team)'}
 
-IMPACT 방법론 권장사항:
-- 이론 위주 세션보다 실습/워크숍 위주 설계
-- Action Week는 P-3(프로토타입)/A-1(MVP)/A-3(전환) 같은 실행 모듈 직후 배치
-- Action Week 직후 1:1 온라인 코칭으로 실행 결과 리뷰
-- 6단계 흐름(I→M→P→A→C→T)을 가능하면 유지하되, 사업 특성에 맞게 일부 단계 생략 가능
+세션 구성 참고:
+- 일반 세션: 강의 15분 + 실습 35분 (총 50분) 기본이나, 사업 특성에 맞게 조정 가능
+- Action Week: 실전 실행 주간, 이론 세션 2~3회 후 배치 권장
+- 1:1 코칭: Action Week 직후 페어로 배치 권장
+- IMPACT 모듈에 매핑 가능하면 impactModuleCode에 기록, 불가능하면 null
+- 사업 대상 단계에 맞춰 무게중심 조정 (예비: I,M,P / 초기: A,C / 성장: C,T)
 
 반드시 아래 JSON만 반환하세요:
 {
   "sessions": [
     {
       "sessionNo": 1,
-      "title": "세션 제목 (사업 맥락에 맞게 변형, 모듈명 그대로 쓰지 말 것)",
+      "title": "세션 제목 (사업 맥락에 맞게)",
       "category": "STARTUP_EDU|TECH_EDU|MENTORING|ACTION_WEEK|NETWORKING|SPECIAL_LECTURE",
       "method": "WORKSHOP|LECTURE|PRACTICE|MENTORING|ACTION_WEEK|MIXED|ONLINE",
       "durationHours": 시간수,
@@ -321,21 +576,21 @@ IMPACT 방법론 권장사항:
       "isTheory": false,
       "isActionWeek": false,
       "isCoaching1on1": false,
-      "objectives": ["목표1 (해당 IMPACT 모듈의 핵심 질문 반영)"],
-      "recommendedExpertise": ["창업 일반", "BM검증"],
+      "objectives": ["목표1"],
+      "recommendedExpertise": ["전문 분야"],
       "notes": "세부 안내",
-      "impactModuleCode": "I-1 또는 M-2 등 (없으면 null)"
+      "impactModuleCode": "I-1 등 (해당 없으면 null)",
+      "logicModelLinks": ["OC-1", "OP-2"]
     }
   ],
   "totalHours": 총시간,
   "actionWeekRatio": Action Week 비율(0~100),
   "theoryRatio": 이론 비율(0~100),
-  "rationale": "커리큘럼 설계 근거 2~3문장 — 어떤 IMPACT 단계에 무게를 뒀고, 사업 대상에 어떻게 맞췄는지",
+  "rationale": "커리큘럼 설계 근거 — Logic Model의 어떤 outcome을 중점적으로 달성하려 했고, 어떤 외부 사례를 참고했는지",
   "insights": [
-    {
-      "type": "tip|info|asset",
-      "message": "기획자에게 전달할 안내 메시지"
-    }
+    {"type": "tip", "message": "운영 팁 또는 최신 트렌드 제안"},
+    {"type": "info", "message": "타 기관 우수 사례 참고 정보"},
+    {"type": "asset", "message": "언더독스 내부 자산 활용 제안"}
   ]
 }`,
       },
@@ -356,6 +611,17 @@ const PROPOSAL_SECTIONS = [
   { no: 6, title: '성과 지표 및 평가 계획' },
   { no: 7, title: '추진 일정 및 예산 계획' },
 ]
+
+// 섹션별 목표 글자수 (프론트엔드 편집 UX용 export)
+export const SECTION_LENGTH_TARGETS: Record<number, { min: number; max: number }> = {
+  1: { min: 700, max: 900 },
+  2: { min: 700, max: 900 },
+  3: { min: 800, max: 1000 },
+  4: { min: 900, max: 1200 },
+  5: { min: 700, max: 900 },
+  6: { min: 700, max: 900 },
+  7: { min: 700, max: 900 },
+}
 
 // 섹션별 작성 가이드 — 언더독스 제안서 패턴 분석 기반
 const SECTION_GUIDES: Record<number, { headlinePattern: string; mustInclude: string[]; lengthRange: string }> = {
@@ -447,6 +713,7 @@ export async function generateProposalSection(
     }>
     impactModules?: ImpactModuleContext[]
     previousSections?: Array<{ no: number; title: string; content: string }>
+    externalResearch?: ExternalResearch[]
   }
 ): Promise<string> {
   const section = PROPOSAL_SECTIONS.find((s) => s.no === sectionNo)
@@ -464,6 +731,10 @@ export async function generateProposalSection(
   const evalContext = evalCriteria.length > 0
     ? `\n[평가 배점 — 이 섹션이 대응해야 할 항목]\n${evalCriteria.map((e) => `  - ${e.item}: ${e.score}점`).join('\n')}\n`
     : ''
+
+  // 외부 리서치 (티키타카 파이프라인)
+  const hasResearch = context.externalResearch && context.externalResearch.length > 0
+  const researchContext = hasResearch ? formatExternalResearch(context.externalResearch!) : ''
 
   // 브랜드 자산
   const brandContext = buildBrandContext()
@@ -484,7 +755,11 @@ export async function generateProposalSection(
     messages: [
       {
         role: 'user',
-        content: `당신은 언더독스의 교육 사업 제안서 전문 작성가입니다. 아래 브랜드 자산과 사업 정보를 바탕으로 제안서의 "${section.title}" 섹션을 한국어로 작성하세요.
+        content: `당신은 교육 사업 제안서 전문 작성가입니다. 아래 브랜드 자산과 사업 정보를 바탕으로 제안서의 "${section.title}" 섹션을 한국어로 작성하세요.
+
+${hasResearch ? '중요: 아래 [PM이 수집한 외부 리서치]를 반드시 활용하여 정량 근거와 외부 사례를 자연스럽게 녹이세요.' : '중요: 언더독스의 내부 자산을 활용하되, 최신 교육 트렌드와 타 기관 우수 사례를 자연스럽게 결합하세요.'}
+내부 홍보만이 아닌, 업계 맥락에서 차별화를 보여주는 것이 높은 평가를 받습니다.
+${researchContext}
 
 ═══════════════════════════════════════
 ${brandContext}

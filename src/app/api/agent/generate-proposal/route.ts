@@ -12,6 +12,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   buildLogicModel,
   generateProposalSection,
+  normalizeLogicModel,
   type RfpParsed,
   type LogicModel,
 } from '@/lib/claude'
@@ -50,15 +51,15 @@ export async function POST(req: NextRequest) {
       )
     } catch (err: any) {
       console.error('[generate-proposal] LogicModel 생성 실패:', err.message)
-      // fallback: 최소 LogicModel
-      logicModel = {
+      // fallback: 최소 LogicModel (normalizeLogicModel로 string[] → LogicModelItem[] 변환)
+      logicModel = normalizeLogicModel({
         impactGoal,
         impact: rfpParsed.objectives.slice(0, 2),
         outcome: ds.keyMessages?.slice(0, 3) ?? [],
         output: rfpParsed.deliverables?.slice(0, 3) ?? [],
         activity: ds.curriculumDirection?.weeklyOutline?.map((w: any) => w.keyActivity) ?? [],
         input: ['전담 PM', '전문 코치진', '교육 운영 인프라'],
-      }
+      })
     }
 
     // 2. 커리큘럼 세션 데이터 (derivedStrategy에서 추출)

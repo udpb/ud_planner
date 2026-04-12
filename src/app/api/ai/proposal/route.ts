@@ -101,17 +101,23 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// PATCH: 제안서 섹션 콘텐츠 직접 수정
+// PATCH: 제안서 섹션 콘텐츠 수정 또는 승인 토글
 export async function PATCH(req: NextRequest) {
   try {
-    const { sectionId, content } = await req.json()
-    if (!sectionId || content === undefined) {
-      return NextResponse.json({ error: 'sectionId와 content가 필요합니다.' }, { status: 400 })
+    const body = await req.json()
+    const { sectionId, content, isApproved } = body
+
+    if (!sectionId) {
+      return NextResponse.json({ error: 'sectionId가 필요합니다.' }, { status: 400 })
     }
+
+    const data: any = { updatedAt: new Date() }
+    if (content !== undefined) data.content = content
+    if (isApproved !== undefined) data.isApproved = isApproved
 
     const updated = await prisma.proposalSection.update({
       where: { id: sectionId },
-      data: { content, updatedAt: new Date() },
+      data,
     })
 
     return NextResponse.json({ section: updated })

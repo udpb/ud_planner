@@ -41,6 +41,15 @@ const CHAIN_TEXT: Record<string, string> = {
   outcome: 'text-violet-700', impact: 'text-orange-700',
 }
 
+// Logic Model 아이템 호환 헬퍼 (구: string, 신: {id, text, ...})
+function getItemText(item: any): string {
+  return typeof item === 'string' ? item : item?.text ?? ''
+}
+function setItemText(item: any, text: string): any {
+  if (typeof item === 'string') return text
+  return { ...item, text }
+}
+
 const FOCUS_ICONS: Record<string, any> = {
   '역량 강화': Target,
   '경제/생태계 기여': TrendingUp,
@@ -62,9 +71,12 @@ function analyzeKeywordFlow(rfpParsed: any, logicModel: any) {
   const keywords = rfpParsed.keywords ?? []
   const objectives = rfpParsed.objectives ?? []
   const allModelText = [
-    ...(logicModel.impact ?? []), ...(logicModel.outcome ?? []),
-    ...(logicModel.output ?? []), ...(logicModel.activity ?? []),
-    ...(logicModel.input ?? []), logicModel.impactGoal ?? '',
+    ...(logicModel.impact ?? []).map(getItemText),
+    ...(logicModel.outcome ?? []).map(getItemText),
+    ...(logicModel.output ?? []).map(getItemText),
+    ...(logicModel.activity ?? []).map(getItemText),
+    ...(logicModel.input ?? []).map(getItemText),
+    logicModel.impactGoal ?? '',
   ].join(' ').toLowerCase()
 
   const items = []
@@ -207,15 +219,15 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
   }
 
   // Inline edit helpers
-  function startEdit(key: string, index: number, value: string) {
-    setEditingKey(key); setEditingIndex(index); setEditValue(value)
+  function startEdit(key: string, index: number, value: any) {
+    setEditingKey(key); setEditingIndex(index); setEditValue(getItemText(value))
   }
   function saveEdit() {
     if (!editingKey || editingIndex < 0) return
     setLogicModel((prev: any) => {
       const updated = { ...prev }
       const arr = [...(updated[editingKey!] ?? [])]
-      arr[editingIndex] = editValue
+      arr[editingIndex] = setItemText(arr[editingIndex], editValue)
       updated[editingKey!] = arr
       return updated
     })
@@ -389,8 +401,11 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
                       <span className="text-[10px] text-muted-foreground">{logicModel[key]?.length ?? 0}</span>
                     </div>
                     <ul className="space-y-1.5">
-                      {logicModel[key]?.map((item: string, i: number) => {
+                      {logicModel[key]?.map((item: any, i: number) => {
                         const isEditing = editingKey === key && editingIndex === i
+                        const text = getItemText(item)
+                        const itemId = typeof item === 'object' ? item?.id : null
+                        const sroiHint = typeof item === 'object' ? item?.sroiProxy : null
                         return (
                           <li key={i} className="group text-xs leading-snug">
                             {isEditing ? (
@@ -402,7 +417,11 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
                             ) : (
                               <div className="flex items-start gap-1">
                                 <span className="mt-0.5 shrink-0 text-muted-foreground">·</span>
-                                <span className="flex-1 cursor-pointer rounded px-0.5 hover:bg-white/60" onClick={() => startEdit(key, i, item)}>{item}</span>
+                                <div className="flex-1 cursor-pointer rounded px-0.5 hover:bg-white/60" onClick={() => startEdit(key, i, item)}>
+                                  {itemId && <span className="mr-1 font-mono text-[9px] text-muted-foreground">{itemId}</span>}
+                                  <span>{text}</span>
+                                  {sroiHint && <span className="ml-1 text-[9px] text-primary/60">({sroiHint})</span>}
+                                </div>
                                 <button onClick={() => removeItem(key, i)} className="shrink-0 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive"><X className="h-2.5 w-2.5" /></button>
                               </div>
                             )}
@@ -414,6 +433,26 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
                   </div>
                 ))}
               </div>
+
+              {/* 외부 인사이트 (LLM이 제안한 트렌드/벤치마크/팁) */}
+              {logicModel.externalInsights?.length > 0 && (
+                <div className="rounded-lg border border-cyan-200 bg-cyan-50/30 p-3 space-y-1.5">
+                  <p className="flex items-center gap-1.5 text-xs font-medium text-cyan-800">
+                    <Sparkles className="h-3.5 w-3.5" /> 외부 인사이트 &amp; 트렌드
+                  </p>
+                  {logicModel.externalInsights.map((insight: any, i: number) => (
+                    <div key={i} className="text-xs text-cyan-700">
+                      <span className="mr-1 rounded bg-cyan-100 px-1 py-0.5 text-[9px] font-medium uppercase">
+                        {insight.type}
+                      </span>
+                      {insight.message}
+                      {insight.source && (
+                        <span className="ml-1 text-[9px] text-cyan-500">— {insight.source}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* 미저장 알림 */}
               {isDirty && (
