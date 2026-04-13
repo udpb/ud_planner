@@ -458,7 +458,7 @@ export async function buildLogicModel(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: hasResearch ? 3072 : 4096, // 리서치 있으면 인사이트 생성 불필요 → 토큰 절약
+    max_tokens: 6144,
     messages: [
       {
         role: 'user',
@@ -882,7 +882,7 @@ ${guide.headlinePattern}
 ▣ 반드시 포함해야 할 요소:
 ${guide.mustInclude.map((m) => `  - ${m}`).join('\n')}
 
-▣ 분량: ${guide.lengthRange}
+▣ 분량: ${guide.lengthRange} (엄격 준수 — 이 범위를 초과하면 안 됩니다)
 
 ▣ 필수 적용 사항:
 1. 위 [언더독스 브랜드 자산] 중 적합한 것을 자연스럽게 인용 (실적 수치, 자체 도구명, 4중 지원 체계 등)
