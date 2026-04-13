@@ -800,11 +800,35 @@ export async function generateProposalSection(
     ?.map((s) => `[${s.no}. ${s.title}]\n${s.content.slice(0, 600)}`)
     .join('\n\n')
 
-  // 평가 배점 분석 — 이 섹션이 평가에서 차지하는 비중
-  const evalCriteria = (context.rfpParsed.evalCriteria ?? []) as Array<{ item: string; score: number }>
-  const evalContext = evalCriteria.length > 0
-    ? `\n[평가 배점 — 이 섹션이 대응해야 할 항목]\n${evalCriteria.map((e) => `  - ${e.item}: ${e.score}점`).join('\n')}\n`
-    : ''
+  // 평가 배점 분석 — 이 섹션에 매핑되는 배점 항목 + 가중치 계산
+  const evalCriteria = (context.rfpParsed.evalCriteria ?? []) as Array<{ item: string; score: number; notes: string }>
+  const EVAL_KEYWORD_MAP: Record<string, number[]> = {
+    '배경': [1], '필요성': [1], '추진': [1, 2], '목표': [2], '전략': [2],
+    '로직': [3], '임팩트': [3, 6], '커리큘럼': [4], '교육': [4], '운영': [4, 7],
+    '코치': [5], '전문': [5], '강사': [5], '인력': [5],
+    '성과': [6], '평가': [6], '지표': [6], '일정': [7], '예산': [7], '사업비': [7],
+  }
+
+  // 이 섹션에 매핑되는 배점 항목 찾기
+  const sectionEvalItems = evalCriteria.filter((e) => {
+    const itemText = (e.item ?? '').toLowerCase()
+    return Object.entries(EVAL_KEYWORD_MAP).some(([kw, sections]) =>
+      itemText.includes(kw) && sections.includes(sectionNo)
+    )
+  })
+  const sectionScore = sectionEvalItems.reduce((sum, e) => sum + (e.score ?? 0), 0)
+  const totalScore = evalCriteria.reduce((sum, e) => sum + (e.score ?? 0), 0)
+
+  let evalContext = ''
+  if (sectionEvalItems.length > 0) {
+    const weight = totalScore > 0 ? Math.round((sectionScore / totalScore) * 100) : 0
+    evalContext = `\n[평가 배점 — 이 섹션 관련 ${sectionScore}점 / 전체 ${totalScore}점 (${weight}%)]
+${sectionEvalItems.map((e) => `  - ${e.item}: ${e.score}점${e.notes ? ` (${e.notes})` : ''}`).join('\n')}
+${weight >= 25 ? '⚠ 고배점 섹션입니다. 평가 항목의 세부 기준을 하나도 빠짐없이 대응하세요.' : ''}\n`
+  } else if (evalCriteria.length > 0) {
+    // 매핑 안 되는 섹션이라도 전체 배점 보여줌
+    evalContext = `\n[참고: 전체 평가 배점]\n${evalCriteria.map((e) => `  - ${e.item}: ${e.score}점`).join('\n')}\n`
+  }
 
   // 외부 리서치 (티키타카 파이프라인)
   const hasResearch = context.externalResearch && context.externalResearch.length > 0
