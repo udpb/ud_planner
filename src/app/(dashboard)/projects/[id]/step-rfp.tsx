@@ -13,6 +13,7 @@ import {
   Lightbulb, HelpCircle, Target, TrendingUp, CheckCircle2, Info,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { AgentInterviewPanel } from '@/components/projects/agent-interview-panel'
 
 interface ClarifyingQuestion {
   field: string
@@ -502,6 +503,14 @@ export function StepRfp({ projectId, initialParsed }: Props) {
                     </p>
                   </CardContent>
                 </Card>
+              )}
+
+              {/* 수주 전략 인터뷰 (RFP 파싱 완료 시 표시) */}
+              {data && (
+                <AgentInterviewPanel
+                  projectId={projectId}
+                  rfpText={data.summary ?? ''}
+                />
               )}
 
               {/* 다음 스텝 */}
