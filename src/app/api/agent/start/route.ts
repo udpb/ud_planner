@@ -27,6 +27,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { runAgentTurn } from '@/lib/planning-agent/agent'
+import { persistSession } from '@/lib/planning-agent/state'
 import type { ChannelInput } from '@/lib/planning-agent/types'
 
 export async function POST(req: NextRequest) {
@@ -71,6 +72,9 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await runAgentTurn({ channelInput })
+
+    // DB에 세션 영속화 (비동기, 실패해도 응답은 정상 반환)
+    persistSession(result.state).catch(() => {})
 
     return NextResponse.json({
       sessionId: result.state.sessionId,

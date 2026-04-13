@@ -25,6 +25,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { runAgentTurn } from '@/lib/planning-agent/agent'
+import { persistSession } from '@/lib/planning-agent/state'
 import type { AgentState } from '@/lib/planning-agent/types'
 
 export async function POST(req: NextRequest) {
@@ -62,6 +63,9 @@ export async function POST(req: NextRequest) {
       userMessage,
       skipCurrentQuestion,
     })
+
+    // DB에 세션 영속화 (매 턴 후)
+    persistSession(result.state).catch(() => {})
 
     return NextResponse.json({
       state: result.state,
