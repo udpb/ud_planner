@@ -16,6 +16,7 @@ const UpdateProjectSchema = z.object({
   pmId: z.string().nullable().optional(),
   impactGoal: z.string().nullable().optional(),
   logicModel: z.any().optional(),
+  strategicNotes: z.any().optional(),
   rfpRaw: z.string().nullable().optional(),
 })
 

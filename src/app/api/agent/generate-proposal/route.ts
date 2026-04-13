@@ -16,6 +16,7 @@ import {
   type RfpParsed,
   type LogicModel,
   type ExternalResearch,
+  type StrategicNotes,
 } from '@/lib/claude'
 
 export async function POST(req: NextRequest) {
@@ -24,6 +25,19 @@ export async function POST(req: NextRequest) {
     // externalResearch는 optional — 티키타카 파이프라인에서 PM이 수집한 리서치
     const research = (externalResearch as ExternalResearch[] | undefined)?.length
       ? externalResearch as ExternalResearch[]
+      : undefined
+
+    // Planning Agent의 strategicContext → StrategicNotes 변환
+    const sc = intent.strategicContext ?? {}
+    const strategicNotes: StrategicNotes | undefined = (sc.clientHiddenWants || sc.mustNotFail || sc.competitorWeakness)
+      ? {
+          clientHiddenWants: sc.clientHiddenWants,
+          mustNotFail: sc.mustNotFail,
+          competitorWeakness: sc.competitorWeakness,
+          riskFactors: sc.riskFactors,
+          pastSimilarProjects: sc.pastSimilarProjects,
+          participationDecision: sc.participationDecision,
+        }
       : undefined
 
     if (!intent?.bidContext?.rfpFacts) {
@@ -100,6 +114,7 @@ export async function POST(req: NextRequest) {
           curriculumSessions,
           previousSections: sections,
           externalResearch: research,
+          strategicNotes,
         })
         sections.push({
           no: sectionNo,

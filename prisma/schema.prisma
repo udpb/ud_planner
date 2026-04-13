@@ -264,6 +264,7 @@ model Project {
   impactGoal String? @db.Text
   logicModel       Json?
   externalResearch Json?   // PM이 외부 LLM에서 수집한 리서치 (ExternalResearch[])
+  strategicNotes   Json?   // 전략 맥락 (StrategicNotes: clientHiddenWants, mustNotFail, etc.)
   evalCriteria Json?
   constraints  Json?
   kpiTargets   Json?

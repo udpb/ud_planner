@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateProposalSection, PROPOSAL_SECTIONS, anthropic, CLAUDE_MODEL, type ExternalResearch } from '@/lib/claude'
+import { generateProposalSection, PROPOSAL_SECTIONS, anthropic, CLAUDE_MODEL, type ExternalResearch, type StrategicNotes } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
 
 function safeParseJson<T>(raw: string): T {
@@ -71,6 +71,9 @@ export async function POST(req: NextRequest) {
     const savedResearch = (project as any).externalResearch as ExternalResearch[] | null
     const externalResearch = savedResearch?.length ? savedResearch : undefined
 
+    // 전략적 맥락 주입
+    const strategicNotes = (project as any).strategicNotes as StrategicNotes | null
+
     const content = await generateProposalSection(sectionNo, {
       rfpParsed,
       logicModel,
@@ -78,6 +81,7 @@ export async function POST(req: NextRequest) {
       impactModules,
       curriculumSessions,
       externalResearch,
+      strategicNotes: strategicNotes ?? undefined,
     })
 
     const section = PROPOSAL_SECTIONS.find((s) => s.no === sectionNo)!
