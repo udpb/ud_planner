@@ -1,10 +1,15 @@
-import { auth } from '@/lib/auth'
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-// 인증 불필요 경로
-const publicPaths = ['/login', '/api/auth', '/api/feedback']
+/**
+ * 경량 미들웨어 — Edge Function 크기 제한(1MB) 준수.
+ * NextAuth의 auth() 대신 세션 토큰 쿠키 존재 여부만 확인.
+ * 실제 토큰 검증은 서버 컴포넌트/API에서 auth()로 수행.
+ */
 
-export default auth((req) => {
+const publicPaths = ['/login', '/api/auth', '/api/feedback', '/feedback']
+
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   // public 경로는 통과
@@ -12,15 +17,19 @@ export default auth((req) => {
     return NextResponse.next()
   }
 
-  // 미인증 → 로그인 페이지로 리다이렉트
-  if (!req.auth) {
+  // 세션 토큰 쿠키 존재 확인 (JWT 전략)
+  const sessionToken =
+    req.cookies.get('authjs.session-token')?.value ??
+    req.cookies.get('__Secure-authjs.session-token')?.value
+
+  if (!sessionToken) {
     const loginUrl = new URL('/login', req.url)
     loginUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
   return NextResponse.next()
-})
+}
 
 export const config = {
   matcher: [
