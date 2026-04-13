@@ -262,7 +262,8 @@ model Project {
   rfpRaw     String? @db.Text
   rfpParsed  Json?
   impactGoal String? @db.Text
-  logicModel Json?
+  logicModel       Json?
+  externalResearch Json?   // PM이 외부 LLM에서 수집한 리서치 (ExternalResearch[])
   evalCriteria Json?
   constraints  Json?
   kpiTargets   Json?

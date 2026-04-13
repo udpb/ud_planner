@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
+import { ResearchPanel } from '@/components/projects/research-panel'
 import { toast } from 'sonner'
 
 interface GoalCandidate {
@@ -383,6 +384,9 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
               </Button>
             </div>
           </div>
+
+          {/* 외부 리서치 수집 패널 (티키타카) */}
+          <ResearchPanel projectId={projectId} />
 
           {/* Confirmed goal banner */}
           <div className="rounded-lg border-l-4 border-primary bg-primary/5 p-4">

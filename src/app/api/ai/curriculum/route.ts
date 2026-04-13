@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { suggestCurriculum, CurriculumSession, CurriculumInsight } from '@/lib/claude'
+import { suggestCurriculum, CurriculumSession, CurriculumInsight, type ExternalResearch } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
 import { validateCurriculumRules } from '@/lib/curriculum-rules'
 
@@ -132,7 +132,18 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    const curriculum = await suggestCurriculum(rfpParsed, logicModel, impactModules)
+    // 저장된 외부 리서치가 있으면 주입 (티키타카)
+    let externalResearch: ExternalResearch[] | undefined
+    if (projectId) {
+      const proj = await prisma.project.findUnique({
+        where: { id: projectId },
+        select: { externalResearch: true },
+      })
+      const saved = (proj?.externalResearch ?? []) as unknown as ExternalResearch[]
+      if (saved.length > 0) externalResearch = saved
+    }
+
+    const curriculum = await suggestCurriculum(rfpParsed, logicModel, impactModules, externalResearch)
 
     // Action Week 페어 1:1 코칭 자동 주입
     const { sessions: sessionsWithCoaching, addedPairs } = injectCoachingPairs(curriculum.sessions)
