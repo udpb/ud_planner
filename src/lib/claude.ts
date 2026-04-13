@@ -658,13 +658,13 @@ const PROPOSAL_SECTIONS = [
 
 // 섹션별 목표 글자수 (프론트엔드 편집 UX용 export)
 export const SECTION_LENGTH_TARGETS: Record<number, { min: number; max: number }> = {
-  1: { min: 800, max: 1000 },
-  2: { min: 800, max: 1000 },
-  3: { min: 900, max: 1100 },
-  4: { min: 1000, max: 1300 },
-  5: { min: 800, max: 1000 },
-  6: { min: 800, max: 1000 },
-  7: { min: 800, max: 1000 },
+  1: { min: 800, max: 3000 },
+  2: { min: 800, max: 3500 },
+  3: { min: 800, max: 2500 },
+  4: { min: 1000, max: 4000 },
+  5: { min: 800, max: 3000 },
+  6: { min: 800, max: 3000 },
+  7: { min: 800, max: 3000 },
 }
 
 // 섹션별 작성 가이드 — 실제 당선 제안서 분석 기반 (청년마을·전통문화 패턴)
@@ -882,7 +882,7 @@ ${guide.headlinePattern}
 ▣ 반드시 포함해야 할 요소:
 ${guide.mustInclude.map((m) => `  - ${m}`).join('\n')}
 
-▣ 분량: ${guide.lengthRange} (엄격 준수 — 이 범위를 초과하면 안 됩니다)
+▣ 분량 참고: ${guide.lengthRange} (핵심 정보를 충분히 전달하는 것이 우선. 근거와 데이터가 풍부하면 초과해도 됩니다)
 
 ▣ 필수 적용 사항:
 1. 위 [언더독스 브랜드 자산] 중 적합한 것을 자연스럽게 인용 (실적 수치, 자체 도구명, 4중 지원 체계 등)

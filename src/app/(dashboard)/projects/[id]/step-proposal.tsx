@@ -30,13 +30,13 @@ const SECTIONS = [
 ]
 
 const LENGTH_TARGETS: Record<number, { min: number; max: number }> = {
-  1: { min: 800, max: 1000 },
-  2: { min: 800, max: 1000 },
-  3: { min: 900, max: 1100 },
-  4: { min: 1000, max: 1300 },
-  5: { min: 800, max: 1000 },
-  6: { min: 800, max: 1000 },
-  7: { min: 800, max: 1000 },
+  1: { min: 800, max: 3000 },
+  2: { min: 800, max: 3500 },
+  3: { min: 800, max: 2500 },
+  4: { min: 1000, max: 4000 },
+  5: { min: 800, max: 3000 },
+  6: { min: 800, max: 3000 },
+  7: { min: 800, max: 3000 },
 }
 
 const EVAL_SECTION_MAP: Record<string, number[]> = {
