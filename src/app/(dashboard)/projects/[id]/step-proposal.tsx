@@ -15,6 +15,7 @@ import {
 import { cn } from '@/lib/utils'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { ResearchPanel } from '@/components/projects/research-panel'
+import { StrategyPanel } from '@/components/projects/strategy-panel'
 
 /* ───────────────────────────────────────── 상수 ── */
 
@@ -338,7 +339,8 @@ export function StepProposal({ projectId, hasLogicModel, initialSections, evalCr
         <DataFlowBanner fromStep="RFP 평가 배점" toStep="제안서 섹션" items={flowItems} />
       )}
 
-      {/* 외부 리서치 수집 패널 (티키타카) */}
+      {/* 수주 전략 메모 + 외부 리서치 수집 */}
+      <StrategyPanel projectId={projectId} />
       <ResearchPanel projectId={projectId} />
 
       {/* Header */}

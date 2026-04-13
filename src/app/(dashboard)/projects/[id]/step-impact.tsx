@@ -13,6 +13,7 @@ import {
 import { cn } from '@/lib/utils'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { ResearchPanel } from '@/components/projects/research-panel'
+import { StrategyPanel } from '@/components/projects/strategy-panel'
 import { toast } from 'sonner'
 
 interface GoalCandidate {
@@ -385,7 +386,8 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
             </div>
           </div>
 
-          {/* 외부 리서치 수집 패널 (티키타카) */}
+          {/* 수주 전략 메모 + 외부 리서치 수집 */}
+          <StrategyPanel projectId={projectId} />
           <ResearchPanel projectId={projectId} />
 
           {/* Confirmed goal banner */}
