@@ -15,11 +15,16 @@ import {
   normalizeLogicModel,
   type RfpParsed,
   type LogicModel,
+  type ExternalResearch,
 } from '@/lib/claude'
 
 export async function POST(req: NextRequest) {
   try {
-    const { intent } = await req.json()
+    const { intent, externalResearch } = await req.json()
+    // externalResearch는 optional — 티키타카 파이프라인에서 PM이 수집한 리서치
+    const research = (externalResearch as ExternalResearch[] | undefined)?.length
+      ? externalResearch as ExternalResearch[]
+      : undefined
 
     if (!intent?.bidContext?.rfpFacts) {
       return NextResponse.json(
@@ -48,6 +53,7 @@ export async function POST(req: NextRequest) {
         rfpParsed.summary,
         rfpParsed.objectives,
         impactGoal,
+        research,
       )
     } catch (err: any) {
       console.error('[generate-proposal] LogicModel 생성 실패:', err.message)
@@ -93,6 +99,7 @@ export async function POST(req: NextRequest) {
           logicModel,
           curriculumSessions,
           previousSections: sections,
+          externalResearch: research,
         })
         sections.push({
           no: sectionNo,

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
+import { ResearchPanel } from '@/components/projects/research-panel'
 
 /* ───────────────────────────────────────── 상수 ── */
 
@@ -28,13 +29,13 @@ const SECTIONS = [
 ]
 
 const LENGTH_TARGETS: Record<number, { min: number; max: number }> = {
-  1: { min: 700, max: 900 },
-  2: { min: 700, max: 900 },
-  3: { min: 800, max: 1000 },
-  4: { min: 900, max: 1200 },
-  5: { min: 700, max: 900 },
-  6: { min: 700, max: 900 },
-  7: { min: 700, max: 900 },
+  1: { min: 800, max: 1000 },
+  2: { min: 800, max: 1000 },
+  3: { min: 900, max: 1100 },
+  4: { min: 1000, max: 1300 },
+  5: { min: 800, max: 1000 },
+  6: { min: 800, max: 1000 },
+  7: { min: 800, max: 1000 },
 }
 
 const EVAL_SECTION_MAP: Record<string, number[]> = {
@@ -336,6 +337,9 @@ export function StepProposal({ projectId, hasLogicModel, initialSections, evalCr
       {evalCriteria.length > 0 && (
         <DataFlowBanner fromStep="RFP 평가 배점" toStep="제안서 섹션" items={flowItems} />
       )}
+
+      {/* 외부 리서치 수집 패널 (티키타카) */}
+      <ResearchPanel projectId={projectId} />
 
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
