@@ -2,33 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { parseRfp, type RfpParsed } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
 
-// PDF → 텍스트 추출 (Vercel 서버리스 호환)
+// PDF → 텍스트 추출 (unpdf — Vercel 서버리스 완전 호환, worker 불필요)
 async function extractTextFromPdf(buffer: Buffer): Promise<string> {
-  try {
-    // pdfjs-dist legacy build (Node.js 환경용)
-    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs')
-    const uint8 = new Uint8Array(buffer)
-    const doc = await pdfjsLib.getDocument({ data: uint8, useSystemFonts: true }).promise
-    const pages: string[] = []
-    for (let i = 1; i <= doc.numPages; i++) {
-      const page = await doc.getPage(i)
-      const content = await page.getTextContent()
-      const text = content.items.map((item: any) => item.str).join(' ')
-      if (text.trim()) pages.push(text)
-    }
-    return pages.join('\n\n')
-  } catch (err: any) {
-    console.error('[extractTextFromPdf] pdfjs-dist 실패, fallback 시도:', err.message)
-    // fallback: pdf-parse
-    try {
-      const pdfParseModule = await import('pdf-parse')
-      const pdfParse = (pdfParseModule as any).default ?? pdfParseModule
-      const data = await pdfParse(buffer)
-      return data.text
-    } catch (err2: any) {
-      throw new Error(`PDF 텍스트 추출 실패: ${err.message} / fallback: ${err2.message}`)
-    }
-  }
+  const { extractText } = await import('unpdf')
+  const result = await extractText(new Uint8Array(buffer))
+  return (result.text ?? []).join('\n\n')
 }
 
 // RFP 파싱 결과에서 정보 부족/주의 항목을 감지하여 질문 생성
