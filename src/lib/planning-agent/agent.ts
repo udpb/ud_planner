@@ -95,11 +95,14 @@ async function startNewSession(
   // 2. 세션 생성
   let state = createSession(intent, { projectId, status: 'preprocessing' })
 
-  // 2.5. RFP 기반 동적 질문 생성 (1회 LLM 호출 — 실패 시 고정 질문 fallback)
-  const dynamicPrompts = await generateDynamicQuestions(intent)
-  if (Object.keys(dynamicPrompts).length > 0) {
-    state = { ...state, dynamicQuestionPrompts: dynamicPrompts }
-  }
+  // 2.5. RFP 기반 동적 질문 생성 — 백그라운드에서 실행 (첫 응답 속도 최적화)
+  // 고정 질문으로 먼저 시작하고, 동적 질문은 다음 턴부터 적용
+  generateDynamicQuestions(intent).then((dynamicPrompts) => {
+    if (Object.keys(dynamicPrompts).length > 0) {
+      const current = state
+      updateSession({ ...current, dynamicQuestionPrompts: dynamicPrompts })
+    }
+  }).catch(() => {})
 
   // 3. 첫 안내 메시지 (Agent가 PM에게 인사 + RFP 분석 공유)
   const welcomeContent = buildWelcomeMessage(intent)
