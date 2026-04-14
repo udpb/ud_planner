@@ -11,30 +11,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
-    // 개발 환경 전용: Google OAuth 없이 로그인
-    ...(process.env.NODE_ENV === 'development'
-      ? [
-          Credentials({
-            name: 'Dev Login',
-            credentials: {
-              email: { label: 'Email', type: 'email', placeholder: 'pm@underdogs.co.kr' },
-            },
-            async authorize(credentials) {
-              const email = credentials?.email as string
-              if (!email) return null
+    // 이메일 로그인 (Google OAuth 없이도 접속 가능)
+    Credentials({
+      name: '이메일 로그인',
+      credentials: {
+        email: { label: 'Email', type: 'email', placeholder: 'pm@underdogs.co.kr' },
+      },
+      async authorize(credentials) {
+        const email = credentials?.email as string
+        if (!email) return null
 
-              // 기존 유저 찾거나 생성
-              let user = await prisma.user.findUnique({ where: { email } })
-              if (!user) {
-                user = await prisma.user.create({
-                  data: { email, name: email.split('@')[0], role: 'PM' },
-                })
-              }
-              return { id: user.id, email: user.email, name: user.name, role: user.role }
-            },
-          }),
-        ]
-      : []),
+        // @udimpact.ai 또는 @underdogs.co.kr 도메인만 허용
+        const allowed = email.endsWith('@udimpact.ai') || email.endsWith('@underdogs.co.kr')
+        if (!allowed) return null
+
+        // 기존 유저 찾거나 생성
+        let user = await prisma.user.findUnique({ where: { email } })
+        if (!user) {
+          user = await prisma.user.create({
+            data: { email, name: email.split('@')[0], role: 'PM' },
+          })
+        }
+        return { id: user.id, email: user.email, name: user.name, role: user.role }
+      },
+    }),
   ],
   session: { strategy: 'jwt' },
   callbacks: {

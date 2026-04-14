@@ -7,7 +7,7 @@ import type { NextRequest } from 'next/server'
  * 실제 토큰 검증은 서버 컴포넌트/API에서 auth()로 수행.
  */
 
-const publicPaths = ['/login', '/api/auth', '/api/feedback', '/feedback']
+const publicPaths = ['/login', '/api/auth', '/api/feedback', '/feedback', '/api/debug-env']
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl

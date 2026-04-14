@@ -62,39 +62,35 @@ function LoginForm() {
             Google로 로그인
           </button>
 
-          {/* Dev Login */}
-          {isDev && (
-            <>
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">개발 모드</span>
-                </div>
-              </div>
+          {/* 이메일 로그인 */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">또는</span>
+            </div>
+          </div>
 
-              <div className="space-y-3">
-                <input
-                  type="email"
-                  value={devEmail}
-                  onChange={(e) => setDevEmail(e.target.value)}
-                  placeholder="이메일"
-                  className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <button
-                  onClick={() => {
-                    setLoading(true)
-                    signIn('credentials', { email: devEmail, callbackUrl })
-                  }}
-                  disabled={loading}
-                  className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
-                >
-                  {loading ? '로그인 중...' : '개발 로그인'}
-                </button>
-              </div>
-            </>
-          )}
+          <div className="space-y-3">
+            <input
+              type="email"
+              value={devEmail}
+              onChange={(e) => setDevEmail(e.target.value)}
+              placeholder="이메일 (@udimpact.ai / @underdogs.co.kr)"
+              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button
+              onClick={() => {
+                setLoading(true)
+                signIn('credentials', { email: devEmail, callbackUrl })
+              }}
+              disabled={loading}
+              className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+            >
+              {loading ? '로그인 중...' : '이메일로 로그인'}
+            </button>
+          </div>
         </div>
 
         <p className="text-center text-xs text-muted-foreground">
