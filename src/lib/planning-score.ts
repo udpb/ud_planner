@@ -88,7 +88,10 @@ export function calculatePlanningScore(data: ProjectData): PlanningScore {
     if (lm.impactGoal && lm.impactGoal.length > 10) impactScore += 3
     if (lm.outcome?.length >= 2) impactScore += 2
     if (lm.activity?.length >= 3) impactScore += 2
-    const hasActionWeek = (lm.activity ?? []).some((a: string) => a.toLowerCase().includes('action'))
+    const hasActionWeek = (lm.activity ?? []).some((a: any) => {
+      const text = typeof a === 'string' ? a : a?.text ?? ''
+      return text.toLowerCase().includes('action')
+    })
     if (hasActionWeek) impactScore += 2
     if (lm.input?.length >= 2) impactScore += 1
 
