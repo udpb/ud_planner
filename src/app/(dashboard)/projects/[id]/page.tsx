@@ -90,18 +90,13 @@ export default async function ProjectDetailPage({
     proposalSectionCount: project.proposalSections.length,
   })
 
+  // ADR-001: 스텝 순서 = rfp → curriculum → coaches → budget → impact → proposal
   const steps: PipelineStep[] = [
     {
       key: 'rfp',
       label: 'RFP 분석',
       sublabel: project.rfpParsed ? '완료' : '미완료',
       done: !!project.rfpParsed,
-    },
-    {
-      key: 'impact',
-      label: '임팩트 설계',
-      sublabel: project.logicModel ? '완료' : '미완료',
-      done: !!project.logicModel,
     },
     {
       key: 'curriculum',
@@ -122,6 +117,12 @@ export default async function ProjectDetailPage({
         ? `마진 ${marginRate.toFixed(1)}%`
         : '미작성',
       done: !!project.budget,
+    },
+    {
+      key: 'impact',
+      label: '임팩트 설계',
+      sublabel: project.logicModel ? '완료' : '미완료',
+      done: !!project.logicModel,
     },
     {
       key: 'proposal',
@@ -196,7 +197,7 @@ export default async function ProjectDetailPage({
       {/* Step content */}
       <div className="flex-1 overflow-y-auto p-6">
 
-        {/* ── Step 1: RFP 분석 ── */}
+        {/* ── Step 1: RFP 분석 + 기획 방향 ── */}
         {step === 'rfp' && (
           <StepRfp
             projectId={project.id}
@@ -204,16 +205,7 @@ export default async function ProjectDetailPage({
           />
         )}
 
-        {/* ── Step 2: 임팩트 설계 ── */}
-        {step === 'impact' && (
-          <StepImpact
-            projectId={project.id}
-            rfpParsed={project.rfpParsed as any}
-            initialLogicModel={project.logicModel as any}
-          />
-        )}
-
-        {/* ── Step 3: 커리큘럼 ── */}
+        {/* ── Step 2: 커리큘럼 ── */}
         {step === 'curriculum' && (
           <CurriculumBoard
             projectId={project.id}
@@ -242,7 +234,7 @@ export default async function ProjectDetailPage({
           />
         )}
 
-        {/* ── Step 4: 코치 배정 ── */}
+        {/* ── Step 3: 코치 배정 ── */}
         {step === 'coaches' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -317,7 +309,7 @@ export default async function ProjectDetailPage({
           </div>
         )}
 
-        {/* ── Step 5: 예산 ── */}
+        {/* ── Step 4: 예산 + SROI ── */}
         {step === 'budget' && (
           <BudgetDashboard
             projectId={project.id}
@@ -342,6 +334,15 @@ export default async function ProjectDetailPage({
               amount: i.amount,
               isEstimated: i.notes?.includes('추정') ?? false,
             })) ?? []}
+          />
+        )}
+
+        {/* ── Step 5: 임팩트 체인 ── */}
+        {step === 'impact' && (
+          <StepImpact
+            projectId={project.id}
+            rfpParsed={project.rfpParsed as any}
+            initialLogicModel={project.logicModel as any}
           />
         )}
 

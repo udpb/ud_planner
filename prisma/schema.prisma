@@ -143,10 +143,10 @@ model Coach {
   hasInvestExp       Boolean @default(false)
 
   // 가용성
-  availableDays  String[]
-  blockedPeriods Json?
-  onlineAvailable Boolean @default(true)
-  minLeadTimeDays Int     @default(7)
+  availableDays   String[]
+  blockedPeriods  Json?
+  onlineAvailable Boolean  @default(true)
+  minLeadTimeDays Int      @default(7)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -198,11 +198,11 @@ model Module {
   maxParticipants Int            @default(50)
   difficulty      Difficulty     @default(INTRO)
 
-  objectives  String[]
-  contents    String[]
-  practices   String[]
-  equipment   String[]
-  outputs     String[]
+  objectives String[]
+  contents   String[]
+  practices  String[]
+  equipment  String[]
+  outputs    String[]
 
   targetStages  String[]
   targetPresets String[]
@@ -210,16 +210,16 @@ model Module {
   impactQ54Mapping String[]
   skills5D         String[]
   acttTargets      String[]
-  aiRatio          Int     @default(0)
-  expertRatio      Int     @default(100)
+  aiRatio          Int      @default(0)
+  expertRatio      Int      @default(100)
 
-  prerequisites String[]
-  outcomeTypes  String[]
+  prerequisites   String[]
+  outcomeTypes    String[]
   conversionRates Json?
   conversionBasis String?
 
-  isTheory  Boolean @default(false)
-  isActive  Boolean @default(true)
+  isTheory  Boolean  @default(false)
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -245,33 +245,33 @@ enum ProjectType {
 }
 
 model Project {
-  id            String        @id @default(cuid())
-  name          String
-  client        String
-  projectType   ProjectType   @default(B2G)
-  status        ProjectStatus @default(DRAFT)
+  id          String        @id @default(cuid())
+  name        String
+  client      String
+  projectType ProjectType   @default(B2G)
+  status      ProjectStatus @default(DRAFT)
 
-  totalBudgetVat   Int?
-  supplyPrice      Int?
+  totalBudgetVat Int?
+  supplyPrice    Int?
 
   projectStartDate DateTime?
   projectEndDate   DateTime?
   eduStartDate     DateTime?
   eduEndDate       DateTime?
 
-  rfpRaw     String? @db.Text
-  rfpParsed  Json?
-  impactGoal String? @db.Text
+  rfpRaw           String? @db.Text
+  rfpParsed        Json?
+  impactGoal       String? @db.Text
   logicModel       Json?
-  externalResearch Json?   // PM이 외부 LLM에서 수집한 리서치 (ExternalResearch[])
-  strategicNotes   Json?   // 전략 맥락 (StrategicNotes: clientHiddenWants, mustNotFail, etc.)
-  evalCriteria Json?
-  constraints  Json?
-  kpiTargets   Json?
-  kpiActuals   Json?
-  sroiCountry  String @default("한국")
-  sroiForecast Json?
-  sroiActual   Json?
+  externalResearch Json? // PM이 외부 LLM에서 수집한 리서치 (ExternalResearch[])
+  strategicNotes   Json? // 전략 맥락 (StrategicNotes: clientHiddenWants, mustNotFail, etc.)
+  evalCriteria     Json?
+  constraints      Json?
+  kpiTargets       Json?
+  kpiActuals       Json?
+  sroiCountry      String  @default("한국")
+  sroiForecast     Json?
+  sroiActual       Json?
 
   pmId String?
   pm   User?   @relation(fields: [pmId], references: [id])
@@ -284,17 +284,17 @@ model Project {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  curriculum       CurriculumItem[]
-  coachAssignments CoachAssignment[]
-  budget           Budget?
-  tasks            Task[]
-  expenses         Expense[]
-  participants     Participant[]
-  proposalSections ProposalSection[]
-  applicants       Applicant[]
+  curriculum            CurriculumItem[]
+  coachAssignments      CoachAssignment[]
+  budget                Budget?
+  tasks                 Task[]
+  expenses              Expense[]
+  participants          Participant[]
+  proposalSections      ProposalSection[]
+  applicants            Applicant[]
   satisfactionResponses SatisfactionResponse[]
-  coachingJournals CoachingJournal[]
-  agentSessions    AgentSession[]
+  coachingJournals      CoachingJournal[]
+  agentSessions         AgentSession[]
 }
 
 // ─────────────────────────────────────────
@@ -316,9 +316,9 @@ model CurriculumItem {
   endTime       String?
   durationHours Float
   venue         String?
-  isOnline      Boolean @default(false)
-  isTheory      Boolean @default(false)
-  isActionWeek  Boolean @default(false)
+  isOnline      Boolean   @default(false)
+  isTheory      Boolean   @default(false)
+  isActionWeek  Boolean   @default(false)
 
   assignedCoachId String?
   coachRole       String?
@@ -356,22 +356,22 @@ enum AssignmentRole {
 }
 
 model CoachAssignment {
-  id        String         @id @default(cuid())
+  id        String  @id @default(cuid())
   projectId String
   coachId   String
-  project   Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  coach     Coach          @relation(fields: [coachId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  coach     Coach   @relation(fields: [coachId], references: [id])
 
-  role           AssignmentRole
-  sessions       Int    @default(1)
-  hoursPerSession Float  @default(5)
-  totalHours     Float?
-  agreedRate     Int?
-  totalFee       Int?
-  taxRate        Float?
-  netFee         Int?
-  confirmed      Boolean @default(false)
-  notes          String?
+  role            AssignmentRole
+  sessions        Int            @default(1)
+  hoursPerSession Float          @default(5)
+  totalHours      Float?
+  agreedRate      Int?
+  totalFee        Int?
+  taxRate         Float?
+  netFee          Int?
+  confirmed       Boolean        @default(false)
+  notes           String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -394,8 +394,8 @@ model Budget {
   marginRate Float @default(0)
 
   items     BudgetItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 enum BudgetItemType {
@@ -404,9 +404,9 @@ enum BudgetItemType {
 }
 
 model BudgetItem {
-  id       String         @id @default(cuid())
+  id       String @id @default(cuid())
   budgetId String
-  budget   Budget         @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
 
   wbsCode   String
   type      BudgetItemType
@@ -447,18 +447,18 @@ enum TaskStatus {
 }
 
 model Task {
-  id          String     @id @default(cuid())
+  id          String         @id @default(cuid())
   projectId   String
-  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
   title       String
-  description String?    @db.Text
-  status      TaskStatus @default(TODO)
+  description String?        @db.Text
+  status      TaskStatus     @default(TODO)
   dueDate     DateTime?
   dDay        Int?
   category    String?
   assignees   TaskAssignee[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 }
 
 model TaskAssignee {
@@ -471,29 +471,29 @@ model TaskAssignee {
 }
 
 model Participant {
-  id          String   @id @default(cuid())
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  name        String
-  email       String?
-  phone       String?
-  track       String?
-  team        String?
-  stage       String?
-  attendances Json?
-  attendanceRate Float @default(0)
-  graduated   Boolean  @default(false)
-  absenceCount Int     @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(cuid())
+  projectId      String
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name           String
+  email          String?
+  phone          String?
+  track          String?
+  team           String?
+  stage          String?
+  attendances    Json?
+  attendanceRate Float    @default(0)
+  graduated      Boolean  @default(false)
+  absenceCount   Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  dogsResults          DogsResult[]
-  acttResults          ActtResult[]
-  startupStatusRecords StartupStatusRecord[]
-  startupDiagnosis     StartupDiagnosis[]
+  dogsResults           DogsResult[]
+  acttResults           ActtResult[]
+  startupStatusRecords  StartupStatusRecord[]
+  startupDiagnosis      StartupDiagnosis[]
   satisfactionResponses SatisfactionResponse[]
-  coachingJournals     CoachingJournal[]
-  alumniRecords        AlumniRecord[]
+  coachingJournals      CoachingJournal[]
+  alumniRecords         AlumniRecord[]
 }
 
 // ─────────────────────────────────────────
@@ -501,16 +501,16 @@ model Participant {
 // ─────────────────────────────────────────
 
 model ProposalSection {
-  id        String  @id @default(cuid())
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  sectionNo Int
-  title     String
-  content   String  @db.Text
-  version   Int     @default(1)
-  isApproved Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sectionNo  Int
+  title      String
+  content    String   @db.Text
+  version    Int      @default(1)
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([projectId, sectionNo, version])
 }
@@ -552,8 +552,8 @@ model SroiProxy {
 }
 
 model TargetPreset {
-  id              String @id @default(cuid())
-  name            String @unique
+  id              String  @id @default(cuid())
+  name            String  @unique
   lectureRatio    Int
   workshopRatio   Int
   mentoringRatio  Int
@@ -596,35 +596,35 @@ model ImpactModule {
 }
 
 model Content {
-  id              String   @id @default(cuid())
-  legacyCode      Int      @unique
-  name            String
-  format          String
-  category        String
-  targetAudience  String[]
-  businessField   String[]
-  startupStage    String[]
-  deliveryMethod  String?
-  sixRolesTarget  String[]
-  learningType    String?
-  impactExpect    String?
-  prerequisites   Int[]
-  pptUrl          String?
-  vodUrl          String?
-  description     String?  @db.Text
-  isActive        Boolean  @default(true)
+  id             String   @id @default(cuid())
+  legacyCode     Int      @unique
+  name           String
+  format         String
+  category       String
+  targetAudience String[]
+  businessField  String[]
+  startupStage   String[]
+  deliveryMethod String?
+  sixRolesTarget String[]
+  learningType   String?
+  impactExpect   String?
+  prerequisites  Int[]
+  pptUrl         String?
+  vodUrl         String?
+  description    String?  @db.Text
+  isActive       Boolean  @default(true)
 
   contentMappings ContentMapping[]
 }
 
 model ContentMapping {
-  id              String       @id @default(cuid())
-  impactModuleId  String
-  impactModule    ImpactModule @relation(fields: [impactModuleId], references: [id])
-  contentId       String
-  content         Content      @relation(fields: [contentId], references: [id])
-  fitScore        Int          @default(3)
-  notes           String?
+  id             String       @id @default(cuid())
+  impactModuleId String
+  impactModule   ImpactModule @relation(fields: [impactModuleId], references: [id])
+  contentId      String
+  content        Content      @relation(fields: [contentId], references: [id])
+  fitScore       Int          @default(3)
+  notes          String?
 
   @@unique([impactModuleId, contentId])
 }
@@ -645,11 +645,11 @@ model DesignRule {
 }
 
 model AudienceProfile {
-  id                 String   @id @default(cuid())
-  name               String   @unique
-  targetAudience     String[]
-  businessFields     String[]
-  startupStages      String[]
+  id             String   @id @default(cuid())
+  name           String   @unique
+  targetAudience String[]
+  businessFields String[]
+  startupStages  String[]
 
   formatWeights      Json
   impactStageWeights Json
@@ -677,8 +677,8 @@ model WeightSuggestion {
 // ─────────────────────────────────────────
 
 model InternalLaborRate {
-  id          String @id @default(cuid())
-  gradeCode   String @unique
+  id          String  @id @default(cuid())
+  gradeCode   String  @unique
   gradeName   String
   category    String // B2G | B2B | INTERNAL
   hourlyRate  Int
@@ -688,8 +688,8 @@ model InternalLaborRate {
 }
 
 model ServiceProduct {
-  id            String @id @default(cuid())
-  code          String @unique
+  id            String  @id @default(cuid())
+  code          String  @unique
   name          String
   category      String // DOGS | VOD | BEYOND_EDU | SV_IMPACT
   basePrice     Int
@@ -704,48 +704,48 @@ model ServiceProduct {
 
 // 참여자 지원서 (신청 정보)
 model Applicant {
-  id            String   @id @default(cuid())
-  projectId     String
-  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   // ID 식별
-  name          String
-  teamName      String?
-  email         String
-  phone         String?
+  name     String
+  teamName String?
+  email    String
+  phone    String?
 
   // 기본 정보
-  gender        String?
-  nationality   String?  @default("대한민국")
-  residence     String?
-  birthDate     DateTime?
-  affiliation   String?
-  jobMajor      String?
-  education     String?
+  gender      String?
+  nationality String?   @default("대한민국")
+  residence   String?
+  birthDate   DateTime?
+  affiliation String?
+  jobMajor    String?
+  education   String?
 
   // 창업 정보
-  orgType       String?   // 예비창업(개인)/예비창업(팀)/개인사업자/법인사업자
-  companyName   String?
-  industry      String?   // 28개 산업분류 중 하나
-  problemToSolve String?  @db.Text
-  itemIntro     String?   @db.Text
+  orgType          String? // 예비창업(개인)/예비창업(팀)/개인사업자/법인사업자
+  companyName      String?
+  industry         String? // 28개 산업분류 중 하나
+  problemToSolve   String?  @db.Text
+  itemIntro        String?  @db.Text
   businessLocation String?
-  startupStage  String?   // 아이디어/MVP/매출발생/투자유치완료 등
-  teamSize      Int?
-  teamMembers   String?
-  certifications String[]
-  currentRevenue Float?
-  lastYearRevenue Float?
-  motivation    String?   @db.Text
-  referralSource String[]
+  startupStage     String? // 아이디어/MVP/매출발생/투자유치완료 등
+  teamSize         Int?
+  teamMembers      String?
+  certifications   String[]
+  currentRevenue   Float?
+  lastYearRevenue  Float?
+  motivation       String?  @db.Text
+  referralSource   String[]
 
   // 심사
   evaluationScores Json?
   selectionResult  String? // PENDING | PASSED | FAILED
 
   // 수료
-  graduated     Boolean  @default(false)
-  participantId String?  // 선발 후 Participant 레코드 연결
+  graduated     Boolean @default(false)
+  participantId String? // 선발 후 Participant 레코드 연결
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -755,140 +755,140 @@ model Applicant {
 
 // DOGS 성향 진단 결과
 model DogsResult {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   participantId String
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   projectId     String
 
-  dogsType      String?  // D | O | G | S (최종 유형)
-  answers       Json     // {q1: 1~4, q2: 1~4, ..., q24: 1~4}
-  scores        Json?    // {D: 점수, O: 점수, G: 점수, S: 점수}
+  dogsType String? // D | O | G | S (최종 유형)
+  answers  Json // {q1: 1~4, q2: 1~4, ..., q24: 1~4}
+  scores   Json? // {D: 점수, O: 점수, G: 점수, S: 점수}
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([participantId, projectId])
 }
 
 // ACTT 실행역량 진단 (사전/사후)
 model ActtResult {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   participantId String
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   projectId     String
-  timing        String   // PRE | POST
+  timing        String // PRE | POST
 
-  answers       Json     // {q1: 1~5, ..., q15: 1~5}
-  domainScores  Json?    // {goalOrientation: avg, marketAwareness: avg, problemSolving: avg, experimentation: avg, persistence: avg}
-  totalScore    Float?
+  answers      Json // {q1: 1~5, ..., q15: 1~5}
+  domainScores Json? // {goalOrientation: avg, marketAwareness: avg, problemSolving: avg, experimentation: avg, persistence: avg}
+  totalScore   Float?
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([participantId, projectId, timing])
 }
 
 // 창업현황 (사전/사후)
 model StartupStatusRecord {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   participantId String
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   projectId     String
-  timing        String   // PRE | POST
+  timing        String // PRE | POST
 
-  orgType       String?
+  orgType           String?
   cumulativeRevenue Float?
-  bepAchieved   Boolean?
-  teamSize      Int?
-  patents       String?
-  investorName  String?
-  investAmount  Float?
-  govSupport    String?
-  privateSupport String?
-  needs         String[]
+  bepAchieved       Boolean?
+  teamSize          Int?
+  patents           String?
+  investorName      String?
+  investAmount      Float?
+  govSupport        String?
+  privateSupport    String?
+  needs             String[]
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([participantId, projectId, timing])
 }
 
 // 창업현황 진단 (사전, 루브릭 12항목)
 model StartupDiagnosis {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   participantId String
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   projectId     String
 
-  scores        Json     // {problemDefinition: 1~5, solutionDiff: 1~5, ..., irReadiness: 1~5}
-  consultingNeeds String[]
-  biggestChallenge String? @db.Text
-  programGoal     String? @db.Text
-  coachRequest    String? @db.Text
+  scores           Json // {problemDefinition: 1~5, solutionDiff: 1~5, ..., irReadiness: 1~5}
+  consultingNeeds  String[]
+  biggestChallenge String?  @db.Text
+  programGoal      String?  @db.Text
+  coachRequest     String?  @db.Text
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([participantId, projectId])
 }
 
 // 만족도 응답 (세션별 + 최종)
 model SatisfactionResponse {
-  id            String   @id @default(cuid())
+  id            String       @id @default(cuid())
   participantId String?
   participant   Participant? @relation(fields: [participantId], references: [id], onDelete: SetNull)
   projectId     String
-  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  sessionId     String?  // CurriculumItem.id (회차별인 경우)
-  timing        String   // SESSION | FINAL
-  section       String   // overall | coaching | lecture | specialLecture | content | consulting | networking | popupEvent | demoDay | other
+  sessionId String? // CurriculumItem.id (회차별인 경우)
+  timing    String // SESSION | FINAL
+  section   String // overall | coaching | lecture | specialLecture | content | consulting | networking | popupEvent | demoDay | other
 
-  responses     Json     // {q1: 5, q2: "텍스트", ...}
-  coachName     String?  // 코칭 만족도 시 코치명
+  responses Json // {q1: 5, q2: "텍스트", ...}
+  coachName String? // 코칭 만족도 시 코치명
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([projectId, timing])
 }
 
 // 코칭일지
 model CoachingJournal {
-  id            String   @id @default(cuid())
+  id            String       @id @default(cuid())
   projectId     String
-  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   participantId String?
   participant   Participant? @relation(fields: [participantId], references: [id], onDelete: SetNull)
   coachName     String
   sessionDate   DateTime
-  goals         String?  @db.Text
-  activities    String?  @db.Text
-  diagnosis     String?  @db.Text
-  actionPlan    String?  @db.Text
+  goals         String?      @db.Text
+  activities    String?      @db.Text
+  diagnosis     String?      @db.Text
+  actionPlan    String?      @db.Text
   stage         String?
   photoUrl      String?
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // 알럼나이 추적
 model AlumniRecord {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   participantId String
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
   surveyYear    Int
 
-  activityStatus   String?
-  startupIntent    String?
-  dropoutReasons   String[]
+  activityStatus    String?
+  startupIntent     String?
+  dropoutReasons    String[]
   cumulativeRevenue Float?
-  bepAchieved      Boolean?
-  teamSize         Int?
-  patents          String?
-  investStatus     String?
-  supportPrograms  String?
-  alumniNeeds      String[]
-  concerns         String[]
-  phone            String?
+  bepAchieved       Boolean?
+  teamSize          Int?
+  patents           String?
+  investStatus      String?
+  supportPrograms   String?
+  alumniNeeds       String[]
+  concerns          String[]
+  phone             String?
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([participantId, surveyYear])
 }
@@ -907,21 +907,21 @@ enum AgentSessionStatus {
 }
 
 model AgentSession {
-  id           String             @id @default(cuid())
-  projectId    String?
-  project      Project?           @relation(fields: [projectId], references: [id], onDelete: SetNull)
-  pmId         String?
-  pm           User?              @relation(fields: [pmId], references: [id], onDelete: SetNull)
+  id        String   @id @default(cuid())
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  pmId      String?
+  pm        User?    @relation(fields: [pmId], references: [id], onDelete: SetNull)
 
-  channel      String             // bid | lead | renewal
-  status       AgentSessionStatus @default(IDLE)
-  stateJson    Json               // AgentState 전체 (history, intent, questions 등)
+  channel   String // bid | lead | renewal
+  status    AgentSessionStatus @default(IDLE)
+  stateJson Json // AgentState 전체 (history, intent, questions 등)
 
-  turnsCompleted Int              @default(0)
-  completeness   Float            @default(0)
+  turnsCompleted Int   @default(0)
+  completeness   Float @default(0)
 
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   planningIntent PlanningIntentRecord?
   pmFeedbacks    PMFeedback[]
@@ -931,36 +931,77 @@ model AgentSession {
 }
 
 model PlanningIntentRecord {
-  id           String       @id @default(cuid())
-  sessionId    String       @unique
-  session      AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  projectId    String?
+  id        String       @id @default(cuid())
+  sessionId String       @unique
+  session   AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  projectId String?
 
-  intentJson   Json         // PlanningIntent 전체
-  completeness Float        @default(0)
-  confidence   String       @default("low") // low | medium | high
-  version      Int          @default(1)
+  intentJson   Json // PlanningIntent 전체
+  completeness Float  @default(0)
+  confidence   String @default("low") // low | medium | high
+  version      Int    @default(1)
 
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([projectId])
 }
 
 model PMFeedback {
-  id           String       @id @default(cuid())
-  sessionId    String
-  session      AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  pmId         String?
+  id        String       @id @default(cuid())
+  sessionId String
+  session   AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  pmId      String?
 
   // PM이 Agent 산출물에 대해 남긴 피드백
-  targetType   String       // intent | strategy | question | overall
-  targetField  String?      // 구체적 필드명 (예: "keyMessages", "coachProfile")
-  rating       Int?         // 1-5
-  comment      String?      @db.Text
-  correction   String?      @db.Text // PM이 직접 수정한 값
+  targetType  String // intent | strategy | question | overall
+  targetField String? // 구체적 필드명 (예: "keyMessages", "coachProfile")
+  rating      Int? // 1-5
+  comment     String? @db.Text
+  correction  String? @db.Text // PM이 직접 수정한 값
 
-  createdAt    DateTime     @default(now())
+  createdAt DateTime @default(now())
 
   @@index([sessionId])
+}
+
+// ─────────────────────────────────────────
+// [Ingestion] 자료 업로드 → 자산 자동 고도화 (ADR-003)
+// Phase A: 스키마 + 업로드 UI 뼈대 (실제 추출은 Phase D)
+// ─────────────────────────────────────────
+
+model IngestionJob {
+  id          String    @id @default(cuid())
+  kind        String // "proposal" | "curriculum" | "evaluator_question" | "strategy_interview"
+  sourceFile  String? // blob 경로 또는 로컬 경로
+  sourceUrl   String?
+  metadata    Json // 사업명·발주처·수주여부·인터뷰 대상 등
+  status      String    @default("queued") // "queued" | "processing" | "review" | "approved" | "rejected" | "failed"
+  uploadedBy  String
+  uploadedAt  DateTime  @default(now())
+  processedAt DateTime?
+  approvedAt  DateTime?
+  approvedBy  String?
+  error       String?
+
+  extractedItems ExtractedItem[]
+
+  @@index([kind, status])
+  @@index([uploadedBy])
+}
+
+model ExtractedItem {
+  id          String       @id @default(cuid())
+  jobId       String
+  job         IngestionJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  targetAsset String // "winning_pattern" | "curriculum_archetype" | "evaluator_question" | "strategy_note"
+  payload     Json // 자산 후보 필드
+  confidence  Float        @default(0)
+  status      String       @default("pending") // "pending" | "approved" | "rejected" | "edited"
+  reviewNotes String?
+  appliedAt   DateTime?
+  appliedId   String? // 자산 테이블에 삽입된 레코드 ID
+
+  @@index([jobId])
+  @@index([targetAsset, status])
 }
