@@ -12,7 +12,12 @@ export const manifest: ModuleManifest = {
   writes: {
     context: ['rfp', 'strategy'],
   },
-  api: ['POST /api/ai/parse-rfp', 'POST /api/ai/planning-direction'],
+  api: [
+    'POST /api/ai/parse-rfp',
+    'POST /api/ai/planning-direction',
+    'GET /api/projects/[id]/similar',
+    'PATCH /api/projects/[id]/rfp',
+  ],
   ui: 'src/app/(dashboard)/projects/[id]/step-rfp.tsx',
   quality: {
     checks: [],

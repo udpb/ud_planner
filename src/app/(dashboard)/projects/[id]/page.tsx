@@ -202,6 +202,17 @@ export default async function ProjectDetailPage({
           <StepRfp
             projectId={project.id}
             initialParsed={project.rfpParsed as any}
+            initialRfpSlice={{
+              proposalBackground: project.proposalBackground,
+              proposalConcept: project.proposalConcept,
+              keyPlanningPoints: Array.isArray(project.keyPlanningPoints)
+                ? (project.keyPlanningPoints as string[])
+                : null,
+              confirmedAt:
+                project.proposalBackground || project.proposalConcept
+                  ? project.updatedAt.toISOString()
+                  : null,
+            }}
           />
         )}
 
