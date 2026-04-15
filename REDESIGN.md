@@ -1,5 +1,12 @@
 # UD-Ops 파이프라인 재설계 v2
 
+> **관련 설계 문서** (세부는 이쪽을 따름):
+> - [docs/architecture/modules.md](docs/architecture/modules.md) — 모듈 4계층 + Manifest 패턴
+> - [docs/architecture/data-contract.md](docs/architecture/data-contract.md) — PipelineContext 슬라이스 계약
+> - [docs/architecture/ingestion.md](docs/architecture/ingestion.md) — 자료 업로드 → 자산 자동 고도화
+> - [docs/architecture/quality-gates.md](docs/architecture/quality-gates.md) — 4계층 품질 검증
+> - [docs/decisions/](docs/decisions/) — ADR-001(순서) · ADR-002(Manifest) · ADR-003(Ingestion)
+
 ## Part 1: 시스템 아키텍처
 
 ### 핵심 원칙
@@ -9,6 +16,18 @@
 2. 내부 자산은 자동으로 올라온다 — PM이 찾으러 다니지 않는다
 3. AI는 맥락 안에서 호출된다 — 매번 처음부터가 아니라, 축적된 컨텍스트 위에서
 4. 신입 PM도 왜 이렇게 써야 하는지 안다 — 각 스텝에 가이드/레퍼런스/경고가 내장
+5. 자료는 쌓일수록 시스템이 강해진다 — Ingestion이 자산을 자동 고도화 (ADR-003)
+6. 모듈은 가볍고 떼어낼 수 있다 — Module Manifest로 계약 선언 (ADR-002)
+7. 품질은 4계층 게이트로 검증된다 — 구조 · 룰 · AI · 사람
+```
+
+### 모듈 4계층 (요약 — 상세는 docs/architecture/modules.md)
+
+```
+CORE (파이프라인 스텝 6개) — PipelineContext 소비/생산
+ASSET (회사 자산) — impact-modules, coach-pool, winning-patterns, channel-presets 등
+INGESTION (자료 업로드 → 자산 고도화) — proposal-ingest 등
+SUPPORT (횡단) — planning-agent, pm-guide, predicted-score, coach-finder
 ```
 
 ### 데이터 레이어 (3층)
@@ -584,14 +603,32 @@ F3. Vercel 배포 + GitHub push
 ## 요약: 전체 타임라인
 
 ```
-Phase A: 골격 재구성          ██████
-Phase B: Step 1 고도화        ██████
-Phase C: 데이터 흐름          ███
-Phase D: PM 가이드 시스템      ██████
-Phase E: 내부 데이터 자동 로드  ███
-Phase F: 안정화 + 배포         ███
+Phase A: 골격 재구성 + 계약 정의     ██████
+Phase B: Step 1 고도화 + Ingestion 뼈대  ██████
+Phase C: 데이터 흐름                  ███
+Phase D: PM 가이드 + proposal-ingest + Gate 3  ██████
+Phase E: 내부 데이터 자동 로드 + 나머지 Ingestion  ███
+Phase F: 안정화 + Manifest 강제 + 배포  ███
 ```
 
 핵심 순서: **A → B → C → D → E → F**
 A~C가 끝나면 이미 체감이 완전히 달라짐 (흐름이 자연스러워지고, 데이터가 연결됨).
-D~E는 신입 PM의 가이드와 자동화로, 품질의 하한선을 끌어올림.
+D~E는 신입 PM의 가이드와 자동화로, 품질의 하한선을 끌어올림. D부터는 Ingestion이 자산을 계속 풍부하게 만들어 장기 레버리지를 붙인다.
+
+---
+
+## Part 5: 역할 분담 — AI 공동기획자 vs 서브 에이전트
+
+### AI 공동기획자 (메인 Claude 세션)
+- **Architect**: 모듈 경계 · 데이터 계약 · Ingestion 설계 유지
+- **Guardian**: 모듈 간 계약 일관성 · 품질 게이트 운용
+- **Curator**: 수주 자료·심사 질문·인터뷰를 사용자에게 요청하여 자산화 유도
+- **Orchestrator**: 각 Phase 작업을 서브 에이전트에게 브리프로 위임, 결과 통합
+- **Historian**: ADR + Journey 기록, 교육자료 원천 축적
+
+### 서브 에이전트 (병렬 실행)
+- 각 Phase의 독립 작업 단위 (예: A1 스텝 순서 변경 / A2 PipelineContext API / A3 Manifest 도입)
+- `.claude/agent-briefs/` 에 작업별 브리프 추가 예정
+- Worktree 격리 or 일반 서브 에이전트 선택은 충돌 가능성에 따라
+
+자세한 역할·협업 방식: [docs/architecture/quality-gates.md](docs/architecture/quality-gates.md) §3 "내가 매일 하는 일"

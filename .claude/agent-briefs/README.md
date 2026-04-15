@@ -2,6 +2,12 @@
 
 서브 에이전트에게 위임할 작업의 자급자족 브리프 모음. 메인 세션이 `Agent` 도구로 서브 에이전트를 생성할 때 브리프 내용을 `prompt`로 전달합니다.
 
+> **📌 이 브리프들은 Planning Agent 트랙 (코치 풍부화 / 추천 / UI 임베드) 전용입니다.**
+> 파이프라인 재설계 트랙(Step 순서 변경, PipelineContext, PM 가이드)은 별도입니다 —
+> [../../ROADMAP.md](../../ROADMAP.md) / [../../REDESIGN.md](../../REDESIGN.md) 의 Phase A~F를 따르세요.
+>
+> 두 트랙의 상호 관계: [../../PLANNING_AGENT_ROADMAP.md](../../PLANNING_AGENT_ROADMAP.md) 상단 참조.
+
 ---
 
 ## 📋 브리프 목록

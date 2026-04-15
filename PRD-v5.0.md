@@ -1,8 +1,29 @@
+# ⚠️ ARCHIVED — 이 문서는 최신 소스가 아닙니다
+
+> **이 PRD v5.1은 2026-04-15 재설계 이후 아카이브되었습니다.**
+>
+> 아래 항목은 **[ROADMAP.md](ROADMAP.md)** / **[REDESIGN.md](REDESIGN.md)** 가 최신 소스입니다 — 이 문서 내용보다 우선합니다:
+> - 6단계 파이프라인 순서 (신: `rfp → curriculum → coaches → budget → impact → proposal`)
+> - 파이프라인 UI/네비게이터 구조
+> - PipelineContext / PM 가이드 시스템 / 예상 점수 시스템
+> - DB 스키마 변경 계획
+>
+> 여전히 **유효한 참고 자료**:
+> - 비즈니스 룰 (Action Week, 이론 30%, 이론 3연속 금지)
+> - IMPACT 18모듈 · CORE 4모듈 방법론
+> - 코치 데이터 구조, SROI 프록시, 예산 공식
+> - 실제 마스터 데이터 (Excel 학습 기반 단가표 등)
+> - Planning Agent 관련 내용은 **[PLANNING_AGENT_ROADMAP.md](PLANNING_AGENT_ROADMAP.md)** 가 최신
+>
+> 신규 작업 전 반드시 ROADMAP.md / REDESIGN.md 를 먼저 확인하세요.
+
+---
+
 # UD-Ops Workspace + Coach Finder 통합 시스템
-## PRD & 기능명세서 v5.1
+## PRD & 기능명세서 v5.1 (아카이브)
 ### "최소 인풋, 최고 품질, 스스로 진화하는 언더독스 기획 엔진"
 
-**작성일:** 2026-03-29  **최종 업데이트:** 2026-04-06
+**작성일:** 2026-03-29  **최종 업데이트:** 2026-04-06  **아카이브일:** 2026-04-15
 **기준 코드베이스:** ud-ops-workspace (Next.js/PostgreSQL) + underdogs-coach-finder (React/Vite/Firebase/JSON)
 **아키텍처 철학:** 3-Layer Optimization Engine (지식 DB → 설계 엔진 → 학습 루프)
 **개발 원칙:** UI/UX 플로우 우선 → 기능 채우기 순서 (기능보다 플로우가 명확해야 기능이 의미있음)
@@ -176,7 +197,9 @@ Admin 승인 Review Panel → Layer 1 가중치 자동 반영
 
 ---
 
-### F0. 기획 파이프라인 UI ✅ **구현 완료 (2026-04-01)**
+### F0. 기획 파이프라인 UI ⚠️ **재설계됨 (2026-04-15) — [ROADMAP.md](ROADMAP.md) / [REDESIGN.md](REDESIGN.md) 참조**
+> 아래 스텝 순서(`rfp → impact → curriculum → coaches → budget → proposal`)는 **구버전**입니다.
+> 신버전 순서: `rfp → curriculum → coaches → budget → impact → proposal`
 
 **핵심 원칙:** 기능을 먼저 채우는 게 아니라 실제 업무 플로우를 UI에 먼저 구현.
 

@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UD-Ops Workspace
 
-## Getting Started
+언더독스 교육 기획 자동화 웹앱 — AI 공동기획자가 RFP부터 제안서까지 6단계를 함께 설계합니다.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+RFP + 기획방향 → 커리큘럼 → 코치 → 예산 + SROI → 임팩트 → 제안서
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 문서
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+신규 작업을 시작하기 전, 아래 순서로 읽으세요.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. [CLAUDE.md](CLAUDE.md) — 개발 규칙 / 디자인 시스템 / 설계 철학
+2. [ROADMAP.md](ROADMAP.md) — 파이프라인 재설계 6-Phase 체크리스트 (A~F)
+3. [REDESIGN.md](REDESIGN.md) — 상세 설계 v2 (PipelineContext, PM 가이드, 예상 점수)
+4. [PLANNING_AGENT_ROADMAP.md](PLANNING_AGENT_ROADMAP.md) — Planning Agent 별도 트랙
+5. `PRD-v5.0.md` — ⚠️ 아카이브. 비즈니스 룰·IMPACT 18모듈·SROI·마스터 데이터만 참고
 
-## Learn More
+## 기술 스택
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: Next.js 16 (App Router) + TypeScript
+- **DB**: PostgreSQL + Prisma 7 (35개 모델)
+- **AI**: Anthropic Claude (`claude-sonnet-4-6`) + Google Gemini (fallback)
+- **Auth**: NextAuth v5 (JWT)
+- **UI**: shadcn/ui + Tailwind + Nanum Gothic
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 개발
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npx prisma migrate dev
+npm run dev
+```
 
-## Deploy on Vercel
+`http://localhost:3000` 에서 확인.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 배포
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel. `master` 푸시 시 자동 배포.
