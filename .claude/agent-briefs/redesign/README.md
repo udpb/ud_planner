@@ -25,6 +25,32 @@ Phase A가 끝나면: 스텝 순서가 자연스럽고, 데이터가 스텝 간 
 |--------|------|------|
 | [A1-A3-reorder-and-manifest.md](./A1-A3-reorder-and-manifest.md) | 스텝 순서 변경 + Module Manifest 도입 | A3가 A2의 PipelineContext 타입을 참조해야 하고, A1/A3 모두 `page.tsx` + 각 스텝 폴더 영역을 건드려 충돌 방지를 위해 순차 |
 
+---
+
+## Phase B — Step 1 고도화 (기획의 시작점)
+
+> Phase B 가 끝나면: RFP 파싱 → 제안배경 + 컨셉 후보 3개 + 핵심기획포인트 + 평가전략 + 유사 프로젝트 모두 자동 생성. PM 은 선택·편집만.
+
+### Wave 1 — 병렬 4개 (서로 완전히 다른 파일)
+
+| 브리프 | 작업 | 격리 |
+|--------|------|------|
+| [B0-schema-extension.md](./B0-schema-extension.md) | Project 에 기획방향·평가전략 필드 + migration | 일반 (schema 만) |
+| [B1-planning-direction-ai.md](./B1-planning-direction-ai.md) | POST /api/ai/planning-direction (stateless) | 일반 |
+| [B2-similar-projects.md](./B2-similar-projects.md) | GET /api/projects/[id]/similar | 일반 |
+| [B3-eval-strategy.md](./B3-eval-strategy.md) | src/lib/eval-strategy.ts (규칙 기반) | 일반 |
+
+### Wave 2 — 단일 에이전트 (Wave 1 완료 후)
+
+| 브리프 | 작업 | 이유 |
+|--------|------|------|
+| [B4-step-rfp-redesign.md](./B4-step-rfp-redesign.md) | step-rfp.tsx 3컬럼 재설계 + 저장 PATCH | B1/B2/B3 API 호출 + B0 필드 활용. Wave 1 전부 필요 |
+
+### 설계 원칙 (재검토 결과, 2026-04-15)
+- **B1 stateless**: AI 결과를 Project 에 저장하지 않고 JSON 만 반환. PM 이 확정 시에만 B4 의 PATCH 가 저장. → 쓰레기 데이터 방지 + RESTful
+- **B0 schema 를 Wave 2 에 미루지 않는 이유**: Wave 2 B4 가 PATCH 호출 시 필드 필요. 독립 Wave 1 에서 미리 적용.
+- **B3 AI 호출 없음**: 규칙 기반. 빠르고 결정론적. Gate 2 룰 엔진의 일부로 자연 흡수.
+
 ## 🚀 메인 세션 실행 순서
 
 ```
