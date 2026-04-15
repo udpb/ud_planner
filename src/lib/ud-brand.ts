@@ -1,26 +1,154 @@
 /**
  * 언더독스 브랜드 자산 — 제안서/커리큘럼 AI 생성 시 일관되게 주입되는 핵심 메시지
  * 출처: 수주 제안서 2건 (청년마을, 재창업) 분석 + IMPACT 방법론 PPTX 18개 + CORE 4개
+ *       + underdogs.global 공식 사이트 (2026-04-15 동기화)
+ *
+ * 관련 Skill: `.claude/skills/ud-brand-voice/SKILL.md` (해석·톤·선택 기준)
  */
 
 // ─────────────────────────────────────────
 // 회사 핵심 실적 (정량 포화 패턴용)
+// 2026-04-15 공식 사이트 기준으로 업데이트 — 변경 시 WinningPattern 시드에도 반영 필요
 // ─────────────────────────────────────────
 export const UD_TRACK_RECORD = {
-  yearsActive: 10,
+  yearsActive: 10,                       // "A Decade Dedicated Solely to Entrepreneurs"
   cumulativeRevenueBillions: 500,        // 누적 500억+
-  totalGraduates: 21000,                 // 21,000명+ 육성
+  totalGraduates: 20211,                 // 공식 카운터 (사이트). 일반 언급은 "약 25,000명 누적" 도 허용
+  totalGraduatesApprox: 25000,           // "approximately 25,000 fellow entrepreneurs"
   totalCoaches: 800,                     // 코치 풀 (DB 기준 실측)
-  partnerUniversities: 160,
+  startupTeamsFormed: 6110,              // 공식 카운터 (사이트)
+  programsConducted: 498,                // 공식 카운터 (사이트). 구 388 → 498 업데이트
+  globalPartners: 520,                   // "Over 520 Global Partners" — 공식 집계
+  partnerUniversities: 160,              // 세부 분류 (legacy) — globalPartners 총합과 별도
   partnerCorporations: 50,
   partnerGovernments: 50,
   partnerMunicipalities: 45,
   regionalHubs: 30,                       // 전국 30개 거점
   simultaneousCapacity: 1500,            // 동시 1,500명 교육
   creditRating: 'BB+',
-  projectCount: 388,                      // 누적 388개 프로젝트
-  regionsCovered: 93,
+  regionsCovered: 96,                    // 공식: 96 Global & Local Regions. 구 93 → 96
+  esgMeasuredCompanies: 1600,            // "1,600+ 기업 ESG 영향 측정"
+  startupDatabaseAnnualUpdate: 10000,    // "10,000명 신생 기업가 DB (연 갱신)"
 }
+
+// ─────────────────────────────────────────
+// 정체성 선언문 (비전·미션·태그라인 — 원문 보존)
+// 제안서 "제안배경" / "서론" / "결론" 섹션의 씨앗 문장
+// ─────────────────────────────────────────
+export const UD_IDENTITY = {
+  missionKo: '창업의 가능성을 현실로 만들어 새로운 세상을 엽니다',
+  missionEn: 'Opening New Worlds Through Entrepreneurial Potential',
+  tagline: "Changing the World Through 'ACT-PRENEUR'",
+  ceoMessage: '1%의 가능성을 100%의 현실로 바꾸는 진정성 있는 파트너, 언더독스입니다',
+  beliefStatement: 'We believe in the potential of underdogs to change the world',
+  actionPhilosophy: '해보기 전엔 아무것도 모른다',  // Action Week 정당화 인용구
+  insightSentence:
+    '20,000명이 넘는 창업가를 만나오면서 얻은 언더독스의 인사이트는 그것을 "실행"이라 답합니다',
+  differentiation:
+    '가장 효과적인 방법으로 일하며, 교육생을 끝까지 책임지고, ' +
+    'AI 코치와 인간 코치가 전 과정에 함께하며, 교육 현장 데이터를 활용하여 성과를 높입니다',
+}
+
+// ─────────────────────────────────────────
+// Underdog 재정의 (제안서 톤에서 치명적 오해 방지)
+// Skill: "약자를 동정 프레임으로 쓰지 말 것"
+// ─────────────────────────────────────────
+export const UD_UNDERDOG_DEFINITION = {
+  literal: '경쟁에서 이기기보다 질 것으로 예상되는 약자',
+  reframe:
+    '스타트업은 1%의 가능성에서 무언가를 만들어내는 세상의 "언더독"입니다. ' +
+    '우리는 기존 시스템에 도전하는 창업가들의 힘을 믿습니다',
+  concept: '사회적 지위가 아닌 의지와 영향력으로 변화를 만드는 사람들',
+}
+
+// ─────────────────────────────────────────
+// Core Values (4개, 조직·팀 소개 섹션용)
+// ─────────────────────────────────────────
+export const UD_CORE_VALUES = [
+  { name: '협업', description: '하나의 팀이 되어 더 나은 해답을 찾아감' },
+  { name: '혁신', description: '이전에 없던 새로운 길을 찾아 나섬' },
+  { name: '성과', description: '매 순간 최고의 성과를 내기 위해 노력' },
+  { name: '책임', description: '자유를 누리면서 책임감 있는 결과를 만듦' },
+] as const
+
+// ─────────────────────────────────────────
+// 법인명 표기 규칙 (2026-04-15 결정)
+// 기본은 "언더독스", 예외는 법적 표기 필요 위치에서 "유디임팩트"
+// ─────────────────────────────────────────
+export const UD_LEGAL_ENTITY = {
+  primaryName: '언더독스',                  // 본문 99% 에서 이것만 사용
+  officialCorporate: '주식회사 유디임팩트',  // 법적 서류·footer·사업자 섹션
+  officialEn: 'UD Impact Co., Ltd.',
+  legacyEn: 'Underdogs',
+  businessRegNo: '693-88-00061',
+  ceo: '김정헌',
+  founded: 2015,
+  renamedIn: 2025,                         // 언더독스 → UD Impact 사명 변경
+  globalEntities: ['Japan (2025)', 'India (2025)'],
+  email: 'contact@udimpact.ai',
+  addressKo: '서울특별시 종로구 돈화문로 88-1',
+}
+
+// ─────────────────────────────────────────
+// 사업 영역 6종 (공식 카테고리 + 대표 메시지 원문)
+// RFP → 영역 매핑 → ChannelPreset 선택 시 활용
+// ─────────────────────────────────────────
+export const UD_BUSINESS_AREAS = [
+  {
+    code: 'startup_education',
+    name: '창업 인재 양성 교육',
+    description:
+      '교육 설계 전문가가 파트너별 최적의 액트프러너 교육을 설계하고 ' +
+      '기획부터 운영 및 성과 관리까지 체계적으로 운영',
+  },
+  {
+    code: 'ai_education',
+    name: 'AI 인재 양성 교육',
+    description:
+      'AI를 활용하여 미래를 이끌 핵심 인재양성을 위해 ' +
+      '리터리시, 멘토링, 인턴십, 솔루션 적용 등 맞춤 교육을 제공',
+  },
+  {
+    code: 'small_business',
+    name: '소상공인 성장 지원',
+    description:
+      '이미 검증된 실행 보장형 교육으로 소상공인을 가장 잘 이해하는 ' +
+      '전담 멘토 실행을 함께',
+  },
+  {
+    code: 'event_ops',
+    name: '행사 기획 운영',
+    description:
+      '지역활성화를 돕고, 참여자 모두를 빛낼 수 있는 다양한 형태의 행사를 ' +
+      '기획부터 운영까지 맞춤형으로 제공',
+  },
+  {
+    code: 'esg_measurement',
+    name: 'ESG 가치 측정',
+    description:
+      '1,600개가 넘는 기업의 ESG 임팩트 측정 노하우를 바탕으로 ' +
+      '신뢰할 수 있게 사업 임팩트를 측정/평가',
+  },
+  {
+    code: 'impact_investing',
+    name: '임팩트 기업 투자',
+    description:
+      '매년 10,000명 업데이트 되는 창업가 데이터와 자동화 딜소싱 체계로 ' +
+      '극초기 창업가를 발굴 육성',
+  },
+] as const
+
+// ─────────────────────────────────────────
+// 고객 세그먼트 6종 (공식 분류, 톤/프로그램 차별화)
+// ─────────────────────────────────────────
+export const UD_CUSTOMER_SEGMENTS = [
+  { code: 'youth', name: '청년', ageRange: '19-39', context: '예비·초기 창업' },
+  { code: 'small_biz', name: '소상공인', ageRange: '-', context: '운영 중, 성장 정체 해소' },
+  { code: 'corporate', name: '기업', ageRange: '-', context: 'B2B, 혁신·AI 전환' },
+  { code: 'young_women', name: '여성청년', ageRange: '19-39', context: '특화 프로그램' },
+  { code: 'senior', name: '신중년', ageRange: '40-60', context: '재창업·경력전환' },
+  { code: 'intl_dev', name: '국제개발협력', ageRange: '-', context: '해외 거점 (일본·인도)' },
+] as const
 
 // ─────────────────────────────────────────
 // 자체 개발 도구 (브랜딩된 이름 — 항상 그대로 사용)
@@ -155,25 +283,38 @@ export const IMPACT_STAGE_OVERVIEW = [
  */
 export function buildBrandContext(): string {
   const r = UD_TRACK_RECORD
+  const id = UD_IDENTITY
   const tools = UD_PROPRIETARY_TOOLS.map((t) => `  - ${t.name} (${t.type}): ${t.description}`).join('\n')
   const layers = UD_SUPPORT_LAYERS.map((l) => `  - ${l.layer}: ${l.role}`).join('\n')
   const patterns = UD_KEY_MESSAGE_PATTERNS.patterns.map((p) => `  - ${p.name}: ${p.usage}`).join('\n')
   const stages = IMPACT_STAGE_OVERVIEW.map((s) => `  - ${s.code} (${s.name}): ${s.focus} — ${s.question}`).join('\n')
+  const values = UD_CORE_VALUES.map((v) => `  - ${v.name}: ${v.description}`).join('\n')
 
   return `
 [언더독스 브랜드 자산 — 제안서 작성 시 자연스럽게 녹여내세요]
 
-▣ 회사 핵심 실적 (정량 표현용)
-  - ${r.yearsActive}년간 누적 ${r.cumulativeRevenueBillions}억+ 전국 창업 프로그램 운영
-  - ${r.totalGraduates.toLocaleString()}명+ 창업가 육성, ${r.totalCoaches}명 코치 풀 보유
-  - 전국 ${r.regionalHubs}개 거점, ${r.simultaneousCapacity.toLocaleString()}명 동시 교육 가능
-  - ${r.partnerUniversities}개 대학 · ${r.partnerCorporations}개 기업 · ${r.partnerGovernments + r.partnerMunicipalities}개 공공 파트너
-  - ${r.regionsCovered}개 지역 · ${r.projectCount}개 프로젝트 누적 · ${r.creditRating} 신용등급
+▣ 정체성 (씨앗 문장)
+  - 미션: ${id.missionKo} (${id.missionEn})
+  - 태그라인: ${id.tagline}
+  - 대표 메시지: ${id.ceoMessage}
+  - 실행 철학: "${id.actionPhilosophy}"
+  - 차별화 선언: ${id.differentiation}
+
+▣ 회사 핵심 실적 (정량 표현용, 2026-04-15 공식 기준)
+  - ${r.yearsActive}년간 ("A Decade Dedicated Solely to Entrepreneurs") 누적 ${r.cumulativeRevenueBillions}억+ 운영
+  - 창업가 ${r.totalGraduates.toLocaleString()}명+ 육성 (약 ${r.totalGraduatesApprox.toLocaleString()}명 누적)
+  - ${r.programsConducted}개 프로그램 · ${r.startupTeamsFormed.toLocaleString()}팀 창업 · ${r.regionsCovered}개 지역
+  - ${r.globalPartners}+ 글로벌 파트너 · ESG 측정 ${r.esgMeasuredCompanies.toLocaleString()}개 기업
+  - 코치 풀 ${r.totalCoaches}명 · 전국 ${r.regionalHubs}개 거점 · 동시 ${r.simultaneousCapacity.toLocaleString()}명 교육
+  - ${r.creditRating} 신용등급 · 일본·인도 현지법인 (2025)
+
+▣ Core Values (조직·팀 소개)
+${values}
 
 ▣ 자체 개발 도구 (브랜드 명칭 그대로 사용)
 ${tools}
 
-▣ 4중 지원 체계 (단일 코치 표현 금지)
+▣ 4중 지원 체계 (단일 코치 표현 금지, AI 코치는 별도 레이어 아님 — 강점 언급만)
 ${layers}
 
 ▣ 운영 구조 원칙
@@ -185,6 +326,11 @@ ${stages}
 
 ▣ 키 메시지 패턴 (반드시 반영)
 ${patterns}
+
+▣ 법인 표기 규칙
+  - 본문 전반: "${UD_LEGAL_ENTITY.primaryName}"
+  - 법적/공식 표기 필요 시: "${UD_LEGAL_ENTITY.officialCorporate} (${UD_LEGAL_ENTITY.officialEn})"
+  - 한 문서에 두 명칭 혼용 금지
 
 ▣ 문체 가이드
   - 어조: ${UD_TONE_GUIDE.voice}
