@@ -1,3 +1,20 @@
+/**
+ * POST /api/coaches/sync
+ *
+ * coach-finder DB (또는 외부 소스)에서 Coach 레코드를 받아 upsert.
+ *
+ * ────────────────────────────────────────────────
+ * 호출 경로 (2026-04-15 재설계 후):
+ * ────────────────────────────────────────────────
+ * 1. CLI 스크립트 `npm run sync:coaches` (scripts/sync-coaches.ts)
+ * 2. Admin/PM 이 수동 POST — curl 또는 Postman 등
+ * 3. 향후 /admin/coaches 페이지 (Phase E 이후 예정)
+ *
+ * 사이드바 "코치 DB 동기화" 버튼은 재설계 v2 에서 제거됨 (2026-04-15).
+ * 이유: 독립 /coaches 페이지 제거와 함께 navItems 축소.
+ * 본 API 는 유지되므로 언제든 호출 가능.
+ */
+
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { CoachCategory, CoachTier, TaxType } from '@prisma/client'

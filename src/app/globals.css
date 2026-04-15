@@ -4,11 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── 언더독스 브랜드 토큰 ── */
+/* ── 언더독스 브랜드 토큰 (underdogs.global 공식 기준, 2026-04-15 마이그레이션) ── */
 :root {
-  /* Action Orange 팔레트 (전체의 10-15% 사용) */
-  --ud-orange:       #FF8204;
-  --ud-orange-light: #FFA40D;
+  /* Action Orange 팔레트 (전체의 10-15% 사용) — 본사 사이트와 일치 */
+  --ud-orange:       #F05519;          /* primary 100 */
+  --ud-orange-light: #F48053;          /* 80 — hover, 2차 강조 */
+  --ud-orange-tint:  #F9BBA3;          /* 40 — 배경 틴트 */
+  --ud-orange-pale:  #FBD4C5;          /* 20 — 카드 하이라이트 */
   --ud-orange-fg:    #FFFFFF;
 
   /* 중립 */
@@ -59,6 +61,8 @@
   /* 브랜드 컬러 유틸리티 */
   --color-brand: var(--ud-orange);
   --color-brand-light: var(--ud-orange-light);
+  --color-brand-tint: var(--ud-orange-tint);
+  --color-brand-pale: var(--ud-orange-pale);
   --color-brand-fg: var(--ud-orange-fg);
   --color-brand-cyan: var(--ud-cyan);
   --color-brand-dark: var(--ud-dark);
@@ -80,8 +84,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.1 0 0);
 
-  /* Primary = Action Orange #FF8204 */
-  --primary: oklch(0.72 0.19 46);
+  /* Primary = Action Orange #F05519 (본사 사이트 기준) */
+  --primary: oklch(0.64 0.21 32);
   --primary-foreground: oklch(1 0 0);
 
   /* Secondary — 밝은 그레이 */
@@ -93,18 +97,18 @@
   --muted-foreground: oklch(0.52 0 0);
 
   /* Accent = 따뜻한 연오렌지 */
-  --accent: oklch(0.97 0.02 55);
-  --accent-foreground: oklch(0.72 0.19 46);
+  --accent: oklch(0.97 0.02 40);
+  --accent-foreground: oklch(0.64 0.21 32);
 
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.91 0 0);
   --input: oklch(0.91 0 0);
-  --ring: oklch(0.72 0.19 46);           /* focus ring = orange */
+  --ring: oklch(0.64 0.21 32);           /* focus ring = orange */
 
   /* 차트 컬러 — 브랜드 팔레트 */
-  --chart-1: oklch(0.72 0.19 46);        /* orange */
+  --chart-1: oklch(0.64 0.21 32);        /* orange */
   --chart-2: oklch(0.62 0.13 213);       /* cyan #06A9D0 */
-  --chart-3: oklch(0.78 0.17 55);        /* orange-light */
+  --chart-3: oklch(0.72 0.18 35);        /* orange-light #F48053 */
   --chart-4: oklch(0.27 0.003 165);      /* dark #373938 */
   --chart-5: oklch(0.85 0.005 315);      /* gray #D8D4D7 */
 
@@ -113,12 +117,12 @@
   /* Sidebar — 다크 (#373938) */
   --sidebar: oklch(0.27 0.003 165);
   --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.72 0.19 46);
+  --sidebar-primary: oklch(0.64 0.21 32);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.32 0.003 165);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(0.35 0.003 165);
-  --sidebar-ring: oklch(0.72 0.19 46);
+  --sidebar-ring: oklch(0.64 0.21 32);
 }
 
 .dark {
@@ -128,31 +132,31 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.18 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.72 0.19 46);
+  --primary: oklch(0.64 0.21 32);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.25 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.25 0 0);
   --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.25 0.02 46);
-  --accent-foreground: oklch(0.85 0.12 46);
+  --accent: oklch(0.25 0.02 32);
+  --accent-foreground: oklch(0.85 0.12 32);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.19 46);
-  --chart-1: oklch(0.72 0.19 46);
+  --ring: oklch(0.64 0.21 32);
+  --chart-1: oklch(0.64 0.21 32);
   --chart-2: oklch(0.62 0.13 213);
-  --chart-3: oklch(0.78 0.17 55);
+  --chart-3: oklch(0.72 0.18 35);
   --chart-4: oklch(0.85 0.005 315);
   --chart-5: oklch(0.45 0 0);
   --sidebar: oklch(0.15 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.72 0.19 46);
+  --sidebar-primary: oklch(0.64 0.21 32);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.22 0 0);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.72 0.19 46);
+  --sidebar-ring: oklch(0.64 0.21 32);
 }
 
 @layer base {

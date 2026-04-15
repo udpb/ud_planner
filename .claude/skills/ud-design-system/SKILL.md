@@ -17,10 +17,9 @@ description: TRIGGER when creating/editing UI components, choosing colors/fonts/
 ## 2. 컬러 팔레트
 
 ### 메인 — Action Orange
-**공식 기준값 (본사 사이트 기준, 2026-04-15 결정):**
-- **`#F05519`** — 본사 underdogs.global 과 일치하는 공식 primary
-
-**⚠️ 현재 코드베이스 상태:** `--ud-orange` CSS 변수 / tailwind primary 가 `#FF8204` 로 설정되어 있음. Phase B 마이그레이션 예정 (CSS 변수 + ud-brand.ts + tailwind.config 동시 교체). 그전까지는 기존값 유지하되 **신규 디자인 결정 시 `#F05519` 기준으로 사고**.
+**`#F05519`** — 본사 underdogs.global 과 일치하는 공식 primary (2026-04-15 마이그레이션 완료).
+- 내부적으로는 OKLCH `oklch(0.64 0.21 32)` 로 정의 (`src/app/globals.css`).
+- `#FF8204` 는 레거시 레퍼런스에만 등장하므로 새 코드에서 사용 금지.
 
 - **클래스:** `bg-primary`, `text-primary`, `border-primary`
 - **CSS 변수:** `--ud-orange`

@@ -421,10 +421,13 @@ export interface PipelineContext {
  * Project 단일 조회 후 관계 테이블을 병렬 조회하여
  * PipelineContext 객체로 조립한다.
  *
+ * @param projectId  프로젝트 id
+ * @param options.viewerId  요청 세션의 userId (meta.lastUpdatedBy 에 반영). 없으면 "system".
  * @throws Error  프로젝트가 없으면 예외.
  */
 export async function buildPipelineContext(
   projectId: string,
+  options: { viewerId?: string } = {},
 ): Promise<PipelineContext> {
   // 프로젝트 + 관계 병렬 조회
   const [project, curriculum, coachAssignments, budget, proposalSections, planningIntent] =
@@ -467,7 +470,7 @@ export async function buildPipelineContext(
     channelType,
     predictedScore: undefined, // 스키마 확장 전까지 undefined
     lastUpdatedAt: project.updatedAt.toISOString(),
-    lastUpdatedBy: 'system',
+    lastUpdatedBy: options.viewerId ?? 'system',
     lastUpdatedModule: 'unknown',
   }
 

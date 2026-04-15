@@ -32,9 +32,10 @@
 
 ## 디자인 시스템
 - **폰트**: Nanum Gothic (나눔고딕) — `font-sans` / `--font-sans` 변수
-- **메인 컬러**: Action Orange `#FF8204` — `bg-primary` / `text-primary` / `--ud-orange`
+- **메인 컬러**: Action Orange `#F05519` (underdogs.global 공식 기준, 2026-04-15 마이그레이션 완료) — `bg-primary` / `text-primary` / `--ud-orange`
 - **블랙**: `#000000`, 화이트: `#FFFFFF`
-- **서브 컬러**: `#FFA40D`(orange-light), `#373938`(dark/sidebar), `#D8D4D7`(gray), `#06A9D0`(cyan)
+- **오렌지 그라데이션**: `#F05519` (100) → `#F48053` (80) → `#F9BBA3` (40) → `#FBD4C5` (20)
+- **서브 컬러**: `#373938`(dark/sidebar), `#D8D4D7`(gray), `#06A9D0`(cyan)
 - **컬러 비율**: Action Orange는 전체 UI의 10~15% 이하 (CTA, 강조, 아이콘 등)
 - **비주얼 패턴**: Spread/Scale, Repetition/Alignment, Expansion/Progress
   - 반복 정렬: `border-brand-left` 유틸리티 클래스 사용

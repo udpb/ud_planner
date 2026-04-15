@@ -21,9 +21,10 @@ export async function GET(_req: NextRequest, { params }: Params) {
   }
 
   const { id } = await params
+  const viewerId = (session.user as { id?: string })?.id ?? session.user.email ?? undefined
 
   try {
-    const context = await buildPipelineContext(id)
+    const context = await buildPipelineContext(id, { viewerId })
     return NextResponse.json(context)
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
