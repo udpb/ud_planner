@@ -273,6 +273,15 @@ model Project {
   sroiForecast     Json?
   sroiActual       Json?
 
+  // Phase B: Step 1 기획 방향 산출물 (data-contract.md §1.2 RfpSlice)
+  proposalBackground String? @db.Text
+  proposalConcept    String? @db.Text
+  keyPlanningPoints  Json? // string[]
+  evalStrategy       Json? // EvalStrategy 객체 (eval-strategy.ts 참조)
+
+  // Phase D: 예상 점수 (Phase D4 에서 본격 활용, B0 에서 필드만 준비)
+  predictedScore Float?
+
   pmId String?
   pm   User?   @relation(fields: [pmId], references: [id])
 

@@ -63,39 +63,84 @@ export type ResearchItem = ExternalResearch
 // ───── RFP 슬라이스 하위 ─────
 
 /**
- * 평가 전략 — 최고배점·섹션매핑·가중치.
+ * 제안서 섹션 키 — EvalStrategy 및 pm-guide 매핑 기준.
+ * (data-contract.md §1.2 EvalStrategy / eval-strategy.ts SECTION_KEYWORDS 와 일치)
+ */
+export type ProposalSectionKey =
+  | 'proposal-background'
+  | 'org-team'
+  | 'curriculum'
+  | 'coaches'
+  | 'budget'
+  | 'impact'
+  | 'other'
+
+/**
+ * 평가 전략 — 최고배점·섹션매핑·가중치·가이드.
  * Step 1D 에서 PM 이 평가표를 분석한 결과.
+ *
+ * (data-contract.md §1.2 EvalStrategy 기준, 2026-04-15 SSoT 정비 반영)
+ * - topItems: 상위 3 항목을 섹션 매핑·weight·guidance 와 함께
+ * - sectionWeights: 섹션별 총 점수 비중
+ * - overallGuidance: PM 에게 보여줄 다줄 가이드 메시지
+ * - criteria/topItem/summary: 하위호환용 optional 필드 (축약 뷰가 필요할 때만)
  */
 export interface EvalStrategy {
-  /** 평가항목별 분석 */
-  criteria: Array<{
+  /** 최고 배점 상위 N 항목 (기본 3) */
+  topItems: Array<{
+    name: string
+    points: number
+    section: ProposalSectionKey
+    /** 전체 대비 가중치 (0~1) */
+    weight: number
+    /** PM 에게 보여줄 한 줄 가이드 */
+    guidance: string
+  }>
+  /** 섹션별 총 가중치 (모든 섹션 키 포함, 0~1) */
+  sectionWeights: Record<ProposalSectionKey, number>
+  /** 전체 가이드 메시지 2~4개 */
+  overallGuidance: string[]
+
+  // ── 하위호환 (optional) ─────────────────────────
+  /** 전체 항목 상세 (topItems 보다 포괄적이어야 할 때) */
+  criteria?: Array<{
     item: string
     score: number
-    /** 어느 제안서 섹션에 매핑되는지 (예: "추진배경", "커리큘럼") */
     section: string
-    /** 가중치(상대 중요도, 0~1 또는 점수 비율) */
     weight: number
-    /** 강조 포인트 / 작성 가이드 */
     emphasis?: string
   }>
-  /** 최고배점 항목 (criteria 중 score 가 가장 높은 것) */
+  /** 최고배점 항목명 축약 (topItems[0].name 과 동일할 수 있음) */
   topItem?: string
-  /** 전체 전략 한 줄 요약 */
+  /** overallGuidance 를 한 줄로 축약한 것 */
   summary?: string
 }
 
 /**
  * 유사 프로젝트 — past-projects 자산에서 매칭된 결과.
+ * (data-contract.md §1.2 + Phase A 실용 필드 결합, 2026-04-15 SSoT 정비 반영)
  */
 export interface SimilarProject {
   projectId: string
   name: string
-  client: string
+  client: string | null
   /** 유사도 점수 (0~1) */
   similarity: number
-  /** 매칭 사유 */
+  /** 매칭 사유 (한국어 스니펫) */
   matchReasons: string[]
-  isBidWon?: boolean
+
+  // ── data-contract.md §1.2 필드 ─────────────────
+  /** 예산 (supplyPrice 기준, KRW) */
+  budget?: number | null
+  /** 수주 여부 (Project.isBidWon / status 에서 유도) */
+  won?: boolean | null
+  /** 핵심 전략 요약 (Project.proposalConcept 이 있으면 그 값) */
+  keyStrategy?: string | null
+
+  // ── Phase A 실용 필드 (유지) ─────────────────
+  /** Project.isBidWon 원본 값 */
+  isBidWon?: boolean | null
+  /** 기술평가 점수 (과거 프로젝트 실측) */
   techEvalScore?: number | null
 }
 
