@@ -5,24 +5,15 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
-  Users,
   FolderKanban,
-  BookOpen,
-  Calculator,
-  BarChart3,
+  Upload,
   Settings,
-  RefreshCw,
-  MessageSquare,
 } from 'lucide-react'
 
 const navItems = [
   { href: '/dashboard', label: '대시보드', icon: LayoutDashboard },
   { href: '/projects', label: '프로젝트', icon: FolderKanban },
-  { href: '/coaches', label: '코치 DB', icon: Users },
-  { href: '/modules', label: '교육 모듈', icon: BookOpen },
-  { href: '/feedback', label: '피드백 관리', icon: MessageSquare },
-  { href: '/budget', label: '예산 기준', icon: Calculator },
-  { href: '/sroi', label: 'SROI 프록시', icon: BarChart3 },
+  { href: '/ingest', label: '자료 업로드', icon: Upload },
   { href: '/settings', label: '설정', icon: Settings },
 ]
 
@@ -66,18 +57,9 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      {/* 코치 동기화 버튼 */}
-      <div className="border-t p-3">
-        <form action="/api/coaches/sync" method="POST">
-          <button
-            type="submit"
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-            코치 DB 동기화
-          </button>
-        </form>
-      </div>
+      {/* 코치 DB 동기화 버튼은 재설계 v2 에서 제거됨 (2026-04-15).
+         API /api/coaches/sync 는 유지되어 Admin/스크립트에서 호출 가능.
+         필요 시 /settings 페이지에 재배치 예정. */}
     </aside>
   )
 }
