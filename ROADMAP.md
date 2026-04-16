@@ -127,19 +127,23 @@
   - 신규: `WinningPattern` Prisma 모델
   - 신규: `proposal-ingest` 모듈 — PDF 업로드 → 섹션 분할 → AI 패턴 추출 → ExtractedItem 생성
   - 신규: `/ingest/review` — Admin 승인 UI
-  - 초기 데이터: 청년마을/전통문화 제안서를 Ingestion으로 처리 (시드 스크립트 아님)
-  - 근거: [ADR-003](docs/decisions/003-ingestion-pipeline.md)
+  - 초기 데이터: 청년마을/전통문화 제안서 + **NH 애그테크 · GS리테일 · 코오롱 프로보노 원본 PDF** 를 Ingestion 으로 처리 (수동 시드 금지 — ADR-003 원본 불변 보존)
+  - 근거: [ADR-003](docs/decisions/003-ingestion-pipeline.md), [journey 2026-04-16](docs/journey/2026-04-16-guidebook-review.md)
 
 - [ ] **D2. 발주처 유형별 프리셋**
   - 신규: `ChannelPreset` Prisma 모델
   - B2G: 정책 대응 + 안정적 운영 + 정량 KPI
   - B2B: 비즈니스 ROI + 속도 + 유연성
   - 재계약: 작년 성과 + 개선점 + 신뢰
+  - **시드 데이터:** 가이드북 Ch.12 발주처 유형 카드 3종 상세 필드 (평가위원 프로필 · 커리큘럼 이론 비율 상한 · 예산 톤) 그대로 DB 시드로 이관
 
 - [ ] **D3. 스텝별 가이드 패널 컴포넌트 (`pm-guide` 모듈)**
   - 신규: `src/modules/pm-guide/` + manifest.ts
   - 내용: 평가위원 관점 + 당선 레퍼런스(WinningPattern 쿼리) + 흔한 실수 + UD 강점 팁
   - 각 step-*.tsx 우측에 배치
+  - **시드 콘텐츠:**
+    - 가이드북 Ch.14 "흔한 실수 Top 7" 그대로 인용
+    - "코오롱 프로보노 사례" (Value Chain 없이 장표부터 씀 → 2주 무한수정 → VC 확정 후 1.5일 완성) 을 Step 2~5 의 경고 문구로 활용
 
 - [ ] **D4. 예상 점수 시스템 (`predicted-score` 모듈)**
   - 신규: `src/modules/predicted-score/` + manifest.ts
