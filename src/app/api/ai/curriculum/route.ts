@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { suggestCurriculum, CurriculumSession, CurriculumInsight, type ExternalResearch } from '@/lib/claude'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { validateCurriculumRules } from '@/lib/curriculum-rules'
+import { buildPipelineContext } from '@/lib/pipeline-context'
+import { generateCurriculum } from '@/lib/curriculum-ai'
+import type { CurriculumSession } from '@/lib/pipeline-context'
+import type { ExternalResearch, CurriculumInsight } from '@/lib/claude'
+import type { ImpactModuleContext } from '@/lib/ud-brand'
+import type { PlanningChannel } from '@/lib/planning-direction'
+
+// ────────────────────────────────────────────────────────────────
+// 보조 유틸 — 기존 route 에서 계승 (Action Week 페어, 안내 메시지)
+// ────────────────────────────────────────────────────────────────
 
 // Action Week 세션이 있는 주에 1:1 온라인 코칭 세션을 페어로 추가
 function injectCoachingPairs(sessions: CurriculumSession[]): {
@@ -16,7 +26,7 @@ function injectCoachingPairs(sessions: CurriculumSession[]): {
 
     // Action Week 세션 직후에 1:1 코칭이 아직 없으면 자동 추가
     if (session.isActionWeek) {
-      const nextSession = sessions.find(s => s.sessionNo === session.sessionNo + 1)
+      const nextSession = sessions.find((s) => s.sessionNo === session.sessionNo + 1)
       const alreadyHasCoaching = nextSession?.isCoaching1on1 === true
 
       if (!alreadyHasCoaching) {
@@ -34,7 +44,8 @@ function injectCoachingPairs(sessions: CurriculumSession[]): {
           isCoaching1on1: true,
           objectives: ['Action Week 실행 결과 점검', '다음 단계 방향 설정'],
           recommendedExpertise: ['창업 일반', '코칭'],
-          notes: 'Action Week 실행 후 1:1 온라인 코칭. 참여자 진행 상황을 개별 확인하고 다음 실행을 구체화합니다.',
+          notes:
+            'Action Week 실행 후 1:1 온라인 코칭. 참여자 진행 상황을 개별 확인하고 다음 실행을 구체화합니다.',
         })
       }
     }
@@ -52,12 +63,11 @@ function buildAdvisoryInsights(sessions: CurriculumSession[]): CurriculumInsight
   const total = sessions.length
   if (total === 0) return insights
 
-  const theoryCount = sessions.filter(s => s.isTheory).length
-  const actionWeekCount = sessions.filter(s => s.isActionWeek).length
-  const coachingCount = sessions.filter(s => s.isCoaching1on1).length
+  const theoryCount = sessions.filter((s) => s.isTheory).length
+  const actionWeekCount = sessions.filter((s) => s.isActionWeek).length
+  const coachingCount = sessions.filter((s) => s.isCoaching1on1).length
   const theoryRatio = Math.round((theoryCount / total) * 100)
 
-  // 이론 비율 안내
   if (theoryRatio > 30) {
     insights.push({
       type: 'tip',
@@ -70,11 +80,11 @@ function buildAdvisoryInsights(sessions: CurriculumSession[]): CurriculumInsight
     })
   }
 
-  // Action Week 안내
   if (actionWeekCount === 0) {
     insights.push({
       type: 'tip',
-      message: 'Action Week(실전 실행 주간)가 포함되어 있지 않습니다. 이론 학습 후 실전 경험 기회를 넣으면 학습 전환율이 높아집니다.',
+      message:
+        'Action Week(실전 실행 주간)가 포함되어 있지 않습니다. 이론 학습 후 실전 경험 기회를 넣으면 학습 전환율이 높아집니다.',
     })
   } else {
     insights.push({
@@ -83,7 +93,6 @@ function buildAdvisoryInsights(sessions: CurriculumSession[]): CurriculumInsight
     })
   }
 
-  // 연속 이론 세션 안내
   let consecutiveTheory = 0
   let maxConsecutive = 0
   for (const s of sessions) {
@@ -101,25 +110,56 @@ function buildAdvisoryInsights(sessions: CurriculumSession[]): CurriculumInsight
     })
   }
 
-  // 총 구성 요약
   insights.push({
     type: 'asset',
-    message: `총 ${total}회차 / ${sessions.filter(s => !s.isCoaching1on1).length}회 그룹 교육 + ${coachingCount}회 1:1 코칭으로 구성되었습니다.`,
+    message: `총 ${total}회차 / ${
+      sessions.filter((s) => !s.isCoaching1on1).length
+    }회 그룹 교육 + ${coachingCount}회 1:1 코칭으로 구성되었습니다.`,
   })
 
   return insights
 }
 
+// ────────────────────────────────────────────────────────────────
+// POST /api/ai/curriculum
+//   - stateless 생성은 curriculum-ai.ts 의 generateCurriculum() 에 위임
+//   - 본 route 는 ① PipelineContext 조립 ② 페어 주입 ③ 룰 검증 ④ DB 저장 담당
+// ────────────────────────────────────────────────────────────────
+
 export async function POST(req: NextRequest) {
   try {
-    const { projectId, rfpParsed, logicModel } = await req.json()
-
-    if (!rfpParsed || !logicModel) {
-      return NextResponse.json({ error: 'RFP 파싱 결과와 Logic Model이 필요합니다.' }, { status: 400 })
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
     }
 
-    // IMPACT 18모듈 DB 로드 (Claude 프롬프트에 컨텍스트로 주입)
-    const impactModules = await prisma.impactModule.findMany({
+    const body = await req.json().catch(() => ({}))
+    const projectId: string | undefined = body?.projectId
+    const channelInput: PlanningChannel | undefined = body?.channel
+    const totalSessions: number | undefined =
+      typeof body?.totalSessions === 'number' ? body.totalSessions : undefined
+
+    if (!projectId || typeof projectId !== 'string') {
+      return NextResponse.json({ error: 'PROJECT_ID_REQUIRED' }, { status: 400 })
+    }
+
+    // PipelineContext 에서 필요한 슬라이스 조립
+    const viewerId =
+      typeof session.user === 'object' && session.user && 'id' in session.user
+        ? (session.user as { id?: string }).id
+        : undefined
+
+    const ctx = await buildPipelineContext(projectId, { viewerId })
+
+    if (!ctx.rfp) {
+      return NextResponse.json(
+        { error: 'RFP_SLICE_MISSING', message: 'Step 1 RFP 파싱이 먼저 필요합니다.' },
+        { status: 400 },
+      )
+    }
+
+    // IMPACT 18모듈 자산 (Prisma) — 자산 로딩은 route 책임
+    const impactModulesRaw = await prisma.impactModule.findMany({
       where: { isActive: true },
       orderBy: [{ stageOrder: 'asc' }, { moduleOrder: 'asc' }],
       select: {
@@ -131,29 +171,45 @@ export async function POST(req: NextRequest) {
         stage: true,
       },
     })
+    const impactModules: ImpactModuleContext[] = impactModulesRaw.map((m) => ({
+      moduleCode: m.moduleCode,
+      moduleName: m.moduleName,
+      coreQuestion: m.coreQuestion,
+      workshopOutputs: m.workshopOutputs,
+      durationMinutes: m.durationMinutes,
+      stage: m.stage,
+    }))
 
-    // 저장된 외부 리서치가 있으면 주입 (티키타카)
-    let externalResearch: ExternalResearch[] | undefined
-    if (projectId) {
-      const proj = await prisma.project.findUnique({
-        where: { id: projectId },
-        select: { externalResearch: true },
-      })
-      const saved = (proj?.externalResearch ?? []) as unknown as ExternalResearch[]
-      if (saved.length > 0) externalResearch = saved
+    // 외부 리서치 — PipelineContext.research 우선
+    const externalResearch: ExternalResearch[] | undefined =
+      ctx.research && ctx.research.length > 0 ? ctx.research : undefined
+
+    // ── AI 호출 (stateless) ──
+    const aiResult = await generateCurriculum({
+      rfp: ctx.rfp,
+      strategy: ctx.strategy,
+      impactModules,
+      externalResearch,
+      channel: channelInput,
+      totalSessions,
+    })
+
+    if (!aiResult.ok) {
+      return NextResponse.json(
+        { error: 'AI_GENERATION_FAILED', message: aiResult.error, raw: aiResult.raw },
+        { status: 500 },
+      )
     }
 
-    const curriculum = await suggestCurriculum(rfpParsed, logicModel, impactModules, externalResearch)
-
     // Action Week 페어 1:1 코칭 자동 주입
-    const { sessions: sessionsWithCoaching, addedPairs } = injectCoachingPairs(curriculum.sessions)
+    const { sessions: sessionsWithCoaching, addedPairs } = injectCoachingPairs(
+      aiResult.data.sessions,
+    )
 
     // 기획자용 안내 메시지 생성
     const advisoryInsights = buildAdvisoryInsights(sessionsWithCoaching)
-    // AI가 생성한 insights와 합침
-    const allInsights = [...(curriculum.insights ?? []), ...advisoryInsights]
+    const allInsights: CurriculumInsight[] = [...advisoryInsights]
 
-    // 추가된 코칭 세션 안내
     if (addedPairs > 0) {
       allInsights.unshift({
         type: 'info',
@@ -169,7 +225,7 @@ export async function POST(req: NextRequest) {
         isActionWeek: s.isActionWeek,
         category: s.category,
         method: s.method,
-      }))
+      })),
     )
 
     // BLOCK 위반 시 422 반환 (DB 저장하지 않음)
@@ -179,13 +235,18 @@ export async function POST(req: NextRequest) {
           error: 'RULE_VIOLATION',
           message: '커리큘럼 설계 규칙을 충족하지 못합니다. 수정 후 다시 시도해주세요.',
           violations: ruleResult.violations,
-          curriculum: { ...curriculum, sessions: sessionsWithCoaching, insights: allInsights },
+          curriculum: {
+            sessions: sessionsWithCoaching,
+            designRationale: aiResult.data.designRationale,
+            appliedDirection: aiResult.data.appliedDirection,
+            insights: allInsights,
+          },
         },
-        { status: 422 }
+        { status: 422 },
       )
     }
 
-    // WARN/SUGGEST 위반은 insights에 추가하여 기획자에게 안내
+    // WARN/SUGGEST 위반은 insights 에 추가
     for (const v of ruleResult.violations) {
       allInsights.push({
         type: v.action === 'WARN' ? 'tip' : 'info',
@@ -193,36 +254,41 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    const finalCurriculum = {
-      ...curriculum,
-      sessions: sessionsWithCoaching,
-      insights: allInsights,
-    }
+    // DB 저장 — 기존 커리큘럼 교체 (projectId 단위)
+    await prisma.curriculumItem.deleteMany({
+      where: { projectId, moduleId: null },
+    })
+    await prisma.curriculumItem.createMany({
+      data: sessionsWithCoaching.map((s, i) => ({
+        projectId,
+        sessionNo: s.sessionNo,
+        title: s.title,
+        durationHours: s.durationHours,
+        lectureMinutes: s.lectureMinutes,
+        practiceMinutes: s.practiceMinutes,
+        isTheory: s.isTheory,
+        isActionWeek: s.isActionWeek,
+        isCoaching1on1: s.isCoaching1on1,
+        impactModuleCode: s.impactModuleCode ?? null,
+        notes: s.notes,
+        order: i,
+      })),
+    })
 
-    // DB 저장
-    if (projectId) {
-      await prisma.curriculumItem.deleteMany({ where: { projectId, moduleId: null } })
-      await prisma.curriculumItem.createMany({
-        data: sessionsWithCoaching.map((s, i) => ({
-          projectId,
-          sessionNo: s.sessionNo,
-          title: s.title,
-          durationHours: s.durationHours,
-          lectureMinutes: s.lectureMinutes,
-          practiceMinutes: s.practiceMinutes,
-          isTheory: s.isTheory,
-          isActionWeek: s.isActionWeek,
-          isCoaching1on1: s.isCoaching1on1,
-          impactModuleCode: s.impactModuleCode ?? null,
-          notes: s.notes,
-          order: i,
-        })),
-      })
-    }
-
-    return NextResponse.json({ curriculum: finalCurriculum })
-  } catch (err: any) {
-    console.error('커리큘럼 생성 에러:', err)
-    return NextResponse.json({ error: err.message ?? '생성 실패' }, { status: 500 })
+    // 응답 — 기존 UI 호환 (curriculum.sessions / rationale / insights) + 신규 필드
+    return NextResponse.json({
+      curriculum: {
+        sessions: sessionsWithCoaching,
+        rationale: aiResult.data.designRationale,
+        designRationale: aiResult.data.designRationale,
+        appliedDirection: aiResult.data.appliedDirection,
+        insights: allInsights,
+        totalHours: sessionsWithCoaching.reduce((sum, s) => sum + s.durationHours, 0),
+      },
+    })
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : '생성 실패'
+    console.error('커리큘럼 생성 에러:', e)
+    return NextResponse.json({ error: 'INTERNAL_ERROR', message }, { status: 500 })
   }
 }

@@ -1,9 +1,28 @@
+/**
+ * POST /api/ai/proposal  — 제안서 섹션 생성 (C3 · PipelineContext 전체 주입)
+ *
+ * 변경 이력:
+ *   - C3 (Phase C Wave 1): `src/lib/proposal-ai.ts` 의 신규 `generateProposalSection` 으로 교체.
+ *     rfp+strategy+curriculum+coaches+budget+impact 전체 슬라이스 주입 + SectionMetadata 반환.
+ *   - 기존 claude.ts 의 `generateProposalSection` 은 /api/ai/proposal/improve 가 계속 사용 (공존).
+ *
+ * Request:  { projectId, sectionNo, keepParts? }
+ * Response: { section, metadata }  |  { error }
+ */
+
 import { NextRequest, NextResponse } from 'next/server'
-import { generateProposalSection, PROPOSAL_SECTIONS, anthropic, CLAUDE_MODEL, type ExternalResearch, type StrategicNotes } from '@/lib/claude'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { buildPipelineContext } from '@/lib/pipeline-context'
+import {
+  generateProposalSection,
+  PROPOSAL_SECTION_SPEC,
+  type ProposalSectionNo,
+} from '@/lib/proposal-ai'
 
 function safeParseJson<T>(raw: string): T {
-  let s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
+  const s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
   const objStart = s.indexOf('{')
   const arrStart = s.indexOf('[')
   let start: number, end: number
@@ -16,77 +35,63 @@ function safeParseJson<T>(raw: string): T {
   return JSON.parse(s.slice(start, end + 1))
 }
 
+function isValidSectionNo(n: unknown): n is ProposalSectionNo {
+  return typeof n === 'number' && n >= 1 && n <= 7 && Number.isInteger(n)
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { projectId, sectionNo } = await req.json()
-
-    if (!projectId || !sectionNo) {
-      return NextResponse.json({ error: 'projectId, sectionNo 필요' }, { status: 400 })
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      include: {
-        proposalSections: { orderBy: { sectionNo: 'asc' } },
-        curriculum: { orderBy: { sessionNo: 'asc' } },
-      },
-    })
+    const body = (await req.json()) as {
+      projectId?: string
+      sectionNo?: number
+      keepParts?: string
+    }
+    const { projectId, sectionNo, keepParts } = body
 
-    if (!project?.rfpParsed || !project?.logicModel) {
-      return NextResponse.json({ error: 'RFP 파싱 및 Logic Model 먼저 생성하세요.' }, { status: 400 })
+    if (!projectId || !isValidSectionNo(sectionNo)) {
+      return NextResponse.json(
+        { error: 'projectId, sectionNo(1~7) 필요' },
+        { status: 400 },
+      )
     }
 
-    const rfpParsed = project.rfpParsed as any
-    const logicModel = project.logicModel as any
-    const previousSections = project.proposalSections
-      .filter((s) => s.sectionNo < sectionNo)
-      .map((s) => ({ no: s.sectionNo, title: s.title, content: s.content }))
-
-    // IMPACT 18모듈 (섹션 3, 4 작성 시 사용)
-    const impactModules = await prisma.impactModule.findMany({
-      where: { isActive: true },
-      orderBy: [{ stageOrder: 'asc' }, { moduleOrder: 'asc' }],
-      select: {
-        moduleCode: true,
-        moduleName: true,
-        coreQuestion: true,
-        workshopOutputs: true,
-        durationMinutes: true,
-        stage: true,
-      },
+    // 1. PipelineContext 조립
+    const userId = (session.user as { id?: string }).id
+    const context = await buildPipelineContext(projectId, {
+      viewerId: typeof userId === 'string' ? userId : undefined,
     })
 
-    // 확정된 커리큘럼 (섹션 4, 5, 7 작성 시 사용)
-    const curriculumSessions = project.curriculum.map((c) => ({
-      sessionNo: c.sessionNo,
-      title: c.title,
-      durationHours: c.durationHours,
-      isTheory: c.isTheory,
-      isActionWeek: c.isActionWeek,
-      isCoaching1on1: c.isCoaching1on1,
-      impactModuleCode: c.impactModuleCode,
-    }))
-
-    // 저장된 외부 리서치 주입 (티키타카)
-    const savedResearch = (project as any).externalResearch as ExternalResearch[] | null
-    const externalResearch = savedResearch?.length ? savedResearch : undefined
-
-    // 전략적 맥락 주입
-    const strategicNotes = (project as any).strategicNotes as StrategicNotes | null
-
-    const content = await generateProposalSection(sectionNo, {
-      rfpParsed,
-      logicModel,
-      previousSections,
-      impactModules,
-      curriculumSessions,
-      externalResearch,
-      strategicNotes: strategicNotes ?? undefined,
+    // 2. AI 생성
+    const result = await generateProposalSection({
+      sectionNo,
+      context,
+      keepParts,
     })
 
-    const section = PROPOSAL_SECTIONS.find((s) => s.no === sectionNo)!
+    if (!result.ok) {
+      if (result.error.startsWith('SLICE_REQUIRED:')) {
+        const slice = result.error.split(':')[1]
+        return NextResponse.json(
+          {
+            error: result.error,
+            message: `이전 스텝을 먼저 완료하세요 (${slice} 슬라이스 미확정)`,
+          },
+          { status: 400 },
+        )
+      }
+      if (result.error.startsWith('INVALID_SECTION_NO:')) {
+        return NextResponse.json({ error: result.error }, { status: 400 })
+      }
+      return NextResponse.json({ error: result.error }, { status: 500 })
+    }
 
-    // 버전 관리: 기존 버전 찾기
+    // 3. DB 저장 (버전 증가)
+    const spec = PROPOSAL_SECTION_SPEC[sectionNo]
     const existing = await prisma.proposalSection.findFirst({
       where: { projectId, sectionNo },
       orderBy: { version: 'desc' },
@@ -97,30 +102,45 @@ export async function POST(req: NextRequest) {
       data: {
         projectId,
         sectionNo,
-        title: section.title,
-        content,
+        title: spec.title,
+        content: result.content,
         version: newVersion,
       },
     })
 
-    return NextResponse.json({ section: saved })
-  } catch (err: any) {
-    console.error('제안서 생성 에러:', err)
-    return NextResponse.json({ error: err.message ?? '생성 실패' }, { status: 500 })
+    return NextResponse.json({
+      section: saved,
+      metadata: result.metadata,
+    })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : '생성 실패'
+    console.error('[proposal generate] error:', err)
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
 
 // PATCH: 제안서 섹션 콘텐츠 수정 또는 승인 토글
 export async function PATCH(req: NextRequest) {
   try {
-    const body = await req.json()
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = (await req.json()) as {
+      sectionId?: string
+      content?: string
+      isApproved?: boolean
+    }
     const { sectionId, content, isApproved } = body
 
     if (!sectionId) {
       return NextResponse.json({ error: 'sectionId가 필요합니다.' }, { status: 400 })
     }
 
-    const data: any = { updatedAt: new Date() }
+    const data: { updatedAt: Date; content?: string; isApproved?: boolean } = {
+      updatedAt: new Date(),
+    }
     if (content !== undefined) data.content = content
     if (isApproved !== undefined) data.isApproved = isApproved
 
@@ -130,15 +150,21 @@ export async function PATCH(req: NextRequest) {
     })
 
     return NextResponse.json({ section: updated })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message ?? '수정 실패' }, { status: 500 })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : '수정 실패'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
 
 // PUT: 평가위원 시뮬레이션 — AI가 현재 제안서를 평가 배점 기준으로 채점
 export async function PUT(req: NextRequest) {
   try {
-    const { projectId } = await req.json()
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { projectId } = (await req.json()) as { projectId?: string }
     if (!projectId) {
       return NextResponse.json({ error: 'projectId가 필요합니다.' }, { status: 400 })
     }
@@ -149,11 +175,14 @@ export async function PUT(req: NextRequest) {
     })
     if (!project) return NextResponse.json({ error: '프로젝트 없음' }, { status: 404 })
 
-    const rfpParsed = project.rfpParsed as any
+    const rfpParsed = project.rfpParsed as { evalCriteria?: Array<{ item: string; score: number }> } | null
     const evalCriteria = rfpParsed?.evalCriteria ?? []
 
     if (evalCriteria.length === 0) {
-      return NextResponse.json({ error: '평가 배점이 입력되지 않아 시뮬레이션할 수 없습니다.' }, { status: 400 })
+      return NextResponse.json(
+        { error: '평가 배점이 입력되지 않아 시뮬레이션할 수 없습니다.' },
+        { status: 400 },
+      )
     }
 
     const sectionsText = project.proposalSections
@@ -161,10 +190,10 @@ export async function PUT(req: NextRequest) {
       .join('\n\n')
 
     const evalText = evalCriteria
-      .map((e: any) => `- ${e.item}: ${e.score}점`)
+      .map((e) => `- ${e.item}: ${e.score}점`)
       .join('\n')
 
-    const totalMaxScore = evalCriteria.reduce((s: number, e: any) => s + e.score, 0)
+    const totalMaxScore = evalCriteria.reduce((s, e) => s + e.score, 0)
 
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
@@ -201,12 +230,14 @@ ${sectionsText}
       ],
     })
 
-    const raw = (msg.content[0] as any).text.trim()
-    const simulation = safeParseJson<any>(raw)
+    const block = msg.content[0] as { type?: string; text?: string }
+    const raw = (block.text ?? '').trim()
+    const simulation = safeParseJson<unknown>(raw)
 
     return NextResponse.json({ simulation })
-  } catch (err: any) {
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : '시뮬레이션 실패'
     console.error('평가 시뮬레이션 에러:', err)
-    return NextResponse.json({ error: err.message ?? '시뮬레이션 실패' }, { status: 500 })
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

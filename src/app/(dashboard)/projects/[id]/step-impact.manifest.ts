@@ -6,7 +6,7 @@ export const manifest: ModuleManifest = {
   version: '0.1.0',
   owner: 'TBD',
   reads: {
-    context: ['curriculum', 'budget'],
+    context: ['curriculum', 'budget', 'coaches', 'rfp'],
     assets: ['impact-modules', 'sroi-proxy'],
   },
   writes: {
