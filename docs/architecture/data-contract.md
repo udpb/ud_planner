@@ -80,7 +80,7 @@ interface StrategySlice {
 interface CurriculumSlice {
   tracks: Track[]
   sessions: CurriculumSession[]
-  designRationale: string
+  designRationale?: string               // optional — 스키마 확장 전·미완 시 undefined
   impactModuleMapping: Record<string, string>  // sessionId → moduleId
   ruleValidation: RuleValidationResult          // curriculum-rules 결과
   confirmedAt?: string
@@ -102,8 +102,8 @@ interface CoachesSlice {
 interface BudgetSlice {
   structure: BudgetStructure
   marginRate: number
-  sroiForecast: SroiForecast
-  benchmark: BenchmarkResult
+  sroiForecast?: SroiForecast                  // optional — SROI 미산출 시 undefined
+  benchmark?: BenchmarkResult                  // optional — 유사 프로젝트 없으면 불가
   warnings: BudgetWarning[]                   // 룰 엔진 경고
 }
 ```
