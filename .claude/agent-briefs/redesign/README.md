@@ -51,6 +51,34 @@ Phase A가 끝나면: 스텝 순서가 자연스럽고, 데이터가 스텝 간 
 - **B0 schema 를 Wave 2 에 미루지 않는 이유**: Wave 2 B4 가 PATCH 호출 시 필드 필요. 독립 Wave 1 에서 미리 적용.
 - **B3 AI 호출 없음**: 규칙 기반. 빠르고 결정론적. Gate 2 룰 엔진의 일부로 자연 흡수.
 
+---
+
+## Phase C — 스텝 간 데이터 흐름 연결 + Gate 2 확장
+
+> Phase C 가 끝나면: 이전 스텝의 결정이 다음 스텝 AI 에 자동 반영됨. DataFlowBanner 로 PM 이 흐름 인지. 예산·임팩트·제안서 룰 엔진 가동.
+
+### Wave 1 — 병렬 4개 (각각 서로 다른 lib/api 파일)
+
+| 브리프 | 작업 | 격리 |
+|--------|------|------|
+| [C1-curriculum-ai.md](./C1-curriculum-ai.md) | curriculum-ai.ts 신규 + /api/ai/curriculum route 수정 | 일반 |
+| [C2-logic-model-builder.md](./C2-logic-model-builder.md) | logic-model-builder.ts (ADR-004) + /api/ai/logic-model route 수정 | 일반 |
+| [C3-proposal-ai.md](./C3-proposal-ai.md) | proposal-ai.ts + /api/ai/proposal route 수정 | 일반 |
+| [C5-rule-engines.md](./C5-rule-engines.md) | budget-rules.ts · impact-rules.ts · proposal-rules.ts 신규 | 일반 |
+
+### Wave 2 — 단일 에이전트
+
+| 브리프 | 작업 | 이유 |
+|--------|------|------|
+| [C4-data-flow-banners.md](./C4-data-flow-banners.md) | 모든 step-*.tsx 상단에 DataFlowBanner + PipelineContext props 연결 | 여러 step 파일 동시 수정, Wave 1 API 완성 후 |
+
+### 설계 원칙 (Phase C, 2026-04-16)
+- **claude.ts 수정 금지**: 기존 함수는 하위호환 유지. 신규 모듈이 helpers(safeParseJson·CLAUDE_MODEL)만 import.
+- **모듈별 파일 분리**: curriculum-ai / logic-model-builder / proposal-ai — Module Manifest 패턴 따라 각자 reads/writes 명확.
+- **ADR-004 알고리즘 반영**: C2 가 sessionsToActivities() + deriveInputs() 구현. AI 는 Outcome/Impact 만.
+- **Gate 2 확장**: C5 가 budget/impact/proposal 룰 추가. curriculum-rules 와 동일 패턴.
+- **DataFlowBanner 재활용**: C4 가 기존 data-flow-banner.tsx 를 모든 스텝에 배치.
+
 ## 🚀 메인 세션 실행 순서
 
 ```
