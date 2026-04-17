@@ -79,6 +79,45 @@ Phase A가 끝나면: 스텝 순서가 자연스럽고, 데이터가 스텝 간 
 - **Gate 2 확장**: C5 가 budget/impact/proposal 룰 추가. curriculum-rules 와 동일 패턴.
 - **DataFlowBanner 재활용**: C4 가 기존 data-flow-banner.tsx 를 모든 스텝에 배치.
 
+---
+
+## Phase D — PM 가이드 + Ingestion + Gate 3
+
+> Phase D 가 끝나면: 수주 제안서 PDF 업로드 → 자동 패턴 추출 → 승인 후 WinningPattern 자산화. 각 스텝 우측에 PM 가이드 패널. 예상 점수 바 + Gate 3 AI 검증.
+
+### Wave 1 — 병렬 2개 (schema 와 독립 모듈)
+
+| 브리프 | 작업 | 격리 |
+|--------|------|------|
+| [D0-schema-phase-d.md](./D0-schema-phase-d.md) | WinningPattern · ChannelPreset 스키마 + ExtractedItem 확장 | 일반 (schema 전용) |
+| [D4-predicted-score.md](./D4-predicted-score.md) | predicted-score 모듈 + 상단 score bar (독립) | 일반 |
+
+### Wave 2 — 병렬 2개 (D0 완료 후)
+
+| 브리프 | 작업 | 격리 |
+|--------|------|------|
+| [D1-proposal-ingest.md](./D1-proposal-ingest.md) | proposal-ingest 워커 + /ingest/review Admin UI + winning-patterns helper | 일반 |
+| [D2-channel-preset.md](./D2-channel-preset.md) | ChannelPreset 시드 3종 + channel-presets helper | 일반 |
+
+### Wave 3 — 단일 (D1·D2 완료 후)
+
+| 브리프 | 작업 |
+|--------|------|
+| [D3-pm-guide.md](./D3-pm-guide.md) | pm-guide 모듈 + 각 step 우측 패널 배치 |
+
+### Wave 4 — 단일 (D1 결과 필수, D2 도 있으면 품질↑)
+
+| 브리프 | 작업 |
+|--------|------|
+| [D5-gate3-ai-validation.md](./D5-gate3-ai-validation.md) | Gate 3 AI 검증 3종 (pattern·evaluator·logic) + validate route |
+
+### Phase D 설계 원칙 (2026-04-16)
+- **원본 PDF 만 시드** — 가이드북 요약문 시드 금지 (ADR-003 원본 불변 보존, ADR-005 정보 흐름)
+- **Admin 승인 필수** — 자동 반영 ❌
+- **pm-guide 는 DB 데이터 + static content 만** — 가이드북 본문 주입 ❌ (ADR-005)
+- **Gate 3 는 리포트만** — 자동 블록 ❌ (quality-gates.md §1)
+- **ChannelPreset 3종 카드는 가이드북 Ch.10 1차 소스** — DB 가 2차 캐시 (ADR-005 §정보 흐름)
+
 ## 🚀 메인 세션 실행 순서
 
 ```
