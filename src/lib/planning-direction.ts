@@ -27,6 +27,7 @@ import {
   UD_PROPRIETARY_TOOLS,
   UD_SUPPORT_LAYERS,
 } from '@/lib/ud-brand'
+import type { ChannelPresetDto } from '@/lib/channel-presets'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입 (B4 UI 가 import)
@@ -339,4 +340,50 @@ export function validatePlanningDirection(r: PlanningDirectionResponse): string 
     }
   }
   return null
+}
+
+// ═════════════════════════════════════════════════════════════════
+// 7. DB 기반 채널 톤 조회 + fallback (Phase D2)
+// ═════════════════════════════════════════════════════════════════
+
+/**
+ * ChannelPresetDto → 프롬프트에 삽입 가능한 톤 문자열.
+ * tone + evaluatorProfile + keyMessages + avoidMessages 를 구조화.
+ */
+function formatToneFromPreset(preset: ChannelPresetDto): string {
+  const lines: string[] = []
+  lines.push(preset.tone)
+  lines.push(`평가위원: ${preset.evaluatorProfile}`)
+  if (preset.keyMessages.length > 0) {
+    lines.push(`핵심 메시지: ${preset.keyMessages.join(' / ')}`)
+  }
+  if (preset.avoidMessages.length > 0) {
+    lines.push(`금지 표현: ${preset.avoidMessages.join(' / ')}`)
+  }
+  if (preset.proposalStructure) {
+    lines.push(`제안서 구조: ${preset.proposalStructure}`)
+  }
+  if (preset.budgetTone) {
+    lines.push(`예산 톤: ${preset.budgetTone}`)
+  }
+  return lines.join('\n')
+}
+
+/**
+ * DB ChannelPreset 을 조회하여 톤 문자열 반환.
+ * DB 실패 또는 미등록 코드 → CHANNEL_TONE_PROMPT 하드코딩 fallback.
+ *
+ * @param channel 발주처 채널 ("B2G" | "B2B" | "renewal")
+ * @returns 프롬프트에 삽입할 톤 블록 문자열
+ */
+export async function resolveChannelTone(channel: PlanningChannel): Promise<string> {
+  try {
+    // dynamic import — channel-presets 모듈의 DB 의존성을 지연 로드
+    const { getChannelPreset } = await import('@/lib/channel-presets')
+    const preset = await getChannelPreset(channel)
+    if (preset) return formatToneFromPreset(preset)
+  } catch {
+    // DB 접근 실패 — fallback 으로
+  }
+  return CHANNEL_TONE_PROMPT[channel]
 }
