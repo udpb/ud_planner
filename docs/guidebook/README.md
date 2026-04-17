@@ -20,6 +20,7 @@
   - [Ch.3 RFP 받은 첫 24시간](./02-field/03-first-24h.md)
   - [Ch.4 Impact Value Chain 사고법](./02-field/04-impact-value-chain.md)
   - [Ch.5 자주 빠지는 함정](./02-field/05-common-pitfalls.md)
+  - [Ch.6 제안서 장표 구성법](./02-field/06-proposal-structure.md) — I~V 섹션 · One-Page-One-Thesis · 정량 포화 · 4중 지원 · 예산 표현
 - **Part 3 — 케이스북** ([03-casebook](./03-casebook/)) *— 앞으로 계속 늘어나는 핵심 자산*
   - [Ch.6 창업교육](./03-casebook/06-startup-education/) — NH 애그테크, GS리테일 에코 소셜임팩트, 코오롱 프로보노
   - [Ch.7 로컬·상권](./03-casebook/07-local-commerce/) — 종로구 서촌
@@ -39,6 +40,7 @@ Part 3 케이스북은 수주/탈락 경험마다 추가됩니다. 분기에 한
 
 - **처음이면**: [Ch.1](./01-start/01-why-read.md) → [Ch.2](./01-start/02-five-perspectives.md) → 관심 영역 케이스 1~2개
 - **RFP 받았을 때**: [Ch.3](./02-field/03-first-24h.md) → 해당 영역 케이스 → [Ch.5](./02-field/05-common-pitfalls.md)
+- **장표 쓰기 직전**: [Ch.6](./02-field/06-proposal-structure.md) → [부록 A](./appendix/a-final-checklist.md)
 - **제출 직전**: [부록 A](./appendix/a-final-checklist.md)
 - **특정 사업 유형 조사**: [Ch.10](./04-channel-types/10-b2g-b2b-renewal.md) → 해당 영역 케이스 전체
 
