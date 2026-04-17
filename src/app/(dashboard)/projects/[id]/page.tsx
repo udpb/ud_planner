@@ -12,7 +12,10 @@ import { StepRfp } from './step-rfp'
 import { StepImpact } from './step-impact'
 import { StepProposal } from './step-proposal'
 import { PlanningScorecard } from '@/components/projects/planning-scorecard'
+import { ScoreBar } from '@/modules/predicted-score/score-bar'
+import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { calculatePlanningScore } from '@/lib/planning-score'
+import { buildPipelineContext } from '@/lib/pipeline-context'
 import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -70,7 +73,10 @@ export default async function ProjectDetailPage({
 }) {
   const { id } = await params
   const { step = 'rfp' } = await searchParams
-  const project = await getProject(id)
+  const [project, context] = await Promise.all([
+    getProject(id),
+    buildPipelineContext(id).catch(() => null),
+  ])
   if (!project) notFound()
 
   const totalCoachFee = project.coachAssignments.reduce((s, a) => s + (a.totalFee ?? 0), 0)
@@ -191,6 +197,9 @@ export default async function ProjectDetailPage({
         </div>
       </div>
 
+      {/* Predicted score bar (evalStrategy 기반 예상 점수) */}
+      <ScoreBar projectId={project.id} />
+
       {/* Planning quality scorecard */}
       <PlanningScorecard score={planningScore} />
 
@@ -242,12 +251,57 @@ export default async function ProjectDetailPage({
             logicModelActivities={(project.logicModel as any)?.activity ?? []}
             supplyPrice={project.supplyPrice ?? 0}
             coachAssignmentCount={project.coachAssignments.length}
+            rfpSlice={context?.rfp}
+            strategySlice={context?.strategy}
           />
         )}
 
         {/* ── Step 3: 코치 배정 ── */}
         {step === 'coaches' && (
           <div className="space-y-4">
+            {/* 이전 스텝 요약 배너 (Step 1·2 → Step 3) */}
+            <DataFlowBanner
+              fromStep="Step 1·2"
+              toStep="Step 3 코치 배정"
+              items={(() => {
+                const rfp = context?.rfp
+                const curri = context?.curriculum
+                const sessionCount = curri?.sessions.length ?? 0
+                const actionWeekCount = curri?.sessions.filter((s) => s.isActionWeek).length ?? 0
+                const coachingCount = curri?.sessions.filter((s) => s.isCoaching1on1).length ?? 0
+                return [
+                  {
+                    label: '제안 컨셉',
+                    value: rfp?.proposalConcept ?? '미확정',
+                    matched: !!rfp?.proposalConcept,
+                    detail: rfp?.proposalConcept
+                      ? undefined
+                      : 'Step 1 에서 컨셉을 확정하세요',
+                  },
+                  {
+                    label: '총 세션 수',
+                    value: sessionCount > 0 ? `${sessionCount}회차` : '미작성',
+                    matched: sessionCount > 0,
+                    detail: sessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
+                  },
+                  {
+                    label: 'Action Week',
+                    value: sessionCount > 0 ? `${actionWeekCount}회` : '—',
+                    matched: actionWeekCount > 0,
+                    detail:
+                      sessionCount > 0 && actionWeekCount === 0
+                        ? '실행 중심 교육 — Action Week 1회 이상 권장'
+                        : undefined,
+                  },
+                  {
+                    label: '1:1 코칭',
+                    value: sessionCount > 0 ? `${coachingCount}회` : '—',
+                    matched: coachingCount > 0,
+                  },
+                ]
+              })()}
+            />
+
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-base font-semibold">코치 배정</h3>
@@ -345,6 +399,8 @@ export default async function ProjectDetailPage({
               amount: i.amount,
               isEstimated: i.notes?.includes('추정') ?? false,
             })) ?? []}
+            curriculumSlice={context?.curriculum}
+            coachesSlice={context?.coaches}
           />
         )}
 
@@ -354,6 +410,10 @@ export default async function ProjectDetailPage({
             projectId={project.id}
             rfpParsed={project.rfpParsed as any}
             initialLogicModel={project.logicModel as any}
+            curriculumSlice={context?.curriculum}
+            coachesSlice={context?.coaches}
+            budgetSlice={context?.budget}
+            autoExtracted={context?.impact?.autoExtracted}
           />
         )}
 
@@ -364,6 +424,7 @@ export default async function ProjectDetailPage({
             hasLogicModel={!!project.logicModel}
             initialSections={project.proposalSections as any}
             evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
+            pipelineContext={context}
           />
         )}
 

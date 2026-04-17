@@ -17,6 +17,8 @@ import {
 import { cn } from '@/lib/utils'
 import { validateCurriculumRules, type RuleViolation } from '@/lib/curriculum-rules'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
+import { sectionLabel } from '@/lib/eval-strategy'
+import type { RfpSlice, StrategySlice } from '@/lib/pipeline-context'
 
 interface CurriculumItem {
   id: string
@@ -50,6 +52,8 @@ interface Props {
   logicModelActivities?: string[]
   supplyPrice?: number
   coachAssignmentCount?: number
+  rfpSlice?: RfpSlice
+  strategySlice?: StrategySlice
 }
 
 // 세션 카드 (sortable)
@@ -192,6 +196,7 @@ export function CurriculumBoard({
   projectId, initialItems, insights = [],
   rfpKeywords = [], rfpObjectives = [], logicModelActivities = [],
   supplyPrice = 0, coachAssignmentCount = 0,
+  rfpSlice, strategySlice,
 }: Props) {
   const [items, setItems] = useState<CurriculumItem[]>(initialItems)
   const [saving, setSaving] = useState(false)
@@ -218,6 +223,49 @@ export function CurriculumBoard({
     }
     return set
   }, [items])
+
+  // --- 이전 스텝 요약 배너 (Step 1 → Step 2 핵심 결정) ---
+  const stepSummaryItems = useMemo(() => {
+    if (!rfpSlice) return []
+    const concept = rfpSlice.proposalConcept
+    const firstPoint = rfpSlice.keyPlanningPoints?.[0]
+    const topEval = rfpSlice.evalStrategy?.topItems?.[0]
+    const items = [
+      {
+        label: '제안 컨셉',
+        value: concept ?? '미확정',
+        matched: !!concept,
+        detail: concept ? undefined : 'Step 1 에서 컨셉을 확정하세요',
+      },
+      {
+        label: '핵심 포인트',
+        value: firstPoint ?? '미확정',
+        matched: (rfpSlice.keyPlanningPoints?.length ?? 0) >= 3,
+        detail:
+          (rfpSlice.keyPlanningPoints?.length ?? 0) >= 3
+            ? undefined
+            : '핵심 기획 포인트 3개 확정 필요',
+      },
+      {
+        label: '평가 최고배점',
+        value: topEval
+          ? `${topEval.name} (${topEval.points}점·${sectionLabel(topEval.section)})`
+          : '미분석',
+        matched: !!topEval,
+        detail: topEval ? undefined : 'Step 1 평가배점 분석을 진행하세요',
+      },
+    ]
+    // strategy 가 있고 keyMessages 가 있으면 한 줄 추가
+    if (strategySlice?.derivedKeyMessages?.[0]) {
+      items.push({
+        label: '수주 전략 키메시지',
+        value: strategySlice.derivedKeyMessages[0],
+        matched: true,
+        detail: undefined,
+      })
+    }
+    return items
+  }, [rfpSlice, strategySlice])
 
   // --- DataFlow: RFP/LogicModel → 커리큘럼 ---
   const flowItems = useMemo(() => {
@@ -306,6 +354,15 @@ export function CurriculumBoard({
 
   return (
     <div className="space-y-4">
+      {/* 이전 스텝 요약 배너 (Step 1 핵심 결정) */}
+      {stepSummaryItems.length > 0 && (
+        <DataFlowBanner
+          fromStep="Step 1 RFP·기획 방향"
+          toStep="Step 2 커리큘럼"
+          items={stepSummaryItems}
+        />
+      )}
+
       {/* DataFlow: RFP/Logic Model → 커리큘럼 */}
       {flowItems.length > 0 && (
         <DataFlowBanner fromStep="RFP·임팩트 설계" toStep="커리큘럼" items={flowItems} />

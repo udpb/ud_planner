@@ -15,6 +15,11 @@ import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { ResearchPanel } from '@/components/projects/research-panel'
 import { StrategyPanel } from '@/components/projects/strategy-panel'
 import { toast } from 'sonner'
+import type {
+  CurriculumSlice,
+  CoachesSlice,
+  BudgetSlice,
+} from '@/lib/pipeline-context'
 
 interface GoalCandidate {
   goal: string
@@ -27,6 +32,10 @@ interface Props {
   projectId: string
   rfpParsed: any
   initialLogicModel: any
+  curriculumSlice?: CurriculumSlice
+  coachesSlice?: CoachesSlice
+  budgetSlice?: BudgetSlice
+  autoExtracted?: { activities: boolean; inputs: boolean }
 }
 
 const CHAIN_KEYS = ['input', 'activity', 'output', 'outcome', 'impact'] as const
@@ -101,7 +110,10 @@ function analyzeKeywordFlow(rfpParsed: any, logicModel: any) {
   return items
 }
 
-export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
+export function StepImpact({
+  projectId, rfpParsed, initialLogicModel,
+  curriculumSlice, coachesSlice, budgetSlice, autoExtracted,
+}: Props) {
   // Phase management
   const [phase, setPhase] = useState<'goal' | 'model'>(initialLogicModel ? 'model' : 'goal')
   const [confirmedGoal, setConfirmedGoal] = useState(initialLogicModel?.impactGoal ?? '')
@@ -250,8 +262,68 @@ export function StepImpact({ projectId, rfpParsed, initialLogicModel }: Props) {
   // RENDER
   // ============================================================
 
+  // 이전 스텝 요약 배너 아이템 (Step 2·3·4 → Step 5)
+  const impactSessionCount = curriculumSlice?.sessions.length ?? 0
+  const impactCoachCount = coachesSlice?.assignments.length ?? 0
+  const impactBudgetTotal =
+    (budgetSlice?.structure.pcTotal ?? 0) + (budgetSlice?.structure.acTotal ?? 0)
+  const sroiRatio = budgetSlice?.sroiForecast?.ratio
+  const prevStepItems = [
+    {
+      label: '세션 수',
+      value: impactSessionCount > 0 ? `${impactSessionCount}회차` : '미작성',
+      matched: impactSessionCount > 0,
+      detail: impactSessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
+    },
+    {
+      label: '코치',
+      value: impactCoachCount > 0 ? `${impactCoachCount}명` : '미배정',
+      matched: impactCoachCount > 0,
+      detail: impactCoachCount > 0 ? undefined : 'Step 3 코치 먼저 배정',
+    },
+    {
+      label: '예산',
+      value:
+        impactBudgetTotal > 0
+          ? `${Math.round(impactBudgetTotal / 10000).toLocaleString()}만원`
+          : '미작성',
+      matched: impactBudgetTotal > 0,
+      detail: impactBudgetTotal > 0 ? undefined : 'Step 4 예산 먼저 산출',
+    },
+    ...(sroiRatio !== undefined
+      ? [
+          {
+            label: 'SROI 비율',
+            value: `${sroiRatio.toFixed(2)}배`,
+            matched: true,
+            detail: undefined as string | undefined,
+          },
+        ]
+      : []),
+  ]
+  const showAutoExtractedBanner =
+    !!autoExtracted && (autoExtracted.activities || autoExtracted.inputs)
+
   return (
     <div className="space-y-4">
+      {/* 이전 스텝 요약 (Step 2·3·4 → Step 5) */}
+      <DataFlowBanner
+        fromStep="Step 2·3·4 커리큘럼·코치·예산"
+        toStep="Step 5 임팩트 설계"
+        items={prevStepItems}
+      />
+
+      {/* 자동 추출 알림 — Activity/Input 이 이미 확정돼 있으면 표시 */}
+      {showAutoExtractedBanner && (
+        <div className="rounded-md border border-primary/30 bg-primary/10 p-3 text-sm">
+          <span className="font-medium text-primary">자동 추출됨:</span>{' '}
+          이 Logic Model 의
+          {autoExtracted?.activities && ' Activity 는 Step 2 커리큘럼 세션에서,'}
+          {autoExtracted?.inputs && ' Input 은 Step 3 코치 + Step 4 예산에서'}
+          {' '}자동으로 추출할 수 있습니다. PM 은 Outcome · Impact 에 집중해 검토·편집하세요.
+        </div>
+      )}
+
       {/* Data flow banner (only when model exists) */}
       {flowItems.length > 0 && logicModel && (
         <DataFlowBanner fromStep="RFP 분석" toStep="임팩트 설계" items={flowItems} />

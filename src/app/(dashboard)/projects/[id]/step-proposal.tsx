@@ -16,6 +16,8 @@ import { cn } from '@/lib/utils'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { ResearchPanel } from '@/components/projects/research-panel'
 import { StrategyPanel } from '@/components/projects/strategy-panel'
+import type { PipelineContext } from '@/lib/pipeline-context'
+import { sectionLabel } from '@/lib/eval-strategy'
 
 /* ───────────────────────────────────────── 상수 ── */
 
@@ -106,6 +108,7 @@ interface Props {
   hasLogicModel: boolean
   initialSections: ProposalSection[]
   evalCriteria: Array<{ item: string; score: number; notes: string }>
+  pipelineContext?: PipelineContext | null
 }
 
 /* ─────────────────────────────── 자동 리사이즈 Hook ── */
@@ -125,7 +128,10 @@ function useAutoResize(value: string) {
    StepProposal 컴포넌트
    ═════════════════════════════════════════════════════ */
 
-export function StepProposal({ projectId, hasLogicModel, initialSections, evalCriteria }: Props) {
+export function StepProposal({
+  projectId, hasLogicModel, initialSections, evalCriteria,
+  pipelineContext,
+}: Props) {
   const [sections, setSections] = useState<ProposalSection[]>(initialSections)
   const [loadingSection, setLoadingSection] = useState<number | null>(null)
   const [error, setError] = useState('')
@@ -148,10 +154,73 @@ export function StepProposal({ projectId, hasLogicModel, initialSections, evalCr
   // 전체 미리보기
   const [previewMode, setPreviewMode] = useState(false)
 
+  // 이전 스텝 요약 배너 펼침 여부
+  const [summaryOpen, setSummaryOpen] = useState(true)
+
   const router = useRouter()
   const pathname = usePathname()
   const evalSectionMap = mapEvalToSections(evalCriteria)
   const textareaRef = useAutoResize(editContent)
+
+  // 이전 스텝 요약 배너 아이템 (Step 1~5 → Step 6)
+  const ctxRfp = pipelineContext?.rfp
+  const ctxCurri = pipelineContext?.curriculum
+  const ctxCoaches = pipelineContext?.coaches
+  const ctxBudget = pipelineContext?.budget
+  const ctxImpact = pipelineContext?.impact
+  const ctxSessionCount = ctxCurri?.sessions.length ?? 0
+  const ctxCoachCount = ctxCoaches?.assignments.length ?? 0
+  const ctxBudgetTotal =
+    (ctxBudget?.structure.pcTotal ?? 0) + (ctxBudget?.structure.acTotal ?? 0)
+  const ctxTopEval = ctxRfp?.evalStrategy?.topItems?.[0]
+  const summaryItems = [
+    {
+      label: '제안 컨셉',
+      value: ctxRfp?.proposalConcept ?? '미확정',
+      matched: !!ctxRfp?.proposalConcept,
+      detail: ctxRfp?.proposalConcept ? undefined : 'Step 1 에서 컨셉을 확정하세요',
+    },
+    {
+      label: '평가 최고배점',
+      value: ctxTopEval
+        ? `${ctxTopEval.name} (${ctxTopEval.points}점·${sectionLabel(ctxTopEval.section)})`
+        : '미분석',
+      matched: !!ctxTopEval,
+      detail: ctxTopEval ? undefined : 'Step 1 평가배점 분석 필요',
+    },
+    {
+      label: '커리큘럼',
+      value: ctxSessionCount > 0 ? `${ctxSessionCount}회차` : '미작성',
+      matched: ctxSessionCount > 0,
+      detail: ctxSessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
+    },
+    {
+      label: '코치',
+      value: ctxCoachCount > 0 ? `${ctxCoachCount}명` : '미배정',
+      matched: ctxCoachCount > 0,
+      detail: ctxCoachCount > 0 ? undefined : 'Step 3 코치 먼저 배정',
+    },
+    {
+      label: '예산',
+      value:
+        ctxBudgetTotal > 0
+          ? `${Math.round(ctxBudgetTotal / 10000).toLocaleString()}만원`
+          : '미작성',
+      matched: ctxBudgetTotal > 0,
+      detail: ctxBudgetTotal > 0 ? undefined : 'Step 4 예산 먼저 산출',
+    },
+    {
+      label: 'Impact Goal',
+      value: ctxImpact?.goal?.trim()
+        ? ctxImpact.goal.length > 40
+          ? `${ctxImpact.goal.slice(0, 40)}…`
+          : ctxImpact.goal
+        : '미확정',
+      matched: !!ctxImpact?.goal?.trim(),
+      detail: ctxImpact?.goal?.trim() ? undefined : 'Step 5 임팩트 목표 먼저 확정',
+    },
+  ]
+  const hasAnySummary = summaryItems.some((i) => i.matched)
 
   // DataFlow
   const flowItems = evalCriteria.slice(0, 6).map((c) => {
@@ -334,6 +403,31 @@ export function StepProposal({ projectId, hasLogicModel, initialSections, evalCr
 
   return (
     <div className="space-y-4">
+      {/* 이전 스텝 요약 (Step 1~5 → Step 6 제안서) — 정보량 많아 접기 가능 */}
+      {pipelineContext && hasAnySummary && (
+        <div className="space-y-1.5">
+          <button
+            type="button"
+            onClick={() => setSummaryOpen((v) => !v)}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+          >
+            {summaryOpen ? (
+              <ChevronUp className="h-3 w-3" />
+            ) : (
+              <ChevronDown className="h-3 w-3" />
+            )}
+            <span>Step 1~5 확정 요약 {summaryOpen ? '접기' : '펼치기'}</span>
+          </button>
+          {summaryOpen && (
+            <DataFlowBanner
+              fromStep="Step 1~5 기획 전체"
+              toStep="Step 6 제안서"
+              items={summaryItems}
+            />
+          )}
+        </div>
+      )}
+
       {/* DataFlow */}
       {evalCriteria.length > 0 && (
         <DataFlowBanner fromStep="RFP 평가 배점" toStep="제안서 섹션" items={flowItems} />

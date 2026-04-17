@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { AlertTriangle, Calculator, CheckCircle2, Pencil, RefreshCw } from 'lucide-react'
+import { DataFlowBanner } from '@/components/projects/data-flow-banner'
+import type { CurriculumSlice, CoachesSlice } from '@/lib/pipeline-context'
 
 interface PcItem {
   coachId: string
@@ -51,6 +53,8 @@ interface Props {
   initialBudget: BudgetSummary | null
   initialPcItems: PcItem[]
   initialAcItems: AcItem[]
+  curriculumSlice?: CurriculumSlice
+  coachesSlice?: CoachesSlice
 }
 
 const ROLE_LABEL: Record<string, string> = {
@@ -64,7 +68,10 @@ function fmt(n: number) {
   return n.toLocaleString()
 }
 
-export function BudgetDashboard({ projectId, initialBudget, initialPcItems, initialAcItems }: Props) {
+export function BudgetDashboard({
+  projectId, initialBudget, initialPcItems, initialAcItems,
+  curriculumSlice, coachesSlice,
+}: Props) {
   const [budget, setBudget] = useState<BudgetSummary | null>(initialBudget)
   const [pcItems, setPcItems] = useState<PcItem[]>(initialPcItems)
   const [acItems, setAcItems] = useState<AcItem[]>(initialAcItems)
@@ -120,8 +127,51 @@ export function BudgetDashboard({ projectId, initialBudget, initialPcItems, init
     ? Math.round((budget.supplyPrice / (budget.totalBudgetVat / 1.1)) * 100)
     : null
 
+  // 이전 스텝 요약 배너 아이템 (Step 2·3 → Step 4)
+  const sessionCount = curriculumSlice?.sessions.length ?? 0
+  const totalEduHours = curriculumSlice?.sessions.reduce(
+    (sum, s) => sum + (s.durationHours ?? 0),
+    0,
+  ) ?? 0
+  const assignedCoachCount = coachesSlice?.assignments.length ?? 0
+  const coachTotalFee = coachesSlice?.totalFee ?? 0
+  const prevStepItems = [
+    {
+      label: '총 회차',
+      value: sessionCount > 0 ? `${sessionCount}회` : '미작성',
+      matched: sessionCount > 0,
+      detail: sessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
+    },
+    {
+      label: '총 교육시간',
+      value: totalEduHours > 0 ? `${totalEduHours.toFixed(1)}시간` : '—',
+      matched: totalEduHours > 0,
+    },
+    {
+      label: '배정 코치',
+      value: assignedCoachCount > 0 ? `${assignedCoachCount}명` : '미배정',
+      matched: assignedCoachCount > 0,
+      detail: assignedCoachCount > 0 ? undefined : 'Step 3 코치 먼저 배정',
+    },
+    {
+      label: '총 사례비',
+      value:
+        coachTotalFee > 0
+          ? `${Math.round(coachTotalFee / 10000).toLocaleString()}만원`
+          : '—',
+      matched: coachTotalFee > 0,
+    },
+  ]
+
   return (
     <div className="space-y-4">
+      {/* 이전 스텝 요약 (Step 2·3 → Step 4) */}
+      <DataFlowBanner
+        fromStep="Step 2·3 커리큘럼·코치"
+        toStep="Step 4 예산"
+        items={prevStepItems}
+      />
+
       {/* 요약 카드 */}
       <div className="grid grid-cols-4 gap-3">
         {[
