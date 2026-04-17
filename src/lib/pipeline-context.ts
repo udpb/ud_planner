@@ -694,6 +694,7 @@ function derivePlanningStrategy(
       clientHiddenWants?: string
       mustNotFail?: string
       competitorWeakness?: string
+      internalAdvantage?: string
       riskFactors?: string[]
       decisionMakers?: string
     }
@@ -713,9 +714,7 @@ function derivePlanningStrategy(
     clientHiddenWants: sc.clientHiddenWants ?? '',
     mustNotFail: sc.mustNotFail ?? '',
     competitorWeakness: sc.competitorWeakness ?? '',
-    // 기존 슬롯에 없음 — participationDecision 이 합쳐진 항목.
-    // 명시적 internalAdvantage 가 들어오기 전까지 빈 문자열.
-    internalAdvantage: '',
+    internalAdvantage: sc.internalAdvantage ?? '',
     riskFactors: sc.riskFactors ?? [],
     decisionMakers: sc.decisionMakers ?? '',
     derivedKeyMessages: ds?.keyMessages ?? [],
