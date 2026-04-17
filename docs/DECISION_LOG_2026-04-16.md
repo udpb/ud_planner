@@ -41,3 +41,18 @@
 - **Why**: 사용자 승인 범위 내 작업 (Phase C Wave 2). 브리프 존재, 의존성(Wave 1) 완료.
 - **Reversibility**: Medium — 6개 step 파일 수정. 에이전트 실패 시 git revert 가능.
 - **How to rollback**: `git reset --hard 3b1332f` (Phase C Wave 1 완료 지점)
+
+### [+30분] 사용자 범위 확대 — Phase D 까지 실행 승인
+- **Block**: 5→ 전체 Phase D
+- **Scope**: Phase D0·D1·D2·D3·D4·D5 전부 브리프 작성 + 실행
+- **Decision**: 사용자 명시 "Phase D까지 할 수 있겠는데? 위에 내용들 기본적으로 다 참고해서 Phase D까지 진행하고 있어줘"
+- **Why**: 10시간 남음. Phase B·C 패턴 검증됨 · 에이전트 병렬 안정적. Phase D Wave 계획 이미 수립 (Wave 1: D0+D4 / Wave 2: D1+D2 / Wave 3: D3 / Wave 4: D5).
+- **Reversibility**: Medium-Hard — schema 변경 포함 (D0). 되돌리기 복잡.
+- **How to rollback**:
+  - schema: `npx prisma migrate resolve --rolled-back add_phase_d_assets` + 기존 commit 으로 git reset
+  - 코드: git reset --hard <Phase C 완료 커밋>
+- **제약:**
+  - Phase D1 WinningPattern 자동 승인 절대 금지 (ADR-003)
+  - ChannelPreset 시드는 가이드북 Ch.12 카드로 (사용자 이미 승인)
+  - 가이드북 수동 시드 경로 금지 (ADR-005)
+  - schema 변경 시 `.claude/settings.local.json` 임시 해제 → 완료 후 복원 (Phase B 패턴)
