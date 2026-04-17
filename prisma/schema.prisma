@@ -1011,6 +1011,72 @@ model ExtractedItem {
   appliedAt   DateTime?
   appliedId   String? // 자산 테이블에 삽입된 레코드 ID
 
+  // Phase D: 승인 후 생성된 자산 레코드 추적
+  appliedWinningPatternId String? // 승인 후 생성된 WinningPattern.id
+  appliedChannelPresetId  String? // ChannelPreset 업데이트 소스라면
+
   @@index([jobId])
   @@index([targetAsset, status])
+}
+
+// ─────────────────────────────────────────
+// [Phase D] 수주 패턴 · 채널 프리셋 — 자산 축적 (ADR-003)
+// ─────────────────────────────────────────
+
+model WinningPattern {
+  id              String   @id @default(cuid())
+  // 출처
+  sourceProject   String // 사업명 (예: "2025 종로구 서촌 로컬브랜드")
+  sourceClient    String? // 발주처
+  ingestionJobId  String? // 어느 IngestionJob 에서 왔는지
+  extractedItemId String? // 어느 ExtractedItem 에서 승인되었는지
+
+  // 분류
+  sectionKey    String // ProposalSectionKey 값 (proposal-background/curriculum/...)
+  channelType   String? // B2G | B2B | renewal
+  outcome       String // "won" | "lost" | "pending" — 반면교사도 저장
+  techEvalScore Float? // 기술평가 점수 (있으면)
+
+  // 내용
+  snippet    String   @db.Text // 섹션의 핵심 원문 스니펫
+  whyItWorks String   @db.Text // 왜 먹혔는지 (추측+근거 명시)
+  tags       String[] // ["청년창업", "정량KPI", ...]
+
+  // 메타
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  approvedBy String? // userId
+  embedding  Json? // pgvector 전환 전까지는 Json
+
+  @@index([sectionKey, channelType, outcome])
+  @@index([sourceProject])
+}
+
+model ChannelPreset {
+  id          String @id @default(cuid())
+  code        String @unique // "B2G" | "B2B" | "renewal" (추후 확장)
+  displayName String // "정부·공공기관"
+  description String @db.Text
+
+  // 톤·메시지
+  keyMessages      Json // string[]
+  avoidMessages    Json // string[] — 이 타입에서 피해야 할 표현
+  tone             String @db.Text
+  evaluatorProfile String @db.Text
+
+  // 커리큘럼 가이드
+  theoryMaxRatio     Float? // 이론 비율 상한 (B2G 0.3)
+  actionWeekMinCount Int? // Action Week 최소 횟수
+
+  // 예산
+  budgetTone         String @db.Text
+  directCostMinRatio Float? // 직접비 최소 비율
+
+  // 제안서 구조
+  proposalStructure String @db.Text
+
+  // 메타
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  source    String   @default("seed") // "seed" | "strategy_interview"
 }
