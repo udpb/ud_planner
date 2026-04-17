@@ -16,6 +16,9 @@ import { ScoreBar } from '@/modules/predicted-score/score-bar'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { calculatePlanningScore } from '@/lib/planning-score'
 import { buildPipelineContext } from '@/lib/pipeline-context'
+import { PmGuidePanel } from '@/modules/pm-guide/panel'
+import { resolvePmGuide } from '@/modules/pm-guide/resolve'
+import type { StepKey } from '@/modules/pm-guide/types'
 import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -81,6 +84,12 @@ export default async function ProjectDetailPage({
 
   const totalCoachFee = project.coachAssignments.reduce((s, a) => s + (a.totalFee ?? 0), 0)
   const marginRate = project.budget?.marginRate ?? 0
+
+  // PM 가이드 콘텐츠 resolve (rfp 제외 — B4 자체 가이드 사용)
+  const PM_GUIDE_STEPS: StepKey[] = ['curriculum', 'coaches', 'budget', 'impact', 'proposal']
+  const pmGuide = context && PM_GUIDE_STEPS.includes(step as StepKey)
+    ? await resolvePmGuide(step as StepKey, context).catch(() => null)
+    : null
 
   // 기획 품질 스코어 계산
   const planningScore = calculatePlanningScore({
@@ -227,205 +236,220 @@ export default async function ProjectDetailPage({
 
         {/* ── Step 2: 커리큘럼 ── */}
         {step === 'curriculum' && (
-          <CurriculumBoard
-            projectId={project.id}
-            initialItems={project.curriculum.map((c) => ({
-              id: c.id,
-              sessionNo: c.sessionNo,
-              title: c.title,
-              durationHours: c.durationHours,
-              lectureMinutes: (c as any).lectureMinutes ?? 15,
-              practiceMinutes: (c as any).practiceMinutes ?? 35,
-              isTheory: c.isTheory,
-              isActionWeek: c.isActionWeek,
-              isCoaching1on1: (c as any).isCoaching1on1 ?? false,
-              isLocked: (c as any).isLocked ?? false,
-              date: c.date,
-              venue: c.venue,
-              isOnline: c.isOnline,
-              notes: c.notes,
-              order: c.order,
-            }))}
-            rfpKeywords={(project.rfpParsed as any)?.keywords ?? []}
-            rfpObjectives={(project.rfpParsed as any)?.objectives ?? []}
-            logicModelActivities={(project.logicModel as any)?.activity ?? []}
-            supplyPrice={project.supplyPrice ?? 0}
-            coachAssignmentCount={project.coachAssignments.length}
-            rfpSlice={context?.rfp}
-            strategySlice={context?.strategy}
-          />
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+            <CurriculumBoard
+              projectId={project.id}
+              initialItems={project.curriculum.map((c) => ({
+                id: c.id,
+                sessionNo: c.sessionNo,
+                title: c.title,
+                durationHours: c.durationHours,
+                lectureMinutes: (c as any).lectureMinutes ?? 15,
+                practiceMinutes: (c as any).practiceMinutes ?? 35,
+                isTheory: c.isTheory,
+                isActionWeek: c.isActionWeek,
+                isCoaching1on1: (c as any).isCoaching1on1 ?? false,
+                isLocked: (c as any).isLocked ?? false,
+                date: c.date,
+                venue: c.venue,
+                isOnline: c.isOnline,
+                notes: c.notes,
+                order: c.order,
+              }))}
+              rfpKeywords={(project.rfpParsed as any)?.keywords ?? []}
+              rfpObjectives={(project.rfpParsed as any)?.objectives ?? []}
+              logicModelActivities={(project.logicModel as any)?.activity ?? []}
+              supplyPrice={project.supplyPrice ?? 0}
+              coachAssignmentCount={project.coachAssignments.length}
+              rfpSlice={context?.rfp}
+              strategySlice={context?.strategy}
+            />
+            {pmGuide && <PmGuidePanel content={pmGuide} />}
+          </div>
         )}
 
         {/* ── Step 3: 코치 배정 ── */}
         {step === 'coaches' && (
-          <div className="space-y-4">
-            {/* 이전 스텝 요약 배너 (Step 1·2 → Step 3) */}
-            <DataFlowBanner
-              fromStep="Step 1·2"
-              toStep="Step 3 코치 배정"
-              items={(() => {
-                const rfp = context?.rfp
-                const curri = context?.curriculum
-                const sessionCount = curri?.sessions.length ?? 0
-                const actionWeekCount = curri?.sessions.filter((s) => s.isActionWeek).length ?? 0
-                const coachingCount = curri?.sessions.filter((s) => s.isCoaching1on1).length ?? 0
-                return [
-                  {
-                    label: '제안 컨셉',
-                    value: rfp?.proposalConcept ?? '미확정',
-                    matched: !!rfp?.proposalConcept,
-                    detail: rfp?.proposalConcept
-                      ? undefined
-                      : 'Step 1 에서 컨셉을 확정하세요',
-                  },
-                  {
-                    label: '총 세션 수',
-                    value: sessionCount > 0 ? `${sessionCount}회차` : '미작성',
-                    matched: sessionCount > 0,
-                    detail: sessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
-                  },
-                  {
-                    label: 'Action Week',
-                    value: sessionCount > 0 ? `${actionWeekCount}회` : '—',
-                    matched: actionWeekCount > 0,
-                    detail:
-                      sessionCount > 0 && actionWeekCount === 0
-                        ? '실행 중심 교육 — Action Week 1회 이상 권장'
-                        : undefined,
-                  },
-                  {
-                    label: '1:1 코칭',
-                    value: sessionCount > 0 ? `${coachingCount}회` : '—',
-                    matched: coachingCount > 0,
-                  },
-                ]
-              })()}
-            />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-semibold">코치 배정</h3>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  역할과 사례비를 설정하고 코치를 확정합니다.
-                </p>
-              </div>
-              <CoachAssign
-                projectId={project.id}
-                assignedCoachIds={project.coachAssignments.map((a) => a.coach.id)}
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+            <div className="space-y-4">
+              {/* 이전 스텝 요약 배너 (Step 1·2 → Step 3) */}
+              <DataFlowBanner
+                fromStep="Step 1·2"
+                toStep="Step 3 코치 배정"
+                items={(() => {
+                  const rfp = context?.rfp
+                  const curri = context?.curriculum
+                  const sessionCount = curri?.sessions.length ?? 0
+                  const actionWeekCount = curri?.sessions.filter((s) => s.isActionWeek).length ?? 0
+                  const coachingCount = curri?.sessions.filter((s) => s.isCoaching1on1).length ?? 0
+                  return [
+                    {
+                      label: '제안 컨셉',
+                      value: rfp?.proposalConcept ?? '미확정',
+                      matched: !!rfp?.proposalConcept,
+                      detail: rfp?.proposalConcept
+                        ? undefined
+                        : 'Step 1 에서 컨셉을 확정하세요',
+                    },
+                    {
+                      label: '총 세션 수',
+                      value: sessionCount > 0 ? `${sessionCount}회차` : '미작성',
+                      matched: sessionCount > 0,
+                      detail: sessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
+                    },
+                    {
+                      label: 'Action Week',
+                      value: sessionCount > 0 ? `${actionWeekCount}회` : '—',
+                      matched: actionWeekCount > 0,
+                      detail:
+                        sessionCount > 0 && actionWeekCount === 0
+                          ? '실행 중심 교육 — Action Week 1회 이상 권장'
+                          : undefined,
+                    },
+                    {
+                      label: '1:1 코칭',
+                      value: sessionCount > 0 ? `${coachingCount}회` : '—',
+                      matched: coachingCount > 0,
+                    },
+                  ]
+                })()}
               />
-            </div>
 
-            <Card>
-              <CardContent className="p-0">
-                {project.coachAssignments.length === 0 ? (
-                  <div className="flex h-40 flex-col items-center justify-center gap-2 text-sm text-muted-foreground">
-                    <p>배정된 코치가 없습니다.</p>
-                    <p className="text-xs">위 버튼으로 코치를 추가하세요.</p>
-                  </div>
-                ) : (
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b bg-muted/40">
-                        <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">코치</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">소속</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">역할</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">세션수</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">단가(시간)</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">총 사례비</th>
-                        <th className="px-4 py-2.5 text-center font-medium text-muted-foreground">확정</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {project.coachAssignments.map((a) => (
-                        <tr key={a.id} className="border-b last:border-0 hover:bg-muted/30">
-                          <td className="px-4 py-3 font-medium">{a.coach.name}</td>
-                          <td className="px-4 py-3 text-muted-foreground text-xs">{a.coach.organization ?? '—'}</td>
-                          <td className="px-4 py-3">
-                            <Badge variant="outline" className="text-xs">{ROLE_LABEL[a.role]}</Badge>
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">{a.sessions}회</td>
-                          <td className="px-4 py-3 text-right tabular-nums text-xs">
-                            {a.agreedRate ? `${a.agreedRate.toLocaleString()}원` : '—'}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums font-semibold">
-                            {a.totalFee ? `${a.totalFee.toLocaleString()}원` : '—'}
-                          </td>
-                          <td className="px-4 py-3 text-center text-base">
-                            {a.confirmed ? '✅' : '⏳'}
-                          </td>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-semibold">코치 배정</h3>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    역할과 사례비를 설정하고 코치를 확정합니다.
+                  </p>
+                </div>
+                <CoachAssign
+                  projectId={project.id}
+                  assignedCoachIds={project.coachAssignments.map((a) => a.coach.id)}
+                />
+              </div>
+
+              <Card>
+                <CardContent className="p-0">
+                  {project.coachAssignments.length === 0 ? (
+                    <div className="flex h-40 flex-col items-center justify-center gap-2 text-sm text-muted-foreground">
+                      <p>배정된 코치가 없습니다.</p>
+                      <p className="text-xs">위 버튼으로 코치를 추가하세요.</p>
+                    </div>
+                  ) : (
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b bg-muted/40">
+                          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">코치</th>
+                          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">소속</th>
+                          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">역할</th>
+                          <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">세션수</th>
+                          <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">단가(시간)</th>
+                          <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">총 사례비</th>
+                          <th className="px-4 py-2.5 text-center font-medium text-muted-foreground">확정</th>
                         </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr className="border-t bg-muted/20">
-                        <td colSpan={5} className="px-4 py-2.5 text-right text-sm font-medium text-muted-foreground">
-                          합계
-                        </td>
-                        <td className="px-4 py-2.5 text-right tabular-nums font-bold text-primary">
-                          {totalCoachFee.toLocaleString()}원
-                        </td>
-                        <td />
-                      </tr>
-                    </tfoot>
-                  </table>
-                )}
-              </CardContent>
-            </Card>
+                      </thead>
+                      <tbody>
+                        {project.coachAssignments.map((a) => (
+                          <tr key={a.id} className="border-b last:border-0 hover:bg-muted/30">
+                            <td className="px-4 py-3 font-medium">{a.coach.name}</td>
+                            <td className="px-4 py-3 text-muted-foreground text-xs">{a.coach.organization ?? '—'}</td>
+                            <td className="px-4 py-3">
+                              <Badge variant="outline" className="text-xs">{ROLE_LABEL[a.role]}</Badge>
+                            </td>
+                            <td className="px-4 py-3 text-right tabular-nums">{a.sessions}회</td>
+                            <td className="px-4 py-3 text-right tabular-nums text-xs">
+                              {a.agreedRate ? `${a.agreedRate.toLocaleString()}원` : '—'}
+                            </td>
+                            <td className="px-4 py-3 text-right tabular-nums font-semibold">
+                              {a.totalFee ? `${a.totalFee.toLocaleString()}원` : '—'}
+                            </td>
+                            <td className="px-4 py-3 text-center text-base">
+                              {a.confirmed ? '✅' : '⏳'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot>
+                        <tr className="border-t bg-muted/20">
+                          <td colSpan={5} className="px-4 py-2.5 text-right text-sm font-medium text-muted-foreground">
+                            합계
+                          </td>
+                          <td className="px-4 py-2.5 text-right tabular-nums font-bold text-primary">
+                            {totalCoachFee.toLocaleString()}원
+                          </td>
+                          <td />
+                        </tr>
+                      </tfoot>
+                    </table>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+            {pmGuide && <PmGuidePanel content={pmGuide} />}
           </div>
         )}
 
         {/* ── Step 4: 예산 + SROI ── */}
         {step === 'budget' && (
-          <BudgetDashboard
-            projectId={project.id}
-            initialBudget={project.budget ? {
-              pcTotal: project.budget.pcTotal,
-              acTotal: project.budget.acTotal,
-              margin: project.budget.margin,
-              marginRate: project.budget.marginRate,
-              marginWarning: project.budget.marginRate < 10,
-              supplyPrice: project.supplyPrice ?? 0,
-              totalBudgetVat: project.totalBudgetVat ?? 0,
-            } : null}
-            initialPcItems={[]}
-            initialAcItems={project.budget?.items.filter((i) => i.type === 'AC').map((i) => ({
-              id: i.id,
-              wbsCode: i.wbsCode,
-              category: i.category,
-              name: i.name,
-              unit: i.unit ?? '',
-              unitPrice: i.unitPrice,
-              quantity: i.quantity,
-              amount: i.amount,
-              isEstimated: i.notes?.includes('추정') ?? false,
-            })) ?? []}
-            curriculumSlice={context?.curriculum}
-            coachesSlice={context?.coaches}
-          />
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+            <BudgetDashboard
+              projectId={project.id}
+              initialBudget={project.budget ? {
+                pcTotal: project.budget.pcTotal,
+                acTotal: project.budget.acTotal,
+                margin: project.budget.margin,
+                marginRate: project.budget.marginRate,
+                marginWarning: project.budget.marginRate < 10,
+                supplyPrice: project.supplyPrice ?? 0,
+                totalBudgetVat: project.totalBudgetVat ?? 0,
+              } : null}
+              initialPcItems={[]}
+              initialAcItems={project.budget?.items.filter((i) => i.type === 'AC').map((i) => ({
+                id: i.id,
+                wbsCode: i.wbsCode,
+                category: i.category,
+                name: i.name,
+                unit: i.unit ?? '',
+                unitPrice: i.unitPrice,
+                quantity: i.quantity,
+                amount: i.amount,
+                isEstimated: i.notes?.includes('추정') ?? false,
+              })) ?? []}
+              curriculumSlice={context?.curriculum}
+              coachesSlice={context?.coaches}
+            />
+            {pmGuide && <PmGuidePanel content={pmGuide} />}
+          </div>
         )}
 
         {/* ── Step 5: 임팩트 체인 ── */}
         {step === 'impact' && (
-          <StepImpact
-            projectId={project.id}
-            rfpParsed={project.rfpParsed as any}
-            initialLogicModel={project.logicModel as any}
-            curriculumSlice={context?.curriculum}
-            coachesSlice={context?.coaches}
-            budgetSlice={context?.budget}
-            autoExtracted={context?.impact?.autoExtracted}
-          />
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+            <StepImpact
+              projectId={project.id}
+              rfpParsed={project.rfpParsed as any}
+              initialLogicModel={project.logicModel as any}
+              curriculumSlice={context?.curriculum}
+              coachesSlice={context?.coaches}
+              budgetSlice={context?.budget}
+              autoExtracted={context?.impact?.autoExtracted}
+            />
+            {pmGuide && <PmGuidePanel content={pmGuide} />}
+          </div>
         )}
 
         {/* ── Step 6: 제안서 ── */}
         {step === 'proposal' && (
-          <StepProposal
-            projectId={project.id}
-            hasLogicModel={!!project.logicModel}
-            initialSections={project.proposalSections as any}
-            evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
-            pipelineContext={context}
-          />
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+            <StepProposal
+              projectId={project.id}
+              hasLogicModel={!!project.logicModel}
+              initialSections={project.proposalSections as any}
+              evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
+              pipelineContext={context}
+            />
+            {pmGuide && <PmGuidePanel content={pmGuide} />}
+          </div>
         )}
 
       </div>
