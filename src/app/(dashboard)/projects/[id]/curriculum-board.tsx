@@ -200,6 +200,30 @@ export function CurriculumBoard({
 }: Props) {
   const [items, setItems] = useState<CurriculumItem[]>(initialItems)
   const [saving, setSaving] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [genError, setGenError] = useState('')
+
+  // AI 커리큘럼 생성
+  const handleGenerateCurriculum = useCallback(async () => {
+    setGenerating(true)
+    setGenError('')
+    try {
+      const res = await fetch('/api/ai/curriculum', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? '커리큘럼 생성 실패')
+      // 성공 시 페이지 새로고침으로 DB 에서 새 세션 로드
+      window.location.reload()
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : '커리큘럼 생성 실패'
+      setGenError(msg)
+    } finally {
+      setGenerating(false)
+    }
+  }, [projectId])
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
 
@@ -393,6 +417,16 @@ export function CurriculumBoard({
       {/* 구성 요약 바 + 비용 미리보기 */}
       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
         <span className="font-medium text-foreground">{items.length}회차</span>
+        {items.length > 0 && (
+          <button
+            onClick={handleGenerateCurriculum}
+            disabled={generating}
+            className="flex items-center gap-1 rounded px-2 py-0.5 text-xs text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+          >
+            {generating ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+            재생성
+          </button>
+        )}
         <span className="flex items-center gap-1">
           <span className="inline-block h-2 w-2 rounded-full bg-primary" />
           AW {actionWeekCount}
@@ -450,10 +484,45 @@ export function CurriculumBoard({
         </div>
       )}
 
-      {/* 세션 목록 */}
+      {/* AI 커리큘럼 생성 CTA */}
       {items.length === 0 ? (
-        <div className="py-12 text-center text-sm text-muted-foreground">
-          AI 패널에서 커리큘럼을 먼저 생성하세요.
+        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/20 py-16 px-8">
+          <Sparkles className="h-10 w-10 text-primary/40 mb-4" />
+          <h3 className="text-lg font-semibold mb-2">커리큘럼 설계</h3>
+          <p className="text-sm text-muted-foreground text-center max-w-md mb-1">
+            Step 1 에서 확정한 제안 컨셉과 핵심 기획 포인트를 반영하여
+            AI 가 커리큘럼 초안을 생성합니다.
+          </p>
+          <p className="text-xs text-muted-foreground mb-6">
+            Action Week · IMPACT 모듈 매핑 · 이론/실습 비율이 자동 설계됩니다.
+          </p>
+          {genError && (
+            <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-2 text-xs text-red-700">
+              {genError}
+            </div>
+          )}
+          <button
+            onClick={handleGenerateCurriculum}
+            disabled={generating}
+            className={cn(
+              'flex items-center gap-2 rounded-md px-6 py-3 text-sm font-medium text-white transition-colors',
+              generating
+                ? 'bg-primary/50 cursor-not-allowed'
+                : 'bg-primary hover:bg-primary/90',
+            )}
+          >
+            {generating ? (
+              <>
+                <RefreshCw className="h-4 w-4 animate-spin" />
+                AI 가 커리큘럼을 설계하는 중...
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-4 w-4" />
+                AI 커리큘럼 생성
+              </>
+            )}
+          </button>
         </div>
       ) : (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

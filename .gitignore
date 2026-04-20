@@ -53,3 +53,4 @@ scripts/test-output-*.log
 
 # Ingestion 파일 저장소 (Phase A 임시 — Vercel 배포 시 Blob/S3로 교체 필요)
 /storage
+.mcp.json

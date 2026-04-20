@@ -195,6 +195,8 @@ export async function POST(req: NextRequest) {
     })
 
     if (!aiResult.ok) {
+      console.error('[curriculum] AI 생성 실패:', aiResult.error)
+      if (aiResult.raw) console.error('[curriculum] raw 응답 (앞 500자):', aiResult.raw.slice(0, 500))
       return NextResponse.json(
         { error: 'AI_GENERATION_FAILED', message: aiResult.error, raw: aiResult.raw },
         { status: 500 },

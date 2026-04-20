@@ -86,6 +86,19 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
       setExpanded(false)
       setText('')
       setFile(null)
+
+      // 파싱 결과를 DB 에 자동 저장 (PUT /api/ai/parse-rfp)
+      // 기존 설계는 PM 수동 저장이었으나, 파싱 완료 시 즉시 저장해야
+      // planning-direction 등 후속 API 가 rfpParsed 를 DB 에서 읽을 수 있음
+      try {
+        await fetch('/api/ai/parse-rfp', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId, parsed: data.parsed }),
+        })
+      } catch {
+        // 저장 실패해도 UI 는 이미 표시 — 다음 기획방향 생성 시 재시도 가능
+      }
     } catch (e: any) {
       setError(e.message)
     } finally {
