@@ -25,6 +25,18 @@ export const COMMON_MISTAKES_BY_STEP: Record<StepKey, CommonMistake[]> = {
       consequence: '발주처 관점에서 핵심 사항이 빠져 보임',
       fix: '파싱된 키워드가 기획 방향에 모두 반영되었는지 확인',
     },
+    {
+      id: 'rfp-03',
+      mistake: '시장 흐름 반영 없음 — 과거 문장 복제',
+      consequence: '"제안 이해도 · 시의성" 배점 감점. 평가위원이 "최근에 이 주제 공부 안 했구나" 를 감지함',
+      fix: '해당 도메인의 2025~2026 기술·정책·수혜자 변화 2~3개를 "왜 지금" 논리로 연결',
+    },
+    {
+      id: 'rfp-04',
+      mistake: '문제정의 모호 — "역량 부족·낙후·인프라 미비"',
+      consequence: '"과업 이해도" 배점(통상 최고 가중치 20~30%) 감점. 뒤 섹션까지 힘이 빠짐',
+      fix: '누가(세그먼트)·무엇이(증상)·왜(근본원인)·왜지금(긴박성) 4요소로 다시 쓰기',
+    },
   ],
   curriculum: [
     {
@@ -87,6 +99,14 @@ export const COMMON_MISTAKES_BY_STEP: Record<StepKey, CommonMistake[]> = {
       consequence: '산출(수료 인원)과 성과(역량 변화)를 구분 못 하면 평가 약화',
       fix: 'Output은 수량, Outcome은 변화. "~명 수료"는 Output, "역량 향상"은 Outcome',
     },
+    {
+      id: 'imp-03',
+      mistake: 'Before · After 가 정량으로 대비되지 않음',
+      consequence:
+        '"기대 효과" 배점 정면 감점. 재계약 논의에서도 "올해 뭐가 달라졌나?" 를 증명 불가',
+      fix:
+        'Outcome 을 "현재 N단위 → 목표 M단위 (변화량)" 형식으로 교체. 측정 도구(ACT-PRENEURSHIP·6 Dimension·매출·재방문율) 명시',
+    },
   ],
   proposal: [
     {
@@ -101,6 +121,14 @@ export const COMMON_MISTAKES_BY_STEP: Record<StepKey, CommonMistake[]> = {
       consequence: '정량 포화 원칙 위배, 신뢰도 저하',
       fix: '항상 구체적 숫자로 표현 (예: "291명의 코치진", "50개 기업")',
     },
+    {
+      id: 'prop-03',
+      mistake: '통계적 근거 없는 주장',
+      consequence:
+        '"근거의 구체성" 배점 감점. 경쟁사도 할 수 있는 말만 남아 차별화 실패',
+      fix:
+        '모든 주장 뒤에 출처 포함 숫자 1개 이상. 수혜자 규모·문제 심각도·비교 기준 중 최소 1개',
+    },
   ],
 }
 
@@ -108,10 +136,81 @@ export const COMMON_MISTAKES_BY_STEP: Record<StepKey, CommonMistake[]> = {
 // 평가위원 관점 (ChannelPreset fallback)
 // ─────────────────────────────────────────
 
+/**
+ * 평가위원 관점 단순 fallback (채널만 본다).
+ * resolve.ts 가 EVALUATOR_PERSPECTIVE_BY_STEP 를 먼저 시도하고, 없으면 이 값으로 폴백.
+ */
 export const EVALUATOR_PERSPECTIVE_FALLBACK: Record<string, string> = {
   B2G: '공무원 + 외부 전문가. 안정성·수행 능력·실적 중시.',
   B2B: '실무 담당자 + 경영진. 결과·ROI·속도 중시.',
   renewal: '이전 프로젝트 경험 있는 담당자 포함. 실질 성과·개선 노력 중시.',
+}
+
+/**
+ * 스텝 × 채널 2D 룩업 — 각 스텝에서 평가위원이 "구체적으로 무엇을 보는지" 2~3문장.
+ *
+ * 배경 (2026-04-20 사용자 피드백):
+ *   "오른쪽 탭도 프로세스가 진척됨에 따라 뭔가 내용이 달라져야 하지 않을까?"
+ * → 스텝별로 평가위원 관점이 달라지게.
+ *
+ * 사용처: resolve.ts 의 evaluatorPerspective 결정.
+ * 우선순위:
+ *   1. ChannelPreset.evaluatorProfile (DB 설정이 있으면)
+ *   2. EVALUATOR_PERSPECTIVE_BY_STEP[stepKey][channel]
+ *   3. EVALUATOR_PERSPECTIVE_FALLBACK[channel]
+ */
+export const EVALUATOR_PERSPECTIVE_BY_STEP: Record<
+  StepKey,
+  Record<'B2G' | 'B2B' | 'renewal', string>
+> = {
+  rfp: {
+    B2G:
+      '공무원 + 외부 전문가 5~7인. 이 사업의 정책 맥락과 상위 전략(중앙·지자체) 과 얼마나 맞닿아 있는지, 과업 이해도가 RFP 배점 최고 비중 항목에 정면 응답하는지를 봅니다.',
+    B2B:
+      '실무 담당자 + 경영진. 비즈니스 과제 정의가 구체적인지, 기대 효과가 사업 수치(매출·리드·리텐션) 와 연결되는지를 봅니다. 추상어는 즉시 감점.',
+    renewal:
+      '작년 사업 결과를 기억하는 담당자. "작년 대비 무엇이 달라지는가" 를 가장 먼저 찾습니다. 현상 유지 톤은 "성장 의지" 배점 감점.',
+  },
+  curriculum: {
+    B2G:
+      '이론/실습 비율 · Action Week 배치 · 정책 연계 언어 · 지역 주민·수혜자 접근성. 전년도 대비 개선점이 세션 단위로 드러나는지 확인합니다.',
+    B2B:
+      'ROI 가 세션 단위로 쪼개져 있는가. 실무 적용 가능성이 Action Week 또는 미션 구조로 구체화되는가. 이론 과다는 실행력 의심.',
+    renewal:
+      '작년 커리큘럼 대비 확장·심화 포인트. 단순 재탕이면 "개선 지향" 감점. Action Week 숫자 증가 또는 신규 트랙 추가가 강한 신호.',
+  },
+  coaches: {
+    B2G:
+      '지원 구조가 "4층 이상" 으로 분리돼 있는가, 외부 파트너 기관 연계가 구체적 이름으로 나오는가. 단일 코치 표현은 "지원 폭 부족" 감점.',
+    B2B:
+      '담당자의 업계 경험·브랜드가 얼마나 강한가. 교육 출신 아닌 "현장에서 뛰는 사람" 이 몇 명인지.',
+    renewal:
+      '작년에 호평받은 코치·멘토가 다시 포함되는지. 신규 코치 추가로 다양성도 확보했는지 병행 확인.',
+  },
+  budget: {
+    B2G:
+      '직접비 70% · 마진 10~15% 라인. 초빙강사 단가 상한. 분기별 집행 현실성. "감사 통과 가능한가" 를 먼저 봅니다.',
+    B2B:
+      'ROI 구조. 각 항목이 "이 돈을 쓰면 어떤 성과" 로 연결되는지. 운영비·관리비 과다는 "중간 마진" 의심.',
+    renewal:
+      '작년 집행률. 미집행 · 불용액 · 변경 사유. 올해 예산이 "실제 집행 가능한 규모" 인지를 보수적으로 검증합니다.',
+  },
+  impact: {
+    B2G:
+      '사회적 가치 정량화 (SROI · 고용 · 지역 활성화). Outcome 이 정책 성과 지표(KPI) 로 번역 가능한지. 추상 Outcome 은 "기대 효과" 직격 감점.',
+    B2B:
+      '비즈니스 KPI 와 얼마나 연결되는가. 매출·리드·재구매 같은 실측 지표가 Outcome 층에 나와야 함. "역량 향상" 은 증거 부족.',
+    renewal:
+      '작년 Outcome 달성률. 달성 못한 항목의 원인 분석. 올해 목표가 "현실+도전" 균형인지 확인합니다.',
+  },
+  proposal: {
+    B2G:
+      '전체 스토리가 "왜 지금 · 누구를 · 어떻게 · 그래서 얼마의 변화" 로 연결되는가. Section V 보너스가 정책 방향과 일치하는가.',
+    B2B:
+      '핵심 메시지가 3초 안에 잡히는가. 수치 밀도. 경쟁사와 차별화되는 한 문장.',
+    renewal:
+      '작년 결과보고서 참조가 구체적인가. 개선 의지 문장이 몇 개인가. 공통 실수: "성공 반복" 톤 → "성장 의지" 배점 놓침.',
+  },
 }
 
 // ─────────────────────────────────────────

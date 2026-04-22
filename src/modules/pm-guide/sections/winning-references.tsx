@@ -48,15 +48,31 @@ export function WinningReferencesCard({ patterns }: WinningReferencesCardProps) 
               <p className="text-xs font-medium leading-tight">
                 {p.sourceProject}
               </p>
-              {p.techEvalScore != null && (
-                <Badge className="shrink-0 bg-primary text-[10px] text-primary-foreground">
-                  {p.techEvalScore}점
-                </Badge>
-              )}
+              <div className="flex shrink-0 items-center gap-1">
+                {p.similarity != null && (
+                  <Badge
+                    variant="outline"
+                    className="border-primary/40 bg-primary/5 text-[10px] font-semibold text-primary"
+                    title="현재 프로파일과의 유사도"
+                  >
+                    유사도 {Math.round(p.similarity * 100)}%
+                  </Badge>
+                )}
+                {p.techEvalScore != null && (
+                  <Badge className="bg-primary text-[10px] text-primary-foreground">
+                    {p.techEvalScore}점
+                  </Badge>
+                )}
+              </div>
             </div>
             {p.sourceClient && (
               <p className="mt-0.5 text-[10px] text-muted-foreground">
                 {p.sourceClient}
+              </p>
+            )}
+            {p.matchReasons && p.matchReasons.length > 0 && (
+              <p className="mt-1 text-[10px] font-medium text-primary/80">
+                {p.matchReasons.join(' · ')}
               </p>
             )}
             <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground line-clamp-3">
