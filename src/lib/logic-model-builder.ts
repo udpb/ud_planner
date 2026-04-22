@@ -28,6 +28,8 @@
 import {
   anthropic,
   CLAUDE_MODEL,
+  formatExternalResearch,
+  type ExternalResearch,
   type LogicModel,
   type LogicModelItem,
 } from '@/lib/claude'
@@ -74,6 +76,13 @@ export interface BuildLogicModelInput {
   budget?: BudgetSlice
   /** PM 이 확정한 Impact Goal (Step 5 UI 입력값) */
   impactGoal: string
+  /**
+   * optional — PM 이 pm-guide 우측 패널에서 수집한 티키타카 리서치 답변들.
+   * formatExternalResearch() 로 프롬프트에 주입돼 Outcome/Impact 품질을 높인다.
+   * Step 5 ResearchRequests (imp-outcome-indicators · imp-diagnostic-tools 등) 가
+   * 이 경로를 통해 Logic Model 생성에 직접 영향.
+   */
+  externalResearch?: ExternalResearch[]
 }
 
 export type BuildLogicModelResult =
@@ -347,12 +356,18 @@ export function buildLogicModelPrompt(args: {
   activities: ActivityDraft[]
   inputs: InputDraft[]
   reinforced?: boolean
+  externalResearch?: ExternalResearch[]
 }): string {
-  const { rfp, impactGoal, activities, inputs, reinforced } = args
+  const { rfp, impactGoal, activities, inputs, reinforced, externalResearch } = args
 
   const activityBlock = serializeActivitiesForPrompt(activities)
   const inputBlock = serializeInputsForPrompt(inputs)
   const rfpBlock = serializeRfpSummary(rfp)
+  // PM 티키타카 리서치 — Step 5 ResearchRequestsCard 답변이 여기로 흘러옴
+  const researchBlock =
+    externalResearch && externalResearch.length > 0
+      ? formatExternalResearch(externalResearch)
+      : ''
 
   const reinforceNote = reinforced
     ? `\n[재시도 — 더 엄격하게]\n이전 응답에서 Activity 개수/이름이 변경되었거나 필수 필드가 누락되었습니다.\n❌ Activity 의 type·title·sourceSessionNos 는 한 글자도 바꾸지 마세요.\n❌ Activity 개수를 늘리거나 줄이지 마세요.\n❌ Input 도 수정 금지. 오직 activityOutputs / outcome / impact 만 생성.\nJSON 형식을 엄격히 지키세요.\n`
@@ -370,7 +385,7 @@ ${reinforceNote}
 
 [RFP 핵심 정보]
 ${rfpBlock}
-
+${researchBlock}
 ═══════════════════════════════════════
 [고정된 Activity — 절대 수정 금지]
 ═══════════════════════════════════════
@@ -633,7 +648,7 @@ function assembleLogicModel(
 export async function buildLogicModel(
   input: BuildLogicModelInput,
 ): Promise<BuildLogicModelResult> {
-  const { rfp, curriculum, coaches, budget, impactGoal } = input
+  const { rfp, curriculum, coaches, budget, impactGoal, externalResearch } = input
 
   if (!impactGoal || impactGoal.trim().length < 5) {
     return { ok: false, error: 'impactGoal 이 비어있거나 너무 짧음' }
@@ -664,6 +679,7 @@ export async function buildLogicModel(
       activities,
       inputs,
       reinforced: attempt === 2,
+      externalResearch,
     })
 
     try {

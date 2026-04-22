@@ -17,7 +17,7 @@
  *   - 데이터 계약: `docs/architecture/data-contract.md` §1.2 ProposalSlice
  */
 
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { anthropic, CLAUDE_MODEL, formatExternalResearch } from '@/lib/claude'
 import type { PipelineContext } from '@/lib/pipeline-context'
 import {
   buildBrandContext,
@@ -29,6 +29,7 @@ import {
   type PlanningChannel,
 } from '@/lib/planning-direction'
 import { sectionLabel } from '@/lib/eval-strategy'
+import { COMMON_PLANNING_PRINCIPLES } from '@/lib/planning-principles'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입 · 상수
@@ -505,11 +506,18 @@ function buildSectionPrompt(input: GenerateSectionInput, retryHint?: string): st
   const ctx = input.context
 
   const commonBlocks: string[] = [
+    COMMON_PLANNING_PRINCIPLES,
     buildBrandContext(),
     buildRfpBrief(ctx),
     buildChannelTone(ctx),
     buildEvalStrategyNote(ctx),
     buildStrategyKeyMessages(ctx),
+    // PM 이 각 스텝에서 수집한 티키타카 리서치 답변 — 모든 섹션 생성에 공통 주입
+    // (pm-guide/sections/research-requests.tsx → POST /api/projects/[id]/research
+    //  → Project.externalResearch → PipelineContext.research → 여기)
+    ctx.research && ctx.research.length > 0
+      ? formatExternalResearch(ctx.research)
+      : '',
   ].filter((s) => s.trim().length > 0)
   const common = commonBlocks.join('\n\n')
 
