@@ -1,0 +1,8 @@
+{
+  "buildCommand": "bash build.sh",
+  "outputDirectory": "site",
+  "framework": null,
+  "installCommand": "pip install mkdocs mkdocs-material mkdocs-static-i18n",
+  "cleanUrls": true,
+  "trailingSlash": true
+}

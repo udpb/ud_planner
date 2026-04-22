@@ -54,6 +54,10 @@ scripts/test-output-*.log
 # Phase E smoke test outputs (control/treatment 비교 산출물)
 scripts/smoke-output/
 
+# Guidebook MkDocs build outputs (Vercel 에서 build.sh 로 생성)
+guidebook-site/dist/
+guidebook-site/site/
+
 # Ingestion 파일 저장소 (Phase A 임시 — Vercel 배포 시 Blob/S3로 교체 필요)
 /storage
 .mcp.json

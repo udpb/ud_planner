@@ -1,0 +1,176 @@
+site_name: Underdogs Proposal Planning Guidebook
+site_description: OJT guidebook for new PMs at Underdogs — bilingual (Korean / English)
+site_url: https://ud-guidebook.vercel.app/
+site_author: Underdogs
+copyright: © 2026 UD Impact Co., Ltd.
+
+repo_url: https://github.com/udpb/ud_planner
+repo_name: udpb/ud_planner
+edit_uri: ""
+
+docs_dir: docs
+site_dir: dist
+
+theme:
+  name: material
+  language: ko
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font: false   # loaded via extra.css (Google Fonts @import)
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.tabs.link
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - 01-start/index.md
+      - Ch.1 Why Read This: 01-start/01-why-read.md
+      - Ch.2 Five Perspectives: 01-start/02-five-perspectives.md
+  - Field Practice:
+      - 02-field/index.md
+      - Ch.3 First 24 Hours: 02-field/03-first-24h.md
+      - Ch.4 Impact Value Chain: 02-field/04-impact-value-chain.md
+      - Ch.5 Common Pitfalls: 02-field/05-common-pitfalls.md
+      - Ch.6 Proposal Slide Structure: 02-field/06-proposal-structure.md
+  - Casebook:
+      - 03-casebook/index.md
+      - Startup Education:
+          - 03-casebook/06-startup-education/index.md
+          - NH Agritech: 03-casebook/06-startup-education/nh-agritech.md
+          - GS Retail: 03-casebook/06-startup-education/gs-retail.md
+          - Kolon Pro Bono: 03-casebook/06-startup-education/kolon-probono.md
+      - Local Commerce:
+          - 03-casebook/07-local-commerce/index.md
+          - Jongno Seochon: 03-casebook/07-local-commerce/jongno-seochon.md
+      - Culture & Tourism:
+          - 03-casebook/08-culture-tourism/index.md
+          - Tourism Souvenir: 03-casebook/08-culture-tourism/tourism-souvenir.md
+          - Hanji Design: 03-casebook/08-culture-tourism/hanji-design.md
+          - Anseong Glocal: 03-casebook/08-culture-tourism/anseong-glocal.md
+      - Global Expansion:
+          - 03-casebook/09-global/index.md
+          - Yebi Global: 03-casebook/09-global/yebi-global.md
+  - Channel Type Strategy:
+      - 04-channel-types/index.md
+      - Ch.10 B2G · B2B · Renewal: 04-channel-types/10-b2g-b2b-renewal.md
+  - Appendix:
+      - appendix/index.md
+      - A. Pre-submission Checklist: appendix/a-final-checklist.md
+      - B. Underdogs Asset Reference: appendix/b-ud-assets.md
+
+plugins:
+  - search:
+      lang:
+        - ko
+        - en
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: ko
+          default: true
+          name: 한국어
+          build: true
+          site_name: 언더독스 제안서 기획 가이드북
+          nav_translations:
+            Home: 홈
+            Getting Started: 시작하기
+            Field Practice: 현장 실전
+            Casebook: 케이스북
+            Startup Education: 창업 교육
+            Local Commerce: 로컬 · 상권
+            Culture & Tourism: 문화 · 관광
+            Global Expansion: 글로벌 진출
+            Channel Type Strategy: 발주처 타입 전략
+            Appendix: 부록
+            Ch.1 Why Read This: Ch.1 이걸 왜 읽어요
+            Ch.2 Five Perspectives: Ch.2 다섯 가지 관점
+            Ch.3 First 24 Hours: Ch.3 첫 24시간
+            Ch.4 Impact Value Chain: Ch.4 Impact Value Chain
+            Ch.5 Common Pitfalls: Ch.5 자주 빠지는 함정
+            Ch.6 Proposal Slide Structure: Ch.6 제안서 장표 구성법
+            Ch.10 B2G · B2B · Renewal: Ch.10 B2G · B2B · 재계약
+            NH Agritech: NH 애그테크
+            GS Retail: GS 리테일
+            Kolon Pro Bono: 코오롱 프로보노
+            Jongno Seochon: 종로구 서촌
+            Tourism Souvenir: 관광기념품 박람회
+            Hanji Design: 한지문화상품 디자인
+            Anseong Glocal: 안성문화장 글로컬
+            Yebi Global: 예비창업 글로벌
+            A. Pre-submission Checklist: A. 제출 직전 체크리스트
+            B. Underdogs Asset Reference: B. 언더독스 자산 참고표
+        - locale: en
+          name: English
+          build: true
+          site_name: Underdogs Proposal Planning Guidebook
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.keys
+
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://underdogs.global
+      name: Underdogs Global
+    - icon: fontawesome/brands/github
+      link: https://github.com/udpb/ud_planner
+      name: GitHub
+  generator: false
+
+extra_css:
+  - assets/extra.css
