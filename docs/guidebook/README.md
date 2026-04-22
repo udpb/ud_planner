@@ -1,53 +1,103 @@
-# 언더독스 제안서 기획 가이드북 v2
+---
+hide:
+  - navigation
+  - toc
+---
 
-> OJT 배포용. 신입 PM 이 이걸 읽고 첫 RFP 받았을 때 첫 주에 뭘 할지 알게 되는 것이 목표.
+# 언더독스 제안서 기획 가이드북
 
-## 이걸 왜 읽어요
+<section class="ud-hero" markdown="0">
+  <span class="ud-hero__tag">PROPOSAL PLANNING GUIDEBOOK · 2026</span>
+  <h1 class="ud-hero__title">수주를 만든다.<br><em>명료하게.</em></h1>
+  <p class="ud-hero__lead">외부 코치·PM 을 위한 OJT 가이드북 — 첫 RFP 부터 최종 제출까지.</p>
+  <div class="ud-hero__cta">
+    <a href="./01-start/01-why-read/" class="ud-btn ud-btn--primary">시작하기 →</a>
+    <a href="./02-field/03-first-24h/" class="ud-btn ud-btn--ghost">RFP 받았어요</a>
+  </div>
+</section>
 
-수주 잘 하는 제안서는 "우리가 얼마나 잘하는지" 를 자랑하는 글이 아닙니다. 발주처가 원하는 걸 정확히 이해하고, 발주처의 언어로, 근거를 갖고 답하는 글입니다. 이 가이드북은 그 "정확한 이해"와 "근거 있는 답"을 만들기 위해 신입 PM 이 꺼내 볼 사고 프레임과 체크리스트를 모았습니다. 자세한 배경은 [Part 1, Ch.1](./01-start/01-why-read.md).
+<section class="ud-stats" markdown="0">
+  <div class="ud-stat"><strong>4</strong><span>PARTS</span></div>
+  <div class="ud-stat"><strong>10</strong><span>CHAPTERS</span></div>
+  <div class="ud-stat"><strong>8</strong><span>CASES</span></div>
+  <div class="ud-stat"><strong>30 min</strong><span>FIRST FEEL</span></div>
+</section>
 
-## 얼마나 걸려요
+<section class="ud-section" markdown="0">
+  <h2 class="ud-section__title">왜 이 가이드북인가</h2>
+  <p class="ud-section__lead">수주되는 제안서는 <strong>"우리가 얼마나 잘하는지"</strong> 를 자랑하는 글이 아닙니다. <strong class="ud-hl">"발주처가 원하는 것을 정확히 이해하고, 발주처의 언어로, 근거를 갖고 답하는 글"</strong> 입니다. 이 책은 그 "정확한 이해" 와 "근거 있는 답" 을 만드는 사고 프레임과 체크리스트를 모았습니다.</p>
+</section>
 
-- **처음 읽기**: Part 1~2 (30분) + 관심 있는 케이스 2~3개 (30분) = 1시간
-- **실전에서 다시 꺼내 보기**: 치트시트 (5분)
+<section class="ud-section" markdown="0">
+  <h2 class="ud-section__title">섹션 바로가기</h2>
+  <div class="ud-cards ud-cards--5">
+    <a class="ud-card" href="./01-start/">
+      <div class="ud-card__kicker">PART 1</div>
+      <h3 class="ud-card__title">시작하기</h3>
+      <p class="ud-card__desc">가이드북을 처음 펼칠 때 읽어야 할 두 챕터.</p>
+      <span class="ud-card__meta">Ch.1 · Ch.2</span>
+    </a>
+    <a class="ud-card" href="./02-field/">
+      <div class="ud-card__kicker">PART 2</div>
+      <h3 class="ud-card__title">현장 실전</h3>
+      <p class="ud-card__desc">RFP 분석부터 장표 구성까지 4단계 사고법.</p>
+      <span class="ud-card__meta">Ch.3 — Ch.6 · 4 chapters</span>
+    </a>
+    <a class="ud-card" href="./03-casebook/">
+      <div class="ud-card__kicker">PART 3</div>
+      <h3 class="ud-card__title">케이스북</h3>
+      <p class="ud-card__desc">수주·수행 사업 8건. 가장 많이 펴보게 되는 부분.</p>
+      <span class="ud-card__meta">8 cases</span>
+    </a>
+    <a class="ud-card" href="./04-channel-types/">
+      <div class="ud-card__kicker">PART 4</div>
+      <h3 class="ud-card__title">발주처 타입 전략</h3>
+      <p class="ud-card__desc">B2G · B2B · 재계약 타입별 톤 · 구조 · 주의사항.</p>
+      <span class="ud-card__meta">Ch.10</span>
+    </a>
+    <a class="ud-card" href="./appendix/">
+      <div class="ud-card__kicker">APPENDIX</div>
+      <h3 class="ud-card__title">부록</h3>
+      <p class="ud-card__desc">제출 직전 체크리스트 · 언더독스 자산 참고표.</p>
+      <span class="ud-card__meta">A · B</span>
+    </a>
+  </div>
+</section>
 
-## 구조
+<section class="ud-section" markdown="0">
+  <h2 class="ud-section__title">상황별 읽는 법</h2>
+  <div class="ud-situations">
+    <div class="ud-situation">
+      <div class="ud-situation__when">처음 가이드북 펼침</div>
+      <div class="ud-situation__path"><a href="./01-start/01-why-read/">Ch.1 왜 읽어요</a> → <a href="./01-start/02-five-perspectives/">Ch.2 다섯 관점</a> → 관심 영역 케이스 1~2건</div>
+    </div>
+    <div class="ud-situation">
+      <div class="ud-situation__when">RFP 방금 받음</div>
+      <div class="ud-situation__path"><a href="./02-field/03-first-24h/">Ch.3 첫 24시간</a> → 해당 영역 케이스 → <a href="./02-field/05-common-pitfalls/">Ch.5 흔한 함정</a></div>
+    </div>
+    <div class="ud-situation">
+      <div class="ud-situation__when">장표 쓰기 직전</div>
+      <div class="ud-situation__path"><a href="./02-field/06-proposal-structure/">Ch.6 장표 구성</a> → <a href="./appendix/a-final-checklist/">부록 A 체크리스트</a></div>
+    </div>
+    <div class="ud-situation">
+      <div class="ud-situation__when">제출 직전</div>
+      <div class="ud-situation__path"><a href="./appendix/a-final-checklist/">부록 A 체크리스트</a></div>
+    </div>
+    <div class="ud-situation">
+      <div class="ud-situation__when">사업 유형 분석</div>
+      <div class="ud-situation__path"><a href="./04-channel-types/10-b2g-b2b-renewal/">Ch.10 발주처 타입</a> → 해당 영역 케이스 전체</div>
+    </div>
+  </div>
+</section>
 
-- **Part 1 — 시작하기** ([01-start](./01-start/))
-  - [Ch.1 이걸 왜 읽어요](./01-start/01-why-read.md)
-  - [Ch.2 다섯 가지 관점](./01-start/02-five-perspectives.md)
-- **Part 2 — 현장 실전** ([02-field](./02-field/))
-  - [Ch.3 RFP 받은 첫 24시간](./02-field/03-first-24h.md)
-  - [Ch.4 Impact Value Chain 사고법](./02-field/04-impact-value-chain.md)
-  - [Ch.5 자주 빠지는 함정](./02-field/05-common-pitfalls.md)
-  - [Ch.6 제안서 장표 구성법](./02-field/06-proposal-structure.md) — I~V 섹션 · One-Page-One-Thesis · 정량 포화 · 4중 지원 · 예산 표현
-- **Part 3 — 케이스북** ([03-casebook](./03-casebook/)) *— 앞으로 계속 늘어나는 핵심 자산*
-  - [Ch.6 창업교육](./03-casebook/06-startup-education/) — NH 애그테크, GS리테일 에코 소셜임팩트, 코오롱 프로보노
-  - [Ch.7 로컬·상권](./03-casebook/07-local-commerce/) — 종로구 서촌
-  - [Ch.8 문화·관광](./03-casebook/08-culture-tourism/) — 관광기념품 공모/박람회, 한지문화상품, 안성문화장
-  - [Ch.9 글로벌 진출](./03-casebook/09-global/) — 예비창업 글로벌
-- **Part 4 — 발주처 타입 전략** ([04-channel-types](./04-channel-types/))
-  - [Ch.10 B2G · B2B · 재계약](./04-channel-types/10-b2g-b2b-renewal.md)
-- **부록** ([appendix](./appendix/))
-  - [부록 A — 제출 직전 체크리스트](./appendix/a-final-checklist.md)
-  - [부록 B — 언더독스 자산 참고표](./appendix/b-ud-assets.md)
-
-## 사례가 계속 늘어나요
-
-Part 3 케이스북은 수주/탈락 경험마다 추가됩니다. 분기에 한 번 확인하세요. 새 케이스가 붙어도 포맷은 동일합니다 (6개 섹션: 사업 요약 → 핵심 메시지 → Value Chain → 차별화 → 언더독스 자산 활용 → 신입 PM 이 배울 점).
-
-## 읽는 법
-
-- **처음이면**: [Ch.1](./01-start/01-why-read.md) → [Ch.2](./01-start/02-five-perspectives.md) → 관심 영역 케이스 1~2개
-- **RFP 받았을 때**: [Ch.3](./02-field/03-first-24h.md) → 해당 영역 케이스 → [Ch.5](./02-field/05-common-pitfalls.md)
-- **장표 쓰기 직전**: [Ch.6](./02-field/06-proposal-structure.md) → [부록 A](./appendix/a-final-checklist.md)
-- **제출 직전**: [부록 A](./appendix/a-final-checklist.md)
-- **특정 사업 유형 조사**: [Ch.10](./04-channel-types/10-b2g-b2b-renewal.md) → 해당 영역 케이스 전체
-
-## 이 가이드북이 주지 않는 것
-
-- ud-ops 시스템 사용법 — 가이드북과 시스템은 별개 트랙입니다
-- 프로젝트 관리 기법 일반론 — 제안서 기획에 초점
-- 사업 부서별 내규·행정 매뉴얼 — 별도 문서
-
-가이드북은 **사고 프레임**, 시스템은 **작업 실행**. 두 개는 서로 보완하되 따로 돕니다.
+<section class="ud-section" markdown="0">
+  <h2 class="ud-section__title">이 가이드북이 주지 않는 것</h2>
+  <div class="ud-negspace">
+    <ul>
+      <li><strong>ud-ops 시스템 사용법</strong> — 가이드북과 시스템은 별개 트랙</li>
+      <li><strong>프로젝트 관리 기법 일반론</strong> — 제안서 기획에 초점</li>
+      <li><strong>사업 부서별 내규·행정 매뉴얼</strong> — 별도 문서</li>
+    </ul>
+    <p class="ud-negspace__footer">가이드북은 <strong>사고 프레임</strong>, 시스템은 <strong>작업 실행</strong>. 따로 돌되 서로 보완합니다.</p>
+  </div>
+</section>
