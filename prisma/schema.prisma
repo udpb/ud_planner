@@ -282,6 +282,15 @@ model Project {
   // Phase D: 예상 점수 (Phase D4 에서 본격 활용, B0 에서 필드만 준비)
   predictedScore Float?
 
+  // Phase E (ADR-006): ProgramProfile v1.0 — 11축 사업 프로파일
+  // 스키마: src/lib/program-profile.ts ProgramProfile 타입 참조
+  programProfile Json?
+
+  // Phase E (ADR-006): 연속사업 컨텍스트
+  // programProfile.channel.isRenewal=true 일 때 **필수** — Gate 3 블로킹
+  // 스키마: src/lib/program-profile.ts RenewalContext 타입 참조
+  renewalContext Json?
+
   pmId String?
   pm   User?   @relation(fields: [pmId], references: [id])
 
@@ -1024,7 +1033,7 @@ model ExtractedItem {
 // ─────────────────────────────────────────
 
 model WinningPattern {
-  id              String   @id @default(cuid())
+  id              String  @id @default(cuid())
   // 출처
   sourceProject   String // 사업명 (예: "2025 종로구 서촌 로컬브랜드")
   sourceClient    String? // 발주처
@@ -1042,6 +1051,13 @@ model WinningPattern {
   whyItWorks String   @db.Text // 왜 먹혔는지 (추측+근거 명시)
   tags       String[] // ["청년창업", "정량KPI", ...]
 
+  // Phase E (ADR-006): ProgramProfile snapshot — 유사도 매칭 입력
+  // 스키마: src/lib/program-profile.ts ProgramProfile 타입 참조
+  sourceProfile Json?
+
+  // Phase E (ADR-006): 정규화 벡터 (향후 대량 매칭 최적화)
+  profileVector Json?
+
   // 메타
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -1050,6 +1066,22 @@ model WinningPattern {
 
   @@index([sectionKey, channelType, outcome])
   @@index([sourceProject])
+}
+
+// Phase E (ADR-006): 프로파일 태그 자동완성 + 재사용률 집계
+// UI 에서 businessDomain · demographic · formats 등 free tag 를
+// 이전에 쓴 값 기준으로 자동완성하기 위한 집계 테이블
+model ProfileTag {
+  id       String @id @default(cuid())
+  axis     String // "targetSegment.businessDomain" | "formats" | ...
+  value    String // 태그 값
+  useCount Int    @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([axis, value])
+  @@index([axis])
 }
 
 model ChannelPreset {
