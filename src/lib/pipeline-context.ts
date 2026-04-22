@@ -16,6 +16,8 @@
 
 import { prisma } from '@/lib/prisma'
 
+import type { ProgramProfile } from '@/lib/program-profile'
+
 import type {
   RfpParsed,
   LogicModel,
@@ -422,6 +424,11 @@ export interface PipelineContextMeta {
   channelType: 'bid' | 'renewal' | 'lead'
   /** 예측 점수 — 스키마 확장 전까지 undefined */
   predictedScore?: number
+  /**
+   * ProgramProfile (Phase E · ADR-006) — 11축 스펙트럼 프로파일.
+   * Project.programProfile JSON 에서 derive. 누락 시 legacy channelType 경로로 폴백.
+   */
+  programProfile?: ProgramProfile
   /** 마지막 업데이트 시각 (Project.updatedAt) */
   lastUpdatedAt: string
   /** 마지막 업데이트한 사용자 (userId 또는 "system") */
@@ -510,10 +517,17 @@ export async function buildPipelineContext(
   // channelType 은 PlanningIntentRecord 또는 AgentSession 에서 derive — 없으면 기본 "bid"
   const channelType = derivePlanningChannel(planningIntent) ?? 'bid'
 
+  // ProgramProfile (Phase E) — Project.programProfile JSON 에서 derive.
+  // 누락 시 undefined → resolvePmGuide 등이 legacy channelType 경로로 폴백.
+  const programProfile: ProgramProfile | undefined = project.programProfile
+    ? (project.programProfile as unknown as ProgramProfile)
+    : undefined
+
   const meta: PipelineContextMeta = {
     projectType: project.projectType,
     channelType,
     predictedScore: undefined, // 스키마 확장 전까지 undefined
+    programProfile,
     lastUpdatedAt: project.updatedAt.toISOString(),
     lastUpdatedBy: options.viewerId ?? 'system',
     lastUpdatedModule: 'unknown',
