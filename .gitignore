@@ -51,6 +51,9 @@ next-env.d.ts
 scripts/test-output-*.json
 scripts/test-output-*.log
 
+# Phase E smoke test outputs (control/treatment 비교 산출물)
+scripts/smoke-output/
+
 # Ingestion 파일 저장소 (Phase A 임시 — Vercel 배포 시 Blob/S3로 교체 필요)
 /storage
 .mcp.json
