@@ -72,12 +72,15 @@ export async function POST(req: NextRequest) {
   }
 
   // Logic Model 생성 (AI 호출 + 재시도)
+  // PM 티키타카 리서치 — pm-guide Step 5 ResearchRequestsCard 답변이 여기로 흘러옴
+  //   (POST /api/projects/[id]/research → Project.externalResearch → ctx.research)
   const result = await buildLogicModel({
     rfp: ctx.rfp,
     curriculum: ctx.curriculum,
     coaches: ctx.coaches,
     budget: ctx.budget,
     impactGoal,
+    externalResearch: ctx.research,
   })
 
   if (!result.ok) {

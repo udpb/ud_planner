@@ -18,6 +18,9 @@ const UpdateProjectSchema = z.object({
   logicModel: z.any().optional(),
   strategicNotes: z.any().optional(),
   rfpRaw: z.string().nullable().optional(),
+  // Phase E Step 6 — ProgramProfile v1.0 (런타임 구조 검증은 클라이언트 validateProfile 에서)
+  programProfile: z.any().optional().nullable(),
+  renewalContext: z.any().optional().nullable(),
 })
 
 type Params = { params: Promise<{ id: string }> }
