@@ -151,19 +151,26 @@ export function StepImpact({
     return () => window.removeEventListener('beforeunload', handler)
   }, [isDirty])
 
-  // DB 저장
+  // DB 저장 — 버그 수정 2026-04-21:
+  //   이전: logicModel 이 없으면 조기 return → impactGoal 만 저장 못 해서
+  //         confirmGoal() 후 다른 스텝으로 넘어가면 값이 DB에 없어 날아감.
+  //   수정: logicModel 또는 confirmedGoal 중 하나라도 있으면 저장.
+  //         body 도 존재하는 필드만 전송해 기존 값 null 덮어쓰기 방지.
   const saveToDb = useCallback(async () => {
-    if (!logicModel) return
+    if (!logicModel && !confirmedGoal) return
     setSaving(true)
     try {
+      const body: Record<string, unknown> = {}
+      if (confirmedGoal) body.impactGoal = confirmedGoal
+      if (logicModel) body.logicModel = logicModel
       const res = await fetch(`/api/projects/${projectId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ logicModel, impactGoal: confirmedGoal }),
+        body: JSON.stringify(body),
       })
       if (!res.ok) throw new Error('저장 실패')
       setIsDirty(false)
-      toast.success('Logic Model 저장 완료')
+      toast.success(logicModel ? 'Logic Model 저장 완료' : '임팩트 목표 저장됨')
     } catch (e: any) {
       toast.error(e.message)
     } finally {
@@ -199,14 +206,38 @@ export function StepImpact({
     }
   }
 
-  function confirmGoal() {
+  // confirmGoal — 버그 수정 2026-04-21:
+  //   이전: state 만 변경하고 DB 저장을 다음 단계(Logic Model 생성)에 의존.
+  //         사용자가 "이 목표로 Logic Model 생성" 직후 다른 스텝으로 이동하면
+  //         impactGoal 이 어디에도 저장되지 않아 재방문 시 초기화됨.
+  //   수정: state 변경 후 즉시 DB PATCH 로 impactGoal 저장.
+  async function confirmGoal() {
     const goal = selectedIdx !== null ? candidates[selectedIdx]?.goal : customGoal
     if (!goal) return
     setConfirmedGoal(goal)
     setPhase('model')
+    // 즉시 DB 저장 — phase 전환과 무관하게 값이 항상 영속
+    try {
+      setSaving(true)
+      const res = await fetch(`/api/projects/${projectId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ impactGoal: goal }),
+      })
+      if (!res.ok) throw new Error('임팩트 목표 저장 실패')
+      toast.success('임팩트 목표 저장됨')
+    } catch (e: any) {
+      toast.error(e.message ?? '저장 실패')
+    } finally {
+      setSaving(false)
+    }
   }
 
   // --- Phase 2: Generate logic model ---
+  // 버그 수정 2026-04-21:
+  //   이전: setLogicModel 만 하고 DB 저장 없음. isDirty 도 false 유지돼 저장 버튼도 안 뜸.
+  //         사용자가 다음 스텝으로 이동하면 Logic Model 이 사라짐.
+  //   수정: 생성 성공 직후 즉시 DB PATCH 로 저장 (impactGoal + logicModel 동시).
   async function generateModel() {
     if (!rfpParsed || !confirmedGoal) return
     setLoadingModel(true)
@@ -225,6 +256,26 @@ export function StepImpact({
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       setLogicModel(data.logicModel)
+
+      // 생성 직후 즉시 DB 저장 (state-only 였던 버그 방지)
+      try {
+        const saveRes = await fetch(`/api/projects/${projectId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            impactGoal: confirmedGoal,
+            logicModel: data.logicModel,
+          }),
+        })
+        if (saveRes.ok) {
+          setIsDirty(false)
+          toast.success('Logic Model 생성·저장 완료')
+        }
+      } catch {
+        // 생성은 성공했으나 저장만 실패 — 상단 "저장" 버튼을 통해 수동 저장 유도
+        setIsDirty(true)
+        toast.error('생성은 완료. 저장이 실패했으니 상단 "저장" 버튼을 눌러주세요.')
+      }
     } catch (e: any) {
       setError(e.message)
     } finally {
@@ -445,12 +496,20 @@ export function StepImpact({
               <Button variant="ghost" size="sm" onClick={() => setPhase('goal')} className="gap-1 text-xs">
                 <Pencil className="h-3 w-3" /> 목표 변경
               </Button>
-              {isDirty && (
-                <Button onClick={saveToDb} disabled={saving} variant="outline" size="sm" className="gap-1.5">
-                  {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                  {saving ? '저장 중...' : '저장'}
-                </Button>
-              )}
+              {/* 버그 수정 2026-04-21: 저장 버튼을 isDirty 와 무관하게 **항상** 표시.
+                  logicModel 이 있으면 언제든 다시 저장 가능 (수동 편집 후 확실히 저장하려는 PM 을 위해).
+                  disabled 로만 제어. */}
+              <Button
+                onClick={saveToDb}
+                disabled={saving || (!isDirty && !logicModel)}
+                variant={isDirty ? 'default' : 'outline'}
+                size="sm"
+                className="gap-1.5"
+                title={isDirty ? '수정사항을 저장합니다' : '이미 저장됨 (다시 저장하려면 수정 후)'}
+              >
+                {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                {saving ? '저장 중...' : isDirty ? '저장' : '저장됨'}
+              </Button>
               <Button onClick={generateModel} disabled={loadingModel} variant={logicModel ? 'outline' : 'default'} className="gap-2" size="sm">
                 {loadingModel ? <><Loader2 className="h-4 w-4 animate-spin" /> 생성 중...</>
                   : <><Brain className="h-4 w-4" /> {logicModel ? 'Logic Model 재생성' : 'Logic Model 생성'}</>}
@@ -550,7 +609,10 @@ export function StepImpact({
                   className="gap-2"
                   disabled={saving}
                   onClick={async () => {
-                    if (isDirty) await saveToDb()
+                    // 버그 수정 2026-04-21: isDirty 와 무관하게 항상 saveToDb 호출.
+                    // 생성 직후 isDirty=false 여도 state-only 상태일 수 있으므로
+                    // 이동 전 한 번 더 PATCH 로 확정 저장.
+                    if (logicModel || confirmedGoal) await saveToDb()
                     router.push(`${pathname}?step=curriculum`)
                   }}
                 >

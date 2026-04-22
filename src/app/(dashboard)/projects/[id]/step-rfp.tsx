@@ -54,6 +54,8 @@ import type {
   PlanningDirectionResponse,
   ProposalConceptCandidate,
 } from '@/lib/planning-direction'
+import { ProgramProfilePanel } from '@/components/projects/program-profile-panel'
+import type { ProgramProfile, RenewalContext, ProjectTaskType } from '@/lib/program-profile'
 
 // RfpParser 의 onParsed 콜백은 로컬(좁은) RfpParsed 를 넘기지만,
 // 런타임 데이터는 claude.ts 의 전체 RfpParsed 모양 — 경계에서 한 번만 캐스팅.
@@ -92,6 +94,9 @@ export interface StepRfpProps {
    * 초기값으로 복원됨. page.tsx 가 project 레코드에서 읽어 전달.
    */
   initialRfpSlice?: StepRfpInitialSlice
+  /** ProgramProfile v1.0 — Phase E Step 6 하단 패널 */
+  initialProfile?: ProgramProfile | null
+  initialRenewalContext?: RenewalContext | null
 }
 
 // ─────────────────────────────────────────
@@ -117,7 +122,13 @@ function formatBudgetOk(krw: number | null | undefined): string {
 // 메인 컴포넌트
 // ─────────────────────────────────────────
 
-export function StepRfp({ projectId, initialParsed, initialRfpSlice }: StepRfpProps) {
+export function StepRfp({
+  projectId,
+  initialParsed,
+  initialRfpSlice,
+  initialProfile,
+  initialRenewalContext,
+}: StepRfpProps) {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -391,8 +402,63 @@ export function StepRfp({ projectId, initialParsed, initialRfpSlice }: StepRfpPr
           router={router}
         />
       </div>
+
+      {/* ── ProgramProfile v1.1 풀폭 패널 (Phase E Step 6) ── */}
+      {/*
+          v1.1: RFP 파싱의 detectedTasks 를 supportStructure.tasks 초기값으로 주입.
+          - initialProfile 이 이미 있고 tasks 가 비어 있을 때 (기존 프로젝트 최초 전환)
+          - 또는 initialProfile 이 없을 때 (신규 프로젝트 첫 파싱)
+          에 한해 detectedTasks 를 반영. PM 이 이미 저장한 tasks 는 보존.
+      */}
+      <ProgramProfilePanel
+        projectId={projectId}
+        initialProfile={mergeDetectedTasksIntoProfile(
+          initialProfile ?? null,
+          parsed?.detectedTasks,
+        )}
+        initialRenewalContext={initialRenewalContext ?? null}
+      />
     </div>
   )
+}
+
+// ─────────────────────────────────────────
+// Helper: detectedTasks → initialProfile.supportStructure.tasks 주입
+// ─────────────────────────────────────────
+
+/**
+ * RFP 파싱에서 감지된 과업 유형을 Profile 의 supportStructure.tasks 초기값으로 주입.
+ *
+ * 규칙:
+ *   - detectedTasks 가 비어있거나 없으면 profile 그대로 반환
+ *   - profile.supportStructure.tasks 가 이미 채워져 있으면 PM 저장값 우선 (보존)
+ *   - profile 이 null 이면 null 반환 (panel 이 emptyProfile() 로 새로 만들되
+ *     그 후 rfpParsed 변경에 대해 따라오지는 않음 — 한 번의 초기 주입만 수행)
+ */
+function mergeDetectedTasksIntoProfile(
+  profile: ProgramProfile | null,
+  detectedTasks: ProjectTaskType[] | undefined,
+): ProgramProfile | null {
+  if (!detectedTasks || detectedTasks.length === 0) return profile
+  if (!profile) {
+    // 신규 프로파일은 Panel 의 emptyProfile() 이 생성. 여기서는 null 유지.
+    // (alternative: 여기서 emptyProfile 을 구성할 수도 있으나, 기본값 세팅은
+    // Panel 이 책임지는 게 관심사 분리에 맞다. 신규 프로젝트의 경우 PM 이
+    // 최초 저장하기 전에 detectedTasks 를 수동 체크하면 되므로 실용 손실 적음.)
+    return null
+  }
+  const currentTasks = profile.supportStructure.tasks
+  if (Array.isArray(currentTasks) && currentTasks.length > 0) {
+    // PM 이 이미 저장한 값이 있으면 건드리지 않음
+    return profile
+  }
+  return {
+    ...profile,
+    supportStructure: {
+      ...profile.supportStructure,
+      tasks: detectedTasks,
+    },
+  }
 }
 
 // ─────────────────────────────────────────

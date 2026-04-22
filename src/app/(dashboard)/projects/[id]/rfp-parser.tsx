@@ -20,6 +20,8 @@ interface RfpParsed {
   evalCriteria: Array<{ item: string; score: number; notes: string }>
   constraints: Array<{ type: string; description: string }>
   summary: string
+  /** v1.1: RFP 본문에서 자동 감지한 과업 유형 (프로파일 tasks 초기값). */
+  detectedTasks?: string[]
 }
 
 interface Props {

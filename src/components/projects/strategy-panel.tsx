@@ -113,9 +113,19 @@ export function StrategyPanel({ projectId }: Props) {
 
   return (
     <div className="rounded-lg border border-orange-200 bg-orange-50/20">
-      <button
+      {/* 버그 수정 2026-04-21: <button> 안에 <Button> 이 들어가서 HTML invalid + hydration error.
+          div + onClick 으로 전환 + 저장 버튼은 stopPropagation 으로 토글 방지. */}
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between p-3 text-left hover:bg-orange-50/40 transition-colors rounded-t-lg"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setExpanded(!expanded)
+          }
+        }}
+        className="flex w-full cursor-pointer items-center justify-between p-3 text-left hover:bg-orange-50/40 transition-colors rounded-t-lg select-none"
       >
         <div className="flex items-center gap-2">
           <Shield className="h-4 w-4 text-orange-700" />
@@ -137,7 +147,7 @@ export function StrategyPanel({ projectId }: Props) {
           )}
           {expanded ? <ChevronUp className="h-4 w-4 text-orange-600" /> : <ChevronDown className="h-4 w-4 text-orange-600" />}
         </div>
-      </button>
+      </div>
 
       {expanded && (
         <div className="border-t border-orange-200 p-3 space-y-2.5">

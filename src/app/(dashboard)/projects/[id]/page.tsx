@@ -85,8 +85,15 @@ export default async function ProjectDetailPage({
   const totalCoachFee = project.coachAssignments.reduce((s, a) => s + (a.totalFee ?? 0), 0)
   const marginRate = project.budget?.marginRate ?? 0
 
-  // PM 가이드 콘텐츠 resolve (rfp 제외 — B4 자체 가이드 사용)
-  const PM_GUIDE_STEPS: StepKey[] = ['curriculum', 'coaches', 'budget', 'impact', 'proposal']
+  // PM 가이드 콘텐츠 resolve (2026-04-20: rfp 포함 — 티키타카 리서치 카드 때문)
+  const PM_GUIDE_STEPS: StepKey[] = [
+    'rfp',
+    'curriculum',
+    'coaches',
+    'budget',
+    'impact',
+    'proposal',
+  ]
   const pmGuide = context && PM_GUIDE_STEPS.includes(step as StepKey)
     ? await resolvePmGuide(step as StepKey, context).catch(() => null)
     : null
@@ -217,21 +224,39 @@ export default async function ProjectDetailPage({
 
         {/* ── Step 1: RFP 분석 + 기획 방향 ── */}
         {step === 'rfp' && (
-          <StepRfp
-            projectId={project.id}
-            initialParsed={project.rfpParsed as any}
-            initialRfpSlice={{
-              proposalBackground: project.proposalBackground,
-              proposalConcept: project.proposalConcept,
-              keyPlanningPoints: Array.isArray(project.keyPlanningPoints)
-                ? (project.keyPlanningPoints as string[])
-                : null,
-              confirmedAt:
-                project.proposalBackground || project.proposalConcept
-                  ? project.updatedAt.toISOString()
+          <div className="space-y-4">
+            <StepRfp
+              projectId={project.id}
+              initialParsed={project.rfpParsed as any}
+              initialRfpSlice={{
+                proposalBackground: project.proposalBackground,
+                proposalConcept: project.proposalConcept,
+                keyPlanningPoints: Array.isArray(project.keyPlanningPoints)
+                  ? (project.keyPlanningPoints as string[])
                   : null,
-            }}
-          />
+                confirmedAt:
+                  project.proposalBackground || project.proposalConcept
+                    ? project.updatedAt.toISOString()
+                    : null,
+              }}
+              initialProfile={(project.programProfile as any) ?? null}
+              initialRenewalContext={(project.renewalContext as any) ?? null}
+            />
+            {/*
+              Step 1 은 3컬럼 내부 구조라 우측 사이드바 대신 하단 전폭에
+              PM 가이드(리서치 요청 카드 중심) 를 렌더한다.
+            */}
+            {pmGuide && (
+              <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_320px]">
+                <div className="hidden xl:block" />
+                <PmGuidePanel
+                  content={pmGuide}
+                  projectId={project.id}
+                  stepKey="rfp"
+                />
+              </div>
+            )}
+          </div>
         )}
 
         {/* ── Step 2: 커리큘럼 ── */}
@@ -264,7 +289,13 @@ export default async function ProjectDetailPage({
               rfpSlice={context?.rfp}
               strategySlice={context?.strategy}
             />
-            {pmGuide && <PmGuidePanel content={pmGuide} />}
+            {pmGuide && (
+              <PmGuidePanel
+                content={pmGuide}
+                projectId={project.id}
+                stepKey="curriculum"
+              />
+            )}
           </div>
         )}
 
@@ -385,7 +416,13 @@ export default async function ProjectDetailPage({
                 </CardContent>
               </Card>
             </div>
-            {pmGuide && <PmGuidePanel content={pmGuide} />}
+            {pmGuide && (
+              <PmGuidePanel
+                content={pmGuide}
+                projectId={project.id}
+                stepKey="coaches"
+              />
+            )}
           </div>
         )}
 
@@ -418,7 +455,13 @@ export default async function ProjectDetailPage({
               curriculumSlice={context?.curriculum}
               coachesSlice={context?.coaches}
             />
-            {pmGuide && <PmGuidePanel content={pmGuide} />}
+            {pmGuide && (
+              <PmGuidePanel
+                content={pmGuide}
+                projectId={project.id}
+                stepKey="budget"
+              />
+            )}
           </div>
         )}
 
@@ -434,7 +477,13 @@ export default async function ProjectDetailPage({
               budgetSlice={context?.budget}
               autoExtracted={context?.impact?.autoExtracted}
             />
-            {pmGuide && <PmGuidePanel content={pmGuide} />}
+            {pmGuide && (
+              <PmGuidePanel
+                content={pmGuide}
+                projectId={project.id}
+                stepKey="impact"
+              />
+            )}
           </div>
         )}
 
@@ -448,7 +497,13 @@ export default async function ProjectDetailPage({
               evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
               pipelineContext={context}
             />
-            {pmGuide && <PmGuidePanel content={pmGuide} />}
+            {pmGuide && (
+              <PmGuidePanel
+                content={pmGuide}
+                projectId={project.id}
+                stepKey="proposal"
+              />
+            )}
           </div>
         )}
 
