@@ -21,6 +21,12 @@
  */
 
 import type { ProposalSlice } from '@/lib/pipeline-context'
+import {
+  validateProfile,
+  type ProfileIssue,
+  type ProgramProfile,
+  type RenewalContext,
+} from '@/lib/program-profile'
 
 // ─────────────────────────────────────────
 // 공통 타입 (curriculum-rules.ts 와 동일 shape)
@@ -293,5 +299,110 @@ export function validateProposalRules(input: ProposalRuleInput): ProposalRuleVal
   return {
     passed: !hasBlock,
     violations,
+  }
+}
+
+// ─────────────────────────────────────────
+// Phase E — ProgramProfile Gate 3 통합
+// ─────────────────────────────────────────
+//
+// validateProfile() (src/lib/program-profile.ts) 를 Gate 3 파이프라인에 연결.
+// 제안서 생성 전 호출해 블로커 이슈가 있으면 생성을 중단시키는 용도.
+//
+// 관리하는 룰 코드 (validateProfile 에서 나오는 것을 그대로 노출):
+//   - renewal-context-missing           (blocker)
+//   - renewal-lessons-empty             (warning)
+//   - renewal-improvement-missing       (warning)
+//   - methodology-mismatch              (warning)
+//   - geography-global-no-support       (warning)
+//
+// 설계 결정: `validateProposalSection()` / `validateProposalRules()` 같은
+// **섹션 단위** 룰 엔진과는 분리된 별도 함수로 노출한다.
+//   - 프로파일 검증은 제안서 콘텐츠가 아니라 프로젝트 **전제 조건** 검증이므로,
+//     섹션 생성 시마다 돌리는 것이 아니라 "생성 시작 직전" 한 번만 호출해야 한다.
+//   - 따라서 외부 호출자 (예: /api/projects/[id]/proposal/generate) 가 먼저
+//     `runPhaseEGates(project)` 를 돌리고, `hasBlocker()` 가 true 면 abort,
+//     false 면 이후 `validateProposalRules()` 로 섹션 단위 검증을 진행하는
+//     2-단계 흐름을 권장한다.
+//   - 기존 `validateProposalRules()` 내부에서 자동 호출하지 않음 — 기존 호출자
+//     (curriculum 등 중간 스텝) 에서도 의도치 않게 프로파일 검증이 돌면
+//     false positive 경고가 쏟아지기 때문.
+
+/**
+ * Prisma 의 `Project` 모델 중 Phase E gate 에 필요한 필드만 추출한 shape.
+ * `project.programProfile` / `project.renewalContext` 는 Json 컬럼이므로
+ * 호출측에서 `as ProgramProfile | null` / `as RenewalContext | null` 로 캐스팅
+ * 된 값이 들어온다고 가정한다.
+ */
+export interface PhaseEGateProjectInput {
+  programProfile: ProgramProfile | null
+  renewalContext: RenewalContext | null
+}
+
+/**
+ * ProgramProfile · RenewalContext 를 기반으로 Phase E Gate 3 룰을 돌린다.
+ *
+ * - `programProfile` 이 null 이면 "아직 프로파일 작성 전" 으로 간주, 빈 배열 반환.
+ *   → 경고/블로커 없음. 프로파일을 만들기 전에는 해당 룰이 적용되지 않는다.
+ * - `programProfile` 이 있으면 `validateProfile()` 을 그대로 호출.
+ *   → `channel.isRenewal && !renewalContext` 일 때만 블로커가 발생.
+ */
+export function runPhaseEGates(project: PhaseEGateProjectInput): ProfileIssue[] {
+  const profile = project.programProfile as ProgramProfile | null
+  if (!profile) return []
+
+  const renewal = project.renewalContext as RenewalContext | null
+  return validateProfile(profile, renewal)
+}
+
+/**
+ * ProfileIssue[] 안에 severity='blocker' 가 하나라도 있으면 true.
+ *
+ * 제안서 생성 라우트에서
+ *   `if (hasBlocker(issues)) throw new Error('…')`
+ * 형태로 생성 중단 여부를 판단하는 용도.
+ */
+export function hasBlocker(issues: ProfileIssue[]): boolean {
+  return issues.some((i) => i.severity === 'blocker')
+}
+
+/**
+ * Step 6 (제안서) UI 에서 바로 렌더링할 수 있는 shape 로 변환.
+ *
+ * 제1원칙(RFP·클라이언트 요구에 맞춘 설득력 + 언더독스 차별화) 에 따라
+ * 네 가지 레이어를 함께 전달한다:
+ *   - title           한 줄 제목 ("왜 문제인지")
+ *   - body            왜 지금 이 문제가 프로젝트를 위협하는가
+ *   - scoringImpact   RFP 의 어떤 배점 항목이 위협받는가
+ *   - differentiationLoss  어떤 언더독스 차별화를 놓치는가
+ *   - fixHint         구체적 해결 경로 (언더독스 자산 활용 포함)
+ *   - severity        'block' | 'warn'
+ */
+export function formatIssueForUI(issue: ProfileIssue): {
+  title: string
+  body: string
+  scoringImpact?: string
+  differentiationLoss?: string
+  fixHint?: string
+  severity: 'block' | 'warn'
+} {
+  const severity: 'block' | 'warn' = issue.severity === 'blocker' ? 'block' : 'warn'
+
+  // 코드별 한국어 제목. 나머지는 code 를 그대로 타이틀로.
+  const TITLE_BY_CODE: Record<string, string> = {
+    'renewal-context-missing': '연속사업 컨텍스트 누락',
+    'renewal-lessons-empty': '작년 레슨런 보강 필요',
+    'renewal-improvement-missing': '개선 영역 추가 필요',
+    'methodology-mismatch': '방법론 · 대상 단계 불일치',
+    'geography-global-no-support': '글로벌 지원 구조 누락',
+  }
+
+  return {
+    title: TITLE_BY_CODE[issue.code] ?? issue.code,
+    body: issue.message,
+    scoringImpact: issue.scoringImpact,
+    differentiationLoss: issue.differentiationLoss,
+    fixHint: issue.fixHint,
+    severity,
   }
 }
