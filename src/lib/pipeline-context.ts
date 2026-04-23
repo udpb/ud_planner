@@ -19,6 +19,11 @@ import { prisma } from '@/lib/prisma'
 import type { ProgramProfile } from '@/lib/program-profile'
 
 import type {
+  ValueChainState,
+  LoopAlignmentChecks,
+} from '@/lib/value-chain'
+
+import type {
   RfpParsed,
   LogicModel,
   LogicModelItem,
@@ -44,6 +49,8 @@ export type {
   StrategicNotes,
   RuleValidationResult,
   RuleViolation,
+  ValueChainState,
+  LoopAlignmentChecks,
 }
 
 /**
@@ -453,16 +460,27 @@ export interface PipelineContext {
   // Step 3
   coaches?: CoachesSlice
 
-  // Step 4
+  // Step 4 (2026-04-23 개칭: "예산 설계" — ② Input 만)
   budget?: BudgetSlice
 
-  // Step 5
+  // Step 5 (2026-04-23 재구성: "임팩트 + SROI Forecast" — ⑤ Outcome 수렴)
   impact?: ImpactSlice
 
   // Step 6
   proposal?: ProposalSlice
 
   meta: PipelineContextMeta
+
+  /**
+   * Impact Value Chain 상태 (ADR-008, 2026-04-23).
+   * 5단계 논리 레이어(① Impact → ② Input → ③ Output → ④ Activity → ⑤ Outcome)
+   * + 루프 얼라인 체크 결과.
+   *
+   * buildPipelineContext() 는 이 필드를 채우지 않는다.
+   * UI/호출자가 `computeValueChainState(ctx, currentStep?)` 헬퍼로 필요한 시점에 도출.
+   * 이유: currentStage 는 "현재 활성 UI 스텝" 에 따라 바뀌므로 컨텍스트 조립 시점에는 모름.
+   */
+  valueChainState?: ValueChainState
 }
 
 // ═════════════════════════════════════════
