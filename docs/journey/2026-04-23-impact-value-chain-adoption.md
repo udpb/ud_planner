@@ -88,15 +88,31 @@ Claude 가 3가지 범위 선택지 제시:
 
 ## Wave 진행 로그 (실시간 갱신)
 
-- [x] Wave 0 — 문서 (이 파일 포함)
-- [ ] Wave 1 — 코어 타입
-- [ ] Wave 2 — 스키마 점검
+- [x] Wave 0 — 문서 (이 파일 포함) · 커밋 `0f416b5`
+- [x] Wave 1 — 코어 타입 · 커밋 `bcd36c0` · typecheck 0 error
+- [x] Wave 2 — 스키마 점검 · **마이그레이션 불필요** (아래 결론)
 - [ ] Wave 3 — 리서치 재분배
 - [ ] Wave 4 — Value Chain 다이어그램
-- [ ] Wave 5 — Step 4·5 재구성
+- [ ] Wave 5 — Step 4·5 재구성 (API 라우팅만)
 - [ ] Wave 6 — Step 1 3 탭
 - [ ] Wave 7 — 루프 Gate
 - [ ] Wave 8 — 검증 · 메모리 · 완료 기록
+
+## Wave 2 스키마 점검 결론 (2026-04-23)
+
+조사 결과 `prisma/schema.prisma`:
+- `Project.sroiForecast` (Json) — SROI 계산 결과. Project 직접 필드.
+- `Project.sroiCountry` (String, 기본 "한국")
+- `Project.sroiActual` (Json) — 실측 SROI
+- `Budget` 모델 (line 404) — pcTotal · acTotal · margin · marginRate + items만. **SROI 필드 없음**.
+
+**즉 SROI 데이터는 이미 Budget 과 분리된 Project 직속 필드.** Wave 5 에서 UI 만 Step 4 → Step 5 로 라우팅 교체하면 되고, **DB 스키마 변경·마이그레이션 불필요**.
+
+이는 2026-04-23 대화에서 Claude 가 ADR 작성 시 예상한 결론 ("스키마 변경 최소화") 과 일치.
+
+다음 Wave 에 영향:
+- Wave 5 SROI UI 이동: API 엔드포인트 유지 (Project.sroiForecast 읽기/쓰기). 라우팅만 step-budget → step-impact 로 교체.
+- Wave 7 루프 Gate: `Project.sroiForecast.ratio` 를 축 수치로 직접 사용 가능.
 
 ## 원칙 재확인
 
