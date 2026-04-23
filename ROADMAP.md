@@ -1,9 +1,9 @@
 # UD-Ops 파이프라인 재설계 로드맵
 
 > 상세 설계: [REDESIGN.md](REDESIGN.md)
-> 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates)
-> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~003)
-> 마지막 업데이트: 2026-04-15
+> 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile)
+> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~008)
+> 마지막 업데이트: 2026-04-23 (Phase F Impact Value Chain Wave 추가)
 
 ---
 
@@ -25,8 +25,9 @@
 | B | Step 1 고도화 + Ingestion 뼈대 | ✅ 완료 | 100% |
 | C | 데이터 흐름 연결 | ✅ 완료 | 100% |
 | D | PM 가이드 + proposal-ingest + Gate 3 | ✅ 완료 | 100% |
-| E | 내부 데이터 자동 로드 + 나머지 Ingestion | 🔲 대기 | 0% |
-| F | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% |
+| E | ProgramProfile + 스텝 차별화 리서치 (ADR-006·007) | ✅ 완료 | 100% |
+| **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | 🟡 진행 | 10% |
+| G | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% |
 
 ---
 
@@ -158,9 +159,14 @@
 
 ---
 
-## Phase E: 내부 데이터 자동 로드 + 나머지 Ingestion
+## Phase E: ProgramProfile + 스텝 차별화 리서치 ✅ 완료 (2026-04-21)
 
-> E가 끝나면: PM이 찾으러 다니지 않아도 관련 데이터가 자동. 커리큘럼·심사위원 질문도 자산화 경로 생김.
+> 실제 완료 내용: ProgramProfile v1.1 11축 도입 (ADR-006) + 스텝 차별화 리서치 플로우 (ADR-007) + Gate 3 강화 + 평가위원 관점 매트릭스.
+> 원 계획(아래 E1~E6 IMPACT 모듈 자동 추천·코치 추천·SROI 통합 등)은 부분 이행 → Phase G 로 이월 고려.
+>
+> 근거: [ADR-006](docs/decisions/006-program-profile.md) · [ADR-007](docs/decisions/007-step-differentiated-research-flow.md) · [docs/journey/2026-04-21-phase-e-complete.md](docs/journey/2026-04-21-phase-e-complete.md)
+
+### 원 계획 (참고용 — 실제 완료 여부 상이)
 
 - [ ] **E1. Step 2: IMPACT 모듈 자동 추천**
   - targetStage 기반 모듈 추천 (예비→I,M / 초기→P,A / 성장→C,T)
@@ -190,9 +196,64 @@
 
 ---
 
-## Phase F: 안정화 + Manifest 강제 + 배포
+## Phase F: Impact Value Chain + SROI 수렴 (ADR-008)
 
-> F가 끝나면: 프로덕션 배포 완료 + 모듈 경계가 런타임·린트로 강제됨
+> F가 끝나면: 파이프라인에 의미 레이어(Value Chain 5단계)가 정식화되고, SROI 가 ⑤ Outcome 의 수렴점이 되며, 루프 얼라인 Gate 로 품질이 자동 검증된다.
+>
+> 근거: [ADR-008](docs/decisions/008-impact-value-chain.md) · [docs/architecture/value-chain.md](docs/architecture/value-chain.md) · [docs/journey/2026-04-23-impact-value-chain-adoption.md](docs/journey/2026-04-23-impact-value-chain-adoption.md)
+
+- [x] **F0. 기록·계획 문서** *(2026-04-23)*
+  - ADR-008 · architecture/value-chain.md · journey/2026-04-23-*.md
+  - CLAUDE.md 설계 철학 8번째 항목 추가
+  - ROADMAP Phase F 섹션 확장
+
+- [ ] **F1. 코어 타입**
+  - 신규: `src/lib/value-chain.ts` — `ValueChainStage` 타입 · 5단계 스펙 · `STEP_TO_STAGES` 매핑
+  - 확장: `src/lib/pipeline-context.ts` — `valueChainState` 슬라이스 (currentStage · completedStages · sroiForecast · loopChecks)
+  - 신규 타입: `SROIForecast` · `LoopAlignmentChecks` · `AlignmentCheck`
+
+- [ ] **F2. 스키마 점검 + (필요시) 마이그레이션**
+  - SROI 관련 기존 필드 감사
+  - 스키마 변경 최소화 목표 (UI 라우팅만 이동)
+
+- [ ] **F3. 리서치 재배치**
+  - `imp-outcome-indicators` → `rfp-outcome-indicators` (🌱 씨앗)
+  - `imp-diagnostic-tools` → `cur-diagnostic-tools` (🌱 씨앗)
+  - 신규 `imp-outcome-benchmark` (🌾 수확)
+  - 리서치 카드에 단계 뱃지 + 씨앗↔수확 링크
+  - `imp-*` ID 하위 호환 resolver
+
+- [ ] **F4. Impact Value Chain 다이어그램**
+  - 신규: `src/components/value-chain-diagram.tsx` — 5단계 가로 플로우 + 루프 화살표
+  - pm-guide 우측 패널 상단 고정
+  - 현재 단계 하이라이트 + SROI 확정 시 루프 화살표 실선화
+
+- [ ] **F5. Step 4 → "예산 설계" 개칭 + SROI UI → Step 5 이동**
+  - `src/app/(dashboard)/projects/[id]/step-budget.tsx` — SROI 섹션 제거, 링크만 유지
+  - `src/app/(dashboard)/projects/[id]/step-impact.tsx` — SROI Forecast 섹션 추가
+  - `page.tsx` — 스텝 레이블 교체
+
+- [ ] **F6. Step 1 3탭 분리**
+  - `step-rfp.tsx` — ① Impact 의도 / ② Input 자산 / ③ Output RFP 탭 구조
+  - 기존 기획방향·프로파일·RFP 파싱을 3탭으로 재배치
+
+- [ ] **F7. 루프 Gate — SROI 축 3방향 얼라인**
+  - 신규: `src/lib/loop-alignment.ts` — SROI 숫자 기반 3방향 체크 룰
+  - Step 5 에 `LoopAlignmentCards` 섹션 (⑤→① / ⑤→② / ⑤→④)
+  - 불일치 시 해당 스텝 복귀 CTA (블록 X)
+  - Gate 4 (사람 확인) 로 quality-gates.md 업데이트
+
+- [ ] **F8. 검증 · 메모리 · 완료 기록**
+  - `npm run typecheck` 0 에러
+  - MEMORY.md 엔트리 추가
+  - journey 완료 로그
+  - 최종 E2E 확인 (브라우저)
+
+---
+
+## Phase G: 안정화 + Manifest 강제 + 배포
+
+> G가 끝나면: 프로덕션 배포 완료 + 모듈 경계가 런타임·린트로 강제됨
 
 - [ ] **F1. 전체 E2E 테스트**
   - 양양 신활력 RFP로 Step 1~6 전체 플로우
@@ -218,31 +279,44 @@
 
 ---
 
-## 참고: 새 파이프라인 흐름
+## 참고: 파이프라인 흐름 (2026-04-23 Value Chain 확장)
+
+UI 스텝(공정 레이어) + Impact Value Chain(의미 레이어) 을 병행 표기.
 
 ```
-Step 1: RFP 분석 + 기획 방향
-  → 제안배경 / 컨셉 / 핵심기획포인트 / 평가전략 / 유사프로젝트
+Step 1: RFP 분석 + 기획 방향                           [① Impact · ② Input · ③ Output]
+  → 의도 선언 · Before/After · 기관 자산 · RFP 요구 (3 탭)
        │
        ▼
-Step 2: 커리큘럼 설계
-  → 트랙 구성 / 회차별 세션 / IMPACT 매핑 / 설계 근거
+Step 2: 커리큘럼 설계                                  [④ Activity]
+  → 트랙 구성 / 회차별 세션 / IMPACT 매핑 / 사전·사후 진단
        │
        ▼
-Step 3: 코치 매칭
+Step 3: 코치 매칭                                      [④ Activity + ② Input]
   → 세션별 추천 코치 / 배정표 / 사례비
        │
        ▼
-Step 4: 예산 + SROI
-  → 예산 구조표 / 마진 / SROI 예측 / 벤치마크
+Step 4: 예산 설계 (2026-04-23 개칭)                    [② Input]
+  → 예산 구조표 / 마진 / 기관 보유 자원 매핑
        │
        ▼
-Step 5: 임팩트 체인
-  → Impact Goal / 5계층 체인 (커리큘럼에서 자동 추출) / 측정 계획
+Step 5: 임팩트 + SROI Forecast (2026-04-23 재구성)     [⑤ Outcome — 수렴점]
+  → IMPACT 모듈 / Logic Model / SROI 비율 / 벤치마크
+  → 루프 Alignment Check 3장 (⑤→① · ⑤→② · ⑤→④)    ◀── 루프 시작
+       │                                              │
+       ▼                                              │
+Step 6: 제안서 생성                                    [③ Output 최종]
+  → 7개 섹션 (위 모든 데이터 + 루프 얼라인 결과 반영)
        │
-       ▼
-Step 6: 제안서 생성
-  → 7개 섹션 (위 모든 데이터 주입)
+       └───── 루프: SROI 숫자 축으로 ①·②·④ 로 역류 검증 ─────┘
+```
+
+### Impact Value Chain (ADR-008)
+
+```
+  ① Impact  ─▶  ② Input  ─▶  ③ Output  ─▶  ④ Activity  ─▶  ⑤ Outcome (SROI)
+     ▲                                                            │
+     └────────────── 루프: SROI 3방향 얼라인 ────────────────────┘
 ```
 
 ## 참고: 데이터 레이어

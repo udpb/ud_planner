@@ -4,8 +4,8 @@
 
 ## 프로젝트 개요
 언더독스 교육 기획 자동화 웹앱. AI 공동기획자 기반 6단계 파이프라인:
-**RFP + 기획방향 → 커리큘럼 → 코치 → 예산+SROI → 임팩트 → 제안서**
-(※ 2026-04-15 재설계. 임팩트 위치가 Step 2 → Step 5로 이동. Impact-First 철학은 유지하되, 커리큘럼 Activity를 자동 추출해 Logic Model의 사실 기반을 강화)
+**RFP + 기획방향 → 커리큘럼 → 코치 → 예산 설계 → 임팩트 + SROI → 제안서**
+(※ 2026-04-15 Step 순서 재설계. 2026-04-23 Impact Value Chain 5단계 프레임 채택 — ADR-008. Step 4·5 재구성: SROI Forecast 가 Step 5 로 이동하여 ⑤ Outcome 수렴점이 됨)
 - **Tech**: Next.js 16 (App Router) + TypeScript + Prisma 7 + PostgreSQL + Claude API
 - **DB**: 35개 모델, `prisma/schema.prisma` 참조
 - **AI**: Anthropic Claude + Google Gemini (fallback)
@@ -18,6 +18,8 @@
   - [data-contract.md](docs/architecture/data-contract.md) — PipelineContext 슬라이스 계약
   - [ingestion.md](docs/architecture/ingestion.md) — 자료 업로드 → 자산 자동 고도화
   - [quality-gates.md](docs/architecture/quality-gates.md) — 4계층 품질 검증 체계
+  - [value-chain.md](docs/architecture/value-chain.md) ⭐ — Impact Value Chain 5단계 + SROI 수렴점 (ADR-008)
+  - [program-profile.md](docs/architecture/program-profile.md) — ProgramProfile v1.1 11축 (ADR-006)
   - [current-state-audit.md](docs/architecture/current-state-audit.md) — 기존 파일 유지/고도화/재작업/제거 판정
 - **[docs/decisions/](docs/decisions/)** — ADR. 중요 결정 전후 필수 참조
 - **[docs/journey/](docs/journey/)** — 시행착오 일지. 세션 끝에 기록
@@ -46,7 +48,7 @@
 - **아이콘**: lucide-react
 - **토스트**: sonner (`toast.success()`, `toast.error()`)
 
-## 설계 철학 (재설계 v2, 2026-04-15)
+## 설계 철학 (재설계 v2, 2026-04-15 · Value Chain 확장 2026-04-23)
 1. **데이터는 위에서 아래로 흐른다** — 각 스텝은 이전 스텝 산출물을 `PipelineContext`로 받는다
 2. **내부 자산은 자동으로 올라온다** — IMPACT 모듈·코치·SROI 프록시 등 PM이 찾아가지 않음
 3. **AI는 맥락 안에서 호출된다** — 매번 처음부터가 아니라 축적된 컨텍스트 위에서
@@ -54,6 +56,10 @@
 5. **Impact-First는 커리큘럼 위에서 재구성된다** — Activity를 커리큘럼에서 자동 추출해 Outcome/Impact만 AI 생성
 6. **Action Week 강제**: 이론 3회 연속 시 경고, Action Week 삽입 제안
 7. AI가 정보 부족 시 → 자동 생성 대신 질문으로 보완
+8. ⭐ **Impact Value Chain 5단계 (ADR-008, 2026-04-23)** — 파이프라인에는 UI 6 스텝과는 독립된 의미 레이어가 있다:
+   `① Impact(의도·Before/After) → ② Input(자원) → ③ Output(RFP/산출물) → ④ Activity(커리큘럼·코칭) → ⑤ Outcome(SROI)`
+   **⑤ Outcome = SROI Forecast** 가 루프의 수렴점. SROI 숫자 축 3방향 얼라인 체크(⑤→①·②·④)로 품질 검증.
+   각 UI 스텝은 자신이 건드리는 단계를 `valueChainStage` 로 태그 ([value-chain.md](docs/architecture/value-chain.md)).
 
 ## Claude API
 - 모델: `claude-sonnet-4-6` (`CLAUDE_MODEL` 상수)
@@ -75,5 +81,6 @@
 
 ## 커밋 컨벤션
 - `feat(scope): 설명` / `fix(scope): 설명`
-- scope: step-rfp, step-curriculum, step-coaches, step-budget, step-impact, step-proposal, pipeline-context, planning-agent, pm-guide, winning-pattern, channel-preset, auth, coaches, modules 등
+- scope: step-rfp, step-curriculum, step-coaches, step-budget, step-impact, step-proposal, pipeline-context, planning-agent, pm-guide, winning-pattern, channel-preset, auth, coaches, modules, value-chain, loop-gate 등
+- Phase 작업은 `feat(phase-f): ...` (Phase F Impact Value Chain Wave)
 - 한글 커밋 메시지 OK
