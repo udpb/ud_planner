@@ -28,7 +28,7 @@
 | E | ProgramProfile + 스텝 차별화 리서치 (ADR-006·007) | ✅ 완료 | 100% |
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
-| **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | 🟡 진행 | 14% |
+| **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
 | I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% |
 
 ---
@@ -315,41 +315,41 @@
 >
 > 근거: [ADR-010](docs/decisions/010-content-hub.md) · [docs/architecture/content-hub.md](docs/architecture/content-hub.md) · [docs/journey/2026-04-24-phase-h-content-hub-kickoff.md](docs/journey/2026-04-24-phase-h-content-hub-kickoff.md)
 
-- [x] **H0. 기록·계획 문서** *(2026-04-24)*
+- [x] **H0. 기록·계획 문서** *(2026-04-24, `c3bd197`)*
   - ADR-010 · architecture/content-hub.md · journey
   - CLAUDE.md 설계 철학 9번 업데이트 (v1 → v2)
   - ROADMAP Phase H 교체, 기존 "안정화+배포" → Phase I 이동
 
-- [ ] **H1. Prisma ContentAsset + 마이그레이션 + DB 시드**
+- [x] **H1. Prisma ContentAsset + 마이그레이션 + DB 시드** *(`9133730`)*
   - Prisma `ContentAsset` 테이블 (parentId 자기 참조 · JSON 필드 6개 · version · sourceReferences)
   - 마이그레이션 `phase_h_content_hub`
   - `prisma/seed-content-assets.ts` — UD_ASSETS 15종 DB insert
   - `package.json` 에 `db:seed:content-assets` 추가
 
-- [ ] **H2. asset-registry.ts 리팩터**
+- [x] **H2. asset-registry.ts 리팩터** *(`c4ffba6`)*
   - 코드 시드 UD_ASSETS 제거 → `getAllAssets()` async 함수 (React cache)
   - `findAssetById`, `matchAssetsToRfp`, `formatAcceptedAssets` async 전환
   - 호출부(page.tsx · proposal-ai.ts · matched-assets-panel.tsx · API) 에 await 주입
   - UdAsset 타입에 parentId · children · version 필드 추가
 
-- [ ] **H3. /admin/content-hub 관리자 UI**
+- [x] **H3. /admin/content-hub 관리자 UI** *(`cdf28eb`)*
   - 목록 `/admin/content-hub/page.tsx` — 필터바(카테고리·단계·상태·부모·검색) + 테이블
   - 편집 `/admin/content-hub/[id]/edit/page.tsx` + 신규 `/admin/content-hub/new/page.tsx`
   - 필수 5 필드 (name · category · narrativeSnippet · applicableSections · valueChainStage)
   - 선택 필드 접힌 섹션 (parentId · keywords · keyNumbers · sourceReferences · ...)
   - API 라우트: GET/POST/PATCH/DELETE `/api/content-hub/assets`
 
-- [ ] **H4. 계층 매칭 + MatchedAssetsPanel 부모-자식 렌더**
+- [x] **H4. 계층 매칭 + MatchedAssetsPanel 부모-자식 렌더** *(`58684f7`)*
   - matchAssetsToRfp: 부모 매칭 strong/medium 이면 children 도 후보
   - AssetCard: children.length > 0 이면 "▸ 세부 세션 N개" 토글
   - 펼치면 children 카드 들여쓰기 + 독립 Switch (각자 acceptedAssetIds)
 
-- [ ] **H5. 계층 시드 예시 2건**
+- [x] **H5. 계층 시드 예시 5건** *(`0e87652`)*
   - `asset-ai-solopreneur` 아래에 Week 1~3 children
   - `asset-ax-guidebook` 아래에 Ch 1~2 children
   - 담당자 UI 흐름 검증용
 
-- [ ] **H6. 검증 · 메모리 · 완료**
+- [x] **H6. 검증 · 메모리 · 완료** *(이 세션)*
   - `npx tsc --noEmit` 0 에러
   - MEMORY.md · project_asset_registry.md 에 v2 추가
   - journey 완료 로그
