@@ -622,3 +622,105 @@ export function matchScoreBand(score: number): 'strong' | 'medium' | 'weak' | 'e
   if (score >= MATCH_THRESHOLDS.weak) return 'weak'
   return 'excluded'
 }
+
+// ═════════════════════════════════════════════════════════════
+// 7. Wave G6 — Step 6 제안서 섹션 생성 시 자산 주입
+// ═════════════════════════════════════════════════════════════
+
+/**
+ * 섹션 번호(1~7) → ProposalSectionKey 매핑.
+ *
+ * 실제 섹션 구성은 `src/lib/proposal-ai.ts` PROPOSAL_SECTION_SPEC 기준.
+ * (`src/lib/claude.ts` 의 PROPOSAL_SECTIONS 는 구 improve 라우트 전용 — 순서 상이)
+ *
+ * proposal-ai.ts 매핑:
+ *   1. 제안 배경 및 목적         → proposal-background
+ *   2. 추진 전략 및 방법론       → proposal-background (전략은 배경 연장)
+ *   3. 교육 커리큘럼             → curriculum
+ *   4. 운영 체계 및 코치진       → coaches (org-team 성격 일부 포함 — 2차 매칭은 formatAcceptedAssets 호출자에서 보강 가능)
+ *   5. 예산 및 경제성            → budget
+ *   6. 기대 성과 및 임팩트       → impact
+ *   7. 수행 역량 및 실적         → org-team
+ *
+ * 자산의 applicableSections 가 여러 개일 때, 본 매핑은 1개의 "대표 키" 만
+ * 제공 → 호출자는 필요 시 추가 키로 2차 필터링 가능 (section 파라미터 생략).
+ */
+export const SECTION_NO_TO_KEY: Record<number, ProposalSectionKey> = {
+  1: 'proposal-background',
+  2: 'proposal-background',
+  3: 'curriculum',
+  4: 'coaches',
+  5: 'budget',
+  6: 'impact',
+  7: 'org-team',
+}
+
+/**
+ * acceptedAssetIds 를 받아 섹션별로 필터·포맷한 AI 프롬프트 블록 생성.
+ *
+ * 사용: Step 6 제안서 섹션 생성 시 proposal-ai.ts 가 호출.
+ *
+ * 동작:
+ *  - acceptedIds 를 UD_ASSETS 에서 조회 (findAssetById).
+ *  - section 이 주어지면 asset.applicableSections 에 section 이 포함된 자산만.
+ *  - section 이 없으면 승인된 모든 자산을 포맷.
+ *  - 결과 없으면 빈 문자열 반환 → 기존 프롬프트 동작에 영향 없음.
+ *
+ * 출력 예시:
+ * ```
+ * [이 섹션에 반드시 포함할 언더독스 자산]
+ * 1. Alumni Hub (10년 25,000명 교육생 데이터) — 언더독스는 지난 10년간 25,000명 ...
+ *    핵심 수치 (그대로 유지): 10년, 25,000명
+ * 2. IMPACT 6단계 프레임워크 — 본 사업의 커리큘럼은 ...
+ *    핵심 수치: 6단계
+ *
+ * **주의**: 위 narrativeSnippet 을 그대로 복사하지 말고 이 섹션의 맥락에 맞춰
+ * 재작성할 것. 단 keyNumbers 는 정확히 유지.
+ * 자산을 활용한 문단 끝에 `<!-- asset:{id} -->` 주석을 삽입해 추적 가능하게 할 것.
+ * ```
+ *
+ * @param acceptedIds PM 이 Step 1 에서 승인한 자산 ID 목록 (Project.acceptedAssetIds)
+ * @param section 이 섹션에 applicable 한 자산만 필터 (생략 시 전체)
+ * @returns AI 프롬프트용 포맷된 블록. 승인 자산이 없으면 빈 문자열.
+ */
+export function formatAcceptedAssets(
+  acceptedIds: string[] | undefined,
+  section?: ProposalSectionKey,
+): string {
+  if (!acceptedIds || acceptedIds.length === 0) return ''
+
+  // 1. ID → UdAsset 으로 매핑 (모르는 ID 는 조용히 제외)
+  const assets: UdAsset[] = []
+  for (const id of acceptedIds) {
+    const a = findAssetById(id)
+    if (a) assets.push(a)
+  }
+  if (assets.length === 0) return ''
+
+  // 2. 섹션 필터
+  const filtered = section
+    ? assets.filter((a) => a.applicableSections.includes(section))
+    : assets
+  if (filtered.length === 0) return ''
+
+  // 3. 포맷 — AI 가 바로 읽을 한국어 지시문
+  const lines: string[] = []
+  lines.push('[이 섹션에 반드시 포함할 언더독스 자산]')
+  filtered.forEach((a, idx) => {
+    lines.push(`${idx + 1}. ${a.name} — ${a.narrativeSnippet}`)
+    if (a.keyNumbers && a.keyNumbers.length > 0) {
+      lines.push(`   핵심 수치 (그대로 유지): ${a.keyNumbers.join(', ')}`)
+    }
+    // 소프트 마커 지시 — 편집 UI 가 나중에 asset:id 주석으로 활용 위치 추적
+    lines.push(`   (활용 위치 끝에 <!-- asset:${a.id} --> 주석 삽입)`)
+  })
+  lines.push('')
+  lines.push(
+    '**주의**: 위 narrativeSnippet 을 그대로 복사하지 말고 이 섹션의 맥락에 맞춰 재작성할 것.',
+  )
+  lines.push('단 keyNumbers 로 지정된 숫자는 정확히 유지해야 한다 (수치 왜곡 금지).')
+  lines.push(
+    '각 자산을 활용한 문단 끝에 `<!-- asset:{asset-id} -->` 주석을 삽입해 추적 가능하게 할 것.',
+  )
+  return lines.join('\n')
+}

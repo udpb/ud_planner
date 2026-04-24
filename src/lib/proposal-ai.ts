@@ -30,6 +30,10 @@ import {
 } from '@/lib/planning-direction'
 import { sectionLabel } from '@/lib/eval-strategy'
 import { COMMON_PLANNING_PRINCIPLES } from '@/lib/planning-principles'
+import {
+  formatAcceptedAssets,
+  SECTION_NO_TO_KEY,
+} from '@/lib/asset-registry'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입 · 상수
@@ -505,6 +509,14 @@ function buildSectionPrompt(input: GenerateSectionInput, retryHint?: string): st
   const spec = PROPOSAL_SECTION_SPEC[input.sectionNo]
   const ctx = input.context
 
+  // Wave G6 (ADR-009) — PM 이 Step 1 에서 승인한 UD 자산을 섹션별로 필터·포맷해서 주입.
+  // 자산 없음(acceptedAssetIds 미설정 또는 빈 배열) 이면 빈 문자열 → 기존 프롬프트 동작 유지.
+  const sectionKey = SECTION_NO_TO_KEY[input.sectionNo]
+  const assetBlockRaw = formatAcceptedAssets(ctx.acceptedAssetIds, sectionKey)
+  const assetBlock = assetBlockRaw.trim().length > 0
+    ? `[언더독스 자산 활용 지시 — PM 승인 자산, Wave G6]\n${assetBlockRaw}`
+    : ''
+
   const commonBlocks: string[] = [
     COMMON_PLANNING_PRINCIPLES,
     buildBrandContext(),
@@ -518,6 +530,8 @@ function buildSectionPrompt(input: GenerateSectionInput, retryHint?: string): st
     ctx.research && ctx.research.length > 0
       ? formatExternalResearch(ctx.research)
       : '',
+    // UD 자산 블록은 섹션 specific 컨텍스트 바로 앞에 배치되도록 common 뒤에 append.
+    assetBlock,
   ].filter((s) => s.trim().length > 0)
   const common = commonBlocks.join('\n\n')
 
