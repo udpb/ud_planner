@@ -18,7 +18,7 @@
  */
 
 import type { ValueChainStage } from '@/lib/value-chain'
-import type { ProposalSectionKey, RfpParsed } from '@/lib/pipeline-context'
+import type { ProposalSectionKey, RfpParsed, EvalStrategy } from '@/lib/pipeline-context'
 import type { ProgramProfile } from '@/lib/program-profile'
 
 // ═════════════════════════════════════════════════════════════
@@ -157,23 +157,177 @@ export interface MatchAssetsParams {
 }
 
 /**
+ * 점수 공식 가중치 (ADR-009).
+ */
+const SCORE_WEIGHTS = {
+  profile: 0.5,
+  keyword: 0.3,
+  section: 0.2,
+} as const
+
+/**
+ * 자산의 partial ProgramProfile 과 프로젝트의 full ProgramProfile 을 비교.
+ * 자산이 지정한 축만 체크 — 지정 안 된 축은 점수에 영향 없음.
+ *
+ * @returns 0~1. 자산에 fit 이 없으면 0.5 (중립).
+ */
+function partialProfileMatch(
+  projectProfile: ProgramProfile | undefined,
+  assetFit: Partial<ProgramProfile> | undefined,
+): number {
+  if (!assetFit || Object.keys(assetFit).length === 0) return 0.5
+  if (!projectProfile) return 0.5
+
+  let matched = 0
+  let total = 0
+
+  const axes = Object.keys(assetFit) as (keyof ProgramProfile)[]
+  for (const axis of axes) {
+    const assetVal = assetFit[axis]
+    const projVal = projectProfile[axis]
+    if (assetVal === undefined || projVal === undefined) continue
+    total += 1
+    // 얕은 동등 — primary 같은 단일 필드는 정확히 일치할 때만 점수
+    // 더 정교한 비교는 program-profile.ts profileSimilarity 에 위임 가능하나,
+    // partial 비교 목적엔 얕은 매칭이 충분 (설명력이 더 중요).
+    if (JSON.stringify(assetVal) === JSON.stringify(projVal)) matched += 1
+  }
+
+  return total === 0 ? 0.5 : matched / total
+}
+
+/**
+ * 자산 keywords 와 RFP 텍스트 필드들의 교집합 비율.
+ * @returns matched/total (0~1). keywords 없으면 0.
+ */
+function keywordOverlap(rfp: RfpParsed, keywords: string[] | undefined): {
+  score: number
+  matchedKeywords: string[]
+} {
+  if (!keywords || keywords.length === 0) return { score: 0, matchedKeywords: [] }
+  // RFP 에서 비교할 통합 텍스트 (자산 매칭 목적)
+  const haystackParts: string[] = [
+    rfp.projectName,
+    rfp.client,
+    rfp.targetAudience,
+    rfp.summary,
+    rfp.region ?? '',
+    ...(rfp.objectives ?? []),
+    ...(rfp.deliverables ?? []),
+    ...(rfp.keywords ?? []),
+    ...(rfp.targetStage ?? []),
+  ]
+  const haystack = haystackParts.join(' ').toLowerCase()
+  const matched = keywords.filter((k) => haystack.includes(k.toLowerCase()))
+  return { score: matched.length / keywords.length, matchedKeywords: matched }
+}
+
+/**
+ * 자산의 applicableSections 와 EvalStrategy.sectionWeights 의 가중합.
+ * evalStrategy 없으면 applicableSections 존재 여부로 0.5/0.
+ *
+ * @returns 0~1 (Math.min 으로 cap)
+ */
+function sectionApplicabilityScore(
+  evalStrategy: EvalStrategy | undefined,
+  applicable: ProposalSectionKey[],
+): number {
+  if (applicable.length === 0) return 0
+  const weights = evalStrategy?.sectionWeights
+  if (!weights) {
+    // evalStrategy 없음 — "어디에든 갈 수 있다" 를 약한 점수로
+    return 0.5
+  }
+  const total = applicable.reduce((sum, sec) => sum + (weights[sec] ?? 0), 0)
+  return Math.min(total, 1)
+}
+
+/**
+ * 단일 자산에 대해 (자산 × 적용 가능 섹션 각각) 의 점수를 계산.
+ * 같은 자산이 여러 섹션에 적합하면 섹션 수만큼 AssetMatch 를 생성.
+ */
+function scoreAssetForSection(
+  asset: UdAsset,
+  section: ProposalSectionKey,
+  rfp: RfpParsed,
+  profile: ProgramProfile | undefined,
+  evalStrategy: EvalStrategy | undefined,
+): AssetMatch {
+  const profileScore = partialProfileMatch(profile, asset.programProfileFit)
+  const { score: keywordScore, matchedKeywords } = keywordOverlap(rfp, asset.keywords)
+  // 섹션 점수는 "이 특정 섹션" 에 대해 계산
+  const sectionScore = sectionApplicabilityScore(
+    evalStrategy,
+    [section], // 단일 섹션에 대한 가중치 합
+  )
+
+  const finalScore =
+    SCORE_WEIGHTS.profile * profileScore +
+    SCORE_WEIGHTS.keyword * keywordScore +
+    SCORE_WEIGHTS.section * sectionScore
+
+  const reasons: string[] = []
+  if (profileScore >= 0.7) reasons.push(`프로파일 적합도 ${Math.round(profileScore * 100)}%`)
+  if (matchedKeywords.length > 0)
+    reasons.push(`RFP 본문 키워드 매칭: ${matchedKeywords.slice(0, 3).join(', ')}`)
+  if (sectionScore >= 0.3)
+    reasons.push(`${section} 섹션 배점 비중 ${Math.round(sectionScore * 100)}%`)
+  if (reasons.length === 0) reasons.push('카테고리·단계 기본 적합')
+
+  return {
+    asset,
+    section,
+    matchScore: Math.max(0, Math.min(1, finalScore)), // clamp
+    matchReasons: reasons,
+  }
+}
+
+/**
  * RFP + ProgramProfile 을 보고 자산을 점수 매겨 반환.
  *
  * 점수 공식 (ADR-009):
- *   score = 0.5 * profileSimilarity(profile, asset.programProfileFit)
+ *   score = 0.5 * partialProfileMatch(profile, asset.programProfileFit)
  *         + 0.3 * keywordOverlap(rfp, asset.keywords)
- *         + 0.2 * sectionApplicability(rfp.evalStrategy, asset.applicableSections)
+ *         + 0.2 * sectionApplicability(rfp.evalStrategy, [section])
  *
- * 반환: 같은 자산이 여러 섹션에 등장 가능 (섹션별 별도 AssetMatch).
+ * 같은 자산이 여러 섹션에 적합하면 섹션 수만큼 AssetMatch 반환.
+ * 결과는 matchScore 내림차순 정렬. minScore 미만 제외. limit 으로 cap.
  *
- * **주의**: 이 시그니처는 Wave G1 에서 정의만, 실제 구현은 Wave G4.
- * 지금은 빈 배열 반환 stub.
+ * 검증 예시:
+ *  - Alumni Hub (25,000명) + 창업 교육 RFP → section=proposal-background 강 매칭
+ *  - SROI 프록시 DB + 임팩트 측정 요구 RFP → section=impact 강 매칭
+ *  - UCA 코치 풀 + 코치 요구 RFP → section=coaches 강 매칭
  */
 export function matchAssetsToRfp(params: MatchAssetsParams): AssetMatch[] {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { rfp, profile, limit = 20, minScore = MATCH_THRESHOLDS.weak, assets = UD_ASSETS } = params
-  // TODO(Wave G4): profileSimilarity + keywordOverlap + sectionApplicability 구현
-  return []
+  const {
+    rfp,
+    profile,
+    limit = 20,
+    minScore = MATCH_THRESHOLDS.weak,
+    assets = UD_ASSETS,
+  } = params
+
+  const evalStrategy = rfp.evalCriteria
+    ? undefined
+    : undefined
+  // NOTE: RfpParsed 에는 evalCriteria(raw) 만 있고 EvalStrategy 는
+  // PipelineContext.rfp.evalStrategy 에 따로 있다. 호출자가 필요 시 파라미터로 확장 가능.
+  // 현재는 sectionApplicability 가 0.5 기본으로 떨어짐 (영향 최소).
+  // Phase G 후속: MatchAssetsParams 에 evalStrategy?: EvalStrategy 추가 고려.
+
+  const results: AssetMatch[] = []
+
+  for (const asset of assets) {
+    for (const section of asset.applicableSections) {
+      const match = scoreAssetForSection(asset, section, rfp, profile, evalStrategy)
+      if (match.matchScore >= minScore) {
+        results.push(match)
+      }
+    }
+  }
+
+  results.sort((a, b) => b.matchScore - a.matchScore)
+  return results.slice(0, limit)
 }
 
 // ═════════════════════════════════════════════════════════════
