@@ -64,7 +64,7 @@ import type {
 import { ProgramProfilePanel } from '@/components/projects/program-profile-panel'
 import type { ProgramProfile, RenewalContext, ProjectTaskType } from '@/lib/program-profile'
 import { MatchedAssetsPanel } from '@/components/projects/matched-assets-panel'
-import type { AssetMatch } from '@/lib/asset-registry'
+import type { AssetMatch } from '@/lib/asset-registry-types'
 
 // RfpParser 의 onParsed 콜백은 로컬(좁은) RfpParsed 를 넘기지만,
 // 런타임 데이터는 claude.ts 의 전체 RfpParsed 모양 — 경계에서 한 번만 캐스팅.

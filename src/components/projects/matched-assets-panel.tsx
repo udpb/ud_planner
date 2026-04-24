@@ -32,7 +32,7 @@ import {
   EVIDENCE_LABELS,
   matchScoreBand,
   type AssetMatch,
-} from '@/lib/asset-registry'
+} from '@/lib/asset-registry-types'
 import { VALUE_CHAIN_STAGES } from '@/lib/value-chain'
 import type { ProposalSectionKey } from '@/lib/pipeline-context'
 

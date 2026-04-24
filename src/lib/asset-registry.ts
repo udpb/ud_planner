@@ -7,151 +7,77 @@
  *
  * CLAUDE.md 설계 원칙 2번 ("내부 자산은 자동으로 올라온다") 의 첫 물리적 구현.
  *
+ * **서버 전용**: 이 파일은 prisma/@prisma/adapter-pg 를 import 하므로
+ * Client Component 에서 import 하면 pg → dns 로 번들 에러.
+ * 클라이언트가 필요한 타입·상수는 `asset-registry-types.ts` 에서 가져올 것.
+ *
  * v2.0 변경:
  *  - 자산 풀 소스: 코드 시드(UD_ASSETS 상수) → Prisma.ContentAsset 테이블
  *  - 런타임 API 는 비동기(async). findAssetById / matchAssetsToRfp / formatAcceptedAssets
  *    모두 Promise 반환.
  *  - UD_ASSETS_SEED 는 seed-content-assets.ts 전용으로만 유지 (public export).
  *  - UdAsset 인터페이스에 parentId / children / version / createdAt / updatedAt 추가.
+ *
+ * v2.1 변경 (2026-04-24 저녁, Phase H 브라우저 번들 픽스):
+ *  - 모든 pure 타입·상수·헬퍼는 asset-registry-types.ts 로 분리 (client safe)
+ *  - 이 파일은 'server-only' 가드 + DB 로직만 유지
+ *  - backward compat 위해 types/constants 를 re-export
  */
+
+import 'server-only'
 
 import { cache } from 'react'
 
 import { prisma } from '@/lib/prisma'
-import type { ValueChainStage } from '@/lib/value-chain'
-import type { ProposalSectionKey, RfpParsed, EvalStrategy } from '@/lib/pipeline-context'
+import type { RfpParsed, EvalStrategy, ProposalSectionKey } from '@/lib/pipeline-context'
 import type { ProgramProfile } from '@/lib/program-profile'
+import type { ValueChainStage } from '@/lib/value-chain'
 
 // ═════════════════════════════════════════════════════════════
-// 1. 분류 Enum
+// 0. 클라이언트 안전 심볼 re-export (backward compat)
+// ═════════════════════════════════════════════════════════════
+//
+// 기존 import 경로 (`@/lib/asset-registry` 에서 types/constants 가져가기)를
+// 유지하고 싶은 서버 코드 위해 re-export. 새 클라이언트 코드는 직접
+// `@/lib/asset-registry-types` 에서 가져갈 것.
+
+export type {
+  AssetCategory,
+  EvidenceType,
+  AssetStatus,
+  UdAsset,
+  AssetMatch,
+} from '@/lib/asset-registry-types'
+export {
+  MATCH_THRESHOLDS,
+  matchScoreBand,
+  CATEGORY_LABELS,
+  EVIDENCE_LABELS,
+  SECTION_NO_TO_KEY,
+} from '@/lib/asset-registry-types'
+
+// 내부 로직에서 쓰기 위한 타입 import
+import type {
+  AssetCategory,
+  EvidenceType,
+  AssetStatus,
+  UdAsset,
+  AssetMatch,
+} from '@/lib/asset-registry-types'
+import { MATCH_THRESHOLDS } from '@/lib/asset-registry-types'
+
+// ═════════════════════════════════════════════════════════════
+// 1~3. 타입·임계값은 asset-registry-types.ts 로 이관됨.
+//      이 파일 상단에서 이미 re-export + 내부 import 완료.
 // ═════════════════════════════════════════════════════════════
 
-/**
- * 자산 카테고리 — 무엇으로 구성된 자산인가.
- * (담당자·조직 운영 정보는 카테고리에 없음 — ADR-009 제약)
+/* Phase H v2.1 (2026-04-24 저녁)
+ * — 남은 심볼(UD_ASSETS_SEED, DB 조회, matchAssetsToRfp, formatAcceptedAssets)은
+ *   server-only 로 유지.
+ * — pure 심볼(AssetCategory/EvidenceType/AssetStatus/UdAsset/AssetMatch/
+ *   MATCH_THRESHOLDS/matchScoreBand/CATEGORY_LABELS/EVIDENCE_LABELS/SECTION_NO_TO_KEY)
+ *   은 asset-registry-types.ts 에 정의됨. 이 파일 최상단에서 re-export + 내부 import 완료.
  */
-export type AssetCategory =
-  | 'methodology'   // IMPACT 6단계 · UOR · 5-Phase 루프
-  | 'content'       // AI 솔로프러너 과정 · AX Guidebook · 창업가 마인드셋
-  | 'product'       // Ops Workspace · Coach Finder · Coaching Log · LMS
-  | 'human'         // UCA 코치 풀 (개인 이름 없이 집합으로만)
-  | 'data'          // Alumni Hub · 고객사 DB · SROI 프록시 · Benchmark
-  | 'framework'     // Before/After AI 프레임 · 완결성 3조건 등 개념 프레임
-
-/**
- * 증거 유형 — 이 자산이 제안서에서 어떻게 작동하는가.
- * quantitative: 숫자로 말함 (25,000명 / 1:3.2 / 95%)
- * structural:   구조/도식 (IMPACT 6단계 · 5-Phase 루프 다이어그램)
- * case:         과거 수행 사례·당선 레퍼런스
- * methodology:  검증된 방법·프로세스 설명
- */
-export type EvidenceType = 'quantitative' | 'structural' | 'case' | 'methodology'
-
-/** 자산의 운영 상태 */
-export type AssetStatus = 'stable' | 'developing' | 'archived'
-
-// ═════════════════════════════════════════════════════════════
-// 2. UdAsset — 자산 단건 스키마
-// ═════════════════════════════════════════════════════════════
-
-/**
- * 언더독스 자산 단건. ADR-009 의 스키마.
- *
- * 설계 제약:
- *  - 담당자·조직 운영 정보 없음 (owner/internalContact 필드 부재)
- *  - narrativeSnippet 은 초안 — PM 편집 필수 전제
- *  - programProfileFit 은 Partial — 자산이 모든 축에 대한 의견을 갖지 않아도 됨
- */
-export interface UdAsset {
-  // ── 식별 ──
-  /** kebab-case, 고유. 예: 'asset-impact-6stages' */
-  id: string
-  /** UI 에 노출되는 이름 */
-  name: string
-  category: AssetCategory
-
-  // ── 3중 태그 (매칭 핵심) ──
-  /** 이 자산이 들어갈 수 있는 RFP 섹션 목록 (1~N) */
-  applicableSections: ProposalSectionKey[]
-  /** Value Chain 단계 (ADR-008) — 이 자산이 어느 논리 단계의 무기인가 */
-  valueChainStage: ValueChainStage
-  /** 증거 유형 — 제안서에서의 작동 방식 */
-  evidenceType: EvidenceType
-
-  // ── 매칭 보조 ──
-  /**
-   * 특히 적합한 사업 프로파일 특징 (11축 중 일부만 지정 가능).
-   * 매칭 점수의 profileSimilarity 성분에 사용 (Wave G4).
-   * 미지정 시 자산은 "어떤 프로파일에도 중립" 으로 취급.
-   */
-  programProfileFit?: Partial<ProgramProfile>
-  /**
-   * RFP 본문·RFP 파싱 필드에서 매칭 트리거가 될 키워드.
-   * keywordOverlap 성분에 사용.
-   */
-  keywords?: string[]
-
-  // ── 제안서 반영 ──
-  /**
-   * 제안서에 들어갈 2~3 문장 초안.
-   * Step 6 제안서 AI 프롬프트에 주입되며, AI 는 맥락 맞춰 재작성.
-   * PM 이 승인 후 직접 편집도 가능.
-   */
-  narrativeSnippet: string
-  /**
-   * narrativeSnippet 을 쓸 때 동반해야 할 핵심 수치들.
-   * 예: ['25,000명', '10년', '1:3.2']
-   * AI 프롬프트에 "이 숫자들을 반드시 유지" 지시로 주입.
-   */
-  keyNumbers?: string[]
-
-  // ── 상태 ──
-  status: AssetStatus
-  /** 근거 문서·URL (선택) */
-  sourceReferences?: string[]
-  /** 최종 검토 일자 (ISO) — "최근 갱신" UI 표시용 */
-  lastReviewedAt: string
-
-  // ── v2.0 (Phase H · ADR-010) 감사·계층 필드 ──
-  /** 부모 자산 ID (1 단 계층). top-level 자산은 null/undefined. */
-  parentId?: string | null
-  /** 계층 조회 시에만 채워짐 (성능 위해 기본 비어있음). */
-  children?: UdAsset[]
-  /** 자산 버전 (DB 기본 1). */
-  version?: number
-  /** 생성 시각 (ISO) — 담당자 UI 용. */
-  createdAt?: string
-  /** 수정 시각 (ISO) — 담당자 UI 용. */
-  updatedAt?: string
-}
-
-// ═════════════════════════════════════════════════════════════
-// 3. AssetMatch — 매칭 결과
-// ═════════════════════════════════════════════════════════════
-
-/**
- * matchAssetsToRfp() 의 반환 단건.
- * 한 자산이 여러 섹션에 어울릴 수 있으므로,
- * 같은 자산이 다른 section 값으로 여러 번 나올 수 있다.
- */
-export interface AssetMatch {
-  asset: UdAsset
-  /** 이 매칭이 제안되는 특정 RFP 섹션 */
-  section: ProposalSectionKey
-  /** 점수 0~1 — UI 는 0.3 미만 제외 */
-  matchScore: number
-  /** 매칭 근거 (PM 에게 표시, 각 1줄) */
-  matchReasons: string[]
-}
-
-/**
- * 매칭 점수 임계값 — UI 에서 그룹 분류에 사용.
- */
-export const MATCH_THRESHOLDS = {
-  strong: 0.7, // 강한 매칭 — 자동 추천
-  medium: 0.5, // 중간 — 후보 표시
-  weak: 0.3, // 약한 — 접힌 섹션
-} as const
 
 // ═════════════════════════════════════════════════════════════
 // 4. matchAssetsToRfp() 시그니처 (구현은 Wave G4)
@@ -754,69 +680,16 @@ export const findAssetById = cache(
   },
 )
 
-/**
- * 자산 카테고리의 한국어 라벨.
- */
-export const CATEGORY_LABELS: Record<AssetCategory, string> = {
-  methodology: '방법론',
-  content: '콘텐츠',
-  product: '프로덕트',
-  human: '휴먼',
-  data: '데이터',
-  framework: '프레임워크',
-}
-
-/**
- * 증거 유형의 한국어 라벨 + 아이콘.
- */
-export const EVIDENCE_LABELS: Record<EvidenceType, { label: string; icon: string }> = {
-  quantitative: { label: '정량', icon: '📊' },
-  structural: { label: '구조', icon: '🏗' },
-  case: { label: '사례', icon: '📋' },
-  methodology: { label: '방법', icon: '🎓' },
-}
-
-/**
- * 매칭 점수 임계 기반 밴드 라벨.
- */
-export function matchScoreBand(score: number): 'strong' | 'medium' | 'weak' | 'excluded' {
-  if (score >= MATCH_THRESHOLDS.strong) return 'strong'
-  if (score >= MATCH_THRESHOLDS.medium) return 'medium'
-  if (score >= MATCH_THRESHOLDS.weak) return 'weak'
-  return 'excluded'
-}
+// ═════════════════════════════════════════════════════════════
+// CATEGORY_LABELS · EVIDENCE_LABELS · matchScoreBand · SECTION_NO_TO_KEY
+// 은 asset-registry-types.ts 로 이관됨.
+// 파일 최상단에서 re-export 되므로 기존 import 경로 (@/lib/asset-registry)
+// 는 그대로 동작.
+// ═════════════════════════════════════════════════════════════
 
 // ═════════════════════════════════════════════════════════════
 // 8. Wave G6 — Step 6 제안서 섹션 생성 시 자산 주입
 // ═════════════════════════════════════════════════════════════
-
-/**
- * 섹션 번호(1~7) → ProposalSectionKey 매핑.
- *
- * 실제 섹션 구성은 `src/lib/proposal-ai.ts` PROPOSAL_SECTION_SPEC 기준.
- * (`src/lib/claude.ts` 의 PROPOSAL_SECTIONS 는 구 improve 라우트 전용 — 순서 상이)
- *
- * proposal-ai.ts 매핑:
- *   1. 제안 배경 및 목적         → proposal-background
- *   2. 추진 전략 및 방법론       → proposal-background (전략은 배경 연장)
- *   3. 교육 커리큘럼             → curriculum
- *   4. 운영 체계 및 코치진       → coaches (org-team 성격 일부 포함 — 2차 매칭은 formatAcceptedAssets 호출자에서 보강 가능)
- *   5. 예산 및 경제성            → budget
- *   6. 기대 성과 및 임팩트       → impact
- *   7. 수행 역량 및 실적         → org-team
- *
- * 자산의 applicableSections 가 여러 개일 때, 본 매핑은 1개의 "대표 키" 만
- * 제공 → 호출자는 필요 시 추가 키로 2차 필터링 가능 (section 파라미터 생략).
- */
-export const SECTION_NO_TO_KEY: Record<number, ProposalSectionKey> = {
-  1: 'proposal-background',
-  2: 'proposal-background',
-  3: 'curriculum',
-  4: 'coaches',
-  5: 'budget',
-  6: 'impact',
-  7: 'org-team',
-}
 
 /**
  * acceptedAssetIds 를 받아 섹션별로 필터·포맷한 AI 프롬프트 블록 생성.
