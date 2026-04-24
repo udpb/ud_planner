@@ -63,6 +63,8 @@ import type {
 } from '@/lib/planning-direction'
 import { ProgramProfilePanel } from '@/components/projects/program-profile-panel'
 import type { ProgramProfile, RenewalContext, ProjectTaskType } from '@/lib/program-profile'
+import { MatchedAssetsPanel } from '@/components/projects/matched-assets-panel'
+import type { AssetMatch } from '@/lib/asset-registry'
 
 // RfpParser 의 onParsed 콜백은 로컬(좁은) RfpParsed 를 넘기지만,
 // 런타임 데이터는 claude.ts 의 전체 RfpParsed 모양 — 경계에서 한 번만 캐스팅.
@@ -104,6 +106,13 @@ export interface StepRfpProps {
   /** ProgramProfile v1.0 — Phase E Step 6 하단 패널 */
   initialProfile?: ProgramProfile | null
   initialRenewalContext?: RenewalContext | null
+  /**
+   * Phase G Wave 5 (ADR-009): matchAssetsToRfp() 결과.
+   * 서버(page.tsx) 에서 계산해 주입한다. RFP 파싱 없으면 빈 배열.
+   */
+  assetMatches?: AssetMatch[]
+  /** 이미 PM 이 승인한 UD 자산 ID (Project.acceptedAssetIds) */
+  initialAcceptedAssetIds?: string[]
 }
 
 // ─────────────────────────────────────────
@@ -135,6 +144,8 @@ export function StepRfp({
   initialRfpSlice,
   initialProfile,
   initialRenewalContext,
+  assetMatches = [],
+  initialAcceptedAssetIds = [],
 }: StepRfpProps) {
   const router = useRouter()
   const pathname = usePathname()
@@ -488,6 +499,14 @@ export function StepRfp({
               completeness={completeness}
               onParsed={handleParsed}
             />
+            {/* Phase G Wave 5 (ADR-009): 매칭 자산 패널 — RFP 파싱 이후에만 노출 */}
+            {parsed && (
+              <MatchedAssetsPanel
+                projectId={projectId}
+                matches={assetMatches}
+                initialAcceptedIds={initialAcceptedAssetIds}
+              />
+            )}
           </TabsContent>
         </Tabs>
 

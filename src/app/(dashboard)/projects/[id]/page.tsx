@@ -20,6 +20,9 @@ import { PmGuidePanel } from '@/modules/pm-guide/panel'
 import { resolvePmGuide } from '@/modules/pm-guide/resolve'
 import type { StepKey } from '@/modules/pm-guide/types'
 import { cn } from '@/lib/utils'
+import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
+import type { RfpParsed } from '@/lib/claude'
+import type { ProgramProfile } from '@/lib/program-profile'
 
 export const dynamic = 'force-dynamic'
 
@@ -97,6 +100,17 @@ export default async function ProjectDetailPage({
   const pmGuide = context && PM_GUIDE_STEPS.includes(step as StepKey)
     ? await resolvePmGuide(step as StepKey, context).catch(() => null)
     : null
+
+  // Phase G Wave 5 (ADR-009): 매칭 자산 계산 — RFP 파싱이 있을 때만
+  const assetMatches: AssetMatch[] = project.rfpParsed
+    ? matchAssetsToRfp({
+        rfp: project.rfpParsed as unknown as RfpParsed,
+        profile: (project.programProfile as unknown as ProgramProfile) ?? undefined,
+      })
+    : []
+  const initialAcceptedAssetIds: string[] = Array.isArray(project.acceptedAssetIds)
+    ? (project.acceptedAssetIds as string[]).filter((v) => typeof v === 'string')
+    : []
 
   // 기획 품질 스코어 계산
   const planningScore = calculatePlanningScore({
@@ -246,6 +260,8 @@ export default async function ProjectDetailPage({
               }}
               initialProfile={(project.programProfile as any) ?? null}
               initialRenewalContext={(project.renewalContext as any) ?? null}
+              assetMatches={assetMatches}
+              initialAcceptedAssetIds={initialAcceptedAssetIds}
             />
             {/*
               Step 1 은 3컬럼 내부 구조라 우측 사이드바 대신 하단 전폭에
