@@ -12,10 +12,14 @@
  *   운영 환경 재실행 주의 — 개발·초기 셋업 용도.
  */
 
+import 'dotenv/config'
 import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 import { UD_ASSETS_SEED, type UdAsset } from '../src/lib/asset-registry'
 
-const prisma = new PrismaClient()
+// Prisma 7 어댑터 주입 — DATABASE_URL 필수 (.env 에서 로드)
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
+const prisma = new PrismaClient({ adapter })
 
 // ─────────────────────────────────────────────────────────────
 // Phase H Wave H5 — 계층 시드 예시 5건
