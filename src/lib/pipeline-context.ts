@@ -481,6 +481,14 @@ export interface PipelineContext {
    * 이유: currentStage 는 "현재 활성 UI 스텝" 에 따라 바뀌므로 컨텍스트 조립 시점에는 모름.
    */
   valueChainState?: ValueChainState
+
+  /**
+   * Asset Registry (ADR-009, 2026-04-24) — 이 프로젝트에 투입할 UD 자산 ID 목록.
+   * matchAssetsToRfp 결과 중 PM 이 Step 1 에서 승인한 자산들.
+   * Step 6 제안서 AI 가 이 ID 로 narrativeSnippet 을 조회해 섹션에 주입.
+   * 자산 정의 자체는 코드 시드 (`src/lib/asset-registry.ts` UD_ASSETS).
+   */
+  acceptedAssetIds?: string[]
 }
 
 // ═════════════════════════════════════════
@@ -678,6 +686,13 @@ export async function buildPipelineContext(
         }
       : undefined
 
+  // ── Asset Registry (Phase G · ADR-009) ──
+  // Project.acceptedAssetIds 는 Wave G2 에서 추가된 JSON 배열 컬럼.
+  // PM 이 Step 1 매칭 자산 패널에서 승인한 자산 ID 들.
+  const acceptedAssetIds: string[] | undefined = Array.isArray(project.acceptedAssetIds)
+    ? (project.acceptedAssetIds as string[])
+    : undefined
+
   return {
     projectId: project.id,
     version: 0,
@@ -690,6 +705,7 @@ export async function buildPipelineContext(
     impact: impactSlice,
     proposal: proposalSlice,
     meta,
+    acceptedAssetIds,
   }
 }
 

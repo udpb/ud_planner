@@ -265,6 +265,8 @@ model Project {
   logicModel       Json?
   externalResearch Json? // PM이 외부 LLM에서 수집한 리서치 (ExternalResearch[])
   strategicNotes   Json? // 전략 맥락 (StrategicNotes: clientHiddenWants, mustNotFail, etc.)
+  // Phase G (ADR-009): 이 프로젝트에 투입할 UD 자산 ID 목록 (matchAssetsToRfp 결과 중 PM 승인)
+  acceptedAssetIds Json? // string[] — UdAsset.id (src/lib/asset-registry.ts)
   evalCriteria     Json?
   constraints      Json?
   kpiTargets       Json?
