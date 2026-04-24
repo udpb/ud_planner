@@ -19,6 +19,7 @@
   - [ingestion.md](docs/architecture/ingestion.md) — 자료 업로드 → 자산 자동 고도화
   - [quality-gates.md](docs/architecture/quality-gates.md) — 4계층 품질 검증 체계
   - [value-chain.md](docs/architecture/value-chain.md) ⭐ — Impact Value Chain 5단계 + SROI 수렴점 (ADR-008)
+  - [asset-registry.md](docs/architecture/asset-registry.md) ⭐ — UD Asset Registry + RFP 자동 매핑 (ADR-009)
   - [program-profile.md](docs/architecture/program-profile.md) — ProgramProfile v1.1 11축 (ADR-006)
   - [current-state-audit.md](docs/architecture/current-state-audit.md) — 기존 파일 유지/고도화/재작업/제거 판정
 - **[docs/decisions/](docs/decisions/)** — ADR. 중요 결정 전후 필수 참조
@@ -60,6 +61,7 @@
    `① Impact(의도·Before/After) → ② Input(자원) → ③ Output(RFP/산출물) → ④ Activity(커리큘럼·코칭) → ⑤ Outcome(SROI)`
    **⑤ Outcome = SROI Forecast** 가 루프의 수렴점. SROI 숫자 축 3방향 얼라인 체크(⑤→①·②·④)로 품질 검증.
    각 UI 스텝은 자신이 건드리는 단계를 `valueChainStage` 로 태그 ([value-chain.md](docs/architecture/value-chain.md)).
+9. ⭐ **UD Asset Registry (ADR-009, 2026-04-24)** — 2번 원칙의 물리적 구현. 언더독스 자산을 단일 스키마로 등록(카테고리·RFP 섹션·Value Chain 단계·증거 유형 3중 태그) · RFP 파싱 직후 자동 매핑 · Step 1 패널에 제안 · Step 6 제안서 생성 시 `narrativeSnippet` 주입. 스키마: [asset-registry.md](docs/architecture/asset-registry.md).
 
 ## Claude API
 - 모델: `claude-sonnet-4-6` (`CLAUDE_MODEL` 상수)
@@ -81,6 +83,6 @@
 
 ## 커밋 컨벤션
 - `feat(scope): 설명` / `fix(scope): 설명`
-- scope: step-rfp, step-curriculum, step-coaches, step-budget, step-impact, step-proposal, pipeline-context, planning-agent, pm-guide, winning-pattern, channel-preset, auth, coaches, modules, value-chain, loop-gate 등
-- Phase 작업은 `feat(phase-f): ...` (Phase F Impact Value Chain Wave)
+- scope: step-rfp, step-curriculum, step-coaches, step-budget, step-impact, step-proposal, pipeline-context, planning-agent, pm-guide, winning-pattern, channel-preset, auth, coaches, modules, value-chain, loop-gate, asset-registry 등
+- Phase 작업은 `feat(phase-g): ...` (현재 Phase G Asset Registry Wave 진행 중)
 - 한글 커밋 메시지 OK
