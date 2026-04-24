@@ -13,15 +13,15 @@
  */
 
 import { PrismaClient } from '@prisma/client'
-import { UD_ASSETS } from '../src/lib/asset-registry'
+import { UD_ASSETS_SEED } from '../src/lib/asset-registry'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log(`[seed-content-assets] 시작 — ${UD_ASSETS.length} 종 자산 upsert`)
+  console.log(`[seed-content-assets] 시작 — ${UD_ASSETS_SEED.length} 종 자산 upsert`)
 
   let upserted = 0
-  for (const asset of UD_ASSETS) {
+  for (const asset of UD_ASSETS_SEED) {
     await prisma.contentAsset.upsert({
       where: { id: asset.id },
       create: {

@@ -486,7 +486,8 @@ export interface PipelineContext {
    * Asset Registry (ADR-009, 2026-04-24) — 이 프로젝트에 투입할 UD 자산 ID 목록.
    * matchAssetsToRfp 결과 중 PM 이 Step 1 에서 승인한 자산들.
    * Step 6 제안서 AI 가 이 ID 로 narrativeSnippet 을 조회해 섹션에 주입.
-   * 자산 정의 자체는 코드 시드 (`src/lib/asset-registry.ts` UD_ASSETS).
+   * Phase H (ADR-010) 이후 자산 정의는 Prisma.ContentAsset 테이블에 저장되며
+   * `getAllAssets()` / `findAssetById()` 로 런타임 조회.
    */
   acceptedAssetIds?: string[]
 }

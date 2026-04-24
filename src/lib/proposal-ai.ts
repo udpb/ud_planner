@@ -505,14 +505,18 @@ function buildSectionSpecific(
 // 4. 전체 프롬프트 조립
 // ═════════════════════════════════════════════════════════════════
 
-function buildSectionPrompt(input: GenerateSectionInput, retryHint?: string): string {
+async function buildSectionPrompt(
+  input: GenerateSectionInput,
+  retryHint?: string,
+): Promise<string> {
   const spec = PROPOSAL_SECTION_SPEC[input.sectionNo]
   const ctx = input.context
 
   // Wave G6 (ADR-009) — PM 이 Step 1 에서 승인한 UD 자산을 섹션별로 필터·포맷해서 주입.
   // 자산 없음(acceptedAssetIds 미설정 또는 빈 배열) 이면 빈 문자열 → 기존 프롬프트 동작 유지.
+  // Phase H Wave H2 (ADR-010): formatAcceptedAssets 가 DB 비동기 조회 → await.
   const sectionKey = SECTION_NO_TO_KEY[input.sectionNo]
-  const assetBlockRaw = formatAcceptedAssets(ctx.acceptedAssetIds, sectionKey)
+  const assetBlockRaw = await formatAcceptedAssets(ctx.acceptedAssetIds, sectionKey)
   const assetBlock = assetBlockRaw.trim().length > 0
     ? `[언더독스 자산 활용 지시 — PM 승인 자산, Wave G6]\n${assetBlockRaw}`
     : ''
@@ -775,7 +779,7 @@ export async function generateProposalSection(
   }
 
   // 2. 1차 생성
-  const prompt = buildSectionPrompt(input)
+  const prompt = await buildSectionPrompt(input)
   let raw: string
   try {
     raw = await callClaudeText(prompt, spec.maxTokens)
@@ -792,7 +796,7 @@ export async function generateProposalSection(
   if (!validation.passed) {
     retried = true
     const retryHint = validation.issues.join(' / ')
-    const retryPrompt = buildSectionPrompt(input, retryHint)
+    const retryPrompt = await buildSectionPrompt(input, retryHint)
     let retryRaw: string
     try {
       retryRaw = await callClaudeText(retryPrompt, spec.maxTokens)

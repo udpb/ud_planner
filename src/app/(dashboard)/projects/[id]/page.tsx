@@ -101,9 +101,10 @@ export default async function ProjectDetailPage({
     ? await resolvePmGuide(step as StepKey, context).catch(() => null)
     : null
 
-  // Phase G Wave 5 (ADR-009): 매칭 자산 계산 — RFP 파싱이 있을 때만
+  // Phase G Wave 5 (ADR-009) + Phase H Wave H2 (ADR-010):
+  // 매칭 자산 계산 — RFP 파싱이 있을 때만. Phase H 이후 DB 조회이므로 await.
   const assetMatches: AssetMatch[] = project.rfpParsed
-    ? matchAssetsToRfp({
+    ? await matchAssetsToRfp({
         rfp: project.rfpParsed as unknown as RfpParsed,
         profile: (project.programProfile as unknown as ProgramProfile) ?? undefined,
       })

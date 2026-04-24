@@ -1,22 +1,23 @@
 /**
- * UD Asset Registry v1.0 — 자산 단일 레지스트리 + RFP 자동 매핑
+ * UD Asset Registry v2.0 — Content Hub 런타임 API (Phase H Wave H2, ADR-010)
  *
- * 근거: ADR-009 (docs/decisions/009-asset-registry.md)
- *       스펙:  docs/architecture/asset-registry.md
+ * 근거: ADR-009 (docs/decisions/009-asset-registry.md) — 자산 스키마 v1
+ *       ADR-010 (docs/decisions/010-content-hub.md)   — DB 저장소 전환
+ *       스펙:  docs/architecture/content-hub.md
  *
  * CLAUDE.md 설계 원칙 2번 ("내부 자산은 자동으로 올라온다") 의 첫 물리적 구현.
  *
- * 구성:
- *  - UdAsset 타입 + 분류 enum (AssetCategory · EvidenceType)
- *  - AssetMatch + matchAssetsToRfp() 시그니처 (구현은 Wave G4)
- *  - UD_ASSETS 시드 배열 (Wave G3 에서 15종 채워짐, 지금은 빈 배열)
- *
- * Wave 분해:
- *  - G1 (이 파일): 타입 + 시그니처 + 빈 시드
- *  - G3: 15종 시드 채우기
- *  - G4: matchAssetsToRfp 실제 점수 알고리즘
+ * v2.0 변경:
+ *  - 자산 풀 소스: 코드 시드(UD_ASSETS 상수) → Prisma.ContentAsset 테이블
+ *  - 런타임 API 는 비동기(async). findAssetById / matchAssetsToRfp / formatAcceptedAssets
+ *    모두 Promise 반환.
+ *  - UD_ASSETS_SEED 는 seed-content-assets.ts 전용으로만 유지 (public export).
+ *  - UdAsset 인터페이스에 parentId / children / version / createdAt / updatedAt 추가.
  */
 
+import { cache } from 'react'
+
+import { prisma } from '@/lib/prisma'
 import type { ValueChainStage } from '@/lib/value-chain'
 import type { ProposalSectionKey, RfpParsed, EvalStrategy } from '@/lib/pipeline-context'
 import type { ProgramProfile } from '@/lib/program-profile'
@@ -110,6 +111,18 @@ export interface UdAsset {
   sourceReferences?: string[]
   /** 최종 검토 일자 (ISO) — "최근 갱신" UI 표시용 */
   lastReviewedAt: string
+
+  // ── v2.0 (Phase H · ADR-010) 감사·계층 필드 ──
+  /** 부모 자산 ID (1 단 계층). top-level 자산은 null/undefined. */
+  parentId?: string | null
+  /** 계층 조회 시에만 채워짐 (성능 위해 기본 비어있음). */
+  children?: UdAsset[]
+  /** 자산 버전 (DB 기본 1). */
+  version?: number
+  /** 생성 시각 (ISO) — 담당자 UI 용. */
+  createdAt?: string
+  /** 수정 시각 (ISO) — 담당자 UI 용. */
+  updatedAt?: string
 }
 
 // ═════════════════════════════════════════════════════════════
@@ -152,7 +165,7 @@ export interface MatchAssetsParams {
   limit?: number
   /** 이 점수 미만은 제외 (기본 MATCH_THRESHOLDS.weak = 0.3) */
   minScore?: number
-  /** 자산 풀 (테스트용 주입 허용 — 기본 UD_ASSETS) */
+  /** 자산 풀 (테스트용 주입 허용 — 기본 getAllAssets() DB 조회 결과) */
   assets?: UdAsset[]
 }
 
@@ -298,14 +311,19 @@ function scoreAssetForSection(
  *  - SROI 프록시 DB + 임팩트 측정 요구 RFP → section=impact 강 매칭
  *  - UCA 코치 풀 + 코치 요구 RFP → section=coaches 강 매칭
  */
-export function matchAssetsToRfp(params: MatchAssetsParams): AssetMatch[] {
+export async function matchAssetsToRfp(
+  params: MatchAssetsParams,
+): Promise<AssetMatch[]> {
   const {
     rfp,
     profile,
     limit = 20,
     minScore = MATCH_THRESHOLDS.weak,
-    assets = UD_ASSETS,
+    assets,
   } = params
+
+  // Phase H (ADR-010): 기본 자산 풀은 DB 조회 (getAllAssets). 테스트용 주입 시 그 풀 사용.
+  const pool = assets ?? (await getAllAssets())
 
   const evalStrategy = rfp.evalCriteria
     ? undefined
@@ -317,7 +335,7 @@ export function matchAssetsToRfp(params: MatchAssetsParams): AssetMatch[] {
 
   const results: AssetMatch[] = []
 
-  for (const asset of assets) {
+  for (const asset of pool) {
     for (const section of asset.applicableSections) {
       const match = scoreAssetForSection(asset, section, rfp, profile, evalStrategy)
       if (match.matchScore >= minScore) {
@@ -331,11 +349,15 @@ export function matchAssetsToRfp(params: MatchAssetsParams): AssetMatch[] {
 }
 
 // ═════════════════════════════════════════════════════════════
-// 5. 자산 시드 (Wave G3 에서 15종으로 채워짐)
+// 5. 자산 시드 (Wave G3, 2026-04-24 — v1.0 15종)
 // ═════════════════════════════════════════════════════════════
 
 /**
  * 언더독스 자산 시드 배열 v1.0 — 15종 (Wave G3, 2026-04-24).
+ *
+ * Phase H (ADR-010) 이후 런타임 조회는 `getAllAssets()` (DB) 로 전환됨.
+ * 이 상수는 **초기 DB 시드 전용** (`prisma/seed-content-assets.ts`) 으로만 유지.
+ * 앱 런타임 로직은 이 상수를 참조해서는 안 된다.
  *
  * 분포:
  *  - 카테고리: methodology 3 · content 3 · product 4 · human 1 · data 3 · framework 1
@@ -346,7 +368,7 @@ export function matchAssetsToRfp(params: MatchAssetsParams): AssetMatch[] {
  * narrativeSnippet 은 제안서 초안 문장 — AI 프롬프트가 재작성 지시 포함.
  * keyNumbers 는 "이 숫자들은 그대로 유지" 조건으로 AI 에 지시.
  */
-const UD_ASSETS_SEED: UdAsset[] = [
+export const UD_ASSETS_SEED: UdAsset[] = [
   // ══════════════════════════════════════════
   // methodology (3) — 검증된 방법론·프로세스
   // ══════════════════════════════════════════
@@ -577,19 +599,100 @@ const UD_ASSETS_SEED: UdAsset[] = [
   },
 ]
 
-export const UD_ASSETS: UdAsset[] = UD_ASSETS_SEED
-
 // ═════════════════════════════════════════════════════════════
-// 6. 헬퍼 유틸 (컴포넌트·API 공용)
+// 6. DB 조회 헬퍼 (Phase H · ADR-010)
 // ═════════════════════════════════════════════════════════════
 
 /**
- * 자산 ID 로 조회.
- * 모르는 ID 면 undefined.
+ * Prisma ContentAsset 행 → UdAsset 변환.
+ *
+ * ContentAsset 의 JSON 필드(applicableSections / keywords / programProfileFit /
+ * keyNumbers / sourceReferences) 는 Prisma.JsonValue 로 반환되므로 TS 배열/객체로
+ * 안전하게 캐스팅한다. 잘못된 JSON 모양이 들어와 있을 가능성은 시드·관리자 UI 쪽에서
+ * 입력 검증으로 막는다 (content-hub.md §"품질 게이트 연동").
  */
-export function findAssetById(id: string): UdAsset | undefined {
-  return UD_ASSETS.find((a) => a.id === id)
+function dbRowToUdAsset(row: {
+  id: string
+  name: string
+  category: string
+  parentId: string | null
+  applicableSections: unknown
+  valueChainStage: string
+  evidenceType: string
+  keywords: unknown
+  programProfileFit: unknown
+  narrativeSnippet: string
+  keyNumbers: unknown
+  status: string
+  version: number
+  sourceReferences: unknown
+  lastReviewedAt: Date
+  createdAt: Date
+  updatedAt: Date
+}): UdAsset {
+  return {
+    id: row.id,
+    name: row.name,
+    category: row.category as AssetCategory,
+    applicableSections: (row.applicableSections ?? []) as ProposalSectionKey[],
+    valueChainStage: row.valueChainStage as ValueChainStage,
+    evidenceType: row.evidenceType as EvidenceType,
+    keywords: row.keywords ? (row.keywords as string[]) : undefined,
+    programProfileFit: row.programProfileFit
+      ? (row.programProfileFit as Partial<ProgramProfile>)
+      : undefined,
+    narrativeSnippet: row.narrativeSnippet,
+    keyNumbers: row.keyNumbers ? (row.keyNumbers as string[]) : undefined,
+    status: row.status as AssetStatus,
+    sourceReferences: row.sourceReferences
+      ? (row.sourceReferences as string[])
+      : undefined,
+    lastReviewedAt:
+      row.lastReviewedAt instanceof Date
+        ? row.lastReviewedAt.toISOString().slice(0, 10)
+        : String(row.lastReviewedAt),
+    parentId: row.parentId,
+    version: row.version,
+    createdAt:
+      row.createdAt instanceof Date ? row.createdAt.toISOString() : undefined,
+    updatedAt:
+      row.updatedAt instanceof Date ? row.updatedAt.toISOString() : undefined,
+  }
 }
+
+/**
+ * 모든 비아카이브 자산을 DB 에서 조회.
+ *
+ * React `cache()` 로 요청 단위 메모 캐시 — 같은 요청에서 여러 Server Component 가
+ * 호출해도 DB 쿼리는 1회만 수행된다.
+ *
+ * ⚠ Server Component · Server Action · Route Handler 에서만 호출 가능.
+ *   Client Component 에서 직접 import/호출 금지.
+ */
+export const getAllAssets = cache(async (): Promise<UdAsset[]> => {
+  const rows = await prisma.contentAsset.findMany({
+    where: { status: { not: 'archived' } },
+    orderBy: { name: 'asc' },
+  })
+  return rows.map(dbRowToUdAsset)
+})
+
+// ═════════════════════════════════════════════════════════════
+// 7. 헬퍼 유틸 (컴포넌트·API 공용)
+// ═════════════════════════════════════════════════════════════
+
+/**
+ * 자산 ID 로 조회. 모르는 ID 면 null.
+ *
+ * Phase H (ADR-010): DB 조회로 전환. 요청 단위 cache 로 중복 쿼리 방지.
+ */
+export const findAssetById = cache(
+  async (id: string): Promise<UdAsset | null> => {
+    const row = await prisma.contentAsset.findUnique({ where: { id } })
+    if (!row) return null
+    return dbRowToUdAsset(row)
+  },
+)
 
 /**
  * 자산 카테고리의 한국어 라벨.
@@ -624,7 +727,7 @@ export function matchScoreBand(score: number): 'strong' | 'medium' | 'weak' | 'e
 }
 
 // ═════════════════════════════════════════════════════════════
-// 7. Wave G6 — Step 6 제안서 섹션 생성 시 자산 주입
+// 8. Wave G6 — Step 6 제안서 섹션 생성 시 자산 주입
 // ═════════════════════════════════════════════════════════════
 
 /**
@@ -661,7 +764,7 @@ export const SECTION_NO_TO_KEY: Record<number, ProposalSectionKey> = {
  * 사용: Step 6 제안서 섹션 생성 시 proposal-ai.ts 가 호출.
  *
  * 동작:
- *  - acceptedIds 를 UD_ASSETS 에서 조회 (findAssetById).
+ *  - acceptedIds 를 ContentAsset DB 에서 조회 (findAssetById).
  *  - section 이 주어지면 asset.applicableSections 에 section 이 포함된 자산만.
  *  - section 이 없으면 승인된 모든 자산을 포맷.
  *  - 결과 없으면 빈 문자열 반환 → 기존 프롬프트 동작에 영향 없음.
@@ -683,18 +786,19 @@ export const SECTION_NO_TO_KEY: Record<number, ProposalSectionKey> = {
  * @param section 이 섹션에 applicable 한 자산만 필터 (생략 시 전체)
  * @returns AI 프롬프트용 포맷된 블록. 승인 자산이 없으면 빈 문자열.
  */
-export function formatAcceptedAssets(
+export async function formatAcceptedAssets(
   acceptedIds: string[] | undefined,
   section?: ProposalSectionKey,
-): string {
+): Promise<string> {
   if (!acceptedIds || acceptedIds.length === 0) return ''
 
-  // 1. ID → UdAsset 으로 매핑 (모르는 ID 는 조용히 제외)
-  const assets: UdAsset[] = []
-  for (const id of acceptedIds) {
-    const a = findAssetById(id)
-    if (a) assets.push(a)
-  }
+  // 1. ID → UdAsset 으로 매핑 (모르는 ID 는 조용히 제외).
+  //    Phase H (ADR-010) 이후 findAssetById 는 async + DB 조회. 요청 단위 cache 덕에
+  //    같은 id 중복 호출은 1 회 쿼리로 귀결.
+  const resolved = await Promise.all(
+    acceptedIds.map((id) => findAssetById(id)),
+  )
+  const assets: UdAsset[] = resolved.filter((a): a is UdAsset => a !== null)
   if (assets.length === 0) return ''
 
   // 2. 섹션 필터

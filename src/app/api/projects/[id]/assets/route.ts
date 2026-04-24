@@ -17,8 +17,9 @@
  *
  * 관련:
  *   - ADR-009: docs/decisions/009-asset-registry.md
- *   - 스펙:    docs/architecture/asset-registry.md
- *   - 자산 시드: src/lib/asset-registry.ts (UD_ASSETS)
+ *   - ADR-010: docs/decisions/010-content-hub.md (DB 저장소 전환)
+ *   - 스펙:    docs/architecture/asset-registry.md · docs/architecture/content-hub.md
+ *   - 자산 풀: Prisma.ContentAsset (DB) — getAllAssets() / findAssetById()
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -70,8 +71,8 @@ export async function POST(req: NextRequest, { params }: Params) {
 
   const { assetId, accepted } = parsed.data
 
-  // 자산 ID 가 시드에 존재하는지 확인 (오탈자·구 ID 방지)
-  if (!findAssetById(assetId)) {
+  // 자산 ID 가 Content Hub(DB) 에 존재하는지 확인 (오탈자·구 ID 방지)
+  if (!(await findAssetById(assetId))) {
     return NextResponse.json(
       { error: 'UNKNOWN_ASSET_ID', assetId },
       { status: 404 },
