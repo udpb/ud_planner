@@ -1,12 +1,15 @@
 'use client'
 
 /**
- * Step 1 — RFP + 기획 방향 (B4 재작업)
+ * Step 1 — RFP + 기획 방향 (Phase F Wave 6: Value Chain 3 탭)
  *
- * 3컬럼 레이아웃:
- *   ┌─────────────────┬────────────────────────┬──────────────────┐
- *   │ [좌] 파싱 결과  │ [중] 기획 방향         │ [우] PM 가이드   │
- *   └─────────────────┴────────────────────────┴──────────────────┘
+ * 레이아웃 (Wave 6 이후):
+ *   ┌──────────────────────────────────────────┬──────────────────┐
+ *   │ Tabs: ① Impact · ② Input · ③ Output      │ [우] PM 가이드    │
+ *   │  - Impact: 기획 방향 편집 (제안배경·컨셉) │                   │
+ *   │  - Input:  ProgramProfile 11축            │                   │
+ *   │  - Output: RFP 파싱 결과                  │                   │
+ *   └──────────────────────────────────────────┴──────────────────┘
  *
  * 데이터 흐름:
  *   - Mount 시: B2 /api/projects/[id]/similar 호출 + B3 analyzeEvalStrategy 계산
@@ -14,6 +17,8 @@
  *   - PM 편집 → "확정" 클릭 → PATCH /api/projects/[id]/rfp
  *
  * 관련:
+ *   - ADR-008: docs/decisions/008-impact-value-chain.md
+ *   - 구현 계약: docs/architecture/value-chain.md §"Step 1 3 탭 분리"
  *   - 브리프: .claude/agent-briefs/redesign/B4-step-rfp-redesign.md
  *   - 디자인 시스템: .claude/skills/ud-design-system/SKILL.md
  *   - 브랜드 보이스: .claude/skills/ud-brand-voice/SKILL.md
@@ -30,6 +35,8 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { VALUE_CHAIN_STAGES } from '@/lib/value-chain'
 import {
   ArrowRight,
   AlertTriangle,
@@ -359,39 +366,132 @@ export function StepRfp({
         </div>
       )}
 
-      {/* 3컬럼 메인 */}
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1.2fr_320px]">
-        {/* ────────── 좌: 파싱 결과 ────────── */}
-        <LeftPanel
-          projectId={projectId}
-          parsed={parsed}
-          questions={questions}
-          completeness={completeness}
-          onParsed={handleParsed}
-        />
+      {/* 메인: 탭(좌) + PM 가이드(우) */}
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_320px]">
+        {/* ────────── 좌: Value Chain 3 탭 ────────── */}
+        <Tabs defaultValue="impact" className="w-full">
+          <TabsList variant="line" className="w-full justify-start border-b">
+            <TabsTrigger
+              value="impact"
+              className="data-active:after:!opacity-100"
+              style={{
+                ['--vc-underline' as string]: VALUE_CHAIN_STAGES.impact.colorHex,
+              }}
+            >
+              <span
+                className="inline-block h-2 w-2 rounded-full"
+                style={{ backgroundColor: VALUE_CHAIN_STAGES.impact.colorHex }}
+              />
+              {VALUE_CHAIN_STAGES.impact.numberedLabel} 의도
+            </TabsTrigger>
+            <TabsTrigger
+              value="input"
+              className="data-active:after:!opacity-100"
+              style={{
+                ['--vc-underline' as string]: VALUE_CHAIN_STAGES.input.colorHex,
+              }}
+            >
+              <span
+                className="inline-block h-2 w-2 rounded-full"
+                style={{ backgroundColor: VALUE_CHAIN_STAGES.input.colorHex }}
+              />
+              {VALUE_CHAIN_STAGES.input.numberedLabel} 자산
+            </TabsTrigger>
+            <TabsTrigger
+              value="output"
+              className="data-active:after:!opacity-100"
+              style={{
+                ['--vc-underline' as string]: VALUE_CHAIN_STAGES.output.colorHex,
+              }}
+            >
+              <span
+                className="inline-block h-2 w-2 rounded-full"
+                style={{ backgroundColor: VALUE_CHAIN_STAGES.output.colorHex }}
+              />
+              {VALUE_CHAIN_STAGES.output.numberedLabel} RFP
+            </TabsTrigger>
+          </TabsList>
 
-        {/* ────────── 중: 기획 방향 ────────── */}
-        <MiddlePanel
-          parsed={parsed}
-          planningDirection={planningDirection}
-          generating={generating}
-          saving={saving}
-          selectedConceptIdx={selectedConceptIdx}
-          onSelectConcept={handleSelectConcept}
-          editedBackground={editedBackground}
-          onEditBackground={setEditedBackground}
-          editedConcept={editedConcept}
-          onEditConcept={setEditedConcept}
-          editedPoints={editedPoints}
-          onEditPoints={setEditedPoints}
-          canConfirm={canConfirm}
-          confirmed={confirmed}
-          onGenerate={requestPlanningDirection}
-          onRegenerate={requestRegenerate}
-          onConfirm={handleConfirm}
-        />
+          {/* ① Impact — 의도 선언 · 기획 방향 편집 */}
+          <TabsContent value="impact" className="mt-3 space-y-3">
+            <TabIntro
+              stageColor={VALUE_CHAIN_STAGES.impact.colorHex}
+              title={`${VALUE_CHAIN_STAGES.impact.numberedLabel} 의도 · Before/After`}
+              description={VALUE_CHAIN_STAGES.impact.essentialQuestion}
+            />
+            {!parsed ? (
+              <EmptyTabState
+                icon={Compass}
+                message="③ Output 탭에서 RFP 파싱을 먼저 완료하세요. 파싱이 끝나면 의도 선언과 기획 방향을 작성할 수 있습니다."
+              />
+            ) : (
+              <MiddlePanel
+                parsed={parsed}
+                planningDirection={planningDirection}
+                generating={generating}
+                saving={saving}
+                selectedConceptIdx={selectedConceptIdx}
+                onSelectConcept={handleSelectConcept}
+                editedBackground={editedBackground}
+                onEditBackground={setEditedBackground}
+                editedConcept={editedConcept}
+                onEditConcept={setEditedConcept}
+                editedPoints={editedPoints}
+                onEditPoints={setEditedPoints}
+                canConfirm={canConfirm}
+                confirmed={confirmed}
+                onGenerate={requestPlanningDirection}
+                onRegenerate={requestRegenerate}
+                onConfirm={handleConfirm}
+              />
+            )}
+          </TabsContent>
 
-        {/* ────────── 우: PM 가이드 ────────── */}
+          {/* ② Input — 기관 자산 · 예산 규모 · 기간 · 지역 · 경험 자산 */}
+          <TabsContent value="input" className="mt-3 space-y-3">
+            <TabIntro
+              stageColor={VALUE_CHAIN_STAGES.input.colorHex}
+              title={`${VALUE_CHAIN_STAGES.input.numberedLabel} 자원 정리`}
+              description="이 사업에 투입 가능한 자원(예산·기관 자산·UD 에셋·기간·지역)을 ProgramProfile 11축으로 정리합니다."
+            />
+            {/*
+              TODO (Wave 8): ProgramProfilePanel 에 Input-only 필터 prop 추가.
+              지금은 전체 11축을 노출하나 Input 성격(organization · budget ·
+              durationMonths · region · pastExperience)만 보여주도록 좁힐 것.
+
+              v1.1: RFP 파싱의 detectedTasks 를 supportStructure.tasks 초기값으로 주입.
+              - initialProfile 이 이미 있고 tasks 가 비어 있을 때 (기존 프로젝트 최초 전환)
+              - 또는 initialProfile 이 없을 때 (신규 프로젝트 첫 파싱)
+              에 한해 detectedTasks 를 반영. PM 이 이미 저장한 tasks 는 보존.
+            */}
+            <ProgramProfilePanel
+              projectId={projectId}
+              initialProfile={mergeDetectedTasksIntoProfile(
+                initialProfile ?? null,
+                parsed?.detectedTasks,
+              )}
+              initialRenewalContext={initialRenewalContext ?? null}
+            />
+          </TabsContent>
+
+          {/* ③ Output — RFP 파싱 결과 · 평가 기준 · 요구 산출물 */}
+          <TabsContent value="output" className="mt-3 space-y-3">
+            <TabIntro
+              stageColor={VALUE_CHAIN_STAGES.output.colorHex}
+              title={`${VALUE_CHAIN_STAGES.output.numberedLabel} RFP 요구 · 평가 기준`}
+              description="RFP 를 업로드·파싱하면 발주기관 요구 산출물과 평가 배점이 구조화됩니다."
+            />
+            <LeftPanel
+              projectId={projectId}
+              parsed={parsed}
+              questions={questions}
+              completeness={completeness}
+              onParsed={handleParsed}
+            />
+          </TabsContent>
+        </Tabs>
+
+        {/* ────────── 우: PM 가이드 (탭과 무관하게 상시 표시) ────────── */}
         <RightPanel
           parsed={parsed}
           evalStrategy={evalStrategy}
@@ -402,22 +502,48 @@ export function StepRfp({
           router={router}
         />
       </div>
+    </div>
+  )
+}
 
-      {/* ── ProgramProfile v1.1 풀폭 패널 (Phase E Step 6) ── */}
-      {/*
-          v1.1: RFP 파싱의 detectedTasks 를 supportStructure.tasks 초기값으로 주입.
-          - initialProfile 이 이미 있고 tasks 가 비어 있을 때 (기존 프로젝트 최초 전환)
-          - 또는 initialProfile 이 없을 때 (신규 프로젝트 첫 파싱)
-          에 한해 detectedTasks 를 반영. PM 이 이미 저장한 tasks 는 보존.
-      */}
-      <ProgramProfilePanel
-        projectId={projectId}
-        initialProfile={mergeDetectedTasksIntoProfile(
-          initialProfile ?? null,
-          parsed?.detectedTasks,
-        )}
-        initialRenewalContext={initialRenewalContext ?? null}
-      />
+// ─────────────────────────────────────────
+// TabIntro — 각 탭 상단 단계 헤더
+// ─────────────────────────────────────────
+
+interface TabIntroProps {
+  stageColor: string
+  title: string
+  description: string
+}
+
+function TabIntro({ stageColor, title, description }: TabIntroProps) {
+  return (
+    <div
+      className="rounded-md border-l-4 bg-muted/30 p-3"
+      style={{ borderLeftColor: stageColor }}
+    >
+      <p className="text-sm font-semibold" style={{ color: stageColor }}>
+        {title}
+      </p>
+      <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// EmptyTabState — 탭이 비어 있을 때 안내
+// ─────────────────────────────────────────
+
+interface EmptyTabStateProps {
+  icon: React.ComponentType<{ className?: string }>
+  message: string
+}
+
+function EmptyTabState({ icon: Icon, message }: EmptyTabStateProps) {
+  return (
+    <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed p-6 text-sm text-muted-foreground">
+      <Icon className="h-8 w-8 opacity-40" />
+      <p className="max-w-md text-center">{message}</p>
     </div>
   )
 }
