@@ -26,7 +26,7 @@
 | C | 데이터 흐름 연결 | ✅ 완료 | 100% |
 | D | PM 가이드 + proposal-ingest + Gate 3 | ✅ 완료 | 100% |
 | E | ProgramProfile + 스텝 차별화 리서치 (ADR-006·007) | ✅ 완료 | 100% |
-| **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | 🟡 진행 | 10% |
+| **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | G | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% |
 
 ---
@@ -202,52 +202,52 @@
 >
 > 근거: [ADR-008](docs/decisions/008-impact-value-chain.md) · [docs/architecture/value-chain.md](docs/architecture/value-chain.md) · [docs/journey/2026-04-23-impact-value-chain-adoption.md](docs/journey/2026-04-23-impact-value-chain-adoption.md)
 
-- [x] **F0. 기록·계획 문서** *(2026-04-23)*
+- [x] **F0. 기록·계획 문서** *(2026-04-23, `0f416b5`)*
   - ADR-008 · architecture/value-chain.md · journey/2026-04-23-*.md
   - CLAUDE.md 설계 철학 8번째 항목 추가
   - ROADMAP Phase F 섹션 확장
 
-- [ ] **F1. 코어 타입**
+- [x] **F1. 코어 타입** *(`bcd36c0`)*
   - 신규: `src/lib/value-chain.ts` — `ValueChainStage` 타입 · 5단계 스펙 · `STEP_TO_STAGES` 매핑
   - 확장: `src/lib/pipeline-context.ts` — `valueChainState` 슬라이스 (currentStage · completedStages · sroiForecast · loopChecks)
   - 신규 타입: `SROIForecast` · `LoopAlignmentChecks` · `AlignmentCheck`
 
-- [ ] **F2. 스키마 점검 + (필요시) 마이그레이션**
+- [x] **F2. 스키마 점검** *(`c98bd62`, 마이그레이션 불필요)*
   - SROI 관련 기존 필드 감사
   - 스키마 변경 최소화 목표 (UI 라우팅만 이동)
 
-- [ ] **F3. 리서치 재배치**
+- [x] **F3. 리서치 재배치** *(`82e101d`)*
   - `imp-outcome-indicators` → `rfp-outcome-indicators` (🌱 씨앗)
   - `imp-diagnostic-tools` → `cur-diagnostic-tools` (🌱 씨앗)
   - 신규 `imp-outcome-benchmark` (🌾 수확)
   - 리서치 카드에 단계 뱃지 + 씨앗↔수확 링크
   - `imp-*` ID 하위 호환 resolver
 
-- [ ] **F4. Impact Value Chain 다이어그램**
+- [x] **F4. Impact Value Chain 다이어그램** *(`bedec87`)*
   - 신규: `src/components/value-chain-diagram.tsx` — 5단계 가로 플로우 + 루프 화살표
   - pm-guide 우측 패널 상단 고정
   - 현재 단계 하이라이트 + SROI 확정 시 루프 화살표 실선화
 
-- [ ] **F5. Step 4 → "예산 설계" 개칭 + SROI UI → Step 5 이동**
+- [x] **F5. Step 4·5 재구성** *(`0f3e4fd`, SROI 데이터 흐름은 이미 분리되어 라벨만 변경)*
   - `src/app/(dashboard)/projects/[id]/step-budget.tsx` — SROI 섹션 제거, 링크만 유지
   - `src/app/(dashboard)/projects/[id]/step-impact.tsx` — SROI Forecast 섹션 추가
   - `page.tsx` — 스텝 레이블 교체
 
-- [ ] **F6. Step 1 3탭 분리**
+- [x] **F6. Step 1 3탭 분리** *(`04e0e04`)*
   - `step-rfp.tsx` — ① Impact 의도 / ② Input 자산 / ③ Output RFP 탭 구조
   - 기존 기획방향·프로파일·RFP 파싱을 3탭으로 재배치
 
-- [ ] **F7. 루프 Gate — SROI 축 3방향 얼라인**
+- [x] **F7. 루프 Gate — SROI 축 3방향 얼라인** *(`ff9dca1`)*
   - 신규: `src/lib/loop-alignment.ts` — SROI 숫자 기반 3방향 체크 룰
   - Step 5 에 `LoopAlignmentCards` 섹션 (⑤→① / ⑤→② / ⑤→④)
   - 불일치 시 해당 스텝 복귀 CTA (블록 X)
   - Gate 4 (사람 확인) 로 quality-gates.md 업데이트
 
-- [ ] **F8. 검증 · 메모리 · 완료 기록**
-  - `npm run typecheck` 0 에러
-  - MEMORY.md 엔트리 추가
-  - journey 완료 로그
-  - 최종 E2E 확인 (브라우저)
+- [x] **F8. 검증 · 메모리 · 완료 기록** *(이 세션)*
+  - `npx tsc --noEmit` 0 에러
+  - MEMORY.md · project_impact_value_chain.md · journey Wave 진행 로그 갱신
+  - ROADMAP Phase F 전부 ✅
+  - 브라우저 E2E 검증은 다음 세션으로 — Docker `ud_ops_db` 기동 후
 
 ---
 

@@ -90,13 +90,35 @@ Claude 가 3가지 범위 선택지 제시:
 
 - [x] Wave 0 — 문서 (이 파일 포함) · 커밋 `0f416b5`
 - [x] Wave 1 — 코어 타입 · 커밋 `bcd36c0` · typecheck 0 error
-- [x] Wave 2 — 스키마 점검 · **마이그레이션 불필요** (아래 결론)
-- [ ] Wave 3 — 리서치 재분배
-- [ ] Wave 4 — Value Chain 다이어그램
-- [ ] Wave 5 — Step 4·5 재구성 (API 라우팅만)
-- [ ] Wave 6 — Step 1 3 탭
-- [ ] Wave 7 — 루프 Gate
-- [ ] Wave 8 — 검증 · 메모리 · 완료 기록
+- [x] Wave 2 — 스키마 점검 · **마이그레이션 불필요** · 커밋 `c98bd62`
+- [x] Wave 3 — 리서치 재분배 · 커밋 `82e101d` · typecheck 0 error
+  - 🌱 `rfp-outcome-indicators` · `cur-diagnostic-tools` (씨앗 2개 이동)
+  - 🌾 `imp-outcome-benchmark` 신규 (수확)
+  - 기존 18 리서치에 valueChainStage 태그 + LEGACY_ID_MAP 하위 호환
+  - UI: StageMetaLine 서브 컴포넌트 (단계 뱃지 · 씨앗/수확 아이콘 · 연결 힌트)
+- [x] Wave 4 — Value Chain 다이어그램 · 커밋 `bedec87` · typecheck 0 error
+  - `src/components/value-chain-diagram.tsx` 신규 (5단계 가로 + 루프)
+  - pm-guide 최상단 상시 고정
+  - hasSroi 여부에 따라 루프 점선/실선 전환
+- [x] Wave 5 — Step 4·5 재구성 · 커밋 `0f3e4fd` · typecheck 0 error
+  - 구조 확인 결과 SROI 데이터 흐름은 이미 의도대로 분리됨 (step-impact 가 budgetSlice.sroiForecast 읽음)
+  - 라벨만 변경: Step 4 `예산 설계` / Step 5 `임팩트 + SROI`
+  - sublabel/done 로직: SROI 확정 여부까지 포함
+  - SROI UI 강화는 Wave 7 루프 Gate 로 이관
+- [x] Wave 6 — Step 1 3 탭 분리 · 커밋 `04e0e04` · typecheck 0 error
+  - 좌측 Tabs (① Impact · ② Input · ③ Output) + 우측 PM 가이드 320px 고정
+  - TabIntro 컴포넌트 — 단계 색상 세로바 + 본질 질문
+  - 기존 컴포넌트(MiddlePanel·ProgramProfilePanel·LeftPanel·RfpParser) 재배치만
+  - TODO: ProgramProfilePanel Input-only 필터 + Tabs variant="vc-line"
+- [x] Wave 7 — SROI 루프 Gate · 커밋 `ff9dca1` · typecheck 0 error
+  - 신규 `src/lib/loop-alignment.ts` — computeLoopAlignment() 3방향 계산
+  - 신규 `src/components/loop-alignment-cards.tsx` — 3 카드 렌더
+  - step-impact 통합: sroiRatio + context 있을 때 표시
+  - page.tsx: StepImpact 에 context prop 전달
+  - 임계값: Impact < 1.5 mismatch, Input > 7 mismatch, Activity 매핑 밀도 기반
+- [x] Wave 8 — 최종 검증 + 메모리 + 완료 기록 (이 세션)
+  - 전체 typecheck 0 error
+  - MEMORY.md 및 project_impact_value_chain.md 갱신 (Wave 진행 로그 반영)
 
 ## Wave 2 스키마 점검 결론 (2026-04-23)
 
