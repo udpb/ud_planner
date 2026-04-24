@@ -181,10 +181,249 @@ export function matchAssetsToRfp(params: MatchAssetsParams): AssetMatch[] {
 // ═════════════════════════════════════════════════════════════
 
 /**
- * 언더독스 자산 시드 배열.
- * 현재는 빈 배열 — Wave G3 에서 15종 추가.
+ * 언더독스 자산 시드 배열 v1.0 — 15종 (Wave G3, 2026-04-24).
+ *
+ * 분포:
+ *  - 카테고리: methodology 3 · content 3 · product 4 · human 1 · data 3 · framework 1
+ *  - 섹션:     proposal-background 2 · curriculum 5 · coaches 3 · budget/impact 3 · other 2
+ *  - 단계:     ① 3 · ② 4 · ③ 2 · ④ 4 · ⑤ 2
+ *  - 증거:     quantitative 5 · structural 6 · methodology 3 · case 1
+ *
+ * narrativeSnippet 은 제안서 초안 문장 — AI 프롬프트가 재작성 지시 포함.
+ * keyNumbers 는 "이 숫자들은 그대로 유지" 조건으로 AI 에 지시.
  */
-export const UD_ASSETS: UdAsset[] = []
+const UD_ASSETS_SEED: UdAsset[] = [
+  // ══════════════════════════════════════════
+  // methodology (3) — 검증된 방법론·프로세스
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-impact-6stages',
+    name: 'IMPACT 6단계 프레임워크',
+    category: 'methodology',
+    applicableSections: ['curriculum', 'other'],
+    valueChainStage: 'activity',
+    evidenceType: 'structural',
+    keywords: ['창업 교육', '창업가 역량', 'IMPACT', '단계별 교육', '아이디어', '시장 검증', '고객 획득'],
+    narrativeSnippet:
+      '본 사업의 커리큘럼은 언더독스가 자체 개발·검증한 IMPACT 6단계 프레임워크(Ideation · Market · Product · Acquisition · Commercialization · Team)를 따라 구성된다. 각 단계는 창업가가 실제로 넘어야 하는 관문에 대응하며, 이론이 아닌 실행 중심으로 설계됐다.',
+    keyNumbers: ['6단계'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-uor-methodology',
+    name: 'UOR 창업교육 방법론',
+    category: 'methodology',
+    applicableSections: ['curriculum', 'proposal-background'],
+    valueChainStage: 'activity',
+    evidenceType: 'methodology',
+    keywords: ['창업 방법론', '실행 중심', '언더독스 방법론', '현장 학습'],
+    narrativeSnippet:
+      '언더독스의 UOR(Underdogs Original Recipe) 방법론은 10년간 창업교육 현장에서 축적된 실행 중심 교수법이다. 강의-실습-피드백의 3단 사이클을 모든 세션에 내장해 "배운 것이 실행으로 이어지는" 구조를 보장한다.',
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-5phase-loop',
+    name: '5-Phase 운영 루프',
+    category: 'methodology',
+    applicableSections: ['other', 'proposal-background'],
+    valueChainStage: 'output',
+    evidenceType: 'structural',
+    keywords: ['운영 체계', '자산화', '선순환', '지속 개선'],
+    narrativeSnippet:
+      '본 사업은 언더독스의 5-Phase 루프(수주 기획 → 프로그램 설계 → 현장 운영 → 데이터 수집 → 자산화)를 따라 진행되며, 마지막 자산화 단계에서 축적된 성과는 다음 기수 기획에 직접 재투입되어 해를 거듭할수록 품질이 높아진다.',
+    keyNumbers: ['5-Phase'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+
+  // ══════════════════════════════════════════
+  // content (3) — 콘텐츠 모듈
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-ai-solopreneur',
+    name: 'AI 솔로프러너 과정 (CORE + IMPACT 4 Phase)',
+    category: 'content',
+    applicableSections: ['curriculum'],
+    valueChainStage: 'activity',
+    evidenceType: 'case',
+    keywords: ['AI 솔로프러너', 'AI 네이티브', '1인 창업', 'AI 활용', 'AI 도구', '글로벌 창업'],
+    // programProfileFit 은 programProfile 유니온 값이 확정되어 있어 해당되는 카테고리가 없을 때 생략.
+    // 실제 매칭은 keywords + applicableSections 조합으로 이루어짐 (ADR-009 점수 공식).
+    narrativeSnippet:
+      '본 사업은 AI 시대에 재편된 창업 지형을 반영해, 언더독스가 운영 중인 AI 솔로프러너 과정(CORE 기초 + IMPACT 4 Phase Stage 2)의 검증된 콘텐츠를 활용한다. 1~3인 팀 기준으로 AI 도구를 활용해 빠르게 시장에 진입하도록 설계됐다.',
+    status: 'developing',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-ax-guidebook',
+    name: 'AX Guidebook (AI 전환 사전학습)',
+    category: 'content',
+    applicableSections: ['curriculum'],
+    valueChainStage: 'activity',
+    evidenceType: 'methodology',
+    keywords: ['AX', 'AI 전환', 'AI 컨설팅', '사전학습', '디지털 전환'],
+    narrativeSnippet:
+      'AX Guidebook 은 언더독스가 구축한 AI 전환 사전학습 체계로, 참여자가 본 교육 시작 전에 자기 사업 맥락에서 AI 활용 지점을 스스로 그려볼 수 있도록 안내한다. 이를 통해 첫 세션부터 실행 수준의 질문이 나오도록 설계됐다.',
+    status: 'developing',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-u10-mindset',
+    name: '창업가 마인드셋 U1.0',
+    category: 'content',
+    applicableSections: ['curriculum'],
+    valueChainStage: 'activity',
+    evidenceType: 'methodology',
+    keywords: ['창업가 마인드셋', '기초 교육', '예비창업', '자기 인식'],
+    narrativeSnippet:
+      'U1.0 창업가 마인드셋 모듈은 언더독스 커리큘럼의 공통 기초로, 창업가가 "왜 이 문제를 풀려는가" 를 스스로 정의하는 과정에서 시작한다. 이 토대 없이 이후 방법론이 제대로 작동하지 않는다는 10년 현장 경험에 근거한다.',
+    keyNumbers: ['10년'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+
+  // ══════════════════════════════════════════
+  // product (4) — 실제 운용 중인 서비스 프로덕트
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-ops-workspace',
+    name: 'Ops Workspace (AI 공동기획자 플랫폼)',
+    category: 'product',
+    applicableSections: ['other', 'proposal-background'],
+    valueChainStage: 'output',
+    evidenceType: 'structural',
+    keywords: ['AI 공동기획', '제안서 자동화', '기획 플랫폼', '품질 관리'],
+    narrativeSnippet:
+      '본 사업 기획·운영은 언더독스가 자체 개발·운영 중인 AI 공동기획자 플랫폼(Ops Workspace)에서 수행된다. 제안서 작성부터 커리큘럼 설계·SROI 산정까지 모든 결정이 플랫폼에 축적되어, 발주기관 요청 시 근거 추적·재현이 가능하다.',
+    status: 'developing',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-coach-finder',
+    name: 'Coach Finder (코치 검색·평판 플랫폼)',
+    category: 'product',
+    applicableSections: ['coaches'],
+    valueChainStage: 'input',
+    evidenceType: 'structural',
+    keywords: ['코치 매칭', '코치 검색', '전문가 풀', '평판 관리'],
+    narrativeSnippet:
+      '본 사업에 투입될 코치는 언더독스가 운영 중인 Coach Finder 플랫폼에서 도메인·단계·지역별 적합도에 따라 자동 추천된다. 과거 코칭 이력·참여자 평가가 누적되어 있어 "검증된 코치" 풀에서만 배정된다.',
+    status: 'developing',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-coaching-log',
+    name: 'Coaching Log (코칭 활동 자동 기록)',
+    category: 'product',
+    applicableSections: ['coaches', 'impact'],
+    valueChainStage: 'input',
+    evidenceType: 'quantitative',
+    keywords: ['코칭 로그', '활동 기록', '데이터 수집', '평가 체계'],
+    narrativeSnippet:
+      '모든 코칭 세션은 Coaching Log 시스템에 자동 기록되며, 코치별·세션별·참여자별 인사이트가 실시간으로 축적된다. 이 데이터는 사업 종료 시 정량 성과 리포트의 원본으로 제공된다.',
+    status: 'developing',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-lms-ai-coach',
+    name: 'LMS + AI 코치봇',
+    category: 'product',
+    applicableSections: ['curriculum'],
+    valueChainStage: 'activity',
+    evidenceType: 'structural',
+    keywords: ['LMS', 'AI 코치', '학습 플랫폼', '자동 피드백', '개인 맞춤'],
+    narrativeSnippet:
+      '본 사업의 학습 환경은 언더독스 LMS 에 AI 코치봇이 탑재된 형태로 제공되어, 세션 사이에도 참여자가 24시간 피드백을 받을 수 있다. AI 는 참여자의 과제 제출·질문 이력을 기억해 맥락 있는 코칭을 이어간다.',
+    keyNumbers: ['24시간'],
+    status: 'developing',
+    lastReviewedAt: '2026-04-24',
+  },
+
+  // ══════════════════════════════════════════
+  // human (1) — 집합적 인적 자원
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-uca-coach-pool',
+    name: 'UCA 코치 풀',
+    category: 'human',
+    applicableSections: ['coaches', 'org-team'],
+    valueChainStage: 'input',
+    evidenceType: 'quantitative',
+    keywords: ['코치 풀', '전문가 네트워크', 'UCA', '액션 코치'],
+    narrativeSnippet:
+      '본 사업에 투입 가능한 언더독스 UCA(Underdogs Certified Accelerator) 코치 풀은 800명 규모로, 도메인·단계·지역별 세분화되어 있다. 자체 육성 체계를 통해 코칭 역량 검증을 거친 인력만 활성 풀에 포함된다.',
+    keyNumbers: ['800명'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+
+  // ══════════════════════════════════════════
+  // data (3) — 정량 근거 자산
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-alumni-hub',
+    name: 'Alumni Hub (10년 25,000명 교육생 데이터)',
+    category: 'data',
+    applicableSections: ['proposal-background', 'impact'],
+    valueChainStage: 'impact',
+    evidenceType: 'quantitative',
+    keywords: ['알럼나이', '교육생 데이터', '졸업 이후', '성과 추적', '창업 실적'],
+    narrativeSnippet:
+      '언더독스는 지난 10년간 25,000명 규모의 교육생 데이터를 축적·관리해왔다. 이 데이터는 본 사업의 Before/After 지표 설계·유사 프로그램 벤치마크·사후 추적 방법론의 실증 근거로 활용된다.',
+    keyNumbers: ['10년', '25,000명'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-sroi-proxy-db',
+    name: 'SROI 프록시 DB (16종 × 4국)',
+    category: 'data',
+    applicableSections: ['impact', 'budget'],
+    valueChainStage: 'outcome',
+    evidenceType: 'quantitative',
+    keywords: ['SROI', '사회적 가치', '임팩트 측정', '프록시', '화폐 환산'],
+    narrativeSnippet:
+      '본 사업의 SROI 산정은 언더독스가 축적한 16종 × 4개국 SROI 프록시 데이터베이스를 기반으로 한다. 교육훈련·고용창출·창업 생태계·지역 활성화 등 Outcome 유형별로 한국사회가치평가·UK Social Value Bank 등 공식 기준과 매핑되어 있어, 화폐 환산 근거가 투명하다.',
+    keyNumbers: ['16종', '4개국'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+  {
+    id: 'asset-benchmark-pattern',
+    name: 'Benchmark Pattern (유사 사업 예산·성과 레퍼런스)',
+    category: 'data',
+    applicableSections: ['budget', 'impact'],
+    valueChainStage: 'outcome',
+    evidenceType: 'quantitative',
+    keywords: ['벤치마크', '유사 사업', '예산 기준', '성과 비교', '레퍼런스'],
+    narrativeSnippet:
+      '본 사업 예산·SROI 초안은 언더독스 내부 Benchmark Pattern DB 에 축적된 유사 사업(같은 대상·규모·기간 기준) 레퍼런스와 비교 검증을 거쳤다. 발주기관은 본 제안의 수치가 시장 평균 대비 어느 위치인지 명확히 확인할 수 있다.',
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+
+  // ══════════════════════════════════════════
+  // framework (1) — 개념 프레임
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-before-after-ai',
+    name: 'Before/After AI 전환 프레임 (창업가 유형·팀·투자·분야)',
+    category: 'framework',
+    applicableSections: ['proposal-background'],
+    valueChainStage: 'impact',
+    evidenceType: 'structural',
+    keywords: ['AI 전환', '창업 지형 변화', 'AI 네이티브', 'Deep Tech', '도메인 AI'],
+    narrativeSnippet:
+      'AI 도입 이후 창업 지형은 창업가 유형·팀 빌딩·투자 기준·창업 분야 4축 모두에서 재편됐다. 본 사업의 교육 설계는 이 Before/After 변화를 정면으로 반영해, 과거 양식의 커리큘럼과 구별되는 AI 시대형 창업교육을 지향한다.',
+    keyNumbers: ['4축'],
+    status: 'stable',
+    lastReviewedAt: '2026-04-24',
+  },
+]
+
+export const UD_ASSETS: UdAsset[] = UD_ASSETS_SEED
 
 // ═════════════════════════════════════════════════════════════
 // 6. 헬퍼 유틸 (컴포넌트·API 공용)
