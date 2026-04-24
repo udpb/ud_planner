@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "prisma/seed.ts", "prisma/seed-channel-presets.ts", "prisma/seed-program-profiles.ts", "scripts"]
+  "exclude": ["node_modules", "prisma/seed.ts", "prisma/seed-channel-presets.ts", "prisma/seed-program-profiles.ts", "prisma/seed-content-assets.ts", "prisma/seed-winning-patterns-sections.ts", "scripts"]
 }

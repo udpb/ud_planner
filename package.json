@@ -18,6 +18,7 @@
     "db:studio": "prisma studio",
     "db:seed:channel-presets": "npx tsx prisma/seed-channel-presets.ts",
     "db:seed:program-profiles": "npx tsx prisma/seed-program-profiles.ts",
+    "db:seed:content-assets": "npx tsx prisma/seed-content-assets.ts",
     "sync:coaches": "npx tsx scripts/sync-coaches.ts"
   },
   "dependencies": {

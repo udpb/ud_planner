@@ -553,6 +553,51 @@ model CostStandard {
   updatedAt   DateTime       @updatedAt
 }
 
+// ─────────────────────────────────────────
+// [마스터] Content Hub — UD Asset Registry v2 (ADR-010)
+// ─────────────────────────────────────────
+
+model ContentAsset {
+  id       String @id @default(cuid())
+  name     String
+  category String // AssetCategory 유니온 (methodology · content · product · human · data · framework)
+
+  // 계층 — 상품 → 세션/주차/챕터 (1 단)
+  parentId String?
+  parent   ContentAsset?  @relation("ContentAssetHierarchy", fields: [parentId], references: [id])
+  children ContentAsset[] @relation("ContentAssetHierarchy")
+
+  // 3중 태그 (Phase G UdAsset 동일)
+  applicableSections Json   // ProposalSectionKey[]
+  valueChainStage    String // ValueChainStage
+  evidenceType       String // 'quantitative' | 'structural' | 'case' | 'methodology'
+
+  // 매칭 보조
+  keywords          Json? // string[]
+  programProfileFit Json? // Partial<ProgramProfile>
+
+  // 제안서 반영
+  narrativeSnippet String  @db.Text
+  keyNumbers       Json?   // string[]
+
+  // 상태 + 버전
+  status           String   @default("stable") // stable | developing | archived
+  version          Int      @default(1)
+  sourceReferences Json?    // string[] — 외부 원본 URL
+  lastReviewedAt   DateTime
+
+  // 감사
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String?
+  updatedById String?
+
+  @@index([category])
+  @@index([valueChainStage])
+  @@index([parentId])
+  @@index([status])
+}
+
 model SroiProxy {
   id               String   @id @default(cuid())
   country          String
