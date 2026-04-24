@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FolderKanban,
   Upload,
+  Library,
   Settings,
 } from 'lucide-react'
 
@@ -14,6 +15,7 @@ const navItems = [
   { href: '/dashboard', label: '대시보드', icon: LayoutDashboard },
   { href: '/projects', label: '프로젝트', icon: FolderKanban },
   { href: '/ingest', label: '자료 업로드', icon: Upload },
+  { href: '/admin/content-hub', label: 'Content Hub', icon: Library },
   { href: '/settings', label: '설정', icon: Settings },
 ]
 
