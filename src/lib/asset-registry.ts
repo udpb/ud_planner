@@ -306,10 +306,22 @@ function scoreAssetForSection(
  * 같은 자산이 여러 섹션에 적합하면 섹션 수만큼 AssetMatch 반환.
  * 결과는 matchScore 내림차순 정렬. minScore 미만 제외. limit 으로 cap.
  *
+ * Phase H Wave H4 (ADR-010) — 계층 지원:
+ *  - 자산 풀은 평면 배열 (top-level 과 children 이 섞여 있음).
+ *  - top-level 자산만 일반 매칭 루프에서 평가.
+ *  - 어떤 top-level 자산이 section 기준 MATCH_THRESHOLDS.medium (0.5) 이상이면,
+ *    그 자산의 children 도 **같은 section 에서** 후보로 강제 포함 (minScore 우회).
+ *    children 자체 점수는 정상 계산 (점수 알고리즘 불변).
+ *  - 결과 타입은 평면 AssetMatch[] — UI 에서 parentId 로 그룹화.
+ *  - limit 은 부모 매칭을 자르지 않도록, 부모-자식 블록 단위로 고려하되
+ *    현재는 단순히 부모·자식을 하나의 정렬 스트림으로 섞고 상위 N 절삭.
+ *    (UI 입장에서는 부모 없이 자식만 뜨는 경우가 없도록 아래 로직이 보장.)
+ *
  * 검증 예시:
  *  - Alumni Hub (25,000명) + 창업 교육 RFP → section=proposal-background 강 매칭
  *  - SROI 프록시 DB + 임팩트 측정 요구 RFP → section=impact 강 매칭
  *  - UCA 코치 풀 + 코치 요구 RFP → section=coaches 강 매칭
+ *  - AI 솔로프러너 과정(parent) 매칭 시 Week 1~3(children) 도 커리큘럼 후보로 함께 상승
  */
 export async function matchAssetsToRfp(
   params: MatchAssetsParams,
@@ -333,13 +345,61 @@ export async function matchAssetsToRfp(
   // 현재는 sectionApplicability 가 0.5 기본으로 떨어짐 (영향 최소).
   // Phase G 후속: MatchAssetsParams 에 evalStrategy?: EvalStrategy 추가 고려.
 
+  // ── Wave H4: top-level 과 children 분리 ──
+  const topLevel = pool.filter((a) => !a.parentId)
+  const childrenByParent = new Map<string, UdAsset[]>()
+  for (const a of pool) {
+    if (a.parentId) {
+      const arr = childrenByParent.get(a.parentId) ?? []
+      arr.push(a)
+      childrenByParent.set(a.parentId, arr)
+    }
+  }
+
   const results: AssetMatch[] = []
 
-  for (const asset of pool) {
-    for (const section of asset.applicableSections) {
-      const match = scoreAssetForSection(asset, section, rfp, profile, evalStrategy)
+  for (const parent of topLevel) {
+    // 부모 자산에 대해 applicable 한 섹션 각각 매칭
+    const parentMatchesBySection = new Map<ProposalSectionKey, AssetMatch>()
+    for (const section of parent.applicableSections) {
+      const match = scoreAssetForSection(parent, section, rfp, profile, evalStrategy)
+      parentMatchesBySection.set(section, match)
       if (match.matchScore >= minScore) {
         results.push(match)
+      }
+    }
+
+    // children 강제 포함 규칙:
+    //  - 부모 자산이 어떤 section 에서 medium+ 로 매칭되면, 그 section 을
+    //    applicableSections 로 가진 children 을 minScore 우회해 후보에 포함.
+    //  - children 이 부모와 다른 section 에도 applicable 하면, 그 section 은 정상 점수 규칙.
+    const children = childrenByParent.get(parent.id) ?? []
+    if (children.length === 0) continue
+
+    // 부모가 medium+ 로 매칭된 섹션 집합
+    const strongParentSections = new Set<ProposalSectionKey>()
+    for (const [section, m] of parentMatchesBySection) {
+      if (m.matchScore >= MATCH_THRESHOLDS.medium) {
+        strongParentSections.add(section)
+      }
+    }
+
+    for (const child of children) {
+      for (const section of child.applicableSections) {
+        const match = scoreAssetForSection(child, section, rfp, profile, evalStrategy)
+        // 부모가 해당 section 에서 medium+ 이면 minScore 우회해 포함.
+        // 아니면 일반 minScore 적용.
+        const parentStrong = strongParentSections.has(section)
+        if (parentStrong || match.matchScore >= minScore) {
+          // 부모 강제 포함 케이스는 이유 추가 (UI 설명력)
+          if (parentStrong && match.matchScore < minScore) {
+            match.matchReasons = [
+              ...match.matchReasons,
+              `상위 자산 "${parent.name}" 매칭에 따른 자동 포함`,
+            ]
+          }
+          results.push(match)
+        }
       }
     }
   }

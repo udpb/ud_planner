@@ -20,7 +20,7 @@
 
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
-import { CheckCircle2, Package, Sparkles } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ChevronRight, Package, Sparkles } from 'lucide-react'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -225,7 +225,7 @@ export function MatchedAssetsPanel({
 }
 
 // ─────────────────────────────────────────
-// SectionGroup — 섹션 단위 그룹
+// SectionGroup — 섹션 단위 그룹 (Wave H4: 부모-자식 계층 렌더)
 // ─────────────────────────────────────────
 
 interface SectionGroupProps {
@@ -236,6 +236,61 @@ interface SectionGroupProps {
   onToggle: (assetId: string, nextAccepted: boolean) => void
 }
 
+/**
+ * Wave H4: 같은 section 안에서 부모 매칭과 자식 매칭을 하나의 블록으로 묶는다.
+ *
+ * 규칙:
+ *  - `asset.parentId` 가 있고, 같은 section 안에 그 parentId 를 가진 부모 매칭이 있으면
+ *    자식으로 그루핑.
+ *  - 부모가 같은 section 에 없는 자식은 고아 자식 → 독립 카드로 상단 노출.
+ *  - 부모 순서는 기존 점수 내림차순 유지. 부모 안에서 자식은 점수 내림차순.
+ */
+interface ParentBlock {
+  parent: AssetMatch
+  children: AssetMatch[]
+}
+function groupBySection(items: AssetMatch[]): {
+  parentBlocks: ParentBlock[]
+  orphanChildren: AssetMatch[]
+} {
+  // 1 차 순회: 부모 후보 map 구축 (asset.parentId 가 없는 매칭들)
+  const parentById = new Map<string, ParentBlock>()
+  const orphanChildren: AssetMatch[] = []
+
+  for (const m of items) {
+    if (!m.asset.parentId) {
+      parentById.set(m.asset.id, { parent: m, children: [] })
+    }
+  }
+
+  // 2 차 순회: 자식 할당
+  for (const m of items) {
+    if (m.asset.parentId) {
+      const block = parentById.get(m.asset.parentId)
+      if (block) {
+        block.children.push(m)
+      } else {
+        orphanChildren.push(m)
+      }
+    }
+  }
+
+  // 부모 블록 순서: 입력 순서(점수 내림차순) 유지.
+  // 자식 정렬도 점수 내림차순으로 재정렬 (안전망).
+  const parentBlocks: ParentBlock[] = []
+  for (const m of items) {
+    if (!m.asset.parentId) {
+      const block = parentById.get(m.asset.id)
+      if (block) {
+        block.children.sort((a, b) => b.matchScore - a.matchScore)
+        parentBlocks.push(block)
+      }
+    }
+  }
+
+  return { parentBlocks, orphanChildren }
+}
+
 function SectionGroup({
   section,
   items,
@@ -243,6 +298,11 @@ function SectionGroup({
   pending,
   onToggle,
 }: SectionGroupProps) {
+  const { parentBlocks, orphanChildren } = useMemo(
+    () => groupBySection(items),
+    [items],
+  )
+
   return (
     <div className="space-y-2">
       <div className="flex items-baseline gap-2">
@@ -254,7 +314,17 @@ function SectionGroup({
         </span>
       </div>
       <div className="grid grid-cols-1 gap-2">
-        {items.map((m) => (
+        {parentBlocks.map((block) => (
+          <AssetBlock
+            key={`${block.parent.asset.id}__${block.parent.section}`}
+            block={block}
+            acceptedIds={acceptedIds}
+            pending={pending}
+            onToggle={onToggle}
+          />
+        ))}
+        {/* 고아 자식 (같은 section 에 부모 매칭이 없음) → 독립 카드 */}
+        {orphanChildren.map((m) => (
           <AssetCard
             key={`${m.asset.id}__${m.section}`}
             match={m}
@@ -269,6 +339,66 @@ function SectionGroup({
 }
 
 // ─────────────────────────────────────────
+// AssetBlock — 부모 자산 + children 묶음 (Wave H4)
+// ─────────────────────────────────────────
+
+interface AssetBlockProps {
+  block: ParentBlock
+  acceptedIds: Set<string>
+  pending: Set<string>
+  onToggle: (assetId: string, nextAccepted: boolean) => void
+}
+
+function AssetBlock({ block, acceptedIds, pending, onToggle }: AssetBlockProps) {
+  const { parent, children } = block
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div className="space-y-1.5">
+      <AssetCard
+        match={parent}
+        accepted={acceptedIds.has(parent.asset.id)}
+        disabled={pending.has(parent.asset.id)}
+        onToggle={onToggle}
+      />
+      {children.length > 0 && (
+        <div className="ml-5 space-y-1.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-7 gap-1 px-1.5 text-[11px] font-medium text-muted-foreground hover:text-foreground"
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+          >
+            {expanded ? (
+              <ChevronDown className="h-3.5 w-3.5" />
+            ) : (
+              <ChevronRight className="h-3.5 w-3.5" />
+            )}
+            세부 세션 {children.length}개 {expanded ? '접기' : '보기'}
+          </Button>
+          {expanded && (
+            <div className="space-y-2 border-l-2 border-dashed border-border/70 pl-3">
+              {children.map((childMatch) => (
+                <AssetCard
+                  key={`${childMatch.asset.id}__${childMatch.section}`}
+                  match={childMatch}
+                  accepted={acceptedIds.has(childMatch.asset.id)}
+                  disabled={pending.has(childMatch.asset.id)}
+                  onToggle={onToggle}
+                  isChild
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
 // AssetCard — 자산 단건 카드
 // ─────────────────────────────────────────
 
@@ -277,9 +407,11 @@ interface AssetCardProps {
   accepted: boolean
   disabled: boolean
   onToggle: (assetId: string, nextAccepted: boolean) => void
+  /** Wave H4: 계층 렌더 시 자식 카드 — 옅은 배경 + 약간 작은 padding */
+  isChild?: boolean
 }
 
-function AssetCard({ match, accepted, disabled, onToggle }: AssetCardProps) {
+function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: AssetCardProps) {
   const [expanded, setExpanded] = useState(false)
 
   const { asset, matchScore, matchReasons } = match
@@ -301,6 +433,7 @@ function AssetCard({ match, accepted, disabled, onToggle }: AssetCardProps) {
     <div
       className={cn(
         'rounded-md border p-3 transition-colors',
+        isChild ? 'bg-muted/40 p-2.5' : '',
         accepted
           ? 'border-primary/50 bg-primary/[0.03]'
           : 'border-border bg-background hover:border-border/80',
