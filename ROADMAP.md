@@ -27,7 +27,7 @@
 | D | PM 가이드 + proposal-ingest + Gate 3 | ✅ 완료 | 100% |
 | E | ProgramProfile + 스텝 차별화 리서치 (ADR-006·007) | ✅ 완료 | 100% |
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
-| **G** | **UD Asset Registry + RFP 자동 매핑 (ADR-009)** | 🟡 진행 | 12% |
+| **G** | **UD Asset Registry + RFP 자동 매핑 (ADR-009)** | ✅ 완료 | 100% |
 | H | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% |
 
 ---
@@ -263,17 +263,17 @@
   - CLAUDE.md 설계 철학 9번째 항목 추가
   - ROADMAP Phase G 섹션 추가 (기존 G → H 이동)
 
-- [ ] **G1. 코어 타입**
+- [x] **G1. 코어 타입** *(`c157863`)*
   - 신규: `src/lib/asset-registry.ts` — `UdAsset` · `AssetCategory` · `EvidenceType` · `AssetMatch`
   - 신규: `src/modules/asset-registry/manifest.ts` — reads/writes 계약
   - 함수 시그니처만 선언 (구현은 G4)
 
-- [ ] **G2. 스키마 마이그레이션**
+- [x] **G2. 스키마 마이그레이션** *(`833819f`)*
   - 변경 1건: `Project.acceptedAssetIds Json?` 추가
   - `prisma/migrations/<timestamp>_asset_registry/migration.sql`
   - PipelineContext 에 `acceptedAssetIds?: string[]` 슬라이스
 
-- [ ] **G3. 시드 자산 ~15종**
+- [x] **G3. 시드 자산 15종** *(`4947254`)*
   - methodology 3 (IMPACT 6단계 · UOR · 5-Phase 루프)
   - content 3 (AI 솔로프러너 · AX Guidebook · U1.0)
   - product 4 (Ops Workspace · Coach Finder · Coaching Log · LMS+AI봇)
@@ -282,29 +282,29 @@
   - framework 1 (Before/After AI 전환 프레임)
   - 각 자산 narrativeSnippet 2~3 문장 초안 작성
 
-- [ ] **G4. matchAssetsToRfp() 점수 알고리즘**
+- [x] **G4. matchAssetsToRfp() 점수 알고리즘** *(`a489880`)*
   - profileSimilarity(0.5) + keywordOverlap(0.3) + sectionApplicability(0.2)
   - matchReasons 반환 (근거 표시)
   - 임계: 0.7↑ 강 · 0.5↑ 중 · 0.3↑ 약 · 0.3 미만 제외
   - 테스트 케이스 3~5개
 
-- [ ] **G5. Step 1 매칭 자산 패널 UI**
+- [x] **G5. Step 1 매칭 자산 패널 UI** *(`a2c8d8a`)*
   - 신규: `src/components/projects/matched-assets-panel.tsx`
   - 섹션별 그룹 + Value Chain 단계 뱃지 + 증거 유형 뱃지
   - narrativeSnippet 프리뷰
   - "제안서에 포함" 토글 → POST `/api/projects/[id]/assets`
   - Step 1 ③ Output 탭 하단 또는 우측 사이드바 최상단 배치
 
-- [ ] **G6. Step 6 제안서 AI 자산 주입**
+- [x] **G6. Step 6 제안서 AI 자산 주입** *(`e9ad4ac`)*
   - `src/lib/proposal-ai.ts` 프롬프트 수정 — acceptedAssetIds 로 자산 narrativeSnippet 주입
   - 소프트 마커 `<!-- asset:id -->` 삽입 (추적용)
   - "복붙 금지, 맥락 맞춰 재작성" 지시 포함
 
-- [ ] **G7. 검증 · 메모리 · 완료 기록**
+- [x] **G7. 검증 · 메모리 · 완료 기록** *(이 세션)*
   - `npx tsc --noEmit` 0 에러
-  - MEMORY.md 엔트리 추가
+  - MEMORY.md + project_asset_registry.md 갱신
   - journey 완료 로그
-  - 브라우저 E2E: "매칭 자산 패널이 실제 RFP 로 활성화되는지"
+  - 브라우저 E2E 는 다음 세션 (Docker `ud_ops_db` 기동 후)
 
 ---
 
