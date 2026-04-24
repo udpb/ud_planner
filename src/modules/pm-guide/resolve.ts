@@ -31,7 +31,7 @@ import {
   EVALUATOR_PERSPECTIVE_FALLBACK,
   UD_STRENGTH_TIPS,
 } from './static-content'
-import { RESEARCH_REQUESTS_BY_STEP } from './research-prompts'
+import { RESEARCH_REQUESTS_BY_STEP, normalizeResearchId } from './research-prompts'
 import type {
   CommonMistake,
   PmGuideContent,
@@ -284,7 +284,13 @@ function resolveResearchRequests(
   // 현재는 route.ts 가 externalResearch 배열에 promptId=request.id 로 동일 저장하므로
   // externalResearch 만 봐도 OK (stores='strategicNotes' 도 여기서 찾음).
   return requests.map((req) => {
-    const saved = research.find((r) => r.promptId === req.id)
+    // Phase F Wave 3 하위 호환: 구 ID 로 저장된 답변도 신 ID 리서치에 매핑.
+    // (imp-outcome-indicators → rfp-outcome-indicators 등)
+    const saved = research.find((r) => {
+      if (r.promptId === req.id) return true
+      const normalized = normalizeResearchId(r.promptId ?? '')
+      return normalized === req.id
+    })
     return {
       ...req,
       savedAnswer: saved?.content,

@@ -37,6 +37,8 @@ import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import type { ResolvedResearchRequest } from '../types'
 import type { StepKey } from '../types'
+import { VALUE_CHAIN_STAGES, STAGE_TO_STEPS } from '@/lib/value-chain'
+import type { ValueChainStage } from '@/lib/value-chain'
 
 interface ResearchRequestsCardProps {
   projectId: string
@@ -223,6 +225,14 @@ function RequestRow({ projectId, stepKey, request }: RequestRowProps) {
               </Badge>
             )}
           </div>
+          {/* Phase F (ADR-008): Value Chain 단계 뱃지 + 씨앗/수확 링크 힌트 */}
+          {(request.valueChainStage || request.seedOrHarvest) && (
+            <StageMetaLine
+              stage={request.valueChainStage}
+              seedOrHarvest={request.seedOrHarvest}
+              currentStep={stepKey}
+            />
+          )}
         </div>
         <span className="shrink-0 pt-0.5 text-muted-foreground">
           {expanded ? (
@@ -358,6 +368,69 @@ function RequestRow({ projectId, stepKey, request }: RequestRowProps) {
             </div>
           )}
         </div>
+      )}
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// Phase F (ADR-008) Value Chain 단계 메타 라인
+// ─────────────────────────────────────────
+
+interface StageMetaLineProps {
+  stage?: ValueChainStage
+  seedOrHarvest?: 'seed' | 'harvest'
+  currentStep: StepKey
+}
+
+/**
+ * 리서치 카드 타이틀 아래에 표시되는 Value Chain 메타:
+ *  - 단계 뱃지 (① Impact 등, 색상 코드)
+ *  - 씨앗🌱(앞 스텝에서 뿌리는 준비) / 수확🌾(뒷 스텝에서 확정) 힌트
+ *  - 씨앗/수확이면 실제 연결 스텝 명시 ("Step 5 에서 수확" 또는 "Step 1·2 에서 이어짐")
+ */
+function StageMetaLine({ stage, seedOrHarvest, currentStep }: StageMetaLineProps) {
+  const spec = stage ? VALUE_CHAIN_STAGES[stage] : null
+
+  // 씨앗이면 해당 단계가 완성되는 스텝 (통상 impact 단계 = Step 5 임팩트)
+  // 수확이면 이전에 씨앗을 뿌린 스텝들 — STAGE_TO_STEPS 에서 현재 스텝 제외
+  let linkHint: string | null = null
+  if (seedOrHarvest === 'seed' && stage) {
+    const targetSteps = STAGE_TO_STEPS[stage].filter((s) => s !== currentStep)
+    if (targetSteps.length > 0) {
+      linkHint = `Step 5 에서 수확`
+    }
+  } else if (seedOrHarvest === 'harvest' && stage) {
+    // 수확은 씨앗이 뿌려진 "앞 스텝들" 을 암시 — 현재 스텝 앞에 있는 스텝들
+    linkHint = `앞 스텝들에서 이어짐`
+  }
+
+  return (
+    <div className="mt-1 flex items-center gap-1.5 text-[9px] text-muted-foreground">
+      {spec && (
+        <span
+          className="inline-flex items-center rounded px-1.5 py-0.5 font-semibold"
+          style={{
+            backgroundColor: `${spec.colorHex}18`,
+            color: spec.colorHex,
+            borderLeft: `2px solid ${spec.colorHex}`,
+          }}
+        >
+          {spec.numberedLabel}
+        </span>
+      )}
+      {seedOrHarvest === 'seed' && (
+        <span className="text-amber-700" title="씨앗 — 앞 스텝에서 미리 뿌리는 준비 질문">
+          🌱 씨앗
+        </span>
+      )}
+      {seedOrHarvest === 'harvest' && (
+        <span className="text-orange-700" title="수확 — 앞에서 뿌린 씨앗을 여기서 확정">
+          🌾 수확
+        </span>
+      )}
+      {linkHint && (
+        <span className="text-[9px] italic text-muted-foreground/80">· {linkHint}</span>
       )}
     </div>
   )

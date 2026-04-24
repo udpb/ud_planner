@@ -21,9 +21,15 @@
  */
 
 import type { StepKey } from './types'
+import type { ValueChainStage } from '@/lib/value-chain'
 
 /**
  * 리서치 요청 단건 — PM 이 외부 LLM 에 붙여넣어 답 받는 구조화된 질문.
+ *
+ * Phase F (ADR-008, 2026-04-23) 확장:
+ *   - `valueChainStage`: 이 리서치가 준비하는 논리 단계 (UI 스텝과 다를 수 있음)
+ *   - `seedOrHarvest`: 씨앗🌱(앞 스텝에서 미리 뿌리는 질문) / 수확🌾(뒷 스텝에서 확정)
+ *   - `linkedResearchIds`: 씨앗↔수확 연결 — 같은 주제 다른 시점 리서치 그룹화
  */
 export interface ResearchRequest {
   /** 고유 ID (promptId 로 externalResearch 에 저장) */
@@ -38,6 +44,41 @@ export interface ResearchRequest {
   stores: 'externalResearch' | 'strategicNotes'
   /** 선택적 요청인가 (기본 false — 강력 권장) */
   optional: boolean
+  /**
+   * 이 리서치가 **준비하는** Value Chain 단계 (ADR-008).
+   * 리서치의 소속 UI 스텝이 아니라, "어느 논리 단계의 산출물을 예리하게 할 것인가".
+   * 예: `rfp-outcome-indicators` 는 Step 1 에 있지만 ⑤ Outcome 을 위한 씨앗이므로 stage='outcome'.
+   */
+  valueChainStage?: ValueChainStage
+  /**
+   * 씨앗(앞에서 뿌리는 준비 질문) / 수확(뒤에서 확정하는 검증 질문).
+   * 단계 간 연결 가시화에 사용 — 리서치 카드에 🌱/🌾 아이콘.
+   */
+  seedOrHarvest?: 'seed' | 'harvest'
+  /**
+   * 연결된 다른 리서치 ID 들 (씨앗↔수확 그룹).
+   * 예: `rfp-outcome-indicators` 와 `imp-sroi-proxy`·`imp-outcome-benchmark` 는 같은 그룹.
+   */
+  linkedResearchIds?: string[]
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 하위 호환 — 이동된 리서치 ID 매핑
+// ─────────────────────────────────────────────────────────────────
+
+/**
+ * Phase F Wave 3 (2026-04-23) 에서 이동된 리서치 ID 매핑.
+ * 기존 Project.externalResearch JSON 에 구 ID 가 저장되어 있을 수 있으므로
+ * UI 및 AI 프롬프트 주입 시 정규화.
+ */
+export const LEGACY_ID_MAP: Record<string, string> = {
+  'imp-outcome-indicators': 'rfp-outcome-indicators',
+  'imp-diagnostic-tools': 'cur-diagnostic-tools',
+}
+
+/** 구 ID → 신 ID 로 정규화. 모르는 ID 는 그대로 반환. */
+export function normalizeResearchId(id: string): string {
+  return LEGACY_ID_MAP[id] ?? id
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -68,6 +109,7 @@ const RFP_REQUESTS: ResearchRequest[] = [
 출력 형식: 번호 매긴 질문 리스트 + 각 질문 옆 "왜 이걸 묻는지" 한 줄 설명.`,
     stores: 'strategicNotes',
     optional: false,
+    valueChainStage: 'impact',
   },
   {
     id: 'rfp-past-similar-winners',
@@ -94,6 +136,7 @@ const RFP_REQUESTS: ResearchRequest[] = [
 핵심만, 600~800자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'output',
   },
   {
     id: 'rfp-market-shift-2025',
@@ -122,6 +165,7 @@ const RFP_REQUESTS: ResearchRequest[] = [
 형식: 번호 매김, 800~1000자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'impact',
   },
   {
     id: 'rfp-competitors-strengths',
@@ -148,6 +192,43 @@ const RFP_REQUESTS: ResearchRequest[] = [
 700~900자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'output',
+  },
+  {
+    // 🌱 Phase F Wave 3 (2026-04-23) — imp-outcome-indicators 에서 Step 1 로 이동.
+    // Step 5 에서 수확(imp-sroi-proxy · imp-outcome-benchmark)하기 위한 씨앗.
+    id: 'rfp-outcome-indicators',
+    title: '🌱 SROI 재료가 될 Before/After 지표 후보 5개',
+    whyAsking:
+      'Outcome 이 "역량 향상" 같은 추상 표현이면 "기대 효과" 배점 직격탄. 이 대상에게 실제 측정 가능한 5개 후보를 **Step 1 에서 미리** 뽑아두면 Step 5 SROI 계산 재료가 바로 준비됨. 제1원칙 중 "Before·After 정량 대비". ⑤ Outcome 수확의 씨앗.',
+    promptTemplate: `아래 교육 대상에서 사업 전후 before/after 를 숫자로 보여줄 수 있는 실측 가능한 지표 5개를 조사해주세요.
+
+[대상]
+- 대상자: [targetAudience]
+- 사업 목적: [impactGoal 또는 제안 컨셉]
+- 기간: [개월]
+
+[지표 조건]
+1. 사업 시작 전에 측정 가능 (before)
+2. 사업 종료 시 재측정 가능 (after)
+3. 변화량을 % · 건수 · 배수 중 하나로 표현 가능
+4. 교육 사업 논문 · 정책보고서에서 실제 쓰이는 표준 지표 우선
+5. 설문·자가진단·실측·매출·고용 · 다양한 유형 섞기
+
+[각 지표마다]
+- 지표명 (예: "창업 역량 진단 점수", "월 매출", "고객 재방문율")
+- 측정 도구·방법 (설문 · 매출 데이터 · 공시 등)
+- 벤치마크 수치 (같은 대상 평균값)
+- 이 사업 목표 수치 (before N → after M 예시)
+
+[출력 형식]
+번호 매긴 지표 5개 + 맨 아래 "이 5개 중 어느 3개를 Outcome 으로 쓸지" 추천.
+600~900자.`,
+    stores: 'externalResearch',
+    optional: false,
+    valueChainStage: 'outcome',
+    seedOrHarvest: 'seed',
+    linkedResearchIds: ['imp-sroi-proxy', 'imp-outcome-benchmark'],
   },
 ]
 
@@ -178,6 +259,7 @@ const CURRICULUM_REQUESTS: ResearchRequest[] = [
 형식: 번호 매김, 600~800자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'activity',
   },
   {
     id: 'cur-benchmark-structure',
@@ -210,6 +292,7 @@ const CURRICULUM_REQUESTS: ResearchRequest[] = [
 600~900자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'activity',
   },
   {
     id: 'cur-methodology-best-practice',
@@ -239,6 +322,7 @@ const CURRICULUM_REQUESTS: ResearchRequest[] = [
 700~900자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'activity',
   },
   {
     id: 'cur-client-change-points',
@@ -267,6 +351,44 @@ const CURRICULUM_REQUESTS: ResearchRequest[] = [
 500~700자.`,
     stores: 'strategicNotes',
     optional: true,
+    valueChainStage: 'activity',
+  },
+  {
+    // 🌱 Phase F Wave 3 (2026-04-23) — imp-diagnostic-tools 에서 Step 2 로 이동.
+    // 커리큘럼 설계 시점에 사전·사후 진단 도구를 박아넣어야 Step 5 SROI 수확 가능.
+    id: 'cur-diagnostic-tools',
+    title: '🌱 사전·사후 진단 도구 비교 (커리큘럼에 박을 측정 장치)',
+    whyAsking:
+      '커리큘럼 설계 시점에 사전·사후 진단 시점이 세션에 박혀 있지 않으면 Step 5 SROI 계산 재료가 나오지 않음. 내부 도구와 외부 표준 도구 중 어느 조합을 쓸지 **지금 결정** 해야 커리큘럼 주차 배치에 반영 가능. ⑤ Outcome 수확의 씨앗.',
+    promptTemplate: `교육 효과성 측정을 위한 진단 도구 3~4개를 비교해주세요.
+
+[대상]
+- 대상자: [대상]
+- 도메인: [도메인]
+- 기대 변화: [impactGoal]
+
+[비교할 도구]
+1. 언더독스 자체 도구 — 창업역량 진단 · 6 Dimension Startup Growth
+   (우리 내부 자산)
+2. 국내 표준 — 중기부 창업역량 진단, 한국창업보육협회 도구 등
+3. 국제 표준 — GEM(Global Entrepreneurship Monitor), Business Model Canvas 기반 도구
+4. 논문 기반 — 학술 검증된 관련 scale
+
+[각 도구마다]
+- 측정 영역 (역량 · 태도 · 행동 · 성과 중 어디)
+- 문항 수 · 소요 시간
+- 검증 수준 (학술 검증 여부, 표본 크기)
+- 이 사업 대상에 적합한 정도 (1~5)
+- 비용 · 사용 조건
+
+[출력 형식]
+비교 표 4행 + 마지막에 "우리 제안서에 어느 도구 2개 조합을 쓸지" 추천.
+600~800자.`,
+    stores: 'externalResearch',
+    optional: false,
+    valueChainStage: 'outcome',
+    seedOrHarvest: 'seed',
+    linkedResearchIds: ['imp-sroi-proxy', 'imp-outcome-benchmark'],
   },
 ]
 
@@ -300,6 +422,7 @@ const COACHES_REQUESTS: ResearchRequest[] = [
 600~800자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'input',
   },
   {
     id: 'coach-support-structure',
@@ -333,6 +456,7 @@ const COACHES_REQUESTS: ResearchRequest[] = [
 500~700자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'input',
   },
   {
     id: 'coach-alternative-structure',
@@ -363,6 +487,7 @@ const COACHES_REQUESTS: ResearchRequest[] = [
 600~900자.`,
     stores: 'externalResearch',
     optional: true,
+    valueChainStage: 'input',
   },
 ]
 
@@ -397,6 +522,7 @@ const BUDGET_REQUESTS: ResearchRequest[] = [
 500~700자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'input',
   },
   {
     id: 'bud-client-culture',
@@ -423,6 +549,7 @@ const BUDGET_REQUESTS: ResearchRequest[] = [
 500~700자.`,
     stores: 'strategicNotes',
     optional: false,
+    valueChainStage: 'input',
   },
   {
     id: 'bud-b2g-direct-ratio',
@@ -449,78 +576,17 @@ const BUDGET_REQUESTS: ResearchRequest[] = [
 500~700자.`,
     stores: 'externalResearch',
     optional: true,
+    valueChainStage: 'input',
   },
 ]
 
 const IMPACT_REQUESTS: ResearchRequest[] = [
   {
-    id: 'imp-outcome-indicators',
-    title: 'Outcome 측정 대체 지표 — before/after 숫자 가능한 5개',
-    whyAsking:
-      'Outcome 이 "역량 향상" 같은 추상 표현이면 "기대 효과" 배점 직격탄. 이 대상에게 실제 측정 가능한 5개 후보를 먼저 뽑아야 Logic Model 품질이 올라감. 제1원칙 중 "Before·After 정량 대비".',
-    promptTemplate: `아래 교육 대상에서 사업 전후 before/after 를 숫자로 보여줄 수 있는 실측 가능한 지표 5개를 조사해주세요.
-
-[대상]
-- 대상자: [targetAudience]
-- 사업 목적: [impactGoal 또는 제안 컨셉]
-- 기간: [개월]
-
-[지표 조건]
-1. 사업 시작 전에 측정 가능 (before)
-2. 사업 종료 시 재측정 가능 (after)
-3. 변화량을 % · 건수 · 배수 중 하나로 표현 가능
-4. 교육 사업 논문 · 정책보고서에서 실제 쓰이는 표준 지표 우선
-5. 설문·자가진단·실측·매출·고용 · 다양한 유형 섞기
-
-[각 지표마다]
-- 지표명 (예: "ACT-PRENEURSHIP 점수", "월 매출", "고객 재방문율")
-- 측정 도구·방법 (설문 · 매출 데이터 · 공시 등)
-- 벤치마크 수치 (같은 대상 평균값)
-- 이 사업 목표 수치 (before N → after M 예시)
-
-[출력 형식]
-번호 매긴 지표 5개 + 맨 아래 "이 5개 중 어느 3개를 Outcome 으로 쓸지" 추천.
-600~900자.`,
-    stores: 'externalResearch',
-    optional: false,
-  },
-  {
-    id: 'imp-diagnostic-tools',
-    title: '사전·사후 진단 도구 비교 (ACT-PRENEURSHIP · 6 Dimension · 외부)',
-    whyAsking:
-      '진단 도구는 평가위원에게 "이 회사가 정량 측정을 할 수 있는 회사인가" 의 강한 신호. 내부 도구(ACT-PRENEURSHIP) 만 쓰면 "자사 편향" 의심, 외부 도구(GEM · KOSBI 지수 등) 병행하면 객관성 확보.',
-    promptTemplate: `교육 효과성 측정을 위한 진단 도구 3~4개를 비교해주세요.
-
-[대상]
-- 대상자: [대상]
-- 도메인: [도메인]
-- 기대 변화: [impactGoal]
-
-[비교할 도구]
-1. 언더독스 자체 도구 — ACT-PRENEURSHIP, 6 Dimension Startup Growth
-   (우리 내부 자산)
-2. 국내 표준 — 중기부 창업역량 진단, 한국창업보육협회 도구 등
-3. 국제 표준 — GEM(Global Entrepreneurship Monitor), Business Model Canvas 기반 도구
-4. 논문 기반 — 학술 검증된 관련 scale
-
-[각 도구마다]
-- 측정 영역 (역량 · 태도 · 행동 · 성과 중 어디)
-- 문항 수 · 소요 시간
-- 검증 수준 (학술 검증 여부, 표본 크기)
-- 이 사업 대상에 적합한 정도 (1~5)
-- 비용 · 사용 조건
-
-[출력 형식]
-비교 표 4행 + 마지막에 "우리 제안서에 어느 도구 2개 조합을 쓸지" 추천.
-600~800자.`,
-    stores: 'externalResearch',
-    optional: false,
-  },
-  {
+    // 🌾 수확 — 기존 IMPACT 리서치. Step 1/2 씨앗 (rfp-outcome-indicators · cur-diagnostic-tools) 을 받아 여기서 확정.
     id: 'imp-sroi-proxy',
-    title: 'SROI 프록시 매핑 적합성',
+    title: '🌾 SROI 프록시 매핑 적합성',
     whyAsking:
-      'SROI 프록시는 "사회적 가치 정량화" 의 핵심. 이 사업 Outcome 에 어느 프록시가 매핑될지 먼저 확인하면 impact 섹션에서 화폐 환산 문장이 자연스러워짐. (예산 섹션 SROI Forecast 와도 연결)',
+      'SROI 프록시는 "사회적 가치 정량화" 의 핵심. Step 1 에서 뽑은 Outcome 지표 후보 · Step 2 에서 정한 진단 도구를 받아 **여기서 프록시로 확정**. ⑤ Outcome 의 수렴 지점. Project.sroiForecast 비율(예: 1:3.2)의 재료.',
     promptTemplate: `아래 Outcome 들에 적합한 SROI 프록시를 매핑해주세요.
 
 [우리 Outcome 초안]
@@ -547,6 +613,48 @@ Outcome 별 카드 + 맨 아래 총 SROI 예상치 1줄.
 500~700자.`,
     stores: 'externalResearch',
     optional: true,
+    valueChainStage: 'outcome',
+    seedOrHarvest: 'harvest',
+    linkedResearchIds: ['rfp-outcome-indicators', 'cur-diagnostic-tools', 'imp-outcome-benchmark'],
+  },
+  {
+    // 🌾 Phase F Wave 3 신규 (2026-04-23) — SROI 숫자가 과다/과소인지 벤치마크로 검증.
+    // 루프 Gate ⑤→② Input 방향 체크의 데이터 기반.
+    id: 'imp-outcome-benchmark',
+    title: '🌾 유사 사업 SROI·Outcome 달성률 벤치마크',
+    whyAsking:
+      '우리가 산정한 SROI 비율이 평가위원이 볼 때 "너무 낮아 설득 약함(< 1.5)" 또는 "너무 높아 과다 약속(> 7)" 인지 벤치마크로 검증 필요. 루프 Gate ⑤→②Input 방향 체크의 근거 데이터. 동시에 Outcome 목표 수치가 시장 평균 대비 어느 위치인지 확인.',
+    promptTemplate: `우리 사업과 유사한 공공·민간 교육 사업의 SROI 비율 · Outcome 달성률 벤치마크를 조사해주세요.
+
+[우리 사업]
+- 대상: [대상자]
+- 예산 규모: [원]
+- 기간: [개월]
+- 참여 규모: [명]
+- 우리 SROI 초안: [1 : ___]
+- 우리 Outcome 목표 수치: [예: 매출 30% 상승, 창업 20건 등]
+
+[조사 항목]
+1. 같은 대상·유사 규모 사업 3~4건 (사업명 · 연도 · 발주처)
+2. 각 사업의 공개된 SROI 비율 (보고서 · 감사자료 · 학술 인용)
+3. 각 사업의 Outcome 달성률 (목표 대비 실적)
+4. 특이 케이스 — 이례적으로 높거나 낮았던 사업 1건 + 이유
+5. 우리 SROI 초안의 시장 내 위치 (하위 25% / 중간 / 상위 25% / 이례적)
+
+[각 벤치마크마다]
+- 사업명 · 연도
+- 예산 · 참여자 수
+- SROI 비율 (또는 유사 성과 지표)
+- 데이터 출처 (보고서 링크 또는 인용)
+
+[출력 형식]
+비교 표 3~4행 + 마지막에 "우리 숫자의 타당성 진단" 한 문단 (하향 조정 · 유지 · 상향 조정 중 어느 쪽).
+600~900자.`,
+    stores: 'externalResearch',
+    optional: false,
+    valueChainStage: 'outcome',
+    seedOrHarvest: 'harvest',
+    linkedResearchIds: ['rfp-outcome-indicators', 'imp-sroi-proxy'],
   },
 ]
 
@@ -590,6 +698,7 @@ const PROPOSAL_REQUESTS: ResearchRequest[] = [
 700~1000자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'output',
   },
   {
     id: 'prop-evaluator-profile',
@@ -616,6 +725,7 @@ const PROPOSAL_REQUESTS: ResearchRequest[] = [
 500~700자.`,
     stores: 'strategicNotes',
     optional: true,
+    valueChainStage: 'output',
   },
   {
     id: 'prop-rfp-final-check',
@@ -644,6 +754,7 @@ const PROPOSAL_REQUESTS: ResearchRequest[] = [
 500~800자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'output',
   },
   {
     id: 'prop-competitor-answers',
@@ -673,6 +784,7 @@ const PROPOSAL_REQUESTS: ResearchRequest[] = [
 700~900자.`,
     stores: 'externalResearch',
     optional: false,
+    valueChainStage: 'output',
   },
 ]
 
