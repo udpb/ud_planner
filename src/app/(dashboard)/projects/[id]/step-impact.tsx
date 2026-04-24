@@ -19,7 +19,10 @@ import type {
   CurriculumSlice,
   CoachesSlice,
   BudgetSlice,
+  PipelineContext,
 } from '@/lib/pipeline-context'
+import { computeLoopAlignment } from '@/lib/loop-alignment'
+import { LoopAlignmentCards } from '@/components/loop-alignment-cards'
 
 interface GoalCandidate {
   goal: string
@@ -36,6 +39,8 @@ interface Props {
   coachesSlice?: CoachesSlice
   budgetSlice?: BudgetSlice
   autoExtracted?: { activities: boolean; inputs: boolean }
+  /** PipelineContext — Wave 7 루프 얼라인 체크용 (없으면 카드 숨김) */
+  context?: PipelineContext
 }
 
 const CHAIN_KEYS = ['input', 'activity', 'output', 'outcome', 'impact'] as const
@@ -112,7 +117,7 @@ function analyzeKeywordFlow(rfpParsed: any, logicModel: any) {
 
 export function StepImpact({
   projectId, rfpParsed, initialLogicModel,
-  curriculumSlice, coachesSlice, budgetSlice, autoExtracted,
+  curriculumSlice, coachesSlice, budgetSlice, autoExtracted, context,
 }: Props) {
   // Phase management
   const [phase, setPhase] = useState<'goal' | 'model'>(initialLogicModel ? 'model' : 'goal')
@@ -597,6 +602,14 @@ export function StepImpact({
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
                   수정사항이 저장되지 않았습니다
                 </p>
+              )}
+
+              {/* ============ Wave 7: SROI 축 3방향 루프 얼라인 ============ */}
+              {sroiRatio !== undefined && context && (
+                <LoopAlignmentCards
+                  checks={computeLoopAlignment(sroiRatio, context)}
+                  projectId={projectId}
+                />
               )}
 
               {/* Nav buttons */}

@@ -481,6 +481,7 @@ export default async function ProjectDetailPage({
               coachesSlice={context?.coaches}
               budgetSlice={context?.budget}
               autoExtracted={context?.impact?.autoExtracted}
+              context={context ?? undefined}
             />
             {pmGuide && (
               <PmGuidePanel
