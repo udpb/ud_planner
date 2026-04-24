@@ -113,6 +113,7 @@ export default async function ProjectDetailPage({
   })
 
   // ADR-001: 스텝 순서 = rfp → curriculum → coaches → budget → impact → proposal
+  // ADR-008 (2026-04-23): Step 4·5 의미 레이어 재정렬 — budget=② Input, impact=⑤ Outcome+SROI
   const steps: PipelineStep[] = [
     {
       key: 'rfp',
@@ -134,7 +135,7 @@ export default async function ProjectDetailPage({
     },
     {
       key: 'budget',
-      label: '예산',
+      label: '예산 설계',
       sublabel: project.budget
         ? `마진 ${marginRate.toFixed(1)}%`
         : '미작성',
@@ -142,9 +143,13 @@ export default async function ProjectDetailPage({
     },
     {
       key: 'impact',
-      label: '임팩트 설계',
-      sublabel: project.logicModel ? '완료' : '미완료',
-      done: !!project.logicModel,
+      label: '임팩트 + SROI',
+      sublabel: project.logicModel
+        ? project.sroiForecast
+          ? 'Logic Model + SROI'
+          : 'Logic Model ✓ · SROI 미산정'
+        : '미완료',
+      done: !!project.logicModel && !!project.sroiForecast,
     },
     {
       key: 'proposal',
@@ -426,7 +431,7 @@ export default async function ProjectDetailPage({
           </div>
         )}
 
-        {/* ── Step 4: 예산 + SROI ── */}
+        {/* ── Step 4: 예산 설계 (② Input · ADR-008) ── */}
         {step === 'budget' && (
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
             <BudgetDashboard
@@ -465,7 +470,7 @@ export default async function ProjectDetailPage({
           </div>
         )}
 
-        {/* ── Step 5: 임팩트 체인 ── */}
+        {/* ── Step 5: 임팩트 + SROI Forecast (⑤ Outcome 수렴 · ADR-008) ── */}
         {step === 'impact' && (
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
             <StepImpact
