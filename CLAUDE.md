@@ -78,6 +78,13 @@
 - 미들웨어: `src/middleware.ts` (로그인 페이지 제외 전체 보호)
 - 역할: PM, DIRECTOR, CM, FM, COACH, ADMIN
 
+## 워크트리 정책 (2026-04-27 통합)
+- ⭐ **유일한 작업 경로**: `C:\Users\USER\projects\ud-ops-workspace` (master 디렉토리)
+- 과거 `.claude/worktrees/{amazing-khorana,blissful-goodall}-*` 두 워크트리는 **삭제됨**. 이 경로들이 다시 등장하면 잘못된 셸·메모.
+- 새 작업도 master 에 직접. Claude Code 의 자동 worktree 생성 기능을 쓸 때만 임시로 워크트리 사용 → 완료 즉시 머지·삭제.
+- `npm run dev` 실행 시 `predev` 훅(`scripts/print-worktree.cjs`)이 현재 경로·브랜치를 출력하고, 워크트리 안에서 띄우면 경고.
+- Phase 진행 중 dev 가 멈춘 듯하면 가장 먼저 출력 첫 줄(📁 경로) 부터 확인.
+
 ## 병렬 작업 규칙
 - 기능 개발은 `feat/<task-id>` 브랜치에서 진행
 - master 직접 커밋은 인프라/설정 변경만 허용
