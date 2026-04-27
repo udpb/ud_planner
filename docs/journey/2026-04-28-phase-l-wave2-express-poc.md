@@ -70,8 +70,43 @@ acceptedByPm: z.boolean().default(false)
 
 ## 다음
 
-L3·L4·L5 가 L2 의존성으로 풀려있어 병렬 가능. 사용자 깰 때 우선순위 결정 필요.
-- L3: 챗봇 안에서 외부 LLM 카드 자동 트리거 (현재는 AI 응답이 `externalLookupNeeded` 채워야 표시 — AI 가 잘 채워주는지 검증 필요)
+L3·L4·L5·L6 가 L2 의존성으로 풀려있어 병렬 가능. 시간 남아 보너스로 L5·L6 까지 같은 세션에 처리:
+
+### 보너스 1: L5 검수 에이전트 (사용자 명시 요청)
+
+`src/lib/express/inspector.ts` — `inspectDraft()` LLM + `heuristicInspect()` 휴리스틱 백업.
+7 렌즈: market · statistics · problem · before-after · key-messages · differentiators · tone.
+
+`/api/express/inspect` — LLM 호출 실패 시 휴리스틱 자동 fallback.
+
+`<ExpressShell>` 통합:
+- 1차본 승인 시 자동 호출 (handleSubmitDraft 가 runInspector 먼저)
+- 수동 "검수" 버튼 (북극성 바 strip 우측)
+- 검수 결과 칩 (점수·이슈 건수)
+- 심각도별 toast: critical → warning, ≥80 → success, 그 외 info
+
+커밋: `6eb142b feat(phase-l,express): L5 — 검수 에이전트`
+
+### 보너스 2: L6 Express → Deep 인계 본격
+
+`src/lib/express/handoff.ts` 의 매퍼들이 stub 만 있던 걸 실전 호출로:
+
+`/api/express/save` markCompleted=true 시 prisma.\$transaction:
+
+1. `mapDraftToProjectFields()` 결과 → `Project.proposalConcept` / `proposalBackground` / `keyPlanningPoints` / `acceptedAssetIds` 자동 동기화
+2. `mapDraftToProposalSections()` 결과 → `ProposalSection` 7건 시드 (version=1, isApproved=false). 기존 비승인 시 갱신·승인 시 보존.
+3. `suggestDeepAreas()` → 응답 handoff.deepSuggestions 에 포함
+
+`<ExpressShell>` UI:
+- handleSubmitDraft 응답 받아 toast: "1차본 승인 완료 — Project N건 인계 + ProposalSection M건 시드"
+- 정밀화 권장 영역 strip 자동 표시 (Step 링크 + 닫기)
+
+커밋: `fcc5715 feat(phase-l,express): L6 — Express → Deep 인계 본격`
+
+## Phase L 진행률 (이 세션 끝)
+
+5/7 Wave 완료 (71%). 남은:
+- L3: 챗봇 안에서 외부 LLM 카드 자동 트리거 검증 (AI 가 externalLookupNeeded 잘 채워주는지)
 - L4: 부차 기능 1줄 인용 정밀화 (현재 placeholder, 신뢰도 0.3)
-- L5: 검수 에이전트 (`inspectDraft`) — 사용자 이전 명시 요청
-- L6: Express → Deep 인계 본격 (`mapDraftToContext` 호출 흐름 + UI 토글 본격)
+
+E2E 사용자 검증은 사용자 손에. typecheck + next build 모두 통과.
