@@ -171,12 +171,14 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
         코치 배정
       </DialogTrigger>
 
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-5xl">
         <DialogHeader>
           <DialogTitle>코치 검색 및 배정</DialogTitle>
         </DialogHeader>
 
-        <div className="flex gap-4">
+        {/* picked 시 좌(검색·결과) + 우(배정 폼) 2 컬럼.
+            모달 컨테이너 한 박스 안에 자연스럽게 분할되도록 grid 명시. */}
+        <div className={picked ? 'grid grid-cols-[minmax(0,1fr)_280px] gap-4' : 'flex'}>
           {/* 왼쪽: 검색 */}
           <div className="flex-1 space-y-3">
             {/* 검색창 */}
@@ -291,9 +293,9 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
             </a>
           </div>
 
-          {/* 오른쪽: 배정 설정 */}
+          {/* 오른쪽: 배정 설정 — 모달과 통합되어 보이도록 border-l 만 사용 (별도 박스 X) */}
           {picked && (
-            <div className="w-60 shrink-0 space-y-3 rounded-lg border p-3">
+            <div className="space-y-3 border-l border-border pl-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-sm">{picked.name}</p>
