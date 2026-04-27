@@ -1,25 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
+import { safeParseJsonExternal as safeParseJson, JsonParseError } from '@/lib/claude'
 
 interface GoalCandidate {
   goal: string
   rationale: string
   focus: string // "역량 강화" | "생태계 구축" | "경제적 가치" 등 — 어떤 관점의 임팩트인지
   sroiHint: string // "교육 임팩트 중심으로 SROI 0.3~0.5 예상" 같은 힌트
-}
-
-function safeParseJson<T>(raw: string): T {
-  let s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
-  const objStart = s.indexOf('{')
-  const arrStart = s.indexOf('[')
-  let start: number, end: number
-  if (arrStart !== -1 && (objStart === -1 || arrStart < objStart)) {
-    start = arrStart; end = s.lastIndexOf(']')
-  } else {
-    start = objStart; end = s.lastIndexOf('}')
-  }
-  if (start === -1 || end === -1 || end <= start) throw new Error('JSON not found')
-  return JSON.parse(s.slice(start, end + 1))
 }
 
 export async function POST(req: NextRequest) {
@@ -35,13 +22,7 @@ export async function POST(req: NextRequest) {
       ? `\n\n평가 배점 (제안서 심사 기준):\n${evalCriteria.map((e: any) => `- ${e.item}: ${e.score}점`).join('\n')}`
       : ''
 
-    const msg = await anthropic.messages.create({
-      model: CLAUDE_MODEL,
-      max_tokens: 2048,
-      messages: [
-        {
-          role: 'user',
-          content: `당신은 소셜임팩트 전문가이자 교육 기획자입니다.
+    const prompt = `당신은 소셜임팩트 전문가이자 교육 기획자입니다.
 아래 RFP 정보를 바탕으로 3가지 서로 다른 관점의 임팩트 목표를 제안하세요.
 각 목표는 서로 다른 임팩트 접근 방식을 반영해야 합니다.
 
@@ -59,7 +40,7 @@ export async function POST(req: NextRequest) {
 2. 경제/생태계 기여 중심 — 사회/경제적 파급 효과에 초점
 3. 평가 배점 최적화 — 제안서 평가에서 높은 점수를 받을 수 있는 방향
 
-반드시 아래 JSON만 반환하세요:
+반드시 아래 JSON만 반환하세요. trailing comma 없이, 모든 따옴표 정확히 닫고, 추가 설명 없이 JSON 만:
 {
   "candidates": [
     {
@@ -82,13 +63,33 @@ export async function POST(req: NextRequest) {
     }
   ],
   "clarifyingQuestions": ["기획자에게 물어볼 질문 1", "질문 2"]
-}`,
-        },
-      ],
-    })
+}`
 
-    const raw = (msg.content[0] as any).text.trim()
-    const result = safeParseJson<{ candidates: GoalCandidate[]; clarifyingQuestions: string[] }>(raw)
+    // L1 (2026-04-27): Gemini 우선 + Claude fallback. JSON 파싱 실패 시 1회 재시도.
+    let result: { candidates: GoalCandidate[]; clarifyingQuestions: string[] } | null = null
+    let lastError: any = null
+    for (let attempt = 0; attempt < 2 && !result; attempt++) {
+      try {
+        const r = await invokeAi({
+          prompt,
+          maxTokens: 8192,
+          temperature: 0.4,
+          label: `suggest-impact-goal (attempt ${attempt + 1})`,
+        })
+        result = safeParseJson<{ candidates: GoalCandidate[]; clarifyingQuestions: string[] }>(
+          r.raw,
+          'suggest-impact-goal',
+        )
+      } catch (e: any) {
+        lastError = e
+        if (e instanceof JsonParseError && attempt === 0) {
+          console.warn('[suggest-impact-goal] JSON 파싱 실패 → 재시도')
+          continue
+        }
+        throw e
+      }
+    }
+    if (!result) throw lastError
 
     return NextResponse.json(result)
   } catch (err: any) {

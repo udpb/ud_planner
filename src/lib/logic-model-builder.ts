@@ -33,6 +33,7 @@ import {
   type LogicModel,
   type LogicModelItem,
 } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import type {
   BudgetSlice,
   CoachesSlice,
@@ -683,15 +684,14 @@ export async function buildLogicModel(
     })
 
     try {
-      const msg = await anthropic.messages.create({
-        model: CLAUDE_MODEL,
-        max_tokens: 4096,
-        messages: [{ role: 'user', content: prompt }],
+      // L1 (2026-04-27): Gemini 우선 + Claude fallback. max_tokens 16384.
+      const r = await invokeAi({
+        prompt,
+        maxTokens: 16384,
+        temperature: 0.3,
+        label: `logic-model-builder (attempt ${attempt})`,
       })
-
-      const block = msg.content[0]
-      const raw =
-        block && 'text' in block ? (block as { text: string }).text.trim() : ''
+      const raw = r.raw.trim()
       lastRaw = raw
 
       const parsed = parseLogicModelJson(raw)
