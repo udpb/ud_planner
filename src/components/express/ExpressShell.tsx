@@ -242,12 +242,16 @@ export function ExpressShell(props: Props) {
     }
   }, [props.projectId, draft])
 
+  const [deepSuggestions, setDeepSuggestions] = useState<
+    Array<{ targetStep: string; reason: string }>
+  >([])
+
   const handleSubmitDraft = useCallback(async () => {
     setSubmitting(true)
     try {
       // 1) 자동 검수
       await runInspector()
-      // 2) 저장 + completed
+      // 2) 저장 + completed (mapDraftToProjectFields + ProposalSection 시드 transaction)
       const r = await fetch('/api/express/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -259,7 +263,16 @@ export function ExpressShell(props: Props) {
         }),
       })
       if (!r.ok) throw new Error(await r.text())
-      toast.success('1차본 승인 완료. Deep Track 으로 정밀화하실 수 있어요.')
+      const data = await r.json()
+      const handoff = data.handoff ?? {}
+      const seededCount = handoff.proposalSectionsSeeded ?? 0
+      const fieldsCount = handoff.projectFieldsUpdated ?? 0
+      toast.success(
+        `1차본 승인 완료 — Project ${fieldsCount}건 인계 + ProposalSection ${seededCount}건 시드`,
+      )
+      if (Array.isArray(handoff.deepSuggestions)) {
+        setDeepSuggestions(handoff.deepSuggestions)
+      }
       setDraft((d) => ({
         ...d,
         meta: { ...d.meta, isCompleted: true, completedAt: new Date().toISOString() },
@@ -324,6 +337,34 @@ export function ExpressShell(props: Props) {
           </Link>
         </div>
       </div>
+
+      {/* 1차본 완료 시 정밀화 추천 패널 */}
+      {deepSuggestions.length > 0 && (
+        <div className="border-b border-primary/30 bg-orange-50/40 px-6 py-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-semibold text-primary">
+              🎯 1차본 완성! 정밀화 권장 영역
+            </span>
+            {deepSuggestions.map((s, i) => (
+              <Link
+                key={i}
+                href={`/projects/${props.projectId}?step=${s.targetStep}`}
+                className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-foreground hover:border-primary/40 hover:text-primary"
+                title={s.reason}
+              >
+                Step {s.targetStep} →
+              </Link>
+            ))}
+            <button
+              onClick={() => setDeepSuggestions([])}
+              className="ml-auto text-xs text-muted-foreground hover:text-foreground"
+              title="닫기"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 본문 — 좌(40%) 우(60%) */}
       <div className="grid flex-1 grid-cols-1 gap-0 overflow-hidden lg:grid-cols-[2fr_3fr]">

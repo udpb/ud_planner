@@ -29,7 +29,7 @@
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
 | **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
-| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1/L2/L5 완료 (57%) |
+| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1/L2/L5/L6 완료 (71%) |
 | I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% (Phase L 완료 후 진입) |
 
 ### Phase 진행 순서 (2026-04-27 합의)
@@ -468,7 +468,13 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - 문제 발견 시 PM 알림 (toast.warning) + 권장 수정 제시
   - 사용자 원문 (STATE 알려진 이슈 등록): *"AI 답변 퀄리티 검수 에이전트 — Gemini/Claude 응답이 '1차본 당선력' 기준 충족하는지 자동 점검"*
 
-- [ ] **L6. Express + Deep 통합 운영 검증**
+- [x] **L6. Express + Deep 통합 운영 검증** *(2026-04-28 부분 완료 — 데이터 인계 본격, E2E 검증은 사용자 손에)*
+  - `src/lib/express/handoff.ts` — `mapDraftToProjectFields()` + `mapDraftToProposalSections()` + `suggestDeepAreas()`
+  - `/api/express/save` markCompleted=true 시:
+    - Prisma transaction 으로 `Project.proposalConcept` / `proposalBackground` / `keyPlanningPoints` / `acceptedAssetIds` 자동 동기화
+    - `ProposalSection` 7건 시드 (version=1, isApproved=false, 기존 비승인 시 갱신·승인 시 보존)
+    - `suggestDeepAreas()` 결과 응답에 포함
+  - `<ExpressShell>`: 1차본 승인 후 "🎯 1차본 완성! 정밀화 권장 영역" 패널 자동 표시 (Step 링크 + 닫기)
   - 신규: `src/lib/express/handoff.ts`
     - `mapDraftToContext(draft, project)` — ExpressDraft → PipelineContext
     - `suggestDeepAreas(draft, rfp)` — 정밀화 권장 영역 자동 결정 (평가표 임팩트 ≥20% / 예산 5억+ / 커리큘럼 항상)

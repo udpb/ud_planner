@@ -13,6 +13,12 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { ExpressDraftSchema } from '@/lib/express/schema'
 import { ConversationStateSchema } from '@/lib/express/conversation'
+import {
+  mapDraftToProjectFields,
+  mapDraftToProposalSections,
+  suggestDeepAreas,
+} from '@/lib/express/handoff'
+import type { RfpParsed } from '@/lib/claude'
 
 const BodySchema = z.object({
   projectId: z.string().min(1),
@@ -76,7 +82,97 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // DB 저장
+    // DB 저장 — markCompleted 시 Project 필드 + ProposalSection 시드까지 transaction
+    if (markCompleted) {
+      const projectFields = mapDraftToProjectFields(validDraft)
+      const proposalSeeds = mapDraftToProposalSections(validDraft)
+
+      // 정밀화 추천 영역 — RFP·예산 단서 활용
+      const projectMeta = await prisma.project.findUnique({
+        where: { id: projectId },
+        select: { totalBudgetVat: true, rfpParsed: true },
+      })
+      const rfp = (projectMeta?.rfpParsed as unknown as RfpParsed | null) ?? null
+      const evalImpactItem = rfp?.evalCriteria?.find((c) => /성과|임팩트|kpi/.test(c.item))
+      const evalImpactWeight = evalImpactItem ? evalImpactItem.score / 100 : null
+      const deepSuggestions = suggestDeepAreas({
+        draft: validDraft,
+        totalBudgetVat: projectMeta?.totalBudgetVat ?? null,
+        evalImpactWeight,
+      })
+
+      await prisma.$transaction(async (tx) => {
+        // 1) Project 본체 + Express 슬롯
+        await tx.project.update({
+          where: { id: projectId },
+          data: {
+            expressDraft: validDraft as unknown as object,
+            expressActive: true,
+            ...(cachedTurns ? { expressTurnsCache: cachedTurns as unknown as object } : {}),
+            // Express → Deep 인계 필드들 (handoff.ts §1)
+            ...(projectFields.proposalConcept !== undefined
+              ? { proposalConcept: projectFields.proposalConcept }
+              : {}),
+            ...(projectFields.proposalBackground !== undefined
+              ? { proposalBackground: projectFields.proposalBackground }
+              : {}),
+            ...(projectFields.keyPlanningPoints !== undefined
+              ? { keyPlanningPoints: projectFields.keyPlanningPoints as unknown as object }
+              : {}),
+            ...(projectFields.acceptedAssetIds !== undefined
+              ? { acceptedAssetIds: projectFields.acceptedAssetIds as unknown as object }
+              : {}),
+          },
+        })
+
+        // 2) ProposalSection 시드 — version=1 우선
+        for (const seed of proposalSeeds) {
+          // 기존 동일 (projectId, sectionNo, version=1) 있으면 upsert
+          const existing = await tx.proposalSection.findUnique({
+            where: {
+              projectId_sectionNo_version: {
+                projectId,
+                sectionNo: seed.sectionNo,
+                version: 1,
+              },
+            },
+          })
+          if (existing) {
+            // 기존이 있으면 isApproved 가 false 일 때만 갱신
+            if (!existing.isApproved) {
+              await tx.proposalSection.update({
+                where: { id: existing.id },
+                data: { content: seed.content, title: seed.title },
+              })
+            }
+          } else {
+            await tx.proposalSection.create({
+              data: {
+                projectId,
+                sectionNo: seed.sectionNo,
+                title: seed.title,
+                content: seed.content,
+                version: 1,
+                isApproved: false,
+              },
+            })
+          }
+        }
+      })
+
+      return NextResponse.json({
+        ok: true,
+        savedAt: new Date().toISOString(),
+        isCompleted: true,
+        handoff: {
+          projectFieldsUpdated: Object.keys(projectFields).length,
+          proposalSectionsSeeded: proposalSeeds.length,
+          deepSuggestions,
+        },
+      })
+    }
+
+    // 일반 저장 (markCompleted=false)
     await prisma.project.update({
       where: { id: projectId },
       data: {
