@@ -1,9 +1,9 @@
 # UD-Ops 파이프라인 재설계 로드맵
 
-> 상세 설계: [REDESIGN.md](REDESIGN.md)
-> 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile)
-> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~008)
-> 마지막 업데이트: 2026-04-23 (Phase F Impact Value Chain Wave 추가)
+> 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v7.0.md](PRD-v7.0.md)** ⭐ (단일 진실 원본)
+> 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode** ⭐)
+> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~011)
+> 마지막 업데이트: 2026-04-27 (**Phase L Express Mode** Wave 추가 — ADR-011 채택)
 
 ---
 
@@ -29,7 +29,18 @@
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
 | **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
-| I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% |
+| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1 완료 (28%) |
+| I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% (Phase L 완료 후 진입) |
+
+### Phase 진행 순서 (2026-04-27 합의)
+
+Phase L (Express Mode) 가 Phase I (안정화·배포) 보다 우선. 1차본 흐름이 안정화되어야 배포의 의미가 있음.
+
+```
+A → B → C → D → E → F → G → H → L → I
+                                ▲
+                      (현재 위치 — L0/L1 완료)
+```
 
 ---
 
@@ -357,9 +368,115 @@
 
 ---
 
+## Phase L: Express Mode — "당선 가능한 1차본" 단일 흐름 (ADR-011) ⭐
+
+> L이 끝나면: 신규 PM 이 RFP 한 부 받아 단일 화면 챗봇에서 **30~45분 안에 7 섹션 1차본** 에 도달. 부차 기능 (SROI · 예산 · 코치) 은 자동 1줄 인용으로 자연 박힘. 정밀화 필요 시 Deep Track (기존 6 스텝) 으로 자동 인계.
+>
+> 근거: [ADR-011](docs/decisions/011-express-mode.md) · [docs/architecture/express-mode.md](docs/architecture/express-mode.md) · [PRD-v7.0.md](PRD-v7.0.md)
+
+### Phase L 의 정체
+
+ADR-011 의 사용자 통찰:
+> *"핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지. SROI, 예산, 코치추천 이것도 필요한 기능이지만 부차적이야"*
+
+이 한 문단으로 시스템 정체성이 *6 스텝 단일 트랙* → *Express (메인) + Deep (보조) 두 트랙* 으로 재정의됨.
+
+- **Express Track (신규)**: 단일 화면 (좌 챗봇 + 우 점진 미리보기) · Slot Filling 12 슬롯 · 30~45분 1차본
+- **Deep Track (보존)**: 기존 6 스텝 그대로 — 정밀 산출 (수주 후 실행)
+
+### Wave 분해 (의존성: L2 만 끝나면 L3·L4·L5 병렬, L6 는 마지막)
+
+```
+L0 ──────► L2 ─┬──► L3 ───┐
+       L1 ─┘   ├──► L4 ───┼──► L6
+               └──► L5 ───┘
+```
+
+- [x] **L0. ADR-011 + architecture spec + 6 문서 싱크** *(2026-04-27)*
+  - `docs/decisions/011-express-mode.md` — 두 트랙 정체, 북극성, 12 슬롯, 3 카드 유형, 4 안전장치
+  - `docs/architecture/express-mode.md` v1.0 — 12 섹션 즉시 코딩 가능 사양 (953줄)
+  - `docs/journey/2026-04-27-express-mode-adoption.md` — 채택 흐름
+  - 6 문서 싱크: `PRD-v7.0.md` (신규) + `ROADMAP.md` (이 섹션) + `STATE.md` + `PROCESS.md` + `LESSONS.md` + `CLAUDE.md`
+
+- [x] **L1. AI 안정화** *(2026-04-27)*
+  - `f2c0c38` `feat(ai): L1 — Gemini 3.1 Pro 통합 + max_tokens 확대 + safeParseJson 강화`
+  - `6369403` `fix(ai): Gemini 모델명 → gemini-3.1-pro-preview (실제 API 명)`
+  - `f0ffab8` `chore(ai): invokeAi 호출마다 provider/model/elapsed 콘솔 로그`
+  - 신규: `src/lib/ai-fallback.ts` — `invokeAi(params)` 단일 진입점
+  - **모델 우선순위 교체**: Gemini 3.1 Pro Preview Primary / Claude Sonnet 4.6 Fallback
+  - max_tokens: 4096 → **8192 (일반) / 16384 (Express 일괄)**
+  - safeParseJson 강화: trailing comma 제거 + 마크다운 펜스 + 잘림 감지 + 자동 1회 재시도
+
+- [ ] **L2. Express PoC: 단일 화면**
+  - 신규 라우트: `src/app/(dashboard)/projects/[id]/express/page.tsx`
+  - 신규 컴포넌트: `<ExpressChat>` (좌측 챗봇) + `<ExpressPreview>` (우측 미리보기) + `<NorthStarBar>` (상단 진행 바)
+  - 신규 라이브러리:
+    - `src/lib/express/schema.ts` — `ExpressDraftSchema` zod (12 슬롯)
+    - `src/lib/express/conversation.ts` — `ConversationStateSchema`
+    - `src/lib/express/slot-priority.ts` — `selectNextSlot()` 결정론
+    - `src/lib/express/prompts.ts` — `buildTurnPrompt()`
+    - `src/lib/express/active-slots.ts` — `computeActiveSlots()` RFP 따라 적용 슬롯 결정
+  - 신규 API: `/api/express/save` (debounced 자동 저장) + `/api/express/turn` (챗봇 턴 처리)
+  - 마이그레이션: `add-express-draft` — `Project.expressDraft Json?` + `expressActive Boolean` + `expressTurnsCache Json?`
+  - 자동 저장 hook: `useExpressAutosave()` debounce 1500ms
+
+- [ ] **L3. 외부 LLM 분기 + 자산 자동 인용**
+  - 3 카드 유형 (`src/components/express/cards/`):
+    - `PmDirectCard.tsx` — 발주처 통화·메일 등 시스템이 못 하는 일
+    - `ExternalLlmCard.tsx` — 시장·통계·정책 등 외부 LLM 활용 (자동 프롬프트 생성)
+    - `AutoExtractCard.tsx` — 자산 자동 매칭 알림 (확정/제외 토글)
+  - `matchAssetsToRfp()` 자동 호출 — RFP 업로드 직후 (Express 두 번째 턴) + ProgramProfile 변경 시 + keyMessages 입력 시
+  - `narrativeSnippet` 자동 주입 — `pourAssetIntoSection()` (Phase G·H 의 의도를 더 일찍)
+  - 알림 토스트 — 매칭된 자산을 PM 에게 visible
+
+- [ ] **L4. 부차 기능 1줄 인용**
+  - 신규: `src/lib/express/auto-citations.ts` — 4 함수
+    - `getBenchmarkSroi(profile)` → "예상 SROI 1:3.2 (Benchmark 기반)"
+    - `estimateMarginSafety(rfp.totalBudgetVat, profile)` → "총 예산 5.4억, 마진 안전 ✓"
+    - `countMatchingCoaches(profile)` → "필요 역량 3종 — 매칭 가능 코치 12명"
+    - `quickCurriculumOutline(rfp, profile)` → "회차 8 · IMPACT 6단계 매핑"
+  - 우측 미리보기 하단 "부차 기능 (자동 인용)" 박스
+  - 클릭 시 Deep Track Step 으로 이동 (Step 5 / Step 4 / Step 3 / Step 2)
+  - `<HelpTip>` "이건 추정치 — 정밀화 시 Deep 에서" 라벨
+
+- [ ] **L5. 검수 에이전트 (사용자 요청)**
+  - 신규: `src/lib/express/inspector.ts` — `inspectDraft(draft, rfp)`
+  - 1차본 완성 직후 자동 평가 — 평가위원 시각 + 제1원칙 4 렌즈
+  - 검사 항목:
+    - 시장·통계·문제정의·Before/After 충족
+    - keyMessages 가 sections 에 골고루 녹아있는지
+    - differentiators 가 sections 에 인용됐는지
+    - 데이터·통계 사용 정확도
+  - 문제 발견 시 PM 알림 (toast.warning) + 권장 수정 제시
+  - 사용자 원문 (STATE 알려진 이슈 등록): *"AI 답변 퀄리티 검수 에이전트 — Gemini/Claude 응답이 '1차본 당선력' 기준 충족하는지 자동 점검"*
+
+- [ ] **L6. Express + Deep 통합 운영 검증**
+  - 신규: `src/lib/express/handoff.ts`
+    - `mapDraftToContext(draft, project)` — ExpressDraft → PipelineContext
+    - `suggestDeepAreas(draft, rfp)` — 정밀화 권장 영역 자동 결정 (평가표 임팩트 ≥20% / 예산 5억+ / 커리큘럼 항상)
+    - `canEnterExpress(project)` — 이미 진행된 프로젝트 차단 룰
+  - "1차본 완성 화면" — 정밀화 권장 영역 N개 표시 + 각각 Deep Step 으로 이동 링크
+  - E2E 시나리오 검증:
+    - 신규 RFP → Express 30~45분 → 1차본 → Deep Step 5 진입 (mapDraftToContext 자동) → SROI 정밀 → Step 6 제안서 7섹션 정밀
+    - Express 도중 이탈 → 다음 진입 시 그 자리부터 (expressTurnsCache)
+    - zod schema 검증 실패 → visible 표시 + 강제 차단 X
+
+### Phase L 의 게이트 (Wave 종료 시)
+
+각 Wave 끝에:
+
+1. `npx tsc --noEmit` 통과
+2. `src/modules/<관련>/manifest.ts` 의 `reads`/`writes` 갱신 (Express 가 ExpressDraftSchema 슬롯 reads/writes)
+3. journey 파일에 한 단락 추가 (시간순, 막힌 지점 + 결정 + 사용자 한마디)
+4. `feat(phase-l,express): ...` 형식으로 커밋
+
+---
+
 ## Phase I: 안정화 + Manifest 강제 + 배포
 
 > I가 끝나면: 프로덕션 배포 완료 + 모듈 경계가 런타임·린트로 강제됨
+>
+> ⚠️ Phase L 완료 *후* 진입 (사용자 합의 2026-04-27).
 
 - [ ] **I1. 전체 E2E 테스트**
   - 양양 신활력 RFP로 Step 1~6 전체 플로우

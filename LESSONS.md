@@ -345,35 +345,137 @@ H5 에서 자산 5종 추가 (계층 children — AI 솔로 Week 1~3 + AX Guideb
 
 ---
 
-## 12. (선택) 미래에 만들 수 있는 다음 함정
+## 13. AI JSON truncate 사고 (Logic Model 5843byte 절단) — Phase L1
+
+### 증상
+
+2026-04-27 dev 로그에서 발견:
+
+```
+[claude] Logic Model 응답 잘림 — 5843 바이트
+SyntaxError: Unexpected end of JSON input
+```
+
+Logic Model AI 호출이 평소 4000~5000byte 응답에서 멈췄으나, 한 RFP 에서 응답이 5843byte 를 *시작* 하다가 절단. 클라이언트 alert 폭발.
+
+### 근본 원인
+
+세 층의 누적:
+
+1. **max_tokens 4096 한계**: PRD-v6 §7.2 의 모든 호출이 4096 — Claude Sonnet 4.6 의 응답이 한국어 + JSON 으로 길어지면 토큰 1당 ~2.5 char 비율로 1만 char 초과 가능. 5843byte 가 정확히 4096 토큰 부근에서 잘림.
+2. **safeParseJson 의 jagged 처리**: 절단된 JSON 을 `JSON.parse()` 직접 호출 → SyntaxError. 부분 복구 시도 없음.
+3. **모델 단일**: Claude 응답 시간이 45~76초/섹션 (제안서 7섹션 = 5분+). truncate 시도 자체가 비싼 호출 끝에 발생 → 재시도 비용 부담.
+
+### 해결 (Phase L1, `f2c0c38` / `6369403` / `f0ffab8`)
+
+세 층 동시 강화:
+
+1. **max_tokens 확장**: 4096 → 8192 (일반) / 16384 (Express 일괄). 토큰 한계 자체를 제거.
+2. **safeParseJson 강화**: trailing comma 제거 + 마크다운 펜스 (` ```json ` / ` ``` `) 제거 + 중괄호 슬라이스 + 잘림 감지 + **자동 1회 재시도**
+3. **Gemini Primary**: Gemini 3.1 Pro Preview 가 Claude 보다 응답 빠름 (특히 한국어 JSON). 실패 시 Claude 자동 fallback.
+
+신규 단일 진입점: `src/lib/ai-fallback.ts` `invokeAi(params)` — provider/model 중립.
+
+```ts
+const { raw, provider, model, elapsedMs } = await invokeAi({
+  prompt,
+  maxTokens: 8192,
+  temperature: 0.4,
+  label: 'logic-model',
+})
+const json = safeParseJson<LogicModelResponse>(raw)
+```
+
+### 재발 방지
+
+**한계가 보이면 데이터 (max_tokens) + 코드 (safeParseJson) + 모델 (provider) 을 동시에 강화.** 하나만 강화하면 다음 한계가 다른 차원에서 또 터진다.
+
+L1 의 발견: 5843byte truncate 사고가 단순 토큰 부족이 아니라 *전체 AI 호출 신뢰성 부족* 의 증상이었다. invokeAi + safeParseJson 강화로 모든 호출이 더 안전해짐.
+
+CLAUDE.md "Claude API" 섹션 + STATE 알려진 이슈 *"AI 응답 시간 45~76초/섹션"* 도 같은 원인 → L1 으로 부분 해소.
+
+---
+
+## 14. 시스템 정체성 재정의 (Express Mode 채택) — ADR-011
+
+### 시작
+
+2026-04-27 PRD-v6.0 작성 직후 (같은 날) 사용자가 던진 통찰:
+
+> *"언더독스의 강점은 부각이 되지만 RFP에 따라 유연하게 적용 유무를 판단하고 적용하면서, 과정이 가장 사용자 친숙한 방식으로 되려면 어떻게 해야할까? 복잡도가 올라가는 방식보다는 사용자가 직관적으로 따라가지만, 계속 본인 스스로 흐름을 놓치지 않고 핵심 메세지 중심으로 결과물이 완성되는거야. SROI, 예산, 코치추천 이것도 필요한 기능이지만 부차적이야. **핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지**"*
+
+이 한 문단이 시스템 정체성 자체를 재정의했다.
+
+### 메인 세션이 잘못 본 것 (재발 방지의 핵심)
+
+PRD-v6.0 작성을 통해 메인 세션은 *"6 스텝 파이프라인 = 시스템의 정체"* 로 굳혀가고 있었다. Phase A~H 누적 105 커밋 + 10 ADR + 9 architecture 문서가 모두 6 스텝 위에 쌓여 있었으니 *그 위에서 안정화*가 자연스러운 다음 수순으로 보였다.
+
+**그러나 사용자는 시스템을 *밖에서* 보고 있었다**:
+- 신입 PM 의 첫 프로젝트 = 6 step 모두 거치면 수 시간. 어디부터?
+- 부차 기능 (SROI · 예산 · 코치) 이 메인 흐름을 차단
+- 평가위원에게 보일 1차본 도달 시간 = 명확하지 않음
+
+### 결과 (ADR-011 채택)
+
+시스템이 두 트랙으로 재정의:
+
+```
+Express Track (메인)              Deep Track (보조)
+────────────────────              ────────────────────
+RFP → 30~45분 → 1차본              기존 6 step (Phase A~H 산출물 100% 보존)
+챗봇 + Slot Filling                정밀 산출 (수주 후 실행)
+점진 미리보기                      Loop 얼라인 Gate
+부차 기능 자동 인용 (1줄)
+신규 진입점
+```
+
+기존 코드·UI·데이터 100% 보존. Express 는 *추가* 트랙. PRD-v6.0 → v7.0 격상 (v6 archived).
+
+### 재발 방지
+
+**Phase A~H 같은 누적 결과 위에서도 "이게 정말 메인 흐름인가" 자문이 필요.** 메인 세션은 누적 산출물에 *과적합* 하기 쉽다. 사용자가 시스템 *밖에서* 보는 시각이 결정적.
+
+세 가지 시그널이 있을 때 시스템 정체성 재검토:
+
+1. **신입 사용자 막힘**: "어디부터 시작?" 질문이 반복되면 진입점 정체성 부재의 신호
+2. **부차 기능 비대화**: 메인 가치 외 부차 기능이 동등 노출되면 메인 흐름 차단
+3. **사용자 한 문단 통찰**: 짧은 한 문단이 "이게 부차이고 이게 메인이야" 를 정리하면 즉시 ADR.
+
+ADR-011 의 사용자 원문을 LESSONS 부록 C 에 추가. *"핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지"* 가 가장 결정적 16글자.
+
+또한 메모: `feedback_gatekeeping.md` 의 *"각 Phase/Wave 게이트에서 설계 재검토"* 가 이 케이스에서 정확히 작동. PRD-v6.0 작성 자체가 게이트 → 사용자 통찰로 즉시 v7 격상.
+
+---
+
+## 15. (선택) 미래에 만들 수 있는 다음 함정 (이전 §12 였음)
 
 이 섹션은 **아직 안 일어났지만 일어날 가능성이 높은** 함정들. 회고 아닌 예방.
 
-### 12.1 Phase I 배포 시 환경변수 누락
+### 15.1 Phase I 배포 시 환경변수 누락
 
 - 로컬 dev 는 `.env` 로 동작하지만, Vercel 배포 시 환경변수 누락 → 빌드는 통과, 런타임 500
 - 특히 `DATABASE_URL`, `ANTHROPIC_API_KEY`, `GOOGLE_*` (OAuth)
 - **방어**: Vercel preview 배포를 거쳐야 prod 배포 가능하도록 강제. preview 에서 첫 페이지 로드 + 1개 AI 호출까지 smoke test.
 
-### 12.2 Asset 30+ 도달 시 매칭 점수 캐싱 부재로 느려짐
+### 15.2 Asset 30+ 도달 시 매칭 점수 캐싱 부재로 느려짐
 
 - 현재 `matchAssetsToRfp()` 는 모든 자산에 대해 매번 점수 계산 (O(N×M) — 자산 N · 섹션 M)
 - 30+ 도달 시 Step 1 RFP 파싱 직후 패널 렌더가 1초 이상
 - **방어**: 자산별 `programProfileFit` 정규화 결과를 캐시 (예: Redis or in-memory). RFP·프로파일 변경 시만 재계산.
 
-### 12.3 Logic Model Outcome ↔ ContentAsset 연결 가능성
+### 15.3 Logic Model Outcome ↔ ContentAsset 연결 가능성
 
 - 현재 `ContentAsset.applicableSections` 는 RFP 섹션 키만 가리킴
 - Logic Model 의 Outcome 항목과 자산을 직접 연결하면 SROI 계산 시 어느 자산이 어떤 outcome 에 기여했는지 추적 가능
 - **함정**: 이 연결을 충동적으로 추가하면 스키마 복잡도 증가. v3 시점까지 미룰 것.
 
-### 12.4 가이드북 사이트 (guidebook-site) 와 메인 시스템 동기화
+### 15.4 가이드북 사이트 (guidebook-site) 와 메인 시스템 동기화
 
 - 가이드북 v2 는 별도 트랙(ADR-005)이지만 ProgramProfile 11축 같은 **시스템 핵심 개념** 이 가이드북에도 등장
 - 시스템에서 12축으로 확장되면 가이드북은 11축인 채로 남을 수 있음
 - **방어**: 시스템 핵심 개념 변경 시 `docs/guidebook/` 도 영향 분석에 포함. CI 에서 guidebook 빌드도 함께 돌리는 게 한 가드.
 
-### 12.5 사용자 메모리(MEMORY.md) 와 저장소 docs 의 진실 충돌
+### 15.5 사용자 메모리(MEMORY.md) 와 저장소 docs 의 진실 충돌
 
 - `~/.claude/projects/.../memory/*.md` 는 시점 스냅샷. *"This memory is N days old"* 경고가 자주 뜸
 - 실제 코드는 그 사이 변경됨
@@ -398,6 +500,7 @@ H5 에서 자산 5종 추가 (계층 children — AI 솔로 Week 1~3 + AX Guideb
 | `project_impact_value_chain.md` | Impact Value Chain 5단계 + 루프? |
 | `project_asset_registry.md` | Asset Registry v1 (코드 시드)? |
 | `project_content_hub.md` | Content Hub v2 (DB + 계층 + UI)? |
+| `project_express_mode.md` ⭐ | Express Mode (ADR-011) 트랙 정체·12 슬롯·3 카드? (L1 후속 추가 예정) |
 
 ## 부록 B — Journey 파일 인덱스
 
@@ -415,6 +518,7 @@ H5 에서 자산 5종 추가 (계층 children — AI 솔로 Week 1~3 + AX Guideb
 | `2026-04-23-impact-value-chain-adoption.md` | ADR-008 채택 흐름 |
 | `2026-04-24-phase-g-asset-registry-kickoff.md` | Phase G 착수 |
 | `2026-04-24-phase-h-content-hub-kickoff.md` | Phase H 착수 (G 완료 익일) |
+| `2026-04-27-express-mode-adoption.md` ⭐ | ADR-011 채택 흐름 + L1 Gemini 통합 (Phase L 시작) |
 
 ## 부록 C — 이 문서에 직접 인용된 사용자 원문
 
@@ -441,6 +545,16 @@ H5 에서 자산 5종 추가 (계층 children — AI 솔로 Week 1~3 + AX Guideb
 7. **2026-04-24 Phase H 트리거 (v1 → v2 격상)**
    > *"계속 교육 콘텐츠는 늘어날건데 이걸 담을 수 있도록 세팅이 되어 있을까?"*
 
+8. **2026-04-27 시스템 정체성 재정의 (Express Mode, ADR-011)**
+   > *"언더독스의 강점은 부각이 되지만 RFP에 따라 유연하게 적용 유무를 판단하고 적용하면서, 과정이 가장 사용자 친숙한 방식으로 되려면 어떻게 해야할까? 복잡도가 올라가는 방식보다는 사용자가 직관적으로 따라가지만, 계속 본인 스스로 흐름을 놓치지 않고 핵심 메세지 중심으로 결과물이 완성되는거야. SROI, 예산, 코치추천 이것도 필요한 기능이지만 부차적이야. **핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지**"*
+
+   가장 결정적인 16글자: *"핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지"*
+
+9. **2026-04-27 비정형 → 정형 우려 (Express 4 안전장치 트리거)**
+   > *"비정형데이터를 정형화 시키는게 굉장히 어려운 로직이 될 것 같아"*
+
+   이 한 줄이 ADR-011 §"비정형 → 정형 안전장치" 4종 (Schema First / Partial Extraction / 외부 분기 자동 / Validation Gate) 도입 트리거.
+
 ---
 
-*이 문서는 누적 업데이트 대상이다. 새로운 사고가 발생하면 (a) 기존 케이스의 변형이면 해당 §에 추가, (b) 새 카테고리면 §13~ 으로 신설. 너무 많아지면(20+ 케이스) 카테고리별로 분할 검토.*
+*이 문서는 누적 업데이트 대상이다. 새로운 사고가 발생하면 (a) 기존 케이스의 변형이면 해당 §에 추가, (b) 새 카테고리면 §16~ 으로 신설. 너무 많아지면(20+ 케이스) 카테고리별로 분할 검토.*

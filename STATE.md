@@ -7,11 +7,12 @@
 
 ## 한 눈 요약
 
-- **누적 커밋 수**: 105 (master 기준)
+- **누적 커밋 수**: 108 (master 기준 — L1 3 커밋 포함)
 - **현재 브랜치**: `claude/blissful-goodall-56a659` (워크트리)
-- **마지막 큰 변경**: `138ebab` 워크트리 통합 + predev 훅 인프라 (2026-04-27)
-- **Phase A~H 완료** (8 Phase). Phase I(안정화·배포) 대기.
-- **다음 우선순위**: 브라우저 E2E 검증 → Phase I1~I5 진입.
+- **마지막 큰 변경**: ⭐ **ADR-011 Express Mode 채택 + L1 Gemini 통합** (2026-04-27)
+- **Phase A~H 완료** (8 Phase) + **Phase L 진행 중** (L0/L1 완료, 28%).
+- **다음 우선순위**: **Phase L Wave L2 — Express PoC** (단일 화면 + 챗봇 + 12 슬롯 + 점진 미리보기).
+- **시스템 정체성 재정의 (2026-04-27)**: 6 스텝 단일 트랙 → **Express (메인) + Deep (보조) 두 트랙**. 북극성 = "RFP → 30~45분 → 1차본".
 
 ### Phase 진행률 표
 
@@ -25,7 +26,8 @@
 | F | Impact Value Chain | 완료 | 100% |
 | G | UD Asset Registry v1 | 완료 | 100% |
 | H | Content Hub v2 | 완료 | 100% |
-| I | 안정화·배포 | 대기 | 0% |
+| **L** ⭐ | **Express Mode (ADR-011)** | **진행 중** | **L0/L1 완료 (28%)** |
+| I | 안정화·배포 | 대기 | 0% (Phase L 후) |
 
 ---
 
@@ -41,6 +43,7 @@
 | F | Impact Value Chain | 완료 | ADR-008 · 5단계 + SROI 수렴점 + 루프 Gate (9 커밋) | `0f416b5` → `2714ca7` |
 | G | UD Asset Registry v1 | 완료 | ADR-009 · 시드 15종 + matchAssetsToRfp + 자산 패널 (8 커밋) | `9af914a` → `b754052` |
 | H | Content Hub v2 | 완료 | ADR-010 · ContentAsset DB + 계층 + 담당자 UI (7 커밋) | `c3bd197` → `0ee6b23` |
+| **L** ⭐ | **Express Mode** | **진행 중** | **ADR-011 · 두 트랙 정체 + Gemini 3.1 Pro Primary + invokeAi() + max_tokens 8192/16384 + safeParseJson 강화** | **`f2c0c38` `6369403` `f0ffab8`** |
 | I | 안정화·배포 | 대기 | (계획) E2E · Manifest 강제 · Vercel 배포 | — |
 
 ---
@@ -55,7 +58,9 @@
 - **PostgreSQL** (Docker Compose `ud_ops_db`)
 - **NextAuth v5** (JWT 전략 — Google OAuth + 개발 모드 Credentials)
 - **shadcn/ui** + **base-ui** + **Tailwind v4**
-- **Anthropic Claude SDK** `^0.80.0` (모델: `claude-sonnet-4-6`) + Gemini fallback
+- **AI Primary**: Google Gemini 3.1 Pro Preview (`gemini-3.1-pro-preview` via `googleapis ^171.4.0`) — L1 완료
+- **AI Fallback**: Anthropic Claude SDK `^0.80.0` (모델: `claude-sonnet-4-6`)
+- **호출 진입점**: `src/lib/ai-fallback.ts` `invokeAi(params)` — provider/model 중립
 - **PDF**: `unpdf` (Vercel 서버리스 호환)
 - 기타: `@dnd-kit`, `@tanstack/react-query`, `zod`, `zustand`, `sonner`, `lucide-react`, `exceljs`, `googleapis`
 
@@ -177,6 +182,7 @@ User · Account · Session · Coach · Module · Project · CurriculumItem · Co
 - **ADR-008** Impact Value Chain 5단계 + SROI = Outcome 수렴점, 루프 얼라인 Gate.
 - **ADR-009** UD Asset Registry — 5 카테고리 자산 + 3중 태그 + RFP 자동 매핑.
 - **ADR-010** Content Hub v2 — DB 기반 + parentId 계층 + 담당자 직접 CRUD UI.
+- **ADR-011** ⭐ Express Mode — 두 트랙 정체 (Express 메인 / Deep 보조). 북극성 = "RFP → 30~45분 → 1차본 7 섹션".
 
 ---
 
@@ -184,37 +190,43 @@ User · Account · Session · Coach · Module · Project · CurriculumItem · Co
 
 | # | 커밋 | 내용 |
 |---|------|------|
-| 1 | `138ebab` | 워크트리 통합 + predev 훅 (정책 명시) |
-| 2 | `0eb8d69` | Phase H Content Hub 브라우저 번들 픽스 — asset-registry 분할 + server-only guard |
-| 3 | `cdf28eb` | Phase H Wave H3 — `/admin/content-hub` 담당자 UI + CRUD API |
-| 4 | `c4ffba6` | Phase H Wave H2 — asset-registry DB 전환 + async 체인 |
-| 5 | `9133730` | Phase H Wave H1 — ContentAsset 테이블 + 마이그레이션 + DB 시드 스크립트 |
+| 1 | ⭐ `ADR-011` + `architecture/express-mode.md` | **Express Mode 채택** — 시스템 정체성 두 트랙 재정의 (메인=Express RFP→30~45분→1차본 / 보조=Deep 6 스텝). PRD-v6 → v7 격상. |
+| 2 | `f0ffab8` | L1 Wave 3 — invokeAi 호출마다 provider/model/elapsed 콘솔 로그 |
+| 3 | `6369403` | L1 Wave 2 — Gemini 모델명 fix (`gemini-3.1-pro-preview` 실제 API명) |
+| 4 | `f2c0c38` | ⭐ **L1 — Gemini 3.1 Pro 통합 + max_tokens 확대 (8192/16384) + safeParseJson 강화** (Logic Model 5843byte truncate 사고 해소) |
+| 5 | `138ebab` | 워크트리 통합 + predev 훅 (정책 명시) |
 
 ---
 
-## 다음 우선순위 (Phase I)
+## 다음 우선순위 (Phase L Wave L2 — Express PoC) ⭐
 
-ROADMAP §Phase I 그대로 인용:
+ROADMAP §Phase L 그대로 인용:
 
-- [ ] **I1. 전체 E2E 테스트**
-  - 양양 신활력 RFP로 Step 1~6 전체 플로우
-  - 각 스텝의 데이터 흐름 검증
-  - Ingestion → 승인 → 자산 반영 → 기획 활용 end-to-end
+- [x] **L0. ADR-011 + architecture spec + 6 문서 싱크** *(이 세션 완료)*
+- [x] **L1. AI 안정화** — Gemini 3.1 Pro + invokeAi + max_tokens 8192/16384 + safeParseJson 강화 *(`f2c0c38` / `6369403` / `f0ffab8`)*
+- [ ] **L2. Express PoC: 단일 화면** *(다음 — 즉시 진입)*
+  - `src/app/(dashboard)/projects/[id]/express/page.tsx`
+  - `<ExpressChat>` (좌) + `<ExpressPreview>` (우) + `<NorthStarBar>` (상단)
+  - `src/lib/express/{schema,conversation,slot-priority,prompts,active-slots}.ts`
+  - 신규 API: `/api/express/save` + `/api/express/turn`
+  - 마이그레이션 `add-express-draft` — `Project.expressDraft Json?` + `expressActive Boolean` + `expressTurnsCache Json?`
+  - 자동 저장 hook (debounce 1500ms)
+- [ ] **L3. 외부 LLM 분기 + 자산 자동 인용** — 3 카드 유형 + matchAssetsToRfp 자동 호출 + narrativeSnippet 주입
+- [ ] **L4. 부차 기능 1줄 인용** — SROI 추정 + 예산 마진 + 코치 카테고리 + Deep 이동 링크
+- [ ] **L5. 검수 에이전트 (사용자 요청)** — `inspectDraft()` 1차본 자동 평가 + 제1원칙 4 렌즈
+- [ ] **L6. Express + Deep 통합 운영 검증** — `mapDraftToContext()` + `suggestDeepAreas()` + E2E
+
+## Phase L 후속: Phase I (안정화·배포)
+
+ROADMAP §Phase I — Phase L 완료 *후* 진입:
+
+- [ ] **I1. 전체 E2E 테스트** — Express + Deep 모두 (Express 30~45분 → Deep Step 5 정밀)
 - [ ] **I2. 빌드 확인 + 에러 수정**
-  - TypeScript 0 에러
-  - Vercel 서버리스 호환 확인
 - [ ] **I3. Module Manifest 강제**
-  - ESLint 커스텀 룰: 모듈이 manifest에 없는 slice/asset 접근 금지
-  - 런타임 레지스트리 (`src/modules/_registry.ts`) — 모든 manifest 자동 수집
-  - 근거: ADR-002
 - [ ] **I4. strategy-interview-ingest + 품질 지표 대시보드**
-  - 수주 전략 인터뷰 자산화
-  - 수주율 · 재생성 횟수 · Ingestion 승인률 · 자산 재사용률 모니터링
 - [ ] **I5. Vercel 배포 + GitHub push**
-  - 프로덕션 배포
-  - Google OAuth 최종 확인
 
-### 즉각 후속 (Phase I 이전 기술 부채)
+### 즉각 후속 (Phase L 이전 기술 부채)
 
 - 브라우저 E2E 검증 (Phase F·G·H 가시 동작) — Docker `ud_ops_db` 기동 후
 - master `node_modules` 재 install 필요 (워크트리 통합 후)
@@ -236,6 +248,8 @@ ROADMAP §Phase I 그대로 인용:
 | 빌드 | TypeScript 빌드 정보 477KB (`tsconfig.tsbuildinfo`) — 정리 필요 | 빌드 디버그 |
 | 가이드북 | 가이드북-시스템 분리 후 `lecture-materials/` 자료 정리 | ADR-005 후속 |
 | Smoke Test | 실제 RFP 로 6 스텝 전수 검증 미실행 | session_20260420 |
+| AI 품질 | **AI 답변 퀄리티 검수 에이전트** — Gemini/Claude 응답이 "1차본 당선력" 기준 충족하는지 자동 점검 (사용자 요청 2026-04-27) | Phase L 후속 |
+| AI | 제안서 전체 생성 매우 느림 (45~76초/섹션) — Gemini 응답 시간 또는 prompt 길이 최적화 필요 | dev 로그 2026-04-27 |
 
 ---
 
@@ -269,13 +283,14 @@ Layer 3 외부 인텔리전스 (AI + PM 수집)
 
 ## 참고 문서
 
-- **ROADMAP.md** — 6 Phase 체크리스트 (단일 진실원, A~I)
+- **PRD-v7.0.md** ⭐ — 단일 진실 원본 (v6.0 은 archived)
+- **ROADMAP.md** — Phase 체크리스트 (A~H 완료, **L 진행 중**, I 대기)
 - **REDESIGN.md** — 상세 설계 v2
-- **CLAUDE.md** — 프로젝트 규칙 / 브랜드 / 컨벤션
-- **docs/architecture/** — modules · data-contract · ingestion · quality-gates · value-chain · program-profile · asset-registry · content-hub · current-state-audit
-- **docs/decisions/** — ADR-001 ~ ADR-010
-- **docs/journey/** — 11건 시행착오 일지
+- **CLAUDE.md** — 프로젝트 규칙 / 브랜드 / 컨벤션 / 설계 철학 10
+- **docs/architecture/** — modules · data-contract · ingestion · quality-gates · value-chain · program-profile · asset-registry · content-hub · **express-mode** ⭐ · current-state-audit
+- **docs/decisions/** — ADR-001 ~ **ADR-011** (Express Mode 채택)
+- **docs/journey/** — 12+건 시행착오 일지
 
 ---
 
-*Generated 2026-04-27. 다음 갱신: Phase I 진입 시.*
+*Generated 2026-04-27. 다음 갱신: Phase L Wave L2 완료 시.*

@@ -1,4 +1,6 @@
-# PRD-v6.0 — UD-Ops Workspace
+# PRD-v6.0 — UD-Ops Workspace (ARCHIVED)
+
+> ⚠️ **이 문서는 [PRD-v7.0.md](PRD-v7.0.md) 으로 대체되었습니다 (2026-04-27, ADR-011 Express Mode 채택).** 본 문서는 Phase A~H 누적 결과의 스냅샷으로 보존되며, 시스템 정체성·원칙·트랙 정의는 v7.0 을 참조하십시오. v7 은 v6 의 6 스텝 파이프라인을 **Deep Track** 으로 보존하면서 **Express Track** (RFP → 30~45분 → 1차본) 을 메인 진입점으로 추가합니다.
 
 > 언더독스 교육 사업 제안 자동화 웹앱의 **단일 진실 원본 (Single Source of Truth)**.
 > 본 PRD 는 시스템 정의에 집중한다. 운영 가이드북·강의 자료는 별도 산출물 (부록 A 참조).
