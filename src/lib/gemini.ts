@@ -13,7 +13,16 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-export const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-3.1-pro'
+/**
+ * 기본 모델 (2026-04-27).
+ * 사용자 의도 = "Gemini 3.1 Pro" → 실제 API 모델명은 `gemini-3.1-pro-preview`.
+ *
+ * ENV `GEMINI_MODEL` 로 override 가능. 후보:
+ *   - `gemini-3.1-pro-preview` (default, 최신 preview)
+ *   - `gemini-pro-latest`      (Google 자동 최신 매핑, 안정+최신)
+ *   - `gemini-2.5-pro`         (preview 아닌 production)
+ */
+export const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-3.1-pro-preview'
 
 let _client: GoogleGenerativeAI | null = null
 
