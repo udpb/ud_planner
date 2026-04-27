@@ -1,0 +1,281 @@
+# STATE.md — 현재 진행 상태 (2026-04-27 기준)
+
+> 단일 페이지 상태 스냅샷. "지금 어디까지 됐고, 뭐가 남았고, 어떻게 동작하는지" 즉시 파악용.
+> 갱신 주기: 마이너 마일스톤 단위. 5문서 묶음(ROADMAP·REDESIGN·CLAUDE·MEMORY·STATE) 통합 커밋 시 동기화.
+
+---
+
+## 한 눈 요약
+
+- **누적 커밋 수**: 105 (master 기준)
+- **현재 브랜치**: `claude/blissful-goodall-56a659` (워크트리)
+- **마지막 큰 변경**: `138ebab` 워크트리 통합 + predev 훅 인프라 (2026-04-27)
+- **Phase A~H 완료** (8 Phase). Phase I(안정화·배포) 대기.
+- **다음 우선순위**: 브라우저 E2E 검증 → Phase I1~I5 진입.
+
+### Phase 진행률 표
+
+| Phase | 이름 | 상태 | 진행률 |
+|-------|------|------|--------|
+| A | 골격·계약 | 완료 | 100% |
+| B | Step 1 + Ingestion 뼈대 | 완료 | 100% |
+| C | 데이터 흐름 | 완료 | 100% |
+| D | PM 가이드 + Gate 3 | 완료 | 100% |
+| E | ProgramProfile + 차별화 리서치 | 완료 | 100% |
+| F | Impact Value Chain | 완료 | 100% |
+| G | UD Asset Registry v1 | 완료 | 100% |
+| H | Content Hub v2 | 완료 | 100% |
+| I | 안정화·배포 | 대기 | 0% |
+
+---
+
+## Phase 진행 표 (대표 커밋 해시)
+
+| Phase | 이름 | 상태 | 핵심 산출 | 대표 커밋 |
+|-------|------|------|---------|---------|
+| A | 골격·계약 | 완료 | PipelineContext · Module Manifest 패턴 · Ingestion 스키마 | `b7980dd` `ccf2150` `3d5d28b` |
+| B | Step 1 + Ingestion 뼈대 | 완료 | RFP 기획방향 AI · 평가배점 전략 · Step 1 3컬럼 UI | `c23d2b6` `10b3683` `98cd461` |
+| C | 데이터 흐름 | 완료 | PipelineContext 주입 AI · 룰 엔진 뼈대 · DataFlowBanner | `ec9c3c2` `3b1332f` `061d5b5` |
+| D | PM 가이드 + Gate 3 | 완료 | proposal-ingest · ChannelPreset · pm-guide · predicted-score | `de71f15` `2c72625` `d649d67` `e2ae095` `d1ad453` |
+| E | ProgramProfile + 차별화 리서치 | 완료 | ADR-006·007 · 11축 프로파일 · 시드 60건 · Gate 3 강화 | `4190096` `a82b2e4` `1b73769` `1f3017f` `afc82fe` `2226f19` `9d00616` |
+| F | Impact Value Chain | 완료 | ADR-008 · 5단계 + SROI 수렴점 + 루프 Gate (9 커밋) | `0f416b5` → `2714ca7` |
+| G | UD Asset Registry v1 | 완료 | ADR-009 · 시드 15종 + matchAssetsToRfp + 자산 패널 (8 커밋) | `9af914a` → `b754052` |
+| H | Content Hub v2 | 완료 | ADR-010 · ContentAsset DB + 계층 + 담당자 UI (7 커밋) | `c3bd197` → `0ee6b23` |
+| I | 안정화·배포 | 대기 | (계획) E2E · Manifest 강제 · Vercel 배포 | — |
+
+---
+
+## 코드 현황
+
+### Tech 스택
+
+- **Next.js 16.2.1** (App Router, Turbopack)
+- **React 19.2.4** + **TypeScript** strict
+- **Prisma 7.5.0** + `@prisma/adapter-pg` (PrismaPg adapter)
+- **PostgreSQL** (Docker Compose `ud_ops_db`)
+- **NextAuth v5** (JWT 전략 — Google OAuth + 개발 모드 Credentials)
+- **shadcn/ui** + **base-ui** + **Tailwind v4**
+- **Anthropic Claude SDK** `^0.80.0` (모델: `claude-sonnet-4-6`) + Gemini fallback
+- **PDF**: `unpdf` (Vercel 서버리스 호환)
+- 기타: `@dnd-kit`, `@tanstack/react-query`, `zod`, `zustand`, `sonner`, `lucide-react`, `exceljs`, `googleapis`
+
+### 디렉토리 구조 (주요만)
+
+```
+src/app/
+  (auth)/                     로그인 라우팅
+  (dashboard)/
+    projects/[id]/            6 스텝 UI (rfp · curriculum · coaches · budget · impact · proposal)
+      step-rfp.tsx            Step 1 + 3탭 (Impact · Input · Output)
+      step-curriculum.tsx
+      step-coaches.tsx
+      step-budget.tsx         예산 설계 (Phase F 개칭)
+      step-impact.tsx         임팩트 + SROI Forecast (Phase F 재구성)
+      step-proposal.tsx
+      *.manifest.ts           Module Manifest 6종
+    ingest/                   Ingestion 페이지
+    settings/
+  admin/
+    content-hub/              Phase H 담당자 UI (목록·신규·편집)
+  api/                        라우트 (admin·agent·ai·auth·budget·coaches·content-hub·ingest 등)
+
+src/lib/                      도메인 레이어
+  asset-registry.ts           DB 기반 자산 매칭 (Phase H async 전환)
+  asset-registry-types.ts     UdAsset · AssetCategory · EvidenceType · AssetMatch
+  value-chain.ts              5단계 의미 레이어 (Phase F)
+  loop-alignment.ts           SROI 3방향 얼라인 룰 (Phase F)
+  program-profile.ts          11축 프로파일 + profileSimilarity (Phase E)
+  planning-principles.ts      제1원칙 + 4 세부원칙 주입
+  pipeline-context.ts         867줄 SSoT 슬라이스 계약
+  claude.ts                   AI 호출 + safeParseJson
+  curriculum-ai.ts            커리큘럼 AI (PipelineContext 주입)
+  proposal-ai.ts              제안서 AI (자산 narrativeSnippet 주입)
+  logic-model-builder.ts      Logic Model + Activity-Session 매핑
+  winning-patterns.ts         WinningPattern + profileSimilarity 매칭
+  proposal-rules.ts           Gate 3 룰 (당선 패턴·평가위원·논리체인)
+  channel-presets.ts          ChannelPreset 시드 + resolveChannelTone
+  eval-strategy.ts            평가배점 전략 (규칙 기반)
+  ingestion/                  pdf-section-splitter · save-file · workers
+  planning-agent/             Planning Agent 코어 (agent · prompts · question-bank · state · tools · types · channel-preprocessors · intent-schema · manifest)
+  budget-rules.ts · impact-rules.ts · curriculum-rules.ts   Gate 2 룰 엔진
+
+src/modules/                  Module Manifest 4계층 (ADR-002)
+  _types.ts                   ModuleManifest 타입
+  pm-guide/                   manifest · panel · resolve · sections · static-content · types · research-prompts
+  asset-registry/             manifest 만 (실 구현은 src/lib/asset-registry.ts)
+  gate3-validation/           manifest · run · evaluator-simulation · logic-chain · pattern-comparison · types
+  predicted-score/            manifest · calculate · score-bar · types
+
+src/components/
+  projects/                   agent-interview-panel · data-flow-banner · matched-assets-panel
+                              · planning-scorecard · program-profile-panel · research-panel · strategy-panel
+  admin/                      asset-form
+  layout/                     sidebar 등
+  value-chain-diagram.tsx     Phase F 5단계 다이어그램
+  loop-alignment-cards.tsx    Phase F 루프 Gate 카드
+  ui/                         shadcn/ui 빌트인
+
+prisma/
+  schema.prisma               44 모델 · 1161줄
+  migrations/                 12 마이그레이션
+  seed.ts · seed-channel-presets.ts · seed-program-profiles.ts
+  seed-content-assets.ts · seed-winning-patterns-sections.ts
+```
+
+### 마이그레이션 (12건)
+
+1. `20260324022406_init`
+2. `20260406075214_v5_1_data_collection_models`
+3. `20260407043917_add_impact_module_code_to_curriculum`
+4. `20260412084344_add_auth_and_planning_agent_phase2`
+5. `20260413005745_add_external_research`
+6. `20260413024845_add_strategic_notes`
+7. `20260415074654_add_ingestion_skeleton` (Phase A)
+8. `20260415124312_add_rfp_planning_fields` (Phase B)
+9. `20260417012218_add_phase_d_assets` (Phase D — WinningPattern · ChannelPreset)
+10. `20260421000206_phase_e_program_profile` (Phase E — ProgramProfile · ProfileTag)
+11. `20260424000000_phase_g_accepted_assets` (Phase G — Project.acceptedAssetIds)
+12. `20260424120000_phase_h_content_hub` (Phase H — ContentAsset)
+
+### DB 시드 현황
+
+- **ProgramProfile + WinningPattern**: 60건 (Phase E, 10 케이스 × 축 조합)
+- **ContentAsset**: 20건 = 15 top-level + 5 children (Phase H)
+- **ChannelPreset**: 3종 (B2G · B2B · 재계약 — Phase D)
+- **IMPACT Module**: 18건 (CORE 4 + IMPACT 14)
+- **Coach**: 800명 (sync-coaches.ts)
+- 기타: SROI 프록시, 비용 기준, 타깃 프리셋 등
+
+### 데이터 모델 44개 (`prisma/schema.prisma`)
+
+User · Account · Session · Coach · Module · Project · CurriculumItem · CoachAssignment · Budget · BudgetItem · Expense · Task · TaskAssignee · Participant · ProposalSection · CostStandard · ContentAsset · SroiProxy · TargetPreset · SatisfactionLog · ImpactModule · Content · ContentMapping · DesignRule · AudienceProfile · WeightSuggestion · InternalLaborRate · ServiceProduct · Applicant · DogsResult · ActtResult · StartupStatusRecord · StartupDiagnosis · SatisfactionResponse · CoachingJournal · AlumniRecord · AgentSession · PlanningIntentRecord · PMFeedback · IngestionJob · ExtractedItem · WinningPattern · ProfileTag · ChannelPreset
+
+---
+
+## 모듈별 상태 표
+
+| 모듈 | 위치 | 상태 | manifest | 비고 |
+|------|------|------|----------|------|
+| pm-guide | `src/modules/pm-guide/` | 운영 (Phase D~E 완성) | 있음 | panel · sections · resolve · research-prompts · static-content |
+| asset-registry | `src/modules/asset-registry/` | 운영 (Phase G~H DB 전환) | 있음 | 실 구현은 `src/lib/asset-registry.ts` |
+| gate3-validation | `src/modules/gate3-validation/` | Phase D5 완료 | 있음 | evaluator-simulation · logic-chain · pattern-comparison |
+| predicted-score | `src/modules/predicted-score/` | Phase D4 완료 | 있음 | calculate · score-bar |
+
+스텝별 manifest (`src/app/(dashboard)/projects/[id]/*.manifest.ts`): step-rfp · step-curriculum · step-coaches · step-budget · step-impact · step-proposal — 6종 모두 존재.
+
+---
+
+## 주요 설계 결정 (ADR 1줄씩)
+
+- **ADR-001** 파이프라인 스텝 순서 변경 — 임팩트 Step 2 → Step 5, 커리큘럼 Activity 자동 추출.
+- **ADR-002** Module Manifest 패턴 — reads/writes 명시, 가벼운 모듈 + 공유 DB.
+- **ADR-003** Ingestion 파이프라인 — 자료 업로드가 곧 자산 고도화. 시스템 정체성.
+- **ADR-004** Activity-Session 매핑 — 1 세션 = 1 Activity. 커리큘럼 → Logic Model 자동 변환 규칙.
+- **ADR-005** 가이드북-시스템 정체성 분리 — 가이드북은 OJT 배포용, ud-ops 와 별개 트랙.
+- **ADR-006** ProgramProfile 11축 — 사업 스펙트럼 매칭. WinningPattern 3축의 한계 극복.
+- **ADR-007** 스텝별 티키타카 리서치 — 단계마다 리서치 갱신, "버튼만 누르면" 느낌 제거.
+- **ADR-008** Impact Value Chain 5단계 + SROI = Outcome 수렴점, 루프 얼라인 Gate.
+- **ADR-009** UD Asset Registry — 5 카테고리 자산 + 3중 태그 + RFP 자동 매핑.
+- **ADR-010** Content Hub v2 — DB 기반 + parentId 계층 + 담당자 직접 CRUD UI.
+
+---
+
+## 마지막 큰 변경 5개 (시간 역순)
+
+| # | 커밋 | 내용 |
+|---|------|------|
+| 1 | `138ebab` | 워크트리 통합 + predev 훅 (정책 명시) |
+| 2 | `0eb8d69` | Phase H Content Hub 브라우저 번들 픽스 — asset-registry 분할 + server-only guard |
+| 3 | `cdf28eb` | Phase H Wave H3 — `/admin/content-hub` 담당자 UI + CRUD API |
+| 4 | `c4ffba6` | Phase H Wave H2 — asset-registry DB 전환 + async 체인 |
+| 5 | `9133730` | Phase H Wave H1 — ContentAsset 테이블 + 마이그레이션 + DB 시드 스크립트 |
+
+---
+
+## 다음 우선순위 (Phase I)
+
+ROADMAP §Phase I 그대로 인용:
+
+- [ ] **I1. 전체 E2E 테스트**
+  - 양양 신활력 RFP로 Step 1~6 전체 플로우
+  - 각 스텝의 데이터 흐름 검증
+  - Ingestion → 승인 → 자산 반영 → 기획 활용 end-to-end
+- [ ] **I2. 빌드 확인 + 에러 수정**
+  - TypeScript 0 에러
+  - Vercel 서버리스 호환 확인
+- [ ] **I3. Module Manifest 강제**
+  - ESLint 커스텀 룰: 모듈이 manifest에 없는 slice/asset 접근 금지
+  - 런타임 레지스트리 (`src/modules/_registry.ts`) — 모든 manifest 자동 수집
+  - 근거: ADR-002
+- [ ] **I4. strategy-interview-ingest + 품질 지표 대시보드**
+  - 수주 전략 인터뷰 자산화
+  - 수주율 · 재생성 횟수 · Ingestion 승인률 · 자산 재사용률 모니터링
+- [ ] **I5. Vercel 배포 + GitHub push**
+  - 프로덕션 배포
+  - Google OAuth 최종 확인
+
+### 즉각 후속 (Phase I 이전 기술 부채)
+
+- 브라우저 E2E 검증 (Phase F·G·H 가시 동작) — Docker `ud_ops_db` 기동 후
+- master `node_modules` 재 install 필요 (워크트리 통합 후)
+- `evalStrategy` 를 `MatchAssetsParams` 로 받기 (Phase G 후속)
+- `ProgramProfile.methodology.primary` 유니온 확장
+- `PmGuidePanel` `valueChainInputs` 실제 주입 (현재 미사용)
+
+---
+
+## 알려진 이슈·기술 부채
+
+| 카테고리 | 항목 | 출처 |
+|----------|------|------|
+| 인프라 | master `node_modules` 재설치 필요 (워크트리 통합 후) | 138ebab 후속 |
+| Phase G | `evalStrategy` 를 `MatchAssetsParams` 로 받기 | project_asset_registry.md 후속 TODO |
+| Phase E | `ProgramProfile.methodology.primary` 유니온 확장 | project_program_profile_v1.md |
+| Phase F | `PmGuidePanel` `valueChainInputs` 실제 주입 | journey 2026-04-23 |
+| Phase H | `ContentAsset` 검색 인덱스 (현재 풀스캔) | journey 2026-04-24 phase-h |
+| 빌드 | TypeScript 빌드 정보 477KB (`tsconfig.tsbuildinfo`) — 정리 필요 | 빌드 디버그 |
+| 가이드북 | 가이드북-시스템 분리 후 `lecture-materials/` 자료 정리 | ADR-005 후속 |
+| Smoke Test | 실제 RFP 로 6 스텝 전수 검증 미실행 | session_20260420 |
+
+---
+
+## 파이프라인 흐름 요약
+
+UI 6 스텝 + Impact Value Chain 5단계 의미 레이어 병행.
+
+```
+Step 1 RFP+기획방향  [① Impact · ② Input · ③ Output 3 탭]
+Step 2 커리큘럼      [④ Activity]
+Step 3 코치          [④ Activity + ② Input]
+Step 4 예산 설계     [② Input]
+Step 5 임팩트+SROI   [⑤ Outcome — 수렴점] ◀── 루프 시작
+Step 6 제안서        [③ Output 최종]
+                            └── 루프: SROI 3방향 얼라인 ──┘
+```
+
+데이터 레이어:
+
+```
+Layer 1 내부 자산 (회사 공통)
+  브랜드 자산 / IMPACT 18모듈 / 코치 800 / 비용 기준
+  / SROI 프록시 / 당선 패턴 60 / ChannelPreset 3 / ContentAsset 20
+Layer 2 프로젝트 컨텍스트 (PipelineContext — 스텝 간 흐름)
+  Step 1→2→3→4→5→6 누적 전달
+Layer 3 외부 인텔리전스 (AI + PM 수집)
+  티키타카 리서치 / AI 생성 / 수주 전략 인터뷰
+```
+
+---
+
+## 참고 문서
+
+- **ROADMAP.md** — 6 Phase 체크리스트 (단일 진실원, A~I)
+- **REDESIGN.md** — 상세 설계 v2
+- **CLAUDE.md** — 프로젝트 규칙 / 브랜드 / 컨벤션
+- **docs/architecture/** — modules · data-contract · ingestion · quality-gates · value-chain · program-profile · asset-registry · content-hub · current-state-audit
+- **docs/decisions/** — ADR-001 ~ ADR-010
+- **docs/journey/** — 11건 시행착오 일지
+
+---
+
+*Generated 2026-04-27. 다음 갱신: Phase I 진입 시.*
