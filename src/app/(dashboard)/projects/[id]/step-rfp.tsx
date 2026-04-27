@@ -380,7 +380,9 @@ export function StepRfp({
       {/* 메인: 탭(좌) + PM 가이드(우) */}
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_320px]">
         {/* ────────── 좌: Value Chain 3 탭 ────────── */}
-        <Tabs defaultValue="impact" className="w-full">
+        {/* 기본 탭: RFP 미파싱 시 ③ Output 부터 (사용자 흐름 — 먼저 파일 업로드).
+            파싱 완료된 프로젝트는 ① Impact 의도부터 보여줌. */}
+        <Tabs defaultValue={parsed ? 'impact' : 'output'} className="w-full">
           <TabsList variant="line" className="w-full justify-start border-b">
             <TabsTrigger
               value="impact"
