@@ -13,6 +13,7 @@
 import { useEffect, useRef, useState, useTransition, useCallback } from 'react'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import {
@@ -207,12 +208,46 @@ export function ExpressShell(props: Props) {
   }, [])
 
   // ─────────────────────────────────────────
-  // 1차본 승인
+  // 1차본 승인 + 자동 검수 (L5)
   // ─────────────────────────────────────────
   const [submitting, setSubmitting] = useState(false)
+  const [inspectorReport, setInspectorReport] = useState<{
+    passed: boolean
+    overallScore: number
+    issues: Array<{ severity: string; lens: string; issue: string; suggestion: string }>
+    nextAction: string
+  } | null>(null)
+
+  const runInspector = useCallback(async () => {
+    try {
+      const r = await fetch('/api/express/inspect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId: props.projectId, draft }),
+      })
+      if (!r.ok) throw new Error(await r.text())
+      const data = await r.json()
+      setInspectorReport(data.report)
+      const critical = data.report.issues.filter((i: { severity: string }) => i.severity === 'critical').length
+      if (critical > 0) {
+        toast.warning(`검수 결과: ${data.report.overallScore}점 — critical ${critical}건. ${data.report.nextAction}`)
+      } else if (data.report.overallScore >= 80) {
+        toast.success(`검수 통과 ✓ ${data.report.overallScore}점 — ${data.report.nextAction}`)
+      } else {
+        toast(`검수: ${data.report.overallScore}점 — ${data.report.nextAction}`)
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      toast.error('검수 실패: ' + msg.slice(0, 80))
+    }
+  }, [props.projectId, draft])
+
   const handleSubmitDraft = useCallback(async () => {
     setSubmitting(true)
     try {
+      // 1) 자동 검수
+      await runInspector()
+      // 2) 저장 + completed
       const r = await fetch('/api/express/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -235,7 +270,7 @@ export function ExpressShell(props: Props) {
     } finally {
       setSubmitting(false)
     }
-  }, [props.projectId, draft, convState])
+  }, [props.projectId, draft, convState, runInspector])
 
   return (
     <>
@@ -257,8 +292,28 @@ export function ExpressShell(props: Props) {
           submitting={submitting}
           isCompleted={draft.meta.isCompleted}
         />
-        {/* 정밀 기획 (Deep) 분기 — 우측 끝 */}
-        <div className="flex items-center justify-end border-t border-dashed bg-muted/20 px-6 py-1.5">
+        {/* 검수 + 정밀 기획 분기 — 우측 끝 */}
+        <div className="flex items-center justify-end gap-2 border-t border-dashed bg-muted/20 px-6 py-1.5">
+          {inspectorReport && (
+            <span
+              className={cn(
+                'rounded-md px-2 py-0.5 text-xs',
+                inspectorReport.passed
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-amber-100 text-amber-800',
+              )}
+              title={inspectorReport.nextAction}
+            >
+              검수 {inspectorReport.overallScore}점 · {inspectorReport.issues.length}건
+            </span>
+          )}
+          <button
+            onClick={runInspector}
+            className="rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+            title="현재 1차본을 평가위원 시각 7 렌즈로 검수"
+          >
+            검수
+          </button>
           <Link
             href={`/projects/${props.projectId}?step=rfp`}
             className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"

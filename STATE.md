@@ -10,8 +10,8 @@
 - **누적 커밋 수**: 108 (master 기준 — L1 3 커밋 포함, L2 통합 커밋 1건 진행 중)
 - **현재 브랜치**: `claude/blissful-goodall-56a659` (워크트리)
 - **마지막 큰 변경**: ⭐ **L2 Express PoC 풀 구현** (2026-04-28) — 단일 화면 동작
-- **Phase A~H 완료** (8 Phase) + **Phase L 진행 중** (L0/L1/L2 완료, 43%).
-- **다음 우선순위**: **L3 — 외부 LLM 분기 + 자산 자동 인용 인-챗 통합** (`PmDirectCard`/`ExternalLlmCard`/`AutoExtractCard` 자동 트리거, `narrativeSnippet` 즉시 sections 주입). L4·L5 와 병렬 가능.
+- **Phase A~H 완료** (8 Phase) + **Phase L 진행 중** (L0/L1/L2/L5 완료, 57%).
+- **다음 우선순위**: **L3 — 외부 LLM 분기 인-챗 자동 트리거** + **L4 — 부차 기능 1줄 인용 정밀화** + **L6 — Express↔Deep 인계 본격**. 모두 병렬 가능.
 - **시스템 정체성 재정의 (2026-04-27)**: 6 스텝 단일 트랙 → **Express (메인) + Deep (보조) 두 트랙**. 북극성 = "RFP → 30~45분 → 1차본".
 
 ### Phase 진행률 표
@@ -26,7 +26,7 @@
 | F | Impact Value Chain | 완료 | 100% |
 | G | UD Asset Registry v1 | 완료 | 100% |
 | H | Content Hub v2 | 완료 | 100% |
-| **L** ⭐ | **Express Mode (ADR-011)** | **진행 중** | **L0/L1/L2 완료 (43%)** |
+| **L** ⭐ | **Express Mode (ADR-011)** | **진행 중** | **L0/L1/L2/L5 완료 (57%)** |
 | I | 안정화·배포 | 대기 | 0% (Phase L 후) |
 
 ---
@@ -215,7 +215,7 @@ ROADMAP §Phase L 그대로 인용:
   - typecheck 0 errors
 - [ ] **L3. 외부 LLM 분기 + 자산 자동 인용** — 3 카드 유형 + matchAssetsToRfp 자동 호출 + narrativeSnippet 주입 *(PoC 카드는 L2 에 들어감, L3 는 인-챗 자동 트리거 보강)*
 - [ ] **L4. 부차 기능 1줄 인용** — SROI 추정 + 예산 마진 + 코치 카테고리 + Deep 이동 링크
-- [ ] **L5. 검수 에이전트 (사용자 요청)** — `inspectDraft()` 1차본 자동 평가 + 제1원칙 4 렌즈
+- [x] **L5. 검수 에이전트 (사용자 요청)** *(2026-04-28)* — `inspectDraft()` AI + `heuristicInspect()` 휴리스틱 백업 · 7 렌즈 (market/statistics/problem/before-after/key-messages/differentiators/tone) · 1차본 승인 시 자동 호출 + 수동 "검수" 버튼
 - [ ] **L6. Express + Deep 통합 운영 검증** — `mapDraftToContext()` + `suggestDeepAreas()` + E2E
 
 ## Phase L 후속: Phase I (안정화·배포)

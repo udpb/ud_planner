@@ -29,7 +29,7 @@
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
 | **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
-| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1/L2 완료 (43%) |
+| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1/L2/L5 완료 (57%) |
 | I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% (Phase L 완료 후 진입) |
 
 ### Phase 진행 순서 (2026-04-27 합의)
@@ -451,7 +451,13 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - 클릭 시 Deep Track Step 으로 이동 (Step 5 / Step 4 / Step 3 / Step 2)
   - `<HelpTip>` "이건 추정치 — 정밀화 시 Deep 에서" 라벨
 
-- [ ] **L5. 검수 에이전트 (사용자 요청)**
+- [x] **L5. 검수 에이전트 (사용자 요청)** *(2026-04-28 완료)*
+  - `src/lib/express/inspector.ts` — `inspectDraft()` AI 검수 + `heuristicInspect()` 휴리스틱 백업
+  - 7 렌즈: market · statistics · problem · before-after · key-messages · differentiators · tone
+  - 심각도 3: critical · major · minor
+  - `/api/express/inspect` — 1차본 평가위원 시각 분석 (LLM 실패 시 휴리스틱 fallback)
+  - `<ExpressShell>`: 1차본 승인 시 자동 검수 호출 + 수동 "검수" 버튼 + 점수/이슈 칩 표시
+  - 사용자 명시 인용: *"너가 따로 나중에 검수 에이전트를 통해서 답변 퀄리티가 잘 출력되는지는 점검해줘"* (2026-04-27)
   - 신규: `src/lib/express/inspector.ts` — `inspectDraft(draft, rfp)`
   - 1차본 완성 직후 자동 평가 — 평가위원 시각 + 제1원칙 4 렌즈
   - 검사 항목:
