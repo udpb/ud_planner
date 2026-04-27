@@ -23,6 +23,8 @@ import { cn } from '@/lib/utils'
 import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
 import type { RfpParsed } from '@/lib/claude'
 import type { ProgramProfile } from '@/lib/program-profile'
+import Link from 'next/link'
+import { Sparkles } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -196,6 +198,15 @@ export default async function ProjectDetailPage({
           <span className="text-sm text-muted-foreground">{project.client}</span>
 
           <div className="ml-auto flex items-center gap-5">
+            {/* Phase L (ADR-011): Express 화면으로 이동 */}
+            <Link
+              href={`/projects/${project.id}/express`}
+              className="flex items-center gap-1.5 rounded-md border border-primary/40 bg-primary/5 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/10"
+              title="Express 1차본 화면 — RFP→1차본 30~45분"
+            >
+              <Sparkles className="h-3 w-3" />
+              Express
+            </Link>
             <div className="text-sm">
               <span className="text-muted-foreground">총 예산 </span>
               <span className="font-semibold">

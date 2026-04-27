@@ -293,6 +293,15 @@ model Project {
   // 스키마: src/lib/program-profile.ts RenewalContext 타입 참조
   renewalContext Json?
 
+  // Phase L (ADR-011): Express Track 1차본
+  // 스키마: src/lib/express/schema.ts ExpressDraftSchema (zod)
+  // 단일 Json 필드로 시작 — 향후 정규화 필요시 별도 테이블 분리
+  expressDraft      Json?
+  // true 면 신규 프로젝트 진입 시 사이드바/페이지가 Express 화면으로 이동
+  expressActive     Boolean @default(false)
+  // 챗봇 마지막 N 턴 캐시 (이탈 후 재진입 회복용)
+  expressTurnsCache Json?
+
   pmId String?
   pm   User?   @relation(fields: [pmId], references: [id])
 

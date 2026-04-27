@@ -36,11 +36,13 @@ async function createProject(formData: FormData) {
       eduStartDate,
       eduEndDate,
       status: 'DRAFT',
+      // Phase L (ADR-011): 신규 프로젝트는 Express Track 으로 진입 (기본)
+      expressActive: true,
     },
   })
 
   revalidatePath('/projects')
-  redirect(`/projects/${project.id}`)
+  redirect(`/projects/${project.id}/express`)
 }
 
 export default function NewProjectPage() {

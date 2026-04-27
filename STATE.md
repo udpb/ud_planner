@@ -1,4 +1,4 @@
-# STATE.md — 현재 진행 상태 (2026-04-27 기준)
+# STATE.md — 현재 진행 상태 (2026-04-28 기준)
 
 > 단일 페이지 상태 스냅샷. "지금 어디까지 됐고, 뭐가 남았고, 어떻게 동작하는지" 즉시 파악용.
 > 갱신 주기: 마이너 마일스톤 단위. 5문서 묶음(ROADMAP·REDESIGN·CLAUDE·MEMORY·STATE) 통합 커밋 시 동기화.
@@ -7,11 +7,11 @@
 
 ## 한 눈 요약
 
-- **누적 커밋 수**: 108 (master 기준 — L1 3 커밋 포함)
+- **누적 커밋 수**: 108 (master 기준 — L1 3 커밋 포함, L2 통합 커밋 1건 진행 중)
 - **현재 브랜치**: `claude/blissful-goodall-56a659` (워크트리)
-- **마지막 큰 변경**: ⭐ **ADR-011 Express Mode 채택 + L1 Gemini 통합** (2026-04-27)
-- **Phase A~H 완료** (8 Phase) + **Phase L 진행 중** (L0/L1 완료, 28%).
-- **다음 우선순위**: **Phase L Wave L2 — Express PoC** (단일 화면 + 챗봇 + 12 슬롯 + 점진 미리보기).
+- **마지막 큰 변경**: ⭐ **L2 Express PoC 풀 구현** (2026-04-28) — 단일 화면 동작
+- **Phase A~H 완료** (8 Phase) + **Phase L 진행 중** (L0/L1/L2 완료, 43%).
+- **다음 우선순위**: **L3 — 외부 LLM 분기 + 자산 자동 인용 인-챗 통합** (`PmDirectCard`/`ExternalLlmCard`/`AutoExtractCard` 자동 트리거, `narrativeSnippet` 즉시 sections 주입). L4·L5 와 병렬 가능.
 - **시스템 정체성 재정의 (2026-04-27)**: 6 스텝 단일 트랙 → **Express (메인) + Deep (보조) 두 트랙**. 북극성 = "RFP → 30~45분 → 1차본".
 
 ### Phase 진행률 표
@@ -26,7 +26,7 @@
 | F | Impact Value Chain | 완료 | 100% |
 | G | UD Asset Registry v1 | 완료 | 100% |
 | H | Content Hub v2 | 완료 | 100% |
-| **L** ⭐ | **Express Mode (ADR-011)** | **진행 중** | **L0/L1 완료 (28%)** |
+| **L** ⭐ | **Express Mode (ADR-011)** | **진행 중** | **L0/L1/L2 완료 (43%)** |
 | I | 안정화·배포 | 대기 | 0% (Phase L 후) |
 
 ---
@@ -190,11 +190,11 @@ User · Account · Session · Coach · Module · Project · CurriculumItem · Co
 
 | # | 커밋 | 내용 |
 |---|------|------|
-| 1 | ⭐ `ADR-011` + `architecture/express-mode.md` | **Express Mode 채택** — 시스템 정체성 두 트랙 재정의 (메인=Express RFP→30~45분→1차본 / 보조=Deep 6 스텝). PRD-v6 → v7 격상. |
-| 2 | `f0ffab8` | L1 Wave 3 — invokeAi 호출마다 provider/model/elapsed 콘솔 로그 |
-| 3 | `6369403` | L1 Wave 2 — Gemini 모델명 fix (`gemini-3.1-pro-preview` 실제 API명) |
-| 4 | `f2c0c38` | ⭐ **L1 — Gemini 3.1 Pro 통합 + max_tokens 확대 (8192/16384) + safeParseJson 강화** (Logic Model 5843byte truncate 사고 해소) |
-| 5 | `138ebab` | 워크트리 통합 + predev 훅 (정책 명시) |
+| 1 | ⭐ `L2` (이 세션) | **Phase L Wave L2 — Express PoC 풀 구현** — `/projects/[id]/express` 단일 화면 + 좌(챗봇) + 우(7섹션 점진 미리보기) + 12 슬롯 + 외부 LLM 카드 3종 + 부차 기능 1줄 자동 인용 + 자동 저장 (debounced 1500ms) + RFP→자산 매칭→첫 턴 자동 흐름 + Express↔Deep 양방향 분기. typecheck 0 errors. |
+| 2 | `06d81a5` | L0 — ADR-011 채택 + `architecture/express-mode.md` + 9 문서 싱크 |
+| 3 | `f0ffab8` | L1 Wave 3 — invokeAi 호출마다 provider/model/elapsed 콘솔 로그 |
+| 4 | `6369403` | L1 Wave 2 — Gemini 모델명 fix (`gemini-3.1-pro-preview` 실제 API명) |
+| 5 | `f2c0c38` | ⭐ **L1 — Gemini 3.1 Pro 통합 + max_tokens 확대 (8192/16384) + safeParseJson 강화** (Logic Model 5843byte truncate 사고 해소) |
 
 ---
 
@@ -202,16 +202,18 @@ User · Account · Session · Coach · Module · Project · CurriculumItem · Co
 
 ROADMAP §Phase L 그대로 인용:
 
-- [x] **L0. ADR-011 + architecture spec + 6 문서 싱크** *(이 세션 완료)*
+- [x] **L0. ADR-011 + architecture spec + 6 문서 싱크** *(2026-04-27)*
 - [x] **L1. AI 안정화** — Gemini 3.1 Pro + invokeAi + max_tokens 8192/16384 + safeParseJson 강화 *(`f2c0c38` / `6369403` / `f0ffab8`)*
-- [ ] **L2. Express PoC: 단일 화면** *(다음 — 즉시 진입)*
-  - `src/app/(dashboard)/projects/[id]/express/page.tsx`
-  - `<ExpressChat>` (좌) + `<ExpressPreview>` (우) + `<NorthStarBar>` (상단)
-  - `src/lib/express/{schema,conversation,slot-priority,prompts,active-slots}.ts`
-  - 신규 API: `/api/express/save` + `/api/express/turn`
-  - 마이그레이션 `add-express-draft` — `Project.expressDraft Json?` + `expressActive Boolean` + `expressTurnsCache Json?`
-  - 자동 저장 hook (debounce 1500ms)
-- [ ] **L3. 외부 LLM 분기 + 자산 자동 인용** — 3 카드 유형 + matchAssetsToRfp 자동 호출 + narrativeSnippet 주입
+- [x] **L2. Express PoC: 단일 화면** *(2026-04-28 완료)*
+  - `src/app/(dashboard)/projects/[id]/express/page.tsx` 서버 컴포넌트 진입
+  - `src/components/express/` 6 컴포넌트 (`ExpressShell`, `ExpressChat`, `ExpressPreview`, `NorthStarBar`, `RfpUploadDialog`, 카드 3종)
+  - `src/lib/express/` 8 파일 (`schema`, `conversation`, `slot-priority`, `prompts`, `active-slots`, `extractor`, `asset-mapper`, `handoff`, `auto-citations`, `process-turn`)
+  - 신규 API: `/api/express/init` + `/api/express/turn` + `/api/express/save`
+  - 마이그레이션: `20260428000000_phase_l_express_draft` — `Project.expressDraft Json?` + `expressActive Boolean @default(false)` + `expressTurnsCache Json?`
+  - 자동 저장 (debounce 1500ms) + RFP 업로드 → 자동 자산 매칭 → 첫 턴 자동
+  - 진입점: 신규 프로젝트 → Express 자동 redirect / 6 step 페이지에서 우상단 "Express" 링크 / Express 안에서 "정밀 기획 (Deep)" 분기
+  - typecheck 0 errors
+- [ ] **L3. 외부 LLM 분기 + 자산 자동 인용** — 3 카드 유형 + matchAssetsToRfp 자동 호출 + narrativeSnippet 주입 *(PoC 카드는 L2 에 들어감, L3 는 인-챗 자동 트리거 보강)*
 - [ ] **L4. 부차 기능 1줄 인용** — SROI 추정 + 예산 마진 + 코치 카테고리 + Deep 이동 링크
 - [ ] **L5. 검수 에이전트 (사용자 요청)** — `inspectDraft()` 1차본 자동 평가 + 제1원칙 4 렌즈
 - [ ] **L6. Express + Deep 통합 운영 검증** — `mapDraftToContext()` + `suggestDeepAreas()` + E2E
