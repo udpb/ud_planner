@@ -48,13 +48,18 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
 
   const preferGemini = params.preferredProvider !== 'claude' && isGeminiAvailable()
 
+  const startedAt = Date.now()
+
   if (preferGemini) {
+    console.log(`[ai] ${label} → Gemini 시도 (max_tokens=${maxTokens})`)
     try {
       const r = await invokeGemini({
         prompt: params.prompt,
         maxTokens,
         temperature,
       })
+      const elapsed = Date.now() - startedAt
+      console.log(`[ai] ${label} ✓ Gemini ${r.model} ${elapsed}ms · raw=${r.raw.length}b`)
       return {
         raw: r.raw,
         provider: 'gemini',
@@ -62,7 +67,7 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
         fallback: false,
       }
     } catch (geminiError: any) {
-      console.warn(`[${label}] Gemini 실패 → Claude fallback:`, geminiError?.message)
+      console.warn(`[ai] ${label} ✗ Gemini 실패 → Claude fallback: ${geminiError?.message}`)
       // Claude 로 폴백
       try {
         const msg = await anthropic.messages.create({
@@ -72,6 +77,8 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
         })
         const block = msg.content[0]
         const raw = block.type === 'text' ? block.text : ''
+        const elapsed = Date.now() - startedAt
+        console.log(`[ai] ${label} ✓ Claude(fallback) ${CLAUDE_MODEL} ${elapsed}ms · raw=${raw.length}b`)
         return {
           raw,
           provider: 'claude',
@@ -89,6 +96,7 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   }
 
   // Gemini 사용 불가 → Claude 직행
+  console.log(`[ai] ${label} → Claude 직행 (Gemini 미설정)`)
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: maxTokens,
@@ -96,6 +104,8 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   })
   const block = msg.content[0]
   const raw = block.type === 'text' ? block.text : ''
+  const elapsed = Date.now() - startedAt
+  console.log(`[ai] ${label} ✓ Claude ${CLAUDE_MODEL} ${elapsed}ms · raw=${raw.length}b`)
   return {
     raw,
     provider: 'claude',
