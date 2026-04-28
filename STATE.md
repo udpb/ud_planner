@@ -10,8 +10,8 @@
 - **누적 커밋 수**: 108 (master 기준 — L1 3 커밋 포함, L2 통합 커밋 1건 진행 중)
 - **현재 브랜치**: `claude/blissful-goodall-56a659` (워크트리)
 - **마지막 큰 변경**: ⭐ **L2 Express PoC 풀 구현** (2026-04-28) — 단일 화면 동작
-- **Phase A~H + L 완료** (9 Phase) — **Phase I 진행 중** (I2/I3 완료, I1/I4/I5 사용자 액션 대기).
-- **다음 우선순위**: **I1 (E2E 테스트 — 사용자 검증)** + **I5 (Vercel 배포 + GitHub push)**. PAT workflow scope 갱신 후 push 가능.
+- **Phase A~H + L 완료** (9 Phase) — **Phase I 진행 중** (I2/I3 완료, I5 코드 준비 완료, I1/I4 대기).
+- **다음 우선순위**: **사용자가 Vercel 에서 New Project → 환경변수 입력 → Deploy** (docs/DEPLOYMENT.md 가이드). 배포 후 I1 (E2E 검증). I4 는 후속.
 - **시스템 정체성 재정의 (2026-04-27)**: 6 스텝 단일 트랙 → **Express (메인) + Deep (보조) 두 트랙**. 북극성 = "RFP → 30~45분 → 1차본".
 
 ### Phase 진행률 표

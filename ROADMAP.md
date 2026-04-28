@@ -534,9 +534,19 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - 수주 전략 인터뷰 자산화
   - 수주율 · 재생성 횟수 · Ingestion 승인률 · 자산 재사용률 모니터링
 
-- [ ] **I5. Vercel 배포 + GitHub push**
-  - 프로덕션 배포
-  - Google OAuth 최종 확인
+- [~] **I5. Vercel 배포 + GitHub push** *(2026-04-28 코드 준비 완료, 배포 자체는 사용자 액션)*
+  - GitHub push ✓ (`origin/master` 22 커밋 반영)
+  - 신규: `vercel.json` (framework=nextjs, buildCommand=`npm run build:prod`, region=icn1, maxDuration=60s)
+  - 신규 npm script: `build:prod` = `prisma generate && prisma migrate deploy && next build` (마이그 자동 적용)
+  - 신규: `.env.example` (개발용 모든 환경변수 카탈로그)
+  - 갱신: `.env.production.example` (GEMINI_API_KEY / GEMINI_MODEL 추가)
+  - 신규: `docs/DEPLOYMENT.md` — 9 섹션 (Neon 준비 / Vercel 프로젝트 / 환경변수 표 / 시드 / OAuth / 검증 체크리스트 / 트러블슈팅)
+  - **사용자 액션 대기**:
+    - Vercel 계정 → New Project → GitHub `udpb/ud_planner` import
+    - 환경변수 입력 (DATABASE_URL, GEMINI_API_KEY, AUTH_SECRET, NEXTAUTH_URL 등)
+    - Deploy 클릭
+    - 첫 배포 후 시드 실행 (`vercel env pull` → `npx tsx prisma/seed*.ts`)
+    - Google OAuth Redirect URIs 갱신
 
 ---
 
