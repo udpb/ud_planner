@@ -29,7 +29,7 @@
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
 | **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
-| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1/L2/L5/L6 완료 (71%) |
+| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | 🔲 진행 중 | L0/L1/L2/L3/L5/L6 완료 (86%) |
 | I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% (Phase L 완료 후 진입) |
 
 ### Phase 진행 순서 (2026-04-27 합의)
@@ -432,14 +432,18 @@ L0 ──────► L2 ─┬──► L3 ───┐
     - `<ExpressShell>` 안 "정밀 기획 (Deep)" 분기 토글 (양방향)
   - typecheck: 0 errors
 
-- [ ] **L3. 외부 LLM 분기 + 자산 자동 인용**
-  - 3 카드 유형 (`src/components/express/cards/`):
-    - `PmDirectCard.tsx` — 발주처 통화·메일 등 시스템이 못 하는 일
-    - `ExternalLlmCard.tsx` — 시장·통계·정책 등 외부 LLM 활용 (자동 프롬프트 생성)
-    - `AutoExtractCard.tsx` — 자산 자동 매칭 알림 (확정/제외 토글)
-  - `matchAssetsToRfp()` 자동 호출 — RFP 업로드 직후 (Express 두 번째 턴) + ProgramProfile 변경 시 + keyMessages 입력 시
-  - `narrativeSnippet` 자동 주입 — `pourAssetIntoSection()` (Phase G·H 의 의도를 더 일찍)
-  - 알림 토스트 — 매칭된 자산을 PM 에게 visible
+- [x] **L3. 외부 LLM 분기 + 자산 자동 인용** *(2026-04-28 완료)*
+  - 3 카드 유형 (PoC 단계 L2 에 같이 들어감) — `PmDirectCard` / `ExternalLlmCard` / `AutoExtractCard`
+  - `matchAssetsToRfp()` 자동 호출 — RFP 업로드 직후 (`/api/express/init`) + 매 턴 (`/api/express/turn` 안)
+  - **차별화 자산 자동 인용** (`<ExpressShell>.handleToggleDiff` 강화):
+    - 사용자가 자산 "수락" 클릭 → narrativeSnippet 이 `ASSET_SECTION_TO_DRAFT` 매핑 따라 sections 자동 주입 (`[자산 인용: assetId]\n...`)
+    - "제외" 클릭 → 해당 자산 인용 블록만 정확히 제거 (다른 자산 인용 보존)
+  - **외부 LLM 카드 운영 로그** (`process-turn.ts`):
+    - 카드 띄울 때마다 `🔔 ${type} → ${topic}` console.log
+    - 4턴 동안 카드 0건이면 `⚠️ prompts 튜닝 신호` 경고 (PM 시간 절약 모니터링)
+  - **prompts.ts 강화**:
+    - PM 답이 `[외부 LLM 답]` / `[PM 직접 확인]` 으로 시작하면 evidenceRefs 자동 누적 + sections 자연스럽게 인용 명시
+    - 시장·통계 자료 부족 / 발주처 의도 모호 / 매 4턴 카드 0건 → 능동적으로 카드 띄우기 패턴
 
 - [ ] **L4. 부차 기능 1줄 인용**
   - 신규: `src/lib/express/auto-citations.ts` — 4 함수

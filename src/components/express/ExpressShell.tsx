@@ -20,9 +20,11 @@ import { Card, CardContent } from '@/components/ui/card'
 import {
   ALL_SLOTS,
   SLOT_LABELS,
+  ASSET_SECTION_TO_DRAFT,
   calcProgress,
   type ExpressDraft,
   type SlotKey,
+  type SectionKey,
 } from '@/lib/express/schema'
 import type { ConversationState, Turn } from '@/lib/express/conversation'
 import type { AssetMatch } from '@/lib/asset-registry-types'
@@ -234,15 +236,46 @@ export function ExpressShell(props: Props) {
 
   // ─────────────────────────────────────────
   // 차별화 자산 토글 (수락/제외)
+  //  + 자산 자동 인용 — acceptedByPm 변경 시 narrativeSnippet 을 sections 에 자동 주입/제거
+  //    (Phase L L3: 사용자 피드백 "UD 자산이 sections 에 자연스럽게 녹아야")
   // ─────────────────────────────────────────
   const handleToggleDiff = useCallback((assetId: string) => {
     setDraft((d) => {
       const refs = d.differentiators ?? []
       const idx = refs.findIndex((r) => r.assetId === assetId)
       if (idx < 0) return d
+      const wasAccepted = refs[idx].acceptedByPm
       const updated = [...refs]
-      updated[idx] = { ...updated[idx], acceptedByPm: !updated[idx].acceptedByPm }
-      return { ...d, differentiators: updated }
+      updated[idx] = { ...updated[idx], acceptedByPm: !wasAccepted }
+
+      const ref = updated[idx]
+      const sectionKey: SectionKey = ASSET_SECTION_TO_DRAFT[ref.sectionKey]
+      const sections = { ...(d.sections ?? {}) }
+      const tag = `[자산 인용: ${ref.assetId}]\n${ref.narrativeSnippet}`
+      const existing = sections[sectionKey] ?? ''
+      const fingerprint = ref.narrativeSnippet.slice(0, 60)
+
+      if (!wasAccepted) {
+        // 수락 — sections 에 narrativeSnippet 추가 (이미 인용돼 있으면 skip)
+        if (!existing.includes(fingerprint)) {
+          const merged = (existing ? existing + '\n\n' : '') + tag
+          sections[sectionKey] = merged.slice(0, 2000)
+        }
+      } else {
+        // 수락 취소 — 해당 자산 인용 블록 제거 (다른 자산 인용은 보존)
+        const tagIdx = existing.indexOf(`[자산 인용: ${ref.assetId}]`)
+        if (tagIdx >= 0) {
+          // 다음 [자산 인용: 또는 끝까지 잘라냄
+          const afterTag = existing.slice(tagIdx)
+          const nextTagRel = afterTag.indexOf('\n\n[자산 인용: ', 1)
+          const cutEnd = nextTagRel >= 0 ? tagIdx + nextTagRel : existing.length
+          const before = existing.slice(0, tagIdx).replace(/\n+$/, '')
+          const after = existing.slice(cutEnd).replace(/^\n+/, '')
+          sections[sectionKey] = (before + (before && after ? '\n\n' : '') + after).trim()
+        }
+      }
+
+      return { ...d, differentiators: updated, sections }
     })
   }, [])
 

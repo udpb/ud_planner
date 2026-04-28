@@ -204,6 +204,24 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
     }
   }
 
+  // 외부 LLM 카드 운영 로그 (Phase L L3)
+  if (parsed.externalLookupNeeded) {
+    const c = parsed.externalLookupNeeded
+    console.log(
+      `[express-turn] 🔔 ${c.type} card → "${c.topic}"` +
+        (c.type === 'external-llm' ? ` (prompt ${c.generatedPrompt?.length ?? 0}b)` : '') +
+        (c.type === 'pm-direct' ? ` (checklist ${c.checklistItems?.length ?? 0})` : ''),
+    )
+  } else if (input.state.turns.length >= 4 && input.state.turns.length % 4 === 0) {
+    // PM 이 4턴 이상 진행 중인데 외부 카드 한 번도 없으면 prompts 튜닝 신호
+    const hasExternalEver = input.state.turns.some((t) => !!t.externalLookupNeeded)
+    if (!hasExternalEver) {
+      console.warn(
+        `[express-turn] ⚠️ ${input.state.turns.length}턴 진행 중 외부 카드 0건 — prompts 튜닝 검토 신호`,
+      )
+    }
+  }
+
   // 슬롯 머지
   const filteredExtracted = filterKnownSlots(parsed.extractedSlots ?? {})
   const merge = mergeExtractedSlots(input.draft, filteredExtracted)
