@@ -515,13 +515,19 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - 각 스텝의 데이터 흐름 검증
   - Ingestion → 승인 → 자산 반영 → 기획 활용 end-to-end
 
-- [ ] **I2. 빌드 확인 + 에러 수정**
-  - TypeScript 0 에러
-  - Vercel 서버리스 호환 확인
+- [x] **I2. 빌드 확인 + 에러 수정** *(2026-04-28)*
+  - TypeScript 0 에러 ✓
+  - ESLint 0 errors / 364 warnings (legacy any 의도적 warn)
+  - 수정: `src/modules/pm-guide/sections/research-requests.tsx` 의 `catch (e: any)` → `unknown` (2건)
+  - eslint.config.mjs: `**/*.cjs` 에 `no-require-imports` off 추가 (Node.js 표준 require 허용)
 
-- [ ] **I3. Module Manifest 강제**
-  - ESLint 커스텀 룰: 모듈이 manifest에 없는 slice/asset 접근 금지
-  - 런타임 레지스트리 (`src/modules/_registry.ts`) — 모든 manifest 자동 수집
+- [x] **I3. Module Manifest 강제** *(2026-04-28)*
+  - 신규: `src/modules/_registry.ts` — 6 step + 4 support/asset = 총 10 manifest 단일 진입점 + 헬퍼 (`findModule`, `modulesByLayer`, `modulesUsingSlice`, `modulesUsingAsset`)
+  - 신규: `scripts/check-manifests.ts` 무결성 검증 — 6 검사 (이름 중복 / layer 유효성 / asset 참조 / writes 충돌 / version semver / owner TBD)
+  - 신규 스크립트: `npm run check:manifest`
+  - **predev / prebuild 훅에 통합** — 시작·빌드 시 자동 검증
+  - 결과: errors 0 / warnings 8 (모두 owner TBD — Phase L·H 후 인수인계 대상)
+  - ESLint 커스텀 룰 (모듈이 manifest 없는 slice/asset 접근 금지) 은 후속 — AST 분석 기반 별도 패키지 필요. 현재는 검증 스크립트로 충분.
   - 근거: [ADR-002](docs/decisions/002-module-manifest-pattern.md)
 
 - [ ] **I4. strategy-interview-ingest + 품질 지표 대시보드**

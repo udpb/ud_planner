@@ -170,8 +170,9 @@ function RequestRow({ projectId, stepKey, request }: RequestRowProps) {
       setPasteMode(false)
       setExpanded(false)
       toast.success('리서치 답변 저장 — 다음 AI 호출에 자동 반영됩니다')
-    } catch (e: any) {
-      toast.error(e.message ?? '저장 실패')
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : '저장 실패'
+      toast.error(msg)
     } finally {
       setSaving(false)
     }
@@ -191,8 +192,9 @@ function RequestRow({ projectId, stepKey, request }: RequestRowProps) {
       setPasteContent('')
       setPasteMode(false)
       toast.success('답변 삭제')
-    } catch (e: any) {
-      toast.error(e.message ?? '삭제 실패')
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : '삭제 실패'
+      toast.error(msg)
     } finally {
       setSaving(false)
     }
