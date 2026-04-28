@@ -10,8 +10,8 @@
 - **누적 커밋 수**: 108 (master 기준 — L1 3 커밋 포함, L2 통합 커밋 1건 진행 중)
 - **현재 브랜치**: `claude/blissful-goodall-56a659` (워크트리)
 - **마지막 큰 변경**: ⭐ **L2 Express PoC 풀 구현** (2026-04-28) — 단일 화면 동작
-- **Phase A~H 완료** (8 Phase) + **Phase L 진행 중** (L0/L1/L2/L3/L5/L6 완료, 86%).
-- **다음 우선순위**: **L4 — 부차 기능 1줄 인용 정밀화** (placeholder 신뢰도 0.3 → Phase F benchmark 자산 / coach-finder API / 실비 비율 실제 데이터 기반).
+- **Phase A~H + L 완료** (9 Phase) — **Phase L 100% 종료** (L0~L6 모두 완료).
+- **다음 우선순위**: **Phase I — 안정화·배포** (E2E 테스트 + Manifest 강제 + Vercel 배포). 또는 Phase J 엑셀 출력 별도 트랙.
 - **시스템 정체성 재정의 (2026-04-27)**: 6 스텝 단일 트랙 → **Express (메인) + Deep (보조) 두 트랙**. 북극성 = "RFP → 30~45분 → 1차본".
 
 ### Phase 진행률 표
@@ -26,7 +26,7 @@
 | F | Impact Value Chain | 완료 | 100% |
 | G | UD Asset Registry v1 | 완료 | 100% |
 | H | Content Hub v2 | 완료 | 100% |
-| **L** ⭐ | **Express Mode (ADR-011)** | **진행 중** | **L0/L1/L2/L3/L5/L6 완료 (86%)** |
+| **L** ⭐ | **Express Mode (ADR-011)** | ✅ **완료** | **L0~L6 100%** |
 | I | 안정화·배포 | 대기 | 0% (Phase L 후) |
 
 ---
@@ -214,6 +214,7 @@ ROADMAP §Phase L 그대로 인용:
   - 진입점: 신규 프로젝트 → Express 자동 redirect / 6 step 페이지에서 우상단 "Express" 링크 / Express 안에서 "정밀 기획 (Deep)" 분기
   - typecheck 0 errors
 - [x] **L3. 외부 LLM 분기 + 자산 자동 인용** *(2026-04-28)* — 차별화 자산 토글 시 narrativeSnippet 자동 sections 주입/제거 + externalLookupNeeded 운영 로그 + prompts 에 PM 외부 답 → evidenceRefs 자동 누적 + 카드 능동 트리거 패턴
+- [x] **L4. 부차 기능 1줄 정밀화** *(2026-04-28)* — auto-citations.ts async 전면 개정 · ContentAsset (Asset Registry) + CostStandard + Coach DB 실제 조회 + coach-finder 외부 프롬프트 자동 생성 · 신뢰도 0.3 → 0.4~0.75 · ExpressPreview 신뢰도 칩·인용 자산 칩·외부 프롬프트 복사 버튼
 - [ ] **L4. 부차 기능 1줄 인용** — SROI 추정 + 예산 마진 + 코치 카테고리 + Deep 이동 링크
 - [x] **L5. 검수 에이전트 (사용자 요청)** *(2026-04-28)* — `inspectDraft()` AI + `heuristicInspect()` 휴리스틱 백업 · 7 렌즈 (market/statistics/problem/before-after/key-messages/differentiators/tone) · 1차본 승인 시 자동 호출 + 수동 "검수" 버튼
 - [x] **L6. Express + Deep 통합 운영 검증** *(2026-04-28 부분)* — `mapDraftToProjectFields()` + `mapDraftToProposalSections()` + `suggestDeepAreas()` 자동 호출 (markCompleted transaction). E2E 검증은 사용자 손에.

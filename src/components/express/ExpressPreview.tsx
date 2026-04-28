@@ -219,7 +219,11 @@ export function ExpressPreview({
 }
 
 // ─────────────────────────────────────────
-// 1줄 인용 라인
+// 1줄 인용 라인 (Phase L L4 강화)
+//  - 신뢰도 색상 (낮으면 회색·중간 노랑·높으면 녹색)
+//  - 인용 자산 칩 (있을 때)
+//  - 외부 프롬프트 복사 버튼 (있을 때 — coach-finder 등)
+//  - rationale tooltip
 // ─────────────────────────────────────────
 
 function CitationLine({
@@ -231,16 +235,69 @@ function CitationLine({
   icon: React.ReactNode
   projectId: string
 }) {
+  const conf = c.confidence
+  const confColor =
+    conf >= 0.6
+      ? 'bg-green-100 text-green-800'
+      : conf >= 0.4
+        ? 'bg-amber-100 text-amber-800'
+        : 'bg-muted text-muted-foreground'
+  const confLabel = conf >= 0.6 ? '높음' : conf >= 0.4 ? '중간' : '추정'
+
+  const handleCopyPrompt = async () => {
+    if (!c.externalPrompt) return
+    try {
+      await navigator.clipboard.writeText(c.externalPrompt)
+      const { toast } = await import('sonner')
+      toast.success(`외부 ${c.area} 프롬프트 복사 완료. ChatGPT/coach-finder 에 붙여넣으세요.`)
+    } catch {
+      // ignore
+    }
+  }
+
   return (
-    <div className="flex items-center gap-2 text-sm">
-      <span className="text-muted-foreground [&>svg]:h-3.5 [&>svg]:w-3.5">{icon}</span>
-      <span className="flex-1">{c.oneLiner}</span>
-      <a
-        href={`/projects/${projectId}${c.deepLink}`}
-        className="flex items-center gap-1 text-xs text-primary hover:underline"
-      >
-        Deep <ExternalLink className="h-3 w-3" />
-      </a>
+    <div className="space-y-1 text-sm" title={c.rationale}>
+      <div className="flex items-center gap-2">
+        <span className="text-muted-foreground [&>svg]:h-3.5 [&>svg]:w-3.5">{icon}</span>
+        <span className="flex-1">{c.oneLiner}</span>
+        <span
+          className={cn('rounded-md px-1.5 py-0.5 text-[10px] tabular-nums', confColor)}
+          title={`신뢰도 ${(conf * 100).toFixed(0)}% — ${c.rationale}`}
+        >
+          {confLabel} {(conf * 100).toFixed(0)}
+        </span>
+        <a
+          href={`/projects/${projectId}${c.deepLink}`}
+          className="flex items-center gap-1 text-xs text-primary hover:underline"
+        >
+          Deep <ExternalLink className="h-3 w-3" />
+        </a>
+      </div>
+
+      {/* 인용 자산 칩 + 외부 프롬프트 복사 버튼 */}
+      {(c.citedAssets || c.externalPrompt) && (
+        <div className="flex flex-wrap items-center gap-1.5 pl-5">
+          {c.citedAssets?.map((a) => (
+            <span
+              key={a.id}
+              className="rounded-full bg-orange-50 px-2 py-0.5 text-[10px] text-primary border border-primary/20"
+              title={a.id}
+            >
+              📎 {a.name.length > 22 ? a.name.slice(0, 22) + '…' : a.name}
+            </span>
+          ))}
+          {c.externalPrompt && (
+            <button
+              type="button"
+              onClick={handleCopyPrompt}
+              className="rounded-md border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary"
+              title="외부 LLM 또는 coach-finder 에 붙여넣을 프롬프트 복사"
+            >
+              📋 외부 프롬프트 복사
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

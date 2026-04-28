@@ -56,6 +56,7 @@ export default async function ExpressPage({
       name: true,
       client: true,
       totalBudgetVat: true,
+      supplyPrice: true,
       rfpRaw: true,
       rfpParsed: true,
       programProfile: true,
@@ -98,10 +99,11 @@ export default async function ExpressPage({
     ? await matchAssetsToRfp({ rfp, profile, limit: 10, minScore: 0.5 }).catch(() => [])
     : []
 
-  const autoCitations = buildAutoCitations({
+  const autoCitations = await buildAutoCitations({
     rfp,
     profile,
     totalBudgetVat: project.totalBudgetVat,
+    supplyPrice: project.supplyPrice ?? null,
   })
 
   const initialNextSlot = selectNextSlot(draft, rfp)

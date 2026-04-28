@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
         rfpParsed: true,
         programProfile: true,
         totalBudgetVat: true,
+        supplyPrice: true,
         expressDraft: true,
         expressTurnsCache: true,
       },
@@ -107,11 +108,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 부차 기능 1줄 자동 인용
-    const autoCitations = buildAutoCitations({
+    // 부차 기능 1줄 자동 인용 (Phase L L4 — async)
+    const autoCitations = await buildAutoCitations({
       rfp,
       profile,
       totalBudgetVat: project.totalBudgetVat,
+      supplyPrice: project.supplyPrice ?? null,
     })
 
     // 첫 턴 자동 호출 — RFP 있고 turns 가 없을 때만
