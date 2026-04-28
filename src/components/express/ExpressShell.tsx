@@ -115,6 +115,43 @@ export function ExpressShell(props: Props) {
   const [showRfpDialog, setShowRfpDialog] = useState<boolean>(!hasRfp)
 
   // ─────────────────────────────────────────
+  // RFP 있는데 첫 턴 없으면 자동 init 호출 (2026-04-28: /new 에서 RFP 분석 후
+  //   /express 로 redirect 된 케이스 — 첫 턴 자동)
+  // ─────────────────────────────────────────
+  const autoInitTriggeredRef = useRef(false)
+  useEffect(() => {
+    if (autoInitTriggeredRef.current) return
+    if (!hasRfp) return
+    if (convState.turns.length > 0) return
+    if (isInitializing) return
+    autoInitTriggeredRef.current = true
+    ;(async () => {
+      setIsInitializing(true)
+      try {
+        const r = await fetch('/api/express/init', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId: props.projectId, autoFirstTurn: true }),
+        })
+        if (!r.ok) throw new Error(await r.text())
+        const data = await r.json()
+        setDraft(data.draft)
+        setConvState(data.state)
+        setNextSlot(data.nextSlot)
+        setMatchedAssets(data.matchedAssets ?? [])
+        setAutoCitations(data.autoCitations)
+        toast.success('첫 질문이 준비됐어요. 답변하시면 1차본이 채워져 나가요.')
+      } catch (err: unknown) {
+        console.warn('[ExpressShell] auto init failed:', err)
+        toast.error('첫 턴 자동 호출 실패 — 챗봇에서 직접 시작해 주세요.')
+      } finally {
+        setIsInitializing(false)
+      }
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasRfp])
+
+  // ─────────────────────────────────────────
   // RFP 파싱 완료 핸들러 (RfpUploadDialog 가 호출)
   // ─────────────────────────────────────────
   const handleRfpReady = useCallback(async () => {
