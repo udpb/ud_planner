@@ -176,6 +176,34 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
     }
   }
 
+  // ─────────────────────────────────────────
+  // Markdown fallback — AI 가 nextQuestion 에 sections 본문을 토해낸 경우
+  // 자동으로 sections.* 슬롯에 매핑 (사용자 피드백 4번 대응, 2026-04-28)
+  // ─────────────────────────────────────────
+  const mdSections = extractMarkdownSections(parsed.nextQuestion)
+  if (Object.keys(mdSections).length > 0) {
+    console.warn(
+      `[express-turn] AI 가 markdown 으로 ${Object.keys(mdSections).length}개 섹션 출력 → 자동 매핑`,
+    )
+    for (const [k, v] of Object.entries(mdSections)) {
+      const slotKey = `sections.${k}`
+      if (!(parsed.extractedSlots as Record<string, unknown>)[slotKey]) {
+        ;(parsed.extractedSlots as Record<string, unknown>)[slotKey] = v
+      }
+    }
+    // nextQuestion 자체는 짧게 자르고 다음 단계 안내
+    parsed.nextQuestion =
+      '1차본 초안이 자동으로 채워졌어요. 우측 미리보기에서 확인하시고 보완할 섹션을 말씀해 주세요.'
+    if (!parsed.quickReplies || parsed.quickReplies.length === 0) {
+      parsed.quickReplies = [
+        '② 추진 전략 보강',
+        '③ 커리큘럼 보강',
+        '⑥ 기대 성과·KPI 보강',
+        '차별화 자산 더 추가',
+      ]
+    }
+  }
+
   // 슬롯 머지
   const filteredExtracted = filterKnownSlots(parsed.extractedSlots ?? {})
   const merge = mergeExtractedSlots(input.draft, filteredExtracted)
@@ -186,6 +214,7 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
     text: parsed.nextQuestion || '(추가 질문 없음 — 다음 슬롯으로 넘어가요)',
     extractedSlots: filteredExtracted,
     externalLookupNeeded: parsed.externalLookupNeeded ?? undefined,
+    quickReplies: parsed.quickReplies && parsed.quickReplies.length > 0 ? parsed.quickReplies : undefined,
     targetSlot: parsed.recommendedNextSlot ?? currentSlot ?? undefined,
     aiModel: aiResp.model,
     createdAt: new Date().toISOString(),
@@ -268,6 +297,9 @@ function coerceToTurnResponse(raw: unknown): TurnResponse {
       ? (obj.extractedSlots as Record<string, unknown>)
       : {}),
     nextQuestion: typeof obj.nextQuestion === 'string' ? obj.nextQuestion : '',
+    quickReplies: Array.isArray(obj.quickReplies)
+      ? (obj.quickReplies as unknown[]).filter((x): x is string => typeof x === 'string')
+      : [],
     externalLookupNeeded:
       obj.externalLookupNeeded && typeof obj.externalLookupNeeded === 'object'
         ? (obj.externalLookupNeeded as TurnResponse['externalLookupNeeded'])
@@ -278,4 +310,60 @@ function coerceToTurnResponse(raw: unknown): TurnResponse {
     recommendedNextSlot:
       typeof obj.recommendedNextSlot === 'string' ? obj.recommendedNextSlot : null,
   }
+}
+
+// ─────────────────────────────────────────
+// Markdown 섹션 추출 휴리스틱
+// AI 가 마크다운으로 1차본 7 섹션을 토해낸 경우 sections.{1..7} 로 자동 매핑.
+// 패턴 인식:
+//   - "### I. 제안 배경"  /  "### 1. 제안 배경"  /  "## 1. 제안 배경"
+//   - "[1장. 제안 배경]"  /  "**[1장. 제안 배경]**"
+//   - "### IV. 사업 관리"  →  로마 숫자도 처리
+// ─────────────────────────────────────────
+
+const ROMAN_TO_NUM: Record<string, number> = {
+  I: 1,
+  II: 2,
+  III: 3,
+  IV: 4,
+  V: 5,
+  VI: 6,
+  VII: 7,
+}
+
+function extractMarkdownSections(text: string): Record<string, string> {
+  if (!text) return {}
+  // 너무 짧으면 정상 nextQuestion — 추출 안 함
+  if (text.length < 400) return {}
+
+  // 섹션 헤더 패턴: 줄 시작에 `###` 또는 `##` 또는 `**[N장`
+  // 캡처: 그룹1=숫자(아라비아) 또는 그룹2=로마, 그룹3=섹션 제목, 그룹4=본문 (다음 헤더 전까지)
+  // 단순화: 헤더 위치만 먼저 뽑고 사이 텍스트로 본문 만들기
+  const headerRegex =
+    /^(?:#{2,4}\s+|\*?\*?\[)\s*(?:([1-7])|(I{1,3}|IV|V|VI{0,2}|VII))[\.\장]?\s*([^\n\]]*?)(?:\]?\*?\*?)\s*$/gm
+
+  const headers: { idx: number; secNo: number; titleHint: string }[] = []
+  let m: RegExpExecArray | null
+  while ((m = headerRegex.exec(text))) {
+    let secNo: number | null = null
+    if (m[1]) secNo = Number(m[1])
+    else if (m[2]) secNo = ROMAN_TO_NUM[m[2]] ?? null
+    if (!secNo || secNo < 1 || secNo > 7) continue
+    headers.push({ idx: m.index, secNo, titleHint: (m[3] ?? '').trim() })
+  }
+
+  if (headers.length === 0) return {}
+
+  const out: Record<string, string> = {}
+  for (let i = 0; i < headers.length; i += 1) {
+    const h = headers[i]
+    const start = h.idx
+    const end = i + 1 < headers.length ? headers[i + 1].idx : text.length
+    const body = text.slice(start, end).trim()
+    // 너무 짧은 본문은 skip (헤더만 있고 내용 없음)
+    if (body.length < 80) continue
+    // 1500자 캡
+    out[String(h.secNo)] = body.slice(0, 1500)
+  }
+  return out
 }

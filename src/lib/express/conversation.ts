@@ -21,6 +21,8 @@ export const TurnSchema = z.object({
   extractedSlots: z.record(z.string(), z.unknown()).optional(),
   /** 외부 LLM 카드 트리거 (있으면 UI 가 카드 렌더) */
   externalLookupNeeded: z.unknown().optional(),
+  /** PM 클릭으로 답할 수 있는 객관식 옵션 (UI 가 chip 버튼으로 렌더) */
+  quickReplies: z.array(z.string()).max(8).optional(),
   /** AI 가 다음 채울 슬롯 (UI 표시용) */
   targetSlot: z.string().optional(),
   /** AI 발화 동안 사용한 모델 (디버깅) */
@@ -86,6 +88,8 @@ export const TurnResponseSchema = z.object({
   extractedSlots: z.record(z.string(), z.unknown()).default({}),
   /** PM 에게 던질 다음 질문 (또는 빈 문자열이면 카드만 표시) */
   nextQuestion: z.string(),
+  /** PM 이 클릭 한 번으로 답할 수 있는 객관식 옵션 (4~6개 권장) */
+  quickReplies: z.array(z.string()).max(8).default([]),
   /** 외부 자료가 필요하면 채움 */
   externalLookupNeeded: ExternalLookupRequestSchema.optional().nullable(),
   /** zod 검증 실패 (이번 턴 슬롯이 길이 미달 등) */

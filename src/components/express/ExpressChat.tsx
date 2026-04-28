@@ -126,6 +126,28 @@ export function ExpressChat({
           </div>
         )}
 
+        {/* 마지막 AI 턴의 quickReplies — 클릭 한 번에 답하기 */}
+        {(() => {
+          if (pendingTurn) return null
+          const lastAi = [...turns].reverse().find((t) => t.role === 'ai')
+          if (!lastAi || !lastAi.quickReplies || lastAi.quickReplies.length === 0) return null
+          return (
+            <div className="flex flex-wrap gap-1.5">
+              {lastAi.quickReplies.map((reply, i) => (
+                <button
+                  key={i}
+                  onClick={() => onSendMessage(reply)}
+                  className="rounded-full border border-primary/40 bg-background px-3 py-1.5 text-xs text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                  title="클릭해 답변 전송"
+                  disabled={pendingTurn}
+                >
+                  {reply}
+                </button>
+              ))}
+            </div>
+          )
+        })()}
+
         {/* 외부 LLM 카드 */}
         {pendingExternalLookup && (
           <div className="my-2">
