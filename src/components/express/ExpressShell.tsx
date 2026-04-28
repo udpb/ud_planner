@@ -12,6 +12,7 @@
 
 import { useEffect, useRef, useState, useTransition, useCallback } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -47,6 +48,7 @@ interface Props {
 }
 
 export function ExpressShell(props: Props) {
+  const router = useRouter()
   const [draft, setDraft] = useState<ExpressDraft>(props.initialDraft)
   const [convState, setConvState] = useState<ConversationState>(props.initialState)
   const [nextSlot, setNextSlot] = useState<string | null>(props.initialNextSlot)
@@ -245,6 +247,45 @@ export function ExpressShell(props: Props) {
   }, [])
 
   // ─────────────────────────────────────────
+  // Express → Deep 인계 (1차본 승인 안 해도 정밀기획 이동 시 자동 sync)
+  // ─────────────────────────────────────────
+  const [handingOff, setHandingOff] = useState(false)
+  const handoffToDeep = useCallback(
+    async (targetStep: string) => {
+      if (handingOff) return
+      setHandingOff(true)
+      try {
+        const r = await fetch('/api/express/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            projectId: props.projectId,
+            draft,
+            conversationState: convState,
+            handoffToDeep: true,
+          }),
+        })
+        if (!r.ok) throw new Error(await r.text())
+        const data = await r.json()
+        const seeded = data.handoff?.proposalSectionsSeeded ?? 0
+        const fields = data.handoff?.projectFieldsUpdated ?? 0
+        toast.success(
+          seeded > 0 || fields > 0
+            ? `Deep 인계 완료 — Project ${fields}건 + ProposalSection ${seeded}건 sync`
+            : '인계 완료 — 진행 내용이 Deep 에 반영됐어요',
+        )
+        // 이동 (Next.js router push)
+        router.push(`/projects/${props.projectId}?step=${targetStep}`)
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err)
+        toast.error('인계 실패: ' + msg.slice(0, 80))
+        setHandingOff(false)
+      }
+    },
+    [handingOff, props.projectId, draft, convState, router],
+  )
+
+  // ─────────────────────────────────────────
   // 1차본 승인 + 자동 검수 (L5)
   // ─────────────────────────────────────────
   const [submitting, setSubmitting] = useState(false)
@@ -364,14 +405,16 @@ export function ExpressShell(props: Props) {
           >
             검수
           </button>
-          <Link
-            href={`/projects/${props.projectId}?step=rfp`}
-            className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="기존 6 step 정밀 기획 (Deep Track) — SROI·예산·코치 정밀화"
+          <button
+            type="button"
+            onClick={() => handoffToDeep('rfp')}
+            disabled={handingOff}
+            className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+            title="Express 진행 내용 (의도·메시지·차별화·섹션) 을 Deep Track 으로 인계 후 이동"
           >
             <Settings2 className="h-3 w-3" />
-            정밀 기획 (Deep)
-          </Link>
+            {handingOff ? '인계 중...' : '정밀 기획 (Deep) →'}
+          </button>
         </div>
       </div>
 
@@ -383,14 +426,16 @@ export function ExpressShell(props: Props) {
               🎯 1차본 완성! 정밀화 권장 영역
             </span>
             {deepSuggestions.map((s, i) => (
-              <Link
+              <button
                 key={i}
-                href={`/projects/${props.projectId}?step=${s.targetStep}`}
-                className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-foreground hover:border-primary/40 hover:text-primary"
+                type="button"
+                onClick={() => handoffToDeep(s.targetStep)}
+                disabled={handingOff}
+                className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
                 title={s.reason}
               >
                 Step {s.targetStep} →
-              </Link>
+              </button>
             ))}
             <button
               onClick={() => setDeepSuggestions([])}

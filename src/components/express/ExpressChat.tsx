@@ -45,6 +45,7 @@ export function ExpressChat({
 }: Props) {
   const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // 스크롤 자동 하단
   useEffect(() => {
@@ -57,6 +58,19 @@ export function ExpressChat({
     const text = input.trim()
     setInput('')
     onSendMessage(text)
+  }
+
+  // chip 클릭 = 입력 박스에 prefill + focus (사용자가 수정 후 전송 가능)
+  const handlePickQuickReply = (reply: string) => {
+    setInput(reply)
+    // 다음 tick 에 focus + 커서 끝으로
+    requestAnimationFrame(() => {
+      const ta = textareaRef.current
+      if (ta) {
+        ta.focus()
+        ta.setSelectionRange(reply.length, reply.length)
+      }
+    })
   }
 
   const slotLabel = currentSlot
@@ -126,24 +140,29 @@ export function ExpressChat({
           </div>
         )}
 
-        {/* 마지막 AI 턴의 quickReplies — 클릭 한 번에 답하기 */}
+        {/* 마지막 AI 턴의 quickReplies — 클릭하면 입력 박스에 prefill (편집 후 전송) */}
         {(() => {
           if (pendingTurn) return null
           const lastAi = [...turns].reverse().find((t) => t.role === 'ai')
           if (!lastAi || !lastAi.quickReplies || lastAi.quickReplies.length === 0) return null
           return (
-            <div className="flex flex-wrap gap-1.5">
-              {lastAi.quickReplies.map((reply, i) => (
-                <button
-                  key={i}
-                  onClick={() => onSendMessage(reply)}
-                  className="rounded-full border border-primary/40 bg-background px-3 py-1.5 text-xs text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  title="클릭해 답변 전송"
-                  disabled={pendingTurn}
-                >
-                  {reply}
-                </button>
-              ))}
+            <div className="space-y-1.5">
+              <div className="text-[11px] text-muted-foreground">
+                💡 추천 답변 — 클릭해서 편집 후 전송하거나, 아래 입력란에 직접 작성
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {lastAi.quickReplies.map((reply, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handlePickQuickReply(reply)}
+                    className="rounded-full border border-primary/40 bg-background px-3 py-1.5 text-xs text-primary hover:bg-primary/10 transition-colors"
+                    title="클릭하면 입력란에 채워져요. 그대로 또는 수정 후 Cmd/Ctrl+Enter 로 전송."
+                    disabled={pendingTurn}
+                  >
+                    {reply}
+                  </button>
+                ))}
+              </div>
             </div>
           )
         })()}
@@ -180,6 +199,7 @@ export function ExpressChat({
       <div className="border-t p-3">
         <div className="flex items-end gap-2">
           <Textarea
+            ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={
@@ -187,7 +207,7 @@ export function ExpressChat({
                 ? 'RFP 업로드 후 챗봇이 시작됩니다 (또는 직접 텍스트 입력)'
                 : pendingTurn
                   ? 'AI 응답을 기다리는 중...'
-                  : '답변을 입력하세요. Cmd/Ctrl + Enter 로 전송.'
+                  : '직접 답변을 작성하거나, 위 추천 답변을 클릭해 편집하세요. Cmd/Ctrl + Enter 로 전송.'
             }
             className="min-h-[60px] flex-1 resize-none text-sm"
             disabled={pendingTurn}
