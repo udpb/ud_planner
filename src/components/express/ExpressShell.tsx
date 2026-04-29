@@ -501,6 +501,14 @@ export function ExpressShell(props: Props) {
               >
                 🔍 검수만 받기
               </button>
+              <a
+                href={`/api/projects/${props.projectId}/export-excel`}
+                download
+                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+                title="현재 Project 데이터 → 5 시트 엑셀 다운로드 (PoC)"
+              >
+                📥 엑셀 추출
+              </a>
               <button
                 type="button"
                 onClick={() => setDismissFinalize(true)}

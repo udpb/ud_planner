@@ -13,14 +13,28 @@ import { z } from 'zod'
 // 1. 한 턴
 // ─────────────────────────────────────────
 
+// 순서 — TurnSchema 가 ExternalLookupRequestSchema 참조하므로 위에서 먼저 정의
+export const ExternalLookupRequestSchema = z.object({
+  type: z.enum(['pm-direct', 'external-llm', 'auto-extract']),
+  topic: z.string(),
+  /** external-llm 일 때만 — AI 가 만든 외부 LLM 프롬프트 */
+  generatedPrompt: z.string().optional(),
+  /** pm-direct 일 때만 — PM 이 통화·확인할 항목 */
+  checklistItems: z.array(z.string()).optional(),
+  /** auto-extract 일 때 — 자동으로 무엇이 채워졌는지 한 줄 설명 */
+  autoNote: z.string().optional(),
+})
+
+export type ExternalLookupRequest = z.infer<typeof ExternalLookupRequestSchema>
+
 export const TurnSchema = z.object({
   id: z.string(),
   role: z.enum(['ai', 'pm']),
   text: z.string(),
   /** 이 턴에서 추출된 슬롯 (Partial Extraction 결과) */
   extractedSlots: z.record(z.string(), z.unknown()).optional(),
-  /** 외부 LLM 카드 트리거 (있으면 UI 가 카드 렌더) */
-  externalLookupNeeded: z.unknown().optional(),
+  /** 외부 LLM 카드 트리거 (있으면 UI 가 카드 렌더) — Phase L 카드 인라인 fix */
+  externalLookupNeeded: ExternalLookupRequestSchema.optional(),
   /** PM 클릭으로 답할 수 있는 객관식 옵션 (UI 가 chip 버튼으로 렌더) */
   quickReplies: z.array(z.string()).max(8).optional(),
   /** AI 가 다음 채울 슬롯 (UI 표시용) */
@@ -45,21 +59,9 @@ export const ValidationErrorSchema = z.object({
 export type ValidationError = z.infer<typeof ValidationErrorSchema>
 
 // ─────────────────────────────────────────
-// 3. 외부 리서치 카드 (3 유형)
+// 3. 외부 리서치 카드 (3 유형) — TurnSchema 위에서 이미 정의됨 (위로 이동)
 // ─────────────────────────────────────────
-
-export const ExternalLookupRequestSchema = z.object({
-  type: z.enum(['pm-direct', 'external-llm', 'auto-extract']),
-  topic: z.string(),
-  /** external-llm 일 때만 — AI 가 만든 외부 LLM 프롬프트 */
-  generatedPrompt: z.string().optional(),
-  /** pm-direct 일 때만 — PM 이 통화·확인할 항목 */
-  checklistItems: z.array(z.string()).optional(),
-  /** auto-extract 일 때 — 자동으로 무엇이 채워졌는지 한 줄 설명 */
-  autoNote: z.string().optional(),
-})
-
-export type ExternalLookupRequest = z.infer<typeof ExternalLookupRequestSchema>
+// (중복 제거 — 윗부분 참조)
 
 // ─────────────────────────────────────────
 // 4. 대화 상태 (전체)

@@ -127,10 +127,18 @@ export function ExpressChat({
           </div>
         )}
 
-        {/* Turn 리스트 */}
-        {turns.map((t) => (
-          <TurnBubble key={t.id} turn={t} />
-        ))}
+        {/* Turn 리스트 — 카드는 마지막 AI 턴 안에 인라인 (이전 턴 카드는 disabled 표시) */}
+        {(() => {
+          const lastAiId = [...turns].reverse().find((t) => t.role === 'ai')?.id
+          return turns.map((t) => (
+            <TurnBubble
+              key={t.id}
+              turn={t}
+              isLatestAi={t.id === lastAiId && !pendingTurn}
+              onSendMessage={onSendMessage}
+            />
+          ))
+        })()}
 
         {/* AI 응답 대기 */}
         {pendingTurn && !isInitializing && (
@@ -167,32 +175,8 @@ export function ExpressChat({
           )
         })()}
 
-        {/* 외부 LLM 카드 */}
-        {pendingExternalLookup && (
-          <div className="my-2">
-            {pendingExternalLookup.type === 'external-llm' && (
-              <ExternalLlmCard
-                topic={pendingExternalLookup.topic}
-                generatedPrompt={pendingExternalLookup.generatedPrompt ?? ''}
-                onPaste={(answer) => onSendMessage(`[외부 LLM 답]\n${answer}`)}
-              />
-            )}
-            {pendingExternalLookup.type === 'pm-direct' && (
-              <PmDirectCard
-                topic={pendingExternalLookup.topic}
-                checklistItems={pendingExternalLookup.checklistItems ?? []}
-                onSubmit={(answer) => onSendMessage(`[PM 직접 확인]\n${answer}`)}
-              />
-            )}
-            {pendingExternalLookup.type === 'auto-extract' && (
-              <AutoExtractCard
-                topic={pendingExternalLookup.topic}
-                autoNote={pendingExternalLookup.autoNote ?? ''}
-                onAcknowledge={() => onSendMessage('[확인]')}
-              />
-            )}
-          </div>
-        )}
+        {/* 외부 카드는 이제 TurnBubble 안에 인라인으로 렌더됨 (Phase L UX fix 2026-04-29).
+            pendingExternalLookup 은 ConversationState 일관성 위해 유지하지만 별도 렌더 X. */}
       </div>
 
       {/* 입력 박스 */}
@@ -238,29 +222,74 @@ export function ExpressChat({
 }
 
 // ─────────────────────────────────────────
-// Turn 말풍선
+// Turn 말풍선 + (마지막 AI 턴이면) 인라인 카드
 // ─────────────────────────────────────────
 
-function TurnBubble({ turn }: { turn: Turn }) {
+function TurnBubble({
+  turn,
+  isLatestAi,
+  onSendMessage,
+}: {
+  turn: Turn
+  isLatestAi: boolean
+  onSendMessage: (text: string) => void
+}) {
   const isAi = turn.role === 'ai'
+  const card = turn.externalLookupNeeded
   return (
-    <div className={cn('flex', isAi ? 'justify-start' : 'justify-end')}>
-      <div
-        className={cn(
-          'max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap',
-          isAi
-            ? 'bg-muted text-foreground'
-            : 'bg-primary text-primary-foreground',
-        )}
-      >
-        <div>{turn.text}</div>
-        {isAi && turn.targetSlot && (
-          <div className="mt-1 text-[10px] uppercase tracking-wider opacity-60">
-            슬롯: {SLOT_LABELS[turn.targetSlot as SlotKey] ?? turn.targetSlot}
-            {turn.aiModel && <span className="ml-2">· {turn.aiModel}</span>}
-          </div>
-        )}
+    <div className={cn('flex flex-col gap-1.5', isAi ? 'items-start' : 'items-end')}>
+      {/* 메시지 버블 */}
+      <div className={cn('flex w-full', isAi ? 'justify-start' : 'justify-end')}>
+        <div
+          className={cn(
+            'max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap',
+            isAi
+              ? 'bg-muted text-foreground'
+              : 'bg-primary text-primary-foreground',
+          )}
+        >
+          <div>{turn.text}</div>
+          {isAi && turn.targetSlot && (
+            <div className="mt-1 text-[10px] uppercase tracking-wider opacity-60">
+              슬롯: {SLOT_LABELS[turn.targetSlot as SlotKey] ?? turn.targetSlot}
+              {turn.aiModel && <span className="ml-2">· {turn.aiModel}</span>}
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* 인라인 카드 (이 turn 의 externalLookupNeeded) — 메시지 바로 아래 한 묶음 */}
+      {isAi && card && (
+        <div
+          className={cn(
+            'w-full max-w-[85%] transition-opacity',
+            !isLatestAi && 'opacity-50 pointer-events-none',
+          )}
+          title={!isLatestAi ? '이전 턴의 카드 (이미 처리됨)' : undefined}
+        >
+          {card.type === 'external-llm' && (
+            <ExternalLlmCard
+              topic={card.topic}
+              generatedPrompt={card.generatedPrompt ?? ''}
+              onPaste={(answer) => onSendMessage(`[외부 LLM 답]\n${answer}`)}
+            />
+          )}
+          {card.type === 'pm-direct' && (
+            <PmDirectCard
+              topic={card.topic}
+              checklistItems={card.checklistItems ?? []}
+              onSubmit={(answer) => onSendMessage(`[PM 직접 확인]\n${answer}`)}
+            />
+          )}
+          {card.type === 'auto-extract' && (
+            <AutoExtractCard
+              topic={card.topic}
+              autoNote={card.autoNote ?? ''}
+              onAcknowledge={() => onSendMessage('[확인]')}
+            />
+          )}
+        </div>
+      )}
     </div>
   )
 }

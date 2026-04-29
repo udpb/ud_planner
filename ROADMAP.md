@@ -37,9 +37,9 @@
 Phase L (Express Mode) 가 Phase I (안정화·배포) 보다 우선. 1차본 흐름이 안정화되어야 배포의 의미가 있음.
 
 ```
-A → B → C → D → E → F → G → H → L → I
-                                    ▲
-                          (현재 위치 — Phase L 100% 완료, Phase I 대기)
+A → B → C → D → E → F → G → H → L → I → J(PoC)
+                                         ▲
+                                 (현재 위치 — Phase I I1·I4 외 완료, Phase J PoC 까지 들어감)
 ```
 
 ---
@@ -501,6 +501,33 @@ L0 ──────► L2 ─┬──► L3 ───┐
 2. `src/modules/<관련>/manifest.ts` 의 `reads`/`writes` 갱신 (Express 가 ExpressDraftSchema 슬롯 reads/writes)
 3. journey 파일에 한 단락 추가 (시간순, 막힌 지점 + 결정 + 사용자 한마디)
 4. `feat(phase-l,express): ...` 형식으로 커밋
+
+---
+
+## Phase J: 엑셀 출력 (PoC, 2026-04-29)
+
+> 발주처 제출용 .xlsx 자동 생성. PoC 5 시트 (단순 형식) 완료.
+> 후속: 16 시트 발주처 템플릿 매핑 (`docs/architecture/budget-template.md`).
+
+- [x] **J1 PoC: 5 시트 단순 형식** *(2026-04-29 완료)*
+  - 신규: `exceljs ^4.4.0` 의존성
+  - 신규: `src/lib/excel-export/render.ts` — `buildProjectExcel(input)` async, ArrayBuffer → Buffer 반환
+  - 신규: `/api/projects/[id]/export-excel` GET — Project + curriculum + coaches + budget + sroi 조회 → workbook → 다운로드 응답
+  - 5 시트:
+    1. 프로젝트 요약 (사업명·기관·예산·기간·핵심 기획·제안 배경)
+    2. 커리큘럼 (회차·제목·시간·날짜·장소·구분)
+    3. 코치 배정 (역할·세션수·단가·총사례비)
+    4. 예산 (PC/AC 합계 + 항목별)
+    5. SROI Forecast (비율·총가치·Outcome 화폐환산)
+  - UI: ExpressShell 의 finalize 패널에 "📥 엑셀 추출" 버튼 (`<a href download>`)
+  - 한글 파일명 utf-8 인코딩 (`Content-Disposition: filename*=UTF-8''...`)
+
+- [ ] **J2 (후속) 16 시트 발주처 템플릿 매핑**
+  - `docs/architecture/budget-template.md` 의 매핑 데이터 → ts 상수
+  - 시트 #2 (1-1-1. 주관부서) 60+ 셀 매핑 — 메인 출력
+  - 시트 #5 (1-2. 외부용) — 발주처 제출
+  - 시트 #16 (2. 내부용 세부 예산)
+  - Q1·Q2·Q3 미해결 사항 답 후 진행
 
 ---
 
