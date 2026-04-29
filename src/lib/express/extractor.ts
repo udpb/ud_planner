@@ -58,15 +58,16 @@ export function mergeExtractedSlots(
     }
 
     // beforeAfter.before / .after
+    // ⚠️ 한쪽만 채워질 때 다른 쪽을 빈 문자열 '' 로 두면 안 됨
+    //    (BeforeAfterSchema 의 min(20) 검증을 통과 못 함 → autosave 400)
+    //    채운 쪽만 set, 다른 쪽은 undefined 유지.
     if (key === 'beforeAfter.before' || key === 'beforeAfter.after') {
       const sub = key.split('.')[1] as 'before' | 'after'
       const text = String(value).trim()
       if (text.length >= 20 && text.length <= 300) {
-        next.beforeAfter = {
-          before: next.beforeAfter?.before ?? '',
-          after: next.beforeAfter?.after ?? '',
-          [sub]: text,
-        } as ExpressDraft['beforeAfter']
+        const merged: { before?: string; after?: string } = { ...(next.beforeAfter ?? {}) }
+        merged[sub] = text
+        next.beforeAfter = merged as ExpressDraft['beforeAfter']
         accepted.push(key)
       } else {
         rejected.push(key)
@@ -80,15 +81,21 @@ export function mergeExtractedSlots(
     }
 
     // beforeAfter (객체로 들어온 경우)
+    // ⚠️ 동일 — 길이 조건 통과한 필드만 set, 그 외는 기존 값 유지 (빈 문자열 X)
     if (key === 'beforeAfter' && typeof value === 'object' && value !== null) {
       const obj = value as { before?: string; after?: string }
-      const merged: ExpressDraft['beforeAfter'] = {
-        before: obj.before ?? next.beforeAfter?.before ?? '',
-        after: obj.after ?? next.beforeAfter?.after ?? '',
+      const merged: { before?: string; after?: string } = { ...(next.beforeAfter ?? {}) }
+      const beforeText = (obj.before ?? '').trim()
+      const afterText = (obj.after ?? '').trim()
+      if (beforeText.length >= 20 && beforeText.length <= 300) {
+        merged.before = beforeText
+        accepted.push('beforeAfter.before')
       }
-      next.beforeAfter = merged
-      if (obj.before) accepted.push('beforeAfter.before')
-      if (obj.after) accepted.push('beforeAfter.after')
+      if (afterText.length >= 20 && afterText.length <= 300) {
+        merged.after = afterText
+        accepted.push('beforeAfter.after')
+      }
+      next.beforeAfter = merged as ExpressDraft['beforeAfter']
       continue
     }
 

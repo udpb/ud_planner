@@ -92,7 +92,16 @@ export function ExpressShell(props: Props) {
               cacheTurnsLimit: 30,
             }),
           })
-          if (!r.ok) throw new Error(`HTTP ${r.status}`)
+          if (!r.ok) {
+            // 검증 실패 시 응답 body 의 issues 까지 console 에 출력 (디버그)
+            const errBody = await r.json().catch(() => null)
+            console.warn(
+              `[ExpressShell] autosave HTTP ${r.status}:`,
+              errBody?.error ?? '(no error)',
+              errBody?.issues ?? [],
+            )
+            throw new Error(`HTTP ${r.status}`)
+          }
           lastSavedRef.current = json
           setAutosaveStatus('saved')
           // 2초 후 idle 로 복귀
