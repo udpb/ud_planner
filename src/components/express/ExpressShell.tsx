@@ -365,6 +365,7 @@ export function ExpressShell(props: Props) {
   const [deepSuggestions, setDeepSuggestions] = useState<
     Array<{ targetStep: string; reason: string }>
   >([])
+  const [dismissFinalize, setDismissFinalize] = useState<boolean>(false)
 
   const handleSubmitDraft = useCallback(async () => {
     setSubmitting(true)
@@ -459,6 +460,58 @@ export function ExpressShell(props: Props) {
           </button>
         </div>
       </div>
+
+      {/* 1차본 어느 정도 채워지면 — 다음 단계 안내 패널 (사용자 종료 의사 visible 트리거)
+        - progress 50%+ 또는 isCompleted 안 한 상태 + dismiss 안 한 상태
+        - markCompleted 후엔 deepSuggestions 패널이 대신 (우선)
+      */}
+      {progress.overall >= 50 &&
+        !draft.meta.isCompleted &&
+        !dismissFinalize &&
+        deepSuggestions.length === 0 && (
+          <div className="border-b border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background px-6 py-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-semibold text-primary">
+                🎯 1차본 핵심이 채워졌어요 ({progress.overall}%) — 다음 단계:
+              </span>
+              <button
+                type="button"
+                onClick={handleSubmitDraft}
+                disabled={submitting || handingOff}
+                className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                title="자동 검수 + Project 필드·ProposalSection 시드 + isCompleted=true"
+              >
+                {submitting ? '승인 중...' : '✓ 1차본 승인 + 검수'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handoffToDeep('rfp')}
+                disabled={handingOff || submitting}
+                className="flex items-center gap-1 rounded-md border border-primary/40 bg-background px-3 py-1 text-xs text-primary hover:bg-primary/10 disabled:opacity-50"
+                title="Express 진행 내용 그대로 Deep Track 으로 인계 후 Step 1 이동"
+              >
+                <Settings2 className="h-3 w-3" />
+                {handingOff ? '인계 중...' : '정밀 기획 (Deep) →'}
+              </button>
+              <button
+                type="button"
+                onClick={runInspector}
+                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+                title="평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)"
+              >
+                🔍 검수만 받기
+              </button>
+              <button
+                type="button"
+                onClick={() => setDismissFinalize(true)}
+                className="ml-auto text-xs text-muted-foreground hover:text-foreground"
+                title="패널 닫기 — 더 다듬을 게 있으면"
+              >
+                × 더 다듬기
+              </button>
+            </div>
+          </div>
+        )}
 
       {/* 1차본 완료 시 정밀화 추천 패널 */}
       {deepSuggestions.length > 0 && (
