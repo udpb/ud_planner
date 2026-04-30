@@ -15,6 +15,7 @@ import {
   RefreshCw, Video, Users, AlertTriangle, TrendingUp,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { safeFetchJson } from '@/lib/fetch-helper'
 import { validateCurriculumRules, type RuleViolation } from '@/lib/curriculum-rules'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { sectionLabel } from '@/lib/eval-strategy'
@@ -203,18 +204,21 @@ export function CurriculumBoard({
   const [generating, setGenerating] = useState(false)
   const [genError, setGenError] = useState('')
 
-  // AI 커리큘럼 생성
+  // AI 커리큘럼 생성 — safeFetchJson 으로 504/HTML 에러도 친절하게
   const handleGenerateCurriculum = useCallback(async () => {
     setGenerating(true)
     setGenError('')
     try {
-      const res = await fetch('/api/ai/curriculum', {
+      const r = await safeFetchJson<{ curriculum?: unknown }>('/api/ai/curriculum', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? '커리큘럼 생성 실패')
+      if (!r.ok) {
+        // status 별 친절 메시지 (504 timeout 등)
+        setGenError(r.error)
+        return
+      }
       // 성공 시 페이지 새로고침으로 DB 에서 새 세션 로드
       window.location.reload()
     } catch (e: unknown) {

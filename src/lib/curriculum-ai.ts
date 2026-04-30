@@ -529,10 +529,10 @@ export async function generateCurriculum(
   try {
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      // Phase E 1.5 (2026-04-21) — 12세션 + designRationale + appliedDirection 조합에서
-      // 8192 가 truncation 유발 (smoke test 에서 11,916 chars 지점 JSON 잘림 확인).
-      // 16384 로 상향해 프로덕션 "500 에러" 원인 차단.
-      max_tokens: 16384,
+      // Phase E 1.5: 12세션 + designRationale + appliedDirection 조합에서 truncation
+      // 발생해 16384 로 상향. 그러나 2026-04-29 운영에서 60초 timeout (Vercel Hobby
+      // 제한) 발견 → 12288 로 축소 (truncation 위험 vs timeout 균형, 일반 케이스 OK).
+      max_tokens: 12288,
       messages: [{ role: 'user', content: prompt }],
     })
 
@@ -553,10 +553,10 @@ export async function generateCurriculum(
     const retryPrompt = buildCurriculumPrompt(input, retryHint)
     const retryMsg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      // Phase E 1.5 (2026-04-21) — 12세션 + designRationale + appliedDirection 조합에서
-      // 8192 가 truncation 유발 (smoke test 에서 11,916 chars 지점 JSON 잘림 확인).
-      // 16384 로 상향해 프로덕션 "500 에러" 원인 차단.
-      max_tokens: 16384,
+      // Phase E 1.5: 12세션 + designRationale + appliedDirection 조합에서 truncation
+      // 발생해 16384 로 상향. 그러나 2026-04-29 운영에서 60초 timeout (Vercel Hobby
+      // 제한) 발견 → 12288 로 축소 (truncation 위험 vs timeout 균형, 일반 케이스 OK).
+      max_tokens: 12288,
       messages: [{ role: 'user', content: retryPrompt }],
     })
 

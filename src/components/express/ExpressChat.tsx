@@ -148,11 +148,15 @@ export function ExpressChat({
           </div>
         )}
 
-        {/* 마지막 AI 턴의 quickReplies — 클릭하면 입력 박스에 prefill (편집 후 전송) */}
+        {/* 마지막 AI 턴의 quickReplies — 클릭하면 입력 박스에 prefill (편집 후 전송).
+            단, 그 턴이 카드(externalLookupNeeded)를 가지면 quickReplies hide
+            (사용자가 카드 먼저 처리하도록 — 동시 표시 방지) */}
         {(() => {
           if (pendingTurn) return null
           const lastAi = [...turns].reverse().find((t) => t.role === 'ai')
           if (!lastAi || !lastAi.quickReplies || lastAi.quickReplies.length === 0) return null
+          // 카드가 있으면 quickReplies 숨김
+          if (lastAi.externalLookupNeeded) return null
           return (
             <div className="space-y-1.5">
               <div className="text-[11px] text-muted-foreground">
@@ -222,6 +226,17 @@ export function ExpressChat({
 }
 
 // ─────────────────────────────────────────
+// 카드가 있을 때 본문을 짧게 자르는 헬퍼
+// ─────────────────────────────────────────
+function truncateForCard(text: string): string {
+  if (!text) return ''
+  // 첫 문장 또는 최대 120자
+  const firstSentence = text.split(/(?<=[.!?。!?])\s/)[0]
+  if (firstSentence && firstSentence.length <= 140) return firstSentence
+  return text.slice(0, 120) + (text.length > 120 ? '…' : '')
+}
+
+// ─────────────────────────────────────────
 // Turn 말풍선 + (마지막 AI 턴이면) 인라인 카드
 // ─────────────────────────────────────────
 
@@ -236,6 +251,12 @@ function TurnBubble({
 }) {
   const isAi = turn.role === 'ai'
   const card = turn.externalLookupNeeded
+  // 카드가 있고 active 상태면 메시지 본문은 한 줄로 짧게 (사용자 시선 카드로 유도).
+  // 메시지 본문이 길어도 첫 줄 또는 100자만 보여주고 카드 가리킨다.
+  const isCardTurnActive = isAi && !!card && isLatestAi
+  const displayText = isCardTurnActive
+    ? truncateForCard(turn.text)
+    : turn.text
   return (
     <div className={cn('flex flex-col gap-1.5', isAi ? 'items-start' : 'items-end')}>
       {/* 메시지 버블 */}
@@ -248,7 +269,10 @@ function TurnBubble({
               : 'bg-primary text-primary-foreground',
           )}
         >
-          <div>{turn.text}</div>
+          <div>{displayText}</div>
+          {isCardTurnActive && (
+            <div className="mt-1 text-[11px] text-primary">▼ 아래 카드를 먼저 처리해 주세요</div>
+          )}
           {isAi && turn.targetSlot && (
             <div className="mt-1 text-[10px] uppercase tracking-wider opacity-60">
               슬롯: {SLOT_LABELS[turn.targetSlot as SlotKey] ?? turn.targetSlot}

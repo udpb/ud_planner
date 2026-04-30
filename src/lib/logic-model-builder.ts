@@ -687,7 +687,7 @@ export async function buildLogicModel(
       // L1 (2026-04-27): Gemini 우선 + Claude fallback. max_tokens 16384.
       const r = await invokeAi({
         prompt,
-        maxTokens: 16384,
+        maxTokens: 12288,
         temperature: 0.3,
         label: `logic-model-builder (attempt ${attempt})`,
       })
