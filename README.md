@@ -1,161 +1,175 @@
 # UD-Ops Workspace
 
-> 언더독스 교육 사업 제안서 자동화 워크스페이스 — AI 공동기획자 기반 6단계 파이프라인.
+> 언더독스 교육 사업 제안 자동화 — **Express Track (메인) + Deep Track (보조)** 두 트랙.
+> RFP 한 부 → 30~45분 → "당선 가능한 기획 1차본 (7 섹션 초안)" 까지.
+
+🚀 **프로덕션**: https://ud-planner.vercel.app
+
+📦 **인수인계**: [HANDOVER.md](HANDOVER.md) (다음 개발자가 받아 곧바로 운영·고도화 가능)
 
 ---
 
 ## ⚡ 5분 빠른 시작 (로컬 개발)
 
-### 전제
-
-- Node.js 20 이상
-- Docker Desktop (PostgreSQL 컨테이너 `ud_ops_db` 용)
-- `.env` 파일 (Anthropic / Google OAuth 키 — 별도 안내)
-
-### 명령
-
-```powershell
-# 1. 작업 경로 (유일하게 정상)
-cd C:\Users\USER\projects\ud-ops-workspace
-
-# 2. 의존성 설치
+```bash
+# 1. 의존성
 npm install
 
-# 3. DB 기동 + 마이그레이션
-docker compose up -d
-npm run db:migrate
+# 2. .env 채우기
+cp .env.example .env
+# DATABASE_URL · GEMINI_API_KEY · AUTH_SECRET 등 입력
 
-# 4. 시드 (3종 모두 적용)
+# 3. DB 기동 + 마이그레이션
+docker compose up -d postgres
+npx prisma migrate deploy
+
+# 4. 시드 (4종)
 npm run db:seed
+npm run db:seed:channel-presets
 npm run db:seed:program-profiles
 npm run db:seed:content-assets
 
-# 5. dev 서버 (predev 훅이 경로 자동 검증)
+# 5. dev 서버 (predev: print-worktree + check:manifest 자동)
 npm run dev
 ```
 
-브라우저에서 `http://localhost:3000` 접속.
+→ http://localhost:3000 접속.
 
 ---
 
-## 📍 어디서 작업하나
+## 🗂 핵심 문서 (읽는 순서)
 
-```
-C:\Users\USER\projects\ud-ops-workspace   ← ⭐ 유일한 master 경로
-└─ scripts/print-worktree.cjs              ← npm run dev 시 자동 검증
-```
-
-과거 `.claude/worktrees/{amazing-khorana,blissful-goodall}-*` 두 워크트리는 2026-04-27 통합·삭제됨. 다시 등장하면 잘못된 곳에서 띄운 것.
-
----
-
-## 🗂 주요 문서
-
-| 문서 | 역할 | 언제 보나 |
+| 문서 | 역할 | 언제 |
 |---|---|---|
-| **[PRD-v6.0.md](PRD-v6.0.md)** | 제품 전체 정의 (사용자·가치·파이프라인·자산) | 처음 진입할 때 |
-| **[STATE.md](STATE.md)** | 현재 진행 한 눈에 (Phase·DB·다음 할 일) | 매 세션 시작 시 |
-| **[PROCESS.md](PROCESS.md)** | 일하는 방식 (Wave·ADR·에이전트·게이트) | 새 작업자 합류 시 |
-| **[LESSONS.md](LESSONS.md)** | 시행착오 정리 (반복 함정 케이스) | 이상한 일 생겼을 때 먼저 |
-| **[CLAUDE.md](CLAUDE.md)** | 개발 규칙·디자인 시스템·설계 철학 | AI 협업 시 |
-| **[ROADMAP.md](ROADMAP.md)** | Phase A~I 체크리스트 | 다음 작업 결정 시 |
+| **[HANDOVER.md](HANDOVER.md)** ⭐⭐⭐ | 인수인계서 — 시스템 정체성·데이터 모델·user flow·API·점검 결과 | **새 개발자 첫 진입** |
+| **[PRD-v7.0.md](PRD-v7.0.md)** | 단일 진실 원본 (v7.1 운영 마일스톤) | 결정 근거 찾을 때 |
+| **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** ⭐ | User flow ASCII 다이어그램 | 흐름 이해할 때 |
+| **[STATE.md](STATE.md)** | 현재 진행 한 눈에 | 매 세션 시작 |
+| **[ROADMAP.md](ROADMAP.md)** | Phase A~J 체크리스트 | 다음 작업 결정 |
+| **[CLAUDE.md](CLAUDE.md)** | 개발 규칙·디자인 시스템 | AI 협업 시 |
+| **[LESSONS.md](LESSONS.md)** | 시행착오 케이스 | 이상한 일 발생 시 먼저 |
+| **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** | Vercel 배포 가이드 | 배포할 때 |
 
-보조 문서: [REDESIGN.md](REDESIGN.md) · [docs/architecture/](docs/architecture/) · [docs/decisions/](docs/decisions/) · [docs/journey/](docs/journey/)
+상세: [docs/architecture/](docs/architecture/) (12 문서) · [docs/decisions/](docs/decisions/) (12 ADR) · [docs/journey/](docs/journey/) (시행착오 일지)
 
 ---
 
-## 🏗 아키텍처 한 장
+## 🏗 시스템 정체성
+
+**RFP → 30~45분 → 당선 가능한 1차본** — 단 하나의 북극성.
 
 ```
-파이프라인 6 UI 스텝 (공정 레이어)
-  RFP → 커리큘럼 → 코치 → 예산 → 임팩트+SROI → 제안서
-
-Impact Value Chain 5 단계 (의미 레이어, ADR-008)
-  ① Impact → ② Input → ③ Output → ④ Activity → ⑤ Outcome (=SROI)
-  └── 루프: SROI 축 3방향 얼라인 ──┘
-
-자산 레이어 (Layer 1)
-  ProgramProfile · IMPACT 18 · UCA 코치 풀 · SROI 프록시 · WinningPattern · Content Hub
+신규 PM → /projects/new (RFP 우선) → Express 단일 화면
+            ↓ 챗봇 + 12 슬롯 + 점진 미리보기 + 자동 저장
+            ↓ 4 액션 (1차본 승인 / 정밀 기획 / 검수 / 엑셀)
+            ↓
+     1차본 완성 (7 섹션) → Deep Track (정밀화) 또는 발주처 제출
 ```
+
+자세히는 [docs/architecture/user-flow.md](docs/architecture/user-flow.md).
 
 ---
 
 ## 🛠 Tech 스택
 
-- **Framework**: Next.js 16 (App Router · Turbopack)
-- **Language**: TypeScript strict
-- **DB**: Prisma 7 + PostgreSQL (PrismaPg adapter)
-- **Auth**: NextAuth v5 (JWT 전략)
-- **UI**: shadcn/ui + base-ui + Tailwind v4
-- **AI**: Anthropic Claude Sonnet 4.6 + Gemini fallback
-- **Font / Color**: Nanum Gothic / Action Orange `#F05519`
+| 영역 | 선택 |
+|---|---|
+| Framework | Next.js 16 (App Router) + TypeScript strict |
+| DB | Prisma 7 + PostgreSQL (PrismaPg adapter) — 44 models |
+| Auth | NextAuth v5 (JWT) |
+| AI | **Gemini 3.1 Pro Preview** (Primary) + **Claude Sonnet 4.6** (Fallback) — `invokeAi()` 단일 진입점 |
+| UI | shadcn/ui + base-ui + Tailwind v4 + lucide-react + sonner |
+| Excel | exceljs ^4.4.0 |
+| 호스팅 | Vercel (Hobby, `regions: ["icn1"]`, `maxDuration: 60`) + Neon PostgreSQL (`ap-southeast-1`) |
+| Font / Color | Nanum Gothic / Action Orange `#F05519` |
 
 ---
 
-## 📦 모듈 4 계층 (Module Manifest, ADR-002)
-
-- **core** — 6 스텝 (`rfp` · `curriculum` · `coaches` · `budget` · `impact` · `proposal`)
-- **support** — `pm-guide` · `gate3-validation` · `predicted-score`
-- **asset** — `asset-registry` · `channel-presets` · `winning-patterns` · `sroi-proxies`
-- **ingestion** — `proposal-ingest` · `curriculum-ingest` 등
-
-각 모듈은 `manifest.ts` 에서 `reads` / `writes` / `owner` 를 명시. 자세한 규칙: [docs/architecture/modules.md](docs/architecture/modules.md).
-
----
-
-## 🚦 진행 상태
+## 📊 진행 상태 (2026-04-29 최종)
 
 | Phase | 이름 | 상태 |
 |---|---|---|
-| A~D | 골격 · Step 1 · 흐름 · Gate 3 | ✅ |
+| A~D | 골격·Step 1·흐름·Gate 3 | ✅ |
 | E | ProgramProfile · 차별화 리서치 | ✅ |
 | F | Impact Value Chain | ✅ |
 | G | Asset Registry v1 | ✅ |
-| H | Content Hub v2 (DB + 계층 + UI) | ✅ |
-| I | 안정화 · 배포 | 🔲 |
+| H | Content Hub v2 (DB + UI) | ✅ |
+| **L** ⭐ | **Express Mode** (메인 트랙) | ✅ L0~L6 |
+| I | 안정화 · 배포 · 모니터링 | ✅ I2/I3/I4/I5 (I1 사용자 검증) |
+| J | 엑셀 출력 | ✅ PoC + J2 발주처 템플릿 (J3 시트 #16 후속) |
 
-상세는 [STATE.md](STATE.md) · 체크리스트는 [ROADMAP.md](ROADMAP.md).
+= **모든 코드 트랙 마무리**. 잔여는 사용자 검증·보안 rotate.
+
+---
+
+## 📦 모듈 4 계층 (ADR-002)
+
+- **core** (6) — `rfp-planning` · `curriculum-design` · `coach-matching` · `budget-sroi` · `impact-chain` · `proposal-generation`
+- **support** (3) — `pm-guide` · `gate3-validation` · `predicted-score`
+- **asset** (1) — `asset-registry`
+
+`src/modules/_registry.ts` 가 10 manifest 통합. 빌드·시작 시 `npm run check:manifest` 자동 실행 (errors 0 보장).
 
 ---
 
 ## 🔧 주요 명령
 
 ```bash
-npm run dev                       # dev 서버 (predev 훅 자동 검증)
-npm run typecheck                 # TypeScript 0 에러 확인
-npm run lint                      # ESLint
-npm run build                     # prisma generate + next build
-npm run db:migrate                # 마이그레이션
-npm run db:studio                 # Prisma Studio
-npm run db:seed                   # 기본 시드 (코치 · 모듈 · SROI 등)
+npm run dev                       # dev 서버 (predev 훅: 워크트리 검증 + manifest)
+npm run typecheck                 # TypeScript 0 errors
+npm run lint                      # ESLint (warnings 348 정상, errors 0 필수)
+npm run build                     # prisma generate + next build (로컬)
+npm run check:manifest            # Module Manifest 무결성
+
+# DB
+npx prisma studio                 # GUI
+npx prisma migrate deploy         # 마이그 적용 (idempotent)
+npm run db:seed                   # 기본 시드
+npm run db:seed:channel-presets   # Channel Preset
 npm run db:seed:program-profiles  # ProgramProfile 10 케이스
-npm run db:seed:content-assets    # Content Hub 자산 + 계층 시드
+npm run db:seed:content-assets    # ContentAsset 20건
+
+# 프로덕션 배포
+git push origin master            # → Vercel 자동 redeploy (build:prod)
 ```
 
 ---
 
-## 📚 별도 산출물 (이 README 범위 밖)
+## 📍 시스템 진입점 (코드)
 
-다음은 시스템 본체와 분리된 결과물입니다 — 본 README 는 "Workspace 시스템" 정의에 집중합니다.
-
-- **운영 가이드북** (한/영): [`docs/guidebook/`](docs/guidebook/) · [`docs/guidebook-en/`](docs/guidebook-en/)
-- **가이드북 사이트** (Vercel 배포 대상): [`guidebook-site/`](guidebook-site/)
-- **강의 자료** (PPT + 스크립트 + 과제): [`lecture-materials/`](lecture-materials/)
-
----
-
-## 🆘 도움이 필요할 때
-
-1. **[LESSONS.md](LESSONS.md)** — 반복 함정 케이스. 이상한 일 생기면 가장 먼저.
-2. **[STATE.md](STATE.md)** — "알려진 이슈 · 기술 부채" 섹션.
-3. **[docs/journey/](docs/journey/)** — 가장 최근 파일 = 마지막 세션 맥락.
-4. **[docs/decisions/](docs/decisions/)** — ADR-001 ~ ADR-010 의사결정 기록.
+| 작업 | 위치 |
+|---|---|
+| Express 챗봇 | `src/components/express/ExpressShell.tsx` + `src/lib/express/` |
+| Deep Track 6 step | `src/app/(dashboard)/projects/[id]/step-*.tsx` |
+| Asset 매칭 | `src/lib/asset-registry.ts` `matchAssetsToRfp()` |
+| AI 호출 | `src/lib/ai-fallback.ts` `invokeAi()` (단일 진입점) |
+| 검수 에이전트 | `src/lib/express/inspector.ts` `inspectDraft()` |
+| 인터뷰 → 자산 추출 | `src/lib/interview-extractor/extract.ts` |
+| 엑셀 출력 | `src/lib/excel-export/render.ts` (5 시트 PoC) + `render-budget-template.ts` (발주처) |
 
 ---
 
-## 📝 기여 약속
+## 🛡 인수인계 / 보안
 
-- 결정 · 과정은 기록 의무 (ADR + journey)
-- Wave 단위 진행, 각 Wave 끝에 커밋
-- 가이드북 · 강의 자료 변경은 별도 PR
-- 자세한 규칙: [PROCESS.md](PROCESS.md)
+- **인수인계 첫 시작**: [HANDOVER.md §14 체크리스트](HANDOVER.md#14-인수인계-체크리스트)
+- **🔴 즉시 rotate 필요**: ANTHROPIC_API_KEY · Neon DB password (작업 중 채팅에 노출됨)
+- **다음 개발 권장**: Vercel Pro 업그레이드 (60s → 300s, AI timeout 빈번 시) · Phase J3 (시트 #16) · E2E 자동 테스트
+
+---
+
+## 🌳 워크트리 정책
+
+```
+C:\Users\USER\projects\ud-ops-workspace   ← ⭐ 유일한 master 경로
+└─ scripts/print-worktree.cjs              ← npm run dev 시 자동 검증
+```
+
+`predev` 훅이 매번 경로·브랜치 검증. 워크트리 안에서 `npm run dev` 띄우면 경고.
+
+---
+
+## 🤝 라이선스 / 저작권
+
+(미정 — 사용자 결정)
+
+**작성**: 2026-04-29 v2 (인수인계 단계 반영)
