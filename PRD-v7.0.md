@@ -1,7 +1,8 @@
-# PRD-v7.0 — UD-Ops Workspace
+# PRD-v7.1 — UD-Ops Workspace
 
 > 언더독스 교육 사업 제안 자동화 웹앱의 **단일 진실 원본 (Single Source of Truth)**.
-> v7.0 은 시스템 정체성을 **Express Track (메인) + Deep Track (보조)** 두 트랙으로 재정의한다.
+> v7.0 은 시스템 정체성을 **Express Track (메인) + Deep Track (보조)** 두 트랙으로 재정의했고,
+> v7.1 은 **Phase L 100% 종료 + Phase I I2/I3/I5 + Phase J PoC** 운영 마일스톤을 반영한다.
 > 본 PRD 는 시스템 정의에 집중한다. 운영 가이드북·강의 자료는 별도 산출물 (부록 A 참조).
 
 ---
@@ -12,14 +13,31 @@
 
 | 항목 | 값 |
 |---|---|
-| **버전** | v7.0 |
+| **버전** | v7.1 (minor — v7.0 운영 마일스톤 반영) |
 | **상태** | Active (Single Source of Truth) |
-| **작성일** | 2026-04-27 |
+| **작성일** | 2026-04-27 (v7.0) · 2026-04-29 (v7.1) |
 | **선행 PRD** | [PRD-v6.0.md](PRD-v6.0.md) (Phase A~H 누적 — Archived 2026-04-27) |
 | **핵심 트리거** | ADR-011 Express Mode 채택 — 사용자 통찰 *"핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지"* |
 | **선행 결정** | ADR-001 ~ ADR-011 |
-| **관련 스펙** | [docs/architecture/express-mode.md](docs/architecture/express-mode.md) v1.0 |
-| **작성 주체** | AI 공동기획자 (Claude Opus 4.7 1M context) + 사용자 (udpb@udimpact.ai) |
+| **관련 스펙** | [docs/architecture/express-mode.md](docs/architecture/express-mode.md) v1.0 · [docs/architecture/user-flow.md](docs/architecture/user-flow.md) v1.0 (v7.1 신규) |
+| **작성 주체** | AI 공동기획자 (Claude Opus 4.7 1M context) + 사용자 (udpb@impact.ai) |
+| **프로덕션** | https://ud-planner.vercel.app (2026-04-29 가동, Neon PostgreSQL ap-southeast-1) |
+
+### 0.2.1 v7.0 → v7.1 변경 요약 (2026-04-29)
+
+v7.0 발행 직후 2일 (2026-04-28~29) 동안 Phase L 풀 구현 + 프로덕션 가동 + Phase I·J 진행. 시스템 정체성·정의는 v7.0 그대로 유지하고, 운영 마일스톤만 반영하는 minor bump (v7.1).
+
+| 영역 | v7.0 | v7.1 | 근거 |
+|---|---|---|---|
+| **Phase L (Express)** | L0/L1 ✅, L2~L6 대기 | **L0~L6 100% 완료** (PoC + 검수 에이전트 + Deep 인계 + 카드 인라인 + 종료 트리거 + autosave 400 fix) | `d451d28` `6eb142b` `fcc5715` `c11539a` `247f48e` `f794ed4` `d5935b2` `293da2a` `42e31b4` `90c67b4` |
+| **Phase I (안정화·배포)** | 대기 | **I2/I3/I5 완료** (ESLint 0 errors / Module Manifest registry + check:manifest / Vercel 프로덕션 배포 + Neon 시드) | `2937e49` `65e6348` `7ac0fd7` |
+| **Phase J (엑셀)** | 명시 X | **PoC 5 시트 완료** (exceljs + buildProjectExcel + /api/projects/[id]/export-excel + UI 버튼) | `90c67b4` |
+| **프로덕션** | 미배포 | **https://ud-planner.vercel.app 가동** (Neon ap-southeast-1, Gemini Primary + Claude Fallback) | I5 |
+| **NextAuth 컨벤션** | middleware.ts | **proxy.ts (Next.js 16 권장)** | `90c67b4` |
+| **User Flow 문서** | 미정의 | **`docs/architecture/user-flow.md` v1.0** — Express + Deep + 데이터 흐름 ASCII | v7.1 |
+| **자산 자동 인용 정밀화** | placeholder 신뢰도 0.3 | **실제 DB 조회 0.4~0.75** (ContentAsset + CostStandard + Coach.count + coach-finder 외부 프롬프트) | `d5935b2` (L4) |
+| **검수 에이전트** | 명시 백로그 | **inspectDraft() 7 렌즈 + heuristicInspect() fallback** (사용자 명시 요청 처리) | `6eb142b` (L5) |
+| **Express → Deep 인계** | markCompleted 시에만 | **handoffToDeep 명시 트리거 + 1차본 미승인도 정밀 기획 클릭 시 자동 sync** | `247f48e` (L6) |
 
 ### 0.2 v6.0 → v7.0 핵심 변경 요약
 

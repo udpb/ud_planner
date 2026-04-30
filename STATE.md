@@ -287,7 +287,8 @@ Layer 3 외부 인텔리전스 (AI + PM 수집)
 
 ## 참고 문서
 
-- **PRD-v7.0.md** ⭐ — 단일 진실 원본 (v6.0 은 archived)
+- **PRD-v7.0.md** ⭐ — 단일 진실 원본 (v7.1 minor bump 2026-04-29 운영 마일스톤 반영, v6.0 archived)
+- **docs/architecture/user-flow.md** ⭐ — User flow 다이어그램 (v1.0 2026-04-29 신규)
 - **ROADMAP.md** — Phase 체크리스트 (A~H 완료, **L 진행 중**, I 대기)
 - **REDESIGN.md** — 상세 설계 v2
 - **CLAUDE.md** — 프로젝트 규칙 / 브랜드 / 컨벤션 / 설계 철학 10

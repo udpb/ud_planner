@@ -1,6 +1,6 @@
 # UD-Ops 파이프라인 재설계 로드맵
 
-> 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v7.0.md](PRD-v7.0.md)** ⭐ (단일 진실 원본)
+> 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v7.0.md](PRD-v7.0.md)** ⭐ (단일 진실 원본, v7.1 2026-04-29) · **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** (User flow 다이어그램)
 > 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode** ⭐)
 > 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~011)
 > 마지막 업데이트: 2026-04-27 (**Phase L Express Mode** Wave 추가 — ADR-011 채택)

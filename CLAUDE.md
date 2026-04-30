@@ -16,8 +16,9 @@
 - **AI 단일 진입점**: `src/lib/ai-fallback.ts` `invokeAi(params)` (provider/model 중립)
 
 ## 최신 설계 소스 (Single Source of Truth)
-- **[PRD-v7.0.md](PRD-v7.0.md)** ⭐⭐⭐ — 단일 진실 원본 (Express + Deep 두 트랙, 2026-04-27)
-- **[ROADMAP.md](ROADMAP.md)** — Phase 체크리스트 (A~H 완료, **L 진행 중**, I 대기)
+- **[PRD-v7.0.md](PRD-v7.0.md)** ⭐⭐⭐ — 단일 진실 원본 (v7.1 minor bump 2026-04-29 — Phase L 100% + I I2/I3/I5 + J PoC 반영, Express + Deep 두 트랙)
+- **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** ⭐ — User flow ASCII 다이어그램 (Express 12 슬롯 + 종료 트리거 + Deep 6 step + 데이터 흐름, v1.0 2026-04-29)
+- **[ROADMAP.md](ROADMAP.md)** — Phase 체크리스트 (A~H + L 100% + I I2/I3/I5 + J PoC 완료, I1·I4 잔여)
 - **[REDESIGN.md](REDESIGN.md)** — 상세 설계 v2 (PipelineContext / PM 가이드 / 예상 점수)
 - **[docs/architecture/](docs/architecture/)** — 아키텍처 9문서
   - [modules.md](docs/architecture/modules.md) — 모듈 4계층 + Manifest 패턴
