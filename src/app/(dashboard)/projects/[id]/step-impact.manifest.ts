@@ -4,7 +4,7 @@ export const manifest: ModuleManifest = {
   name: 'impact-chain',
   layer: 'core',
   version: '0.1.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
   reads: {
     context: ['curriculum', 'budget', 'coaches', 'rfp'],
     assets: ['impact-modules', 'sroi-proxy'],

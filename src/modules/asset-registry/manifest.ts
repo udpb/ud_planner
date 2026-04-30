@@ -14,7 +14,7 @@ export const manifest: ModuleManifest = {
   name: 'asset-registry',
   layer: 'asset',
   version: '1.0.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
 
   reads: {
     context: ['rfp'], // rfp.parsed + meta.programProfile

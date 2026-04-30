@@ -23,6 +23,7 @@ import { CATEGORY_LABELS } from '@/lib/asset-registry'
 import { VALUE_CHAIN_STAGES } from '@/lib/value-chain'
 
 import { FilterBar } from './_components/filter-bar'
+import { SeedButton } from './_components/seed-button'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Content Hub' }
@@ -101,7 +102,8 @@ export default async function ContentHubPage({
         {/* 필터 바 + 새 자산 CTA */}
         <div className="mb-4 flex items-start justify-between gap-3">
           <FilterBar initial={params} />
-          <div className="shrink-0">
+          <div className="flex shrink-0 gap-2">
+            <SeedButton />
             <Link href="/admin/content-hub/new">
               <Button size="sm" className="gap-1.5">
                 <Plus className="h-4 w-4" />새 자산

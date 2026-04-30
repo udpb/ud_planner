@@ -4,7 +4,7 @@ export const manifest: ModuleManifest = {
   name: 'budget-sroi',
   layer: 'core',
   version: '0.1.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
   reads: {
     context: ['curriculum', 'coaches'],
     assets: ['cost-standards', 'sroi-proxy'],

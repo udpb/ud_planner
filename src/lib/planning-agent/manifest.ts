@@ -4,7 +4,7 @@ export const manifest: ModuleManifest = {
   name: 'planning-agent',
   layer: 'support',
   version: '0.2.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
   reads: {
     context: ['rfp'],
     assets: ['channel-presets', 'past-projects'],

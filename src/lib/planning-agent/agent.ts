@@ -66,7 +66,7 @@ export async function runAgentTurn(input: AgentTurnInput): Promise<AgentTurnOutp
     return startNewSession(input.channelInput, input.projectId)
   }
 
-  let state = input.state
+  const state = input.state
 
   // ── 시나리오 3: 질문 스킵 ─────────────────────────────────
   if (input.skipCurrentQuestion) {

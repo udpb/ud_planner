@@ -557,9 +557,18 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - ESLint 커스텀 룰 (모듈이 manifest 없는 slice/asset 접근 금지) 은 후속 — AST 분석 기반 별도 패키지 필요. 현재는 검증 스크립트로 충분.
   - 근거: [ADR-002](docs/decisions/002-module-manifest-pattern.md)
 
-- [ ] **I4. strategy-interview-ingest + 품질 지표 대시보드**
-  - 수주 전략 인터뷰 자산화
-  - 수주율 · 재생성 횟수 · Ingestion 승인률 · 자산 재사용률 모니터링
+- [x] **I4. strategy-interview-ingest + 품질 지표 대시보드** *(2026-04-29 PoC 완료)*
+  - 신규: `/admin/metrics` — 운영 지표 대시보드
+    - 4 영역: Project 통계·수주율 / Express 활용도 / Content Hub 자산 / Ingestion 승인률
+    - 자산 재사용 Top 10 + 부가 지표 (활성 코치·제안서 섹션 누적·Express 활성률·Ingestion 진행 중)
+    - 차트 라이브러리 미사용 (recharts 등) — progress bar 인라인 구현
+    - 인증: ADMIN/DIRECTOR redirect
+  - 신규: `/admin/interview-ingest` — 수주 후 PM 전략 인터뷰 자산화 (PoC)
+    - 기존 `IngestionJob` 모델 재활용 (`kind='strategy_interview'`)
+    - POST/GET API + admin UI 입력 폼 + 목록
+    - 메타: 사업명 / 발주 / 도메인 / PM / 결과 (수주/미수주/취소) / 인터뷰 텍스트
+    - status='queued' 로 저장. AI 요약·자산 추출 워커는 후속.
+  - 사이드바 진입점 추가: 「운영 지표」 + 「전략 인터뷰」
 
 - [~] **I5. Vercel 배포 + GitHub push** *(2026-04-28 코드 준비 완료, 배포 자체는 사용자 액션)*
   - GitHub push ✓ (`origin/master` 22 커밋 반영)

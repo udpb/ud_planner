@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Draft — body 우선, 없으면 DB, 없으면 empty
-    let draft = (() => {
+    const draft = (() => {
       const fromBody = parsed.data.draft
       if (fromBody) {
         const r = ExpressDraftSchema.safeParse(fromBody)
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     })()
 
     // ConversationState — body 우선, 없으면 cache, 없으면 empty
-    let state = (() => {
+    const state = (() => {
       const fromBody = parsed.data.conversationState
       if (fromBody) {
         const r = ConversationStateSchema.safeParse(fromBody)

@@ -4,7 +4,7 @@ export const manifest: ModuleManifest = {
   name: 'curriculum-design',
   layer: 'core',
   version: '0.1.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
   reads: {
     context: ['rfp', 'strategy'],
     assets: ['impact-modules', 'winning-patterns', 'channel-presets'],

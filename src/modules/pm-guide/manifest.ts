@@ -4,7 +4,7 @@ export const manifest: ModuleManifest = {
   name: 'pm-guide',
   layer: 'support',
   version: '0.1.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
 
   reads: {
     context: ['rfp', 'strategy', 'curriculum', 'coaches', 'budget', 'impact', 'proposal'],

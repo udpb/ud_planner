@@ -46,7 +46,7 @@ export class JsonParseError extends Error {
 }
 
 function stripFenceAndExtract(raw: string): string {
-  let s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
+  const s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
   const objStart = s.indexOf('{')
   const arrStart = s.indexOf('[')
   let start: number

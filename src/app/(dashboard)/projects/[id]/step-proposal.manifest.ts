@@ -4,7 +4,7 @@ export const manifest: ModuleManifest = {
   name: 'proposal-generation',
   layer: 'core',
   version: '0.1.0',
-  owner: 'TBD',
+  owner: 'Underdogs Workspace Team',
   reads: {
     context: ['rfp', 'strategy', 'curriculum', 'coaches', 'budget', 'impact'],
     assets: ['winning-patterns', 'channel-presets', 'ud-brand'],

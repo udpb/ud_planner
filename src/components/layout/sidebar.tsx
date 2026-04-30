@@ -8,6 +8,8 @@ import {
   FolderKanban,
   Upload,
   Library,
+  BarChart3,
+  MessageSquareText,
   Settings,
 } from 'lucide-react'
 
@@ -16,6 +18,8 @@ const navItems = [
   { href: '/projects', label: '프로젝트', icon: FolderKanban },
   { href: '/ingest', label: '자료 업로드', icon: Upload },
   { href: '/admin/content-hub', label: 'Content Hub', icon: Library },
+  { href: '/admin/metrics', label: '운영 지표', icon: BarChart3 },
+  { href: '/admin/interview-ingest', label: '전략 인터뷰', icon: MessageSquareText },
   { href: '/settings', label: '설정', icon: Settings },
 ]
 
