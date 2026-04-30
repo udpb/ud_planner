@@ -108,9 +108,10 @@ export default async function InterviewIngestPage() {
                       rawTextLength?: number
                     }
                     return (
-                      <div
+                      <a
                         key={job.id}
-                        className="rounded-md border bg-background p-3 text-sm"
+                        href={`/admin/interview-ingest/${job.id}`}
+                        className="block rounded-md border bg-background p-3 text-sm hover:border-primary/40 hover:bg-muted/30 transition-colors"
                       >
                         <div className="flex flex-wrap items-baseline gap-3">
                           <span className="font-semibold">
@@ -147,7 +148,7 @@ export default async function InterviewIngestPage() {
                             에러: {job.error}
                           </div>
                         )}
-                      </div>
+                      </a>
                     )
                   })}
                 </div>

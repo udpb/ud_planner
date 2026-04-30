@@ -522,12 +522,27 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - UI: ExpressShell 의 finalize 패널에 "📥 엑셀 추출" 버튼 (`<a href download>`)
   - 한글 파일명 utf-8 인코딩 (`Content-Disposition: filename*=UTF-8''...`)
 
-- [ ] **J2 (후속) 16 시트 발주처 템플릿 매핑**
-  - `docs/architecture/budget-template.md` 의 매핑 데이터 → ts 상수
-  - 시트 #2 (1-1-1. 주관부서) 60+ 셀 매핑 — 메인 출력
-  - 시트 #5 (1-2. 외부용) — 발주처 제출
-  - 시트 #16 (2. 내부용 세부 예산)
-  - Q1·Q2·Q3 미해결 사항 답 후 진행
+- [x] **J2 발주처 템플릿 매핑 PoC** *(2026-04-29 완료)*
+  - 시트 #2 (1-1-1. 주관부서) — 내부 사업성 검토용. 예산 표·실비 표·인건비 표 + 마진율 < 10% 색 강조
+  - 시트 #5 (1-2. 외부용) — 발주처 제출 견적서. 회사 정보 + 인건비·모객·경상 + 일반관리비 5% + 기업이윤 8% + VAT
+  - 신규: `src/lib/excel-export/render-budget-template.ts` — exceljs 셀별 매핑 (수식 그대로 유지)
+  - 신규: `/api/projects/[id]/export-budget-template` GET
+  - UI: ExpressShell finalize 패널에 "📋 발주처 템플릿" 버튼 (기존 "📥 내부 엑셀" 옆)
+  - 미해결 (Q3 보정값 -15,100) 은 표준 공식만 사용, 후속
+
+- [x] **I4 후속 인터뷰 AI 자산 추출 워커** *(2026-04-29 완료)*
+  - 신규: `src/lib/interview-extractor/extract.ts` — invokeAi → 자산 후보 N개 추출 (zod schema)
+  - 4 자산 유형: winning_pattern / curriculum_archetype / evaluator_question / strategy_note
+  - 신규: `/api/admin/interview-ingest/[id]` GET (단일 조회) + POST (action='process')
+    - status 'queued' → 'processing' → ExtractedItem N건 + 'review'
+    - 실패 시 status='failed' + error 저장
+  - 신규: `/api/admin/extracted-items/[id]` POST (action='approve|reject|edit')
+    - approve: ContentAsset 자동 생성 (status='developing', id=`interview-{jobId6}-{itemId6}`)
+    - reject: status='rejected' + reviewNotes
+    - edit: payload 갱신 + status='edited'
+  - 신규: `/admin/interview-ingest/[id]` 상세 페이지 — 좌(원문+AI 요약+Red Flags) + 우(ExtractedItem 카드별 검토)
+  - 카드 컴포넌트: 신뢰도 칩 + targetAsset 라벨 + payload (name·snippet·keywords·keyNumbers·evidence) + 승인/반려 버튼
+  - 목록 페이지에서 상세로 진입 가능
 
 ---
 

@@ -505,9 +505,17 @@ export function ExpressShell(props: Props) {
                 href={`/api/projects/${props.projectId}/export-excel`}
                 download
                 className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-                title="현재 Project 데이터 → 5 시트 엑셀 다운로드 (PoC)"
+                title="내부 검토용 5 시트 엑셀 (요약·커리큘럼·코치·예산·SROI)"
               >
-                📥 엑셀 추출
+                📥 내부 엑셀
+              </a>
+              <a
+                href={`/api/projects/${props.projectId}/export-budget-template`}
+                download
+                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+                title="발주처 제출용 budget-template 양식 (1-1-1 주관부서 + 1-2 외부용)"
+              >
+                📋 발주처 템플릿
               </a>
               <button
                 type="button"
