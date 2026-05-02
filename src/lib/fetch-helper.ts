@@ -48,12 +48,18 @@ export async function safeFetchJson<T = unknown>(
   const rawText = await resp.text().catch(() => '')
 
   if (!resp.ok) {
-    // 에러 응답 — JSON 이면 message/error 추출, 아니면 친절한 메시지
+    // 에러 응답 — JSON 이면 server 의 message 우선 추출, 아니면 친절 메시지
+    // 2026-05-03: message 가 진짜 원인. error 는 카테고리 코드일 뿐.
     const friendlyError = friendlyErrorMessage(resp.status)
     let parsedError: string | undefined
     try {
       const j = JSON.parse(rawText) as { error?: string; message?: string }
-      parsedError = j.error ?? j.message
+      // message 우선 (실제 원인) — 없으면 error 코드 + friendly
+      if (j.message) {
+        parsedError = j.error ? `${j.error}: ${j.message}` : j.message
+      } else if (j.error) {
+        parsedError = `${j.error} (${friendlyError})`
+      }
     } catch {
       // HTML/text 그대로 — 친절한 메시지로 대체
     }
@@ -61,7 +67,7 @@ export async function safeFetchJson<T = unknown>(
       ok: false,
       status: resp.status,
       error: parsedError ?? friendlyError,
-      raw: rawText.slice(0, 500),
+      raw: rawText.slice(0, 800),
     }
   }
 

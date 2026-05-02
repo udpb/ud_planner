@@ -567,7 +567,10 @@ export async function generateCurriculum(
  * 1단계: 가벼운 outline 호출 (~30초 목표)
  *   - 출력: 회차 제목·태그·시간 + designRationale + appliedDirection
  *   - 빠진 것 (2단계에서 채움): objectives, recommendedExpertise, notes, impactModuleCode
- *   - max_tokens: 6144 (가벼움)
+ *   - max_tokens: 6144
+ *
+ * 2026-05-03: buildCurriculumPrompt 전체 + hint 가 prompt 너무 길고 instruction
+ *   혼동 — 별도 단순 prompt 로 분리. impactModules·externalResearch 제외.
  */
 export async function generateCurriculumOutline(
   input: GenerateCurriculumInput,
@@ -576,24 +579,63 @@ export async function generateCurriculumOutline(
     return { ok: false, error: '[curriculum-ai/outline] rfp.parsed 가 없습니다' }
   }
 
-  const fullPrompt = buildCurriculumPrompt(input)
-  const outlineHint = `\n\n⚠️ [분할 호출 1단계 — Outline]\n
-다음 필드만 채우세요. 나머지는 다음 호출에서 보강합니다:
-- sessions[].sessionNo · title · category · method · durationHours · lectureMinutes · practiceMinutes · isTheory · isActionWeek · isCoaching1on1
-- designRationale (200자+)
-- appliedDirection (전체)
+  const rfp = input.rfp.parsed
+  const totalSessions =
+    input.totalSessions ?? (rfp as { totalSessions?: number }).totalSessions ?? 8
+  const keyPoints = (input.rfp.keyPlanningPoints ?? []).slice(0, 5)
+  const concept = input.rfp.proposalConcept ?? '(미설정)'
+  const projectName = (rfp as { projectName?: string }).projectName ?? '(미상)'
 
-빠뜨려도 되는 것 (2단계에서 채움):
-- sessions[].objectives → 빈 배열 [] 로
-- sessions[].recommendedExpertise → 빈 배열 [] 로
-- sessions[].notes → 빈 문자열 "" 로
-- sessions[].impactModuleCode → null
+  const prompt = `[1단계: 커리큘럼 골격 (Outline)]
 
-이 분할은 60초 timeout 회피용. 본 호출에서 빠르게 골격만 잡으세요.`
+[RFP 핵심]
+- 사업명: ${projectName}
+- 제안 컨셉: ${concept}
+- 핵심 기획 포인트: ${keyPoints.length > 0 ? keyPoints.join(' · ') : '(미설정)'}
+- 총 회차: ${totalSessions}회
+- 발주 기관: ${rfp.client ?? '미상'}
+- 대상: ${rfp.targetAudience ?? '미상'}
+${rfp.objectives && rfp.objectives.length > 0 ? `- 목적: ${rfp.objectives.slice(0, 3).join(' / ')}` : ''}
 
-  const prompt = fullPrompt + outlineHint
+[설계 원칙]
+- Action Week (실전 주간) 1~2회 포함 권장
+- 이론 강의 3회 연속 X
+- IMPACT 또는 ${input.profile?.methodology?.primary ?? 'IMPACT'} 방법론 흐름
+
+[당신의 일 — 회차 골격만]
+${totalSessions} 회차의 outline 만 채우세요. 상세 (objectives·notes 등) 는 2단계에서 보강.
+
+[출력 JSON 스키마]
+{
+  "sessions": [
+    {
+      "sessionNo": 1,
+      "title": "회차 제목 (간결)",
+      "category": "LECTURE" | "WORKSHOP" | "PRACTICE" | "MENTORING" | "ACTION_WEEK" | "OTHERS",
+      "method": "ONLINE" | "OFFLINE" | "HYBRID",
+      "durationHours": 2 | 4 | 8,
+      "lectureMinutes": 45,
+      "practiceMinutes": 75,
+      "isTheory": true | false,
+      "isActionWeek": false,
+      "isCoaching1on1": false,
+      "objectives": [],
+      "recommendedExpertise": [],
+      "notes": "",
+      "impactModuleCode": null
+    }
+  ],
+  "designRationale": "200자 이상 — 어떤 기획 방향을 어느 회차에 반영했는지",
+  "appliedDirection": {
+    "conceptReflected": true,
+    "keyPointsReflected": ${JSON.stringify(keyPoints.length > 0 ? keyPoints.map(() => '...반영 위치/방법...') : ['반영 위치 서술'])},
+    "evalStrategyAlignment": "평가 가중치 top 1 항목에 대한 대응 전략 1~2 문장"
+  }
+}
+
+JSON 만 출력. 마크다운 펜스·trailing comma 금지.`
+
   let raw = ''
-
   try {
     const aiResult = await invokeAi({
       prompt,
@@ -604,20 +646,26 @@ export async function generateCurriculumOutline(
     raw = aiResult.raw
 
     const parsed = parseJsonStrict<GenerateCurriculumResponse>(raw, 'generateCurriculumOutline')
-    // 단계별 검증 — 1단계는 minimal 검증만 (objectives 등 빈 값 허용)
     if (!parsed.sessions || parsed.sessions.length === 0) {
-      return { ok: false, error: 'outline 단계: sessions 가 비어있음', raw }
+      console.error('[curriculum-outline] sessions 비어있음. raw 앞 500:', raw.slice(0, 500))
+      return { ok: false, error: 'outline: sessions 가 비어있음', raw }
     }
     if (!parsed.designRationale || parsed.designRationale.length < 100) {
+      console.error(
+        `[curriculum-outline] designRationale 짧음 (${parsed.designRationale?.length ?? 0}자). raw 앞 500:`,
+        raw.slice(0, 500),
+      )
       return {
         ok: false,
-        error: `outline 단계: designRationale 가 짧음 (${parsed.designRationale?.length ?? 0}자, 100자+ 필요)`,
+        error: `outline: designRationale 가 짧음 (${parsed.designRationale?.length ?? 0}자, 100자+ 필요)`,
         raw,
       }
     }
     return { ok: true, data: parsed }
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e)
+    console.error('[curriculum-outline] 예외:', message)
+    if (raw) console.error('[curriculum-outline] raw 앞 500:', raw.slice(0, 500))
     return { ok: false, error: message, raw: raw || undefined }
   }
 }

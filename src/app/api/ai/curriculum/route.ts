@@ -216,8 +216,17 @@ export async function POST(req: NextRequest) {
       const outline = await generateCurriculumOutline(aiInput)
       if (!outline.ok) {
         console.error('[curriculum/outline] 실패:', outline.error)
+        if (outline.raw) {
+          console.error('[curriculum/outline] raw 응답 (앞 800):', outline.raw.slice(0, 800))
+        }
         return NextResponse.json(
-          { error: 'AI_GENERATION_FAILED', message: outline.error, raw: outline.raw, mode: 'outline' },
+          {
+            error: 'AI_GENERATION_FAILED',
+            message: outline.error,
+            // raw 처음 200자만 client 에 — 디버깅 도움
+            rawPreview: outline.raw?.slice(0, 200),
+            mode: 'outline',
+          },
           { status: 500 },
         )
       }
