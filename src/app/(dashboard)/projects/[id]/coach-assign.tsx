@@ -81,6 +81,7 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
   const [selectedRegion, setSelectedRegion] = useState('')
   const [results, setResults] = useState<CoachResult[]>([])
   const [searching, setSearching] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false)
   const [picked, setPicked] = useState<CoachResult | null>(null)
   const [assignForm, setAssignForm] = useState<AssignForm>({
     role: 'MAIN_COACH', sessions: '1', hoursPerSession: '5', agreedRate: '', notes: '',
@@ -90,6 +91,7 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
 
   const search = useCallback(async () => {
     setSearching(true)
+    setHasSearched(true)
     try {
       const params = new URLSearchParams({ q, limit: '20' })
       if (selectedExpertise.length) params.set('expertise', selectedExpertise.join(','))
@@ -225,8 +227,23 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
 
             {/* 결과 목록 */}
             <div className="max-h-72 space-y-1.5 overflow-y-auto">
-              {results.length === 0 && !searching && (
+              {results.length === 0 && !searching && !hasSearched && (
                 <p className="py-6 text-center text-xs text-muted-foreground">검색어를 입력하고 Enter를 누르세요</p>
+              )}
+              {results.length === 0 && !searching && hasSearched && (
+                <div className="py-6 text-center text-xs text-muted-foreground space-y-2">
+                  <p className="font-medium text-amber-700">⚠ 검색 결과가 없습니다</p>
+                  <p>
+                    Coach DB 가 비어있거나 검색 조건과 일치하는 코치가 없습니다.
+                  </p>
+                  <p>
+                    조건 (지역·전문성) 을 줄여보거나, 관리자가{' '}
+                    <a href="/admin/metrics" className="text-primary underline" target="_blank" rel="noopener">
+                      /admin/metrics
+                    </a>{' '}
+                    의 <span className="font-mono">[Sync]</span> 버튼으로 코치 DB 를 동기화해야 합니다.
+                  </p>
+                </div>
               )}
               {results.map((c) => (
                 <button

@@ -585,6 +585,26 @@ export async function generateCurriculumOutline(
   const keyPoints = (input.rfp.keyPlanningPoints ?? []).slice(0, 5)
   const concept = input.rfp.proposalConcept ?? '(미설정)'
   const projectName = (rfp as { projectName?: string }).projectName ?? '(미상)'
+  const methodology = input.profile?.methodology?.primary ?? 'IMPACT'
+
+  // IMPACT 18 모듈 중 top 6 — outline 단계의 IMPACT 매핑 힌트 (퀄리티 ↑)
+  const impactSummary =
+    input.impactModules && input.impactModules.length > 0
+      ? input.impactModules
+          .slice(0, 6)
+          .map((m) => `  ${m.moduleCode}. ${m.moduleName}`)
+          .join('\n')
+      : '  (impactModules 미주입 — 일반 흐름)'
+
+  // 평가 가중치 top 1~2 (회차 비중 결정용)
+  const evalTop =
+    rfp.evalCriteria && rfp.evalCriteria.length > 0
+      ? rfp.evalCriteria
+          .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+          .slice(0, 2)
+          .map((c) => `${c.item} (${c.score}점)`)
+          .join(' · ')
+      : '(평가표 미명시)'
 
   const prompt = `[1단계: 커리큘럼 골격 (Outline)]
 
@@ -596,11 +616,18 @@ export async function generateCurriculumOutline(
 - 발주 기관: ${rfp.client ?? '미상'}
 - 대상: ${rfp.targetAudience ?? '미상'}
 ${rfp.objectives && rfp.objectives.length > 0 ? `- 목적: ${rfp.objectives.slice(0, 3).join(' / ')}` : ''}
+- 평가표 top: ${evalTop}
+
+[방법론·자산 활용 힌트]
+- 주 방법론: ${methodology}
+- IMPACT 18 모듈 중 핵심 6개 (회차에 매핑 권장):
+${impactSummary}
 
 [설계 원칙]
 - Action Week (실전 주간) 1~2회 포함 권장
-- 이론 강의 3회 연속 X
-- IMPACT 또는 ${input.profile?.methodology?.primary ?? 'IMPACT'} 방법론 흐름
+- 이론 강의 3회 연속 X — 실습/AW 사이에 배치
+- 1:1 코칭은 Action Week 직후 페어 (자동 추가됨)
+- ${methodology} 방법론 흐름에 회차 배치 정렬
 
 [당신의 일 — 회차 골격만]
 ${totalSessions} 회차의 outline 만 채우세요. 상세 (objectives·notes 등) 는 2단계에서 보강.

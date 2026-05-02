@@ -21,6 +21,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { CATEGORY_LABELS } from '@/lib/asset-registry-types'
 import { cn } from '@/lib/utils'
+import { CoachSyncButton } from './_components/coach-sync-button'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: '운영 지표 — 모니터링' }
@@ -372,10 +373,18 @@ export default async function MetricsPage() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <Card>
             <CardContent className="pt-6">
-              <div className="text-xs text-muted-foreground">활성 코치</div>
+              <div className="flex items-baseline justify-between gap-2">
+                <div className="text-xs text-muted-foreground">활성 코치</div>
+                <CoachSyncButton />
+              </div>
               <div className="mt-1 text-2xl font-bold tabular-nums">
                 {m.coachActiveCount}
               </div>
+              {m.coachActiveCount === 0 && (
+                <div className="mt-1 text-[10px] text-amber-700">
+                  ⚠ 코치 DB 비어있음 — 우상단 sync
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card>
