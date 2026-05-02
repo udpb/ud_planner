@@ -204,28 +204,59 @@ export function CurriculumBoard({
   const [generating, setGenerating] = useState(false)
   const [genError, setGenError] = useState('')
 
-  // AI 커리큘럼 생성 — safeFetchJson 으로 504/HTML 에러도 친절하게
+  // AI 커리큘럼 생성 — 2단계 분할 호출 (60초 timeout 우회)
+  // 1단계 outline (~30초) → 2단계 details (~30초) → DB 저장 + reload
+  // 진행률·메시지는 genProgress state 로 표시
+  const [genProgress, setGenProgress] = useState<string>('')
   const handleGenerateCurriculum = useCallback(async () => {
     setGenerating(true)
     setGenError('')
+    setGenProgress('1단계: 회차 골격 생성 중 (~30초)...')
     try {
-      const r = await safeFetchJson<{ curriculum?: unknown }>('/api/ai/curriculum', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectId }),
-      })
-      if (!r.ok) {
-        // status 별 친절 메시지 (504 timeout 등)
-        setGenError(r.error)
+      // 1단계 — Outline
+      const outlineRes = await safeFetchJson<{ outline?: unknown; mode?: string }>(
+        '/api/ai/curriculum',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId, mode: 'outline' }),
+        },
+      )
+      if (!outlineRes.ok) {
+        setGenError(`1단계 실패: ${outlineRes.error}`)
         return
       }
-      // 성공 시 페이지 새로고침으로 DB 에서 새 세션 로드
+      const outline = (outlineRes.data as { outline?: unknown })?.outline
+      if (!outline) {
+        setGenError('1단계 응답에 outline 누락')
+        return
+      }
+
+      // 2단계 — Details + DB 저장
+      setGenProgress('2단계: 회차별 상세 채우는 중 (~30초)...')
+      const detailsRes = await safeFetchJson('/api/ai/curriculum', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId,
+          mode: 'details',
+          existingOutline: outline,
+        }),
+      })
+      if (!detailsRes.ok) {
+        setGenError(`2단계 실패: ${detailsRes.error}`)
+        return
+      }
+
+      // 성공 — DB 저장됨, reload
+      setGenProgress('완료. 페이지 새로고침...')
       window.location.reload()
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : '커리큘럼 생성 실패'
       setGenError(msg)
     } finally {
       setGenerating(false)
+      setGenProgress('')
     }
   }, [projectId])
 
@@ -503,6 +534,11 @@ export function CurriculumBoard({
           {genError && (
             <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-2 text-xs text-red-700">
               {genError}
+            </div>
+          )}
+          {generating && genProgress && (
+            <div className="mb-4 rounded-md bg-orange-50 border border-orange-200 px-4 py-2 text-xs text-primary">
+              {genProgress}
             </div>
           )}
           <button

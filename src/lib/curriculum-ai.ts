@@ -510,9 +510,11 @@ export function validateGeneratedCurriculum(
  * 커리큘럼 생성 — invokeAi (Gemini Primary / Claude Fallback) + JSON 파싱 + 검증.
  *
  * Phase L1 (2026-04-27): invokeAi 단일 진입점 도입. Gemini Primary 가 더 빠름.
- * 2026-05-03: anthropic 직접 호출 → invokeAi 마이그 (60초 timeout 해소).
- *   - retry 제거: invokeAi 자체가 Gemini→Claude 자동 fallback. 별도 retry 불필요.
- *   - 이로써 60초 안에 들어갈 확률 ↑, 동시에 Gemini 실패 시 Claude 자동 처리.
+ * 2026-05-03 (1차): anthropic 직접 호출 → invokeAi 마이그.
+ * 2026-05-03 (2차): 60초 timeout 빈번 → 분할 호출 도입.
+ *   - generateCurriculumOutline: 가벼운 호출 (~30초) — 회차 제목·태그·시간 + designRationale
+ *   - enrichCurriculumDetails: outline 받아서 각 회차 detail 보강 (~30초)
+ *   - generateCurriculum: 두 호출 합치는 헬퍼 (60초 한계 안전 마진 + 단일 호출 fallback)
  *
  * Stateless: DB 에 쓰지 않음. 호출자가 CurriculumItem 으로 저장.
  *
@@ -551,6 +553,179 @@ export async function generateCurriculum(
       error: `검증 실패: ${err}`,
       raw,
     }
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e)
+    return { ok: false, error: message, raw: raw || undefined }
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════
+// 분할 호출 (2026-05-03) — 60초 timeout 우회
+// ═════════════════════════════════════════════════════════════════
+
+/**
+ * 1단계: 가벼운 outline 호출 (~30초 목표)
+ *   - 출력: 회차 제목·태그·시간 + designRationale + appliedDirection
+ *   - 빠진 것 (2단계에서 채움): objectives, recommendedExpertise, notes, impactModuleCode
+ *   - max_tokens: 6144 (가벼움)
+ */
+export async function generateCurriculumOutline(
+  input: GenerateCurriculumInput,
+): Promise<GenerateCurriculumResult> {
+  if (!input?.rfp?.parsed) {
+    return { ok: false, error: '[curriculum-ai/outline] rfp.parsed 가 없습니다' }
+  }
+
+  const fullPrompt = buildCurriculumPrompt(input)
+  const outlineHint = `\n\n⚠️ [분할 호출 1단계 — Outline]\n
+다음 필드만 채우세요. 나머지는 다음 호출에서 보강합니다:
+- sessions[].sessionNo · title · category · method · durationHours · lectureMinutes · practiceMinutes · isTheory · isActionWeek · isCoaching1on1
+- designRationale (200자+)
+- appliedDirection (전체)
+
+빠뜨려도 되는 것 (2단계에서 채움):
+- sessions[].objectives → 빈 배열 [] 로
+- sessions[].recommendedExpertise → 빈 배열 [] 로
+- sessions[].notes → 빈 문자열 "" 로
+- sessions[].impactModuleCode → null
+
+이 분할은 60초 timeout 회피용. 본 호출에서 빠르게 골격만 잡으세요.`
+
+  const prompt = fullPrompt + outlineHint
+  let raw = ''
+
+  try {
+    const aiResult = await invokeAi({
+      prompt,
+      maxTokens: 6144,
+      temperature: 0.4,
+      label: 'curriculum-outline',
+    })
+    raw = aiResult.raw
+
+    const parsed = parseJsonStrict<GenerateCurriculumResponse>(raw, 'generateCurriculumOutline')
+    // 단계별 검증 — 1단계는 minimal 검증만 (objectives 등 빈 값 허용)
+    if (!parsed.sessions || parsed.sessions.length === 0) {
+      return { ok: false, error: 'outline 단계: sessions 가 비어있음', raw }
+    }
+    if (!parsed.designRationale || parsed.designRationale.length < 100) {
+      return {
+        ok: false,
+        error: `outline 단계: designRationale 가 짧음 (${parsed.designRationale?.length ?? 0}자, 100자+ 필요)`,
+        raw,
+      }
+    }
+    return { ok: true, data: parsed }
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e)
+    return { ok: false, error: message, raw: raw || undefined }
+  }
+}
+
+/**
+ * 2단계: outline 의 각 회차에 detail 보강 (~30초 목표)
+ *   - objectives, recommendedExpertise, notes, impactModuleCode 채움
+ *   - max_tokens: 8192
+ */
+export async function enrichCurriculumDetails(
+  input: GenerateCurriculumInput,
+  outline: GenerateCurriculumResponse,
+): Promise<GenerateCurriculumResult> {
+  if (!input?.rfp?.parsed) {
+    return { ok: false, error: '[curriculum-ai/details] rfp.parsed 가 없습니다' }
+  }
+
+  const sessionsBrief = outline.sessions
+    .map(
+      (s) =>
+        `${s.sessionNo}회차 "${s.title}" (${s.category}/${s.method}/${s.durationHours}h${
+          s.isActionWeek ? '/AW' : s.isCoaching1on1 ? '/1on1' : s.isTheory ? '/이론' : '/실습'
+        })`,
+    )
+    .join('\n')
+
+  const detailsPrompt = `[분할 호출 2단계 — Details]
+
+이미 1단계에서 정해진 커리큘럼 골격:
+${sessionsBrief}
+
+설계 근거: ${outline.designRationale.slice(0, 400)}
+
+[당신의 일]
+각 회차에 다음 detail 을 채워주세요. 회차 순서·제목·시간 등은 절대 변경하지 마세요:
+- objectives: 회차 학습 목표 3~5개 (각 1줄)
+- recommendedExpertise: 코치/강사 추천 전문성 1~3개
+- notes: 회차 운영 노하우·주의점 (1~3 문장)
+- impactModuleCode: IMPACT 18 모듈 중 매핑되는 모듈 코드 (해당 시 — null 도 OK)
+
+[RFP 핵심]
+- 사업명: ${input.rfp.parsed?.projectName ?? '미상'}
+- 핵심 기획 포인트: ${(input.rfp.keyPlanningPoints ?? []).join(' · ') || '미설정'}
+- 제안 컨셉: ${input.rfp.proposalConcept ?? '미설정'}
+
+[IMPACT 모듈 후보 (회차에 매핑 추천)]
+${(input.impactModules ?? [])
+  .slice(0, 18)
+  .map((m) => `${m.moduleCode}: ${m.moduleName} — ${m.coreQuestion?.slice(0, 50) ?? ''}`)
+  .join('\n')}
+
+[출력 JSON 스키마]
+{
+  "sessions": [
+    {
+      "sessionNo": <기존 그대로>,
+      "title": "<기존 그대로>",
+      "category": "<기존 그대로>",
+      "method": "<기존 그대로>",
+      "durationHours": <기존 그대로>,
+      "lectureMinutes": <기존 그대로>,
+      "practiceMinutes": <기존 그대로>,
+      "isTheory": <기존 그대로>,
+      "isActionWeek": <기존 그대로>,
+      "isCoaching1on1": <기존 그대로>,
+      "objectives": ["...", "...", "..."],
+      "recommendedExpertise": ["...", "..."],
+      "notes": "...",
+      "impactModuleCode": "U1.0" | null
+    }
+  ],
+  "designRationale": "<기존 그대로>",
+  "appliedDirection": <기존 그대로>
+}
+
+JSON 만 출력. 설명·마크다운 펜스 없이. trailing comma 금지.`
+
+  let raw = ''
+  try {
+    const aiResult = await invokeAi({
+      prompt: detailsPrompt,
+      maxTokens: 8192,
+      temperature: 0.3,
+      label: 'curriculum-details',
+    })
+    raw = aiResult.raw
+
+    const parsed = parseJsonStrict<GenerateCurriculumResponse>(raw, 'enrichCurriculumDetails')
+
+    // outline 의 회차 수·순서 보존 검증
+    if (
+      !parsed.sessions ||
+      parsed.sessions.length !== outline.sessions.length
+    ) {
+      return {
+        ok: false,
+        error: `details 단계: 회차 수 불일치 (outline ${outline.sessions.length} vs details ${parsed.sessions?.length ?? 0})`,
+        raw,
+      }
+    }
+
+    // 풀 검증
+    const err = validateGeneratedCurriculum(parsed, input)
+    if (err) {
+      return { ok: false, error: `details 검증 실패: ${err}`, raw }
+    }
+
+    return { ok: true, data: parsed }
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e)
     return { ok: false, error: message, raw: raw || undefined }

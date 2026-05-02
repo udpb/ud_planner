@@ -3,11 +3,19 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { validateCurriculumRules } from '@/lib/curriculum-rules'
 import { buildPipelineContext } from '@/lib/pipeline-context'
-import { generateCurriculum } from '@/lib/curriculum-ai'
+import {
+  generateCurriculum,
+  generateCurriculumOutline,
+  enrichCurriculumDetails,
+  type GenerateCurriculumResponse,
+} from '@/lib/curriculum-ai'
 import type { CurriculumSession } from '@/lib/pipeline-context'
 import type { ExternalResearch, CurriculumInsight } from '@/lib/claude'
 import type { ImpactModuleContext } from '@/lib/ud-brand'
 import type { PlanningChannel } from '@/lib/planning-direction'
+
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60 // 60초 — Vercel Hobby 한계, mode='outline'/'details' 로 분할
 
 // ────────────────────────────────────────────────────────────────
 // 보조 유틸 — 기존 route 에서 계승 (Action Week 페어, 안내 메시지)
@@ -138,6 +146,15 @@ export async function POST(req: NextRequest) {
     const channelInput: PlanningChannel | undefined = body?.channel
     const totalSessions: number | undefined =
       typeof body?.totalSessions === 'number' ? body.totalSessions : undefined
+    // 분할 호출 mode (2026-05-03)
+    //  - 'outline'  : 1단계 — 회차 골격 + designRationale (가벼움, ~30초)
+    //  - 'details'  : 2단계 — outline 받아서 detail 보강 (~30초). DB 저장 + 룰 검증.
+    //  - 'full'     : 단일 호출 (기존 동작) — 작은 RFP 에서 가능
+    //  - 미지정     : 'full' 로 처리
+    const mode: 'outline' | 'details' | 'full' =
+      body?.mode === 'outline' || body?.mode === 'details' ? body.mode : 'full'
+    const existingOutline: GenerateCurriculumResponse | undefined =
+      mode === 'details' && body?.existingOutline ? body.existingOutline : undefined
 
     if (!projectId || typeof projectId !== 'string') {
       return NextResponse.json({ error: 'PROJECT_ID_REQUIRED' }, { status: 400 })
@@ -184,21 +201,53 @@ export async function POST(req: NextRequest) {
     const externalResearch: ExternalResearch[] | undefined =
       ctx.research && ctx.research.length > 0 ? ctx.research : undefined
 
-    // ── AI 호출 (stateless) ──
-    const aiResult = await generateCurriculum({
+    // ── AI 호출 (stateless) — mode 별 분기 ──
+    const aiInput = {
       rfp: ctx.rfp,
       strategy: ctx.strategy,
       impactModules,
       externalResearch,
       channel: channelInput,
       totalSessions,
-    })
+    }
+
+    // mode='outline': 1단계 — 회차 골격만 응답 (DB 저장 X, 룰 검증 X)
+    if (mode === 'outline') {
+      const outline = await generateCurriculumOutline(aiInput)
+      if (!outline.ok) {
+        console.error('[curriculum/outline] 실패:', outline.error)
+        return NextResponse.json(
+          { error: 'AI_GENERATION_FAILED', message: outline.error, raw: outline.raw, mode: 'outline' },
+          { status: 500 },
+        )
+      }
+      return NextResponse.json({
+        mode: 'outline',
+        outline: outline.data,
+        message: '커리큘럼 골격 완성. 다음 단계: details 호출로 회차별 상세 보강.',
+      })
+    }
+
+    // mode='details': 2단계 — existingOutline 받아 detail 보강 + 룰 검증 + DB 저장
+    let aiResult: { ok: true; data: GenerateCurriculumResponse } | { ok: false; error: string; raw?: string }
+    if (mode === 'details') {
+      if (!existingOutline) {
+        return NextResponse.json(
+          { error: 'EXISTING_OUTLINE_REQUIRED', message: 'mode=details 는 body.existingOutline 필수' },
+          { status: 400 },
+        )
+      }
+      aiResult = await enrichCurriculumDetails(aiInput, existingOutline)
+    } else {
+      // mode='full' (default) — 기존 단일 호출 (작은 RFP 케이스)
+      aiResult = await generateCurriculum(aiInput)
+    }
 
     if (!aiResult.ok) {
-      console.error('[curriculum] AI 생성 실패:', aiResult.error)
-      if (aiResult.raw) console.error('[curriculum] raw 응답 (앞 500자):', aiResult.raw.slice(0, 500))
+      console.error(`[curriculum/${mode}] AI 생성 실패:`, aiResult.error)
+      if (aiResult.raw) console.error(`[curriculum/${mode}] raw 응답 (앞 500자):`, aiResult.raw.slice(0, 500))
       return NextResponse.json(
-        { error: 'AI_GENERATION_FAILED', message: aiResult.error, raw: aiResult.raw },
+        { error: 'AI_GENERATION_FAILED', message: aiResult.error, raw: aiResult.raw, mode },
         { status: 500 },
       )
     }
