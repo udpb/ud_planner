@@ -35,11 +35,10 @@
  */
 
 import {
-  anthropic,
-  CLAUDE_MODEL,
   formatExternalResearch,
   type ExternalResearch,
 } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import type {
   RfpSlice,
   StrategySlice,
@@ -508,7 +507,12 @@ export function validateGeneratedCurriculum(
 // ═════════════════════════════════════════════════════════════════
 
 /**
- * 커리큘럼 생성 — Claude 호출 + JSON 파싱 + 검증 + 실패 시 1회 재시도.
+ * 커리큘럼 생성 — invokeAi (Gemini Primary / Claude Fallback) + JSON 파싱 + 검증.
+ *
+ * Phase L1 (2026-04-27): invokeAi 단일 진입점 도입. Gemini Primary 가 더 빠름.
+ * 2026-05-03: anthropic 직접 호출 → invokeAi 마이그 (60초 timeout 해소).
+ *   - retry 제거: invokeAi 자체가 Gemini→Claude 자동 fallback. 별도 retry 불필요.
+ *   - 이로써 60초 안에 들어갈 확률 ↑, 동시에 Gemini 실패 시 Claude 자동 처리.
  *
  * Stateless: DB 에 쓰지 않음. 호출자가 CurriculumItem 으로 저장.
  *
@@ -518,63 +522,37 @@ export function validateGeneratedCurriculum(
 export async function generateCurriculum(
   input: GenerateCurriculumInput,
 ): Promise<GenerateCurriculumResult> {
-  // 최소 입력 검증 — rfp.parsed 없으면 즉시 실패
+  // 최소 입력 검증
   if (!input?.rfp?.parsed) {
     return { ok: false, error: '[curriculum-ai] rfp.parsed 가 없습니다' }
   }
 
   const prompt = buildCurriculumPrompt(input)
-  let rawFirst = ''
+  let raw = ''
 
   try {
-    const msg = await anthropic.messages.create({
-      model: CLAUDE_MODEL,
-      // Phase E 1.5: 12세션 + designRationale + appliedDirection 조합에서 truncation
-      // 발생해 16384 로 상향. 그러나 2026-04-29 운영에서 60초 timeout (Vercel Hobby
-      // 제한) 발견 → 12288 로 축소 (truncation 위험 vs timeout 균형, 일반 케이스 OK).
-      max_tokens: 12288,
-      messages: [{ role: 'user', content: prompt }],
+    const aiResult = await invokeAi({
+      prompt,
+      maxTokens: 12288,
+      temperature: 0.4,
+      label: 'curriculum',
     })
+    raw = aiResult.raw
 
-    rawFirst = extractClaudeText(msg.content)
-    const parsed = parseJsonStrict<GenerateCurriculumResponse>(rawFirst, 'generateCurriculum')
+    const parsed = parseJsonStrict<GenerateCurriculumResponse>(raw, 'generateCurriculum')
     const err = validateGeneratedCurriculum(parsed, input)
 
     if (!err) {
       return { ok: true, data: parsed }
     }
 
-    // 재시도 1회 — 실패 사유를 힌트로 재주입
-    const firstKeyPoint = input.rfp.keyPlanningPoints?.[0]
-    const retryHint = `이전 출력 검증 실패: ${err}. 특히 appliedDirection.keyPointsReflected 배열 길이와 designRationale 200자+ 기준을 엄격히 준수하세요.${
-      firstKeyPoint ? ` '${firstKeyPoint}' 가 어느 세션에 반영됐는지 명시하세요.` : ''
-    }`
-
-    const retryPrompt = buildCurriculumPrompt(input, retryHint)
-    const retryMsg = await anthropic.messages.create({
-      model: CLAUDE_MODEL,
-      // Phase E 1.5: 12세션 + designRationale + appliedDirection 조합에서 truncation
-      // 발생해 16384 로 상향. 그러나 2026-04-29 운영에서 60초 timeout (Vercel Hobby
-      // 제한) 발견 → 12288 로 축소 (truncation 위험 vs timeout 균형, 일반 케이스 OK).
-      max_tokens: 12288,
-      messages: [{ role: 'user', content: retryPrompt }],
-    })
-
-    const rawSecond = extractClaudeText(retryMsg.content)
-    const parsedRetry = parseJsonStrict<GenerateCurriculumResponse>(rawSecond, 'generateCurriculum.retry')
-    const err2 = validateGeneratedCurriculum(parsedRetry, input)
-
-    if (!err2) {
-      return { ok: true, data: parsedRetry }
-    }
-
     return {
       ok: false,
-      error: `검증 실패 (2회 시도): ${err2}`,
-      raw: rawSecond,
+      error: `검증 실패: ${err}`,
+      raw,
     }
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e)
-    return { ok: false, error: message, raw: rawFirst || undefined }
+    return { ok: false, error: message, raw: raw || undefined }
   }
 }
