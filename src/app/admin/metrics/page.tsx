@@ -98,6 +98,8 @@ async function getMetrics() {
     coachActiveCount,
     proposalSectionCount,
     projectAssets,
+    proposalSections,
+    expressDrafts,
   ] = await Promise.all([
     prisma.project.groupBy({
       by: ['status'],
@@ -131,6 +133,15 @@ async function getMetrics() {
     // 단순히 모두 가져온 후 메모리에서 필터 (수십 행 수준이라 영향 없음)
     prisma.project.findMany({
       select: { acceptedAssetIds: true },
+    }),
+    // Phase 3.2 — Validation 지표
+    prisma.proposalSection.findMany({
+      select: { sectionNo: true, version: true, isApproved: true },
+    }),
+    // Express 검수 결과 (inspectionResult JSON)
+    prisma.project.findMany({
+      where: { expressActive: true },
+      select: { expressDraft: true },
     }),
   ])
 
@@ -187,6 +198,51 @@ async function getMetrics() {
   const assetsByStatus: Record<string, number> = {}
   for (const r of contentAssetByStatus) assetsByStatus[r.status] = r._count._all
 
+  // ─────────────────────────────────────────
+  // Phase 3.2 — Validation 지표 계산
+  // ─────────────────────────────────────────
+
+  // ProposalSection: 평균 version (재시도 빈도 proxy) + 승인률
+  let approvedCount = 0
+  let totalVersionSum = 0
+  let multiVersionCount = 0 // version >= 2 (재시도 1회 이상)
+  for (const s of proposalSections) {
+    if (s.isApproved) approvedCount += 1
+    totalVersionSum += s.version
+    if (s.version >= 2) multiVersionCount += 1
+  }
+  const sectionApprovalRate =
+    proposalSections.length > 0 ? (approvedCount / proposalSections.length) * 100 : 0
+  const avgSectionVersion =
+    proposalSections.length > 0 ? totalVersionSum / proposalSections.length : 0
+  const retryRate =
+    proposalSections.length > 0 ? (multiVersionCount / proposalSections.length) * 100 : 0
+
+  // Express 검수: inspectionResult.overallScore 평균
+  let inspectorScoreSum = 0
+  let inspectorScoreCount = 0
+  let criticalIssueCount = 0
+  for (const p of expressDrafts) {
+    const draft = p.expressDraft as {
+      meta?: {
+        inspectionResult?: {
+          overallScore?: number
+          issues?: Array<{ severity?: string }>
+        }
+      }
+    } | null
+    const r = draft?.meta?.inspectionResult
+    if (typeof r?.overallScore === 'number') {
+      inspectorScoreSum += r.overallScore
+      inspectorScoreCount += 1
+    }
+    if (Array.isArray(r?.issues)) {
+      criticalIssueCount += r.issues.filter((i) => i?.severity === 'critical').length
+    }
+  }
+  const avgInspectorScore =
+    inspectorScoreCount > 0 ? inspectorScoreSum / inspectorScoreCount : 0
+
   return {
     totalProjects,
     projectByStatus,
@@ -208,6 +264,13 @@ async function getMetrics() {
     approvalRate,
     coachActiveCount,
     proposalSectionCount,
+    // Phase 3.2 Validation
+    sectionApprovalRate,
+    avgSectionVersion,
+    retryRate,
+    avgInspectorScore,
+    inspectorScoreCount,
+    criticalIssueCount,
   }
 }
 
@@ -308,7 +371,63 @@ export default async function MetricsPage() {
             </CardContent>
           </Card>
 
-          {/* 4. Ingestion */}
+          {/* 4. Validation (Phase 3.2) */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">Validation</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <StatRow
+                label="ProposalSection 승인률"
+                value={`${m.sectionApprovalRate.toFixed(1)}%`}
+                pct={m.sectionApprovalRate}
+                color={
+                  m.sectionApprovalRate >= 80
+                    ? 'green'
+                    : m.sectionApprovalRate >= 50
+                      ? 'amber'
+                      : 'red'
+                }
+                hint={`섹션 ${m.proposalSectionCount}건 중`}
+              />
+              <StatRow
+                label="재시도율"
+                value={`${m.retryRate.toFixed(1)}%`}
+                pct={m.retryRate}
+                color={m.retryRate >= 30 ? 'red' : m.retryRate >= 15 ? 'amber' : 'green'}
+                hint={`평균 v${m.avgSectionVersion.toFixed(2)} (높을수록 검증 실패 多)`}
+              />
+              <div className="space-y-1.5 pt-2 border-t text-xs">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Express 검수 평균점</span>
+                  <span className="tabular-nums">
+                    {m.inspectorScoreCount > 0
+                      ? `${m.avgInspectorScore.toFixed(1)} / 100`
+                      : '–'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">검수 표본</span>
+                  <span className="tabular-nums">{m.inspectorScoreCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Critical 이슈</span>
+                  <span className="tabular-nums">
+                    {m.criticalIssueCount > 0 ? (
+                      <span className="text-red-600 font-semibold">{m.criticalIssueCount}</span>
+                    ) : (
+                      0
+                    )}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* 두 번째 행 — Ingestion (validation 추가로 4 카드 유지) */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {/* 5. Ingestion */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm">Ingestion</CardTitle>

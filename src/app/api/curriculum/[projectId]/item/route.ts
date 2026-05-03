@@ -14,7 +14,10 @@ export async function PATCH(
       Object.entries(data).filter(([key]) => allowed.includes(key))
     )
 
-    const item = await prisma.curriculumItem.update({ where: { id }, data: updateData })
+    const item = await prisma.curriculumItem.update({
+      where: { id },
+      data: updateData as Parameters<typeof prisma.curriculumItem.update>[0]['data'],
+    })
     return NextResponse.json({ ok: true, item })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })
