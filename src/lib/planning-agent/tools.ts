@@ -5,7 +5,7 @@
  * 모두 비동기 함수, Claude Sonnet 4.6 사용.
  */
 
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import type {
   PartialPlanningIntent,
   Question,
@@ -70,18 +70,14 @@ export async function extractSlotFromAnswer(
   const intentSummary = summarizeIntent(intent)
   const prompt = buildSlotExtractionPrompt(question, userAnswer, channel, intentSummary)
 
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: AI_TOKENS.LIGHT,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
+  const result = await invokeAi({
+    prompt,
+    maxTokens: AI_TOKENS.LIGHT,
+    temperature: 0.4,
+    label: 'extract-slot-from-answer',
   })
 
-  const raw = (msg.content[0] as any).text.trim()
+  const raw = result.raw.trim()
   return safeParseJson<SlotExtraction>(raw, 'extractSlotFromAnswer')
 }
 
@@ -101,18 +97,14 @@ export async function generateFollowupQuestion(
 ): Promise<FollowupSuggestion> {
   const prompt = buildFollowupSuggestionPrompt(question, userAnswer, channel)
 
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: 512,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
+  const result = await invokeAi({
+    prompt,
+    maxTokens: 512,
+    temperature: 0.4,
+    label: 'generate-followup-question',
   })
 
-  const raw = (msg.content[0] as any).text.trim()
+  const raw = result.raw.trim()
   return safeParseJson<FollowupSuggestion>(raw, 'generateFollowupQuestion')
 }
 
@@ -130,18 +122,14 @@ export async function synthesizeStrategy(
 ): Promise<DerivedStrategy> {
   const prompt = buildSynthesisPrompt(intent, conversationHistory)
 
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: AI_TOKENS.LARGE, // 11섹션 JSON은 ~12K 토큰. Sonnet max output = 16384.
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
+  const aiResult = await invokeAi({
+    prompt,
+    maxTokens: AI_TOKENS.LARGE,
+    temperature: 0.4,
+    label: 'synthesize-strategy',
   })
 
-  const raw = (msg.content[0] as any).text.trim()
+  const raw = aiResult.raw.trim()
   const result = safeParseJson<DerivedStrategy>(raw, 'synthesizeStrategy')
 
   // 기본값 보정 (기존 필드 + 새 필드)
@@ -177,18 +165,14 @@ export async function generateStrategicReaction(
 ): Promise<string> {
   const prompt = buildStrategicReactionPrompt(pmAnswer, currentSlot, intent, nextQuestion)
 
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: 512,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
+  const result = await invokeAi({
+    prompt,
+    maxTokens: 512,
+    temperature: 0.5,
+    label: 'generate-strategic-reaction',
   })
 
-  return (msg.content[0] as any).text.trim()
+  return result.raw.trim()
 }
 
 // ─────────────────────────────────────────
@@ -205,12 +189,13 @@ export async function generateDynamicQuestions(
   const prompt = buildDynamicQuestionsPrompt(intent)
 
   try {
-    const msg = await anthropic.messages.create({
-      model: CLAUDE_MODEL,
-      max_tokens: AI_TOKENS.LIGHT,
-      messages: [{ role: 'user', content: prompt }],
+    const result = await invokeAi({
+      prompt,
+      maxTokens: AI_TOKENS.LIGHT,
+      temperature: 0.4,
+      label: 'generate-dynamic-questions',
     })
-    const raw = (msg.content[0] as any).text.trim()
+    const raw = result.raw.trim()
     return safeParseJson<Record<string, string>>(raw, 'generateDynamicQuestions')
   } catch (err: any) {
     console.error('[generateDynamicQuestions] 실패, 고정 질문으로 fallback:', err.message)

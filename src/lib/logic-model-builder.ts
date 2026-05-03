@@ -26,8 +26,6 @@
  */
 
 import {
-  anthropic,
-  CLAUDE_MODEL,
   formatExternalResearch,
   type ExternalResearch,
   type LogicModel,

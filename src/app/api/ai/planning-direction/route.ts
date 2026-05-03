@@ -15,7 +15,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { anthropic, CLAUDE_MODEL, type RfpParsed } from '@/lib/claude'
+import { type RfpParsed } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import type { SimilarProject } from '@/lib/pipeline-context'
 import {
   buildPlanningDirectionPrompt,
@@ -66,21 +67,16 @@ async function generatePlanningDirection(
 
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const msg = await anthropic.messages.create({
-        model: CLAUDE_MODEL,
-        max_tokens: AI_TOKENS.LIGHT,
-        messages: [
-          {
-            role: 'user',
-            content: attempt === 1
-              ? prompt
-              : prompt + '\n\n[재시도 지침] 이전 응답이 품질 기준(3+3 개수·필수 필드)을 통과하지 못했습니다. JSON 형식을 엄격히 지키고, 컨셉 3개·포인트 3개를 반드시 채우세요.',
-          },
-        ],
+      const r = await invokeAi({
+        prompt: attempt === 1
+          ? prompt
+          : prompt + '\n\n[재시도 지침] 이전 응답이 품질 기준(3+3 개수·필수 필드)을 통과하지 못했습니다. JSON 형식을 엄격히 지키고, 컨셉 3개·포인트 3개를 반드시 채우세요.',
+        maxTokens: AI_TOKENS.LIGHT,
+        temperature: 0.4,
+        label: `planning-direction (attempt ${attempt})`,
       })
 
-      const block = msg.content[0]
-      const raw = block && 'text' in block ? (block as { text: string }).text.trim() : ''
+      const raw = r.raw.trim()
       lastRaw = raw
 
       const parsed = parsePlanningDirectionJson(raw)

@@ -13,7 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import { buildPipelineContext } from '@/lib/pipeline-context'
 import {
   generateProposalSection,
@@ -199,13 +199,9 @@ export async function PUT(req: NextRequest) {
 
     const totalMaxScore = evalCriteria.reduce((s, e) => s + e.score, 0)
 
-    const msg = await anthropic.messages.create({
-      model: CLAUDE_MODEL,
-      max_tokens: AI_TOKENS.LIGHT,
-      messages: [
-        {
-          role: 'user',
-          content: `당신은 교육 사업 제안서를 평가하는 심사위원입니다.
+    // 2026-05-03: anthropic → invokeAi
+    const result = await invokeAi({
+      prompt: `당신은 교육 사업 제안서를 평가하는 심사위원입니다.
 아래 제안서 내용을 평가 배점 기준으로 채점하고, 개선 포인트를 제시하세요.
 
 [평가 배점 기준] (총 ${totalMaxScore}점)
@@ -230,12 +226,12 @@ ${sectionsText}
   "overallFeedback": "전체 피드백 (2~3문장)",
   "topPriority": "가장 먼저 개선해야 할 1가지"
 }`,
-        },
-      ],
+      maxTokens: AI_TOKENS.LIGHT,
+      temperature: 0.4,
+      label: 'evaluator-simulation',
     })
 
-    const block = msg.content[0] as { type?: string; text?: string }
-    const raw = (block.text ?? '').trim()
+    const raw = result.raw.trim()
     const simulation = safeParseJson<unknown>(raw)
 
     return NextResponse.json({ simulation })

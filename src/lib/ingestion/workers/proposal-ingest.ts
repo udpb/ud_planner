@@ -22,7 +22,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import {
   splitPdfIntoSections,
   type SplitSection,
@@ -108,13 +108,14 @@ ${section.body.slice(0, 6000)}
   // 최대 2회 시도 (원본 + 재시도 1회)
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const msg = await anthropic.messages.create({
-        model: CLAUDE_MODEL,
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }],
+      const r = await invokeAi({
+        prompt,
+        maxTokens: 1024,
+        temperature: 0.4,
+        label: `proposal-ingest (attempt ${attempt + 1})`,
       })
 
-      const raw = (msg.content[0] as { type: 'text'; text: string }).text.trim()
+      const raw = r.raw.trim()
       const parsed = safeParseJson<ExtractedPattern>(raw, 'extractPatternsFromSection')
 
       // 기본 검증

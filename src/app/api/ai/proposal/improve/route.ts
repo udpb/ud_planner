@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
   PROPOSAL_SECTIONS,
-  anthropic,
-  CLAUDE_MODEL,
   formatExternalResearch,
   formatStrategicNotes,
   type ExternalResearch,
   type StrategicNotes,
 } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import { prisma } from '@/lib/prisma'
 import { AI_TOKENS } from '@/lib/ai/config'
 
@@ -74,13 +73,9 @@ export async function POST(req: NextRequest) {
       .map((s) => `[${s.sectionNo}. ${s.title}] ${s.content.slice(0, 300)}...`)
       .join('\n\n')
 
-    const msg = await anthropic.messages.create({
-      model: CLAUDE_MODEL,
-      max_tokens: AI_TOKENS.LIGHT,
-      messages: [
-        {
-          role: 'user',
-          content: `당신은 교육 사업 제안서 전문 편집자입니다. PM의 피드백을 정밀하게 반영하여 섹션을 개선하세요.
+    // 2026-05-03: anthropic → invokeAi
+    const result = await invokeAi({
+      prompt: `당신은 교육 사업 제안서 전문 편집자입니다. PM의 피드백을 정밀하게 반영하여 섹션을 개선하세요.
 ${strategyBlock}${researchBlock}${evalBlock}
 [현재 섹션 ${sectionNo}. ${sectionMeta?.title ?? ''}]
 ${currentSection.content}
@@ -100,11 +95,12 @@ ${keepParts ? `\n[유지 요청] ${keepParts}` : ''}
 5. 평가 배점 정보가 있으면 해당 항목의 점수를 높이는 방향으로 보강하세요.
 6. 800~1200자 범위를 유지하세요.
 7. 개선된 제안서 섹션 내용만 반환하세요 (JSON 아님, 순수 마크다운 텍스트).`,
-        },
-      ],
+      maxTokens: AI_TOKENS.LIGHT,
+      temperature: 0.4,
+      label: 'proposal-improve',
     })
 
-    const improvedContent = (msg.content[0] as any).text.trim()
+    const improvedContent = result.raw.trim()
 
     // 새 버전으로 저장
     const newVersion = currentSection.version + 1

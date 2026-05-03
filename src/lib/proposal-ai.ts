@@ -17,7 +17,8 @@
  *   - 데이터 계약: `docs/architecture/data-contract.md` §1.2 ProposalSlice
  */
 
-import { anthropic, CLAUDE_MODEL, formatExternalResearch } from '@/lib/claude'
+import { formatExternalResearch } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import type { PipelineContext } from '@/lib/pipeline-context'
 import {
   buildBrandContext,
@@ -580,30 +581,15 @@ async function buildSectionPrompt(
 // 5. Claude 호출 (마크다운 본문 직접 추출)
 // ═════════════════════════════════════════════════════════════════
 
-/**
- * Claude 응답 message 에서 text 블록을 안전하게 추출.
- * (claude.ts 의 비공개 `safeParseJson` 대신 본 모듈 국지 구현 — JSON 아닌 마크다운)
- */
-function extractClaudeText(
-  content: Array<{ type: string; text?: string }>,
-): string {
-  for (const block of content) {
-    if (block.type === 'text' && typeof block.text === 'string') {
-      return block.text.trim()
-    }
-  }
-  return ''
-}
-
+// 2026-05-03: anthropic → invokeAi (Gemini Primary + Claude Fallback)
 async function callClaudeText(prompt: string, maxTokens: number): Promise<string> {
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: maxTokens,
-    messages: [{ role: 'user', content: prompt }],
+  const result = await invokeAi({
+    prompt,
+    maxTokens,
+    temperature: 0.4,
+    label: 'proposal-ai',
   })
-  return extractClaudeText(
-    msg.content as Array<{ type: string; text?: string }>,
-  )
+  return result.raw.trim()
 }
 
 /** 응답에서 흔한 마크다운 래퍼(```...```) 를 제거 */

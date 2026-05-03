@@ -7,7 +7,7 @@
  * safeParseJson 은 B1 패턴대로 본 모듈에 국지 복제.
  */
 
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import type { PipelineContext } from '@/lib/pipeline-context'
 import type { ProposalSectionNo } from '@/lib/proposal-ai'
 import type { EvaluatorSimulationResult } from './types'
@@ -118,14 +118,14 @@ ${sectionContent.slice(0, 2500)}
   "likelyQuestions": ["예상 질문 1", "예상 질문 2", "예상 질문 3"]
 }`
 
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: 1024,
-    messages: [{ role: 'user', content: prompt }],
+  const result = await invokeAi({
+    prompt,
+    maxTokens: 1024,
+    temperature: 0.3,
+    label: 'gate3-evaluator-simulation',
   })
 
-  const block = msg.content[0]
-  const raw = block.type === 'text' ? block.text : ''
+  const raw = result.raw
 
   const parsed = safeParseJson<{
     expectedScore: number

@@ -8,7 +8,7 @@
  * safeParseJson 은 B1 패턴대로 본 모듈에 국지 복제.
  */
 
-import { anthropic, CLAUDE_MODEL } from '@/lib/claude'
+import { invokeAi } from '@/lib/ai-fallback'
 import { findWonPatternsBySection } from '@/lib/winning-patterns'
 import type { PipelineContext, ProposalSectionKey } from '@/lib/pipeline-context'
 import type { ProposalSectionNo } from '@/lib/proposal-ai'
@@ -105,14 +105,14 @@ ${patternsBlock}
   "missingElements": ["현재 섹션에 부족한 요소 1", "부족한 요소 2"]
 }`
 
-  const msg = await anthropic.messages.create({
-    model: CLAUDE_MODEL,
-    max_tokens: 1024,
-    messages: [{ role: 'user', content: prompt }],
+  const result = await invokeAi({
+    prompt,
+    maxTokens: 1024,
+    temperature: 0.3,
+    label: 'gate3-pattern-comparison',
   })
 
-  const block = msg.content[0]
-  const raw = block.type === 'text' ? block.text : ''
+  const raw = result.raw
 
   const parsed = safeParseJson<{
     similarityScore: number
