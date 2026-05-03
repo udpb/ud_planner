@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import type { PlanningScore } from '@/lib/planning-score'
 import {
@@ -12,8 +14,22 @@ interface Props {
   score: PlanningScore
 }
 
+// 2026-05-03: 점수 카드 클릭 시 해당 스텝으로 이동.
+// 카테고리 key (planning-score.ts) → step 라우트 매핑.
+const CATEGORY_TO_STEP: Record<string, string> = {
+  rfp: 'rfp',
+  evalAlignment: 'rfp',  // 평가 배점 입력은 RFP 스텝에서
+  impact: 'impact',
+  curriculum: 'curriculum',
+  coaches: 'coaches',
+  budget: 'budget',
+  proposal: 'proposal',
+}
+
 export function PlanningScorecard({ score }: Props) {
   const [expanded, setExpanded] = useState(false)
+  const params = useParams<{ id: string }>()
+  const projectId = params?.id ?? ''
 
   const pct = Math.round((score.total / score.maxTotal) * 100)
 
@@ -94,43 +110,77 @@ export function PlanningScorecard({ score }: Props) {
       {/* 상세 카테고리 */}
       {expanded && (
         <div className="grid gap-2 px-6 pb-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
-          {score.categories.map((cat) => (
-            <div
-              key={cat.key}
-              className={cn(
-                'rounded-lg border p-3',
-                cat.status === 'good' ? 'border-green-200 bg-green-50/50' :
-                  cat.status === 'warn' ? 'border-amber-200 bg-amber-50/50' :
-                    'border-red-200 bg-red-50/50',
-              )}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-medium text-muted-foreground">{cat.label}</span>
-                {cat.status === 'good' && <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />}
-                {cat.status === 'warn' && <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />}
-                {cat.status === 'missing' && <XCircle className="h-3.5 w-3.5 text-red-400" />}
+          {score.categories.map((cat) => {
+            const targetStep = CATEGORY_TO_STEP[cat.key]
+            const needsAction = cat.status !== 'good'
+            const href =
+              targetStep && projectId ? `/projects/${projectId}?step=${targetStep}` : null
+
+            const cardContent = (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-medium text-muted-foreground">{cat.label}</span>
+                  {cat.status === 'good' && <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />}
+                  {cat.status === 'warn' && <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />}
+                  {cat.status === 'missing' && <XCircle className="h-3.5 w-3.5 text-red-400" />}
+                </div>
+
+                <div className="mt-1 flex items-end gap-1">
+                  <span className={cn(
+                    'text-lg font-bold tabular-nums',
+                    cat.status === 'good' ? 'text-green-700' :
+                      cat.status === 'warn' ? 'text-amber-700' : 'text-red-600',
+                  )}>
+                    {cat.score}
+                  </span>
+                  <span className="mb-0.5 text-[10px] text-muted-foreground">/{cat.max}</span>
+                </div>
+
+                <p className="mt-1 text-[10px] leading-snug text-muted-foreground">{cat.detail}</p>
+
+                {cat.action && (
+                  <div className="mt-1.5 flex items-center gap-1 text-[10px] leading-snug font-medium text-amber-700">
+                    <span className="flex-1">→ {cat.action}</span>
+                    {href && needsAction && (
+                      <ArrowRight className="h-3 w-3 shrink-0 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                    )}
+                  </div>
+                )}
+              </>
+            )
+
+            const baseClass = cn(
+              'block rounded-lg border p-3 transition-all',
+              cat.status === 'good' ? 'border-green-200 bg-green-50/50' :
+                cat.status === 'warn' ? 'border-amber-200 bg-amber-50/50' :
+                  'border-red-200 bg-red-50/50',
+              // 점수 부족한 카드만 클릭 가능 강조 (good 은 호버 효과 작게)
+              href && needsAction
+                ? 'group cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-primary/40'
+                : href
+                  ? 'group cursor-pointer hover:shadow-sm'
+                  : '',
+            )
+
+            return href ? (
+              <Link
+                key={cat.key}
+                href={href}
+                className={baseClass}
+                title={
+                  needsAction
+                    ? `${cat.label} 보강하기 → ${targetStep} 스텝으로 이동`
+                    : `${cat.label} 검토 → ${targetStep} 스텝`
+                }
+              >
+                {cardContent}
+              </Link>
+            ) : (
+              <div key={cat.key} className={baseClass}>
+                {cardContent}
               </div>
-
-              <div className="mt-1 flex items-end gap-1">
-                <span className={cn(
-                  'text-lg font-bold tabular-nums',
-                  cat.status === 'good' ? 'text-green-700' :
-                    cat.status === 'warn' ? 'text-amber-700' : 'text-red-600',
-                )}>
-                  {cat.score}
-                </span>
-                <span className="mb-0.5 text-[10px] text-muted-foreground">/{cat.max}</span>
-              </div>
-
-              <p className="mt-1 text-[10px] leading-snug text-muted-foreground">{cat.detail}</p>
-
-              {cat.action && (
-                <p className="mt-1.5 text-[10px] leading-snug font-medium text-amber-700">
-                  → {cat.action}
-                </p>
-              )}
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>
