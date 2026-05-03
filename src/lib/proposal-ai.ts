@@ -35,7 +35,6 @@ import {
   formatAcceptedAssets,
   SECTION_NO_TO_KEY,
 } from '@/lib/asset-registry'
-import { AI_TOKENS } from '@/lib/ai/config'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입 · 상수
