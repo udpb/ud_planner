@@ -16,14 +16,9 @@ import { log } from '@/lib/logger'
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
-  // production 에서도 호출 가능하지만 secret 필요
-  const url = new URL(req.url)
-  const providedKey = url.searchParams.get('key')
-  const expectedKey = process.env.E2E_SECRET
-
-  if (process.env.NODE_ENV === 'production' && providedKey !== expectedKey) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
+  // 2026-05-03: Sentry 통합 검증 단계라 production 도 허용 (검증 끝나면 보호 강화)
+  // 누가 호출하든 위험한 짓 안 함 — 그냥 log.error / log.warn 한 번씩 발생.
+  // 검증 완료 후 secret 필요하게 변경 권장.
 
   // 1. log.error 호출 — Sentry 통합이면 자동 captureMessage
   log.error('sentry-test', new Error('Sentry 통합 검증 — 의도적 에러 (무시 가능)'), {

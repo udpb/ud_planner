@@ -51,10 +51,13 @@ const STATUS_COLOR: Record<string, string> = {
 export default async function DashboardPage() {
   const { coachCount, projectCount, moduleCount, activeProjects } = await getStats()
 
+  // 2026-05-03 fix: /coaches 와 /modules 페이지 없음 (재설계 v2 에서 제거됨).
+  // 활성 코치 → /admin/metrics (Coach Sync 버튼 + 카운트)
+  // 교육 모듈 → /admin/content-hub
   const stats = [
-    { label: '활성 코치', value: coachCount, icon: Users, href: '/coaches' },
+    { label: '활성 코치', value: coachCount, icon: Users, href: '/admin/metrics' },
     { label: '전체 프로젝트', value: projectCount, icon: FolderKanban, href: '/projects' },
-    { label: '교육 모듈', value: moduleCount, icon: BookOpen, href: '/modules' },
+    { label: '교육 모듈', value: moduleCount, icon: BookOpen, href: '/admin/content-hub' },
     { label: '진행중 프로젝트', value: activeProjects.length, icon: TrendingUp, href: '/projects' },
   ]
 
