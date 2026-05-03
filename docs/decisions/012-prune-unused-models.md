@@ -28,13 +28,19 @@ incoming/outgoing FK 모두 inactive. 마스터 데이터 미시드, 호출자 0
 | `WeightSuggestion` | 어드민 가중치 제안 | 미구현 — UI/로직 모두 없음 |
 | `ProfileTag` | 태그 풀 누적 | 미구현 — ProgramProfile 의 11축 enum 사용 |
 
-### 보존 결정 — 시드 데이터 있음 (3개)
+### 보존 → 폐기 결정 (revision, 2026-05-03)
 
-| 모델 | 시드 행 수 | 보존 이유 |
+원래 시드 데이터 있어 보존했으나 운영자 결정으로 **추가 제거** (3 모델, 38 rows).
+
+| 모델 | 시드 행 수 | 폐기 사유 |
 |---|---|---|
-| `TargetPreset` | 8 | PRD v5.1 마스터 — 코드 호출 0이지만 데이터 보존 |
-| `InternalLaborRate` | 16 | PRD v5.1 인건비 단가표 — 향후 활용 가능 |
-| `ServiceProduct` | 14 | PRD v5.1 서비스 카탈로그 — 향후 활용 가능 |
+| `TargetPreset` | 8 | ProgramProfile 의 targetSegment 11축 enum 으로 흡수 |
+| `InternalLaborRate` | 16 | Coach 모델 + CostStandard 가 단가 담당 |
+| `ServiceProduct` | 14 | 서비스 카탈로그 미구현, Coach 단가로 대체 |
+
+추가 migration: `prisma/migrations/20260503100000_drop_legacy_v51_tables/migration.sql`
+
+→ 최종 결과: **44 → 33 모델 (11 모델 정리)**.
 
 ### Group D-2: Project FK outgoing — 3개
 Project 에서 back-ref array 만 추가 제거.
