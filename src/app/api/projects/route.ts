@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
-import { syncProjectToSupabase } from '@/lib/supabase-sync'
+
+// Phase Bridge 1: Supabase mirror is now centralized in the Prisma client
+// extension (see src/lib/prisma.ts) — fires automatically on every project
+// create/update regardless of which API route triggered it. No per-route
+// hook needed here.
 
 const CreateProjectSchema = z.object({
   name: z.string().min(1),
@@ -75,19 +79,7 @@ export async function POST(req: NextRequest) {
       projectEndDate: projectEndDate ? new Date(projectEndDate) : undefined,
     },
   })
-
-  // Phase Bridge 1: mirror to Supabase business_plans (best-effort).
-  // Failure here MUST NOT break the response; the user's project is saved
-  // either way. See src/lib/supabase-sync.ts and INTEGRATED_ARCHITECTURE.md.
-  void syncProjectToSupabase(project).then((res) => {
-    if (!res.ok) {
-      // eslint-disable-next-line no-console
-      console.warn('[POST /api/projects] supabase mirror skipped', {
-        projectId: project.id,
-        reason: res.reason,
-      })
-    }
-  })
+  // Supabase mirror fires automatically inside prisma extension.
 
   return NextResponse.json(project, { status: 201 })
 }
