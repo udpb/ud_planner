@@ -1,33 +1,65 @@
 /**
  * POST /api/coaches/sync
  *
- * coach-finder DB (또는 외부 소스)에서 Coach 레코드를 받아 upsert.
+ * Supabase `coaches_directory` (coach-finder 와 동일 source) 또는 GitHub raw JSON 에서
+ * Coach 데이터를 fetch → ud-ops 의 Prisma `Coach` 테이블에 upsert.
  *
- * ────────────────────────────────────────────────
- * 호출 경로 (2026-04-15 재설계 후):
- * ────────────────────────────────────────────────
- * 1. CLI 스크립트 `npm run sync:coaches` (scripts/sync-coaches.ts)
- * 2. Admin/PM 이 수동 POST — curl 또는 Postman 등
- * 3. 향후 /admin/coaches 페이지 (Phase E 이후 예정)
+ * Source 우선순위 (Phase 4-coach-integration, 2026-05-03):
+ *   1. Supabase  — SUPABASE_URL + SUPABASE_SERVICE_ROLE 설정 시 (coach-finder 동기 source)
+ *   2. GitHub    — fallback (`underdogs-org/coaches-db`)
  *
- * 사이드바 "코치 DB 동기화" 버튼은 재설계 v2 에서 제거됨 (2026-04-15).
- * 이유: 독립 /coaches 페이지 제거와 함께 navItems 축소.
- * 본 API 는 유지되므로 언제든 호출 가능.
+ * 호출 경로:
+ *   1. /admin/metrics 의 "Coach Sync" 버튼 (CoachSyncButton)
+ *   2. CLI: `npm run sync:coaches`  (scripts/sync-coaches.ts 가 동일 로직)
+ *   3. Admin/PM 수동 POST
  */
 
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { CoachCategory, CoachTier, TaxType } from '@prisma/client'
+import {
+  fetchCoachesFromSupabase,
+  isSupabaseCoachSourceAvailable,
+  invalidateCoachCache,
+} from '@/lib/coaches/supabase-source'
+import { log } from '@/lib/logger'
 
-function toArray(val: any): string[] {
+// ─────────────────────────────────────────
+// GitHub fallback (Supabase 미설정 시)
+// ─────────────────────────────────────────
+
+interface RawCoach {
+  [key: string]: unknown
+}
+
+async function fetchFromGitHub(): Promise<RawCoach[]> {
+  const repo = process.env.GITHUB_COACHES_REPO ?? 'underdogs-org/coaches-db'
+  const branch = process.env.GITHUB_COACHES_BRANCH ?? 'main'
+  const file = process.env.GITHUB_COACHES_FILE ?? 'coaches_db.json'
+  const token = process.env.GITHUB_TOKEN
+
+  const url = `https://raw.githubusercontent.com/${repo}/${branch}/${file}`
+  const headers: Record<string, string> = { Accept: 'application/json' }
+  if (token) headers['Authorization'] = `Bearer ${token}`
+
+  const res = await fetch(url, { headers })
+  if (!res.ok) throw new Error(`GitHub fetch 실패: ${res.status}`)
+  return (await res.json()) as RawCoach[]
+}
+
+// ─────────────────────────────────────────
+// GitHub raw → Prisma 데이터 매퍼 (Supabase 는 supabase-source.ts 의 rowToCoach 사용)
+// ─────────────────────────────────────────
+
+function toArray(val: unknown): string[] {
   if (!val) return []
   if (Array.isArray(val)) return val.map(String)
   if (typeof val === 'string') return val.split(/[,，;|]/).map((s) => s.trim()).filter(Boolean)
   return [String(val)]
 }
 
-function mapCoach(raw: any) {
-  const cat = (raw.category ?? raw.coach_category ?? '').toLowerCase()
+function mapGithubCoach(raw: RawCoach) {
+  const cat = String(raw.category ?? raw.coach_category ?? '').toLowerCase()
   let category: CoachCategory = 'COACH'
   if (cat.includes('파트너') || cat.includes('partner')) category = 'PARTNER_COACH'
   else if (cat.includes('글로벌') || cat.includes('global')) category = 'GLOBAL_COACH'
@@ -42,38 +74,41 @@ function mapCoach(raw: any) {
 
   return {
     githubId: raw.id ? Number(raw.id) : undefined,
-    name: raw.name ?? '',
-    email: raw.email ?? null,
-    phone: raw.phone ?? null,
-    gender: raw.gender ?? null,
-    location: raw.location ?? null,
+    name: String(raw.name ?? ''),
+    email: (raw.email as string) ?? null,
+    phone: (raw.phone as string) ?? null,
+    gender: (raw.gender as string) ?? null,
+    location: (raw.location as string) ?? null,
     regions: toArray(raw.regions ?? raw.region),
-    organization: raw.organization ?? raw.company ?? null,
-    position: raw.position ?? raw.title ?? null,
+    organization: (raw.organization as string) ?? (raw.company as string) ?? null,
+    position: (raw.position as string) ?? (raw.title as string) ?? null,
     industries: toArray(raw.industries ?? raw.industry),
     expertise: toArray(raw.expertise ?? raw.expert_tags ?? raw.tags),
     roles: toArray(raw.roles ?? raw.role),
     overseas: Boolean(raw.overseas ?? raw.is_global),
-    overseasDetail: raw.overseas_detail ?? null,
-    toolsSkills: raw.tools_skills ?? raw.skills ?? null,
-    intro: raw.intro ?? raw.introduction ?? null,
-    careerHistory: raw.career_history ?? raw.career ?? null,
-    education: raw.education ?? null,
-    underdogsHistory: raw.underdogs_history ?? null,
-    currentWork: raw.current_work ?? null,
+    overseasDetail: (raw.overseas_detail as string) ?? null,
+    toolsSkills: (raw.tools_skills as string) ?? (raw.skills as string) ?? null,
+    intro: (raw.intro as string) ?? (raw.introduction as string) ?? null,
+    careerHistory: (raw.career_history as string) ?? (raw.career as string) ?? null,
+    education: (raw.education as string) ?? null,
+    underdogsHistory: (raw.underdogs_history as string) ?? null,
+    currentWork: (raw.current_work as string) ?? null,
     careerYears: raw.career_years ? Number(raw.career_years) : null,
-    careerYearsRaw: raw.career_years_raw ?? String(raw.career_years ?? ''),
-    photoUrl: raw.photo_url ?? raw.photo ?? null,
-    businessType: raw.business_type ?? null,
-    country: raw.country ?? '한국',
+    careerYearsRaw: (raw.career_years_raw as string) ?? String(raw.career_years ?? ''),
+    photoUrl: (raw.photo_url as string) ?? (raw.photo as string) ?? null,
+    businessType: (raw.business_type as string) ?? null,
+    country: (raw.country as string) ?? '한국',
     language: toArray(raw.language ?? raw.languages ?? ['한국어']),
     hasStartup: Boolean(raw.has_startup ?? raw.startup),
     isActive: raw.is_active !== false,
-    mainField: raw.main_field ?? null,
+    mainField: (raw.main_field as string) ?? null,
     category,
     tier,
     satisfactionAvg: sat || null,
     collaborationCount: collab,
+    impactMethodLevel: (raw.impact_method_level as string) ?? null,
+    lectureStyle: (raw.lecture_style as string) ?? null,
+    hasInvestExp: Boolean(raw.has_invest_exp ?? raw.invest_experience),
     onlineAvailable: raw.online_available !== false,
     minLeadTimeDays: Number(raw.min_lead_time_days ?? 7),
     availableDays: toArray(raw.available_days),
@@ -81,33 +116,58 @@ function mapCoach(raw: any) {
   }
 }
 
+// ─────────────────────────────────────────
+// 메인 핸들러
+// ─────────────────────────────────────────
+
 export async function POST() {
-  const repo = process.env.GITHUB_COACHES_REPO ?? 'underdogs-org/coaches-db'
-  const branch = process.env.GITHUB_COACHES_BRANCH ?? 'main'
-  const file = process.env.GITHUB_COACHES_FILE ?? 'coaches_db.json'
-  const token = process.env.GITHUB_TOKEN
+  const t0 = Date.now()
+  let coaches: ReturnType<typeof mapGithubCoach>[] = []
+  let source: 'supabase' | 'github' = 'github'
 
-  const url = `https://raw.githubusercontent.com/${repo}/${branch}/${file}`
-  const headers: Record<string, string> = { Accept: 'application/json' }
-  if (token) headers['Authorization'] = `Bearer ${token}`
-
-  let rawCoaches: any[]
-  try {
-    const res = await fetch(url, { headers })
-    if (!res.ok) {
-      return NextResponse.json({ error: `GitHub fetch 실패: ${res.status}` }, { status: 502 })
+  // 1. Supabase 우선
+  if (isSupabaseCoachSourceAvailable()) {
+    try {
+      const supabaseCoaches = await fetchCoachesFromSupabase({ activeOnly: true })
+      // MappedCoach 는 이미 Prisma upsert 호환 형태
+      coaches = supabaseCoaches as unknown as ReturnType<typeof mapGithubCoach>[]
+      source = 'supabase'
+      log.info('coach-sync', 'Supabase fetch OK', { rows: coaches.length })
+    } catch (err) {
+      log.warn('coach-sync', 'Supabase fetch 실패 → GitHub fallback', {
+        error: (err as Error).message.slice(0, 200),
+      })
     }
-    rawCoaches = await res.json()
-  } catch {
-    return NextResponse.json({ error: 'GitHub에 연결할 수 없습니다.' }, { status: 502 })
   }
 
+  // 2. GitHub fallback
+  if (coaches.length === 0) {
+    try {
+      const rawCoaches = await fetchFromGitHub()
+      coaches = rawCoaches.map(mapGithubCoach)
+      source = 'github'
+      log.info('coach-sync', 'GitHub fetch OK', { rows: coaches.length })
+    } catch (err) {
+      log.error('coach-sync', err)
+      return NextResponse.json(
+        {
+          error:
+            'Supabase 와 GitHub 둘 다 fetch 실패. SUPABASE_URL + SUPABASE_SERVICE_ROLE 또는 GITHUB_TOKEN 환경변수를 확인하세요.',
+        },
+        { status: 502 },
+      )
+    }
+  }
+
+  // 3. Prisma upsert
   let upserted = 0
   let skipped = 0
 
-  for (const raw of rawCoaches) {
-    const data = mapCoach(raw)
-    if (!data.name) { skipped++; continue }
+  for (const data of coaches) {
+    if (!data.name) {
+      skipped++
+      continue
+    }
 
     try {
       if (data.githubId) {
@@ -132,5 +192,21 @@ export async function POST() {
     }
   }
 
-  return NextResponse.json({ ok: true, upserted, skipped })
+  // 4. live cache invalidate (다음 read 가 fresh data 가져가도록)
+  invalidateCoachCache()
+
+  log.info('coach-sync', 'sync 완료', {
+    source,
+    upserted,
+    skipped,
+    ms: Date.now() - t0,
+  })
+
+  return NextResponse.json({
+    ok: true,
+    source,
+    upserted,
+    skipped,
+    durationMs: Date.now() - t0,
+  })
 }
