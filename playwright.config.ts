@@ -1,33 +1,41 @@
 /**
- * Playwright E2E 설정 (Phase 3.4, 2026-05-03)
+ * Playwright E2E 설정 (Phase 4-coach-integration, 2026-05-03)
  *
- * 시나리오 범위 (smoke):
- *   - 미인증 / → /login redirect
- *   - /login 페이지 로드 + 이메일 입력 가능
- *   - /admin/metrics 미인증 시 /login redirect
+ * Projects 분리:
+ *   - smoke      : 미인증 라우팅만 (storageState 없음, 빠른 1분 내)
+ *   - auth-flow  : 로그인 흐름 검증 (storageState 없음)
+ *   - authenticated : 인증된 상태에서 RFP/Express/제안서 시나리오
+ *                     (globalSetup 이 storageState 저장 후 재사용)
  *
  * 실행:
- *   npm run e2e            — webServer 자동 시작 후 chromium 으로 실행
- *   npm run e2e:headed     — 브라우저 visible
- *   npx playwright install chromium  — 처음에 한 번 (CI 에서도)
+ *   npm run e2e                 — 모든 project 실행
+ *   npm run e2e -- --project=smoke   — smoke 만
+ *   npm run e2e:install         — chromium 다운로드 (한 번만)
  *
- * CI: .github/workflows/e2e.yml (별도 추가 가능)
+ * E2E 환경:
+ *   E2E_SECRET           — seed endpoint 인증 (없으면 authenticated project skip)
+ *   PLAYWRIGHT_MOCK_AI   — 'true' 권장 (실제 AI 호출 절약)
+ *   E2E_PROJECT_ID       — globalSetup 이 자동 set
  */
 
 import { defineConfig, devices } from '@playwright/test'
 
 const PORT = Number(process.env.E2E_PORT ?? 3100)
 const BASE_URL = `http://localhost:${PORT}`
+const STORAGE_STATE = 'playwright/.auth/user.json'
 
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 60_000,
   expect: { timeout: 10_000 },
-  fullyParallel: false, // 인증 상태가 갈리면 병렬 위험 — 단순 시작은 직렬
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: 1,
   reporter: process.env.CI ? [['github'], ['list']] : 'list',
+
+  // E2E_SECRET 있을 때만 globalSetup 실행 (없으면 smoke / auth-flow 만)
+  globalSetup: process.env.E2E_SECRET ? './tests/e2e/_fixtures/global-setup.ts' : undefined,
 
   use: {
     baseURL: BASE_URL,
@@ -38,13 +46,25 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
+      name: 'smoke',
+      testMatch: /smoke\.spec\.ts$/,
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'auth-flow',
+      testMatch: /auth-flow\.spec\.ts$/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'authenticated',
+      testMatch: /authenticated\/.*\.spec\.ts$/,
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: STORAGE_STATE,
+      },
     },
   ],
 
-  // 로컬·CI 모두 — 자동으로 Next.js production server 시작
-  // build 는 별도 (npm run build 먼저), 본 webServer 는 npm start 만.
   webServer: {
     command: `npm run start -- -p ${PORT}`,
     url: BASE_URL,
@@ -52,5 +72,10 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
     stderr: 'pipe',
+    env: {
+      // 자식 프로세스에 mock AI 옵션 전파 (있을 때만)
+      ...(process.env.PLAYWRIGHT_MOCK_AI ? { PLAYWRIGHT_MOCK_AI: process.env.PLAYWRIGHT_MOCK_AI } : {}),
+      ...(process.env.E2E_SECRET ? { E2E_SECRET: process.env.E2E_SECRET } : {}),
+    },
   },
 })

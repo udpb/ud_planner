@@ -66,3 +66,4 @@ guidebook-site/site/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/playwright/.auth/

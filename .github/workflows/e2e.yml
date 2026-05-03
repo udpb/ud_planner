@@ -37,13 +37,17 @@ jobs:
           NEXTAUTH_URL: "http://localhost:3100"
           NEXTAUTH_SECRET: "ci-dummy-secret"
 
-      - name: Run E2E smoke
-        run: npm run e2e
+      - name: Run E2E smoke + auth-flow
+        # CI 에서는 일단 smoke + auth-flow 만 (DB 가 dummy 라 authenticated project 는 skip)
+        # 실제 DB + Supabase 연결된 staging 에서는 모든 project 실행 가능.
+        run: npm run e2e -- --project=smoke --project=auth-flow
         env:
           DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
           NEXTAUTH_URL: "http://localhost:3100"
-          NEXTAUTH_SECRET: "ci-dummy-secret"
+          AUTH_SECRET: "ci-dummy-secret-32chars-minimum-required"
           E2E_PORT: "3100"
+          # PLAYWRIGHT_MOCK_AI: "true"   # AI 모킹 필요 시 활성
+          # E2E_SECRET: "${{ secrets.E2E_SECRET }}"  # authenticated project 활성 시 필요
 
       - name: Upload Playwright report
         if: always()

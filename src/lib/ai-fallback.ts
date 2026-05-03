@@ -48,6 +48,20 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   const maxTokens = params.maxTokens ?? AI_TOKENS.LARGE
   const temperature = params.temperature ?? 0.4
 
+  // E2E mock 모드 (Phase 4-coach-integration, 2026-05-03)
+  // 환경변수 PLAYWRIGHT_MOCK_AI=true 일 때 실제 호출 X — fixture JSON 반환.
+  // 운영 / dev 에서는 영향 없음 (env 미설정).
+  if (process.env.PLAYWRIGHT_MOCK_AI === 'true') {
+    log.info('ai', 'MOCK 응답 반환 (PLAYWRIGHT_MOCK_AI=true)', { label })
+    const { getMockResponse } = await import('./ai-mock')
+    return {
+      raw: getMockResponse(label),
+      provider: 'gemini',
+      model: 'mock-gemini',
+      fallback: false,
+    }
+  }
+
   const preferGemini = params.preferredProvider !== 'claude' && isGeminiAvailable()
 
   const startedAt = Date.now()
