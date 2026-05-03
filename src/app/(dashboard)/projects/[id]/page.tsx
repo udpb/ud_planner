@@ -55,11 +55,7 @@ async function getProject(id: string) {
         include: { coach: { select: { id: true, name: true, tier: true, organization: true } } },
       },
       curriculum: { orderBy: { order: 'asc' } },
-      tasks: {
-        where: { status: { not: 'DONE' } },
-        orderBy: [{ dueDate: 'asc' }, { createdAt: 'desc' }],
-        take: 20,
-      },
+      // 2026-05-03 ADR-012: Task 모델 제거됨 — tasks include 제거
       proposalSections: { orderBy: { sectionNo: 'asc' } },
       _count: { select: { participants: true } },
     },

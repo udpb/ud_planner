@@ -34,8 +34,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
-  taskAssignees TaskAssignee[]
   agentSessions AgentSession[]
+  // 2026-05-03 ADR-012: taskAssignees TaskAssignee[] 제거 (Task 모델 함께 제거)
 }
 
 model Account {
@@ -316,14 +316,13 @@ model Project {
   curriculum            CurriculumItem[]
   coachAssignments      CoachAssignment[]
   budget                Budget?
-  tasks                 Task[]
-  expenses              Expense[]
   participants          Participant[]
   proposalSections      ProposalSection[]
   applicants            Applicant[]
   satisfactionResponses SatisfactionResponse[]
   coachingJournals      CoachingJournal[]
   agentSessions         AgentSession[]
+  // 2026-05-03 ADR-012: tasks Task[] / expenses Expense[] 제거 (해당 모델 함께 제거)
 }
 
 // ─────────────────────────────────────────
@@ -454,50 +453,8 @@ model BudgetItem {
 // [운영] 실지출 / 태스크 / 참여자
 // ─────────────────────────────────────────
 
-model Expense {
-  id          String   @id @default(cuid())
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  wbsCode     String
-  category    String
-  description String
-  amount      Int
-  paidAt      DateTime
-  receipt     String?
-  notes       String?
-  createdAt   DateTime @default(now())
-}
-
-enum TaskStatus {
-  TODO
-  IN_PROGRESS
-  DONE
-  BLOCKED
-}
-
-model Task {
-  id          String         @id @default(cuid())
-  projectId   String
-  project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  title       String
-  description String?        @db.Text
-  status      TaskStatus     @default(TODO)
-  dueDate     DateTime?
-  dDay        Int?
-  category    String?
-  assignees   TaskAssignee[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-}
-
-model TaskAssignee {
-  taskId String
-  userId String
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user   User   @relation(fields: [userId], references: [id])
-
-  @@id([taskId, userId])
-}
+// 2026-05-03 ADR-012 — Expense / Task / TaskAssignee 모델 제거 (미구현, 호출자 0)
+// Project.tasks / Project.expenses / User.taskAssignees back-ref 도 함께 제거됨.
 
 model Participant {
   id             String   @id @default(cuid())
@@ -625,6 +582,9 @@ model SroiProxy {
   @@unique([country, impactType, subType])
 }
 
+// 2026-05-03 ADR-012 (revision):
+// TargetPreset 은 8건 시드 데이터 보존. 코드 호출 0이지만 PRD v5.1 마스터 데이터로
+// 유지 — 운영자가 별도 cleanup 결정 시 다음 migration 에서 처리.
 model TargetPreset {
   id              String  @id @default(cuid())
   name            String  @unique
@@ -703,52 +663,13 @@ model ContentMapping {
   @@unique([impactModuleId, contentId])
 }
 
-model DesignRule {
-  id          String   @id @default(cuid())
-  ruleCode    String   @unique
-  name        String
-  description String?
-  ruleType    String
-  threshold   Float
-  action      String
-  message     String
-  category    String
-  priority    Int      @default(5)
-  isActive    Boolean  @default(true)
-  updatedAt   DateTime @updatedAt
-}
-
-model AudienceProfile {
-  id             String   @id @default(cuid())
-  name           String   @unique
-  targetAudience String[]
-  businessFields String[]
-  startupStages  String[]
-
-  formatWeights      Json
-  impactStageWeights Json
-  fieldWeights       Json
-
-  recommendedPattern String?
-  notes              String?
-}
-
-model WeightSuggestion {
-  id             String    @id @default(cuid())
-  category       String
-  targetField    String
-  currentValue   Float
-  suggestedValue Float
-  evidenceJson   Json
-  status         String    @default("PENDING")
-  adminNote      String?
-  createdAt      DateTime  @default(now())
-  resolvedAt     DateTime?
-}
-
-// ─────────────────────────────────────────
-// [v5.1 신규] 내부 인건비 단가 · 서비스 상품
-// ─────────────────────────────────────────
+// 2026-05-03 ADR-012 — 미구현 어드민 모델 제거:
+//   DesignRule (proposal-rules.ts 정적 룰로 대체)
+//   AudienceProfile (ProgramProfile 로 통합)
+//   WeightSuggestion (어드민 UI 0)
+//
+// InternalLaborRate (16건 시드) / ServiceProduct (14건 시드) 는 PRD v5.1 마스터
+// 데이터가 살아있어 보존. 별도 운영 결정 시 다음 migration 에서 처리.
 
 model InternalLaborRate {
   id          String  @id @default(cuid())
@@ -998,7 +919,7 @@ model AgentSession {
   updatedAt DateTime @updatedAt
 
   planningIntent PlanningIntentRecord?
-  pmFeedbacks    PMFeedback[]
+  // 2026-05-03 ADR-012: pmFeedbacks PMFeedback[] 제거 (PMFeedback 모델 제거됨)
 
   @@index([projectId])
   @@index([pmId])
@@ -1021,23 +942,8 @@ model PlanningIntentRecord {
   @@index([projectId])
 }
 
-model PMFeedback {
-  id        String       @id @default(cuid())
-  sessionId String
-  session   AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  pmId      String?
-
-  // PM이 Agent 산출물에 대해 남긴 피드백
-  targetType  String // intent | strategy | question | overall
-  targetField String? // 구체적 필드명 (예: "keyMessages", "coachProfile")
-  rating      Int? // 1-5
-  comment     String? @db.Text
-  correction  String? @db.Text // PM이 직접 수정한 값
-
-  createdAt DateTime @default(now())
-
-  @@index([sessionId])
-}
+// 2026-05-03 ADR-012 — PMFeedback 모델 제거 (planning-agent 인터뷰 흐름 미사용,
+// PlanningIntentRecord 만 활성)
 
 // ─────────────────────────────────────────
 // [Ingestion] 자료 업로드 → 자산 자동 고도화 (ADR-003)
@@ -1127,18 +1033,7 @@ model WinningPattern {
 // Phase E (ADR-006): 프로파일 태그 자동완성 + 재사용률 집계
 // UI 에서 businessDomain · demographic · formats 등 free tag 를
 // 이전에 쓴 값 기준으로 자동완성하기 위한 집계 테이블
-model ProfileTag {
-  id       String @id @default(cuid())
-  axis     String // "targetSegment.businessDomain" | "formats" | ...
-  value    String // 태그 값
-  useCount Int    @default(1)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([axis, value])
-  @@index([axis])
-}
+// 2026-05-03 ADR-012 — ProfileTag 제거 (ProgramProfile 11축 enum 으로 충분)
 
 model ChannelPreset {
   id          String @id @default(cuid())

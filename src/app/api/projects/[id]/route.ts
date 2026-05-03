@@ -41,7 +41,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
         },
       },
       curriculum: { orderBy: { order: 'asc' } },
-      tasks: { orderBy: [{ dueDate: 'asc' }, { createdAt: 'desc' }] },
+      // 2026-05-03 ADR-012: Task 모델 제거됨 — tasks include 제거
       participants: { orderBy: { createdAt: 'asc' } },
       proposalSections: { orderBy: { sectionNo: 'asc' } },
       _count: { select: { participants: true } },
