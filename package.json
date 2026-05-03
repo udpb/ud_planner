@@ -16,6 +16,10 @@
     "typecheck": "tsc --noEmit",
     "check:manifest": "npx tsx scripts/check-manifests.ts",
     "health-check": "npx tsx scripts/health-check.ts",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
+    "e2e:install": "playwright install chromium",
+    "e2e:ui": "playwright test --ui",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
@@ -65,6 +69,7 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.37",
     "@types/react": "^19",
