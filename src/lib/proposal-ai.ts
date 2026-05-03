@@ -94,7 +94,8 @@ export const PROPOSAL_SECTION_SPEC: Record<ProposalSectionNo, ProposalSectionSpe
     focus: '세션 · 트랙 · IMPACT 매핑 · Action Week · 설계 근거',
     minChars: 1000,
     maxChars: 2000,
-    maxTokens: AI_TOKENS.LIGHT,
+    // 2026-05-03 P1-4: 4096 → 3500 (504 timeout 방어, 재시도 포함 50s 안에 들어오게)
+    maxTokens: 3500,
     requiresSlices: ['rfp', 'curriculum'],
   },
   4: {

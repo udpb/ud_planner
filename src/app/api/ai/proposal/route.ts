@@ -65,19 +65,26 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. PipelineContext 조립
+    const t0 = Date.now()
     const userId = (session.user as { id?: string }).id
     const context = await buildPipelineContext(projectId, {
       viewerId: typeof userId === 'string' ? userId : undefined,
     })
+    const tCtx = Date.now() - t0
 
     // 2. AI 생성
+    const tAi0 = Date.now()
     const result = await generateProposalSection({
       sectionNo,
       context,
       keepParts,
     })
+    const tAi = Date.now() - tAi0
 
     if (!result.ok) {
+      console.warn(
+        `[proposal POST] section ${sectionNo} 실패 (${tAi}ms): ${result.error}`,
+      )
       if (result.error.startsWith('SLICE_REQUIRED:')) {
         const slice = result.error.split(':')[1]
         return NextResponse.json(
@@ -91,7 +98,14 @@ export async function POST(req: NextRequest) {
       if (result.error.startsWith('INVALID_SECTION_NO:')) {
         return NextResponse.json({ error: result.error }, { status: 400 })
       }
-      return NextResponse.json({ error: result.error }, { status: 500 })
+      // 504 가능성 안내: AI 생성이 50초 넘으면 timeout 위험을 클라이언트에 전달
+      const timeoutHint = tAi > 50_000
+        ? ' (AI 생성이 오래 걸리고 있습니다. 다시 시도해주세요.)'
+        : ''
+      return NextResponse.json(
+        { error: result.error + timeoutHint },
+        { status: 500 },
+      )
     }
 
     // 3. DB 저장 (버전 증가)
@@ -112,13 +126,18 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    const tTotal = Date.now() - t0
+    console.info(
+      `[proposal POST] ✓ section ${sectionNo} v${newVersion} (ctx=${tCtx}ms, ai=${tAi}ms, total=${tTotal}ms, retried=${result.metadata.retried})`,
+    )
+
     return NextResponse.json({
       section: saved,
       metadata: result.metadata,
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : '생성 실패'
-    console.error('[proposal generate] error:', err)
+    console.error('[proposal POST] error:', err)
     return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
