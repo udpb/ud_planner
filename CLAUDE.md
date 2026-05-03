@@ -34,8 +34,8 @@
 - **[docs/decisions/](docs/decisions/)** — ADR-001 ~ **ADR-011**. 중요 결정 전후 필수 참조
 - **[docs/journey/](docs/journey/)** — 시행착오 일지. 세션 끝에 기록
 - **[PLANNING_AGENT_ROADMAP.md](PLANNING_AGENT_ROADMAP.md)** — Planning Agent 별도 트랙
-- `PRD-v6.0.md` — ⚠️ Archived (PRD-v7.0 으로 대체됨, 2026-04-27 ADR-011 채택)
-- `PRD-v5.0.md` — ⚠️ 아카이브. 비즈니스 룰·IMPACT·SROI만 참고
+- `docs/archive/PRD-v6.0.md` — ⚠️ Archived (PRD-v7.0 으로 대체됨, 2026-04-27 ADR-011 채택)
+- `docs/archive/PRD-v5.0.md` — ⚠️ 아카이브. 비즈니스 룰·IMPACT·SROI만 참고
 
 ## 아키텍처 (꼭 읽어야 할 파일)
 - `prisma/schema.prisma` — 전체 데이터 모델 (44개)
