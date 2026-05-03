@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { log } from '@/lib/logger'
+import { checkRateLimit, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit'
 import { validateCurriculumRules } from '@/lib/curriculum-rules'
 import { buildPipelineContext } from '@/lib/pipeline-context'
 import {
@@ -141,6 +142,23 @@ export async function POST(req: NextRequest) {
     const session = await auth()
     if (!session?.user) {
       return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 })
+    }
+
+    // Phase 4: rate-limit (분당 10회)
+    const userId = (session.user as { id?: string }).id ?? 'anon'
+    const limit = checkRateLimit({
+      key: `curriculum-gen:${userId}:${getClientIp(req)}`,
+      ...AI_RATE_LIMIT,
+    })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        {
+          error: 'RATE_LIMIT',
+          message: `잠시 후 다시 시도해주세요 (${limit.retryAfterSec}초 후).`,
+          retryAfterSec: limit.retryAfterSec,
+        },
+        { status: 429, headers: { 'Retry-After': String(limit.retryAfterSec) } },
+      )
     }
 
     const body = await req.json().catch(() => ({}))

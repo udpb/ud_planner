@@ -15,6 +15,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { invokeAi } from '@/lib/ai-fallback'
 import { log } from '@/lib/logger'
+import { checkRateLimit, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit'
 import { buildPipelineContext } from '@/lib/pipeline-context'
 import {
   generateProposalSection,
@@ -51,6 +52,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Phase 4: rate-limit (IP + user 기반 — 분당 10회)
+    const userId = (session.user as { id?: string }).id ?? 'anon'
+    const limitKey = `proposal-gen:${userId}:${getClientIp(req)}`
+    const limit = checkRateLimit({ key: limitKey, ...AI_RATE_LIMIT })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        {
+          error: 'RATE_LIMIT',
+          message: `잠시 후 다시 시도해주세요 (${limit.retryAfterSec}초 후).`,
+          retryAfterSec: limit.retryAfterSec,
+        },
+        { status: 429, headers: { 'Retry-After': String(limit.retryAfterSec) } },
+      )
+    }
+
     const body = (await req.json()) as {
       projectId?: string
       sectionNo?: number
@@ -67,7 +83,6 @@ export async function POST(req: NextRequest) {
 
     // 1. PipelineContext 조립
     const t0 = Date.now()
-    const userId = (session.user as { id?: string }).id
     const context = await buildPipelineContext(projectId, {
       viewerId: typeof userId === 'string' ? userId : undefined,
     })

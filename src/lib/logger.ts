@@ -40,8 +40,38 @@ function shouldLog(level: LogLevel): boolean {
   return LEVEL_RANK[level] >= LEVEL_RANK[MIN_LEVEL]
 }
 
+// ─────────────────────────────────────────
+// Sentry 통합 hook (선택, Phase 4-coach-integration)
+//
+// Sentry 패키지를 추가하지 않아도 logger.error 만으로 외부 모니터링 가능하도록.
+// SENTRY_DSN 이 설정돼 있고 globalThis.__sentry__ 가 등록되면 error 만 라우팅.
+// 정식 통합 시: npm i @sentry/nextjs → src/instrumentation.ts 에서 globalThis.__sentry__ = Sentry
+// ─────────────────────────────────────────
+interface SentryLike {
+  captureException: (err: unknown, ctx?: Record<string, unknown>) => void
+  captureMessage: (msg: string, ctx?: Record<string, unknown>) => void
+}
+
+function getSentry(): SentryLike | null {
+  const g = globalThis as { __sentry__?: SentryLike }
+  return g.__sentry__ ?? null
+}
+
 function emit(level: LogLevel, scope: string, msg: string, fields?: Record<string, unknown>) {
   if (!shouldLog(level)) return
+
+  // Sentry 라우팅 (error / warn 만)
+  if ((level === 'error' || level === 'warn') && process.env.SENTRY_DSN) {
+    const sentry = getSentry()
+    if (sentry) {
+      try {
+        sentry.captureMessage(`[${scope}] ${msg}`, { level, ...fields })
+      } catch {
+        // sentry 실패해도 로깅은 계속
+      }
+    }
+  }
+
   const payload = {
     ts: new Date().toISOString(),
     level,

@@ -18,6 +18,7 @@ import { matchAssetsToRfp } from '@/lib/asset-registry'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import { log } from '@/lib/logger'
+import { checkRateLimit, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit'
 
 const BodySchema = z.object({
   projectId: z.string().min(1),
@@ -33,6 +34,22 @@ export const maxDuration = 60 // 60초
 
 export async function POST(req: NextRequest) {
   try {
+    // Phase 4: rate-limit (Express 챗봇 — 분당 10회 충분)
+    const limit = checkRateLimit({
+      key: `express-turn:${getClientIp(req)}`,
+      ...AI_RATE_LIMIT,
+    })
+    if (!limit.allowed) {
+      return NextResponse.json(
+        {
+          error: 'RATE_LIMIT',
+          message: `잠시 후 다시 시도해주세요 (${limit.retryAfterSec}초 후).`,
+          retryAfterSec: limit.retryAfterSec,
+        },
+        { status: 429, headers: { 'Retry-After': String(limit.retryAfterSec) } },
+      )
+    }
+
     const body = await req.json()
     const parsed = BodySchema.safeParse(body)
     if (!parsed.success) {
