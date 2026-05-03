@@ -8,7 +8,8 @@ import type { NextRequest } from 'next/server'
  * 실제 토큰 검증은 서버 컴포넌트/API에서 auth()로 수행.
  */
 
-const publicPaths = ['/login', '/api/auth', '/api/feedback', '/feedback']
+// 2026-05-03: /api/feedback / /feedback 제거 — Google Sheets 연동 폐기
+const publicPaths = ['/login', '/api/auth']
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
