@@ -110,7 +110,12 @@ export async function POST(req: NextRequest) {
     const acTotal = acItems.reduce((s, i) => s + i.amount, 0)
 
     // ── 마진 산출 ────────────────────────────────────────────
-    const supplyPrice = project.supplyPrice ?? 0
+    // 2026-05-03 fix: supplyPrice 가 null 이면 totalBudgetVat / 1.1 로 자동 계산
+    // (대부분 프로젝트가 RFP 에서 totalBudgetVat 만 추출, supplyPrice 는 별도 입력 필요).
+    // 이 fallback 없이 0 이면 margin = 0 - PC - AC = 음수 표시되는 버그 → 운영자 혼란.
+    const supplyPrice =
+      project.supplyPrice ??
+      (project.totalBudgetVat ? Math.round(project.totalBudgetVat / 1.1) : 0)
     const margin = supplyPrice - pcTotal - acTotal
     const marginRate = supplyPrice > 0 ? (margin / supplyPrice) * 100 : 0
 
@@ -204,8 +209,14 @@ export async function PATCH(req: NextRequest) {
     const pcTotal = budgetItems.filter((i) => i.type === 'PC').reduce((s, i) => s + i.amount, 0)
     const acTotal = budgetItems.filter((i) => i.type === 'AC').reduce((s, i) => s + i.amount, 0)
     const budget = await prisma.budget.findUnique({ where: { id: item.budgetId }, select: { projectId: true } })
-    const project = await prisma.project.findUnique({ where: { id: budget!.projectId }, select: { supplyPrice: true } })
-    const supplyPrice = project?.supplyPrice ?? 0
+    const project = await prisma.project.findUnique({
+      where: { id: budget!.projectId },
+      select: { supplyPrice: true, totalBudgetVat: true },
+    })
+    // 2026-05-03 fix: supplyPrice null 이면 totalBudgetVat / 1.1 fallback (POST 와 동일)
+    const supplyPrice =
+      project?.supplyPrice ??
+      (project?.totalBudgetVat ? Math.round(project.totalBudgetVat / 1.1) : 0)
     const margin = supplyPrice - pcTotal - acTotal
     const marginRate = supplyPrice > 0 ? (margin / supplyPrice) * 100 : 0
 
