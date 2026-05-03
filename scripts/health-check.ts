@@ -44,7 +44,7 @@ function fail(name: string, message: string, detail?: Record<string, unknown>) {
 // ─────────────────────────────────────────
 
 function checkEnvVars() {
-  const required = ['DATABASE_URL', 'NEXTAUTH_SECRET']
+  const required = ['DATABASE_URL']
   const aiKeys = ['ANTHROPIC_API_KEY', 'GEMINI_API_KEY', 'GOOGLE_API_KEY']
   const optional = ['AUTH_GOOGLE_ID', 'AUTH_GOOGLE_SECRET', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE']
 
@@ -54,6 +54,15 @@ function checkEnvVars() {
     } else {
       pass('env-required', `${key} ✓`)
     }
+  }
+
+  // NextAuth secret — v5 는 AUTH_SECRET, v4 는 NEXTAUTH_SECRET. 둘 중 하나라도 있으면 OK.
+  const authSecret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
+  if (!authSecret) {
+    fail('env-required', '필수 환경변수 누락: AUTH_SECRET (또는 NEXTAUTH_SECRET)')
+  } else {
+    const which = process.env.AUTH_SECRET ? 'AUTH_SECRET' : 'NEXTAUTH_SECRET'
+    pass('env-required', `${which} ✓ (NextAuth ${which === 'AUTH_SECRET' ? 'v5' : 'v4'} 호환)`)
   }
 
   // AI: 최소 1개 있어야 운영 가능
