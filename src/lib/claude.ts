@@ -646,102 +646,10 @@ export interface CurriculumSuggestion {
   insights: CurriculumInsight[]  // 기획자에게 전달할 안내/제안 (강제 아님)
 }
 
-export async function suggestCurriculum(
-  rfpParsed: RfpParsed,
-  logicModel: LogicModel,
-  impactModules: ImpactModuleContext[] = [],
-  externalResearch?: ExternalResearch[],
-): Promise<CurriculumSuggestion> {
-  const impactContext = buildImpactModulesContext(impactModules)
-  const hasResearch = externalResearch && externalResearch.length > 0
-  const researchContext = hasResearch ? formatExternalResearch(externalResearch) : ''
-
-  // Logic Model 항목을 텍스트로 변환 (새/구 형식 모두 대응)
-  const formatItems = (items: any[]) =>
-    items.map((item: any) => {
-      if (typeof item === 'string') return item
-      const parts = [item.id ? `[${item.id}]` : '', item.text]
-      if (item.sroiProxy) parts.push(`(SROI: ${item.sroiProxy})`)
-      return parts.filter(Boolean).join(' ')
-    }).join(', ')
-
-  // 2026-05-03: anthropic → invokeAi
-  const result = await invokeAi({
-    prompt: `당신은 창업 교육 프로그램 설계 전문가입니다.
-${researchContext}
-중요한 원칙:
-1. 아래 [참고 자산]의 IMPACT 방법론은 **가이드**입니다. 강제가 아닙니다.
-2. IMPACT 모듈에 가중치를 주되, ${hasResearch ? '위 [PM이 수집한 외부 리서치]를 적극 반영하여' : '최신 교육 트렌드, 해외 우수 프로그램 사례를 결합하여'} 더 나은 커리큘럼을 설계하세요.
-3. "이 사업에 이런 새로운 접근도 고려해볼 만합니다" 같은 창의적 제안을 insights에 포함하세요.
-4. 각 세션이 Logic Model의 어떤 outcome/output에 기여하는지 명시하세요 (logicModelLinks).
-
-═══════════════════════════════════════
-사업 정보
-═══════════════════════════════════════
-사업명: ${rfpParsed.projectName}
-대상: ${rfpParsed.targetAudience} (${rfpParsed.targetCount}명)
-단계: ${rfpParsed.targetStage.join(', ')}
-기간: ${rfpParsed.eduStartDate} ~ ${rfpParsed.eduEndDate}
-
-═══════════════════════════════════════
-Logic Model (커리큘럼이 달성해야 할 것)
-═══════════════════════════════════════
-임팩트 목표: ${logicModel.impactGoal}
-Outcome (참여자 변화): ${formatItems(logicModel.outcome)}
-Output (직접 산출물): ${formatItems(logicModel.output)}
-Activity (핵심 활동): ${formatItems(logicModel.activity)}
-
-═══════════════════════════════════════
-[참고 자산] 언더독스 IMPACT 방법론 (가이드, 강제 아님)
-═══════════════════════════════════════
-${impactContext || 'IMPACT 6단계: I(Ideation) → M(Market) → P(Product) → A(Acquisition) → C(Commercial) → T(Team)'}
-
-세션 구성 참고:
-- 일반 세션: 강의 15분 + 실습 35분 (총 50분) 기본이나, 사업 특성에 맞게 조정 가능
-- Action Week: 실전 실행 주간, 이론 세션 2~3회 후 배치 권장
-- 1:1 코칭: Action Week 직후 페어로 배치 권장
-- IMPACT 모듈에 매핑 가능하면 impactModuleCode에 기록, 불가능하면 null
-- 사업 대상 단계에 맞춰 무게중심 조정 (예비: I,M,P / 초기: A,C / 성장: C,T)
-
-반드시 아래 JSON만 반환하세요:
-{
-  "sessions": [
-    {
-      "sessionNo": 1,
-      "title": "세션 제목 (사업 맥락에 맞게)",
-      "category": "STARTUP_EDU|TECH_EDU|MENTORING|ACTION_WEEK|NETWORKING|SPECIAL_LECTURE",
-      "method": "WORKSHOP|LECTURE|PRACTICE|MENTORING|ACTION_WEEK|MIXED|ONLINE",
-      "durationHours": 시간수,
-      "lectureMinutes": 15,
-      "practiceMinutes": 35,
-      "isTheory": false,
-      "isActionWeek": false,
-      "isCoaching1on1": false,
-      "objectives": ["목표1"],
-      "recommendedExpertise": ["전문 분야"],
-      "notes": "세부 안내",
-      "impactModuleCode": "I-1 등 (해당 없으면 null)",
-      "logicModelLinks": ["OC-1", "OP-2"]
-    }
-  ],
-  "totalHours": 총시간,
-  "actionWeekRatio": Action Week 비율(0~100),
-  "theoryRatio": 이론 비율(0~100),
-  "rationale": "커리큘럼 설계 근거 — Logic Model의 어떤 outcome을 중점적으로 달성하려 했고, 어떤 외부 사례를 참고했는지",
-  "insights": [
-    {"type": "tip", "message": "운영 팁 또는 최신 트렌드 제안"},
-    {"type": "info", "message": "타 기관 우수 사례 참고 정보"},
-    {"type": "asset", "message": "언더독스 내부 자산 활용 제안"}
-  ]
-}`,
-    maxTokens: AI_TOKENS.LARGE,
-    temperature: 0.4,
-    label: 'suggest-curriculum',
-  })
-
-  const raw = result.raw.trim()
-  return safeParseJson<CurriculumSuggestion>(raw, 'suggestCurriculum')
-}
+// 2026-05-03 (Phase 2 단순화): suggestCurriculum 제거.
+// /api/ai/curriculum 은 src/lib/curriculum-ai.ts (split outline + details) 가 담당.
+// CurriculumSession / CurriculumInsight / CurriculumSuggestion 타입은
+// generateProposalSection 의 context shape 정의를 위해 위쪽에 그대로 유지.
 
 // ─── 제안서 섹션 생성 ─────────────────────────────────────
 const PROPOSAL_SECTIONS = [
