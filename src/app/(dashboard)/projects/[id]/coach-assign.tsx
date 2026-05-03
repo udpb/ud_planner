@@ -173,14 +173,15 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
         코치 배정
       </DialogTrigger>
 
-      <DialogContent className="max-w-5xl">
+      <DialogContent className="max-w-[min(1280px,95vw)] sm:max-w-[min(1280px,95vw)]">
         <DialogHeader>
           <DialogTitle>코치 검색 및 배정</DialogTitle>
         </DialogHeader>
 
         {/* picked 시 좌(검색·결과) + 우(배정 폼) 2 컬럼.
-            모달 컨테이너 한 박스 안에 자연스럽게 분할되도록 grid 명시. */}
-        <div className={picked ? 'grid grid-cols-[minmax(0,1fr)_280px] gap-4' : 'flex'}>
+            2026-05-03: 좌측 충분히 넓게 (1fr) + 우측 폼 360px 고정 (메모/단가 가독성).
+            모달 자체가 1280px max → 좌측 ~880px 확보 → 코치 카드 + 필터 여유. */}
+        <div className={picked ? 'grid grid-cols-[minmax(0,1fr)_360px] gap-6' : 'flex'}>
           {/* 왼쪽: 검색 */}
           <div className="flex-1 space-y-3">
             {/* 검색창 */}
@@ -208,13 +209,13 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
               </SelectContent>
             </Select>
 
-            {/* 전문분야 필터 */}
-            <div className="flex flex-wrap gap-1">
-              {EXPERTISE_OPTIONS.slice(0, 8).map((e) => (
+            {/* 전문분야 필터 — 2026-05-03: 모든 옵션 노출 (기존 8개만 보여 답답) */}
+            <div className="flex flex-wrap gap-1.5">
+              {EXPERTISE_OPTIONS.map((e) => (
                 <button
                   key={e}
                   onClick={() => toggleExpertise(e)}
-                  className={`rounded-full border px-2 py-0.5 text-[11px] transition-colors ${
+                  className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
                     selectedExpertise.includes(e)
                       ? 'border-primary bg-primary text-primary-foreground'
                       : 'border-muted-foreground/30 text-muted-foreground hover:border-primary'
@@ -225,8 +226,8 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
               ))}
             </div>
 
-            {/* 결과 목록 */}
-            <div className="max-h-72 space-y-1.5 overflow-y-auto">
+            {/* 결과 목록 — 2026-05-03: max-h 72 → 96 (288→384px), 카드 패딩 ↑ */}
+            <div className="max-h-[28rem] space-y-2 overflow-y-auto pr-1">
               {results.length === 0 && !searching && !hasSearched && (
                 <p className="py-6 text-center text-xs text-muted-foreground">검색어를 입력하고 Enter를 누르세요</p>
               )}
