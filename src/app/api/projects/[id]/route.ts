@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { syncProjectToSupabase } from '@/lib/supabase-sync'
 
 const UpdateProjectSchema = z.object({
   name: z.string().min(1).optional(),
@@ -75,6 +76,20 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       ...(projectStartDate !== undefined && { projectStartDate: projectStartDate ? new Date(projectStartDate) : null }),
       ...(projectEndDate !== undefined && { projectEndDate: projectEndDate ? new Date(projectEndDate) : null }),
     },
+  })
+
+  // Phase Bridge 1: mirror to Supabase business_plans (best-effort).
+  // Especially important on status/isBidWon transitions — when the mirror
+  // lands with status='won', Supabase's bp_on_won trigger fires and
+  // automatically materializes projects + project_members for coaching-log.
+  void syncProjectToSupabase(project).then((res) => {
+    if (!res.ok) {
+      // eslint-disable-next-line no-console
+      console.warn('[PATCH /api/projects/[id]] supabase mirror skipped', {
+        projectId: id,
+        reason: res.reason,
+      })
+    }
   })
 
   return NextResponse.json(project)

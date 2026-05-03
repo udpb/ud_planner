@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { syncProjectToSupabase } from '@/lib/supabase-sync'
 
 const CreateProjectSchema = z.object({
   name: z.string().min(1),
@@ -73,6 +74,19 @@ export async function POST(req: NextRequest) {
       projectStartDate: projectStartDate ? new Date(projectStartDate) : undefined,
       projectEndDate: projectEndDate ? new Date(projectEndDate) : undefined,
     },
+  })
+
+  // Phase Bridge 1: mirror to Supabase business_plans (best-effort).
+  // Failure here MUST NOT break the response; the user's project is saved
+  // either way. See src/lib/supabase-sync.ts and INTEGRATED_ARCHITECTURE.md.
+  void syncProjectToSupabase(project).then((res) => {
+    if (!res.ok) {
+      // eslint-disable-next-line no-console
+      console.warn('[POST /api/projects] supabase mirror skipped', {
+        projectId: project.id,
+        reason: res.reason,
+      })
+    }
   })
 
   return NextResponse.json(project, { status: 201 })

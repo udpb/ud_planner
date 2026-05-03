@@ -711,6 +711,18 @@ Vercel **Hobby plan = 60s 최대**. 자주 timeout 나면 Pro plan (300s) 권장
 - [ ] E2E 자동 테스트 도입 (Playwright)
 - [ ] 모니터링 시계열·알림 (Sentry / DataDog 등)
 
+### 14.5 Phase Bridge 1 (2026-05-03) — Supabase mirror 활성화
+
+ud-ops 가 단독 운영 중이라면 skip 가능. coaching-log/coach-finder 와 lifecycle 을 자연스럽게 잇고 싶다면:
+
+- [ ] Vercel env 에 `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE` 추가 (`.env.production.example` 참조)
+- [ ] (이미 push 된 코드라면) 새 deploy 자동 적용. 아니면 redeploy.
+- [ ] **검증**: ud-ops 에서 새 Project 생성 → Supabase Table Editor 에서 `business_plans` 테이블에 새 행 확인. `legacy_firestore_id` 가 ud-ops Project.id 와 일치해야 함.
+- [ ] **수주 흐름 검증**: Project.status 를 `IN_PROGRESS` 로 변경 (또는 `isBidWon=true`) → Supabase 의 같은 BP 가 status='won' 으로 업데이트 → bp_on_won 트리거 발동 → `projects` + `project_members` 자동 생성 → 코치들이 coaching-log 에서 프로젝트 즉시 확인.
+
+자세한 설계: `../underdogs-coaching-log/docs/INTEGRATED_ARCHITECTURE.md` §4.1
+구현: `src/lib/supabase-sync.ts`
+
 ---
 
 ## 15. 시작 명령 cheatsheet
