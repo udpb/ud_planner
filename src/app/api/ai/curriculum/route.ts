@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { log } from '@/lib/logger'
 import { validateCurriculumRules } from '@/lib/curriculum-rules'
 import { buildPipelineContext } from '@/lib/pipeline-context'
 import {
@@ -215,10 +216,9 @@ export async function POST(req: NextRequest) {
     if (mode === 'outline') {
       const outline = await generateCurriculumOutline(aiInput)
       if (!outline.ok) {
-        console.error('[curriculum/outline] 실패:', outline.error)
-        if (outline.raw) {
-          console.error('[curriculum/outline] raw 응답 (앞 800):', outline.raw.slice(0, 800))
-        }
+        log.error('curriculum-outline', outline.error, {
+          rawPreview: outline.raw?.slice(0, 200),
+        })
         return NextResponse.json(
           {
             error: 'AI_GENERATION_FAILED',
@@ -253,8 +253,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (!aiResult.ok) {
-      console.error(`[curriculum/${mode}] AI 생성 실패:`, aiResult.error)
-      if (aiResult.raw) console.error(`[curriculum/${mode}] raw 응답 (앞 500자):`, aiResult.raw.slice(0, 500))
+      log.error('curriculum-' + mode, aiResult.error, {
+        rawPreview: aiResult.raw?.slice(0, 200),
+      })
       return NextResponse.json(
         { error: 'AI_GENERATION_FAILED', message: aiResult.error, raw: aiResult.raw, mode },
         { status: 500 },
@@ -348,7 +349,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : '생성 실패'
-    console.error('커리큘럼 생성 에러:', e)
+    log.error('curriculum', e)
     return NextResponse.json({ error: 'INTERNAL_ERROR', message }, { status: 500 })
   }
 }

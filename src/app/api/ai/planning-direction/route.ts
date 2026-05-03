@@ -17,6 +17,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { type RfpParsed } from '@/lib/claude'
 import { invokeAi } from '@/lib/ai-fallback'
+import { log } from '@/lib/logger'
 import type { SimilarProject } from '@/lib/pipeline-context'
 import {
   buildPlanningDirectionPrompt,
@@ -146,7 +147,9 @@ export async function POST(req: NextRequest) {
   const result = await generatePlanningDirection(prompt)
 
   if (!result.ok) {
-    console.error('[planning-direction] 생성 실패:', result.error)
+    log.error('planning-direction', result.error, {
+      rawPreview: result.raw?.slice(0, 200),
+    })
     return NextResponse.json(
       {
         error: 'AI_GENERATION_FAILED',

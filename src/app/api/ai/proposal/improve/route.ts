@@ -9,6 +9,7 @@ import {
 import { invokeAi } from '@/lib/ai-fallback'
 import { prisma } from '@/lib/prisma'
 import { AI_TOKENS } from '@/lib/ai/config'
+import { log } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -116,7 +117,7 @@ ${keepParts ? `\n[유지 요청] ${keepParts}` : ''}
 
     return NextResponse.json({ section: saved, previousVersion: currentSection.version })
   } catch (err: any) {
-    console.error('제안서 개선 에러:', err)
+    log.error('proposal-improve', err)
     return NextResponse.json({ error: err.message ?? '개선 실패' }, { status: 500 })
   }
 }

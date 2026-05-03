@@ -17,6 +17,7 @@ import { ConversationStateSchema, emptyConversation } from '@/lib/express/conver
 import { matchAssetsToRfp } from '@/lib/asset-registry'
 import type { RfpParsed } from '@/lib/claude'
 import type { ProgramProfile } from '@/lib/program-profile'
+import { log } from '@/lib/logger'
 
 const BodySchema = z.object({
   projectId: z.string().min(1),
@@ -123,7 +124,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
-    console.error('[/api/express/turn] error:', msg)
+    log.error('express-turn-route', msg)
     return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

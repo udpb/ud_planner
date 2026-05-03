@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { parseRfp, type RfpParsed } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
+import { log } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60 // Vercel Hobby 한계 — RFP 파싱 큰 PDF 시 위험
@@ -172,9 +173,15 @@ export async function POST(req: NextRequest) {
       })
     }
 
+    log.info('parse-rfp', '파싱 성공', {
+      completeness: completeness.score,
+      gapCount: questions.length,
+      hasProject: Boolean(projectId),
+    })
+
     return NextResponse.json({ parsed, questions, completeness })
   } catch (err: any) {
-    console.error('RFP 파싱 에러:', err)
+    log.error('parse-rfp', err)
     return NextResponse.json({ error: err.message ?? '파싱 실패' }, { status: 500 })
   }
 }
@@ -208,7 +215,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (err: any) {
-    console.error('RFP 저장 에러:', err)
+    log.error('parse-rfp-save', err)
     return NextResponse.json({ error: err.message ?? '저장 실패' }, { status: 500 })
   }
 }
