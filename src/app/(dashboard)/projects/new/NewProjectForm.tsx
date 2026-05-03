@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Loader2, Upload, FileText, X, Sparkles, ChevronDown, ChevronUp } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import { createProjectAction } from './actions'
 
 interface FormValues {

@@ -34,10 +34,7 @@
  * 관련 문서: `docs/architecture/data-contract.md` §1.2 CurriculumSlice
  */
 
-import {
-  formatExternalResearch,
-  type ExternalResearch,
-} from '@/lib/claude'
+import { formatExternalResearch, type ExternalResearch } from '@/lib/ai/research'
 import { invokeAi } from '@/lib/ai-fallback'
 import type {
   RfpSlice,

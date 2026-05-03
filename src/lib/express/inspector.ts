@@ -21,7 +21,7 @@ import { AI_TOKENS } from '@/lib/ai/config'
 
 import { z } from 'zod'
 import { invokeAi } from '@/lib/ai-fallback'
-import { safeParseJsonExternal } from '@/lib/claude'
+import { safeParseJson as safeParseJsonExternal } from '@/lib/ai/parser'
 import {
   SECTION_LABELS,
   type ExpressDraft,

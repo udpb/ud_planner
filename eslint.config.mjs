@@ -60,14 +60,13 @@ const eslintConfig = defineConfig([
   // 신규 코드가 다시 anthropic.messages.create / GenerativeModel 등을 직접 부르면
   // Phase L1 의 Gemini Primary + Claude Fallback 전환이 무의미.
   //
-  // 예외: src/lib/ai-fallback.ts (구현체) · src/lib/claude.ts (CLAUDE_MODEL 상수만 export)
-  //       · src/lib/gemini.ts (Gemini 직접 호출 — invokeAi 가 사용)
+  // 2026-05-03 update: claude.ts shim 제거됨 (ai/* 8 모듈 직접 import).
+  // 예외: src/lib/ai-fallback.ts (구현체) · src/lib/gemini.ts (Gemini 직접 호출 — invokeAi 가 사용)
   // ──────────────────────────────────────────────────────────
   {
     files: ["src/**/*.{ts,tsx}"],
     ignores: [
       "src/lib/ai-fallback.ts",
-      "src/lib/claude.ts",
       "src/lib/gemini.ts",
     ],
     rules: {

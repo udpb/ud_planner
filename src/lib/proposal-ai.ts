@@ -17,7 +17,7 @@
  *   - 데이터 계약: `docs/architecture/data-contract.md` §1.2 ProposalSlice
  */
 
-import { formatExternalResearch } from '@/lib/claude'
+import { formatExternalResearch } from '@/lib/ai/research'
 import { invokeAi } from '@/lib/ai-fallback'
 import type { PipelineContext } from '@/lib/pipeline-context'
 import {

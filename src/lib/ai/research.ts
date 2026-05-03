@@ -6,7 +6,7 @@
  * → 토큰 절약 + 일관성 + PM 컨트롤
  */
 
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 /** PM이 외부 LLM에 복사할 리서치 프롬프트 */
 export interface ResearchPrompt {

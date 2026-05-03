@@ -23,14 +23,11 @@ import type {
   LoopAlignmentChecks,
 } from '@/lib/value-chain'
 
-import type {
-  RfpParsed,
-  LogicModel,
-  LogicModelItem,
-  CurriculumSession as ClaudeCurriculumSession,
-  ExternalResearch,
-  StrategicNotes,
-} from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
+import type { LogicModel, LogicModelItem } from '@/lib/ai/logic-model'
+import type { CurriculumSession as ClaudeCurriculumSession } from '@/lib/ai/curriculum-types'
+import type { ExternalResearch } from '@/lib/ai/research'
+import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 import type {
   RuleValidationResult,

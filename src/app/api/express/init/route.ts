@@ -31,7 +31,7 @@ import { seedDifferentiatorsFromMatches } from '@/lib/express/asset-mapper'
 import { processTurn } from '@/lib/express/process-turn'
 import { selectNextSlot } from '@/lib/express/slot-priority'
 import { buildAutoCitations } from '@/lib/express/auto-citations'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 
 const BodySchema = z.object({

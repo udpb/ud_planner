@@ -18,7 +18,7 @@ import type {
   LeadContext,
   RenewalContext,
 } from './types'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import { buildBrandContext } from '@/lib/ud-brand'
 
 // ─────────────────────────────────────────

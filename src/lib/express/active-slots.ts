@@ -8,7 +8,7 @@
  */
 
 import { ALL_SLOTS, type SlotKey } from './schema'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 
 export interface ActiveSlotResult {

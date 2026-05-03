@@ -18,12 +18,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import {
-  generateResearchPrompts,
-  type RfpParsed,
-  type ExternalResearch,
-  type StrategicNotes,
-} from '@/lib/claude'
+import { generateResearchPrompts, type ExternalResearch } from '@/lib/ai/research'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
+import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 type Params = { params: Promise<{ id: string }> }
 

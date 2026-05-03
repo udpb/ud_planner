@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  PROPOSAL_SECTIONS,
-  formatExternalResearch,
-  formatStrategicNotes,
-  type ExternalResearch,
-  type StrategicNotes,
-} from '@/lib/claude'
+import { PROPOSAL_SECTIONS } from '@/lib/ai/proposal-section'
+import { formatExternalResearch, type ExternalResearch } from '@/lib/ai/research'
+import { formatStrategicNotes, type StrategicNotes } from '@/lib/ai/strategic-notes'
 import { invokeAi } from '@/lib/ai-fallback'
 import { prisma } from '@/lib/prisma'
 import { AI_TOKENS } from '@/lib/ai/config'

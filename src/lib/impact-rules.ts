@@ -21,7 +21,7 @@
  */
 
 import type { ImpactSlice } from '@/lib/pipeline-context'
-import type { LogicModelItem } from '@/lib/claude'
+import type { LogicModelItem } from '@/lib/ai/logic-model'
 
 // ─────────────────────────────────────────
 // 공통 타입 (curriculum-rules.ts 와 동일 shape)

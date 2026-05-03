@@ -10,7 +10,7 @@ import {
   type ExpressDraft,
 } from '../schema'
 import type { ConversationState } from '../conversation'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import type { AssetMatch } from '@/lib/asset-registry'
 import {

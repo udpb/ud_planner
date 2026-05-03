@@ -13,7 +13,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 export async function createProjectAction(formData: FormData): Promise<void> {
   const name = (formData.get('name') as string)?.trim() ?? ''

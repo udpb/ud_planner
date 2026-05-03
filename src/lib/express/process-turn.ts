@@ -17,7 +17,8 @@ import 'server-only'
 import { AI_TOKENS } from '@/lib/ai/config'
 
 import { invokeAi } from '@/lib/ai-fallback'
-import { safeParseJsonExternal, JsonParseError, type RfpParsed } from '@/lib/claude'
+import { safeParseJson as safeParseJsonExternal, JsonParseError } from '@/lib/ai/parser'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import type { AssetMatch } from '@/lib/asset-registry'
 

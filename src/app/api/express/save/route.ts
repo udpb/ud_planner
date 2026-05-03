@@ -25,7 +25,7 @@ import {
   mapDraftToProposalSections,
   suggestDeepAreas,
 } from '@/lib/express/handoff'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 const BodySchema = z.object({
   projectId: z.string().min(1),

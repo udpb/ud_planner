@@ -25,7 +25,7 @@ import { computeActiveSlots } from '@/lib/express/active-slots'
 import { selectNextSlot } from '@/lib/express/slot-priority'
 import { buildAutoCitations } from '@/lib/express/auto-citations'
 import { ExpressShell } from '@/components/express/ExpressShell'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 
 export const dynamic = 'force-dynamic'

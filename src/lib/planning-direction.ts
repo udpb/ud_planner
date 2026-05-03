@@ -17,7 +17,7 @@
  *     `PlanningDirectionResponse` 타입을 import 하여 UI 렌더링에 사용
  */
 
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { SimilarProject } from '@/lib/pipeline-context'
 import {
   UD_IDENTITY,

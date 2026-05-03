@@ -15,7 +15,7 @@
 
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { SimilarProject } from '@/lib/pipeline-context'
 
 // ─────────────────────────────────────────

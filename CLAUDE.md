@@ -40,7 +40,7 @@
 ## 아키텍처 (꼭 읽어야 할 파일)
 - `prisma/schema.prisma` — 전체 데이터 모델 (44개)
 - `src/lib/ai-fallback.ts` ⭐ — **invokeAi 단일 진입점 (Gemini Primary / Claude Fallback) — Phase L1**
-- `src/lib/claude.ts` — Claude 클라이언트 + `safeParseJson` 강화 (trailing comma·펜스·잘림)
+- `src/lib/ai/*` ⭐ — 8 모듈 (parser / parse-rfp / impact-goal / logic-model / curriculum-types / research / strategic-notes / proposal-section). 2026-05-03 claude.ts 단일 파일 1014줄에서 분할 후 shim 제거 완료.
 - `src/lib/express/` ⭐ — Express Track 코어 (schema·conversation·prompts·handoff·inspector — L2~L6)
 - `src/lib/planning-agent/` — Planning Agent 코어 (7개 모듈, Deep 부수 트랙)
 - `src/app/(dashboard)/projects/[id]/express/` ⭐ — Express 단일 화면 (L2)
@@ -89,7 +89,7 @@
 - **단일 진입점**: `src/lib/ai-fallback.ts` `invokeAi(params)` — provider/model 중립
 - **Primary**: Google Gemini 3.1 Pro Preview (`gemini-3.1-pro-preview` via `googleapis ^171.4.0`)
 - **Fallback**: Claude Sonnet 4.6 (`claude-sonnet-4-6`, `CLAUDE_MODEL` 상수, `@anthropic-ai/sdk ^0.80.0`) — Gemini 실패·할당량 초과 시 자동 전환
-- JSON 파싱: 항상 `safeParseJson()` 헬퍼 사용 (`src/lib/claude.ts`) — 강화: trailing comma 제거 + 마크다운 펜스 제거 + 중괄호 슬라이스 + 잘림 감지 + 자동 1회 재시도
+- JSON 파싱: 항상 `safeParseJson()` 헬퍼 사용 (`src/lib/ai/parser.ts`) — 강화: trailing comma 제거 + 마크다운 펜스 제거 + 중괄호 슬라이스 + 잘림 감지 + 자동 1회 재시도
 - **`max_tokens` (L1 확장)**: RFP 파싱 8192 / Logic Model 8192 / 커리큘럼 8192 / **Express 일괄 16384**
 - L1 커밋: `f2c0c38` (Gemini 통합) · `6369403` (모델명 fix) · `f0ffab8` (provider/model/elapsed 로깅)
 

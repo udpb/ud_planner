@@ -38,7 +38,7 @@ import type {
   ResolvedResearchRequest,
   StepKey,
 } from './types'
-import type { ExternalResearch } from '@/lib/claude'
+import type { ExternalResearch } from '@/lib/ai/research'
 
 // ─────────────────────────────────────────
 // 상수

@@ -9,7 +9,7 @@
  * - renewal: PM 수동 입력 → RenewalContext (텔레메트리 포함)
  */
 
-import { parseRfp } from '@/lib/claude'
+import { parseRfp } from '@/lib/ai/parse-rfp'
 import type {
   PartialPlanningIntent,
   ChannelMeta,

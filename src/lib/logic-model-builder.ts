@@ -25,12 +25,8 @@
  *   - `src/lib/ud-brand.ts`     — IMPACT_STAGE_OVERVIEW (단계명 풀 네임 해석용)
  */
 
-import {
-  formatExternalResearch,
-  type ExternalResearch,
-  type LogicModel,
-  type LogicModelItem,
-} from '@/lib/claude'
+import { formatExternalResearch, type ExternalResearch } from '@/lib/ai/research'
+import type { LogicModel, LogicModelItem } from '@/lib/ai/logic-model'
 import { invokeAi } from '@/lib/ai-fallback'
 import type {
   BudgetSlice,

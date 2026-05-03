@@ -9,15 +9,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  buildLogicModel,
-  generateProposalSection,
-  normalizeLogicModel,
-  type RfpParsed,
-  type LogicModel,
-  type ExternalResearch,
-  type StrategicNotes,
-} from '@/lib/claude'
+import { buildLogicModel, normalizeLogicModel, type LogicModel } from '@/lib/ai/logic-model'
+import { generateProposalSection } from '@/lib/ai/proposal-section'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
+import type { ExternalResearch } from '@/lib/ai/research'
+import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 export async function POST(req: NextRequest) {
   try {

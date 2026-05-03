@@ -17,7 +17,7 @@ import 'server-only'
 
 import { prisma } from '@/lib/prisma'
 import { getAllAssets } from '@/lib/asset-registry'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import type { UdAsset } from '@/lib/asset-registry-types'
 

@@ -8,7 +8,7 @@
  * 4. 수동 입력 단계(renewal의 Phase 1)는 텔레메트리를 남겨 향후 자동화 설계에 활용
  */
 
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 // ═════════════════════════════════════════
 // CHANNEL & MODE

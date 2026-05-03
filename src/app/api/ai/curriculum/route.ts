@@ -11,7 +11,8 @@ import {
   type GenerateCurriculumResponse,
 } from '@/lib/curriculum-ai'
 import type { CurriculumSession } from '@/lib/pipeline-context'
-import type { ExternalResearch, CurriculumInsight } from '@/lib/claude'
+import type { ExternalResearch } from '@/lib/ai/research'
+import type { CurriculumInsight } from '@/lib/ai/curriculum-types'
 import type { ImpactModuleContext } from '@/lib/ud-brand'
 import type { PlanningChannel } from '@/lib/planning-direction'
 

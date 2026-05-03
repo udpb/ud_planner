@@ -18,7 +18,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { invokeAi } from '@/lib/ai-fallback'
-import { safeParseJsonExternal } from '@/lib/claude'
+import { safeParseJson as safeParseJsonExternal } from '@/lib/ai/parser'
 
 // ─────────────────────────────────────────
 // 응답 스키마

@@ -54,7 +54,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { RfpParser } from './rfp-parser'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { EvalStrategy, SimilarProject } from '@/lib/pipeline-context'
 import { analyzeEvalStrategy, sectionLabel } from '@/lib/eval-strategy'
 import type {

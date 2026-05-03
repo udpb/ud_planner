@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { invokeAi } from '@/lib/ai-fallback'
-import { safeParseJsonExternal as safeParseJson, JsonParseError } from '@/lib/claude'
+import { safeParseJson, JsonParseError } from '@/lib/ai/parser'
 import { AI_TOKENS } from '@/lib/ai/config'
 
 export const dynamic = 'force-dynamic'

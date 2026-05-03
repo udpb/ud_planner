@@ -15,7 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { type RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import { invokeAi } from '@/lib/ai-fallback'
 import { log } from '@/lib/logger'
 import type { SimilarProject } from '@/lib/pipeline-context'

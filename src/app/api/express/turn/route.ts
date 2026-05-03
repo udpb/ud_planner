@@ -15,7 +15,7 @@ import { processTurn } from '@/lib/express/process-turn'
 import { ExpressDraftSchema, emptyDraft } from '@/lib/express/schema'
 import { ConversationStateSchema, emptyConversation } from '@/lib/express/conversation'
 import { matchAssetsToRfp } from '@/lib/asset-registry'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import { log } from '@/lib/logger'
 

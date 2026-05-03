@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { parseRfp, type RfpParsed } from '@/lib/claude'
+import { parseRfp, type RfpParsed } from '@/lib/ai/parse-rfp'
 import { prisma } from '@/lib/prisma'
 import { log } from '@/lib/logger'
 

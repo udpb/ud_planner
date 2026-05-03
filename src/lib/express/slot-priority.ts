@@ -14,7 +14,7 @@ import {
   type SectionKey,
   type SlotKey,
 } from './schema'
-import type { RfpParsed } from '@/lib/claude'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 const SECTION_DEFAULT_ORDER: SectionKey[] = ['1', '2', '3', '4', '6']
 
