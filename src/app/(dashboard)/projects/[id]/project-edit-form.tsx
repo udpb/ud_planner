@@ -32,6 +32,9 @@ interface Props {
     projectEndDate: Date | null
     eduStartDate: Date | null
     eduEndDate: Date | null
+    isBidWon?: boolean | null
+    techEvalScore?: number | null
+    bidNotes?: string | null
   }
 }
 
@@ -56,6 +59,11 @@ export function ProjectEditForm({ project }: Props) {
     projectEndDate: toDateInput(project.projectEndDate),
     eduStartDate: toDateInput(project.eduStartDate),
     eduEndDate: toDateInput(project.eduEndDate),
+    // Phase 4: 수주 피드백 루프
+    isBidWon:
+      project.isBidWon === true ? 'won' : project.isBidWon === false ? 'lost' : 'unknown',
+    techEvalScore: project.techEvalScore?.toString() ?? '',
+    bidNotes: project.bidNotes ?? '',
   })
 
   function set(key: string, val: string) {
@@ -78,6 +86,12 @@ export function ProjectEditForm({ project }: Props) {
       if (form.projectEndDate) body.projectEndDate = form.projectEndDate
       if (form.eduStartDate) body.eduStartDate = form.eduStartDate
       if (form.eduEndDate) body.eduEndDate = form.eduEndDate
+      // Phase 4: 수주 피드백 — null/true/false 명시 전송
+      if (form.isBidWon === 'won') body.isBidWon = true
+      else if (form.isBidWon === 'lost') body.isBidWon = false
+      else body.isBidWon = null
+      if (form.techEvalScore) body.techEvalScore = Number(form.techEvalScore)
+      if (form.bidNotes) body.bidNotes = form.bidNotes
 
       const res = await fetch(`/api/projects/${project.id}`, {
         method: 'PATCH',
@@ -192,6 +206,46 @@ export function ProjectEditForm({ project }: Props) {
               <div className="space-y-1">
                 <Label className="text-xs">교육 종료</Label>
                 <Input type="date" value={form.eduEndDate} onChange={(e) => set('eduEndDate', e.target.value)} />
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Phase 4: 수주 피드백 루프 */}
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">
+              수주 결과 (학습용 — Validation 카드 / WinningPattern 패턴 누적에 활용)
+            </Label>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs">isBidWon</Label>
+                <Select value={form.isBidWon} onValueChange={(v) => v && set('isBidWon', v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="unknown">미정 / 결과 없음</SelectItem>
+                    <SelectItem value="won">수주 ✓</SelectItem>
+                    <SelectItem value="lost">미수주 ✗</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs">기술평가 점수 (있으면)</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  placeholder="예: 87.5"
+                  value={form.techEvalScore}
+                  onChange={(e) => set('techEvalScore', e.target.value)}
+                />
+              </div>
+              <div className="col-span-2 space-y-1">
+                <Label className="text-xs">메모 (성공/실패 사유, 평가위원 코멘트 등)</Label>
+                <Input
+                  placeholder="예: 평가위원 A — '커리큘럼 차별성 약함', 자체 평가 — 임팩트 정량 보강 필요"
+                  value={form.bidNotes}
+                  onChange={(e) => set('bidNotes', e.target.value)}
+                />
               </div>
             </div>
           </div>

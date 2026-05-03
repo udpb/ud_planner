@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { CATEGORY_LABELS } from '@/lib/asset-registry-types'
 import { cn } from '@/lib/utils'
 import { CoachSyncButton } from './_components/coach-sync-button'
@@ -100,6 +101,8 @@ async function getMetrics() {
     projectAssets,
     proposalSections,
     expressDrafts,
+    rfpAudit,
+    bidOutcome,
   ] = await Promise.all([
     prisma.project.groupBy({
       by: ['status'],
@@ -142,6 +145,23 @@ async function getMetrics() {
     prisma.project.findMany({
       where: { expressActive: true },
       select: { expressDraft: true },
+    }),
+    // Phase 4-coach-integration: evalCriteria 추출 정확도 audit
+    prisma.project.findMany({
+      where: { rfpParsed: { not: Prisma.JsonNull } },
+      select: { id: true, name: true, rfpParsed: true },
+    }),
+    // isBidWon 기록률 (수주 피드백 루프)
+    prisma.project.findMany({
+      where: {
+        OR: [
+          { status: 'COMPLETED' },
+          { status: 'IN_PROGRESS' },
+          { status: 'LOST' },
+          { status: 'SUBMITTED' },
+        ],
+      },
+      select: { id: true, status: true, isBidWon: true, techEvalScore: true },
     }),
   ])
 
@@ -243,6 +263,37 @@ async function getMetrics() {
   const avgInspectorScore =
     inspectorScoreCount > 0 ? inspectorScoreSum / inspectorScoreCount : 0
 
+  // ─────────────────────────────────────────
+  // evalCriteria audit (Phase 4-coach-integration)
+  // ─────────────────────────────────────────
+  let evalEmptyCount = 0
+  let evalThinCount = 0 // 항목 < 3
+  let evalRichCount = 0 // 항목 ≥ 5
+  let evalCriteriaTotal = 0
+  for (const p of rfpAudit) {
+    const rfp = p.rfpParsed as { evalCriteria?: Array<{ score: number }> } | null
+    const items = rfp?.evalCriteria ?? []
+    if (items.length === 0) evalEmptyCount += 1
+    else if (items.length < 3) evalThinCount += 1
+    else if (items.length >= 5) evalRichCount += 1
+    evalCriteriaTotal += 1
+  }
+
+  // ─────────────────────────────────────────
+  // isBidWon 기록률 (수주 피드백 루프)
+  // ─────────────────────────────────────────
+  // 제출 이상 단계 프로젝트 중 isBidWon 기록된 비율
+  const submittedOrLater = bidOutcome.length
+  const bidWonRecorded = bidOutcome.filter((p) => p.isBidWon !== null).length
+  const bidWonTrue = bidOutcome.filter((p) => p.isBidWon === true).length
+  const bidWonFalse = bidOutcome.filter((p) => p.isBidWon === false).length
+  const bidWonRate = submittedOrLater > 0 ? (bidWonRecorded / submittedOrLater) * 100 : 0
+  const techScoreRecorded = bidOutcome.filter((p) => p.techEvalScore !== null).length
+  const techScoreAvg =
+    techScoreRecorded > 0
+      ? bidOutcome.reduce((s, p) => s + (p.techEvalScore ?? 0), 0) / techScoreRecorded
+      : 0
+
   return {
     totalProjects,
     projectByStatus,
@@ -271,6 +322,19 @@ async function getMetrics() {
     avgInspectorScore,
     inspectorScoreCount,
     criticalIssueCount,
+    // Phase 4: evalCriteria audit
+    evalEmptyCount,
+    evalThinCount,
+    evalRichCount,
+    evalCriteriaTotal,
+    // Phase 4: 수주 피드백 루프
+    submittedOrLater,
+    bidWonRecorded,
+    bidWonTrue,
+    bidWonFalse,
+    bidWonRate,
+    techScoreRecorded,
+    techScoreAvg,
   }
 }
 
@@ -425,7 +489,7 @@ export default async function MetricsPage() {
           </Card>
         </div>
 
-        {/* 두 번째 행 — Ingestion (validation 추가로 4 카드 유지) */}
+        {/* 두 번째 행 — Ingestion / evalCriteria audit / 수주 피드백 / 활성 코치 등 */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {/* 5. Ingestion */}
           <Card>
@@ -449,6 +513,84 @@ export default async function MetricsPage() {
                     <span className="tabular-nums">{count}</span>
                   </div>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 6. evalCriteria audit (Phase 4) */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">평가 배점 추출</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <StatRow
+                label="추출 성공률"
+                value={
+                  m.evalCriteriaTotal > 0
+                    ? `${(((m.evalCriteriaTotal - m.evalEmptyCount) / m.evalCriteriaTotal) * 100).toFixed(0)}%`
+                    : '–'
+                }
+                pct={
+                  m.evalCriteriaTotal > 0
+                    ? ((m.evalCriteriaTotal - m.evalEmptyCount) / m.evalCriteriaTotal) * 100
+                    : 0
+                }
+                color="green"
+                hint={`RFP 파싱 ${m.evalCriteriaTotal}건 중 평가배점 추출됨`}
+              />
+              <div className="space-y-1.5 pt-2 border-t text-xs">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">⚠ 추출 0건</span>
+                  <span className="tabular-nums">
+                    {m.evalEmptyCount > 0 ? (
+                      <span className="text-red-600 font-semibold">{m.evalEmptyCount}</span>
+                    ) : (
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">부분 (≤2개)</span>
+                  <span className="tabular-nums">{m.evalThinCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">풍부 (≥5개)</span>
+                  <span className="tabular-nums text-green-700">{m.evalRichCount}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 7. 수주 피드백 루프 (Phase 4) */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">수주 피드백 루프</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <StatRow
+                label="isBidWon 기록률"
+                value={`${m.bidWonRate.toFixed(0)}%`}
+                pct={m.bidWonRate}
+                color={m.bidWonRate >= 80 ? 'green' : m.bidWonRate >= 50 ? 'amber' : 'red'}
+                hint={`제출 이상 ${m.submittedOrLater}건 중 ${m.bidWonRecorded}건`}
+              />
+              <div className="space-y-1.5 pt-2 border-t text-xs">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">수주 (won)</span>
+                  <span className="tabular-nums text-green-700">{m.bidWonTrue}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">미수주 (lost)</span>
+                  <span className="tabular-nums">{m.bidWonFalse}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">기술평가 평균점</span>
+                  <span className="tabular-nums">
+                    {m.techScoreRecorded > 0
+                      ? `${m.techScoreAvg.toFixed(1)} (n=${m.techScoreRecorded})`
+                      : '–'}
+                  </span>
+                </div>
               </div>
             </CardContent>
           </Card>

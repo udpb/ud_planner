@@ -24,6 +24,10 @@ const UpdateProjectSchema = z.object({
   // Phase E Step 6 — ProgramProfile v1.0 (런타임 구조 검증은 클라이언트 validateProfile 에서)
   programProfile: z.any().optional().nullable(),
   renewalContext: z.any().optional().nullable(),
+  // Phase 4-coach-integration: 수주 피드백 루프 (학습용)
+  isBidWon: z.boolean().nullable().optional(),
+  techEvalScore: z.number().nullable().optional(),
+  bidNotes: z.string().nullable().optional(),
 })
 
 type Params = { params: Promise<{ id: string }> }
