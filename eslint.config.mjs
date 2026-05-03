@@ -42,6 +42,17 @@ const eslintConfig = defineConfig([
       "prefer-const": "warn",
       "@next/next/no-html-link-for-pages": "warn",
       "@next/next/no-assign-module-variable": "warn",
+      // 2026-05-03: _ prefix 는 의도적 unused (eg. _req, _context, _reason).
+      // catch-all 규칙으로 ESLint 가 알아서 무시하게 → noise 감소.
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
     },
   },
 

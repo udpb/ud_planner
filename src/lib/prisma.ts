@@ -51,7 +51,7 @@ function createPrismaClient() {
           // If this fires we log a warning so future devs notice the gap.
           const result = await query(args)
           if (result.count > 0) {
-            // eslint-disable-next-line no-console
+             
             console.warn(
               `[prisma-extend] project.updateMany fired (count=${result.count}) but Supabase mirror was skipped (no row data). ` +
                 'If this becomes a regular path, add a findMany pre-call to mirror each row.',
@@ -68,7 +68,7 @@ function fireSync(project: Project, op: 'create' | 'update' | 'upsert') {
   void syncProjectToSupabase(project)
     .then((res) => {
       if (!res.ok && res.reason !== 'env-missing') {
-        // eslint-disable-next-line no-console
+         
         console.warn('[prisma-extend] supabase mirror failed', {
           op,
           projectId: project.id,
@@ -77,7 +77,7 @@ function fireSync(project: Project, op: 'create' | 'update' | 'upsert') {
       }
     })
     .catch((err) => {
-      // eslint-disable-next-line no-console
+       
       console.warn('[prisma-extend] supabase mirror threw', {
         op,
         projectId: project.id,

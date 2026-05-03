@@ -42,7 +42,7 @@ function getClient(): SupabaseClient | null {
   if (cachedClient) return cachedClient
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE) {
     if (!envWarned) {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         '[supabase-sync] SUPABASE_URL or SUPABASE_SERVICE_ROLE missing — sync disabled. ' +
           'Add both to .env.local (and Vercel env) to enable mirror to coaching-log Supabase.',
@@ -166,7 +166,7 @@ export async function syncProjectToSupabase(project: Project): Promise<SyncResul
       .maybeSingle()
 
     if (lookupError) {
-      // eslint-disable-next-line no-console
+       
       console.warn('[supabase-sync] lookup failed', {
         projectId: project.id,
         error: lookupError,
@@ -180,7 +180,7 @@ export async function syncProjectToSupabase(project: Project): Promise<SyncResul
         .update(row)
         .eq('id', existing.id)
       if (error) {
-        // eslint-disable-next-line no-console
+         
         console.warn('[supabase-sync] update failed', { projectId: project.id, error })
         return { ok: false, reason: error.message }
       }
@@ -193,7 +193,7 @@ export async function syncProjectToSupabase(project: Project): Promise<SyncResul
       .select('id')
       .single()
     if (insertError || !inserted) {
-      // eslint-disable-next-line no-console
+       
       console.warn('[supabase-sync] insert failed', {
         projectId: project.id,
         error: insertError,
@@ -202,7 +202,7 @@ export async function syncProjectToSupabase(project: Project): Promise<SyncResul
     }
     return { ok: true, bpId: inserted.id as string, action: 'inserted' }
   } catch (err) {
-    // eslint-disable-next-line no-console
+     
     console.warn('[supabase-sync] sync threw', {
       projectId: project.id,
       err: err instanceof Error ? err.message : String(err),
