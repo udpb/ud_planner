@@ -18,6 +18,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { invokeGemini, isGeminiAvailable, GEMINI_MODEL } from './gemini'
 import { AI_TOKENS } from './ai/config'
+import { log } from './logger'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 const CLAUDE_MODEL = 'claude-sonnet-4-6'
@@ -52,7 +53,7 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   const startedAt = Date.now()
 
   if (preferGemini) {
-    console.log(`[ai] ${label} → Gemini 시도 (max_tokens=${maxTokens})`)
+    log.debug('ai', 'Gemini 시도', { label, maxTokens })
     try {
       const r = await invokeGemini({
         prompt: params.prompt,
@@ -60,7 +61,12 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
         temperature,
       })
       const elapsed = Date.now() - startedAt
-      console.log(`[ai] ${label} ✓ Gemini ${r.model} ${elapsed}ms · raw=${r.raw.length}b`)
+      log.info('ai', 'Gemini 성공', {
+        label,
+        model: r.model,
+        ms: elapsed,
+        rawBytes: r.raw.length,
+      })
       return {
         raw: r.raw,
         provider: 'gemini',
@@ -68,7 +74,10 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
         fallback: false,
       }
     } catch (geminiError: any) {
-      console.warn(`[ai] ${label} ✗ Gemini 실패 → Claude fallback: ${geminiError?.message}`)
+      log.warn('ai', 'Gemini 실패 → Claude fallback', {
+        label,
+        primaryError: String(geminiError?.message ?? geminiError).slice(0, 200),
+      })
       // Claude 로 폴백
       try {
         const msg = await anthropic.messages.create({
@@ -79,7 +88,12 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
         const block = msg.content[0]
         const raw = block.type === 'text' ? block.text : ''
         const elapsed = Date.now() - startedAt
-        console.log(`[ai] ${label} ✓ Claude(fallback) ${CLAUDE_MODEL} ${elapsed}ms · raw=${raw.length}b`)
+        log.info('ai', 'Claude(fallback) 성공', {
+          label,
+          model: CLAUDE_MODEL,
+          ms: elapsed,
+          rawBytes: raw.length,
+        })
         return {
           raw,
           provider: 'claude',
@@ -88,6 +102,11 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
           primaryError: String(geminiError?.message ?? geminiError),
         }
       } catch (claudeError: any) {
+        log.error('ai', 'Gemini + Claude 모두 실패', {
+          label,
+          geminiError: String(geminiError?.message ?? geminiError).slice(0, 200),
+          claudeError: String(claudeError?.message ?? claudeError).slice(0, 200),
+        })
         throw new Error(
           `[${label}] Gemini + Claude 모두 실패. ` +
             `Gemini: ${geminiError?.message} / Claude: ${claudeError?.message}`,
@@ -97,7 +116,7 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   }
 
   // Gemini 사용 불가 → Claude 직행
-  console.log(`[ai] ${label} → Claude 직행 (Gemini 미설정)`)
+  log.debug('ai', 'Claude 직행 (Gemini 미설정)', { label })
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: maxTokens,
@@ -106,7 +125,12 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   const block = msg.content[0]
   const raw = block.type === 'text' ? block.text : ''
   const elapsed = Date.now() - startedAt
-  console.log(`[ai] ${label} ✓ Claude ${CLAUDE_MODEL} ${elapsed}ms · raw=${raw.length}b`)
+  log.info('ai', 'Claude 성공', {
+    label,
+    model: CLAUDE_MODEL,
+    ms: elapsed,
+    rawBytes: raw.length,
+  })
   return {
     raw,
     provider: 'claude',

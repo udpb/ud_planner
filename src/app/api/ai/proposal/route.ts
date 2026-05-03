@@ -14,6 +14,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { invokeAi } from '@/lib/ai-fallback'
+import { log } from '@/lib/logger'
 import { buildPipelineContext } from '@/lib/pipeline-context'
 import {
   generateProposalSection,
@@ -82,9 +83,11 @@ export async function POST(req: NextRequest) {
     const tAi = Date.now() - tAi0
 
     if (!result.ok) {
-      console.warn(
-        `[proposal POST] section ${sectionNo} 실패 (${tAi}ms): ${result.error}`,
-      )
+      log.warn('proposal-generate', '섹션 생성 실패', {
+        sectionNo,
+        ms: tAi,
+        error: result.error,
+      })
       if (result.error.startsWith('SLICE_REQUIRED:')) {
         const slice = result.error.split(':')[1]
         return NextResponse.json(
@@ -127,9 +130,14 @@ export async function POST(req: NextRequest) {
     })
 
     const tTotal = Date.now() - t0
-    console.info(
-      `[proposal POST] ✓ section ${sectionNo} v${newVersion} (ctx=${tCtx}ms, ai=${tAi}ms, total=${tTotal}ms, retried=${result.metadata.retried})`,
-    )
+    log.info('proposal-generate', '섹션 생성 성공', {
+      sectionNo,
+      version: newVersion,
+      ctxMs: tCtx,
+      aiMs: tAi,
+      totalMs: tTotal,
+      retried: result.metadata.retried,
+    })
 
     return NextResponse.json({
       section: saved,
@@ -137,7 +145,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : '생성 실패'
-    console.error('[proposal POST] error:', err)
+    log.error('proposal-generate', err)
     return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
