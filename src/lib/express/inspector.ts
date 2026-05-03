@@ -17,6 +17,7 @@
  */
 
 import 'server-only'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 import { z } from 'zod'
 import { invokeAi } from '@/lib/ai-fallback'
@@ -164,7 +165,7 @@ export async function inspectDraft(draft: ExpressDraft): Promise<InspectorReport
 
   const r = await invokeAi({
     prompt,
-    maxTokens: 8192,
+    maxTokens: AI_TOKENS.STANDARD,
     temperature: 0.3, // 검수는 보수적
     label: 'express-inspect',
   })

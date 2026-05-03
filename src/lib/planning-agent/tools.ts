@@ -24,6 +24,7 @@ import {
   buildStrategicReactionPrompt,
   buildDynamicQuestionsPrompt,
 } from './prompts'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 // ─────────────────────────────────────────
 // JSON 파싱 헬퍼 (claude.ts의 safeParseJson 패턴)
@@ -71,7 +72,7 @@ export async function extractSlotFromAnswer(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 2048,
+    max_tokens: AI_TOKENS.LIGHT,
     messages: [
       {
         role: 'user',
@@ -131,7 +132,7 @@ export async function synthesizeStrategy(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 12288, // 11섹션 JSON은 ~12K 토큰. Sonnet max output = 16384.
+    max_tokens: AI_TOKENS.LARGE, // 11섹션 JSON은 ~12K 토큰. Sonnet max output = 16384.
     messages: [
       {
         role: 'user',
@@ -206,7 +207,7 @@ export async function generateDynamicQuestions(
   try {
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 4096,
+      max_tokens: AI_TOKENS.LIGHT,
       messages: [{ role: 'user', content: prompt }],
     })
     const raw = (msg.content[0] as any).text.trim()

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { invokeAi } from '@/lib/ai-fallback'
 import { safeParseJsonExternal as safeParseJson, JsonParseError } from '@/lib/claude'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
       try {
         const r = await invokeAi({
           prompt,
-          maxTokens: 8192,
+          maxTokens: AI_TOKENS.STANDARD,
           temperature: 0.4,
           label: `suggest-impact-goal (attempt ${attempt + 1})`,
         })

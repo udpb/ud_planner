@@ -34,6 +34,7 @@ import {
   formatAcceptedAssets,
   SECTION_NO_TO_KEY,
 } from '@/lib/asset-registry'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입 · 상수
@@ -92,7 +93,7 @@ export const PROPOSAL_SECTION_SPEC: Record<ProposalSectionNo, ProposalSectionSpe
     focus: '세션 · 트랙 · IMPACT 매핑 · Action Week · 설계 근거',
     minChars: 1000,
     maxChars: 2000,
-    maxTokens: 4096,
+    maxTokens: AI_TOKENS.LIGHT,
     requiresSlices: ['rfp', 'curriculum'],
   },
   4: {

@@ -12,6 +12,7 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { AI_TOKENS } from './ai/config'
 
 /**
  * 기본 모델 (2026-04-27).
@@ -64,7 +65,7 @@ export async function invokeGemini(params: GeminiInvokeParams): Promise<GeminiIn
   const model = client.getGenerativeModel({
     model: modelName,
     generationConfig: {
-      maxOutputTokens: params.maxTokens ?? 16384,
+      maxOutputTokens: params.maxTokens ?? AI_TOKENS.LARGE,
       temperature: params.temperature ?? 0.4,
     },
   })

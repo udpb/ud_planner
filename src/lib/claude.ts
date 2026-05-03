@@ -9,6 +9,7 @@ import {
   PROJECT_TASK_VALUES,
   type ProjectTaskType,
 } from './program-profile'
+import { AI_TOKENS } from './ai/config'
 
 // ────────────────────────────────────────────────────────────────
 // LLM 백엔드: Anthropic Claude (네이티브 SDK)
@@ -164,7 +165,7 @@ export interface RfpParsed {
 export async function parseRfp(text: string): Promise<RfpParsed> {
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 12288, // L1 확대 (4096 → 16384) — RFP 본문이 길 때 절단 방지
+    max_tokens: AI_TOKENS.LARGE, // L1 확대 (4096 → 16384) — RFP 본문이 길 때 절단 방지
     messages: [
       {
         role: 'user',
@@ -243,7 +244,7 @@ export async function suggestImpactGoal(
 ): Promise<ImpactGoalSuggestion> {
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 8192, // L1 확대 (1024 → 8192) — Impact Goal 응답 절단 사고 (2026-04-27)
+    max_tokens: AI_TOKENS.STANDARD, // L1 확대 (1024 → 8192) — Impact Goal 응답 절단 사고 (2026-04-27)
     messages: [
       {
         role: 'user',
@@ -566,7 +567,7 @@ export async function buildLogicModel(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 12288, // L1 확대 (6144 → 16384) — Logic Model 5843byte 절단 사고 (2026-04-27)
+    max_tokens: AI_TOKENS.LARGE, // L1 확대 (6144 → 16384) — Logic Model 5843byte 절단 사고 (2026-04-27)
     messages: [
       {
         role: 'user',
@@ -674,7 +675,7 @@ export async function suggestCurriculum(
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 12288, // L1 확대 (4096 → 16384) — 커리큘럼 길어질 때 안전 마진
+    max_tokens: AI_TOKENS.LARGE, // L1 확대 (4096 → 16384) — 커리큘럼 길어질 때 안전 마진
     messages: [
       {
         role: 'user',
@@ -957,7 +958,7 @@ ${weight >= 25 ? '⚠ 고배점 섹션입니다. 평가 항목의 세부 기준�
 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 12288, // L1 확대 (4096 → 16384) — 제안서 섹션 길이 안전 마진
+    max_tokens: AI_TOKENS.LARGE, // L1 확대 (4096 → 16384) — 제안서 섹션 길이 안전 마진
     messages: [
       {
         role: 'user',

@@ -17,6 +17,7 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 import { invokeGemini, isGeminiAvailable, GEMINI_MODEL } from './gemini'
+import { AI_TOKENS } from './ai/config'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 const CLAUDE_MODEL = 'claude-sonnet-4-6'
@@ -43,7 +44,7 @@ export interface InvokeAiResult {
 
 export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> {
   const label = params.label ?? 'invokeAi'
-  const maxTokens = params.maxTokens ?? 16384
+  const maxTokens = params.maxTokens ?? AI_TOKENS.LARGE
   const temperature = params.temperature ?? 0.4
 
   const preferGemini = params.preferredProvider !== 'claude' && isGeminiAvailable()

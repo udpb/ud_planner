@@ -9,6 +9,7 @@ import {
   type StrategicNotes,
 } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
 
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 4096,
+      max_tokens: AI_TOKENS.LIGHT,
       messages: [
         {
           role: 'user',

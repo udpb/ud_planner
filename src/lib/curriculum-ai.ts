@@ -61,6 +61,7 @@ import type {
   MethodologyPrimary,
 } from '@/lib/program-profile'
 import { COMMON_PLANNING_PRINCIPLES } from '@/lib/planning-principles'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입
@@ -535,7 +536,7 @@ export async function generateCurriculum(
   try {
     const aiResult = await invokeAi({
       prompt,
-      maxTokens: 12288,
+      maxTokens: AI_TOKENS.LARGE,
       temperature: 0.4,
       label: 'curriculum',
     })
@@ -666,7 +667,7 @@ JSON 만 출력. 마크다운 펜스·trailing comma 금지.`
   try {
     const aiResult = await invokeAi({
       prompt,
-      maxTokens: 6144,
+      maxTokens: AI_TOKENS.OUTLINE,
       temperature: 0.4,
       label: 'curriculum-outline',
     })
@@ -700,7 +701,7 @@ JSON 만 출력. 마크다운 펜스·trailing comma 금지.`
 /**
  * 2단계: outline 의 각 회차에 detail 보강 (~30초 목표)
  *   - objectives, recommendedExpertise, notes, impactModuleCode 채움
- *   - max_tokens: 8192
+ *   - max_tokens: AI_TOKENS.STANDARD
  */
 export async function enrichCurriculumDetails(
   input: GenerateCurriculumInput,
@@ -774,7 +775,7 @@ JSON 만 출력. 설명·마크다운 펜스 없이. trailing comma 금지.`
   try {
     const aiResult = await invokeAi({
       prompt: detailsPrompt,
-      maxTokens: 8192,
+      maxTokens: AI_TOKENS.STANDARD,
       temperature: 0.3,
       label: 'curriculum-details',
     })

@@ -20,6 +20,7 @@ import {
   PROPOSAL_SECTION_SPEC,
   type ProposalSectionNo,
 } from '@/lib/proposal-ai'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 function safeParseJson<T>(raw: string): T {
   const s = raw.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/, '').trim()
@@ -200,7 +201,7 @@ export async function PUT(req: NextRequest) {
 
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 2048,
+      max_tokens: AI_TOKENS.LIGHT,
       messages: [
         {
           role: 'user',

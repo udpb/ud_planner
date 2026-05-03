@@ -10,6 +10,7 @@
  */
 
 import 'server-only'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 import { invokeAi } from '@/lib/ai-fallback'
 import { safeParseJsonExternal, JsonParseError, type RfpParsed } from '@/lib/claude'
@@ -93,7 +94,7 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
   try {
     const r = await invokeAi({
       prompt,
-      maxTokens: 8192,
+      maxTokens: AI_TOKENS.STANDARD,
       temperature: 0.5,
       label: input.firstTurn ? 'express-first-turn' : 'express-turn',
     })
@@ -141,7 +142,7 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
       try {
         const r2 = await invokeAi({
           prompt: prompt + '\n\n[중요] 이전 응답이 JSON 파싱 실패. JSON 만 출력하세요.',
-          maxTokens: 8192,
+          maxTokens: AI_TOKENS.STANDARD,
           temperature: 0.3,
           label: 'express-turn-retry',
           preferredProvider: aiResp.provider === 'gemini' ? 'claude' : 'gemini',

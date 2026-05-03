@@ -26,6 +26,7 @@ import {
   type PlanningDirectionRequest,
   type PlanningDirectionResponse,
 } from '@/lib/planning-direction'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60 // Vercel Hobby 한계
@@ -67,7 +68,7 @@ async function generatePlanningDirection(
     try {
       const msg = await anthropic.messages.create({
         model: CLAUDE_MODEL,
-        max_tokens: 4096,
+        max_tokens: AI_TOKENS.LIGHT,
         messages: [
           {
             role: 'user',

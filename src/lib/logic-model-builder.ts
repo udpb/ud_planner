@@ -42,6 +42,7 @@ import type {
   RfpSlice,
 } from '@/lib/pipeline-context'
 import { IMPACT_STAGE_OVERVIEW } from '@/lib/ud-brand'
+import { AI_TOKENS } from '@/lib/ai/config'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입
@@ -687,7 +688,7 @@ export async function buildLogicModel(
       // L1 (2026-04-27): Gemini 우선 + Claude fallback. max_tokens 16384.
       const r = await invokeAi({
         prompt,
-        maxTokens: 12288,
+        maxTokens: AI_TOKENS.LARGE,
         temperature: 0.3,
         label: `logic-model-builder (attempt ${attempt})`,
       })
