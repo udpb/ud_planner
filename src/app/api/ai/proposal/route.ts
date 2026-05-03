@@ -39,6 +39,9 @@ function isValidSectionNo(n: unknown): n is ProposalSectionNo {
   return typeof n === 'number' && n >= 1 && n <= 7 && Number.isInteger(n)
 }
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60 // Vercel Hobby 한계 — 7 섹션 큰 응답 시 위험 (P1-4 분할 호출 예정)
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()

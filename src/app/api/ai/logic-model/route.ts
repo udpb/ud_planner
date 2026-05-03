@@ -18,6 +18,9 @@ import { auth } from '@/lib/auth'
 import { buildPipelineContext } from '@/lib/pipeline-context'
 import { buildLogicModel } from '@/lib/logic-model-builder'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60 // Vercel Hobby 한계
+
 interface LogicModelRequestBody {
   projectId?: string
   impactGoal?: string

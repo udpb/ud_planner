@@ -18,6 +18,9 @@ import { buildPipelineContext } from '@/lib/pipeline-context'
 import type { ProposalSectionNo } from '@/lib/proposal-ai'
 import { runGate3 } from '@/modules/gate3-validation/run'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60 // 3 AI 검증 병렬 — 60초 위험 영역
+
 function isValidSectionNo(n: unknown): n is ProposalSectionNo {
   return typeof n === 'number' && n >= 1 && n <= 7 && Number.isInteger(n)
 }

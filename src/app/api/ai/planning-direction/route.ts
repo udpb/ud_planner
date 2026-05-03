@@ -27,6 +27,9 @@ import {
   type PlanningDirectionResponse,
 } from '@/lib/planning-direction'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60 // Vercel Hobby 한계
+
 // ─────────────────────────────────────────
 // B3 유틸 (src/lib/eval-strategy.ts) 동적 로더
 //

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { invokeAi } from '@/lib/ai-fallback'
 import { safeParseJsonExternal as safeParseJson, JsonParseError } from '@/lib/claude'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60
+
 interface GoalCandidate {
   goal: string
   rationale: string

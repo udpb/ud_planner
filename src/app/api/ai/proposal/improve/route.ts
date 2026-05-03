@@ -10,6 +10,9 @@ import {
 } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60
+
 /**
  * POST /api/ai/proposal/improve
  *

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { parseRfp, type RfpParsed } from '@/lib/claude'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 60 // Vercel Hobby 한계 — RFP 파싱 큰 PDF 시 위험
+
 // PDF → 텍스트 추출 (unpdf — Vercel 서버리스 완전 호환, worker 불필요)
 async function extractTextFromPdf(buffer: Buffer): Promise<string> {
   const { extractText } = await import('unpdf')
