@@ -34,6 +34,8 @@ import { NorthStarBar } from './NorthStarBar'
 import { ExpressChat } from './ExpressChat'
 import { ExpressPreview } from './ExpressPreview'
 import { RfpUploadDialog } from './RfpUploadDialog'
+import { AutoDiagnosisPanel } from '@/components/projects/auto-diagnosis-panel'
+import { ChannelConfirmCard } from '@/components/projects/channel-confirm-card'
 
 interface Props {
   projectId: string
@@ -575,16 +577,33 @@ export function ExpressShell(props: Props) {
           />
         </div>
 
-        {/* 우측 미리보기 */}
+        {/* 우측 미리보기 + AI 자동 진단 (Phase M0 ADR-013) */}
         <div className="flex flex-col overflow-hidden">
-          <ExpressPreview
-            draft={draft}
-            matchedAssets={matchedAssets}
-            autoCitations={autoCitations}
-            onToggleDiff={handleToggleDiff}
-            currentSlot={nextSlot}
-            projectId={props.projectId}
-          />
+          <div className="flex-1 overflow-y-auto">
+            {/* AI 자동 진단 + 채널 컨펌 — ExpressPreview 위에 sticky 영역으로 */}
+            <div className="space-y-3 border-b bg-muted/20 p-3">
+              <AutoDiagnosisPanel
+                projectId={props.projectId}
+                diagnosis={draft.meta.autoDiagnosis}
+                onRefresh={() => router.refresh()}
+              />
+              <ChannelConfirmCard
+                projectId={props.projectId}
+                channelDiag={draft.meta.autoDiagnosis?.channel}
+                intendedDepartment={draft.meta.intendedDepartment}
+                onConfirmed={() => router.refresh()}
+              />
+            </div>
+            {/* 7 섹션 미리보기 */}
+            <ExpressPreview
+              draft={draft}
+              matchedAssets={matchedAssets}
+              autoCitations={autoCitations}
+              onToggleDiff={handleToggleDiff}
+              currentSlot={nextSlot}
+              projectId={props.projectId}
+            />
+          </div>
         </div>
       </div>
     </>

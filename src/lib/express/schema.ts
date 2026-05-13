@@ -125,6 +125,49 @@ export const ASSET_SECTION_TO_DRAFT: Record<
 // 7. 메타 — 진행·완성 추적
 // ─────────────────────────────────────────
 
+/** 채널 분류 (ADR-013 Express 2.0) */
+export const ChannelSchema = z.enum(['B2G', 'B2B', 'renewal'])
+export type Channel = z.infer<typeof ChannelSchema>
+
+/** B2B 부서 분류 (프레임 진단) */
+export const DepartmentSchema = z.enum(['csr', 'strategy', 'sales', 'tech'])
+export type Department = z.infer<typeof DepartmentSchema>
+
+/** AI 자동 진단 결과 (사이드바 AutoDiagnosisPanel 에 표시) */
+export const AutoDiagnosisSchema = z.object({
+  /** 채널 추론 (Express 진입 시 1회) */
+  channel: z.object({
+    detected: ChannelSchema,
+    confidence: z.number().min(0).max(1),
+    reasoning: z.array(z.string()),
+    confirmedByPm: z.boolean().default(false),
+  }).optional(),
+  /** 프레임 진단 (B2B 우선 — sections.* 슬롯 채워질 때마다) */
+  framing: z.object({
+    detected: DepartmentSchema,
+    intendedDepartment: DepartmentSchema.optional(),
+    match: z.boolean(),
+    evidence: z.array(z.string()),
+    suggestion: z.string().optional(),
+    diagnosedAt: z.string().datetime(),
+  }).optional(),
+  /** 논리 흐름 점검 (1차본 조립 직전) */
+  logicChain: z.object({
+    passed: z.boolean(),
+    breakpoints: z.array(z.string()),
+    diagnosedAt: z.string().datetime(),
+  }).optional(),
+  /** 팩트체크 (정규식 + AI 검증, 1차본 조립 직전) */
+  factCheck: z.object({
+    totalFacts: z.number(),
+    verified: z.number(),
+    suspicious: z.number(),
+    unverifiable: z.number(),
+    diagnosedAt: z.string().datetime(),
+  }).optional(),
+})
+export type AutoDiagnosis = z.infer<typeof AutoDiagnosisSchema>
+
 export const ExpressMetaSchema = z.object({
   startedAt: z.string().datetime(),
   lastUpdatedAt: z.string().datetime(),
@@ -136,6 +179,22 @@ export const ExpressMetaSchema = z.object({
   skippedSlots: z.array(z.string()).default([]),
   /** AI 가 마지막으로 채운 슬롯 키 (디버깅) */
   lastFilledSlot: z.string().optional(),
+  /** 검수 결과 (Phase L5 — Inspector 7 렌즈) */
+  inspectionResult: z.object({
+    passed: z.boolean(),
+    overallScore: z.number(),
+    issues: z.array(z.object({
+      severity: z.string(),
+      lens: z.string(),
+      issue: z.string(),
+      suggestion: z.string(),
+    })),
+    nextAction: z.string(),
+  }).optional(),
+  /** ADR-013 Express 2.0 — AI 자동 진단 결과 */
+  autoDiagnosis: AutoDiagnosisSchema.optional(),
+  /** B2B 일 때 PM 이 지정한 목표 부서 (프레임 진단의 정답) */
+  intendedDepartment: DepartmentSchema.optional(),
 })
 
 // ─────────────────────────────────────────
