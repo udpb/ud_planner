@@ -1,9 +1,9 @@
-# Express Mode v1.0 — 아키텍처 스펙
+# Express Mode v2.0 — 아키텍처 스펙
 
-> 근거: [ADR-011 Express Mode](../decisions/011-express-mode.md)
+> 근거: [ADR-011 Express Mode](../decisions/011-express-mode.md) · **[ADR-013 Express 2.0](../decisions/013-express-v2-auto-diagnosis.md)** ⭐
 > 관련: [ADR-006 ProgramProfile](../decisions/006-program-profile.md) · [ADR-007 Differentiated Research](../decisions/007-step-differentiated-research-flow.md) · [ADR-008 Value Chain](../decisions/008-impact-value-chain.md) · [ADR-009 Asset Registry](../decisions/009-asset-registry.md) · [ADR-010 Content Hub](../decisions/010-content-hub.md)
 > 연결: [data-contract.md](data-contract.md) · [asset-registry.md](asset-registry.md) · [content-hub.md](content-hub.md) · [program-profile.md](program-profile.md) · [value-chain.md](value-chain.md) · [quality-gates.md](quality-gates.md)
-> 최종: 2026-04-27
+> 최종: 2026-05-03 (v2.0)
 
 ---
 
@@ -11,15 +11,30 @@
 
 | 항목 | 값 |
 |---|---|
-| 버전 | v1.0 (초안) |
-| 일자 | 2026-04-27 |
-| 작성자 | Underdogs UD-Ops 코어 |
-| 상태 | Accepted (ADR-011 채택과 동시) |
-| 선행 | ADR-001 ~ ADR-010 (특히 ADR-006 / 008 / 009 / 010) |
-| 후속 | Phase L Wave (L0~L6) — L1 Gemini fallback 완료, L2 PoC 시작 |
-| 본 문서 책임 범위 | Express Track 1차본 흐름의 데이터 모델·챗봇 흐름·UI·자산 인용·Deep 인계의 **구현 계약** |
+| 버전 | **v2.0** (ADR-013 Express 2.0 채택) |
+| 일자 | 2026-05-03 (v2.0) · 2026-04-27 (v1.0) |
+| 상태 | Accepted (ADR-013 채택과 동시) |
+| 선행 | ADR-001 ~ **ADR-013** (특히 ADR-011 / 013) |
+| 본 문서 책임 범위 | Express Track 1차본 흐름의 데이터 모델·챗봇 흐름·**자동 진단**·UI·자산 인용·Deep 인계의 **구현 계약** |
 
-이 문서는 ADR-011 의 결정을 architecture 차원에서 구체화한다. ADR 본문에 적힌 결정·배경·대안·리스크는 **참조만 하고 중복하지 않는다**. 본 문서는 "L2 PoC 를 즉시 코딩 가능한 수준의 사양" 을 목표로 한다.
+---
+
+## v1.0 → v2.0 변경 요약
+
+ADR-013 채택 (2026-05-03) 에 따른 변경:
+
+| 영역 | v1.0 | v2.0 |
+|---|---|---|
+| **AI 역할** | 콘텐츠 생성자 (12 슬롯 채움 + 7 섹션 생성) | **+ 자동 진단자** (채널·프레임·논리·팩트 자동) |
+| **AI 자동 진단** | Inspector 7 렌즈 (검수 시 1회) | **Inspector 8 렌즈 + 4 자동 진단 모듈 (매 턴)** |
+| **채널 분기** | 톤만 분리 (B2G/B2B/renewal) | **+ Inspector·UI·진단 lens 모두 분기** |
+| **외부 LLM 카드** | 5건 (정책·시장·벤치마크·대상자·운영) | **2~3건** (정부 통계·발주처 공식·시장 데이터) |
+| **사이드바 UI** | 5+ 카드 분산 | **4 패널 (다음 액션·자동 진단·외부 LLM·진행률)** |
+| **의사결정 컨펌** | slot filling 흐름 | **+ 4 마일스톤 컨펌** |
+| **슬롯 수** | 12개 | **12개 (변화 없음)** — PM 부담 동일 |
+| **토큰/1차본** | ~30K | ~50K (사용자 허용, 진단 자동화 대가) |
+
+본 문서는 v2.0 의 자동 진단·채널 분기·사이드바 재설계를 구현 계약으로 정의한다.
 
 ---
 
@@ -951,3 +966,193 @@ function canEnterExpress(project: Project): boolean {
 | CLAUDE.md "설계 철학" | 1~9번 중 9번 (Value Chain) 까지. ADR-011 의 "Express 메인" 추가 필요 | 설계 철학 10번 추가 (별도 작업) |
 
 이 문서는 **본문에서 충돌을 일으키지 않음** — Deep Track 설계는 그대로 유지하고 Express 만 추가하는 패턴이라 6 step·Phase A~H 모두 보존된다.
+
+---
+
+# v2.0 신규 섹션 — Express 2.0 자동 진단·채널 분기
+
+## v2.1 AI 자동 진단 4종
+
+PM 입력 없이 AI 가 매 턴 또는 1차본 조립 직전 자동 실행. 결과를 사이드바 "AI 자동 진단" 패널에 노출.
+
+### v2.1.1 ChannelDetector
+
+```typescript
+// src/lib/express/channel-detector.ts
+export async function detectChannel(
+  rfp: RfpParsed,
+  clientHistory?: PriorProject[]
+): Promise<{
+  detected: 'B2G' | 'B2B' | 'renewal'
+  confidence: number  // 0~1
+  reasoning: string[]
+}>
+```
+
+추론 logic:
+1. **Renewal 우선**: 같은 발주처 prior project (status=COMPLETED) 있으면 renewal
+2. **B2G**: 발주처명에 `진흥원·공단·재단·청·부·처` 키워드 + 평가표 ≥4 항목 명시
+3. **B2B**: 발주처명에 `그룹·㈜·금융·카카오·네이버` 키워드 + 평가표 없음
+4. **하이브리드 (카카오 지역협력 등)**: confidence < 0.8 → PM 컨펌 필수
+
+호출 시점: Express 진입 시 1회. PM 컨펌 카드 (1 클릭).
+
+### v2.1.2 FramingInspector (B2B 우선)
+
+```typescript
+// src/lib/express/framing-inspector.ts
+export async function diagnoseFraming(
+  draft: ExpressDraft,
+  channel: 'B2G' | 'B2B' | 'renewal',
+): Promise<{
+  detected: 'csr' | 'strategy' | 'sales' | 'tech'
+  intendedDepartment?: 'csr' | 'strategy' | 'sales' | 'tech'  // PM 명시 시
+  evidence: string[]
+  match: boolean
+  suggestion?: string  // 불일치 시 수정 제안
+}>
+```
+
+호출 시점: `sections.*` 슬롯 채워질 때마다 (debounce 1초). 토큰 ~2K/회.
+
+채널별 lens:
+- **B2B**: CSR vs 기획전략 vs 영업 vs 기술 — 슬기님 03/25 직접 대응
+- **B2G**: rfpCompliance 강화 (지정 목차 위반 등)
+- **renewal**: 작년 톤 vs 올해 톤 일관성
+
+### v2.1.3 FactCheckLight
+
+```typescript
+// src/lib/proposal/fact-checker.ts
+export function extractFacts(content: string): Fact[]
+export function categorizeFacts(facts: Fact[]): FactCategory[]
+export async function verifyFact(fact: Fact): Promise<VerificationResult>  // 선택, AI 호출
+```
+
+5 카테고리 (새싹 워크플로):
+- A 신한공식 / B 정부공공 / C 시장 / D 내부 (Asset 매칭) / E 자체추정
+
+5 검증 상태:
+- ✅검증됨 / ⚠️유사확인 / ❓검증불가 / 🔴불일치 / 📌자체추정
+
+UI: ProposalSection 옆 hover 시 수치 highlight 색.
+
+### v2.1.4 LogicChainChecker (확장)
+
+기존 `src/modules/gate3-validation/logic-chain.ts` 채널별 분기 추가.
+
+채널별 chain 기준:
+- **B2B (사회공헌 흐름)**: 발주처 사업 전략 → 사회공헌 기성과 → 집중 과제 → 솔루션 → 기대효과 (브랜드 가치 + 업 기여)
+- **B2G (평가배점 정렬)**: 평가표 항목 1번 → 2번 → ... → N번 순서대로 섹션 매핑
+- **renewal (개선 매핑)**: 작년 KPI → 미흡 영역 → 올해 약속 → 측정 가능한 변화
+
+호출 시점: 1차본 조립 직전. 토큰 ~3K.
+
+## v2.2 채널별 Inspector 가중치
+
+```typescript
+// src/lib/express/inspector.ts (확장)
+const CHANNEL_INSPECTOR_WEIGHTS: Record<Channel, InspectorWeight> = {
+  B2G: {
+    evalWeightAlignment: 0.30,
+    quantitativeEvidence: 0.20,
+    rfpCompliance: 0.20,
+    differentiation: 0.15,
+    udAssetCitation: 0.10,
+    framingAlignment: 0.05,
+  },
+  B2B: {
+    framingAlignment: 0.30,   // 슬기님 03/25 핵심
+    officialDocCitation: 0.20,
+    departmentTone: 0.15,
+    internalContext: 0.15,
+    differentiation: 0.10,
+    quantitativeEvidence: 0.10,
+  },
+  renewal: {
+    improvementMapping: 0.30,
+    priorYearData: 0.25,
+    measurableChange: 0.20,
+    continuity: 0.15,
+    differentiation: 0.10,
+  },
+}
+```
+
+총점 100점. 채널별로 critical 차원이 다름.
+
+## v2.3 사이드바 4 패널 구조
+
+```
+╔═════════════════════════════════════╗
+║ 🎯 다음 1 액션 (Next Step)         ║
+║   critical / warn 중 1개            ║
+╠═════════════════════════════════════╣
+║ 🤖 AI 자동 진단                    ║
+║   채널 | 프레임 | 논리 | 팩트       ║
+║   각각 pass / warn / fail           ║
+╠═════════════════════════════════════╣
+║ 🤝 외부 LLM (2~3건만)              ║
+║   Impact Value Chain stage 태깅     ║
+╠═════════════════════════════════════╣
+║ 📊 슬롯 진행 (12 / 12)             ║
+║   진행률 + 펼침 목록                ║
+╚═════════════════════════════════════╝
+```
+
+### v2.3.1 패널별 컴포넌트
+
+| 패널 | 파일 | 책임 |
+|---|---|---|
+| 1. 다음 1 액션 | `src/components/express/sidebar/NextActionCard.tsx` | 가장 점수 낮은 진단 1개 강조 + 수정 액션 |
+| 2. AI 자동 진단 | `src/components/express/sidebar/AutoDiagnosisPanel.tsx` | 4 진단 결과 (pass/warn/fail) 한 줄씩 |
+| 3. 외부 LLM | `src/components/express/sidebar/ExternalLLMCards.tsx` | 2~3 카드 (Impact stage 태깅) |
+| 4. 슬롯 진행 | `src/components/express/sidebar/SlotProgress.tsx` | 12 슬롯 펼침 가능 |
+
+### v2.3.2 채널별 특화 카드 (사이드바 2번 패널 내부)
+
+| 채널 | 특화 컴포넌트 |
+|---|---|
+| B2G | `B2GSidebar.tsx` — 평가배점 100점 시뮬 막대 |
+| B2B | `B2BSidebar.tsx` — 프레임 진단 (CSR vs 전략 vs 영업) |
+| renewal | `RenewalSidebar.tsx` — 작년 vs 올해 매핑 체크리스트 |
+
+## v2.4 의사결정 컨펌 흐름
+
+slot filling 흐름 중 4 마일스톤에서 챗봇이 **컨펌 카드** 띄움.
+
+```typescript
+// src/lib/express/decision-points.ts
+export const DECISION_POINTS = [
+  {
+    id: 'channel-confirmed',
+    triggerAfter: 'first-turn',
+    title: (d) => `이 사업은 [${d.channel}] 으로 진행합니다`,
+    options: ['확인', '다른 채널로 변경'],
+  },
+  {
+    id: 'main-solution-confirmed',
+    triggerAfter: (d) => d.sections?.['2']?.length > 200,  // 추진전략 작성됨
+    title: '메인 솔루션을 확정합니다 — 다음 단계 (커리큘럼·KPI) 로 진행?',
+    options: ['확정', 'ALT 추가 검토'],
+  },
+  {
+    id: 'pre-assembly',
+    triggerAfter: (d) => slotProgress(d) >= 0.85,
+    title: '12 슬롯 중 10개 채워짐. 1차본 자동 조립 시작?',
+    options: ['시작', '슬롯 더 채우기'],
+  },
+  {
+    id: 'post-inspection',
+    triggerAfter: 'inspector-done',
+    title: '검수 결과 8 렌즈: 6 통과 / 2 경고. 경고 영역만 재생성?',
+    options: ['재생성', '그대로 승인', '직접 수정'],
+  },
+]
+```
+
+UI: 챗봇 슬롯 흐름 중 컨펌 카드 (Yes/No + 사유). 슬랙 새싹 패턴 흡수.
+
+## v2.5 토큰 모델 (참조)
+
+PRD-v8.0 §3 참조. 1차본당 ~50K (v1.0 30K + 진단 20K). 사용자 허용 영역.

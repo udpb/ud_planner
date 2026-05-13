@@ -10,15 +10,19 @@
   - 2026-04-15 Step 순서 재설계 / 2026-04-23 Impact Value Chain 5단계 (ADR-008, ⑤ Outcome = SROI 수렴점) / Step 4·5 재구성
 
 - **Tech**: Next.js 16 (App Router) + TypeScript + Prisma 7 + PostgreSQL
-- **DB**: 44개 모델, `prisma/schema.prisma` 참조
+- **DB**: **33개 모델** (ADR-012 완결, 2026-05-03 — 44 → 33), `prisma/schema.prisma` 참조
 - **AI Primary**: Google Gemini 3.1 Pro Preview (`gemini-3.1-pro-preview`) — Phase L1 완료
 - **AI Fallback**: Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`)
 - **AI 단일 진입점**: `src/lib/ai-fallback.ts` `invokeAi(params)` (provider/model 중립)
+- **Coach 단일 source**: Supabase `coaches_directory` (coach-finder 와 동기, 715명 활성)
 
 ## 최신 설계 소스 (Single Source of Truth)
-- **[PRD-v7.0.md](PRD-v7.0.md)** ⭐⭐⭐ — 단일 진실 원본 (v7.1 minor bump 2026-04-29 — Phase L 100% + I I2/I3/I5 + J PoC 반영, Express + Deep 두 트랙)
-- **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** ⭐ — User flow ASCII 다이어그램 (Express 12 슬롯 + 종료 트리거 + Deep 6 step + 데이터 흐름, v1.0 2026-04-29)
-- **[ROADMAP.md](ROADMAP.md)** — Phase 체크리스트 (A~H + L 100% + I I2/I3/I5 + J PoC 완료, I1·I4 잔여)
+- **[PRD-v8.0.md](PRD-v8.0.md)** ⭐⭐⭐ — 단일 진실 원본 (v8.0 2026-05-03 — **Express 2.0** AI 자동 진단 + 채널 분기 + 외부 LLM 최소화)
+- **[docs/decisions/013-express-v2-auto-diagnosis.md](docs/decisions/013-express-v2-auto-diagnosis.md)** ⭐⭐ — Express 2.0 의사결정 (슬기님 03/25 + 사용자 통찰 기반)
+- **[docs/architecture/express-mode.md](docs/architecture/express-mode.md)** ⭐ — v2.0 (Express 2.0 자동 진단·채널 분기·사이드바 4 패널)
+- **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** — User flow ASCII 다이어그램 (v1.0 2026-04-29)
+- **[ROADMAP.md](ROADMAP.md)** — Phase 체크리스트 (A~H + L + I + J 완료, **Phase M Express 2.0** 시작 대기)
+- `docs/archive/PRD-v7.1.md` — 이전 PRD (v8.0 으로 대체됨, 2026-05-03 ADR-013 채택)
 - **[REDESIGN.md](REDESIGN.md)** — 상세 설계 v2 (PipelineContext / PM 가이드 / 예상 점수)
 - **[docs/architecture/](docs/architecture/)** — 아키텍처 9문서
   - [modules.md](docs/architecture/modules.md) — 모듈 4계층 + Manifest 패턴
@@ -28,10 +32,10 @@
   - [value-chain.md](docs/architecture/value-chain.md) ⭐ — Impact Value Chain 5단계 + SROI 수렴점 (ADR-008)
   - [asset-registry.md](docs/architecture/asset-registry.md) ⭐ — UD Asset Registry v1 + RFP 자동 매핑 (ADR-009)
   - [content-hub.md](docs/architecture/content-hub.md) ⭐ — Content Hub v2 (DB + 계층 + 담당자 UI, ADR-010)
-  - [express-mode.md](docs/architecture/express-mode.md) ⭐⭐ — **Express Mode v1.0 — 두 트랙 정체 + 12 슬롯 + 3 카드 + 검수 에이전트 (ADR-011)**
+  - [express-mode.md](docs/architecture/express-mode.md) ⭐⭐ — **Express Mode v2.0 — AI 자동 진단 4종 + 채널 분기 + 사이드바 4 패널 (ADR-013, 2026-05-03)**
   - [program-profile.md](docs/architecture/program-profile.md) — ProgramProfile v1.1 11축 (ADR-006)
   - [current-state-audit.md](docs/architecture/current-state-audit.md) — 기존 파일 유지/고도화/재작업/제거 판정
-- **[docs/decisions/](docs/decisions/)** — ADR-001 ~ **ADR-011**. 중요 결정 전후 필수 참조
+- **[docs/decisions/](docs/decisions/)** — ADR-001 ~ **ADR-013**. 중요 결정 전후 필수 참조
 - **[docs/journey/](docs/journey/)** — 시행착오 일지. 세션 끝에 기록
 - **[PLANNING_AGENT_ROADMAP.md](PLANNING_AGENT_ROADMAP.md)** — Planning Agent 별도 트랙
 - `docs/archive/PRD-v6.0.md` — ⚠️ Archived (PRD-v7.0 으로 대체됨, 2026-04-27 ADR-011 채택)
@@ -62,7 +66,7 @@
 - **아이콘**: lucide-react
 - **토스트**: sonner (`toast.success()`, `toast.error()`)
 
-## 설계 철학 (재설계 v2, 2026-04-15 · Value Chain 2026-04-23 · Express Mode 2026-04-27)
+## 설계 철학 (재설계 v2, 2026-04-15 · Value Chain 2026-04-23 · Express Mode 2026-04-27 · **Express 2.0 2026-05-03**)
 1. **데이터는 위에서 아래로 흐른다** — 각 스텝은 이전 스텝 산출물을 `PipelineContext`로 받는다 (Deep Track)
 2. **내부 자산은 자동으로 올라온다** — IMPACT 모듈·코치·SROI 프록시 등 PM이 찾아가지 않음. ⭐ **Express 의 자동 인용으로 진짜 구현** — `narrativeSnippet` 이 1차본 sections 에 자연 박힘 (Phase G·H 의 의도를 Express 가 더 일찍 실현)
 3. **AI는 맥락 안에서 호출된다** — 매번 처음부터가 아니라 축적된 컨텍스트 위에서. invokeAi (Gemini Primary / Claude Fallback) + safeParseJson 강화 (Phase L1 완료)
@@ -82,8 +86,20 @@
     - **북극성**: RFP → 30~45분 → "당선 가능한 기획 1차본 (7 섹션 초안)"
     - **신규 프로젝트 진입 시 Express 부터** — 단일 화면 (좌 챗봇 + 우 점진 미리보기), Slot Filling 12 슬롯, 외부 LLM 분기 3 카드 유형, 부차 기능 1줄 자동 인용
     - **정밀화 필요 시 Deep Track** — 기존 6 스텝 (Phase A~H 산출물 100% 보존). SROI/예산/코치 정밀, 루프 얼라인 Gate
-    - 스펙: [docs/architecture/express-mode.md](docs/architecture/express-mode.md) v1.0 + [PRD-v7.0.md](PRD-v7.0.md)
+    - 스펙: [docs/architecture/express-mode.md](docs/architecture/express-mode.md) v2.0 + [PRD-v8.0.md](PRD-v8.0.md)
     - 사용자 원문: *"핵심은 RFP에 맞춰서 당선 가능한 기획 1차본이 나오는거지"*
+
+11. ⭐⭐⭐ **Express 2.0 — AI 자동 진단 + 채널 분기 + 외부 LLM 최소화 (ADR-013, 2026-05-03)** — Express 패러다임 전환.
+    - **AI 가 콘텐츠 생성자 → 오케스트레이터·자동 진단자** — PM 입력 부담 동일, AI 가 더 일함, 외부 LLM 은 무거운 리서치만
+    - **AI 자동 진단 4종**: ChannelDetector (B2G/B2B/renewal 추론) · FramingInspector (사회공헌 vs 일반전략) · FactCheckLight (수치 5 카테고리·5 검증 상태) · LogicChainChecker (채널별 chain)
+    - **채널 분기**: 슬롯은 12개 공통, **Inspector 가중치·UI 사이드바·진단 lens** 만 채널별 분기
+    - **외부 LLM 5건 → 2~3건**: 정부 통계·발주처 공식 문서·시장 데이터만 (왔다갔다 60% ↓)
+    - **사이드바 4 패널**: 다음 1 액션 · AI 자동 진단 · 외부 LLM · 슬롯 진행 (행동 흐름)
+    - **의사결정 컨펌 4 마일스톤**: 채널 결정 / 메인 솔루션 / 1차본 조립 / 검수 결과 (슬랙 새싹 패턴 흡수)
+    - **슬기님 5 원칙 점수**: 51% → 74% (+23%p) — 특히 논리 흐름 (+45%p), 팩트체크 (+50%p)
+    - 스펙: [PRD-v8.0.md](PRD-v8.0.md) + [docs/decisions/013-express-v2-auto-diagnosis.md](docs/decisions/013-express-v2-auto-diagnosis.md)
+    - 사용자 원문: *"토큰은 좀 소모되어도 되는데, 무거운 리서치만 외부에서 하자. 너무 왔다갔다하면 번거롭잖아."*
+    - 슬기님 03/25 인용: *"논리 흐름이 '사회공헌사업' 보다는 '일반 사업 전략 제안'으로 읽힘"*
 
 ## AI API (v7 / Phase L1 갱신)
 - **단일 진입점**: `src/lib/ai-fallback.ts` `invokeAi(params)` — provider/model 중립

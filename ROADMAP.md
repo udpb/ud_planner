@@ -1,9 +1,9 @@
 # UD-Ops 파이프라인 재설계 로드맵
 
-> 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v7.0.md](PRD-v7.0.md)** ⭐ (단일 진실 원본, v7.1 2026-04-29) · **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** (User flow 다이어그램)
-> 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode** ⭐)
-> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~011)
-> 마지막 업데이트: 2026-04-27 (**Phase L Express Mode** Wave 추가 — ADR-011 채택)
+> 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v8.0.md](PRD-v8.0.md)** ⭐⭐ (단일 진실 원본, v8.0 2026-05-03 — Express 2.0)
+> 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode v2.0** ⭐)
+> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~**013**)
+> 마지막 업데이트: 2026-05-03 (**Phase M Express 2.0** — ADR-013 채택, AI 자동 진단 + 채널 분기 + 외부 LLM 최소화)
 
 ---
 
@@ -30,16 +30,17 @@
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
 | **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
 | **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | ✅ **완료** | **L0~L6 모두 완료 (100%)** |
-| I | 안정화 + Manifest 강제 + 배포 | 🔲 대기 | 0% (Phase L 완료 후 진입) |
+| I | 안정화 + Manifest 강제 + 배포 | ✅ 완료 | 100% (I2/I3/I5 완료, I1/I4 후속) |
+| J | 엑셀 PoC | ✅ 완료 | 100% (J1 5시트 + J2 budget-template) |
+| **운영 안정화** ⭐ | **30+ 커밋 정리 (Phase 1·2·3 + Coach 통합)** | ✅ 완료 | **100%** (DIAGNOSIS-2026-05-03) |
+| **M** ⭐⭐ | **Express 2.0 — AI 자동 진단 + 채널 분기 (ADR-013)** | 🔲 시작 대기 | 0% (M0~M3 4 단계) |
 
-### Phase 진행 순서 (2026-04-27 합의)
-
-Phase L (Express Mode) 가 Phase I (안정화·배포) 보다 우선. 1차본 흐름이 안정화되어야 배포의 의미가 있음.
+### Phase 진행 순서 (2026-05-03 합의)
 
 ```
-A → B → C → D → E → F → G → H → L → I → J(PoC)
-                                         ▲
-                                 (현재 위치 — Phase I I1·I4 외 완료, Phase J PoC 까지 들어감)
+A → B → C → D → E → F → G → H → L → I → J → [운영 안정화] → M
+                                                              ▲
+                                                          (현재 위치 — Phase M 진입 직전)
 ```
 
 ---
@@ -543,6 +544,85 @@ L0 ──────► L2 ─┬──► L3 ───┐
   - 신규: `/admin/interview-ingest/[id]` 상세 페이지 — 좌(원문+AI 요약+Red Flags) + 우(ExtractedItem 카드별 검토)
   - 카드 컴포넌트: 신뢰도 칩 + targetAsset 라벨 + payload (name·snippet·keywords·keyNumbers·evidence) + 승인/반려 버튼
   - 목록 페이지에서 상세로 진입 가능
+
+---
+
+## Phase M: Express 2.0 — AI 자동 진단 + 채널 분기 (ADR-013) ⭐⭐
+
+> M이 끝나면: 슬기님 5원칙 51% → 74% 달성. 발주처 부서별 프레임 진단 자동, 외부 LLM 5→3건 축소, 사이드바 행동 흐름.
+>
+> 근거: [ADR-013](docs/decisions/013-express-v2-auto-diagnosis.md), [PRD-v8.0.md](PRD-v8.0.md)
+
+### M0 (반나절~1일) — 시작 ⭐
+
+- [ ] **M0-1. ChannelDetector**
+  - 신규: `src/lib/express/channel-detector.ts`
+  - 입력: RfpParsed (client, projectType, evalCriteria, summary 등)
+  - 출력: `{ detected: 'B2G'|'B2B'|'renewal', confidence: number, reasoning: string[] }`
+  - 추론 logic: 발주처명 키워드 (`진흥원`/`재단`/`그룹` 등) + 평가표 명시 강도 + 우리 prior project 조회
+  - UI: Express 첫 화면에 컨펌 카드 (1 클릭)
+
+- [ ] **M0-2. FramingInspector** (B2B 우선)
+  - 신규: `src/lib/express/framing-inspector.ts`
+  - 입력: `ExpressDraft` + 채널
+  - 호출 시점: sections.* 슬롯 채워질 때마다 자동
+  - AI 호출 (~2K 토큰): "이 글이 어느 부서 언어인지 판별 + 근거 + 수정 제안"
+  - 결과: `{ detected: 'csr'|'strategy'|'sales'|'tech', evidence, match, suggestion }`
+
+- [ ] **M0-3. 사이드바 4 패널 재설계**
+  - 신규: `src/components/express/sidebar/NextActionCard.tsx`
+  - 신규: `src/components/express/sidebar/AutoDiagnosisPanel.tsx`
+  - 수정: `src/components/express/sidebar/ExternalLLMCards.tsx` (5→3 축소 + Impact Value Chain 태깅)
+  - 유지: `PMDirectCard.tsx`
+  - 신규: `src/components/express/sidebar/SlotProgress.tsx`
+
+### M1 (1~2일)
+
+- [ ] **M1-1. FactCheckLight**
+  - 신규: `src/lib/proposal/fact-checker.ts`
+  - Phase 1 (정규식): 수치·출처 자동 추출 (AI X)
+  - 5 카테고리 자동 분류 (A 신한공식 / B 정부공공 / C 시장 / D 내부 / E 자체추정)
+  - 5 검증 상태 (✅검증됨 / ⚠️유사 / ❓불가 / 🔴불일치 / 📌추정)
+  - UI: ProposalSection 옆 hover 시 수치 highlight
+
+- [ ] **M1-2. LogicChainChecker 채널별 확장**
+  - 기존: `src/modules/gate3-validation/logic-chain.ts`
+  - 확장: 채널별 다른 chain 기준
+    - B2B: 사회공헌 흐름 (전략→기성과→집중과제→솔루션→기대효과)
+    - B2G: 평가배점 정렬 흐름
+    - renewal: 작년→올해 매핑 흐름
+  - AI 호출 (~3K): 7 섹션 chain 정합성 진단
+
+- [ ] **M1-3. 의사결정 컨펌 흐름**
+  - 신규: `src/lib/express/decision-points.ts`
+  - 4 마일스톤: 채널 결정 / 메인 솔루션 / 1차본 조립 / 검수 결과
+  - 챗봇 흐름 중 컨펌 카드 (Yes/No + 사유)
+
+### M2 (3~5일)
+
+- [ ] **M2-1. 채널별 Inspector 가중치**
+  - 수정: `src/lib/express/inspector.ts`
+  - B2G/B2B/renewal 별 7 렌즈 가중치 분기 (ADR-013 §채널별 메커니즘)
+  
+- [ ] **M2-2. B2G 평가배점 시뮬**
+  - 신규: `src/components/express/sidebar/channel/B2GSidebar.tsx`
+  - 100점 만점 시뮬 + 섹션별 예상 점수 막대
+  - AI 호출: 각 섹션 본문 vs 평가 항목 매칭 → 점수 추정
+
+- [ ] **M2-3. renewal 개선 매핑 자동화**
+  - 신규: `src/components/express/sidebar/channel/RenewalSidebar.tsx`
+  - 작년 vs 올해 매핑 표 (체크리스트)
+  - `renewalContext` 기반 + sections.* 와 매칭
+
+### M3 (1주+, 후속)
+
+- [ ] **M3-1. PPT 출력**
+  - 옵션 A: Sassac (`proposal-gen` 스킬) 연결 — 마크다운 export 형식 표준화
+  - 옵션 B: `pptxgenjs` 직접 통합 (coach-finder 가 사용 중)
+
+- [ ] **M3-2. 발주처 공식 문서 ingestion**
+  - `IngestionJob.kind` 에 `client_official_doc` 추가
+  - PDF 업로드 → 키워드 자동 추출 → `Strategy.clientOfficialKeywords` 자동 채움
 
 ---
 
