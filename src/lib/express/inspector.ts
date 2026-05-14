@@ -26,6 +26,7 @@ import {
   SECTION_LABELS,
   type ExpressDraft,
   type SectionKey,
+  type Channel,
 } from './schema'
 
 // ─────────────────────────────────────────
@@ -62,9 +63,95 @@ export const InspectorReportSchema = z.object({
   strengths: z.array(z.string()).default([]),
   /** AI 가 추천하는 다음 액션 1줄 */
   nextAction: z.string(),
+  /** 채널별 가중치 적용 후 overallScore 가 산정됐는지 (M2 ADR-013) */
+  weightedByChannel: z.enum(['B2G', 'B2B', 'renewal']).optional(),
 })
 
 export type InspectorReport = z.infer<typeof InspectorReportSchema>
+
+// ─────────────────────────────────────────
+// 1.5 채널별 렌즈 가중치 (Phase M2, ADR-013)
+// ─────────────────────────────────────────
+
+/**
+ * 채널별 평가 가중치 — Inspector overallScore 계산 시 lensScores 에 곱한다.
+ *
+ * B2G  — 정량 통계 · 정책 근거 · 문제정의 강조 (시장도 중요)
+ * B2B  — 발주 부서 문제정의 · Before/After · 차별화 자산 강조
+ * renewal — 직전 성과·정량 변화·After 강조, 시장 분석은 덜 (이미 알고 있음)
+ *
+ * 가중치 합이 정확히 7.0 이 되도록 정규화. lens 7개 × 평균 1.0.
+ */
+export const CHANNEL_LENS_WEIGHTS: Record<Channel, Record<InspectorIssue['lens'], number>> = {
+  B2G: {
+    market: 1.1,
+    statistics: 1.3,
+    problem: 1.2,
+    'before-after': 1.0,
+    'key-messages': 0.8,
+    differentiators: 0.8,
+    tone: 0.8,
+  },
+  B2B: {
+    market: 0.9,
+    statistics: 0.9,
+    problem: 1.3,
+    'before-after': 1.2,
+    'key-messages': 1.0,
+    differentiators: 1.3,
+    tone: 0.8,
+  },
+  renewal: {
+    market: 0.7,
+    statistics: 1.2,
+    problem: 1.0,
+    'before-after': 1.3,
+    'key-messages': 0.9,
+    differentiators: 1.0,
+    tone: 0.9,
+  },
+}
+
+const ALL_LENSES: InspectorIssue['lens'][] = [
+  'market',
+  'statistics',
+  'problem',
+  'before-after',
+  'key-messages',
+  'differentiators',
+  'tone',
+]
+
+/**
+ * lensScores 에 채널 가중치 적용 → overallScore 재계산.
+ * 원본 report.overallScore 가 0 이거나 lensScores 가 비어있으면 그대로 반환.
+ */
+export function applyChannelWeights(
+  report: InspectorReport,
+  channel: Channel,
+): InspectorReport {
+  const weights = CHANNEL_LENS_WEIGHTS[channel]
+  if (!weights) return report
+
+  // 가중 평균 계산
+  let totalWeight = 0
+  let weightedSum = 0
+  for (const lens of ALL_LENSES) {
+    const score = report.lensScores[lens]
+    if (typeof score !== 'number') continue
+    const w = weights[lens] ?? 1
+    weightedSum += score * w
+    totalWeight += w
+  }
+  const weighted =
+    totalWeight > 0 ? Math.round(weightedSum / totalWeight) : report.overallScore
+
+  return {
+    ...report,
+    overallScore: weighted,
+    weightedByChannel: channel,
+  }
+}
 
 // ─────────────────────────────────────────
 // 2. 프롬프트
@@ -160,7 +247,10 @@ JSON 만 출력. 설명·마크다운 없이.
 // 3. 메인 함수
 // ─────────────────────────────────────────
 
-export async function inspectDraft(draft: ExpressDraft): Promise<InspectorReport> {
+export async function inspectDraft(
+  draft: ExpressDraft,
+  options: { channel?: Channel } = {},
+): Promise<InspectorReport> {
   const prompt = buildInspectPrompt(draft)
 
   const r = await invokeAi({
@@ -172,11 +262,20 @@ export async function inspectDraft(draft: ExpressDraft): Promise<InspectorReport
 
   const raw = safeParseJsonExternal<unknown>(r.raw, 'express-inspect')
   const validated = InspectorReportSchema.safeParse(raw)
-  if (validated.success) return validated.data
+  let report: InspectorReport
+  if (validated.success) {
+    report = validated.data
+  } else {
+    // 부분 채움이라도 시도
+    console.warn('[inspectDraft] zod 검증 실패 → coerce:', validated.error.message)
+    report = coerceReport(raw)
+  }
 
-  // 부분 채움이라도 시도
-  console.warn('[inspectDraft] zod 검증 실패 → coerce:', validated.error.message)
-  return coerceReport(raw)
+  // 채널 가중치 적용 (M2)
+  if (options.channel) {
+    report = applyChannelWeights(report, options.channel)
+  }
+  return report
 }
 
 function coerceReport(raw: unknown): InspectorReport {

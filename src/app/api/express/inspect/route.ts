@@ -50,9 +50,12 @@ export async function POST(req: NextRequest) {
     }
     const draft = draftValidation.data
 
+    // Phase M2: 채널 가중치 적용 (autoDiagnosis.channel 또는 confirmedByPm 기반)
+    const channel = draft.meta?.autoDiagnosis?.channel?.detected
+
     // LLM 검수 시도
     try {
-      const report = await inspectDraft(draft)
+      const report = await inspectDraft(draft, { channel })
       return NextResponse.json({ report, fellbackToHeuristic: false })
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err)

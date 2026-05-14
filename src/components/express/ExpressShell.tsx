@@ -36,6 +36,8 @@ import { ExpressPreview } from './ExpressPreview'
 import { RfpUploadDialog } from './RfpUploadDialog'
 import { AutoDiagnosisPanel } from '@/components/projects/auto-diagnosis-panel'
 import { ChannelConfirmCard } from '@/components/projects/channel-confirm-card'
+import { EvalSimulatorCard } from '@/components/projects/eval-simulator-card'
+import { RenewalSeedCard } from '@/components/projects/renewal-seed-card'
 
 interface Props {
   projectId: string
@@ -594,6 +596,15 @@ export function ExpressShell(props: Props) {
                 intendedDepartment={draft.meta.intendedDepartment}
                 onConfirmed={() => router.refresh()}
               />
+              {/* M2: 채널별 분기 카드 — B2G 평가 시뮬 / renewal 시드 */}
+              {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&
+                draft.meta.autoDiagnosis.channel.detected === 'B2G' && (
+                  <EvalSimulatorCard projectId={props.projectId} />
+                )}
+              {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&
+                draft.meta.autoDiagnosis.channel.detected === 'renewal' && (
+                  <RenewalSeedCard projectId={props.projectId} />
+                )}
             </div>
             {/* 7 섹션 미리보기 */}
             <ExpressPreview
