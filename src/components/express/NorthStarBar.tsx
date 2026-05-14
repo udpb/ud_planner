@@ -40,16 +40,16 @@ export function NorthStarBar({
 }: Props) {
   return (
     <div className="border-b bg-gradient-to-r from-orange-50/40 via-background to-background">
-      <div className="flex items-center gap-3 px-6 py-2.5">
-        {/* 북극성 메시지 */}
-        <div className="flex items-center gap-2 text-sm">
-          <Sparkles className="h-4 w-4 text-primary" />
+      <div className="flex flex-wrap items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 sm:py-2.5">
+        {/* 북극성 메시지 — 모바일에선 RFP→1차본 만 (시간 hide) */}
+        <div className="flex items-center gap-1.5 text-xs sm:gap-2 sm:text-sm">
+          <Sparkles className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
           <span className="font-medium text-foreground">RFP → 1차본</span>
-          <span className="text-muted-foreground">· 30~45분</span>
+          <span className="hidden text-muted-foreground sm:inline">· 30~45분</span>
         </div>
 
-        {/* 5단계 진행 점 */}
-        <div className="ml-3 flex flex-1 items-center gap-1">
+        {/* 5단계 진행 점 — 모바일에선 라벨 hide */}
+        <div className="ml-1 flex flex-1 items-center gap-1 sm:ml-3">
           {progress.stages.map((stage, i) => {
             const done = stage.pct >= 100
             const active = stage.pct > 0 && !done
@@ -64,7 +64,7 @@ export function NorthStarBar({
                 >
                   <div
                     className={cn(
-                      'h-2.5 w-2.5 rounded-full transition-all',
+                      'h-2 w-2 rounded-full transition-all sm:h-2.5 sm:w-2.5',
                       done
                         ? 'bg-primary'
                         : active
@@ -74,7 +74,7 @@ export function NorthStarBar({
                   />
                   <span
                     className={cn(
-                      'text-[10px] tabular-nums',
+                      'hidden text-[10px] tabular-nums sm:block',
                       done
                         ? 'font-semibold text-primary'
                         : active
@@ -84,8 +84,8 @@ export function NorthStarBar({
                   >
                     {stage.label}
                   </span>
-                  {/* Hover tooltip (CSS-only, 작은 카드) */}
-                  <div className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 -translate-x-1/2 whitespace-nowrap rounded-md border bg-popover px-2 py-1 text-[10px] text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+                  {/* Hover tooltip (CSS-only) — 데스크탑 hover 만 */}
+                  <div className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 hidden -translate-x-1/2 whitespace-nowrap rounded-md border bg-popover px-2 py-1 text-[10px] text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100 sm:block">
                     <div className="font-medium">
                       {stage.label} · {stage.pct}%
                     </div>
@@ -109,42 +109,42 @@ export function NorthStarBar({
           })}
         </div>
 
-        {/* 전체 % */}
+        {/* 전체 % — 모바일에선 라벨 hide */}
         <div className="text-right">
-          <div className="text-xs text-muted-foreground">전체</div>
-          <div className="text-base font-bold tabular-nums text-primary">
+          <div className="hidden text-xs text-muted-foreground sm:block">전체</div>
+          <div className="text-sm font-bold tabular-nums text-primary sm:text-base">
             {progress.overall}%
           </div>
         </div>
 
-        {/* 자동 저장 상태 */}
-        <div className="ml-3 flex w-24 items-center gap-1.5 text-xs">
+        {/* 자동 저장 상태 — 모바일에선 아이콘만 */}
+        <div className="flex items-center gap-1 text-xs sm:ml-3 sm:w-24 sm:gap-1.5">
           {autosaveStatus === 'saving' && (
             <>
               <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />
-              <span className="text-muted-foreground">저장 중</span>
+              <span className="hidden text-muted-foreground sm:inline">저장 중</span>
             </>
           )}
           {autosaveStatus === 'saved' && (
             <>
               <CheckCircle2 className="h-3 w-3 text-green-600" />
-              <span className="text-muted-foreground">저장됨</span>
+              <span className="hidden text-muted-foreground sm:inline">저장됨</span>
             </>
           )}
           {autosaveStatus === 'error' && (
             <>
               <AlertCircle className="h-3 w-3 text-red-600" />
-              <span className="text-red-600">저장 실패</span>
+              <span className="hidden text-red-600 sm:inline">저장 실패</span>
             </>
           )}
           {autosaveStatus === 'idle' && (
-            <span className="text-muted-foreground">자동 저장</span>
+            <span className="hidden text-muted-foreground sm:inline">자동 저장</span>
           )}
         </div>
 
-        {/* 1차본 승인 */}
+        {/* 1차본 승인 — 모바일에선 ml-0 (wrap 정렬) */}
         {isCompleted ? (
-          <div className="rounded-md bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
+          <div className="rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-800 sm:px-3">
             1차본 완성 ✓
           </div>
         ) : (
@@ -152,7 +152,7 @@ export function NorthStarBar({
             size="sm"
             onClick={onSubmitDraft}
             disabled={submitting || progress.overall < 60}
-            className="ml-2"
+            className="h-9 px-3 text-xs sm:ml-2 sm:h-9 sm:px-4"
           >
             {submitting ? (
               <>

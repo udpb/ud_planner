@@ -61,7 +61,7 @@ export function ExpressPreview({
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto p-5 space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 space-y-4 sm:p-5">
         {/* 한 줄 요약 카드 */}
         <Card className="border-l-4 border-l-primary bg-orange-50/30">
           <CardContent className="p-4">

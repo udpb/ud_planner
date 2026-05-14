@@ -80,6 +80,10 @@ export function ExpressShell(props: Props) {
   const [persistentErrors, setPersistentErrors] = useState<PersistentError[]>([])
   const consecutiveSaveFailRef = useRef<number>(0)
 
+  // Wave 4 #10: 모바일 view switcher — 채팅/미리보기/사이드바 中 하나만 표시
+  // 데스크탑 (lg+) 에선 모두 동시 표시 (CSS 로 mobile 만 한정).
+  const [mobileView, setMobileView] = useState<'chat' | 'preview' | 'sidebar'>('chat')
+
   const dismissError = useCallback((id: string) => {
     setPersistentErrors((es) => es.filter((e) => e.id !== id))
   }, [])
@@ -525,21 +529,21 @@ export function ExpressShell(props: Props) {
         deepSuggestions.length === 0 && (
           <div
             className={cn(
-              'border-b px-6 py-3',
+              'border-b px-3 py-2 sm:px-6 sm:py-3',
               progress.overall >= 50
                 ? 'border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background'
                 : 'border-muted bg-muted/20',
             )}
           >
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span
                 className={cn(
-                  'text-sm font-semibold',
+                  'w-full text-xs font-semibold sm:w-auto sm:text-sm',
                   progress.overall >= 50 ? 'text-primary' : 'text-muted-foreground',
                 )}
               >
                 {progress.overall >= 50
-                  ? `🎯 1차본 핵심이 채워졌어요 (${progress.overall}%) — 다음 단계:`
+                  ? `🎯 1차본 ${progress.overall}% — 다음 단계:`
                   : `⏳ 1차본 ${progress.overall}% — 더 채우거나 지금 받기:`}
               </span>
               <button
@@ -644,10 +648,61 @@ export function ExpressShell(props: Props) {
         </div>
       )}
 
-      {/* 본문 — 좌(40%) 우(60%) */}
+      {/* Wave 4 #10: 모바일 view switcher — segmented control (lg 이하만 표시) */}
+      <div className="sticky top-0 z-10 flex border-b bg-background lg:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileView('chat')}
+          className={cn(
+            'flex-1 py-2 text-xs font-medium transition-colors',
+            mobileView === 'chat'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          💬 채팅
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileView('preview')}
+          className={cn(
+            'flex-1 py-2 text-xs font-medium transition-colors',
+            mobileView === 'preview'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          👁 미리보기 {progress.overall}%
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileView('sidebar')}
+          className={cn(
+            'relative flex-1 py-2 text-xs font-medium transition-colors',
+            mobileView === 'sidebar'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          🤖 진단
+          {!draft.meta.autoDiagnosis?.channel && (
+            <span
+              className="absolute right-2 top-1.5 h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
+              title="진단 실행 권장"
+            />
+          )}
+        </button>
+      </div>
+
+      {/* 본문 — 좌(40%) 우(60%) — 모바일에선 mobileView 따라 한 컬럼만 표시 */}
       <div className="grid flex-1 grid-cols-1 gap-0 overflow-hidden lg:grid-cols-[2fr_3fr]">
-        {/* 좌측 챗봇 */}
-        <div className="flex flex-col overflow-hidden border-r">
+        {/* 좌측 챗봇 — 모바일 'chat' 일 때만 */}
+        <div
+          className={cn(
+            'flex flex-col overflow-hidden lg:border-r',
+            mobileView !== 'chat' && 'hidden lg:flex',
+          )}
+        >
           <ExpressChat
             turns={convState.turns}
             currentSlot={nextSlot}
@@ -661,11 +716,22 @@ export function ExpressShell(props: Props) {
           />
         </div>
 
-        {/* 우측 미리보기 + AI 자동 진단 (Phase M0 ADR-013, Wave 2 #1 탭화) */}
-        <div className="flex flex-col overflow-hidden">
+        {/* 우측 미리보기 + AI 자동 진단 (Phase M0 ADR-013, Wave 2 #1 탭화, Wave 4 모바일 분리) */}
+        <div
+          className={cn(
+            'flex flex-col overflow-hidden',
+            mobileView === 'chat' && 'hidden lg:flex',
+          )}
+        >
           <div className="flex-1 overflow-y-auto">
-            {/* Wave 2 #1: 사이드바 3 탭화 — AI 진단 / 채널·전략 / 발주처 */}
-            <div className="border-b bg-muted/20 p-3">
+            {/* Wave 2 #1: 사이드바 3 탭화 — AI 진단 / 채널·전략 / 발주처
+                Wave 4: 모바일 'preview' 일 때 hide */}
+            <div
+              className={cn(
+                'border-b bg-muted/20 p-3',
+                mobileView === 'preview' && 'hidden lg:block',
+              )}
+            >
               <Tabs defaultValue="diagnosis" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="diagnosis" className="relative text-xs">
@@ -765,15 +831,17 @@ export function ExpressShell(props: Props) {
                 </TabsContent>
               </Tabs>
             </div>
-            {/* 7 섹션 미리보기 */}
-            <ExpressPreview
-              draft={draft}
-              matchedAssets={matchedAssets}
-              autoCitations={autoCitations}
-              onToggleDiff={handleToggleDiff}
-              currentSlot={nextSlot}
-              projectId={props.projectId}
-            />
+            {/* 7 섹션 미리보기 — 모바일 'sidebar' 일 때 hide */}
+            <div className={cn(mobileView === 'sidebar' && 'hidden lg:block')}>
+              <ExpressPreview
+                draft={draft}
+                matchedAssets={matchedAssets}
+                autoCitations={autoCitations}
+                onToggleDiff={handleToggleDiff}
+                currentSlot={nextSlot}
+                projectId={props.projectId}
+              />
+            </div>
           </div>
         </div>
       </div>

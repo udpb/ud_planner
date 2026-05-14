@@ -121,9 +121,9 @@ export function ExpressChat({
 
   return (
     <div className="flex h-full flex-col">
-      {/* 상단 바 — 다음 슬롯 안내 */}
-      <div className="border-b bg-muted/30 px-5 py-2.5">
-        <div className="text-xs uppercase tracking-wider text-muted-foreground">
+      {/* 상단 바 — 다음 슬롯 안내 (Wave 4: 모바일 padding 축소) */}
+      <div className="border-b bg-muted/30 px-3 py-2 sm:px-5 sm:py-2.5">
+        <div className="text-[10px] uppercase tracking-wider text-muted-foreground sm:text-xs">
           다음 채울 슬롯
         </div>
         <div className="mt-0.5 text-sm font-medium">
@@ -140,7 +140,7 @@ export function ExpressChat({
       </div>
 
       {/* 대화 영역 */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-3">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-3 sm:p-5">
         {/* RFP 미업로드 안내 */}
         {!hasRfp && turns.length === 0 && (
           <Card className="border-orange-200 bg-orange-50/50">
@@ -227,8 +227,8 @@ export function ExpressChat({
             pendingExternalLookup 은 ConversationState 일관성 위해 유지하지만 별도 렌더 X. */}
       </div>
 
-      {/* 입력 박스 */}
-      <div className="border-t p-3">
+      {/* 입력 박스 — 모바일 터치 친화 (Wave 4) */}
+      <div className="border-t p-2 sm:p-3">
         <div className="flex items-end gap-2">
           <Textarea
             ref={textareaRef}
@@ -236,12 +236,12 @@ export function ExpressChat({
             onChange={(e) => setInput(e.target.value)}
             placeholder={
               !hasRfp
-                ? 'RFP 업로드 후 챗봇이 시작됩니다 (또는 직접 텍스트 입력)'
+                ? 'RFP 업로드 후 챗봇이 시작됩니다'
                 : pendingTurn
                   ? 'AI 응답을 기다리는 중...'
-                  : '직접 답변을 작성하거나, 위 추천 답변을 클릭해 편집하세요. Cmd/Ctrl + Enter 로 전송.'
+                  : '답변 작성 또는 위 옵션 클릭 (Cmd/Ctrl + Enter 로 전송)'
             }
-            className="min-h-[60px] flex-1 resize-none text-sm"
+            className="min-h-[48px] flex-1 resize-none text-sm sm:min-h-[60px]"
             disabled={pendingTurn}
             onKeyDown={(e) => {
               if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
@@ -254,7 +254,8 @@ export function ExpressChat({
             onClick={handleSubmit}
             disabled={!input.trim() || pendingTurn}
             size="icon"
-            className="h-10 w-10"
+            // 모바일 터치 최소 44x44px (Apple HIG 권장)
+            className="h-11 w-11 shrink-0 sm:h-10 sm:w-10"
             title="전송 (Cmd/Ctrl + Enter)"
           >
             {pendingTurn ? (
