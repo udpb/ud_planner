@@ -19,7 +19,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { prisma } from '@/lib/prisma'
 import { log } from '@/lib/logger'
 import {
@@ -36,11 +36,6 @@ const BodySchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
   let body: z.infer<typeof BodySchema>
   try {
     body = BodySchema.parse(await req.json())
@@ -49,6 +44,9 @@ export async function POST(req: NextRequest) {
   }
 
   const { projectId, channel, intendedDepartment } = body
+
+  const access = await requireProjectAccess(projectId)
+  if (!access.ok) return access.response!
 
   const project = await prisma.project.findUnique({
     where: { id: projectId },

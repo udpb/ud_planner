@@ -22,7 +22,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { prisma } from '@/lib/prisma'
 import { log } from '@/lib/logger'
 import { ExpressDraftSchema, type ExpressDraft, type Channel } from '@/lib/express/schema'
@@ -41,11 +41,6 @@ const BodySchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
   let body: z.infer<typeof BodySchema>
   try {
     body = BodySchema.parse(await req.json())
@@ -54,6 +49,9 @@ export async function POST(req: NextRequest) {
   }
 
   const { projectId, kinds = ['channel', 'framing'] } = body
+
+  const access = await requireProjectAccess(projectId)
+  if (!access.ok) return access.response!
 
   // 프로젝트 + draft + RFP + prior projects 동시 조회
   const project = await prisma.project.findUnique({

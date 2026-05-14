@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { ExpressDraftSchema } from '@/lib/express/schema'
 import { inspectDraft, heuristicInspect } from '@/lib/express/inspector'
 
@@ -32,6 +33,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid body', issues: parsed.error.issues }, { status: 400 })
     }
     const { projectId } = parsed.data
+
+    const access = await requireProjectAccess(projectId)
+    if (!access.ok) return access.response!
 
     // Draft 로드 — body 우선, 없으면 DB
     const project = await prisma.project.findUnique({

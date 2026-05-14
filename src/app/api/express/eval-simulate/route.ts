@@ -11,7 +11,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { prisma } from '@/lib/prisma'
 import { ExpressDraftSchema } from '@/lib/express/schema'
 import { simulateEvalScore } from '@/lib/express/eval-simulator'
@@ -25,17 +25,15 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 15
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
   let body: z.infer<typeof BodySchema>
   try {
     body = BodySchema.parse(await req.json())
   } catch (err) {
     return NextResponse.json({ error: 'Invalid body', detail: err }, { status: 400 })
   }
+
+  const access = await requireProjectAccess(body.projectId)
+  if (!access.ok) return access.response!
 
   const project = await prisma.project.findUnique({
     where: { id: body.projectId },

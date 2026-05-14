@@ -29,6 +29,8 @@ interface Props {
   pendingTurn: boolean
   isInitializing: boolean
   hasRfp: boolean
+  /** Wave 1 #13: 입력 보존 sessionStorage 스코프 */
+  projectId?: string
   onSendMessage: (pmInput: string, forceSlot?: string | null) => void
   onUploadRfp: () => void
 }
@@ -40,12 +42,47 @@ export function ExpressChat({
   pendingTurn,
   isInitializing,
   hasRfp,
+  projectId,
   onSendMessage,
   onUploadRfp,
 }: Props) {
-  const [input, setInput] = useState('')
+  // Wave 1 #13: 채팅 인풋 sessionStorage 보존
+  // - key 스코프: projectId × currentSlot. 슬롯 바뀌면 별도 저장 (의도)
+  // - 마운트 시 복원, input 변할 때마다 저장, 전송 후 해당 키 제거
+  const storageKey =
+    projectId && currentSlot ? `express-input:${projectId}:${currentSlot}` : null
+
+  const readStorage = (key: string | null): string => {
+    if (!key || typeof window === 'undefined') return ''
+    try {
+      return sessionStorage.getItem(key) ?? ''
+    } catch {
+      return ''
+    }
+  }
+
+  // lazy init — 첫 마운트 시 sessionStorage 에서 복원
+  const [input, setInput] = useState<string>(() => readStorage(storageKey))
+  // key 가 바뀌면 별도 복원 (사용자가 슬롯 사이 이동) — useEffect setState 회피 위해 useRef 비교
+  const lastKeyRef = useRef<string | null>(storageKey)
+  if (lastKeyRef.current !== storageKey) {
+    lastKeyRef.current = storageKey
+    // event-like update: 다음 render 에 반영되도록 setInput 호출 (effect 밖이므로 lint OK)
+    setInput(readStorage(storageKey))
+  }
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (!storageKey || typeof window === 'undefined') return
+    try {
+      if (input) sessionStorage.setItem(storageKey, input)
+      else sessionStorage.removeItem(storageKey)
+    } catch {
+      // ignore
+    }
+  }, [input, storageKey])
 
   // 스크롤 자동 하단
   useEffect(() => {
@@ -57,6 +94,11 @@ export function ExpressChat({
     if (!input.trim() || pendingTurn) return
     const text = input.trim()
     setInput('')
+    if (storageKey && typeof window !== 'undefined') {
+      try {
+        sessionStorage.removeItem(storageKey)
+      } catch {}
+    }
     onSendMessage(text)
   }
 

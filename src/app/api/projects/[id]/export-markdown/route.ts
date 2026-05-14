@@ -13,7 +13,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { auth } from '@/lib/auth'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { ExpressDraftSchema } from '@/lib/express/schema'
 import { renderExpressMarkdown } from '@/lib/express/render-markdown'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
@@ -25,12 +25,10 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
   const { id } = await params
+
+  const access = await requireProjectAccess(id)
+  if (!access.ok) return access.response!
 
   const project = await prisma.project.findUnique({
     where: { id },

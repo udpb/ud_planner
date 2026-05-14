@@ -20,7 +20,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { prisma } from '@/lib/prisma'
 import { log } from '@/lib/logger'
 import { extractClientDoc } from '@/lib/ai/client-doc-extractor'
@@ -39,12 +39,11 @@ export async function POST(
   req: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
-  const session = await auth()
-  if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
   const { id } = await context.params
+
+  const access = await requireProjectAccess(id)
+  if (!access.ok) return access.response!
+
   const project = await prisma.project.findUnique({
     where: { id },
     select: { client: true, strategicNotes: true },

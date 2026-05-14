@@ -39,6 +39,7 @@ import { ChannelConfirmCard } from '@/components/projects/channel-confirm-card'
 import { EvalSimulatorCard } from '@/components/projects/eval-simulator-card'
 import { RenewalSeedCard } from '@/components/projects/renewal-seed-card'
 import { ClientDocUploadCard } from '@/components/projects/client-doc-upload-card'
+import { PersistentErrorBanner, type PersistentError } from '@/components/ui/persistent-error-banner'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 interface Props {
@@ -72,6 +73,21 @@ export function ExpressShell(props: Props) {
   )
   const [isInitializing, setIsInitializing] = useState<boolean>(false)
   const [, startTransition] = useTransition()
+
+  // Wave 1 #12: persistent error 영구 표시 (toast 가 사라지면 안 되는 케이스)
+  const [persistentErrors, setPersistentErrors] = useState<PersistentError[]>([])
+  const consecutiveSaveFailRef = useRef<number>(0)
+
+  const dismissError = useCallback((id: string) => {
+    setPersistentErrors((es) => es.filter((e) => e.id !== id))
+  }, [])
+
+  const addOrReplaceError = useCallback((err: PersistentError) => {
+    setPersistentErrors((es) => {
+      const without = es.filter((e) => e.id !== err.id)
+      return [...without, err]
+    })
+  }, [])
 
   const progress = calcProgress(draft, hasRfp)
 
@@ -111,10 +127,28 @@ export function ExpressShell(props: Props) {
           }
           lastSavedRef.current = json
           setAutosaveStatus('saved')
+          consecutiveSaveFailRef.current = 0
+          // 자동 저장 복구 — banner 가 있었다면 제거
+          dismissError('autosave-fail')
           // 2초 후 idle 로 복귀
           setTimeout(() => setAutosaveStatus('idle'), 2000)
         } catch (err: unknown) {
           console.warn('[ExpressShell] autosave error:', err)
+          consecutiveSaveFailRef.current += 1
+          // 3회 연속 실패 시 영구 배너 (toast 만으로는 PM 이 놓침)
+          if (consecutiveSaveFailRef.current >= 3) {
+            addOrReplaceError({
+              id: 'autosave-fail',
+              severity: 'critical',
+              title: '자동 저장 실패 (3회 연속)',
+              message:
+                '네트워크·세션 만료·DB 문제일 수 있습니다. 페이지를 새로고침 하거나, 작성한 내용을 별도 텍스트로 백업한 뒤 다시 시도해주세요.',
+              action: {
+                label: '페이지 새로고침',
+                onClick: () => router.refresh(),
+              },
+            })
+          }
           setAutosaveStatus('error')
         }
       }, 1500)
@@ -424,6 +458,15 @@ export function ExpressShell(props: Props) {
         />
       )}
 
+      {/* Wave 1 #12: 영구 에러 배너 — 자동 저장 실패 등 toast 가 사라지면 안 되는 케이스 */}
+      {persistentErrors.length > 0 && (
+        <PersistentErrorBanner
+          errors={persistentErrors}
+          onDismiss={dismissError}
+          className="px-6 py-2"
+        />
+      )}
+
       {/* 북극성 바 */}
       <div className="sticky top-0 z-20 border-b bg-background">
         <NorthStarBar
@@ -593,6 +636,7 @@ export function ExpressShell(props: Props) {
             pendingTurn={pendingTurn || isInitializing}
             isInitializing={isInitializing}
             hasRfp={hasRfp}
+            projectId={props.projectId}
             onSendMessage={handleSendMessage}
             onUploadRfp={() => setShowRfpDialog(true)}
           />

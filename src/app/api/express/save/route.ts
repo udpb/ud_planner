@@ -18,6 +18,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { ExpressDraftSchema } from '@/lib/express/schema'
 import { ConversationStateSchema } from '@/lib/express/conversation'
 import {
@@ -62,6 +63,11 @@ export async function POST(req: NextRequest) {
       markCompleted = false,
       handoffToDeep = false,
     } = parsed.data
+
+    // 권한 — 본인 또는 미배정 프로젝트 (Wave 1)
+    const access = await requireProjectAccess(projectId)
+    if (!access.ok) return access.response!
+
     // markCompleted 면 자동으로 인계도 같이
     const shouldHandoff = markCompleted || handoffToDeep
 
@@ -77,6 +83,37 @@ export async function POST(req: NextRequest) {
       )
     }
     let validDraft = draftValidation.data
+
+    // ─────────────────────────────────────────
+    // Server-side merge — server-derived 필드는 DB 가 source of truth
+    // (Phase Wave 1, ADR-013 race fix):
+    //   - autoDiagnosis  : /api/express/diagnose 가 결정
+    //   - intendedDepartment : /api/express/channel 이 결정
+    //   - inspectionResult : /api/express/inspect 가 결정
+    // 클라이언트 autosave 가 이들을 모르고 보낼 수 있으므로 DB 에서 읽어 보존.
+    // 정책: 클라이언트가 명시적으로 보낸 값이 있으면 그것 우선 (예: diagnose 응답 직후 setDraft).
+    // 클라이언트 값이 undefined 이고 DB 에 있으면 DB 값 보존.
+    // ─────────────────────────────────────────
+    const dbProject = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { expressDraft: true },
+    })
+    const dbDraft = dbProject?.expressDraft
+      ? ExpressDraftSchema.safeParse(dbProject.expressDraft)
+      : null
+    const dbMeta = dbDraft?.success ? dbDraft.data.meta : null
+
+    validDraft = {
+      ...validDraft,
+      meta: {
+        ...validDraft.meta,
+        autoDiagnosis: validDraft.meta.autoDiagnosis ?? dbMeta?.autoDiagnosis,
+        intendedDepartment:
+          validDraft.meta.intendedDepartment ?? dbMeta?.intendedDepartment,
+        inspectionResult:
+          validDraft.meta.inspectionResult ?? dbMeta?.inspectionResult,
+      },
+    }
 
     if (markCompleted) {
       validDraft = {
