@@ -28,14 +28,17 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
-  // 1. production 차단
-  if (process.env.NODE_ENV === 'production') {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  }
-
-  // 2. secret 검증
+  // 1. secret 검증 — production 에서도 secret 매칭되면 허용 (E2E production build 지원)
+  //    운영 Vercel 에 E2E_SECRET 안 박으면 자동 차단 (이전과 동일 안전성).
+  //    명시적으로 박는 경우만 활성 — 운영자의 의도된 결정.
   const expected = process.env.E2E_SECRET
   if (!expected) {
+    // E2E_SECRET 미설정:
+    // - production: 404 (운영 노출 방지 — 이전 동작 유지)
+    // - dev: 503 (개발자 가이드)
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
     return NextResponse.json(
       { error: 'E2E_SECRET 환경변수 미설정' },
       { status: 503 },
