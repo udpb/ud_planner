@@ -9,7 +9,8 @@ import type { NextRequest } from 'next/server'
  */
 
 // 2026-05-03: /api/feedback / /feedback 제거 — Google Sheets 연동 폐기
-const publicPaths = ['/login', '/api/auth']
+// 2026-05-14: /api/dev — 자체 E2E_SECRET 인증 (production 에서는 route 자체가 404)
+const publicPaths = ['/login', '/api/auth', '/api/dev']
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl

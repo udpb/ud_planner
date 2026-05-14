@@ -171,6 +171,71 @@ const MOCKS: MockTable = {
       '6개월 후 사업 지속률 70% 가 적절한 KPI 인가요?',
     ],
   }),
+
+  // ─── Phase M0 (ADR-013): 프레임 진단 ───
+  'framing-inspector': JSON.stringify({
+    detected: 'csr',
+    evidence: [
+      '"사회적 가치" "취약계층" 등 CSR 언어가 도입부 5문장 내 다수 등장',
+      '발주처 부서 추정 키워드 (사회공헌·동반성장) 매칭',
+    ],
+    suggestion:
+      '[E2E Mock] 현재 글이 CSR 부서 언어로 감지됩니다. 목표 부서가 다르면 첫 문단을 재작성하세요.',
+  }),
+
+  // ─── Phase M1 (ADR-013): 논리 흐름 ───
+  'logic-chain-checker': JSON.stringify({
+    passedSteps: ['policy-basis', 'client-issue', 'solution'],
+    breakpoints: [
+      {
+        stepKey: 'eval-mapping',
+        affectedSections: ['2', '7'],
+        reason: '평가배점 항목별 대응 흐름이 sections.2/7 에 명시되지 않음',
+        suggestion: '섹션 2 마지막에 평가배점 4개 항목별 본 제안의 대응 1줄 표 추가',
+      },
+      {
+        stepKey: 'expected-outcome',
+        affectedSections: ['6'],
+        reason: '기대 성과 정량 지표가 추상적',
+        suggestion: '섹션 6 에 SROI 추정치 + KPI 3개 명시',
+      },
+    ],
+  }),
+
+  // ─── Phase M1 (ADR-013): 팩트체크 ───
+  'fact-check-light': JSON.stringify({
+    facts: [
+      { match: '70%', source: 'sections.1', status: 'needs-source', note: '창업진흥원 출처 1줄 추가 권장' },
+      { match: '5,000만원', source: 'sections.6', status: 'verified', note: 'KDI 추정치 합리적' },
+      { match: '600억', source: 'sections.7', status: 'verified', note: '자사 누적 수주 기록' },
+    ],
+  }),
+
+  // ─── Phase L (express-inspect) — 검수 ───
+  'express-inspect': JSON.stringify({
+    passed: true,
+    overallScore: 78,
+    lensScores: {
+      market: 75,
+      statistics: 80,
+      problem: 85,
+      'before-after': 78,
+      'key-messages': 70,
+      differentiators: 82,
+      tone: 75,
+    },
+    issues: [
+      {
+        lens: 'market',
+        severity: 'minor',
+        sectionKey: '1',
+        issue: '시장 규모 출처 1건만 인용',
+        suggestion: '추가 출처 1건 보강',
+      },
+    ],
+    strengths: ['Before/After 가 측정 가능', '차별화 자산 3건 인용'],
+    nextAction: '시장 규모 외부 LLM 카드로 출처 보강',
+  }),
 }
 
 /**
