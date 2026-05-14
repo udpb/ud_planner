@@ -588,13 +588,41 @@ export function ExpressShell(props: Props) {
                 projectId={props.projectId}
                 diagnosis={draft.meta.autoDiagnosis}
                 onRefresh={() => router.refresh()}
+                onDiagnosed={(autoDiagnosis) => {
+                  // router.refresh() 만으로는 useState 가 props 변화 무시 →
+                  // 진단 응답을 받아 draft state 에 직접 머지 (Phase M2 race fix)
+                  setDraft((d) => ({
+                    ...d,
+                    meta: { ...d.meta, autoDiagnosis },
+                  }))
+                }}
                 enableDeepDiagnosis={progress.overall >= 60}
               />
               <ChannelConfirmCard
                 projectId={props.projectId}
                 channelDiag={draft.meta.autoDiagnosis?.channel}
                 intendedDepartment={draft.meta.intendedDepartment}
-                onConfirmed={() => router.refresh()}
+                onConfirmed={(channel, intendedDepartment) => {
+                  // 컨펌 결과도 state 에 직접 머지
+                  setDraft((d) => ({
+                    ...d,
+                    meta: {
+                      ...d.meta,
+                      intendedDepartment: channel === 'B2B' ? intendedDepartment : undefined,
+                      autoDiagnosis: {
+                        ...(d.meta.autoDiagnosis ?? {}),
+                        channel: {
+                          detected: channel,
+                          confidence: 1.0,
+                          reasoning:
+                            d.meta.autoDiagnosis?.channel?.reasoning ?? ['PM 직접 확정'],
+                          confirmedByPm: true,
+                        },
+                      },
+                    },
+                  }))
+                  router.refresh()
+                }}
               />
               {/* M2: 채널별 분기 카드 — B2G 평가 시뮬 / renewal 시드 */}
               {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&

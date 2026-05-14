@@ -29,6 +29,11 @@ interface Props {
   diagnosis?: AutoDiagnosis
   /** 진단 결과 없을 때 PM 이 "지금 진단 실행" 버튼 누르면 호출 */
   onRefresh?: () => void
+  /**
+   * 진단 응답을 받았을 때 직접 호출 — ExpressShell 의 React state 갱신용.
+   * router.refresh() 만으로는 useState 가 props 변화를 무시해 카드가 안 나타남.
+   */
+  onDiagnosed?: (autoDiagnosis: AutoDiagnosis) => void
   /** 1차본 조립 단계인지 — true 면 logic-chain + fact-check 도 자동 포함 */
   enableDeepDiagnosis?: boolean
 }
@@ -46,7 +51,7 @@ const DEPT_LABEL: Record<Department, string> = {
   tech: '기술·DX',
 }
 
-export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, enableDeepDiagnosis = false }: Props) {
+export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnosed, enableDeepDiagnosis = false }: Props) {
   const router = useRouter()
   const [busy, setBusy] = useState(false)
   const [, startTransition] = useTransition()
@@ -69,7 +74,10 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, enableDeep
         const data = await r.json().catch(() => ({}))
         throw new Error(data.message ?? data.error ?? `HTTP ${r.status}`)
       }
+      const data = (await r.json()) as { autoDiagnosis?: AutoDiagnosis }
       toast.success('AI 자동 진단 완료')
+      // ExpressShell state 직접 갱신 (router.refresh 만으로는 useState 안 갱신됨)
+      if (data.autoDiagnosis) onDiagnosed?.(data.autoDiagnosis)
       startTransition(() => {
         onRefresh?.()
         router.refresh()
