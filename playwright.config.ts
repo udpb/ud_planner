@@ -19,6 +19,17 @@
  */
 
 import { defineConfig, devices } from '@playwright/test'
+import { config as dotenvConfig } from 'dotenv'
+import { existsSync } from 'node:fs'
+
+// Next.js 와 동일한 우선순위로 .env.local → .env 자동 로드 (playwright process)
+// 이 두 파일 안 읽으면 process.env.E2E_SECRET 이 undefined → authenticated skip
+// (사용자 피드백: .env.local 추가했는데도 미설정 경고)
+for (const file of ['.env.local', '.env']) {
+  if (existsSync(file)) {
+    dotenvConfig({ path: file, override: false })
+  }
+}
 
 const PORT = Number(process.env.E2E_PORT ?? 3100)
 const BASE_URL = `http://localhost:${PORT}`
