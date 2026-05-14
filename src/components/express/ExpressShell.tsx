@@ -448,6 +448,14 @@ export function ExpressShell(props: Props) {
               검수 {inspectorReport.overallScore}점 · {inspectorReport.issues.length}건
             </span>
           )}
+          <a
+            href={`/api/projects/${props.projectId}/export-markdown`}
+            download
+            className="rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+            title="현재 1차본 → Markdown 다운로드 (PPT/HWP 변환은 별도)"
+          >
+            📝 .md
+          </a>
           <button
             onClick={runInspector}
             className="rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
@@ -508,6 +516,14 @@ export function ExpressShell(props: Props) {
               >
                 🔍 검수만 받기
               </button>
+              <a
+                href={`/api/projects/${props.projectId}/export-markdown`}
+                download
+                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+                title="1차본 전체 → Markdown 다운로드 (PPT/HWP 변환은 PM 후처리)"
+              >
+                📝 마크다운
+              </a>
               <a
                 href={`/api/projects/${props.projectId}/export-excel`}
                 download
