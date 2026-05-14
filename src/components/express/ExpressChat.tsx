@@ -132,7 +132,9 @@ export function ExpressChat({
               <span className="text-primary">●</span> {slotLabel}
             </>
           ) : (
-            <span className="text-muted-foreground">전체 슬롯 채워짐 — 1차본 승인 가능</span>
+            <span className="text-muted-foreground">
+              전체 슬롯이 채워졌어요 — 위쪽 [1차본 승인] 버튼을 눌러주세요
+            </span>
           )}
         </div>
       </div>
