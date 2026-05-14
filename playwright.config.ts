@@ -24,6 +24,20 @@ const PORT = Number(process.env.E2E_PORT ?? 3100)
 const BASE_URL = `http://localhost:${PORT}`
 const STORAGE_STATE = 'playwright/.auth/user.json'
 
+// E2E_SECRET 가 있어야 authenticated project 실행 가능 (storageState 생성용)
+const hasE2ESecret = !!process.env.E2E_SECRET
+
+if (!hasE2ESecret) {
+  // playwright 실행 시 명시적 안내 — 실패 후 디버그 시간 절약
+  console.warn(
+    '\n[playwright.config] ⚠️  E2E_SECRET 환경변수 미설정 — authenticated project 자동 skip.\n' +
+      '  smoke + auth-flow (총 11 tests) 만 실행됩니다.\n' +
+      '  authenticated 13 tests 실행하려면 .env.local 에 추가:\n' +
+      '    E2E_SECRET="<32자 이상 랜덤>"\n' +
+      '    PLAYWRIGHT_MOCK_AI="true"   (실제 AI 호출 절약 권장)\n',
+  )
+}
+
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 60_000,
@@ -35,7 +49,7 @@ export default defineConfig({
   reporter: process.env.CI ? [['github'], ['list']] : 'list',
 
   // E2E_SECRET 있을 때만 globalSetup 실행 (없으면 smoke / auth-flow 만)
-  globalSetup: process.env.E2E_SECRET ? './tests/e2e/_fixtures/global-setup.ts' : undefined,
+  globalSetup: hasE2ESecret ? './tests/e2e/_fixtures/global-setup.ts' : undefined,
 
   use: {
     baseURL: BASE_URL,
@@ -55,14 +69,21 @@ export default defineConfig({
       testMatch: /auth-flow\.spec\.ts$/,
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'authenticated',
-      testMatch: /authenticated\/.*\.spec\.ts$/,
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: STORAGE_STATE,
-      },
-    },
+    // E2E_SECRET 없으면 authenticated project 자체를 등록 안 함 —
+    // 빈 testMatch 로 두면 spec 들이 ENOENT 로 cascade fail.
+    // 사용자 환경에서 7건 fail 대신 13건 skip 으로 명확하게.
+    ...(hasE2ESecret
+      ? [
+          {
+            name: 'authenticated',
+            testMatch: /authenticated\/.*\.spec\.ts$/,
+            use: {
+              ...devices['Desktop Chrome'],
+              storageState: STORAGE_STATE,
+            },
+          },
+        ]
+      : []),
   ],
 
   webServer: {
