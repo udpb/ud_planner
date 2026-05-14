@@ -5,10 +5,16 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from '@/lib/prisma'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  // NextAuth v5 — production (next start) 모드에서 host 검증 자동 비활성.
-  // E2E (playwright webServer 3100) · dev (3000) · Vercel 등 다양한 host 에서 동작하도록 trust.
-  // NEXTAUTH_URL / AUTH_URL 환경변수와 mismatch 시 UntrustedHost 에러 방지.
-  trustHost: true,
+  // trustHost — 환경별 조건부 적용 (보안 default 유지)
+  //   - dev (NODE_ENV !== 'production'): 자동 trust (편의)
+  //   - E2E (production build + AUTH_TRUST_HOST=true env): 명시 trust
+  //   - production Vercel: Vercel 자체가 X-Forwarded-Host 검증 — 자동 trust 됨
+  //   - self-hosted production (AUTH_TRUST_HOST 미설정): trust=false → 보안 default
+  //
+  // 무조건 trustHost=true 는 host header injection 공격 표면 — 피함.
+  trustHost:
+    process.env.NODE_ENV !== 'production' ||
+    process.env.AUTH_TRUST_HOST === 'true',
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({

@@ -53,7 +53,8 @@ test.describe('smoke: API 미인증 보호', () => {
   test('/api/projects 미인증 호출 시 보호됨', async ({ request }) => {
     // maxRedirects=0 — playwright 가 자동 follow 하면 최종 status 200 으로 보임.
     // 우리는 첫 응답의 status (302/307 redirect 또는 401) 를 직접 보고 싶음.
+    // 진짜 보호 증거만 인정: 401 또는 redirect (302/307/308).
     const r = await request.get('/api/projects', { maxRedirects: 0 })
-    expect([401, 302, 307, 308, 405, 400]).toContain(r.status())
+    expect([401, 302, 307, 308]).toContain(r.status())
   })
 })

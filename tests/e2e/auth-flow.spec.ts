@@ -58,20 +58,21 @@ test.describe('auth-flow: Credentials 로그인', () => {
     // /login 에 머물거나 error 페이지로 redirect — 네트워크 안정될 때까지 대기
     await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => {})
     const url = page.url()
-    // 거절되면 /login 에 머물거나 callbackUrl 포함 /login?error=... 가 정상
-    // 거절 안 되고 /dashboard 같은 보호 페이지로 가면 실패
-    expect(url).not.toMatch(/\/dashboard|\/projects(?!\/new)|\/admin/)
+    // 정확 검증: NextAuth 의 credentials authorize() 가 null 반환 → /login 으로 돌아감
+    // /login?error= 또는 /login 자체 둘 다 OK. 보호 페이지 진입 = 거절 실패
+    expect(url).toMatch(/\/login/)
   })
 })
 
 test.describe('auth-flow: API 인증 보호 검증', () => {
-  // 미인증 GET/POST 가 받을 수 있는 status:
-  //   - 401: 명시적 인증 거부
-  //   - 302/307/308: redirect (proxy.ts → /login)
-  //   - 405: Method Not Allowed (라우트 존재하지만 method 안 맞음)
-  //   - 400: 라우트가 body 검증 먼저 — 의미상 정상이지만 인증 우선 권장
-  // 보호의 증거로 200·201 만 아니면 OK.
-  const PROTECTED_STATUSES = [401, 302, 307, 308, 405, 400]
+  // 진짜 "보호의 증거" 만 인정 (엄격화 — 사용자 피드백):
+  //   - 401: 명시적 unauthorized — 라우트 핸들러의 auth() 거부
+  //   - 302/307/308: proxy.ts 의 /login redirect
+  //   - 405/400 은 보호 증거 아님:
+  //     · 405 = 라우트 정의의 method 불일치 (인증 검증 안 거침)
+  //     · 400 = body 검증이 auth 보다 먼저 (false positive 가능)
+  //   proxy.ts matcher 가 /api/* 잡으니 미인증은 무조건 redirect 또는 401.
+  const PROTECTED_STATUSES = [401, 302, 307, 308]
 
   test('미인증 /api/projects → 보호됨', async ({ request }) => {
     const r = await request.get('/api/projects', {
