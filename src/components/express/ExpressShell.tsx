@@ -487,9 +487,9 @@ export function ExpressShell(props: Props) {
           submitting={submitting}
           isCompleted={draft.meta.isCompleted}
         />
-        {/* 검수 + 정밀 기획 분기 — 우측 끝 */}
-        <div className="flex items-center justify-end gap-2 border-t border-dashed bg-muted/20 px-6 py-1.5">
-          {inspectorReport && (
+        {/* Wave 2.5 — 상단 status only (액션 버튼은 아래 단일 패널로 통합) */}
+        {inspectorReport && (
+          <div className="flex items-center justify-end gap-2 border-t border-dashed bg-muted/20 px-6 py-1.5">
             <span
               className={cn(
                 'rounded-md px-2 py-0.5 text-xs',
@@ -501,33 +501,8 @@ export function ExpressShell(props: Props) {
             >
               검수 {inspectorReport.overallScore}점 · {inspectorReport.issues.length}건
             </span>
-          )}
-          <a
-            href={`/api/projects/${props.projectId}/export-markdown`}
-            download
-            className="rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="현재 1차본 → Markdown 다운로드 (PPT/HWP 변환은 별도)"
-          >
-            📝 .md
-          </a>
-          <button
-            onClick={runInspector}
-            className="rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="현재 1차본을 평가위원 시각 7 렌즈로 검수"
-          >
-            검수
-          </button>
-          <button
-            type="button"
-            onClick={() => handoffToDeep('rfp')}
-            disabled={handingOff}
-            className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
-            title="Express 진행 내용 (의도·메시지·차별화·섹션) 을 Deep Track 으로 인계 후 이동"
-          >
-            <Settings2 className="h-3 w-3" />
-            {handingOff ? '인계 중...' : '정밀 기획 (Deep) →'}
-          </button>
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Wave 2 #5: 검수 결과 상세 카드 — inspectorReport 있을 때만 */}
@@ -540,25 +515,48 @@ export function ExpressShell(props: Props) {
         </div>
       )}
 
-      {/* 1차본 어느 정도 채워지면 — 다음 단계 안내 패널 (사용자 종료 의사 visible 트리거)
-        - progress 50%+ 또는 isCompleted 안 한 상태 + dismiss 안 한 상태
+      {/* Wave 2.5: 다음 단계 안내 패널 — 항상 표시 (progress 따라 활성/비활성)
+        - 액션 hub: 1차본 승인 / 정밀 기획 / 검수만 / 마크다운 / 엑셀 / 발주처 템플릿
+        - 50% 미만 시 1차본 승인 버튼 disabled + 라벨 변경
         - markCompleted 후엔 deepSuggestions 패널이 대신 (우선)
       */}
-      {progress.overall >= 50 &&
-        !draft.meta.isCompleted &&
+      {!draft.meta.isCompleted &&
         !dismissFinalize &&
         deepSuggestions.length === 0 && (
-          <div className="border-b border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background px-6 py-3">
+          <div
+            className={cn(
+              'border-b px-6 py-3',
+              progress.overall >= 50
+                ? 'border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background'
+                : 'border-muted bg-muted/20',
+            )}
+          >
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-primary">
-                🎯 1차본 핵심이 채워졌어요 ({progress.overall}%) — 다음 단계:
+              <span
+                className={cn(
+                  'text-sm font-semibold',
+                  progress.overall >= 50 ? 'text-primary' : 'text-muted-foreground',
+                )}
+              >
+                {progress.overall >= 50
+                  ? `🎯 1차본 핵심이 채워졌어요 (${progress.overall}%) — 다음 단계:`
+                  : `⏳ 1차본 ${progress.overall}% — 더 채우거나 지금 받기:`}
               </span>
               <button
                 type="button"
                 onClick={handleSubmitDraft}
-                disabled={submitting || handingOff}
-                className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
-                title="자동 검수 + Project 필드·ProposalSection 시드 + isCompleted=true"
+                disabled={submitting || handingOff || progress.overall < 50}
+                className={cn(
+                  'rounded-md px-3 py-1 text-xs font-medium disabled:opacity-50',
+                  progress.overall >= 50
+                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                    : 'bg-muted text-muted-foreground cursor-not-allowed',
+                )}
+                title={
+                  progress.overall < 50
+                    ? '50% 이상 채워야 승인 가능'
+                    : '자동 검수 + Project 필드·ProposalSection 시드 + isCompleted=true'
+                }
               >
                 {submitting ? '승인 중...' : '✓ 1차본 승인 + 검수'}
               </button>
@@ -578,7 +576,7 @@ export function ExpressShell(props: Props) {
                 className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
                 title="평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)"
               >
-                🔍 검수만 받기
+                🔍 검수
               </button>
               <a
                 href={`/api/projects/${props.projectId}/export-markdown`}
