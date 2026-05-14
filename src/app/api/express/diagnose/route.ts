@@ -28,6 +28,8 @@ import { log } from '@/lib/logger'
 import { ExpressDraftSchema, type ExpressDraft, type Channel } from '@/lib/express/schema'
 import { detectChannel } from '@/lib/express/channel-detector'
 import { diagnoseFraming } from '@/lib/express/framing-inspector'
+import { checkLogicChain } from '@/lib/express/logic-chain-checker'
+import { checkFacts } from '@/lib/express/fact-check-light'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 export const dynamic = 'force-dynamic'
@@ -144,8 +146,59 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // ─── 3·4. Logic Chain / Fact Check — Phase M1 ───
-  // (후속 PR)
+  // ─── 3. Logic Chain 진단 (M1) ───
+  if (kinds.includes('logic-chain') && draft) {
+    const channel: Channel = (newDiagnosis.channel?.detected ?? prevDiagnosis.channel?.detected ?? 'B2B') as Channel
+    try {
+      const result = await checkLogicChain({
+        draft,
+        channel,
+        intendedDepartment: draft.meta?.intendedDepartment,
+      })
+      newDiagnosis.logicChain = {
+        passed: result.passed,
+        channel: result.channel,
+        passedSteps: result.passedSteps,
+        totalSteps: result.totalSteps,
+        breakpoints: result.breakpoints,
+        mode: result.mode,
+        diagnosedAt: new Date().toISOString(),
+      }
+      log.info('express-diagnose', 'logic-chain 진단 완료', {
+        projectId,
+        channel,
+        passed: result.passed,
+        breakpoints: result.breakpoints.length,
+        mode: result.mode,
+      })
+    } catch (err) {
+      log.error('express-diagnose', err, { projectId, stage: 'logic-chain' })
+    }
+  }
+
+  // ─── 4. Fact Check 진단 (M1) ───
+  if (kinds.includes('fact-check') && draft) {
+    try {
+      const result = await checkFacts(draft, { aiVerify: true })
+      newDiagnosis.factCheck = {
+        totalFacts: result.totalFacts,
+        byCategory: result.byCategory,
+        byStatus: result.byStatus,
+        facts: result.facts,
+        mode: result.mode,
+        diagnosedAt: new Date().toISOString(),
+      }
+      log.info('express-diagnose', 'fact-check 진단 완료', {
+        projectId,
+        totalFacts: result.totalFacts,
+        suspicious: result.byStatus.suspicious,
+        needsSource: result.byStatus['needs-source'],
+        mode: result.mode,
+      })
+    } catch (err) {
+      log.error('express-diagnose', err, { projectId, stage: 'fact-check' })
+    }
+  }
 
   // DB 저장 — meta.autoDiagnosis 업데이트
   if (draft) {

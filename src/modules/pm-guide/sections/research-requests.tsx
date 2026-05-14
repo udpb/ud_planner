@@ -44,13 +44,40 @@ interface ResearchRequestsCardProps {
   projectId: string
   stepKey: StepKey
   requests: ResolvedResearchRequest[]
+  /**
+   * 기본 표시 카드 수 (ADR-013 Express 2.0 — 외부 LLM 호출 5→2-3 으로 축소).
+   * 초과 분은 "더 보기" 토글로만 노출. 기본값 3.
+   */
+  defaultVisible?: number
+}
+
+/**
+ * 우선순위 정렬 (ADR-013 Express 2.0):
+ *   1. 답변되지 않은 필수 (!optional & !answered) — 가장 우선
+ *   2. 답변되지 않은 선택 (optional & !answered)
+ *   3. 답변 완료 (answered)
+ * 내부적으로 동일 priority 이면 원래 순서 유지.
+ */
+function sortRequestsByPriority(
+  requests: ResolvedResearchRequest[],
+): ResolvedResearchRequest[] {
+  return [...requests].sort((a, b) => {
+    const score = (r: ResolvedResearchRequest) => {
+      if (r.savedAnswer) return 2 // 답변 완료
+      return r.optional ? 1 : 0 // 미답·필수=0, 미답·선택=1
+    }
+    return score(a) - score(b)
+  })
 }
 
 export function ResearchRequestsCard({
   projectId,
   stepKey,
   requests,
+  defaultVisible = 3,
 }: ResearchRequestsCardProps) {
+  const [showAll, setShowAll] = useState(false)
+
   // 최소 2개 이상이어야 함 (빈 상태 금지 — research-prompts.ts 품질 게이트)
   if (requests.length === 0) {
     return (
@@ -70,7 +97,10 @@ export function ResearchRequestsCard({
     )
   }
 
-  const answeredCount = requests.filter((r) => r.savedAnswer).length
+  const sorted = sortRequestsByPriority(requests)
+  const visible = showAll ? sorted : sorted.slice(0, defaultVisible)
+  const hiddenCount = sorted.length - visible.length
+  const answeredCount = sorted.filter((r) => r.savedAnswer).length
 
   return (
     <Card className="border-primary/30 bg-primary/5">
@@ -82,17 +112,16 @@ export function ResearchRequestsCard({
             variant="outline"
             className="ml-auto border-primary/40 bg-primary/10 text-[10px] font-semibold text-primary"
           >
-            {answeredCount}/{requests.length}
+            {answeredCount}/{sorted.length}
           </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 pt-0">
         <p className="text-[11px] leading-relaxed text-muted-foreground">
-          이 스텝에서 AI 가 PM 에게 되묻는 리서치입니다. 프롬프트를 복사해 외부
-          LLM(Claude · Gemini · ChatGPT) 에 붙여넣고, 받은 답변을 다시 붙여넣으면
-          다음 AI 호출에 자동 반영됩니다.
+          이 스텝의 우선순위 리서치 {Math.min(defaultVisible, sorted.length)}건입니다.
+          프롬프트를 복사해 외부 LLM 에 붙여넣고, 답변을 다시 붙여넣으면 다음 AI 호출에 자동 반영됩니다.
         </p>
-        {requests.map((req) => (
+        {visible.map((req) => (
           <RequestRow
             key={req.id}
             projectId={projectId}
@@ -100,6 +129,24 @@ export function ResearchRequestsCard({
             request={req}
           />
         ))}
+        {hiddenCount > 0 && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="w-full rounded-md border border-dashed border-primary/30 bg-background py-1.5 text-[11px] text-primary hover:bg-primary/10"
+          >
+            + 추가 리서치 {hiddenCount}건 더 보기
+          </button>
+        )}
+        {showAll && sorted.length > defaultVisible && (
+          <button
+            type="button"
+            onClick={() => setShowAll(false)}
+            className="w-full text-center text-[10px] text-muted-foreground hover:text-primary"
+          >
+            상위 {defaultVisible}개만 보기
+          </button>
+        )}
       </CardContent>
     </Card>
   )

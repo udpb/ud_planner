@@ -586,6 +586,7 @@ export function ExpressShell(props: Props) {
                 projectId={props.projectId}
                 diagnosis={draft.meta.autoDiagnosis}
                 onRefresh={() => router.refresh()}
+                enableDeepDiagnosis={progress.overall >= 60}
               />
               <ChannelConfirmCard
                 projectId={props.projectId}

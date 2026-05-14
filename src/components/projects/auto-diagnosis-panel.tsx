@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Bot, CheckCircle2, AlertTriangle, XCircle, ChevronRight, Loader2, Sparkles } from 'lucide-react'
+import { Bot, CheckCircle2, AlertTriangle, XCircle, Loader2, Sparkles, GitBranch, FileSearch } from 'lucide-react'
 import { toast } from 'sonner'
 import type { AutoDiagnosis, Channel, Department } from '@/lib/express/schema'
 import { cn } from '@/lib/utils'
@@ -29,6 +29,8 @@ interface Props {
   diagnosis?: AutoDiagnosis
   /** 진단 결과 없을 때 PM 이 "지금 진단 실행" 버튼 누르면 호출 */
   onRefresh?: () => void
+  /** 1차본 조립 단계인지 — true 면 logic-chain + fact-check 도 자동 포함 */
+  enableDeepDiagnosis?: boolean
 }
 
 const CHANNEL_LABEL: Record<Channel, string> = {
@@ -44,22 +46,24 @@ const DEPT_LABEL: Record<Department, string> = {
   tech: '기술·DX',
 }
 
-export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh }: Props) {
+export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, enableDeepDiagnosis = false }: Props) {
   const router = useRouter()
   const [busy, setBusy] = useState(false)
   const [, startTransition] = useTransition()
 
   const channelDiag = diagnosis?.channel
   const framingDiag = diagnosis?.framing
+  const logicDiag = diagnosis?.logicChain
+  const factDiag = diagnosis?.factCheck
 
-  async function runDiagnose() {
+  async function runDiagnose(kinds: Array<'channel' | 'framing' | 'logic-chain' | 'fact-check'> = ['channel', 'framing']) {
     if (busy) return
     setBusy(true)
     try {
       const r = await fetch('/api/express/diagnose', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectId, kinds: ['channel', 'framing'] }),
+        body: JSON.stringify({ projectId, kinds }),
       })
       if (!r.ok) {
         const data = await r.json().catch(() => ({}))
@@ -77,7 +81,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh }: Props) {
     }
   }
 
-  if (!diagnosis || (!channelDiag && !framingDiag)) {
+  if (!diagnosis || (!channelDiag && !framingDiag && !logicDiag && !factDiag)) {
     return (
       <Card>
         <CardHeader className="pb-2">
@@ -93,7 +97,9 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh }: Props) {
           <Button
             size="sm"
             variant="outline"
-            onClick={runDiagnose}
+            onClick={() => runDiagnose(enableDeepDiagnosis
+              ? ['channel', 'framing', 'logic-chain', 'fact-check']
+              : ['channel', 'framing'])}
             disabled={busy}
             className="w-full gap-2"
           >
@@ -113,7 +119,9 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh }: Props) {
           AI 자동 진단
         </CardTitle>
         <button
-          onClick={runDiagnose}
+          onClick={() => runDiagnose(enableDeepDiagnosis
+            ? ['channel', 'framing', 'logic-chain', 'fact-check']
+            : ['channel', 'framing'])}
           disabled={busy}
           className="text-[10px] text-muted-foreground hover:text-primary disabled:opacity-50"
         >
@@ -204,11 +212,182 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh }: Props) {
           </div>
         )}
 
-        {/* 3·4. 논리·팩트 — Phase M1 (placeholder) */}
-        <div className="rounded-md border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground">
-          📝 논리 흐름 · 팩트체크 — Phase M1 후속
-        </div>
+        {/* 3. 논리 흐름 진단 */}
+        {logicDiag ? (
+          <div
+            className={cn(
+              'rounded-md border p-2',
+              logicDiag.passed
+                ? 'border-green-200 bg-green-50/50'
+                : 'border-amber-200 bg-amber-50/50',
+            )}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 text-xs">
+                {logicDiag.passed ? (
+                  <CheckCircle2 className="h-3 w-3 text-green-600" />
+                ) : (
+                  <GitBranch className="h-3 w-3 text-amber-600" />
+                )}
+                <span className="font-medium">논리 흐름</span>
+                <Badge variant="outline" className="h-4 px-1 text-[10px]">
+                  {logicDiag.channel}
+                </Badge>
+              </div>
+              <span className="text-[10px] tabular-nums text-muted-foreground">
+                {logicDiag.passedSteps}/{logicDiag.totalSteps}
+              </span>
+            </div>
+            {!logicDiag.passed && logicDiag.breakpoints.length > 0 && (
+              <details className="mt-1" open>
+                <summary className="cursor-pointer text-[10px] text-amber-700 hover:text-foreground">
+                  ⚠️ 끊김 {logicDiag.breakpoints.length}건
+                </summary>
+                <ul className="mt-1 space-y-1 pl-1 text-[10px]">
+                  {logicDiag.breakpoints.slice(0, 4).map((bp, i) => (
+                    <li
+                      key={i}
+                      className="rounded bg-white/60 p-1.5"
+                      title={bp.reason}
+                    >
+                      <div className="font-medium text-amber-900">
+                        · {bp.stepLabel}
+                        {bp.affectedSections.length > 0 && (
+                          <span className="ml-1 text-muted-foreground">
+                            (섹션 {bp.affectedSections.join('·')})
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-0.5 text-muted-foreground line-clamp-2">
+                        {bp.reason}
+                      </div>
+                      <div className="mt-0.5 text-primary">💡 {bp.suggestion}</div>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => runDiagnose(['logic-chain'])}
+            disabled={busy}
+            className="flex w-full items-center justify-between gap-1.5 rounded-md border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+          >
+            <span className="flex items-center gap-1.5">
+              <GitBranch className="h-3 w-3" />
+              논리 흐름 — 1차본 sections 채운 후 클릭
+            </span>
+            <span className="text-primary">진단 →</span>
+          </button>
+        )}
+
+        {/* 4. 팩트체크 */}
+        {factDiag ? (
+          <div
+            className={cn(
+              'rounded-md border p-2',
+              factDiag.byStatus.suspicious === 0 && factDiag.byStatus['needs-source'] <= 2
+                ? 'border-green-200 bg-green-50/50'
+                : factDiag.byStatus.suspicious > 0
+                  ? 'border-red-200 bg-red-50/50'
+                  : 'border-amber-200 bg-amber-50/50',
+            )}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 text-xs">
+                <FileSearch className="h-3 w-3 text-primary" />
+                <span className="font-medium">팩트체크</span>
+                <Badge variant="outline" className="h-4 px-1 text-[10px]">
+                  {factDiag.totalFacts} 건
+                </Badge>
+              </div>
+              <span className="text-[10px] text-muted-foreground">
+                {factDiag.mode === 'ai+regex' ? 'AI+정규식' : '정규식'}
+              </span>
+            </div>
+            <div className="mt-1.5 grid grid-cols-5 gap-1 text-[9px]">
+              <FactStatusChip n={factDiag.byStatus.verified} label="검증" color="green" />
+              <FactStatusChip n={factDiag.byStatus['needs-source']} label="출처" color="amber" />
+              <FactStatusChip n={factDiag.byStatus.suspicious} label="의심" color="red" />
+              <FactStatusChip n={factDiag.byStatus.unverifiable} label="자체" color="gray" />
+              <FactStatusChip n={factDiag.byStatus.outdated} label="구식" color="amber" />
+            </div>
+            {(factDiag.byStatus.suspicious > 0 || factDiag.byStatus['needs-source'] >= 3) && (
+              <details className="mt-1.5">
+                <summary className="cursor-pointer text-[10px] text-muted-foreground hover:text-foreground">
+                  의심·출처필요 항목
+                </summary>
+                <ul className="mt-1 space-y-0.5 pl-1 text-[10px]">
+                  {factDiag.facts
+                    .filter((f) => f.status === 'suspicious' || f.status === 'needs-source')
+                    .slice(0, 5)
+                    .map((f, i) => (
+                      <li
+                        key={i}
+                        className={cn(
+                          'rounded p-1',
+                          f.status === 'suspicious' ? 'bg-red-50' : 'bg-amber-50',
+                        )}
+                        title={f.note ?? f.excerpt}
+                      >
+                        <span className="font-medium">{f.match}</span>
+                        <span className="ml-1 text-[9px] text-muted-foreground">
+                          ({f.source})
+                        </span>
+                        {f.note && (
+                          <div className="mt-0.5 text-[9px] text-muted-foreground line-clamp-1">
+                            {f.note}
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                </ul>
+              </details>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => runDiagnose(['fact-check'])}
+            disabled={busy}
+            className="flex w-full items-center justify-between gap-1.5 rounded-md border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+          >
+            <span className="flex items-center gap-1.5">
+              <FileSearch className="h-3 w-3" />
+              팩트체크 — 정량 수치·인용 추출 후 검증
+            </span>
+            <span className="text-primary">진단 →</span>
+          </button>
+        )}
       </CardContent>
     </Card>
+  )
+}
+
+function FactStatusChip({
+  n,
+  label,
+  color,
+}: {
+  n: number
+  label: string
+  color: 'green' | 'amber' | 'red' | 'gray'
+}) {
+  const colorClass = {
+    green: 'bg-green-100 text-green-800',
+    amber: 'bg-amber-100 text-amber-800',
+    red: 'bg-red-100 text-red-800',
+    gray: 'bg-gray-100 text-gray-700',
+  }[color]
+  return (
+    <div
+      className={cn(
+        'rounded px-1 py-0.5 text-center tabular-nums',
+        n === 0 ? 'bg-muted/30 text-muted-foreground' : colorClass,
+      )}
+    >
+      <div className="font-semibold">{n}</div>
+      <div className="text-[8px]">{label}</div>
+    </div>
   )
 }

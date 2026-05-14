@@ -151,18 +151,48 @@ export const AutoDiagnosisSchema = z.object({
     suggestion: z.string().optional(),
     diagnosedAt: z.string().datetime(),
   }).optional(),
-  /** 논리 흐름 점검 (1차본 조립 직전) */
+  /** 논리 흐름 점검 (1차본 조립 직전) — Phase M1 확장 */
   logicChain: z.object({
     passed: z.boolean(),
-    breakpoints: z.array(z.string()),
+    channel: ChannelSchema,
+    passedSteps: z.number(),
+    totalSteps: z.number(),
+    breakpoints: z.array(z.object({
+      stepKey: z.string(),
+      stepLabel: z.string(),
+      affectedSections: z.array(z.string()),
+      reason: z.string(),
+      suggestion: z.string(),
+    })),
+    mode: z.enum(['ai', 'heuristic']),
     diagnosedAt: z.string().datetime(),
   }).optional(),
-  /** 팩트체크 (정규식 + AI 검증, 1차본 조립 직전) */
+  /** 팩트체크 (정규식 + AI 검증) — Phase M1 확장 */
   factCheck: z.object({
     totalFacts: z.number(),
-    verified: z.number(),
-    suspicious: z.number(),
-    unverifiable: z.number(),
+    byCategory: z.object({
+      'quant-stat': z.number(),
+      'policy-cite': z.number(),
+      'client-info': z.number(),
+      'own-record': z.number(),
+      'external-cite': z.number(),
+    }),
+    byStatus: z.object({
+      verified: z.number(),
+      suspicious: z.number(),
+      unverifiable: z.number(),
+      'needs-source': z.number(),
+      outdated: z.number(),
+    }),
+    facts: z.array(z.object({
+      category: z.enum(['quant-stat', 'policy-cite', 'client-info', 'own-record', 'external-cite']),
+      excerpt: z.string(),
+      source: z.string(),
+      match: z.string(),
+      status: z.enum(['verified', 'suspicious', 'unverifiable', 'needs-source', 'outdated']),
+      note: z.string().optional(),
+    })),
+    mode: z.enum(['regex', 'ai+regex']),
     diagnosedAt: z.string().datetime(),
   }).optional(),
 })
