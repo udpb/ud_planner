@@ -40,6 +40,8 @@ import { EvalSimulatorCard } from '@/components/projects/eval-simulator-card'
 import { RenewalSeedCard } from '@/components/projects/renewal-seed-card'
 import { ClientDocUploadCard } from '@/components/projects/client-doc-upload-card'
 import { PersistentErrorBanner, type PersistentError } from '@/components/ui/persistent-error-banner'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { InspectorReportCard } from '@/components/projects/inspector-report-card'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 interface Props {
@@ -375,8 +377,17 @@ export function ExpressShell(props: Props) {
   const [inspectorReport, setInspectorReport] = useState<{
     passed: boolean
     overallScore: number
-    issues: Array<{ severity: string; lens: string; issue: string; suggestion: string }>
+    lensScores?: Record<string, number>
+    issues: Array<{
+      severity: 'critical' | 'major' | 'minor'
+      lens: string
+      sectionKey?: string
+      issue: string
+      suggestion: string
+    }>
+    strengths?: string[]
     nextAction: string
+    weightedByChannel?: 'B2G' | 'B2B' | 'renewal'
   } | null>(null)
 
   const runInspector = useCallback(async () => {
@@ -519,6 +530,16 @@ export function ExpressShell(props: Props) {
         </div>
       </div>
 
+      {/* Wave 2 #5: 검수 결과 상세 카드 — inspectorReport 있을 때만 */}
+      {inspectorReport && (
+        <div className="border-b bg-muted/10 px-6 py-3">
+          <InspectorReportCard
+            report={inspectorReport}
+            onDismiss={() => setInspectorReport(null)}
+          />
+        </div>
+      )}
+
       {/* 1차본 어느 정도 채워지면 — 다음 단계 안내 패널 (사용자 종료 의사 visible 트리거)
         - progress 50%+ 또는 isCompleted 안 한 상태 + dismiss 안 한 상태
         - markCompleted 후엔 deepSuggestions 패널이 대신 (우선)
@@ -642,65 +663,109 @@ export function ExpressShell(props: Props) {
           />
         </div>
 
-        {/* 우측 미리보기 + AI 자동 진단 (Phase M0 ADR-013) */}
+        {/* 우측 미리보기 + AI 자동 진단 (Phase M0 ADR-013, Wave 2 #1 탭화) */}
         <div className="flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto">
-            {/* AI 자동 진단 + 채널 컨펌 — ExpressPreview 위에 sticky 영역으로 */}
-            <div className="space-y-3 border-b bg-muted/20 p-3">
-              <AutoDiagnosisPanel
-                projectId={props.projectId}
-                diagnosis={draft.meta.autoDiagnosis}
-                onRefresh={() => router.refresh()}
-                onDiagnosed={(autoDiagnosis) => {
-                  // router.refresh() 만으로는 useState 가 props 변화 무시 →
-                  // 진단 응답을 받아 draft state 에 직접 머지 (Phase M2 race fix)
-                  setDraft((d) => ({
-                    ...d,
-                    meta: { ...d.meta, autoDiagnosis },
-                  }))
-                }}
-                enableDeepDiagnosis={progress.overall >= 60}
-              />
-              <ChannelConfirmCard
-                projectId={props.projectId}
-                channelDiag={draft.meta.autoDiagnosis?.channel}
-                intendedDepartment={draft.meta.intendedDepartment}
-                onConfirmed={(channel, intendedDepartment) => {
-                  // 컨펌 결과도 state 에 직접 머지
-                  setDraft((d) => ({
-                    ...d,
-                    meta: {
-                      ...d.meta,
-                      intendedDepartment: channel === 'B2B' ? intendedDepartment : undefined,
-                      autoDiagnosis: {
-                        ...(d.meta.autoDiagnosis ?? {}),
-                        channel: {
-                          detected: channel,
-                          confidence: 1.0,
-                          reasoning:
-                            d.meta.autoDiagnosis?.channel?.reasoning ?? ['PM 직접 확정'],
-                          confirmedByPm: true,
+            {/* Wave 2 #1: 사이드바 3 탭화 — AI 진단 / 채널·전략 / 발주처 */}
+            <div className="border-b bg-muted/20 p-3">
+              <Tabs defaultValue="diagnosis" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="diagnosis" className="relative text-xs">
+                    AI 진단
+                    {!draft.meta.autoDiagnosis?.channel && (
+                      <span
+                        className="absolute -top-0.5 right-1 h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
+                        title="진단 실행 권장"
+                      />
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="channel" className="relative text-xs">
+                    채널·전략
+                    {draft.meta.autoDiagnosis?.channel &&
+                      !draft.meta.autoDiagnosis.channel.confirmedByPm && (
+                        <span
+                          className="absolute -top-0.5 right-1 h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"
+                          title="채널 컨펌 필요"
+                        />
+                      )}
+                  </TabsTrigger>
+                  <TabsTrigger value="client" className="text-xs">
+                    발주처
+                    {props.initialClientDoc && (
+                      <span
+                        className="ml-1 h-1.5 w-1.5 rounded-full bg-green-500"
+                        title="문서 추출됨"
+                      />
+                    )}
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="diagnosis" className="mt-3 space-y-3">
+                  <AutoDiagnosisPanel
+                    projectId={props.projectId}
+                    diagnosis={draft.meta.autoDiagnosis}
+                    onRefresh={() => router.refresh()}
+                    onDiagnosed={(autoDiagnosis) => {
+                      setDraft((d) => ({
+                        ...d,
+                        meta: { ...d.meta, autoDiagnosis },
+                      }))
+                    }}
+                    enableDeepDiagnosis={progress.overall >= 60}
+                  />
+                </TabsContent>
+
+                <TabsContent value="channel" className="mt-3 space-y-3">
+                  <ChannelConfirmCard
+                    projectId={props.projectId}
+                    channelDiag={draft.meta.autoDiagnosis?.channel}
+                    intendedDepartment={draft.meta.intendedDepartment}
+                    onConfirmed={(channel, intendedDepartment) => {
+                      setDraft((d) => ({
+                        ...d,
+                        meta: {
+                          ...d.meta,
+                          intendedDepartment:
+                            channel === 'B2B' ? intendedDepartment : undefined,
+                          autoDiagnosis: {
+                            ...(d.meta.autoDiagnosis ?? {}),
+                            channel: {
+                              detected: channel,
+                              confidence: 1.0,
+                              reasoning:
+                                d.meta.autoDiagnosis?.channel?.reasoning ?? [
+                                  'PM 직접 확정',
+                                ],
+                              confirmedByPm: true,
+                            },
+                          },
                         },
-                      },
-                    },
-                  }))
-                  router.refresh()
-                }}
-              />
-              {/* M2: 채널별 분기 카드 — B2G 평가 시뮬 / renewal 시드 */}
-              {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&
-                draft.meta.autoDiagnosis.channel.detected === 'B2G' && (
-                  <EvalSimulatorCard projectId={props.projectId} />
-                )}
-              {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&
-                draft.meta.autoDiagnosis.channel.detected === 'renewal' && (
-                  <RenewalSeedCard projectId={props.projectId} />
-                )}
-              {/* M3-2: 발주처 공식 문서 업로드 — 모든 채널 */}
-              <ClientDocUploadCard
-                projectId={props.projectId}
-                current={props.initialClientDoc}
-              />
+                      }))
+                      router.refresh()
+                    }}
+                  />
+                  {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&
+                    draft.meta.autoDiagnosis.channel.detected === 'B2G' && (
+                      <EvalSimulatorCard projectId={props.projectId} />
+                    )}
+                  {draft.meta.autoDiagnosis?.channel?.confirmedByPm &&
+                    draft.meta.autoDiagnosis.channel.detected === 'renewal' && (
+                      <RenewalSeedCard projectId={props.projectId} />
+                    )}
+                  {!draft.meta.autoDiagnosis?.channel && (
+                    <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+                      먼저 [AI 진단] 탭에서 진단을 실행하면 채널이 자동 감지됩니다.
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="client" className="mt-3">
+                  <ClientDocUploadCard
+                    projectId={props.projectId}
+                    current={props.initialClientDoc}
+                  />
+                </TabsContent>
+              </Tabs>
             </div>
             {/* 7 섹션 미리보기 */}
             <ExpressPreview

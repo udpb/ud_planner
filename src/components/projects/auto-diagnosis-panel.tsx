@@ -91,27 +91,40 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
 
   if (!diagnosis || (!channelDiag && !framingDiag && !logicDiag && !factDiag)) {
     return (
-      <Card>
+      <Card className="border-primary/40 bg-orange-50/40 ring-2 ring-primary/20">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-1.5 text-sm">
             <Bot className="h-4 w-4 text-primary" />
             AI 자동 진단
+            <Badge className="ml-auto h-4 gap-0.5 bg-primary px-1.5 text-[10px] text-primary-foreground">
+              <Sparkles className="h-2.5 w-2.5" />
+              먼저 진행
+            </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-3 text-xs text-muted-foreground">
-            RFP + 제안서 도입부를 AI 가 분석하여 채널·프레임·논리·팩트를 자동 진단합니다.
+          <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
+            👉 <span className="font-medium text-foreground">먼저 이 버튼을 눌러주세요.</span>
+            <br />
+            RFP + 제안서 도입부를 AI 가 분석해 채널·프레임·논리·팩트를 자동 진단합니다 (~30초).
           </p>
           <Button
             size="sm"
-            variant="outline"
-            onClick={() => runDiagnose(enableDeepDiagnosis
-              ? ['channel', 'framing', 'logic-chain', 'fact-check']
-              : ['channel', 'framing'])}
+            onClick={() =>
+              runDiagnose(
+                enableDeepDiagnosis
+                  ? ['channel', 'framing', 'logic-chain', 'fact-check']
+                  : ['channel', 'framing'],
+              )
+            }
             disabled={busy}
-            className="w-full gap-2"
+            className="w-full gap-2 shadow-md shadow-primary/30 ring-2 ring-primary/40 hover:ring-primary/60 transition-all"
           >
-            {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+            {busy ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="h-3.5 w-3.5" />
+            )}
             지금 진단 실행
           </Button>
         </CardContent>

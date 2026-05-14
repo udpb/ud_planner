@@ -18,6 +18,19 @@ interface Props {
   isCompleted: boolean
 }
 
+/**
+ * Wave 2 #6: 각 단계의 완료 조건 PM 에게 명시.
+ * hover tooltip 으로 어디까지 채워야 다음 단계 진행되는지 보여줌.
+ */
+const STAGE_TOOLTIP: Record<string, string> = {
+  rfp: 'RFP 업로드 + 파싱 완료',
+  intent:
+    '사업의 한 문장 정체성 + Before·After + 핵심 메시지 3개 모두 채움',
+  differentiators: '차별화 자산 최소 3개 수락',
+  sections: '제안서 7섹션 中 5개(①②③④⑥) 가 200자 이상',
+  submit: '1차본 승인 (자동 검수 통과 + Project 필드 인계)',
+}
+
 export function NorthStarBar({
   progress,
   autosaveStatus,
@@ -40,9 +53,15 @@ export function NorthStarBar({
           {progress.stages.map((stage, i) => {
             const done = stage.pct >= 100
             const active = stage.pct > 0 && !done
+            const tooltipText = STAGE_TOOLTIP[stage.key]
+              ? `${stage.label}: ${stage.pct}% · ${STAGE_TOOLTIP[stage.key]}`
+              : `${stage.label}: ${stage.pct}%`
             return (
               <div key={stage.key} className="flex flex-1 items-center gap-1">
-                <div className="flex flex-col items-center gap-0.5">
+                <div
+                  className="group relative flex flex-col items-center gap-0.5 cursor-help"
+                  title={tooltipText}
+                >
                   <div
                     className={cn(
                       'h-2.5 w-2.5 rounded-full transition-all',
@@ -65,6 +84,17 @@ export function NorthStarBar({
                   >
                     {stage.label}
                   </span>
+                  {/* Hover tooltip (CSS-only, 작은 카드) */}
+                  <div className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 -translate-x-1/2 whitespace-nowrap rounded-md border bg-popover px-2 py-1 text-[10px] text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+                    <div className="font-medium">
+                      {stage.label} · {stage.pct}%
+                    </div>
+                    {STAGE_TOOLTIP[stage.key] && (
+                      <div className="mt-0.5 text-muted-foreground">
+                        {STAGE_TOOLTIP[stage.key]}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 {i < progress.stages.length - 1 && (
                   <div
