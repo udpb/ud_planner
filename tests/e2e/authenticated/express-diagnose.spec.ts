@@ -27,8 +27,11 @@ test.describe.serial('인증 흐름: Express 2.0 자동 진단', () => {
     const parseRes = await request.post('/api/ai/parse-rfp', {
       data: {
         projectId,
+        // parse-rfp 가 100자 미만 거부 — 100자+ 확보
         text:
-          '[E2E Test RFP]\n사업명: 청년 창업 회복탄력성 강화 사업\n발주기관: 한국청년창업진흥원\n예산 3억원\n예비/초기 창업자 30명',
+          '[E2E Test RFP] 사업명: 청년 창업 회복탄력성 강화 사업. 발주기관: 한국청년창업진흥원. ' +
+          '사업 기간: 2026-07 ~ 2026-12. 총 예산 3억원 (VAT 포함). 대상: 예비/초기 창업자 30명. ' +
+          '평가 항목: 제안 배경(15), 추진 전략(25), 교육 커리큘럼(20), 운영(15), 예산(10), 성과(15).',
       },
     })
     if (parseRes.ok()) {
