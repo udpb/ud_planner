@@ -66,7 +66,9 @@ export default async function globalSetup(config: FullConfig) {
     await emailInput.waitFor({ timeout: 15_000 })
     await emailInput.fill(E2E_USER_EMAIL)
 
-    const submitBtn = page.locator('button[type="submit"]').first()
+    // login page 의 이메일 로그인 버튼은 form 밖의 <button onClick={signIn}> —
+    // type="submit" 없음 → 텍스트 selector 로 매칭 (Wave 3 fix)
+    const submitBtn = page.getByRole('button', { name: /이메일로 로그인|로그인 중/ }).first()
     await submitBtn.click()
 
     // login → callback → 보호 페이지 redirect 대기

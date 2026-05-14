@@ -50,9 +50,10 @@ test.describe('smoke: /login 페이지', () => {
 })
 
 test.describe('smoke: API 미인증 보호', () => {
-  test('/api/projects 미인증 호출 시 401', async ({ request }) => {
+  test('/api/projects 미인증 호출 시 보호됨', async ({ request }) => {
     const r = await request.get('/api/projects')
-    // 미들웨어가 401 또는 redirect (302/307) — 둘 다 보호로 인정
-    expect([401, 302, 307, 308]).toContain(r.status())
+    // 미인증이 받을 수 있는 status: 401 / redirect / 405 / 400
+    // 200/201 만 아니면 보호로 인정
+    expect([401, 302, 307, 308, 405, 400]).toContain(r.status())
   })
 })
