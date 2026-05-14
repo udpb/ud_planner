@@ -27,6 +27,7 @@ import { buildAutoCitations } from '@/lib/express/auto-citations'
 import { ExpressShell } from '@/components/express/ExpressShell'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
+import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 export const dynamic = 'force-dynamic'
 
@@ -63,6 +64,7 @@ export default async function ExpressPage({
       expressDraft: true,
       expressTurnsCache: true,
       expressActive: true,
+      strategicNotes: true,
     },
   })
   if (!project) notFound()
@@ -124,6 +126,10 @@ export default async function ExpressPage({
         initialProgress={progress}
         initialMatchedAssets={matchedAssets}
         initialAutoCitations={autoCitations}
+        initialClientDoc={
+          ((project.strategicNotes as unknown as StrategicNotes | null) ?? null)
+            ?.clientOfficialDoc
+        }
       />
     </div>
   )

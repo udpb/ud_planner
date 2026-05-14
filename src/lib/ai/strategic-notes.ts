@@ -13,6 +13,22 @@ export interface StrategicNotes {
   pastSimilarProjects?: string // 과거 유사 사업 경험/교훈
   participationDecision?: string // 참여 결정 근거
   winStrategy?: string         // 수주 핵심 전략 (PM 자유 입력)
+  /**
+   * Phase M3-2 (ADR-013): 발주처 공식 문서에서 추출한 키워드·정책·실적.
+   * RFP 가 못 담은 발주처 컨텍스트 (홈페이지·기관 소개·중장기 계획서 등) 흡수.
+   * - keywords: 발주처가 자주 쓰는 어휘 (제안서 톤 일치)
+   * - policies: 정책·법령·계획 (제안서 §1 정당성 근거)
+   * - track: 발주처 자체 실적·통계
+   */
+  clientOfficialDoc?: {
+    keywords: string[]
+    policies: string[]
+    track: string[]
+    /** PDF 파일명·URL — 출처 추적 */
+    sourceLabel?: string
+    /** 마지막 추출 시각 */
+    extractedAt?: string
+  }
 }
 
 /**
@@ -29,6 +45,14 @@ export function formatStrategicNotes(notes: StrategicNotes): string {
   if (notes.riskFactors?.length) lines.push(`- 주요 리스크: ${notes.riskFactors.join(' / ')}`)
   if (notes.pastSimilarProjects) lines.push(`- 과거 유사 경험: ${notes.pastSimilarProjects}`)
   if (notes.winStrategy) lines.push(`- 수주 전략: ${notes.winStrategy}`)
+
+  // Phase M3-2: 발주처 공식 문서 추출 컨텍스트
+  const doc = notes.clientOfficialDoc
+  if (doc) {
+    if (doc.keywords?.length) lines.push(`- 발주처 어휘: ${doc.keywords.slice(0, 10).join(', ')}`)
+    if (doc.policies?.length) lines.push(`- 발주처 정책·법령: ${doc.policies.slice(0, 5).join(' / ')}`)
+    if (doc.track?.length) lines.push(`- 발주처 실적: ${doc.track.slice(0, 5).join(' / ')}`)
+  }
 
   if (lines.length === 0) return ''
 

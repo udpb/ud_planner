@@ -38,6 +38,8 @@ import { AutoDiagnosisPanel } from '@/components/projects/auto-diagnosis-panel'
 import { ChannelConfirmCard } from '@/components/projects/channel-confirm-card'
 import { EvalSimulatorCard } from '@/components/projects/eval-simulator-card'
 import { RenewalSeedCard } from '@/components/projects/renewal-seed-card'
+import { ClientDocUploadCard } from '@/components/projects/client-doc-upload-card'
+import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 interface Props {
   projectId: string
@@ -51,6 +53,7 @@ interface Props {
   initialProgress: ReturnType<typeof calcProgress>
   initialMatchedAssets: AssetMatch[]
   initialAutoCitations: AutoCitationsBundle
+  initialClientDoc?: StrategicNotes['clientOfficialDoc']
 }
 
 export function ExpressShell(props: Props) {
@@ -633,6 +636,11 @@ export function ExpressShell(props: Props) {
                 draft.meta.autoDiagnosis.channel.detected === 'renewal' && (
                   <RenewalSeedCard projectId={props.projectId} />
                 )}
+              {/* M3-2: 발주처 공식 문서 업로드 — 모든 채널 */}
+              <ClientDocUploadCard
+                projectId={props.projectId}
+                current={props.initialClientDoc}
+              />
             </div>
             {/* 7 섹션 미리보기 */}
             <ExpressPreview
