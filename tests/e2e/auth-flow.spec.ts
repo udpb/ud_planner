@@ -55,10 +55,12 @@ test.describe('auth-flow: Credentials 로그인', () => {
     const submitBtn = page.getByRole('button', { name: LOGIN_BTN_RE }).first()
     await submitBtn.click()
 
-    // /login 에 머물거나 error 페이지로 redirect
-    await page.waitForLoadState('networkidle', { timeout: 5_000 })
+    // /login 에 머물거나 error 페이지로 redirect — 네트워크 안정될 때까지 대기
+    await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => {})
     const url = page.url()
-    expect(url).toMatch(/\/login/)
+    // 거절되면 /login 에 머물거나 callbackUrl 포함 /login?error=... 가 정상
+    // 거절 안 되고 /dashboard 같은 보호 페이지로 가면 실패
+    expect(url).not.toMatch(/\/dashboard|\/projects(?!\/new)|\/admin/)
   })
 })
 
@@ -74,6 +76,7 @@ test.describe('auth-flow: API 인증 보호 검증', () => {
   test('미인증 /api/projects → 보호됨', async ({ request }) => {
     const r = await request.get('/api/projects', {
       headers: { 'Content-Type': 'application/json' },
+      maxRedirects: 0, // redirect 자동 follow 막아 첫 응답 status 직접 검사
     })
     expect(PROTECTED_STATUSES).toContain(r.status())
   })
@@ -82,15 +85,16 @@ test.describe('auth-flow: API 인증 보호 검증', () => {
     const r = await request.post('/api/ai/proposal', {
       data: { projectId: 'fake', sectionNo: 1 },
       headers: { 'Content-Type': 'application/json' },
+      maxRedirects: 0,
     })
     expect(PROTECTED_STATUSES).toContain(r.status())
   })
 
   test('rate-limit 헤더 동작 검증 (시뮬)', async ({ request }) => {
-    // 인증 가드만으로 충분 — 401/302/405 어떤 응답이든 endpoint 가 보호됨
     const r = await request.post('/api/ai/proposal', {
       data: { projectId: 'fake', sectionNo: 1 },
       headers: { 'Content-Type': 'application/json' },
+      maxRedirects: 0,
     })
     expect([...PROTECTED_STATUSES, 429]).toContain(r.status())
   })

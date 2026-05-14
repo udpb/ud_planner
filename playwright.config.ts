@@ -76,6 +76,11 @@ export default defineConfig({
       // 자식 프로세스에 mock AI 옵션 전파 (있을 때만)
       ...(process.env.PLAYWRIGHT_MOCK_AI ? { PLAYWRIGHT_MOCK_AI: process.env.PLAYWRIGHT_MOCK_AI } : {}),
       ...(process.env.E2E_SECRET ? { E2E_SECRET: process.env.E2E_SECRET } : {}),
+      // NextAuth v5 — host 검증 우회 (production build + 3100 포트 + .env 의 NEXTAUTH_URL=3000 mismatch).
+      // 또한 AUTH_URL 을 명시해서 NextAuth 가 callback URL 을 3100 으로 생성.
+      AUTH_TRUST_HOST: 'true',
+      AUTH_URL: BASE_URL,
+      NEXTAUTH_URL: BASE_URL,
     },
   },
 })
