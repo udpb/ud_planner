@@ -547,82 +547,72 @@ L0 ──────► L2 ─┬──► L3 ───┐
 
 ---
 
-## Phase M: Express 2.0 — AI 자동 진단 + 채널 분기 (ADR-013) ⭐⭐
+## Phase M: Express 2.0 — AI 자동 진단 + 채널 분기 (ADR-013) ✅ 완료 (2026-05-14~15) ⭐⭐
 
 > M이 끝나면: 슬기님 5원칙 51% → 74% 달성. 발주처 부서별 프레임 진단 자동, 외부 LLM 5→3건 축소, 사이드바 행동 흐름.
 >
 > 근거: [ADR-013](docs/decisions/013-express-v2-auto-diagnosis.md), [PRD-v8.0.md](PRD-v8.0.md)
+>
+> **결과**: M0~M3-2 완료. Wave 1~4 (신뢰성·UX·언어·모바일) 추가 완료. E2E 34/34 통과.
+> M3-1b PPT 출력은 별도 차수로 보류 (사용자 결정 2026-05-15).
 
-### M0 (반나절~1일) — 시작 ⭐
+### M0 ✅ 완료 (2026-05-14)
 
-- [ ] **M0-1. ChannelDetector**
-  - 신규: `src/lib/express/channel-detector.ts`
-  - 입력: RfpParsed (client, projectType, evalCriteria, summary 등)
-  - 출력: `{ detected: 'B2G'|'B2B'|'renewal', confidence: number, reasoning: string[] }`
-  - 추론 logic: 발주처명 키워드 (`진흥원`/`재단`/`그룹` 등) + 평가표 명시 강도 + 우리 prior project 조회
-  - UI: Express 첫 화면에 컨펌 카드 (1 클릭)
+- [x] **M0-1. ChannelDetector** — `src/lib/express/channel-detector.ts`
+  - 비-AI heuristic (토큰 0): 발주처명 키워드 + RFP projectType + 평가배점 강도 + prior project 조회
+  - confidence < 0.8 시 PM 컨펌 권장 + alternatives 제시
+- [x] **M0-2. FramingInspector** — `src/lib/express/framing-inspector.ts`
+  - 4 부서 (csr/strategy/sales/tech) 키워드 사전 + B2B 시 AI 1회(~2K) 정밀 모드
+  - GEMINI_API_KEY 없으면 heuristic fallback
+- [x] **M0-3. 사이드바 컴포넌트** — `AutoDiagnosisPanel` + `ChannelConfirmCard`
+  - Wave 2 #1 에서 3 탭으로 재정리 (AI 진단 / 채널·전략 / 발주처)
+  - Phase M3-2 에서 4번째 (ClientDocUploadCard) 추가
 
-- [ ] **M0-2. FramingInspector** (B2B 우선)
-  - 신규: `src/lib/express/framing-inspector.ts`
-  - 입력: `ExpressDraft` + 채널
-  - 호출 시점: sections.* 슬롯 채워질 때마다 자동
-  - AI 호출 (~2K 토큰): "이 글이 어느 부서 언어인지 판별 + 근거 + 수정 제안"
-  - 결과: `{ detected: 'csr'|'strategy'|'sales'|'tech', evidence, match, suggestion }`
+### M1 ✅ 완료 (2026-05-14)
 
-- [ ] **M0-3. 사이드바 4 패널 재설계**
-  - 신규: `src/components/express/sidebar/NextActionCard.tsx`
-  - 신규: `src/components/express/sidebar/AutoDiagnosisPanel.tsx`
-  - 수정: `src/components/express/sidebar/ExternalLLMCards.tsx` (5→3 축소 + Impact Value Chain 태깅)
-  - 유지: `PMDirectCard.tsx`
-  - 신규: `src/components/express/sidebar/SlotProgress.tsx`
+- [x] **M1-1. FactCheckLight** — `src/lib/express/fact-check-light.ts`
+  - 5 카테고리 (quant-stat·policy-cite·client-info·own-record·external-cite) × 5 상태 (verified·suspicious·unverifiable·needs-source·outdated)
+  - 정규식 추출 + AI 검증 (5건+ 시 1회, ~2K)
+  - 후속 fix: 한국 공공기관 (진흥원·공단·재단) + "6개월" 단위 collision 해결
+- [x] **M1-2. LogicChainChecker** — `src/lib/express/logic-chain-checker.ts`
+  - 채널별 chain (B2G: 정책→과제→솔루션→평가매핑→성과 / B2B: 니즈→인사이트→솔루션→차별화→ROI / renewal: 직전성과→학습→확장)
+  - AI 1회(~3K) + heuristic fallback. breakpoint + 보완 제안 반환
+- [~] **M1-3. 의사결정 컨펌 흐름** — 부분 완료
+  - ✅ 채널 컨펌: ChannelConfirmCard 별도 카드 (3 채널 라디오 + B2B 시 부서)
+  - ⚠ 메인 솔루션 / 1차본 조립 / 검수 결과 — 별도 컨펌 카드 없이 챗봇 흐름·다음 단계 패널·검수 모달로 흡수
+  - 후속: 명시적 컨펌 마일스톤 필요 시 별도 작업
 
-### M1 (1~2일)
+### M2 ✅ 완료 (2026-05-14)
 
-- [ ] **M1-1. FactCheckLight**
-  - 신규: `src/lib/proposal/fact-checker.ts`
-  - Phase 1 (정규식): 수치·출처 자동 추출 (AI X)
-  - 5 카테고리 자동 분류 (A 신한공식 / B 정부공공 / C 시장 / D 내부 / E 자체추정)
-  - 5 검증 상태 (✅검증됨 / ⚠️유사 / ❓불가 / 🔴불일치 / 📌추정)
-  - UI: ProposalSection 옆 hover 시 수치 highlight
+- [x] **M2-1. 채널별 Inspector 가중치** — `src/lib/express/inspector.ts`
+  - `CHANNEL_LENS_WEIGHTS` 테이블 (B2G: 통계·문제정의↑ / B2B: 차별화·Before-After↑ / renewal: 정량 변화↑)
+  - `applyChannelWeights()` 가 overallScore 가중 평균 재계산
+- [x] **M2-2. B2G 평가배점 시뮬** — `src/lib/express/eval-simulator.ts` + `EvalSimulatorCard`
+  - 비-AI: RFP evalCriteria × draft.sections 완성도 + 자산 인용 가산
+  - worstItems Top 3 "이 섹션 +N점 가능" 가이드
+- [x] **M2-3. renewal 매핑 자동화** — `src/lib/express/renewal-seed.ts` + `RenewalSeedCard`
+  - 같은 발주처 COMPLETED/IN_PROGRESS prior project 자동 조회
+  - 빈 필드만 시드 (intent prefix, keyMessages, sections 1·7)
 
-- [ ] **M1-2. LogicChainChecker 채널별 확장**
-  - 기존: `src/modules/gate3-validation/logic-chain.ts`
-  - 확장: 채널별 다른 chain 기준
-    - B2B: 사회공헌 흐름 (전략→기성과→집중과제→솔루션→기대효과)
-    - B2G: 평가배점 정렬 흐름
-    - renewal: 작년→올해 매핑 흐름
-  - AI 호출 (~3K): 7 섹션 chain 정합성 진단
+### M3 ✅ 완료 (2026-05-14)
 
-- [ ] **M1-3. 의사결정 컨펌 흐름**
-  - 신규: `src/lib/express/decision-points.ts`
-  - 4 마일스톤: 채널 결정 / 메인 솔루션 / 1차본 조립 / 검수 결과
-  - 챗봇 흐름 중 컨펌 카드 (Yes/No + 사유)
+- [x] **M3-1a. Markdown 출력** — `src/lib/express/render-markdown.ts` + `/api/projects/[id]/export-markdown`
+  - 헤더(프로젝트·발주처·예산·채널) + Before/After + 키 메시지 + 차별화 + 7섹션 + 진단 + 발주처 인용 + 푸터
+  - `<!-- ai-diagnosis -->` 마커로 grep 제거 가능
+- [ ] **M3-1b. PPT 출력** — *별도 차수* (사용자: "PPT 변환기는 따로 만들거야", 2026-05-15)
+- [x] **M3-2. 발주처 공식 문서 ingestion** — `src/lib/ai/client-doc-extractor.ts` + `/api/projects/[id]/ingest-client-doc`
+  - PDF 또는 텍스트 → AI 1회(~3K) → 3 카테고리 (keywords/policies/track)
+  - `StrategicNotes.clientOfficialDoc` 에 저장 → `formatStrategicNotes()` 가 모든 AI 호출에 자동 주입
 
-### M2 (3~5일)
+### Phase M 후 — Wave 1~4 ✅ 완료 (2026-05-14~15)
 
-- [ ] **M2-1. 채널별 Inspector 가중치**
-  - 수정: `src/lib/express/inspector.ts`
-  - B2G/B2B/renewal 별 7 렌즈 가중치 분기 (ADR-013 §채널별 메커니즘)
-  
-- [ ] **M2-2. B2G 평가배점 시뮬**
-  - 신규: `src/components/express/sidebar/channel/B2GSidebar.tsx`
-  - 100점 만점 시뮬 + 섹션별 예상 점수 막대
-  - AI 호출: 각 섹션 본문 vs 평가 항목 매칭 → 점수 추정
+> 사용자 종합 검토 후 발견된 13 항목 fix. 자세한 내역: git log `wave 1` ~ `wave 4`.
 
-- [ ] **M2-3. renewal 개선 매핑 자동화**
-  - 신규: `src/components/express/sidebar/channel/RenewalSidebar.tsx`
-  - 작년 vs 올해 매핑 표 (체크리스트)
-  - `renewalContext` 기반 + sections.* 와 매칭
-
-### M3 (1주+, 후속)
-
-- [ ] **M3-1. PPT 출력**
-  - 옵션 A: Sassac (`proposal-gen` 스킬) 연결 — 마크다운 export 형식 표준화
-  - 옵션 B: `pptxgenjs` 직접 통합 (coach-finder 가 사용 중)
-
-- [ ] **M3-2. 발주처 공식 문서 ingestion**
-  - `IngestionJob.kind` 에 `client_official_doc` 추가
-  - PDF 업로드 → 키워드 자동 추출 → `Strategy.clientOfficialKeywords` 자동 채움
+- [x] **Wave 1 — 신뢰성·안전성**: autosave race fix (server-side merge) + 권한 체크 (requireProjectAccess) + 영구 에러 banner + 채팅 인풏 sessionStorage 보존
+- [x] **Wave 2 — UX 핵심**: 사이드바 3 탭화 + next-action pulse + 챗봇 응답 단축 (prompt 80자 cap) + 검수 결과 시각화 (InspectorReportCard) + NorthStar tooltip + 자산 흐름 통합
+- [x] **Wave 2.5 — 액션 hub**: 상단/패널 액션 중복 제거 → 단일 hub
+- [x] **Wave 3 — 통합 E2E + 언어**: 9 시나리오 통합 spec + copy polish
+- [x] **Wave 4 — 모바일 반응형**: ExpressShell segmented view + NorthStarBar compact + 터치 친화 (44x44px) + ExpressChat/Preview 모바일 패딩
 
 ---
 
@@ -632,10 +622,13 @@ L0 ──────► L2 ─┬──► L3 ───┐
 >
 > ⚠️ Phase L 완료 *후* 진입 (사용자 합의 2026-04-27).
 
-- [ ] **I1. 전체 E2E 테스트**
-  - 양양 신활력 RFP로 Step 1~6 전체 플로우
-  - 각 스텝의 데이터 흐름 검증
-  - Ingestion → 승인 → 자산 반영 → 기획 활용 end-to-end
+- [~] **I1. 전체 E2E 테스트** *(부분 완료, 2026-05-14~15)*
+  - ✅ Express Track E2E 34/34 통과 (smoke 6 + auth-flow 5 + authenticated 23)
+    - full-path.spec.ts: RFP → 진단 → 컨펌 → 슬롯 → 검수 → Markdown export 9 시나리오
+    - express-diagnose.spec.ts: channel/framing/logic-chain/fact-check 7 시나리오
+    - 권한 (Wave 1 #8) + autosave race (Wave 1 #3) + state preservation 검증
+  - ⚠ Deep Track Step 1~6 통합 E2E 미작성 (Express 가 메인이므로 우선순위 낮음)
+  - ⚠ 양양 신활력 RFP 실제 시나리오는 사용자 manual 검증 단계
 
 - [x] **I2. 빌드 확인 + 에러 수정** *(2026-04-28)*
   - TypeScript 0 에러 ✓
@@ -665,19 +658,25 @@ L0 ──────► L2 ─┬──► L3 ───┐
     - status='queued' 로 저장. AI 요약·자산 추출 워커는 후속.
   - 사이드바 진입점 추가: 「운영 지표」 + 「전략 인터뷰」
 
-- [~] **I5. Vercel 배포 + GitHub push** *(2026-04-28 코드 준비 완료, 배포 자체는 사용자 액션)*
-  - GitHub push ✓ (`origin/master` 22 커밋 반영)
-  - 신규: `vercel.json` (framework=nextjs, buildCommand=`npm run build:prod`, region=icn1, maxDuration=60s)
-  - 신규 npm script: `build:prod` = `prisma generate && prisma migrate deploy && next build` (마이그 자동 적용)
-  - 신규: `.env.example` (개발용 모든 환경변수 카탈로그)
-  - 갱신: `.env.production.example` (GEMINI_API_KEY / GEMINI_MODEL 추가)
-  - 신규: `docs/DEPLOYMENT.md` — 9 섹션 (Neon 준비 / Vercel 프로젝트 / 환경변수 표 / 시드 / OAuth / 검증 체크리스트 / 트러블슈팅)
+- [~] **I5. Vercel 배포 + GitHub push** *(2026-04-28 코드 준비, 2026-05-15 Phase M 후속 갱신)*
+  - GitHub push ✓ (`origin/master` 최신)
+  - `vercel.json` (framework=nextjs, buildCommand=`npm run build:prod`, region=icn1, maxDuration=60s)
+  - `build:prod` script: `prisma generate && prisma migrate deploy && next build`
+  - `.env.example` + `.env.production.example` 갱신 (Phase M + Wave 1~4 환경변수 반영):
+    - `AUTH_TRUST_HOST` — production 에선 미설정 권장 (Vercel 자동 trust)
+    - `E2E_SECRET` / `PLAYWRIGHT_MOCK_AI` — production 절대 금지 (보안·서비스 마비)
+    - `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE` — Bridge 1 mirror 강력 권장
+    - `SENTRY_DSN` — 운영 모니터링 권장
+  - `docs/DEPLOYMENT.md` v2 갱신 (2026-05-15):
+    - 검증 체크리스트 8 → 32 항목 (Phase M + Wave 1~4 흐름 추가)
+    - 트러블슈팅 5 → 11 케이스 (UntrustedHost / Phase M timeout / seed-e2e production 노출 검사 등)
   - **사용자 액션 대기**:
     - Vercel 계정 → New Project → GitHub `udpb/ud_planner` import
     - 환경변수 입력 (DATABASE_URL, GEMINI_API_KEY, AUTH_SECRET, NEXTAUTH_URL 등)
     - Deploy 클릭
     - 첫 배포 후 시드 실행 (`vercel env pull` → `npx tsx prisma/seed*.ts`)
     - Google OAuth Redirect URIs 갱신
+    - 배포 후 `docs/DEPLOYMENT.md` §6 체크리스트 32 항목 manual 검증
 
 ---
 
