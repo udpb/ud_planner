@@ -7,14 +7,18 @@ import { prisma } from '@/lib/prisma'
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // trustHost — 환경별 조건부 적용 (보안 default 유지)
   //   - dev (NODE_ENV !== 'production'): 자동 trust (편의)
-  //   - E2E (production build + AUTH_TRUST_HOST=true env): 명시 trust
-  //   - production Vercel: Vercel 자체가 X-Forwarded-Host 검증 — 자동 trust 됨
-  //   - self-hosted production (AUTH_TRUST_HOST 미설정): trust=false → 보안 default
+  //   - Vercel production: VERCEL env 자동 감지 — X-Forwarded-Host 신뢰
+  //   - E2E (production build + AUTH_TRUST_HOST=true): 명시 trust
+  //   - AUTH_URL 박힌 자체 호스팅: NextAuth 가 그 URL 만 인정 → trust
+  //   - 그 외 self-hosted (env 미설정): trust=false → 보안 default
   //
   // 무조건 trustHost=true 는 host header injection 공격 표면 — 피함.
+  // 단 Vercel·자체 호스팅에서 명시 설정 있을 땐 안전 가정.
   trustHost:
     process.env.NODE_ENV !== 'production' ||
-    process.env.AUTH_TRUST_HOST === 'true',
+    process.env.AUTH_TRUST_HOST === 'true' ||
+    !!process.env.VERCEL ||
+    !!process.env.AUTH_URL,
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
