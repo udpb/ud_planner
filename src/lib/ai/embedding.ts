@@ -8,12 +8,17 @@
  *   const matches = topKBySimilarity(queryVec, candidateVecs, 5)
  */
 
-import 'server-only'
+// NOTE: 'server-only' 가드 미사용 — CLI 스크립트 (scripts/embed-assets.ts) 에서도
+// 직접 import 함. 어차피 GEMINI_API_KEY 가 노드 환경에서만 노출되므로 브라우저
+// 번들에 들어가도 동작 안 함. import 가 client 에서 일어나지 않도록 호출 측에서
+// 관리 (현재는 API route 와 CLI 만 사용).
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const EMBEDDING_MODEL = 'text-embedding-004'
-export const EMBEDDING_MODEL_LABEL = `gemini-${EMBEDDING_MODEL}`
-export const EMBEDDING_DIM = 768
+// 2026-05-15 N4: gemini-embedding-001 (dim 3072). 다른 키 tier 에서 text-embedding-004
+//  는 안 보이는 경우가 있어 안정 모델로 픽스.
+const EMBEDDING_MODEL = 'gemini-embedding-001'
+export const EMBEDDING_MODEL_LABEL = EMBEDDING_MODEL
+export const EMBEDDING_DIM = 3072
 
 let _client: GoogleGenerativeAI | null = null
 

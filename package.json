@@ -31,7 +31,8 @@
     "db:seed:winning-patterns-sections": "npx tsx prisma/seed-winning-patterns-sections.ts",
     "db:seed:all": "npm run db:seed && npm run db:seed:channel-presets && npm run db:seed:program-profiles && npm run db:seed:content-assets && npm run db:seed:winning-patterns-sections",
     "sync:coaches": "npx tsx scripts/sync-coaches.ts",
-    "ingest:web": "npx tsx scripts/ingest-underdogs.ts"
+    "ingest:web": "npx tsx scripts/ingest-underdogs.ts",
+    "embed:assets": "npx tsx scripts/embed-assets.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",

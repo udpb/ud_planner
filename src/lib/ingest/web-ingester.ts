@@ -13,7 +13,8 @@
  *  - robots.txt 준수는 호출자 책임 (지금은 자체 자산 사이트 대상이라 생략)
  */
 
-import 'server-only'
+// 'server-only' 가드 미사용 — CLI 스크립트에서도 직접 import.
+// (Wave N2 보조: scripts/ingest-underdogs.ts, scripts/ingest-homepage-crawl.ts)
 import * as cheerio from 'cheerio'
 import { z } from 'zod'
 
@@ -142,7 +143,8 @@ export async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
 // 3. 자산 후보 추출 (AI)
 // ─────────────────────────────────────────
 
-export const AssetProposalSchema = z.object({
+// 자산화 가치 있는 정상 후보
+const AcceptedAssetSchema = z.object({
   name: z.string().min(2).max(120),
   category: z.enum([
     'methodology',
@@ -170,15 +172,26 @@ export const AssetProposalSchema = z.object({
     'activity',
     'outcome',
   ]),
-  narrativeSnippet: z.string().min(20).max(500),
-  keyNumbers: z.array(z.string()).max(8),
-  keywords: z.array(z.string()).max(15),
-  /** 자산화 자체가 부적절한 페이지 (회사 소개 인사말 등) — true 면 호출자가 스킵 */
-  rejected: z.boolean().optional(),
+  narrativeSnippet: z.string().min(20).max(800),
+  keyNumbers: z.array(z.string()).max(20),
+  keywords: z.array(z.string()).max(25),
+  rejected: z.literal(false).optional(),
   rejectionReason: z.string().optional(),
 })
 
-export type AssetProposal = z.infer<typeof AssetProposalSchema>
+// AI 가 자산화 부적절로 판단한 경우 — 필수 필드 모두 면제
+const RejectedAssetSchema = z.object({
+  rejected: z.literal(true),
+  rejectionReason: z.string().optional(),
+  // 다른 필드는 있어도 무시 (passthrough)
+}).passthrough()
+
+export const AssetProposalSchema = z.union([
+  RejectedAssetSchema,
+  AcceptedAssetSchema,
+])
+
+export type AssetProposal = z.infer<typeof AcceptedAssetSchema>
 
 interface ProposeOptions {
   /** 추가 컨텍스트 (이 페이지 collection 의 성격 등) */
@@ -199,11 +212,15 @@ export async function proposeAssetFromText(
   const raw = safeParseJson<unknown>(r.raw, 'web-ingest-propose')
   const validated = AssetProposalSchema.safeParse(raw)
   if (!validated.success) {
-    console.warn('[web-ingester] zod 실패:', validated.error.message.slice(0, 200))
+    if (process.env.DEBUG_INGEST) {
+      console.warn('[web-ingester] raw:', JSON.stringify(raw).slice(0, 800))
+    }
+    console.warn('[web-ingester] zod 실패:', validated.error.issues.slice(0, 3).map(i => `${i.path.join('.')}: ${i.message}`).join(' | '))
     return null
   }
-  if (validated.data.rejected) return null
-  return validated.data
+  if ('rejected' in validated.data && validated.data.rejected === true) return null
+  // AcceptedAssetSchema branch
+  return validated.data as AssetProposal
 }
 
 function buildProposalPrompt(page: FetchedPage, opts: ProposeOptions): string {
@@ -211,6 +228,17 @@ function buildProposalPrompt(page: FetchedPage, opts: ProposeOptions): string {
 당신은 언더독스 (UD) 의 콘텐츠 큐레이터입니다. 아래 웹 페이지를 보고
 이것이 **언더독스 제안서 작성용 자산 (ContentAsset)** 으로 가치 있는지
 판단하고, 가치 있으면 등록 후보로 JSON 을 만들어주세요.
+
+**중요: 자산화 가치 있으면 다음 9개 필드 모두 반드시 포함**:
+  1. name (자산 이름, 2~120자) — 페이지 주제를 짧게 요약 (예: "언더독스 회사 소개", "AX Guidebook v2", "2024년 임팩트 리포트")
+  2. category
+  3. evidenceType
+  4. applicableSections
+  5. valueChainStage
+  6. narrativeSnippet
+  7. keyNumbers (배열, 비어있어도 OK)
+  8. keywords (배열)
+  9. rejected (false 또는 생략)
 
 [자산 가치 판단 기준]
 다음 중 하나 이상에 해당하면 자산화 가치 있음:

@@ -17,7 +17,7 @@
  * 변환 가이드만 메시지로 안내.
  */
 
-import 'server-only'
+// 'server-only' 가드 미사용 — CLI 스크립트와 공유.
 import { z } from 'zod'
 
 import { invokeAi } from '@/lib/ai-fallback'
@@ -174,7 +174,10 @@ export async function proposeAssetsFromFile(
       console.warn('[file-ingester] multi zod 실패:', v.error.message.slice(0, 200))
       return []
     }
-    return v.data.proposals
+    // rejection 항목 제외
+    return v.data.proposals.filter(
+      (p): p is AssetProposal => !('rejected' in p && p.rejected === true),
+    )
   } else {
     const raw = safeParseJson<unknown>(r.raw, 'file-ingest-single')
     const v = AssetProposalSchema.safeParse(raw)
@@ -182,8 +185,8 @@ export async function proposeAssetsFromFile(
       console.warn('[file-ingester] single zod 실패:', v.error.message.slice(0, 200))
       return []
     }
-    if (v.data.rejected) return []
-    return [v.data]
+    if ('rejected' in v.data && v.data.rejected === true) return []
+    return [v.data as AssetProposal]
   }
 }
 

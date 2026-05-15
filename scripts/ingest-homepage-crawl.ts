@@ -1,21 +1,16 @@
 /**
- * scripts/ingest-underdogs.ts — Wave N2 (2026-05-15)
+ * scripts/ingest-homepage-crawl.ts — Wave N2 보조 (2026-05-15)
  *
- * underdogs.global (또는 다른 sitemap 기반 사이트) 의 페이지를
- * 일괄 ingestion → ContentAsset (status='developing') 으로 저장.
+ * sitemap.xml 이 없는 사이트용. 홈페이지 → 내부 링크 추출 → 일괄 ingest.
  *
- * 사용법:
- *   npx tsx scripts/ingest-underdogs.ts \
- *     --sitemap https://underdogs.global/sitemap.xml \
+ * 사용:
+ *   npx tsx scripts/ingest-homepage-crawl.ts \
+ *     --root https://underdogs.global/ko \
  *     --limit 30 \
- *     --include "/case|/impact|/program" \
- *     --exclude "/login|/admin" \
- *     --auto-save
+ *     --auto-save \
+ *     --hint "언더독스 글로벌 한국 사이트"
  *
- * 저장된 자산은 status=developing 으로 들어가 /admin/content-hub 에서
- * 담당자가 검토 후 status=stable 로 승격. 시드 자산을 덮어쓰지 않음.
- *
- * 환경변수 필요: DATABASE_URL · GOOGLE_GENERATIVE_AI_KEY · ANTHROPIC_API_KEY (fallback)
+ * 깊이 1 — root 페이지에서 추출한 같은 호스트 링크만.
  */
 
 import { config as loadDotenv } from 'dotenv'
@@ -27,9 +22,9 @@ delete process.env.E2E_SECRET
 
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import * as cheerio from 'cheerio'
 import {
   fetchPageText,
-  fetchSitemapUrls,
   proposeAssetFromText,
 } from '../src/lib/ingest/web-ingester'
 
@@ -37,12 +32,12 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
 const prisma = new PrismaClient({ adapter })
 
 interface Args {
-  sitemap: string
+  root: string
   limit: number
-  include?: string
-  exclude?: string
   autoSave: boolean
   hint?: string
+  include?: string
+  exclude?: string
   dryRun: boolean
 }
 
@@ -54,37 +49,71 @@ function parseArgs(): Args {
     return argv[i + 1]
   }
   const has = (name: string) => argv.includes(`--${name}`)
-
-  const sitemap = get('sitemap')
-  if (!sitemap) {
-    console.error('사용법: --sitemap <url> [--limit 30] [--include regex] [--exclude regex] [--auto-save] [--hint "..."] [--dry-run]')
+  const root = get('root')
+  if (!root) {
+    console.error('사용법: --root <url> [--limit 30] [--auto-save] [--hint "..."] [--include regex] [--exclude regex] [--dry-run]')
     process.exit(1)
   }
   return {
-    sitemap,
+    root,
     limit: Number(get('limit') ?? '30'),
-    include: get('include'),
-    exclude: get('exclude'),
     autoSave: has('auto-save'),
     hint: get('hint'),
+    include: get('include'),
+    exclude: get('exclude'),
     dryRun: has('dry-run'),
   }
 }
 
+const USER_AGENT =
+  'UD-Ops-Ingester/0.1 (+https://underdogs.co.kr; contact: udpb@udimpact.ai)'
+
+async function fetchHomepageLinks(rootUrl: string): Promise<string[]> {
+  const res = await fetch(rootUrl, {
+    headers: { 'user-agent': USER_AGENT },
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${rootUrl}`)
+  const html = await res.text()
+  const $ = cheerio.load(html)
+
+  const base = new URL(rootUrl)
+  const host = base.host
+  const seen = new Set<string>()
+
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href')
+    if (!href) return
+    try {
+      const u = new URL(href, base)
+      if (u.host !== host) return // 외부 링크 제외
+      if (u.protocol !== 'https:' && u.protocol !== 'http:') return
+      // 정렬 + 쿼리 제거 (anchor 도 제거)
+      u.hash = ''
+      const clean = u.toString().replace(/\/$/, '')
+      if (clean === rootUrl.replace(/\/$/, '')) return // 자기 자신 제외
+      seen.add(clean)
+    } catch {
+      // ignore
+    }
+  })
+  return Array.from(seen)
+}
+
 async function main() {
   const args = parseArgs()
-  console.log('▶ Ingest 시작')
-  console.log('  sitemap   :', args.sitemap)
+  console.log('▶ Homepage Crawl 시작')
+  console.log('  root      :', args.root)
   console.log('  limit     :', args.limit)
-  console.log('  include   :', args.include ?? '(no filter)')
-  console.log('  exclude   :', args.exclude ?? '(no filter)')
   console.log('  auto-save :', args.autoSave)
   console.log('  dry-run   :', args.dryRun)
+  console.log('  include   :', args.include ?? '(no filter)')
+  console.log('  exclude   :', args.exclude ?? '(no filter)')
   console.log('  hint      :', args.hint ?? '(none)')
   console.log('')
 
-  // 1) sitemap → url
-  let urls = await fetchSitemapUrls(args.sitemap)
+  let urls = await fetchHomepageLinks(args.root)
+  console.log(`◇ 홈페이지에서 ${urls.length}개 내부 링크 추출`)
+
   if (args.include) {
     const re = new RegExp(args.include)
     urls = urls.filter((u) => re.test(u))
@@ -93,9 +122,10 @@ async function main() {
     const re = new RegExp(args.exclude)
     urls = urls.filter((u) => !re.test(u))
   }
+  console.log(`  filter 후 : ${urls.length}개`)
   const total = urls.length
   urls = urls.slice(0, args.limit)
-  console.log(`◇ sitemap 총 ${total} url (filter 후), ${urls.length}개 처리`)
+  console.log(`  처리할 것: ${urls.length}개`)
   console.log('')
 
   let saved = 0
@@ -109,7 +139,7 @@ async function main() {
     try {
       const page = await fetchPageText(url)
       if (!page.text || page.text.length < 100) {
-        console.log(`${prefix} ⊘ ${url} — 본문 너무 짧음`)
+        console.log(`${prefix} ⊘ ${url} — 본문 너무 짧음 (${page.text.length}자)`)
         skipped++
         continue
       }
@@ -154,7 +184,7 @@ async function main() {
         proposed++
       }
 
-      await new Promise((r) => setTimeout(r, 250))
+      await new Promise((r) => setTimeout(r, 300))
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err)
       console.log(`${prefix} ✗ ${url} — ${msg.slice(0, 120)}`)
@@ -164,11 +194,12 @@ async function main() {
 
   console.log('')
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-  console.log('Ingest 완료')
-  console.log(`  saved   : ${saved}`)
-  console.log(`  proposed: ${proposed} (dry-run)`)
-  console.log(`  skipped : ${skipped}`)
-  console.log(`  errors  : ${errors}`)
+  console.log('Homepage Crawl 완료')
+  console.log(`  found url    : ${total}`)
+  console.log(`  saved        : ${saved}`)
+  console.log(`  proposed     : ${proposed} (dry-run)`)
+  console.log(`  skipped      : ${skipped}`)
+  console.log(`  errors       : ${errors}`)
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
   await prisma.$disconnect()
