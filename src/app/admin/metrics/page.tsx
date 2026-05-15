@@ -340,9 +340,8 @@ async function getMetrics() {
 
 export default async function MetricsPage() {
   const session = await auth()
-  const role = (session?.user as { role?: string })?.role
   if (!session?.user) redirect('/login')
-  if (role !== 'ADMIN' && role !== 'DIRECTOR') redirect('/dashboard')
+  // 운영 지표는 PM 도 열람 가능 (보기만)
 
   const m = await getMetrics()
 

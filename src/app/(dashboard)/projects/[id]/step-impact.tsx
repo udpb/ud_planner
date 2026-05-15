@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -362,6 +363,22 @@ export function StepImpact({
 
   return (
     <div className="space-y-4">
+      {/* 사전 임팩트 리포트 (forecast) 진입점 — Express 와 동일 데이터 공유 */}
+      <div className="flex items-center justify-between gap-3 rounded-md border border-violet-200 bg-violet-50/40 px-4 py-2">
+        <div className="text-xs">
+          <span className="font-semibold text-violet-900">📊 사전 임팩트 리포트 (SROI Forecast)</span>
+          <span className="ml-2 text-muted-foreground">
+            impact-measurement 계수 기반 사회적 가치 예측 — 사후 실측 시 동일 계수로 비교
+          </span>
+        </div>
+        <Link
+          href={`/projects/${projectId}/impact-forecast`}
+          className="shrink-0 rounded border border-violet-400 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
+        >
+          열기 / 생성 →
+        </Link>
+      </div>
+
       {/* 이전 스텝 요약 (Step 2·3·4 → Step 5) */}
       <DataFlowBanner
         fromStep="Step 2·3·4 커리큘럼·코치·예산"

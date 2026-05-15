@@ -69,9 +69,12 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
     }
 
+    console.info(`[impact-forecast POST] projectId=${projectId} 시작`)
+
     const project = await prisma.project.findUnique({
       where: { id: projectId },
       select: {
+        name: true,
         expressDraft: true,
         rfpParsed: true,
         programProfile: true,
@@ -89,14 +92,19 @@ export async function POST(req: NextRequest, { params }: Ctx) {
 
     const draftValidation = ExpressDraftSchema.safeParse(project.expressDraft)
     if (!draftValidation.success) {
+      console.warn(`[impact-forecast POST] ExpressDraft 무효: ${draftValidation.error.issues.slice(0,3).map(i=>i.path.join('.')+':'+i.message).join('|')}`)
       return NextResponse.json(
-        { error: 'ExpressDraft 가 없거나 유효하지 않음 — 1차본 먼저 작성' },
+        {
+          error:
+            '1차본 데이터가 비어있거나 손상되어 임팩트 예측 불가. Express 에서 의도·Before/After·핵심 메시지·섹션을 최소한 채운 후 다시 시도하세요.',
+        },
         { status: 400 },
       )
     }
     const draft = draftValidation.data
     const rfp = project.rfpParsed as RfpParsed | null
 
+    const t0 = Date.now()
     const result = await forecastImpact({
       projectId,
       draft: {
@@ -127,12 +135,24 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       country: project.sroiCountry,
       conservative: parsed.data.conservative ?? true,
     })
+    console.info(
+      `[impact-forecast POST] 완료 ${Date.now() - t0}ms · items=${result.itemCount} · value=${result.totalSocialValue} · skipped=${result.skipped.length}`,
+    )
 
     return NextResponse.json({ ok: true, result })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('[/api/projects/[id]/impact-forecast POST] error:', msg)
-    return NextResponse.json({ error: msg }, { status: 500 })
+    // 사용자에게 더 친절한 에러 메시지
+    let userMsg = msg
+    if (msg.includes('IMPACT_MEASUREMENT_DATABASE_URL')) {
+      userMsg = '임팩트 측정 DB 미설정 — 관리자에게 환경변수 추가 요청'
+    } else if (msg.includes('tenant') || msg.includes('ENOTFOUND')) {
+      userMsg = '임팩트 측정 DB 연결 실패 — connection string 확인 필요'
+    } else if (msg.includes('zod') || msg.includes('AI 응답')) {
+      userMsg = 'AI 매핑 결과 형식 오류 — 다시 시도하거나 1차본을 더 채워보세요'
+    }
+    return NextResponse.json({ error: userMsg, originalError: msg }, { status: 500 })
   }
 }
 

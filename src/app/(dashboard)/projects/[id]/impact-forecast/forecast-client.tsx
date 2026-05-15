@@ -14,7 +14,7 @@
  *  - "최종 확정 (lock)" — calibration = pm-locked
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2, RefreshCw, Save, Lock, TrendingUp } from 'lucide-react'
@@ -110,10 +110,15 @@ export function ImpactForecastClient({
   configured,
 }: Props) {
   const router = useRouter()
-  const [forecast, setForecast] = useState(initialForecast)
+  // forecast 는 서버 source-of-truth 라 state 안 씀 (prop 직접 사용 → router.refresh 후 자동 갱신)
+  const forecast = initialForecast
+  // editing 은 PM 이 보정하는 작업 영역 — 새 forecast 가 들어오면 sync
   const [editing, setEditing] = useState<ForecastItem[]>(
     initialForecast?.items ?? [],
   )
+  useEffect(() => {
+    setEditing(initialForecast?.items ?? [])
+  }, [initialForecast])
   const [regenerating, setRegenerating] = useState(false)
   const [saving, setSaving] = useState(false)
 

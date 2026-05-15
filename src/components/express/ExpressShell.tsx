@@ -647,6 +647,13 @@ export function ExpressShell(props: Props) {
               >
                 🔍 검수
               </button>
+              <Link
+                href={`/projects/${props.projectId}/impact-forecast`}
+                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+                title="1차본 → 사전 임팩트 리포트 (SROI 계수 기반 사회적 가치 추정)"
+              >
+                📊 임팩트 리포트
+              </Link>
               <a
                 href={`/api/projects/${props.projectId}/export-markdown`}
                 download

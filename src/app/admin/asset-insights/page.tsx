@@ -146,10 +146,8 @@ async function getInsights() {
 
 export default async function AssetInsightsPage() {
   const session = await auth()
-  const role = (session?.user as { role?: string })?.role
-  if (!session?.user || (role !== 'ADMIN' && role !== 'DIRECTOR')) {
-    redirect('/admin/content-hub')
-  }
+  if (!session?.user) redirect('/login')
+  // 자산 인사이트는 PM 도 열람 가능 (보기만 — 자산 편집은 별도 페이지에서 권한 체크)
 
   const data = await getInsights()
 
