@@ -12,7 +12,7 @@
  */
 
 import Link from 'next/link'
-import { Plus } from 'lucide-react'
+import { Plus, Sparkles } from 'lucide-react'
 
 import { Header } from '@/components/layout/header'
 import { Badge } from '@/components/ui/badge'
@@ -104,6 +104,12 @@ export default async function ContentHubPage({
           <FilterBar initial={params} />
           <div className="flex shrink-0 gap-2">
             <SeedButton />
+            <Link href="/admin/content-hub/ingest">
+              <Button size="sm" variant="outline" className="gap-1.5">
+                <Sparkles className="h-4 w-4" />
+                URL 자동 수집
+              </Button>
+            </Link>
             <Link href="/admin/content-hub/new">
               <Button size="sm" className="gap-1.5">
                 <Plus className="h-4 w-4" />새 자산
