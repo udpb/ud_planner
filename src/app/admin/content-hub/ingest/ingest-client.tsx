@@ -8,8 +8,8 @@
  * 하단 탭: sitemap 일괄 (limit · include/exclude regex · auto-save)
  */
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import {
   Loader2,
@@ -55,6 +55,7 @@ interface BulkResultRow {
 
 export function IngestClient() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [singleUrl, setSingleUrl] = useState('')
   const [singleHint, setSingleHint] = useState('')
   const [singleLoading, setSingleLoading] = useState(false)
@@ -93,11 +94,23 @@ export function IngestClient() {
     errors: number
   } | null>(null)
 
-  const handleSingleExtract = async () => {
-    if (!singleUrl.trim()) {
-      toast.error('URL 을 입력해주세요')
-      return
+  // Wave N5 — bookmarklet prefill 자동 실행
+  useEffect(() => {
+    const prefillUrl = searchParams.get('prefill')
+    const prefillTitle = searchParams.get('title')
+    if (prefillUrl && !singleUrl) {
+      setSingleUrl(prefillUrl)
+      if (prefillTitle) setSingleHint(`페이지 제목: ${prefillTitle}`)
+      // 자동 추출 트리거 — 한 박자 늦춰서 state 반영 후
+      setTimeout(() => {
+        // 직접 fetch 호출 (state 의존성 회피)
+        void runSingleExtract(prefillUrl, prefillTitle ? `페이지 제목: ${prefillTitle}` : '')
+      }, 100)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
+
+  const runSingleExtract = async (url: string, hint: string) => {
     setSingleLoading(true)
     setSingleResult(null)
     setEditable(null)
@@ -106,8 +119,8 @@ export function IngestClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          url: singleUrl.trim(),
-          hint: singleHint.trim() || undefined,
+          url: url.trim(),
+          hint: hint.trim() || undefined,
         }),
       })
       const data = await r.json()
@@ -125,6 +138,14 @@ export function IngestClient() {
     } finally {
       setSingleLoading(false)
     }
+  }
+
+  const handleSingleExtract = async () => {
+    if (!singleUrl.trim()) {
+      toast.error('URL 을 입력해주세요')
+      return
+    }
+    await runSingleExtract(singleUrl, singleHint)
   }
 
   const handleSave = async () => {

@@ -7,5 +7,11 @@
     "src/app/api/**/route.ts": {
       "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/asset-freshness",
+      "schedule": "0 0 1 * *"
+    }
+  ]
 }
