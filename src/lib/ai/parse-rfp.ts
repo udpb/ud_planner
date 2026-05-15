@@ -55,6 +55,13 @@ export async function parseRfp(text: string): Promise<RfpParsed> {
   "projectEndDate": "YYYY-MM-DD" 또는 null,
   "eduStartDate": "YYYY-MM-DD" 또는 null,
   "eduEndDate": "YYYY-MM-DD" 또는 null,
+  // ⚠️ 날짜 정확성 지침 (Wave 5 fix):
+  // - 한국식 표기 "2026.7.1" / "2026년 7월 1일" / "26.7.1" 등 모두 YYYY-MM-DD 로 정규화
+  // - 2자리 연도 (26.7.1) → 2026 로 가정 (이번 사업·내년 사업이 압도적)
+  // - "착수일~종료일" 구분: 사업 전체 (projectStart/End) vs 교육 기간 (eduStart/End)
+  // - "협약일 기준 6개월" 같은 상대 표현은 null (절대 추정 X)
+  // - "상반기/하반기" 만 있으면 null (구체 일자 없음)
+  // - 텍스트에 명시되지 않은 필드는 반드시 null
   "targetAudience": "대상자 설명",
   "targetCount": 참여인원수 또는 null,
   "targetStage": ["예비창업", "초기창업"] 등,
