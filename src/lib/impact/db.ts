@@ -212,7 +212,7 @@ export async function listCurrentCoefficients(
     [country],
   )
 
-  const coefficients: Coefficient[] = result.rows.map((r) => ({
+  const rawCoefficients: Coefficient[] = result.rows.map((r) => ({
     id: r.id,
     categoryId: r.categoryId,
     country: r.country,
@@ -228,6 +228,38 @@ export async function listCurrentCoefficients(
     isCurrent: r.isCurrent,
     displayOrder: r.displayOrder,
   }))
+
+  // ─────────────────────────────────────────
+  // 방어 dedup (Wave M 후속 fix, 2026-05-15)
+  //
+  // 동일 (categoryId, role='primary') 가 isCurrent=true 로 2건 이상이면 엔진이 둘을
+  // 곱해서 폭주함 (예: 300,000 × 300,000 = 9e10). 이는 impact-measurement 의
+  // 데이터 정합성 이슈 (신버전 추가 시 구버전 isCurrent 미해제) — 그 시스템은
+  // 건드리지 않으므로 우리 쪽에서 가장 최신 effectiveDate 만 채택.
+  //
+  // adjustment role 은 곱셈 인수 의도라 dedup 안 함 (원본 엔진 동작 유지).
+  // ─────────────────────────────────────────
+  const dedupMap = new Map<string, Coefficient>()
+  const adjustments: Coefficient[] = []
+  for (const c of rawCoefficients) {
+    if (c.role !== 'primary') {
+      adjustments.push(c)
+      continue
+    }
+    const key = c.categoryId
+    const cur = dedupMap.get(key)
+    if (!cur || c.effectiveDate > cur.effectiveDate) {
+      if (cur) {
+        console.warn(
+          `[impact-db] 중복 primary current 감지 — category=${c.categoryId} country=${country}: ` +
+            `v${cur.version}(${cur.effectiveDate.slice(0, 10)}, ${cur.proxyValue}) → v${c.version}(${c.effectiveDate.slice(0, 10)}, ${c.proxyValue}) 선택. ` +
+            `impact-measurement 데이터 정리 권장 (구버전 isCurrent=false).`,
+        )
+      }
+      dedupMap.set(key, c)
+    }
+  }
+  const coefficients: Coefficient[] = [...dedupMap.values(), ...adjustments]
 
   return cacheSet(cacheKey, coefficients)
 }
