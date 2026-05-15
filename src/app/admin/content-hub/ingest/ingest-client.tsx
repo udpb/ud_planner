@@ -11,7 +11,14 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Loader2, Sparkles, FileSpreadsheet, ExternalLink } from 'lucide-react'
+import {
+  Loader2,
+  Sparkles,
+  FileSpreadsheet,
+  ExternalLink,
+  Upload,
+  FileText,
+} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -54,6 +61,22 @@ export function IngestClient() {
   const [singleResult, setSingleResult] = useState<SinglePageResult | null>(null)
   const [editable, setEditable] = useState<AssetProposal | null>(null)
   const [saving, setSaving] = useState(false)
+
+  // file ingest (Wave N3)
+  const [file, setFile] = useState<File | null>(null)
+  const [fileHint, setFileHint] = useState('')
+  const [fileWasWon, setFileWasWon] = useState(false)
+  const [filePerSlide, setFilePerSlide] = useState(false)
+  const [fileSingleOnly, setFileSingleOnly] = useState(false)
+  const [fileAutoSave, setFileAutoSave] = useState(true)
+  const [fileLoading, setFileLoading] = useState(false)
+  const [fileResult, setFileResult] = useState<{
+    proposalCount: number
+    savedIds: string[]
+    proposals: AssetProposal[]
+    file: { name: string }
+    truncated: boolean
+  } | null>(null)
 
   // bulk
   const [sitemap, setSitemap] = useState('')
@@ -130,6 +153,46 @@ export function IngestClient() {
     }
   }
 
+  const handleFileUpload = async () => {
+    if (!file) {
+      toast.error('파일을 선택해주세요')
+      return
+    }
+    setFileLoading(true)
+    setFileResult(null)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      if (fileHint.trim()) form.append('hint', fileHint.trim())
+      if (fileWasWon) form.append('wasWon', 'true')
+      if (filePerSlide) form.append('perSlide', 'true')
+      if (fileSingleOnly) form.append('singleOnly', 'true')
+      if (fileAutoSave) form.append('autoSave', 'true')
+
+      const r = await fetch('/api/admin/ingest-file', {
+        method: 'POST',
+        body: form,
+      })
+      const data = await r.json()
+      if (!r.ok) throw new Error(data.error ?? 'unknown')
+      if (data.skipped) {
+        toast.warning(`스킵: ${data.reason}`)
+        return
+      }
+      setFileResult(data)
+      toast.success(
+        `${data.proposalCount}개 자산 후보 추출 완료${
+          data.savedIds.length > 0 ? ` — ${data.savedIds.length}개 저장됨` : ''
+        }`,
+      )
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      toast.error('파일 처리 실패: ' + msg.slice(0, 120))
+    } finally {
+      setFileLoading(false)
+    }
+  }
+
   const handleBulkRun = async () => {
     if (!sitemap.trim()) {
       toast.error('sitemap.xml URL 을 입력해주세요')
@@ -184,6 +247,10 @@ export function IngestClient() {
           <TabsTrigger value="bulk" className="gap-1">
             <FileSpreadsheet className="h-3.5 w-3.5" />
             sitemap 일괄
+          </TabsTrigger>
+          <TabsTrigger value="file" className="gap-1">
+            <Upload className="h-3.5 w-3.5" />
+            파일 (PDF/PPT)
           </TabsTrigger>
         </TabsList>
 
@@ -497,6 +564,152 @@ export function IngestClient() {
                     </tbody>
                   </table>
                 </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* ── 파일 업로드 모드 ──────────────────────────── */}
+        <TabsContent value="file" className="space-y-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">PDF · PPTX · DOCX · XLSX 업로드</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <Label htmlFor="file" className="text-xs">
+                  파일 선택 (최대 20MB)
+                </Label>
+                <Input
+                  id="file"
+                  type="file"
+                  accept=".pdf,.pptx,.docx,.xlsx,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  className="mt-1 cursor-pointer"
+                />
+                {file && (
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    <FileText className="-mt-0.5 mr-0.5 inline h-2.5 w-2.5" />
+                    {file.name} · {Math.round(file.size / 1024)}KB
+                  </p>
+                )}
+                <p className="mt-1 text-[10px] text-muted-foreground">
+                  HWP 는 지원 안 함 — Word/한컴 오피스에서 PDF 로 변환 후 업로드
+                </p>
+              </div>
+              <div>
+                <Label htmlFor="file-hint" className="text-xs">
+                  파일 컨텍스트 (선택)
+                </Label>
+                <Input
+                  id="file-hint"
+                  value={fileHint}
+                  onChange={(e) => setFileHint(e.target.value)}
+                  placeholder="예: 2024년 OO재단 청년창업 사업 수주 제안서"
+                  className="mt-1"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <label className="flex cursor-pointer items-center gap-1.5">
+                  <input
+                    type="checkbox"
+                    checked={fileWasWon}
+                    onChange={(e) => setFileWasWon(e.target.checked)}
+                  />
+                  수주된 제안서 (Win 라벨)
+                </label>
+                <label className="flex cursor-pointer items-center gap-1.5">
+                  <input
+                    type="checkbox"
+                    checked={filePerSlide}
+                    onChange={(e) => setFilePerSlide(e.target.checked)}
+                  />
+                  슬라이드별 자산화 (PPTX)
+                </label>
+                <label className="flex cursor-pointer items-center gap-1.5">
+                  <input
+                    type="checkbox"
+                    checked={fileSingleOnly}
+                    onChange={(e) => setFileSingleOnly(e.target.checked)}
+                  />
+                  단건만 추출 (파일 전체)
+                </label>
+                <label className="flex cursor-pointer items-center gap-1.5">
+                  <input
+                    type="checkbox"
+                    checked={fileAutoSave}
+                    onChange={(e) => setFileAutoSave(e.target.checked)}
+                  />
+                  추출 즉시 저장 (developing)
+                </label>
+              </div>
+              <Button
+                onClick={handleFileUpload}
+                disabled={fileLoading || !file}
+                className="gap-1"
+              >
+                {fileLoading ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Upload className="h-3.5 w-3.5" />
+                )}
+                {fileLoading ? '추출·분석 중...' : '🚀 파일 업로드'}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {fileResult && (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">
+                  추출 결과 — {fileResult.file.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="text-xs">
+                  자산 후보 {fileResult.proposalCount}건 추출
+                  {fileResult.savedIds.length > 0 &&
+                    ` (${fileResult.savedIds.length}건 저장)`}
+                  {fileResult.truncated && (
+                    <span className="ml-2 text-amber-700">⚠ 본문 절단됨</span>
+                  )}
+                </div>
+                <div className="max-h-96 space-y-1.5 overflow-y-auto">
+                  {fileResult.proposals.map((p, i) => (
+                    <div
+                      key={i}
+                      className="rounded border bg-muted/20 p-1.5 text-[11px]"
+                    >
+                      <div className="flex flex-wrap items-center gap-1">
+                        <span className="font-medium">{p.name}</span>
+                        <Badge variant="outline" className="h-3.5 px-1 text-[9px]">
+                          {p.category}
+                        </Badge>
+                        <Badge variant="outline" className="h-3.5 px-1 text-[9px]">
+                          {p.evidenceType}
+                        </Badge>
+                        {fileResult.savedIds[i] && (
+                          <a
+                            href={`/admin/content-hub/${fileResult.savedIds[i]}/edit`}
+                            className="ml-auto text-[10px] text-primary hover:underline"
+                          >
+                            편집 →
+                          </a>
+                        )}
+                      </div>
+                      <div className="mt-0.5 line-clamp-2 text-muted-foreground">
+                        {p.narrativeSnippet}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {fileResult.savedIds.length > 0 && (
+                  <p className="text-[10px] text-muted-foreground">
+                    ⓘ 저장된 자산은{' '}
+                    <code>status=developing</code>. /admin/content-hub 에서 검토 후
+                    stable 로 승격.
+                  </p>
+                )}
               </CardContent>
             </Card>
           )}

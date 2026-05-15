@@ -80,6 +80,7 @@
     "cheerio": "^1.2.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "officeparser": "^7.0.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
