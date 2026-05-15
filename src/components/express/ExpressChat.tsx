@@ -10,7 +10,7 @@
  * (Phase L Wave L2, ADR-011 §3.2 장치 4·5)
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
@@ -35,17 +35,29 @@ interface Props {
   onUploadRfp: () => void
 }
 
-export function ExpressChat({
-  turns,
-  currentSlot,
-  pendingExternalLookup,
-  pendingTurn,
-  isInitializing,
-  hasRfp,
-  projectId,
-  onSendMessage,
-  onUploadRfp,
-}: Props) {
+/**
+ * Wave N1 — 외부에서 챗봇 입력에 텍스트를 주입하기 위한 ref 핸들.
+ * Inspector 자산 추천 카드 → "인용" 클릭 시 narrativeSnippet 박힘.
+ */
+export interface ExpressChatHandle {
+  injectInput: (text: string, opts?: { append?: boolean }) => void
+  focusInput: () => void
+}
+
+export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function ExpressChat(
+  {
+    turns,
+    currentSlot,
+    pendingExternalLookup,
+    pendingTurn,
+    isInitializing,
+    hasRfp,
+    projectId,
+    onSendMessage,
+    onUploadRfp,
+  },
+  ref,
+) {
   // Wave 1 #13: 채팅 인풋 sessionStorage 보존
   // - key 스코프: projectId × currentSlot. 슬롯 바뀌면 별도 저장 (의도)
   // - 마운트 시 복원, input 변할 때마다 저장, 전송 후 해당 키 제거
@@ -73,6 +85,31 @@ export function ExpressChat({
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  // Wave N1: Inspector 자산 추천 → "인용" 클릭 시 외부에서 textarea 채우기
+  useImperativeHandle(
+    ref,
+    () => ({
+      injectInput: (text, opts) => {
+        setInput((cur) => {
+          const next = opts?.append && cur ? `${cur}\n\n${text}` : text
+          return next
+        })
+        requestAnimationFrame(() => {
+          const ta = textareaRef.current
+          if (ta) {
+            ta.focus()
+            ta.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+            ta.setSelectionRange(ta.value.length, ta.value.length)
+          }
+        })
+      },
+      focusInput: () => {
+        textareaRef.current?.focus()
+      },
+    }),
+    [],
+  )
 
   useEffect(() => {
     if (!storageKey || typeof window === 'undefined') return
@@ -268,7 +305,7 @@ export function ExpressChat({
       </div>
     </div>
   )
-}
+})
 
 // ─────────────────────────────────────────
 // 카드가 있을 때 본문을 짧게 자르는 헬퍼

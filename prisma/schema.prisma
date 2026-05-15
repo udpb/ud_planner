@@ -322,6 +322,7 @@ model Project {
   satisfactionResponses SatisfactionResponse[]
   coachingJournals      CoachingJournal[]
   agentSessions         AgentSession[]
+  assetUsages           AssetUsage[]
   // 2026-05-03 ADR-012: tasks Task[] / expenses Expense[] 제거 (해당 모델 함께 제거)
 }
 
@@ -534,7 +535,7 @@ model ContentAsset {
   children ContentAsset[] @relation("ContentAssetHierarchy")
 
   // 3중 태그 (Phase G UdAsset 동일)
-  applicableSections Json   // ProposalSectionKey[]
+  applicableSections Json // ProposalSectionKey[]
   valueChainStage    String // ValueChainStage
   evidenceType       String // 'quantitative' | 'structural' | 'case' | 'methodology'
 
@@ -543,13 +544,13 @@ model ContentAsset {
   programProfileFit Json? // Partial<ProgramProfile>
 
   // 제안서 반영
-  narrativeSnippet String  @db.Text
-  keyNumbers       Json?   // string[]
+  narrativeSnippet String @db.Text
+  keyNumbers       Json? // string[]
 
   // 상태 + 버전
   status           String   @default("stable") // stable | developing | archived
   version          Int      @default(1)
-  sourceReferences Json?    // string[] — 외부 원본 URL
+  sourceReferences Json? // string[] — 외부 원본 URL
   lastReviewedAt   DateTime
 
   // 감사
@@ -558,10 +559,45 @@ model ContentAsset {
   createdById String?
   updatedById String?
 
+  usages AssetUsage[]
+
   @@index([category])
   @@index([valueChainStage])
   @@index([parentId])
   @@index([status])
+}
+
+/**
+ * Wave N1 (2026-05-15) — 자산 사용 이력 + Win/Loss 라벨.
+ * 목적:
+ * - 자주 인용되어 수주된 자산 학습 → 매칭 가산점 (Wave N4 가중치 합산)
+ * - 자산 freshness 보조 신호 (Wave N5)
+ * - PM 별 / 채널별 자산 선호도 분석
+ * 기록 시점:
+ * - Express: 1차본 승인 시 differentiators.acceptedByPm=true 인 자산 일괄 기록
+ * - Deep: ProposalSection 저장 시 narrativeSnippet 안에 박힌 자산 ID 자동 추적
+ * wonProject:
+ * - 처음 기록 시 null (수주 결과 미정)
+ * - Project.isBidWon 갱신 시 cascade 로 채움 (서버 hook)
+ */
+model AssetUsage {
+  id         String       @id @default(cuid())
+  assetId    String
+  asset      ContentAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  projectId  String
+  project    Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sectionKey String? // '1'..'7' (Express) | ProposalSectionKey (Deep)
+  channel    String? // 'B2G' | 'B2B' | 'renewal'
+  surface    String       @default("express") // 'express' | 'deep' | 'manual'
+  wonProject Boolean? // Project.isBidWon 결과 cascade (null = 미정)
+  techScore  Float? // Project.techEvalScore (있으면)
+  notes      String?
+  createdAt  DateTime     @default(now())
+
+  @@index([assetId])
+  @@index([projectId])
+  @@index([wonProject])
+  @@index([channel])
 }
 
 model SroiProxy {

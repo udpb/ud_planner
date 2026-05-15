@@ -31,7 +31,7 @@ import type { AssetMatch } from '@/lib/asset-registry-types'
 import type { AutoCitationsBundle } from '@/lib/express/auto-citations'
 import { Settings2 } from 'lucide-react'
 import { NorthStarBar } from './NorthStarBar'
-import { ExpressChat } from './ExpressChat'
+import { ExpressChat, type ExpressChatHandle } from './ExpressChat'
 import { ExpressPreview } from './ExpressPreview'
 import { RfpUploadDialog } from './RfpUploadDialog'
 import { AutoDiagnosisPanel } from '@/components/projects/auto-diagnosis-panel'
@@ -41,7 +41,10 @@ import { RenewalSeedCard } from '@/components/projects/renewal-seed-card'
 import { ClientDocUploadCard } from '@/components/projects/client-doc-upload-card'
 import { PersistentErrorBanner, type PersistentError } from '@/components/ui/persistent-error-banner'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { InspectorReportCard } from '@/components/projects/inspector-report-card'
+import {
+  InspectorReportCard,
+  type AssetRecommendationUI,
+} from '@/components/projects/inspector-report-card'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 
 interface Props {
@@ -393,6 +396,12 @@ export function ExpressShell(props: Props) {
     nextAction: string
     weightedByChannel?: 'B2G' | 'B2B' | 'renewal'
   } | null>(null)
+  // Wave N1 — Inspector 가 약점 lens 별로 추천한 자산 카드
+  const [inspectorRecommendations, setInspectorRecommendations] = useState<
+    AssetRecommendationUI[]
+  >([])
+  // ExpressChat textarea 에 외부에서 텍스트 주입할 때 사용
+  const chatRef = useRef<ExpressChatHandle>(null)
 
   const runInspector = useCallback(async () => {
     try {
@@ -404,6 +413,9 @@ export function ExpressShell(props: Props) {
       if (!r.ok) throw new Error(await r.text())
       const data = await r.json()
       setInspectorReport(data.report)
+      setInspectorRecommendations(
+        Array.isArray(data.recommendations) ? data.recommendations : [],
+      )
       const critical = data.report.issues.filter((i: { severity: string }) => i.severity === 'critical').length
       if (critical > 0) {
         toast.warning(`검수 결과: ${data.report.overallScore}점 — critical ${critical}건. ${data.report.nextAction}`)
@@ -514,8 +526,31 @@ export function ExpressShell(props: Props) {
         <div className="border-b bg-muted/10 px-6 py-3">
           <InspectorReportCard
             report={inspectorReport}
-            onDismiss={() => setInspectorReport(null)}
+            onDismiss={() => {
+              setInspectorReport(null)
+              setInspectorRecommendations([])
+            }}
             draftProgress={progress.overall}
+            recommendations={inspectorRecommendations}
+            onInsertAsset={(asset) => {
+              // textarea 에 narrativeSnippet 박고 + 사용 이력 기록 (fire & forget)
+              chatRef.current?.injectInput(
+                `[자산 인용 — ${asset.name}] ${asset.narrativeSnippet}`,
+                { append: true },
+              )
+              toast.success(`"${asset.name}" 을 챗봇 입력에 박았습니다 — 손보고 전송하세요`)
+              // 사용 이력 비동기 기록 (에러 무시)
+              fetch('/api/express/asset-usage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  projectId: props.projectId,
+                  assetId: asset.assetId,
+                  surface: 'express',
+                  notes: `inspector-recommend lens=${asset.lens}`,
+                }),
+              }).catch(() => {})
+            }}
           />
         </div>
       )}
@@ -715,6 +750,7 @@ export function ExpressShell(props: Props) {
           )}
         >
           <ExpressChat
+            ref={chatRef}
             turns={convState.turns}
             currentSlot={nextSlot}
             pendingExternalLookup={convState.pendingExternalLookup}

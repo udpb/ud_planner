@@ -17,7 +17,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { CheckCircle2, AlertTriangle, XCircle, Sparkles, X } from 'lucide-react'
+import { CheckCircle2, AlertTriangle, XCircle, Sparkles, X, BookMarked, Plus } from 'lucide-react'
 
 interface InspectorIssue {
   lens: string
@@ -37,6 +37,18 @@ interface InspectorReport {
   weightedByChannel?: string
 }
 
+export interface AssetRecommendationUI {
+  assetId: string
+  name: string
+  category: string
+  evidenceType: string
+  narrativeSnippet: string
+  keyNumbers: string[]
+  lens: string
+  score: number
+  reasons: string[]
+}
+
 interface Props {
   report: InspectorReport
   onDismiss?: () => void
@@ -46,6 +58,13 @@ interface Props {
    * lens 점수가 모두 0 으로 나와도 PM 이 "평가위원 0점" 으로 오해하지 않도록.
    */
   draftProgress?: number
+  /**
+   * Wave N1 — Inspector 가 약점 lens 별로 추천한 자산 카드.
+   * 사용자가 "인용" 클릭 시 onInsertAsset 호출 → ExpressShell 이 narrativeSnippet 을
+   * 챗봇 입력창에 넣거나 differentiators 에 자동 수락.
+   */
+  recommendations?: AssetRecommendationUI[]
+  onInsertAsset?: (asset: AssetRecommendationUI) => void
 }
 
 const LENS_LABEL: Record<string, string> = {
@@ -75,6 +94,8 @@ export function InspectorReportCard({
   onDismiss,
   onJumpToSection,
   draftProgress,
+  recommendations,
+  onInsertAsset,
 }: Props) {
   const draftIncomplete = typeof draftProgress === 'number' && draftProgress < 50
   const score = Math.round(report.overallScore)
@@ -256,6 +277,65 @@ export function InspectorReportCard({
             <ul className="space-y-0.5 text-[10px] text-green-900">
               {report.strengths!.slice(0, 3).map((s, i) => (
                 <li key={i}>· {s}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Wave N1 — 약점 lens 별 자산 추천 */}
+        {recommendations && recommendations.length > 0 && (
+          <div className="rounded-md border border-primary/30 bg-primary/5 p-2">
+            <div className="mb-1.5 flex items-center gap-1 text-[10px] font-medium text-primary">
+              <BookMarked className="h-2.5 w-2.5" />
+              이 자산을 인용해 보강하세요 ({recommendations.length})
+            </div>
+            <ul className="space-y-1.5">
+              {recommendations.slice(0, 4).map((rec) => (
+                <li
+                  key={rec.assetId}
+                  className="rounded border bg-white/70 p-1.5 text-[11px]"
+                >
+                  <div className="flex items-start gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-1">
+                        <span className="font-medium">{rec.name}</span>
+                        <Badge
+                          variant="outline"
+                          className="h-3.5 px-1 text-[9px] text-muted-foreground"
+                        >
+                          {LENS_LABEL[rec.lens] ?? rec.lens}
+                        </Badge>
+                        <span className="text-[9px] text-muted-foreground">
+                          매칭 {Math.round(rec.score * 100)}%
+                        </span>
+                      </div>
+                      <div className="mt-0.5 line-clamp-2 leading-snug text-muted-foreground">
+                        {rec.narrativeSnippet}
+                      </div>
+                      {rec.keyNumbers.length > 0 && (
+                        <div className="mt-0.5 flex flex-wrap gap-1">
+                          {rec.keyNumbers.slice(0, 3).map((n, i) => (
+                            <span
+                              key={i}
+                              className="rounded bg-primary/10 px-1 py-0 text-[9px] text-primary"
+                            >
+                              {n}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {onInsertAsset && (
+                      <button
+                        onClick={() => onInsertAsset(rec)}
+                        className="shrink-0 rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
+                        title="이 자산을 챗봇 입력에 인용"
+                      >
+                        <Plus className="-mt-0.5 inline h-2.5 w-2.5" /> 인용
+                      </button>
+                    )}
+                  </div>
+                </li>
               ))}
             </ul>
           </div>
