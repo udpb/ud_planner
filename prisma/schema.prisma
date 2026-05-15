@@ -543,6 +543,14 @@ model ContentAsset {
   keywords          Json? // string[]
   programProfileFit Json? // Partial<ProgramProfile>
 
+  // Wave N4 (2026-05-15): 의미 매칭용 임베딩 벡터
+  // - Gemini text-embedding-004 (768 dim) 권장. 다른 모델 쓰면 dim 일치만 유지.
+  // - null = 아직 임베딩 생성 안 됨 (배치 스크립트 대상)
+  // - embeddingModel 로 검증 가능 (다른 모델이면 재생성 필요)
+  embedding      Float[]
+  embeddingModel String? // 예: 'gemini-text-embedding-004'
+  embeddedAt     DateTime?
+
   // 제안서 반영
   narrativeSnippet String @db.Text
   keyNumbers       Json? // string[]

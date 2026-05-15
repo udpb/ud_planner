@@ -85,6 +85,24 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   })
   // Supabase mirror fires automatically inside prisma extension.
 
+  // Wave N4 — isBidWon 또는 techEvalScore 변경 시 AssetUsage 에 cascade.
+  // 이 프로젝트에서 인용된 자산들 전부 wonProject / techScore 갱신 → Win/Loss 학습 데이터.
+  if (parsed.data.isBidWon !== undefined || parsed.data.techEvalScore !== undefined) {
+    try {
+      await prisma.assetUsage.updateMany({
+        where: { projectId: id },
+        data: {
+          ...(parsed.data.isBidWon !== undefined && { wonProject: parsed.data.isBidWon }),
+          ...(parsed.data.techEvalScore !== undefined && { techScore: parsed.data.techEvalScore }),
+        },
+      })
+    } catch (err: unknown) {
+      // 본 update 는 성공했으니 cascade 실패는 로깅만
+      const msg = err instanceof Error ? err.message : String(err)
+      console.warn('[projects/[id] PATCH] AssetUsage cascade 실패 (무시):', msg)
+    }
+  }
+
   return NextResponse.json(project)
 }
 

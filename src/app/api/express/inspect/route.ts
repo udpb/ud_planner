@@ -75,13 +75,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Wave N1 — 약점 lens 별 자산 추천 (휴리스틱 fallback 일 땐 lensScores 없을 수 있어서 issues 기반 폴백)
+    // Wave N4 — channel + semanticQuery (draft.intent + Before) 전달
     let recommendations: Awaited<ReturnType<typeof recommendAssetsForWeakLenses>> = []
     try {
       const weakLenses = pickWeakLenses(report)
       if (weakLenses.length > 0) {
+        // semantic query: 의도 + Before 합쳐서 자산 의미 매칭 강화
+        const semanticParts: string[] = []
+        if (draft.intent) semanticParts.push(draft.intent)
+        if (draft.beforeAfter?.before) semanticParts.push(draft.beforeAfter.before)
+        if (draft.keyMessages?.length)
+          semanticParts.push(draft.keyMessages.join(' '))
+        const semanticQuery = semanticParts.join('\n').slice(0, 1500)
+
         recommendations = await recommendAssetsForWeakLenses({
           weakLenses,
           programProfile: project.programProfile as ProgramProfile | null,
+          channel,
+          semanticQuery: semanticQuery.length > 20 ? semanticQuery : undefined,
         })
       }
     } catch (err: unknown) {
