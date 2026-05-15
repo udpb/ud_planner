@@ -242,6 +242,75 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    // Wave M4 — 1차본 승인 시 사전 임팩트 forecast 자동 생성 (실패해도 승인은 성공)
+    let impactForecast: { id: string; totalSocialValue: number; calibration: string } | null =
+      null
+    if (markCompleted) {
+      try {
+        const { forecastImpact } = await import('@/lib/impact/forecast')
+        const { isImpactDbConfigured } = await import('@/lib/impact/db')
+        if (isImpactDbConfigured()) {
+          const projectFull = await prisma.project.findUnique({
+            where: { id: projectId },
+            select: {
+              rfpParsed: true,
+              programProfile: true,
+              sroiCountry: true,
+              curriculum: {
+                select: {
+                  title: true,
+                  sessionNo: true,
+                  durationHours: true,
+                  isTheory: true,
+                },
+                orderBy: { sessionNo: 'asc' },
+              },
+              totalBudgetVat: true,
+            },
+          })
+          const rfp = projectFull?.rfpParsed as RfpParsed | null
+          const f = await forecastImpact({
+            projectId,
+            draft: {
+              intent: validDraft.intent,
+              beforeAfter: validDraft.beforeAfter,
+              keyMessages: validDraft.keyMessages,
+              sections: validDraft.sections,
+            },
+            rfp: rfp
+              ? {
+                  targetCount: rfp.targetCount,
+                  targetAudience: rfp.targetAudience,
+                  eduStartDate: rfp.eduStartDate,
+                  eduEndDate: rfp.eduEndDate,
+                  projectStartDate: rfp.projectStartDate,
+                  projectEndDate: rfp.projectEndDate,
+                  totalBudgetVat: projectFull?.totalBudgetVat ?? rfp.totalBudgetVat,
+                  keywords: rfp.keywords,
+                }
+              : undefined,
+            programProfile: projectFull?.programProfile,
+            curriculum: projectFull?.curriculum?.map((c) => ({
+              moduleName: c.title,
+              sessionNo: c.sessionNo,
+              hours: c.durationHours,
+              isTheory: c.isTheory,
+            })),
+            country: projectFull?.sroiCountry,
+            conservative: true,
+          })
+          impactForecast = {
+            id: f.id,
+            totalSocialValue: f.totalSocialValue,
+            calibration: f.calibration,
+          }
+        }
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err)
+        console.warn('[/api/express/save] impact forecast 실패 (무시):', msg.slice(0, 200))
+      }
+    }
+
     return NextResponse.json({
       ok: true,
       savedAt: new Date().toISOString(),
@@ -252,6 +321,7 @@ export async function POST(req: NextRequest) {
         deepSuggestions,
         mode: markCompleted ? 'completed' : 'handoff',
       },
+      impactForecast,
     })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)

@@ -435,6 +435,13 @@ export function ExpressShell(props: Props) {
   >([])
   const [dismissFinalize, setDismissFinalize] = useState<boolean>(false)
 
+  // Wave M4 — 1차본 승인 시 자동 생성된 사전 임팩트 리포트
+  const [impactForecast, setImpactForecast] = useState<{
+    id: string
+    totalSocialValue: number
+    calibration: string
+  } | null>(null)
+
   const handleSubmitDraft = useCallback(async () => {
     setSubmitting(true)
     try {
@@ -461,6 +468,18 @@ export function ExpressShell(props: Props) {
       )
       if (Array.isArray(handoff.deepSuggestions)) {
         setDeepSuggestions(handoff.deepSuggestions)
+      }
+      // Wave M4 — 사전 임팩트 리포트 자동 생성 결과
+      if (data.impactForecast) {
+        setImpactForecast({
+          id: data.impactForecast.id,
+          totalSocialValue: Number(data.impactForecast.totalSocialValue),
+          calibration: data.impactForecast.calibration,
+        })
+        toast.success(
+          `📊 사전 임팩트 리포트 생성 — 사회적 가치 ${(Number(data.impactForecast.totalSocialValue) / 1_000_000).toFixed(1)}백만원`,
+          { duration: 6000 },
+        )
       }
       setDraft((d) => ({
         ...d,
@@ -663,6 +682,56 @@ export function ExpressShell(props: Props) {
             </div>
           </div>
         )}
+
+      {/* Wave M4 — 1차본 완료 시 사전 임팩트 리포트 카드 */}
+      {impactForecast && (
+        <div className="border-b border-violet-300 bg-violet-50/40 px-6 py-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-semibold text-violet-700">
+              📊 사전 임팩트 리포트
+            </span>
+            <span className="text-sm tabular-nums">
+              사회적 가치{' '}
+              <strong className="text-violet-900">
+                {(impactForecast.totalSocialValue / 100_000_000).toFixed(2)}억원
+              </strong>
+            </span>
+            <span
+              className="rounded bg-violet-100 px-1.5 py-0.5 text-[10px] text-violet-800"
+              title={
+                impactForecast.calibration === 'auto-conservative'
+                  ? 'AI 추정 항목에 0.7 보수 인수 적용됨'
+                  : impactForecast.calibration === 'pm-locked'
+                    ? 'PM 이 최종 확정한 값'
+                    : 'PM 이 보정한 값'
+              }
+            >
+              {impactForecast.calibration === 'auto-conservative'
+                ? '보수 추정'
+                : impactForecast.calibration === 'pm-locked'
+                  ? 'PM 확정'
+                  : 'PM 보정'}
+            </span>
+            <Link
+              href={`/projects/${props.projectId}/impact-forecast`}
+              className="rounded-md border border-violet-400 bg-background px-3 py-1 text-xs text-violet-700 hover:bg-violet-100"
+            >
+              상세 보기 + 보정 →
+            </Link>
+            <button
+              onClick={() => setImpactForecast(null)}
+              className="ml-auto text-xs text-muted-foreground hover:text-foreground"
+              title="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <p className="mt-1 text-[10px] text-violet-700/70">
+            ⓘ impact-measurement 시스템 계수 기반 · 사후 실측 시 impact-measurement
+            에서 같은 계수로 측정
+          </p>
+        </div>
+      )}
 
       {/* 1차본 완료 시 정밀화 추천 패널 */}
       {deepSuggestions.length > 0 && (

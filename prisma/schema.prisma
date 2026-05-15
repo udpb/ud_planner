@@ -323,6 +323,7 @@ model Project {
   coachingJournals      CoachingJournal[]
   agentSessions         AgentSession[]
   assetUsages           AssetUsage[]
+  impactForecast        ImpactForecast?
   // 2026-05-03 ADR-012: tasks Task[] / expenses Expense[] 제거 (해당 모델 함께 제거)
 }
 
@@ -606,6 +607,61 @@ model AssetUsage {
   @@index([projectId])
   @@index([wonProject])
   @@index([channel])
+}
+
+/**
+ * Wave M2 (2026-05-15) — 사전 임팩트 forecast.
+ * 1차본 승인 시 자동 생성. impact-measurement DB 의 계수 + 자체 엔진으로 계산.
+ * impact-measurement 시스템과의 데이터 호환을 위해 같은 모양의 itemsJson / breakdownJson 보관.
+ * 정책:
+ * - projectId 당 1건 (덮어쓰기). 재계산 시 generatedAt 갱신.
+ * - calibration: 'auto-conservative' (기본) / 'pm-adjusted' (PM이 보정함) / 'pm-locked'
+ * - 사후실적은 별도 — 그건 impact-measurement 본진에서.
+ */
+model ImpactForecast {
+  id        String  @id @default(cuid())
+  projectId String  @unique
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  /**
+   * ISO-2: KR / JP / IN / ID
+   */
+  country String
+
+  totalSocialValue Decimal
+  beneficiaryCount Int
+
+  /**
+   * BreakdownEntry[] — { categoryId, value, combinedProxyValue, formulaVariables }
+   * impact-measurement 의 breakdown 과 동일 모양.
+   */
+  breakdownJson Json
+
+  /**
+   * ForecastItemWithMeta[] — EducationItemInput + confidence + rationale.
+   * AI 매핑 결과 (감사 가능 형태). PM 이 수정하면 같은 모양 유지.
+   */
+  itemsJson Json
+
+  /**
+   * 신뢰도 메타 — 'auto-conservative' | 'pm-adjusted' | 'pm-locked'
+   */
+  calibration     String  @default("auto-conservative")
+  /**
+   * AI 가 남긴 calibration 노트 (보수 추정 사유 등)
+   */
+  calibrationNote String? @db.Text
+
+  /**
+   * 1차본 시점 hash — draft 변경 후 재계산 필요 여부 판단용
+   */
+  basedOnDraftHash String?
+
+  generatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([country])
+  @@index([generatedAt])
 }
 
 model SroiProxy {

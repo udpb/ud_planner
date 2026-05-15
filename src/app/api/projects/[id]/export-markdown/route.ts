@@ -17,6 +17,9 @@ import { requireProjectAccess } from '@/lib/auth-helpers'
 import { ExpressDraftSchema } from '@/lib/express/schema'
 import { renderExpressMarkdown } from '@/lib/express/render-markdown'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
+import type { BreakdownEntry, ForecastItemWithMeta } from '@/lib/impact/types'
+import { listActiveCategories, isImpactDbConfigured } from '@/lib/impact/db'
+import { fromImpactCountry } from '@/lib/impact/db'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 15
@@ -41,6 +44,7 @@ export async function GET(
       eduEndDate: true,
       expressDraft: true,
       strategicNotes: true,
+      impactForecast: true,
     },
   })
   if (!project) {
@@ -58,6 +62,40 @@ export async function GET(
 
   const notes = project.strategicNotes as unknown as StrategicNotes | null
 
+  // Wave M5 — 사전 임팩트 forecast (있으면 markdown 섹션 자동 포함)
+  let forecastBlock: Parameters<typeof renderExpressMarkdown>[0]['impactForecast'] = undefined
+  if (project.impactForecast && isImpactDbConfigured()) {
+    try {
+      const cats = await listActiveCategories()
+      const catMap = new Map(cats.map((c) => [c.id, c]))
+      const breakdown = (project.impactForecast.breakdownJson as unknown as BreakdownEntry[]) ?? []
+      const itemsMeta = (project.impactForecast.itemsJson as unknown as ForecastItemWithMeta[]) ?? []
+      // breakdown 상위 5건 (이름·유형 lookup)
+      const top = [...breakdown]
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5)
+        .map((b) => {
+          const cat = catMap.get(b.categoryId)
+          const fromItem = itemsMeta.find((i) => i.categoryId === b.categoryId)
+          return {
+            categoryName: cat?.name ?? fromItem?.categoryName ?? b.categoryId,
+            impactTypeName: cat?.impactType?.name ?? fromItem?.impactTypeName ?? '',
+            value: b.value,
+          }
+        })
+      forecastBlock = {
+        totalSocialValue: Number(project.impactForecast.totalSocialValue),
+        beneficiaryCount: project.impactForecast.beneficiaryCount,
+        country: fromImpactCountry(project.impactForecast.country),
+        calibration: project.impactForecast.calibration,
+        calibrationNote: project.impactForecast.calibrationNote,
+        topBreakdown: top,
+      }
+    } catch (err) {
+      console.warn('[export-markdown] forecast 블록 구성 실패 (무시):', err)
+    }
+  }
+
   const markdown = renderExpressMarkdown({
     project: {
       name: project.name,
@@ -69,6 +107,7 @@ export async function GET(
     },
     draft: parsed.data,
     clientOfficialDoc: notes?.clientOfficialDoc,
+    impactForecast: forecastBlock,
   })
 
   const safeName = project.name.replace(/[\\/:*?"<>|]/g, '_').slice(0, 80)

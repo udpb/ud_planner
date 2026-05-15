@@ -41,6 +41,20 @@ export interface MarkdownInput {
   draft: ExpressDraft
   /** 발주처 공식 문서 추출 (M3-2 산출물) — 있으면 인용 섹션 추가 */
   clientOfficialDoc?: StrategicNotes['clientOfficialDoc']
+  /** Wave M5 — 사전 임팩트 forecast 요약 (있으면 markdown 끝에 자동 섹션) */
+  impactForecast?: {
+    totalSocialValue: number
+    beneficiaryCount: number
+    country: string
+    calibration: string
+    calibrationNote: string | null
+    /** breakdown 상위 5건만 markdown 에 노출 */
+    topBreakdown: Array<{
+      categoryName: string
+      impactTypeName: string
+      value: number
+    }>
+  }
 }
 
 // ─────────────────────────────────────────
@@ -230,6 +244,34 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
         parts.push(`- ${i.lens}: ${i.issue}`)
       }
     }
+  }
+
+  // 9.5 Wave M5 — 사전 임팩트 리포트 ─────────────
+  if (input.impactForecast) {
+    const f = input.impactForecast
+    parts.push('\n## 사전 임팩트 리포트 (Forecast)\n')
+    parts.push(
+      `**총 사회적 가치**: ${formatKRW(f.totalSocialValue)} (${f.country})`,
+    )
+    parts.push(`**예상 수혜자**: ${f.beneficiaryCount.toLocaleString()}명\n`)
+    if (project.totalBudgetVat && project.totalBudgetVat > 0) {
+      const ratio = f.totalSocialValue / project.totalBudgetVat
+      parts.push(`**예산 대비 SROI**: 1:${ratio.toFixed(2)}\n`)
+    }
+    if (f.topBreakdown.length > 0) {
+      parts.push('### 카테고리별 기여 (상위 5)\n')
+      for (const b of f.topBreakdown) {
+        parts.push(
+          `- ${b.impactTypeName} · ${b.categoryName}: ${formatKRW(b.value)}`,
+        )
+      }
+    }
+    if (f.calibrationNote) {
+      parts.push(`\n_분석 메모: ${f.calibrationNote}_`)
+    }
+    parts.push(
+      '\n_본 forecast 는 impact-measurement 시스템 (UD impact 측정 플랫폼) 의 활성 계수 기반. 사후 실측 시 동일 계수로 비교 가능._',
+    )
   }
 
   // 10. 메타 푸터 ─────────────────────────────────
