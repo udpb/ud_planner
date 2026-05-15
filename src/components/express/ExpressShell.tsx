@@ -574,121 +574,133 @@ export function ExpressShell(props: Props) {
         </div>
       )}
 
-      {/* Wave 2.5: 다음 단계 안내 패널 — 항상 표시 (progress 따라 활성/비활성)
-        - 액션 hub: 1차본 승인 / 정밀 기획 / 검수만 / 마크다운 / 엑셀 / 발주처 템플릿
-        - 50% 미만 시 1차본 승인 버튼 disabled + 라벨 변경
-        - markCompleted 후엔 deepSuggestions 패널이 대신 (우선)
+      {/* Wave 2.5 / 2026-05-15 재구성:
+          액션 hub 를 두 부분으로 분리.
+          1) 승인 영역 (1차본 미완성 시만): "✓ 1차본 승인 + 검수" 단일 CTA
+          2) 산출물 액션바 (항상 노출): Deep / 검수 / 임팩트 / 마크다운 / 엑셀 / 발주처 템플릿
+             — 1차본 승인 후에도 PM 이 산출물에 다시 접근해야 함.
       */}
-      {!draft.meta.isCompleted &&
-        !dismissFinalize &&
-        deepSuggestions.length === 0 && (
-          <div
-            className={cn(
-              'border-b px-3 py-2 sm:px-6 sm:py-3',
-              progress.overall >= 50
-                ? 'border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background'
-                : 'border-muted bg-muted/20',
-            )}
-          >
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span
-                className={cn(
-                  'w-full text-xs font-semibold sm:w-auto sm:text-sm',
-                  progress.overall >= 50 ? 'text-primary' : 'text-muted-foreground',
-                )}
-              >
-                {progress.overall >= 50
-                  ? `🎯 1차본 ${progress.overall}% — 다음 단계:`
-                  : `⏳ 1차본 ${progress.overall}% — 더 채우거나 지금 받기:`}
-              </span>
-              <button
-                type="button"
-                onClick={handleSubmitDraft}
-                disabled={submitting || handingOff || progress.overall < 50}
-                className={cn(
-                  'rounded-md px-3 py-1 text-xs font-medium disabled:opacity-50',
-                  progress.overall >= 50
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                    : 'bg-muted text-muted-foreground cursor-not-allowed',
-                )}
-                title={
-                  progress.overall < 50
-                    ? '50% 이상 채워야 승인 가능'
-                    : '자동 검수 + Project 필드·ProposalSection 시드 + isCompleted=true'
-                }
-              >
-                {submitting ? '승인 중...' : '✓ 1차본 승인 + 검수'}
-              </button>
-              <button
-                type="button"
-                onClick={() => handoffToDeep('rfp')}
-                disabled={handingOff || submitting}
-                className="flex items-center gap-1 rounded-md border border-primary/40 bg-background px-3 py-1 text-xs text-primary hover:bg-primary/10 disabled:opacity-50"
-                title="Express 진행 내용 그대로 Deep Track 으로 인계 후 Step 1 이동"
-              >
-                <Settings2 className="h-3 w-3" />
-                {handingOff ? '인계 중...' : '정밀 기획 (Deep) →'}
-              </button>
-              <button
-                type="button"
-                onClick={runInspector}
-                disabled={progress.overall < 50}
-                className={cn(
-                  'rounded-md border px-3 py-1 text-xs',
-                  progress.overall < 50
-                    ? 'cursor-not-allowed border-muted bg-muted/40 text-muted-foreground/60'
-                    : 'bg-background text-muted-foreground hover:border-primary/40 hover:text-primary',
-                )}
-                title={
-                  progress.overall < 50
-                    ? '1차본 50% 이상이어야 의미있는 검수 가능 (현재 본문이 비어 모든 lens 가 0 으로 나옴)'
-                    : '평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)'
-                }
-              >
-                🔍 검수
-              </button>
-              <Link
-                href={`/projects/${props.projectId}/impact-forecast`}
-                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-                title="1차본 → 사전 임팩트 리포트 (SROI 계수 기반 사회적 가치 추정)"
-              >
-                📊 임팩트 리포트
-              </Link>
-              <a
-                href={`/api/projects/${props.projectId}/export-markdown`}
-                download
-                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-                title="1차본 전체 → Markdown 다운로드 (PPT/HWP 변환은 PM 후처리)"
-              >
-                📝 마크다운
-              </a>
-              <a
-                href={`/api/projects/${props.projectId}/export-excel`}
-                download
-                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-                title="내부 검토용 5 시트 엑셀 (요약·커리큘럼·코치·예산·SROI)"
-              >
-                📥 내부 엑셀
-              </a>
-              <a
-                href={`/api/projects/${props.projectId}/export-budget-template`}
-                download
-                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-                title="발주처 제출용 budget-template 양식 (1-1-1 주관부서 + 1-2 외부용)"
-              >
-                📋 발주처 템플릿
-              </a>
-              <button
-                type="button"
-                onClick={() => setDismissFinalize(true)}
-                className="ml-auto text-xs text-muted-foreground hover:text-foreground"
-                title="패널 닫기 — 더 다듬을 게 있으면"
-              >
-                × 더 다듬기
-              </button>
-            </div>
+
+      {/* 1) 승인 영역 — 1차본 미완성 시만 */}
+      {!draft.meta.isCompleted && !dismissFinalize && (
+        <div
+          className={cn(
+            'border-b px-3 py-2 sm:px-6 sm:py-3',
+            progress.overall >= 50
+              ? 'border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background'
+              : 'border-muted bg-muted/20',
+          )}
+        >
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span
+              className={cn(
+                'text-xs font-semibold sm:text-sm',
+                progress.overall >= 50 ? 'text-primary' : 'text-muted-foreground',
+              )}
+            >
+              {progress.overall >= 50
+                ? `🎯 1차본 ${progress.overall}% — 승인 준비됨`
+                : `⏳ 1차본 ${progress.overall}% — 더 채워주세요`}
+            </span>
+            <button
+              type="button"
+              onClick={handleSubmitDraft}
+              disabled={submitting || handingOff || progress.overall < 50}
+              className={cn(
+                'rounded-md px-3 py-1 text-xs font-medium disabled:opacity-50',
+                progress.overall >= 50
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  : 'bg-muted text-muted-foreground cursor-not-allowed',
+              )}
+              title={
+                progress.overall < 50
+                  ? '50% 이상 채워야 승인 가능'
+                  : '자동 검수 + Project 필드·ProposalSection 시드 + 사전 임팩트 forecast'
+              }
+            >
+              {submitting ? '승인 중...' : '✓ 1차본 승인 + 검수 + 임팩트 forecast'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setDismissFinalize(true)}
+              className="ml-auto text-xs text-muted-foreground hover:text-foreground"
+              title="패널 숨기기"
+            >
+              ×
+            </button>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* 2) 산출물 액션바 — 항상 노출 (1차본 완성 후에도) */}
+      <div className="border-b bg-muted/10 px-3 py-2 sm:px-6 sm:py-2.5">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <span className="text-xs font-medium text-muted-foreground">
+            {draft.meta.isCompleted
+              ? `✅ 1차본 완성 ${progress.overall}% · 산출물:`
+              : `📦 산출물 / 다음 단계:`}
+          </span>
+          <button
+            type="button"
+            onClick={() => handoffToDeep('rfp')}
+            disabled={handingOff || submitting}
+            className="flex items-center gap-1 rounded-md border border-primary/40 bg-background px-3 py-1 text-xs text-primary hover:bg-primary/10 disabled:opacity-50"
+            title="Express 진행 내용 그대로 Deep Track 으로 인계 후 Step 1 이동"
+          >
+            <Settings2 className="h-3 w-3" />
+            {handingOff ? '인계 중...' : '정밀 기획 (Deep) →'}
+          </button>
+          <button
+            type="button"
+            onClick={runInspector}
+            disabled={progress.overall < 50}
+            className={cn(
+              'rounded-md border px-3 py-1 text-xs',
+              progress.overall < 50
+                ? 'cursor-not-allowed border-muted bg-muted/40 text-muted-foreground/60'
+                : 'bg-background text-muted-foreground hover:border-primary/40 hover:text-primary',
+            )}
+            title={
+              progress.overall < 50
+                ? '1차본 50% 이상이어야 의미있는 검수 가능'
+                : '평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)'
+            }
+          >
+            🔍 검수
+          </button>
+          <Link
+            href={`/projects/${props.projectId}/impact-forecast`}
+            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+            title="1차본 → 사전 임팩트 리포트 (SROI 계수 기반 사회적 가치 추정)"
+          >
+            📊 임팩트 리포트
+          </Link>
+          <a
+            href={`/api/projects/${props.projectId}/export-markdown`}
+            download
+            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+            title="1차본 전체 → Markdown 다운로드 (PPT/HWP 변환은 PM 후처리)"
+          >
+            📝 마크다운
+          </a>
+          <a
+            href={`/api/projects/${props.projectId}/export-excel`}
+            download
+            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+            title="내부 검토용 5 시트 엑셀 (요약·커리큘럼·코치·예산·SROI)"
+          >
+            📥 내부 엑셀
+          </a>
+          <a
+            href={`/api/projects/${props.projectId}/export-budget-template`}
+            download
+            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
+            title="발주처 제출용 budget-template 양식 (1-1-1 주관부서 + 1-2 외부용)"
+          >
+            📋 발주처 템플릿
+          </a>
+        </div>
+      </div>
 
       {/* Wave M4 — 1차본 완료 시 사전 임팩트 리포트 카드 */}
       {impactForecast && (
