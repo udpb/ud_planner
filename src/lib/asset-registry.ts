@@ -24,7 +24,11 @@
  *  - backward compat 위해 types/constants 를 re-export
  */
 
-import 'server-only'
+// 'server-only' 가드 제거 — 모든 import 가 server context (page.tsx · lib/server · api).
+// CLI seed 스크립트 (prisma/seed-content-assets.ts) 가 동일 모듈에서 UD_ASSETS_SEED 를
+// 가져갈 수 있어야 production 시드 가능. (2026-05-15)
+// 만약 클라이언트가 이 모듈을 import 하면 build 시 pg/dns 에러 발생 — 그건 본 guard
+// 가 아닌 빌드 단계에서 잡힘. asset-registry-types.ts 가 client-safe re-export 책임.
 
 import { cache } from 'react'
 

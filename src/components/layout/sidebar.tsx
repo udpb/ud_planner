@@ -6,24 +6,43 @@ import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
   FolderKanban,
-  Upload,
   Library,
-  BarChart3,
-  MessageSquareText,
   Settings,
   Sparkles,
 } from 'lucide-react'
 
-const navItems = [
+/**
+ * 좌측 네비게이션 — 2026-05-15 정리:
+ *   - "자료 업로드" : RFP 업로드가 Express 안에서 가능 → 제거
+ *   - "운영 지표" : 데이터 부족 → 일단 숨김 (라우트 유지, 필요 시 재노출)
+ *   - "전략 인터뷰" : Express 2.0 이후 사용 빈도 낮음 → 숨김
+ *   - "Content Hub" + "자산 인사이트" → "자산" 그룹으로 묶음 (목록 + 인사이트)
+ */
+interface NavItem {
+  href: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  children?: Array<{ href: string; label: string }>
+}
+
+const navItems: NavItem[] = [
   { href: '/dashboard', label: '대시보드', icon: LayoutDashboard },
   { href: '/projects', label: '프로젝트', icon: FolderKanban },
-  { href: '/ingest', label: '자료 업로드', icon: Upload },
-  { href: '/admin/content-hub', label: 'Content Hub', icon: Library },
-  { href: '/admin/asset-insights', label: '자산 인사이트', icon: Sparkles },
-  { href: '/admin/metrics', label: '운영 지표', icon: BarChart3 },
-  { href: '/admin/interview-ingest', label: '전략 인터뷰', icon: MessageSquareText },
+  {
+    href: '/admin/content-hub',
+    label: '자산',
+    icon: Library,
+    children: [
+      { href: '/admin/content-hub', label: '목록 (Content Hub)' },
+      { href: '/admin/asset-insights', label: '인사이트' },
+    ],
+  },
   { href: '/settings', label: '설정', icon: Settings },
 ]
+
+function isActive(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(href + '/')
+}
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -43,8 +62,12 @@ export function Sidebar() {
       {/* 내비게이션 */}
       <nav className="flex-1 overflow-y-auto py-3">
         <ul className="space-y-0.5 px-2">
-          {navItems.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href || pathname.startsWith(href + '/')
+          {navItems.map(({ href, label, icon: Icon, children }) => {
+            const active = isActive(pathname, href)
+            // 그룹 내 자식 중 하나라도 활성이면 그룹도 펼침
+            const childActive = children?.some((c) => isActive(pathname, c.href))
+            const expanded = active || childActive
+
             return (
               <li key={href}>
                 <Link
@@ -53,21 +76,41 @@ export function Sidebar() {
                     'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                     active
                       ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   {label}
                 </Link>
+                {/* 자식 항목 — 부모 또는 자식이 활성일 때만 표시 */}
+                {children && expanded && (
+                  <ul className="ml-7 mt-0.5 space-y-0.5">
+                    {children.map((c) => {
+                      const cActive = isActive(pathname, c.href)
+                      return (
+                        <li key={c.href}>
+                          <Link
+                            href={c.href}
+                            className={cn(
+                              'flex items-center rounded-md px-3 py-1 text-[11px] transition-colors',
+                              cActive
+                                ? 'bg-accent text-accent-foreground font-medium'
+                                : 'text-muted-foreground/80 hover:bg-accent hover:text-accent-foreground',
+                            )}
+                          >
+                            <Sparkles className="mr-1.5 h-3 w-3 shrink-0 opacity-60" />
+                            {c.label}
+                          </Link>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
               </li>
             )
           })}
         </ul>
       </nav>
-
-      {/* 코치 DB 동기화 버튼은 재설계 v2 에서 제거됨 (2026-04-15).
-         API /api/coaches/sync 는 유지되어 Admin/스크립트에서 호출 가능.
-         필요 시 /settings 페이지에 재배치 예정. */}
     </aside>
   )
 }
