@@ -515,6 +515,7 @@ export function ExpressShell(props: Props) {
           <InspectorReportCard
             report={inspectorReport}
             onDismiss={() => setInspectorReport(null)}
+            draftProgress={progress.overall}
           />
         </div>
       )}
@@ -577,8 +578,18 @@ export function ExpressShell(props: Props) {
               <button
                 type="button"
                 onClick={runInspector}
-                className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-                title="평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)"
+                disabled={progress.overall < 50}
+                className={cn(
+                  'rounded-md border px-3 py-1 text-xs',
+                  progress.overall < 50
+                    ? 'cursor-not-allowed border-muted bg-muted/40 text-muted-foreground/60'
+                    : 'bg-background text-muted-foreground hover:border-primary/40 hover:text-primary',
+                )}
+                title={
+                  progress.overall < 50
+                    ? '1차본 50% 이상이어야 의미있는 검수 가능 (현재 본문이 비어 모든 lens 가 0 으로 나옴)'
+                    : '평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)'
+                }
               >
                 🔍 검수
               </button>

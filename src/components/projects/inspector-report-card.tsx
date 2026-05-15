@@ -41,6 +41,11 @@ interface Props {
   report: InspectorReport
   onDismiss?: () => void
   onJumpToSection?: (sectionKey: string) => void
+  /**
+   * 1차본 진척률 (0~100). 50 미만일 때 "본문 미완성" 컨텍스트 배너 노출 —
+   * lens 점수가 모두 0 으로 나와도 PM 이 "평가위원 0점" 으로 오해하지 않도록.
+   */
+  draftProgress?: number
 }
 
 const LENS_LABEL: Record<string, string> = {
@@ -65,7 +70,13 @@ const SEVERITY_BG = {
   minor: 'border-muted bg-muted/30',
 }
 
-export function InspectorReportCard({ report, onDismiss, onJumpToSection }: Props) {
+export function InspectorReportCard({
+  report,
+  onDismiss,
+  onJumpToSection,
+  draftProgress,
+}: Props) {
+  const draftIncomplete = typeof draftProgress === 'number' && draftProgress < 50
   const score = Math.round(report.overallScore)
   const scoreColor =
     score >= 80
@@ -128,6 +139,22 @@ export function InspectorReportCard({ report, onDismiss, onJumpToSection }: Prop
         )}
       </CardHeader>
       <CardContent className="space-y-3">
+        {/* 본문 미완성 컨텍스트 배너 — 50% 미만에서만 표시 */}
+        {draftIncomplete && (
+          <div className="rounded-md border border-amber-300 bg-amber-50/70 p-2 text-[11px] text-amber-900">
+            <div className="flex items-start gap-1.5">
+              <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0 text-amber-600" />
+              <div>
+                <span className="font-medium">1차본 {draftProgress}% — 본문이 아직 비어있습니다.</span>
+                <span className="ml-1 text-amber-800/80">
+                  lens 점수가 0 으로 표시되는 것은 평가위원 점수가 아니라
+                  &ldquo;검수할 본문이 부족함&rdquo;을 의미합니다. 챗봇으로 슬롯을 더 채운 뒤 다시 검수해주세요.
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* 총점 막대 */}
         <div className="rounded-md border bg-muted/20 p-2.5">
           <div className="flex items-baseline justify-between gap-2">
