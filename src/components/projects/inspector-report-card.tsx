@@ -47,6 +47,8 @@ export interface AssetRecommendationUI {
   lens: string
   score: number
   reasons: string[]
+  /** P2 — lens·자산 기준으로 자동 결정된 추천 섹션 (1~7) */
+  suggestedSectionKey: '1' | '2' | '3' | '4' | '5' | '6' | '7'
 }
 
 interface Props {
@@ -64,7 +66,25 @@ interface Props {
    * 챗봇 입력창에 넣거나 differentiators 에 자동 수락.
    */
   recommendations?: AssetRecommendationUI[]
-  onInsertAsset?: (asset: AssetRecommendationUI) => void
+  /**
+   * P2 — 자산 인용 시 호출. sectionKey 가 주어지면 그 섹션에 narrativeSnippet 자동 추가;
+   * 'chat' 이면 챗봇 textarea 에 박는 기존 동작 (PM 직접 정리 모드).
+   */
+  onInsertAsset?: (
+    asset: AssetRecommendationUI,
+    target: '1' | '2' | '3' | '4' | '5' | '6' | '7' | 'chat',
+  ) => void
+}
+
+// P2 — 섹션 라벨 (SECTION_LABELS 와 동일)
+const SECTION_LABEL: Record<string, string> = {
+  '1': '제안 배경',
+  '2': '추진 전략',
+  '3': '커리큘럼',
+  '4': '코치·운영',
+  '5': '예산',
+  '6': '임팩트',
+  '7': '조직·팀',
 }
 
 const LENS_LABEL: Record<string, string> = {
@@ -290,7 +310,23 @@ export function InspectorReportCard({
               이 자산을 인용해 보강하세요 ({recommendations.length})
             </div>
             <ul className="space-y-1.5">
-              {recommendations.slice(0, 4).map((rec) => (
+              {recommendations.slice(0, 4).map((rec) => {
+                // P3 — 매칭 % 색상 분기 + 핵심 이유 1~2개 추출
+                const matchPct = Math.round(rec.score * 100)
+                const matchColor =
+                  matchPct >= 75
+                    ? 'bg-green-100 text-green-800'
+                    : matchPct >= 55
+                      ? 'bg-amber-100 text-amber-800'
+                      : 'bg-muted text-muted-foreground'
+                // reasons 중 winrate / 채널 / 의미 유사도 우선
+                const primaryReason = rec.reasons.find((r) =>
+                  /학습|채널|유사도|프로파일|수주|사례/.test(r),
+                )
+                const secondaryReason = rec.reasons.find(
+                  (r) => r !== primaryReason && !/카테고리|자산$/.test(r),
+                )
+                return (
                 <li
                   key={rec.assetId}
                   className="rounded border bg-white/70 p-1.5 text-[11px]"
@@ -305,10 +341,28 @@ export function InspectorReportCard({
                         >
                           {LENS_LABEL[rec.lens] ?? rec.lens}
                         </Badge>
-                        <span className="text-[9px] text-muted-foreground">
-                          매칭 {Math.round(rec.score * 100)}%
+                        <Badge
+                          variant="outline"
+                          className="h-3.5 px-1 text-[9px] text-muted-foreground"
+                          title={`evidence: ${rec.evidenceType} · category: ${rec.category}`}
+                        >
+                          {rec.evidenceType} · {rec.category}
+                        </Badge>
+                        <span
+                          className={cn(
+                            'rounded px-1 py-0 text-[9px] font-medium',
+                            matchColor,
+                          )}
+                        >
+                          {matchPct}%
                         </span>
                       </div>
+                      {/* P3 — 왜 이 자산이 추천됐는지 한 줄 (가장 강력한 이유 위주) */}
+                      {(primaryReason || secondaryReason) && (
+                        <div className="mt-0.5 text-[10px] text-primary/80">
+                          ✓ {[primaryReason, secondaryReason].filter(Boolean).join(' · ')}
+                        </div>
+                      )}
                       <div className="mt-0.5 line-clamp-2 leading-snug text-muted-foreground">
                         {rec.narrativeSnippet}
                       </div>
@@ -326,17 +380,45 @@ export function InspectorReportCard({
                       )}
                     </div>
                     {onInsertAsset && (
-                      <button
-                        onClick={() => onInsertAsset(rec)}
-                        className="shrink-0 rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
-                        title="이 자산을 챗봇 입력에 인용"
-                      >
-                        <Plus className="-mt-0.5 inline h-2.5 w-2.5" /> 인용
-                      </button>
+                      <div className="group relative shrink-0">
+                        <button
+                          onClick={() => onInsertAsset(rec, rec.suggestedSectionKey)}
+                          className="rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
+                          title={`섹션 ${rec.suggestedSectionKey} (${SECTION_LABEL[rec.suggestedSectionKey]}) 에 자동 추가`}
+                        >
+                          <Plus className="-mt-0.5 inline h-2.5 w-2.5" />
+                          섹션 {rec.suggestedSectionKey} 에 추가
+                        </button>
+                        {/* 호버 시 다른 섹션 선택 dropdown */}
+                        <div className="invisible absolute right-0 top-full z-10 mt-0.5 w-32 rounded-md border bg-white p-1 shadow-lg group-hover:visible">
+                          <div className="mb-0.5 px-1.5 py-0.5 text-[9px] text-muted-foreground">
+                            다른 섹션에 추가:
+                          </div>
+                          {(['1', '2', '3', '4', '6', '7'] as const)
+                            .filter((s) => s !== rec.suggestedSectionKey)
+                            .map((s) => (
+                              <button
+                                key={s}
+                                onClick={() => onInsertAsset(rec, s)}
+                                className="block w-full rounded px-1.5 py-0.5 text-left text-[10px] hover:bg-muted"
+                              >
+                                섹션 {s} · {SECTION_LABEL[s]}
+                              </button>
+                            ))}
+                          <div className="my-0.5 border-t" />
+                          <button
+                            onClick={() => onInsertAsset(rec, 'chat')}
+                            className="block w-full rounded px-1.5 py-0.5 text-left text-[10px] text-muted-foreground hover:bg-muted"
+                          >
+                            💬 챗봇 입력에 박기
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </li>
-              ))}
+                )
+              })}
             </ul>
           </div>
         )}

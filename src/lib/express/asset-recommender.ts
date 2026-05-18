@@ -131,6 +131,54 @@ export interface AssetRecommendation {
   lens: string
   score: number
   reasons: string[]
+  /**
+   * P2 — 이 자산을 어느 SectionKey ('1'~'7') 에 넣으면 가장 자연스러운가.
+   * lens 기반 default + 자산의 applicableSections 와 교차 검증.
+   * UI 가 "+ 섹션 N 에 인용" 라벨로 표시 + 한 클릭 자동 추가.
+   */
+  suggestedSectionKey: '1' | '2' | '3' | '4' | '5' | '6' | '7'
+}
+
+// P2 — lens → 가장 적합한 섹션 매핑 (asset.applicableSections 와 교차해서 최종 결정)
+const LENS_TO_DEFAULT_SECTION: Record<
+  Exclude<InspectorIssue['lens'], 'tone'>,
+  '1' | '2' | '3' | '4' | '5' | '6' | '7'
+> = {
+  market: '1', // 제안 배경 — 시장 통계
+  statistics: '1', // 제안 배경 — 정량 수치
+  problem: '1', // 제안 배경 — 문제정의
+  'before-after': '6', // 임팩트 — Before/After
+  'key-messages': '2', // 추진 전략 — 메시지 구조
+  differentiators: '4', // 커리큘럼/코치 — 자체 자산 차별화
+}
+
+/** asset-registry 의 applicableSections → SectionKey 매핑 */
+const ASSET_SECTION_KEY_MAP: Record<string, '1' | '2' | '3' | '4' | '5' | '6' | '7'> = {
+  'proposal-background': '1',
+  curriculum: '3',
+  coaches: '4',
+  budget: '5',
+  impact: '6',
+  'org-team': '7',
+  other: '2',
+}
+
+function pickSuggestedSection(
+  lens: Exclude<InspectorIssue['lens'], 'tone'>,
+  applicableSections: string[],
+): '1' | '2' | '3' | '4' | '5' | '6' | '7' {
+  const lensDefault = LENS_TO_DEFAULT_SECTION[lens]
+  // 자산의 applicableSections 중 lens default 가 있으면 우선
+  for (const s of applicableSections) {
+    const mapped = ASSET_SECTION_KEY_MAP[s]
+    if (mapped === lensDefault) return mapped
+  }
+  // 아니면 자산의 첫 번째 applicableSections
+  for (const s of applicableSections) {
+    const mapped = ASSET_SECTION_KEY_MAP[s]
+    if (mapped) return mapped
+  }
+  return lensDefault
 }
 
 // ─────────────────────────────────────────
@@ -291,6 +339,7 @@ export async function recommendAssetsForWeakLenses(
       if (count >= topNPerLens) break
       if (pickedAssetIds.has(asset.id)) continue
       pickedAssetIds.add(asset.id)
+      const applicable = (asset.applicableSections as string[]) ?? []
       results.push({
         assetId: asset.id,
         name: asset.name,
@@ -301,6 +350,7 @@ export async function recommendAssetsForWeakLenses(
         lens,
         score,
         reasons: [...reasons, profile.hint],
+        suggestedSectionKey: pickSuggestedSection(lens, applicable),
       })
       count++
       if (results.length >= totalLimit) break

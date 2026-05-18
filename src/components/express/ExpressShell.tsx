@@ -31,6 +31,7 @@ import type { AssetMatch } from '@/lib/asset-registry-types'
 import type { AutoCitationsBundle } from '@/lib/express/auto-citations'
 import { Settings2 } from 'lucide-react'
 import { NorthStarBar } from './NorthStarBar'
+import { EvaluatorScoreBar } from './EvaluatorScoreBar'
 import { ExpressChat, type ExpressChatHandle } from './ExpressChat'
 import { ExpressPreview } from './ExpressPreview'
 import { RfpUploadDialog } from './RfpUploadDialog'
@@ -533,6 +534,42 @@ export function ExpressShell(props: Props) {
           submitting={submitting}
           isCompleted={draft.meta.isCompleted}
         />
+        {/* P1 — 평가위원 점수판 (항상 노출) */}
+        <EvaluatorScoreBar
+          projectId={props.projectId}
+          channel={draft.meta?.autoDiagnosis?.channel?.detected}
+          progressOverall={progress.overall}
+          draftSignature={JSON.stringify({
+            i: draft.intent?.length ?? 0,
+            b: draft.beforeAfter?.before?.length ?? 0,
+            a: draft.beforeAfter?.after?.length ?? 0,
+            k: draft.keyMessages?.length ?? 0,
+            s: Object.values(draft.sections ?? {}).reduce(
+              (sum, v) => sum + (v?.length ?? 0),
+              0,
+            ),
+          })}
+          inspectorScore={inspectorReport?.overallScore}
+          inspectorWeakLenses={
+            inspectorReport?.lensScores
+              ? Object.entries(inspectorReport.lensScores)
+                  .filter(([k]) => k !== 'tone')
+                  .map(([lens, score]) => ({ lens, score }))
+                  .sort((a, b) => a.score - b.score)
+                  .slice(0, 2)
+              : undefined
+          }
+          onClickDetails={() => {
+            // 페이지 하단 InspectorReportCard 로 스크롤
+            const el = document.querySelector('[data-inspector-card]')
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }}
+          onJumpToSection={(s) => {
+            // 우측 미리보기에서 해당 섹션 스크롤
+            const el = document.querySelector(`[data-preview-section="${s}"]`)
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }}
+        />
         {/* Wave 2.5 — 상단 status only (액션 버튼은 아래 단일 패널로 통합) */}
         {inspectorReport && (
           <div className="flex items-center justify-end gap-2 border-t border-dashed bg-muted/20 px-6 py-1.5">
@@ -553,7 +590,7 @@ export function ExpressShell(props: Props) {
 
       {/* Wave 2 #5: 검수 결과 상세 카드 — inspectorReport 있을 때만 */}
       {inspectorReport && (
-        <div className="border-b bg-muted/10 px-6 py-3">
+        <div data-inspector-card className="border-b bg-muted/10 px-6 py-3">
           <InspectorReportCard
             report={inspectorReport}
             onDismiss={() => {
@@ -562,13 +599,35 @@ export function ExpressShell(props: Props) {
             }}
             draftProgress={progress.overall}
             recommendations={inspectorRecommendations}
-            onInsertAsset={(asset) => {
-              // textarea 에 narrativeSnippet 박고 + 사용 이력 기록 (fire & forget)
-              chatRef.current?.injectInput(
-                `[자산 인용 — ${asset.name}] ${asset.narrativeSnippet}`,
-                { append: true },
-              )
-              toast.success(`"${asset.name}" 을 챗봇 입력에 박았습니다 — 손보고 전송하세요`)
+            onInsertAsset={(asset, target) => {
+              if (target === 'chat') {
+                // 기존 동작 — 챗봇 textarea 에 박기
+                chatRef.current?.injectInput(
+                  `[자산 인용 — ${asset.name}] ${asset.narrativeSnippet}`,
+                  { append: true },
+                )
+                toast.success(
+                  `"${asset.name}" 을 챗봇 입력에 박았습니다 — 손보고 전송하세요`,
+                )
+              } else {
+                // P2 — 자동 섹션 반영
+                setDraft((d) => {
+                  const sectionKey = target as SectionKey
+                  const current = d.sections?.[sectionKey] ?? ''
+                  const snippet = `\n\n[${asset.name}] ${asset.narrativeSnippet}`
+                  const next = (current + snippet).trim()
+                  return {
+                    ...d,
+                    sections: {
+                      ...d.sections,
+                      [sectionKey]: next,
+                    },
+                  }
+                })
+                toast.success(
+                  `섹션 ${target} 에 "${asset.name}" 추가됨 — 자동 저장됩니다`,
+                )
+              }
               // 사용 이력 비동기 기록 (에러 무시)
               fetch('/api/express/asset-usage', {
                 method: 'POST',
@@ -577,7 +636,8 @@ export function ExpressShell(props: Props) {
                   projectId: props.projectId,
                   assetId: asset.assetId,
                   surface: 'express',
-                  notes: `inspector-recommend lens=${asset.lens}`,
+                  sectionKey: target === 'chat' ? null : target,
+                  notes: `inspector-recommend lens=${asset.lens} target=${target}`,
                 }),
               }).catch(() => {})
             }}
