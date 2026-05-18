@@ -262,10 +262,26 @@ export async function POST(req: NextRequest) {
                   sessionNo: true,
                   durationHours: true,
                   isTheory: true,
+                  isActionWeek: true,
+                  isCoaching1on1: true,
                 },
                 orderBy: { sessionNo: 'asc' },
               },
               totalBudgetVat: true,
+              budget: {
+                select: {
+                  acTotal: true,
+                  items: {
+                    select: {
+                      category: true,
+                      name: true,
+                      amount: true,
+                      quantity: true,
+                      unit: true,
+                    },
+                  },
+                },
+              },
             },
           })
           const rfp = projectFull?.rfpParsed as RfpParsed | null
@@ -295,7 +311,21 @@ export async function POST(req: NextRequest) {
               sessionNo: c.sessionNo,
               hours: c.durationHours,
               isTheory: c.isTheory,
+              isActionWeek: c.isActionWeek,
+              isCoaching1on1: c.isCoaching1on1,
             })),
+            budget: projectFull?.budget
+              ? {
+                  totalAmount: projectFull.budget.acTotal,
+                  items: projectFull.budget.items?.map((it) => ({
+                    category: it.category,
+                    name: it.name,
+                    amount: it.amount,
+                    quantity: it.quantity,
+                    unit: it.unit,
+                  })),
+                }
+              : undefined,
             country: projectFull?.sroiCountry,
             conservative: true,
           })

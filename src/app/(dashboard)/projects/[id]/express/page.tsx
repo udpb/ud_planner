@@ -65,6 +65,25 @@ export default async function ExpressPage({
       expressTurnsCache: true,
       expressActive: true,
       strategicNotes: true,
+      // C-8 — 사전 임팩트 forecast (있으면 ExpressShell 의 violet 카드 즉시 렌더)
+      impactForecast: {
+        select: {
+          id: true,
+          totalSocialValue: true,
+          beneficiaryCount: true,
+          calibration: true,
+          generatedAt: true,
+          basedOnDraftHash: true,
+        },
+      },
+      // outdated 감지용 — 마지막 수정 시각들
+      updatedAt: true,
+      budget: { select: { updatedAt: true } },
+      curriculum: {
+        select: { updatedAt: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 1,
+      },
     },
   })
   if (!project) notFound()
@@ -111,6 +130,29 @@ export default async function ExpressPage({
   const initialNextSlot = selectNextSlot(draft, rfp)
   const progress = calcProgress(draft, !!rfp)
 
+  // C-8 — 사전 임팩트 forecast + outdated 감지
+  // budget/curriculum 이 forecast 생성 후에 수정됐다면 stale → 재계산 필요
+  let initialForecast: {
+    id: string
+    totalSocialValue: number
+    beneficiaryCount: number
+    calibration: string
+    isStale: boolean
+  } | null = null
+  if (project.impactForecast) {
+    const genAt = project.impactForecast.generatedAt.getTime()
+    const budgetUpdatedAt = project.budget?.updatedAt?.getTime() ?? 0
+    const curriculumLatest = project.curriculum[0]?.updatedAt?.getTime() ?? 0
+    const isStale = budgetUpdatedAt > genAt || curriculumLatest > genAt
+    initialForecast = {
+      id: project.impactForecast.id,
+      totalSocialValue: Number(project.impactForecast.totalSocialValue),
+      beneficiaryCount: project.impactForecast.beneficiaryCount,
+      calibration: project.impactForecast.calibration,
+      isStale,
+    }
+  }
+
   return (
     <div className="flex flex-col overflow-hidden">
       <Header title={`${project.name} · Express`} />
@@ -130,6 +172,7 @@ export default async function ExpressPage({
           ((project.strategicNotes as unknown as StrategicNotes | null) ?? null)
             ?.clientOfficialDoc
         }
+        initialImpactForecast={initialForecast}
       />
     </div>
   )

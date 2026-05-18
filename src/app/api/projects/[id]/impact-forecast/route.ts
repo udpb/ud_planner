@@ -81,8 +81,29 @@ export async function POST(req: NextRequest, { params }: Ctx) {
         sroiCountry: true,
         totalBudgetVat: true,
         curriculum: {
-          select: { title: true, sessionNo: true, durationHours: true, isTheory: true },
+          select: {
+            title: true,
+            sessionNo: true,
+            durationHours: true,
+            isTheory: true,
+            isActionWeek: true,
+            isCoaching1on1: true,
+          },
           orderBy: { sessionNo: 'asc' },
+        },
+        budget: {
+          select: {
+            acTotal: true,
+            items: {
+              select: {
+                category: true,
+                name: true,
+                amount: true,
+                quantity: true,
+                unit: true,
+              },
+            },
+          },
         },
       },
     })
@@ -131,7 +152,21 @@ export async function POST(req: NextRequest, { params }: Ctx) {
         sessionNo: c.sessionNo,
         hours: c.durationHours,
         isTheory: c.isTheory,
+        isActionWeek: c.isActionWeek,
+        isCoaching1on1: c.isCoaching1on1,
       })),
+      budget: project.budget
+        ? {
+            totalAmount: project.budget.acTotal,
+            items: project.budget.items?.map((it) => ({
+              category: it.category,
+              name: it.name,
+              amount: it.amount,
+              quantity: it.quantity,
+              unit: it.unit,
+            })),
+          }
+        : undefined,
       country: project.sroiCountry,
       conservative: parsed.data.conservative ?? true,
     })

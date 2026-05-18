@@ -60,6 +60,14 @@ interface Props {
   initialMatchedAssets: AssetMatch[]
   initialAutoCitations: AutoCitationsBundle
   initialClientDoc?: StrategicNotes['clientOfficialDoc']
+  /** C-8 — 서버에서 미리 로드한 사전 임팩트 forecast (있으면 즉시 카드 노출) */
+  initialImpactForecast?: {
+    id: string
+    totalSocialValue: number
+    beneficiaryCount: number
+    calibration: string
+    isStale: boolean
+  } | null
 }
 
 export function ExpressShell(props: Props) {
@@ -436,11 +444,14 @@ export function ExpressShell(props: Props) {
   const [dismissFinalize, setDismissFinalize] = useState<boolean>(false)
 
   // Wave M4 — 1차본 승인 시 자동 생성된 사전 임팩트 리포트
+  // C-8: 서버 props 초기값 + Stale (curriculum/budget 변경 후) 표시
   const [impactForecast, setImpactForecast] = useState<{
     id: string
     totalSocialValue: number
+    beneficiaryCount?: number
     calibration: string
-  } | null>(null)
+    isStale?: boolean
+  } | null>(props.initialImpactForecast ?? null)
 
   const handleSubmitDraft = useCallback(async () => {
     setSubmitting(true)
@@ -702,21 +713,52 @@ export function ExpressShell(props: Props) {
         </div>
       </div>
 
-      {/* Wave M4 — 1차본 완료 시 사전 임팩트 리포트 카드 */}
+      {/* Wave M4 — 1차본 완료 시 사전 임팩트 리포트 카드. C-8: stale 표시 추가 */}
       {impactForecast && (
-        <div className="border-b border-violet-300 bg-violet-50/40 px-6 py-3">
+        <div
+          className={cn(
+            'border-b px-6 py-3',
+            impactForecast.isStale
+              ? 'border-amber-300 bg-amber-50/40'
+              : 'border-violet-300 bg-violet-50/40',
+          )}
+        >
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-semibold text-violet-700">
+            <span
+              className={cn(
+                'text-sm font-semibold',
+                impactForecast.isStale ? 'text-amber-800' : 'text-violet-700',
+              )}
+            >
               📊 사전 임팩트 리포트
+              {impactForecast.isStale && (
+                <span className="ml-1.5 text-[10px] font-normal text-amber-700">
+                  (재계산 필요)
+                </span>
+              )}
             </span>
             <span className="text-sm tabular-nums">
               사회적 가치{' '}
-              <strong className="text-violet-900">
+              <strong
+                className={
+                  impactForecast.isStale ? 'text-amber-900' : 'text-violet-900'
+                }
+              >
                 {(impactForecast.totalSocialValue / 100_000_000).toFixed(2)}억원
               </strong>
+              {impactForecast.beneficiaryCount != null && (
+                <span className="ml-2 text-xs text-muted-foreground">
+                  · 수혜자 {impactForecast.beneficiaryCount.toLocaleString()}명
+                </span>
+              )}
             </span>
             <span
-              className="rounded bg-violet-100 px-1.5 py-0.5 text-[10px] text-violet-800"
+              className={cn(
+                'rounded px-1.5 py-0.5 text-[10px]',
+                impactForecast.isStale
+                  ? 'bg-amber-100 text-amber-800'
+                  : 'bg-violet-100 text-violet-800',
+              )}
               title={
                 impactForecast.calibration === 'auto-conservative'
                   ? 'AI 추정 항목에 0.7 보수 인수 적용됨'
@@ -733,9 +775,14 @@ export function ExpressShell(props: Props) {
             </span>
             <Link
               href={`/projects/${props.projectId}/impact-forecast`}
-              className="rounded-md border border-violet-400 bg-background px-3 py-1 text-xs text-violet-700 hover:bg-violet-100"
+              className={cn(
+                'rounded-md border bg-background px-3 py-1 text-xs',
+                impactForecast.isStale
+                  ? 'border-amber-400 text-amber-700 hover:bg-amber-100'
+                  : 'border-violet-400 text-violet-700 hover:bg-violet-100',
+              )}
             >
-              상세 보기 + 보정 →
+              {impactForecast.isStale ? '재계산 →' : '상세 보기 + 보정 →'}
             </Link>
             <button
               onClick={() => setImpactForecast(null)}
@@ -745,9 +792,15 @@ export function ExpressShell(props: Props) {
               ×
             </button>
           </div>
-          <p className="mt-1 text-[10px] text-violet-700/70">
-            ⓘ impact-measurement 시스템 계수 기반 · 사후 실측 시 impact-measurement
-            에서 같은 계수로 측정
+          <p
+            className={cn(
+              'mt-1 text-[10px]',
+              impactForecast.isStale ? 'text-amber-700/80' : 'text-violet-700/70',
+            )}
+          >
+            {impactForecast.isStale
+              ? 'ⓘ 커리큘럼 또는 예산이 forecast 생성 후 수정됨 — 재계산 권장'
+              : 'ⓘ impact-measurement 시스템 계수 기반 · 사후 실측 시 같은 계수로 비교'}
           </p>
         </div>
       )}

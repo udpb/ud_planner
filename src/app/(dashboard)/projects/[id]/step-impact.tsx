@@ -42,6 +42,15 @@ interface Props {
   autoExtracted?: { activities: boolean; inputs: boolean }
   /** PipelineContext — Wave 7 루프 얼라인 체크용 (없으면 카드 숨김) */
   context?: PipelineContext
+  /** C-8 — 사전 임팩트 forecast (있으면 인라인 요약 카드, 없으면 "생성하기" 링크) */
+  impactForecast?: {
+    id: string
+    totalSocialValue: number
+    beneficiaryCount: number
+    calibration: string
+    isStale: boolean
+  } | null
+  totalBudgetVat?: number | null
 }
 
 const CHAIN_KEYS = ['input', 'activity', 'output', 'outcome', 'impact'] as const
@@ -119,6 +128,7 @@ function analyzeKeywordFlow(rfpParsed: any, logicModel: any) {
 export function StepImpact({
   projectId, rfpParsed, initialLogicModel,
   curriculumSlice, coachesSlice, budgetSlice, autoExtracted, context,
+  impactForecast, totalBudgetVat,
 }: Props) {
   // Phase management
   const [phase, setPhase] = useState<'goal' | 'model'>(initialLogicModel ? 'model' : 'goal')
@@ -363,21 +373,103 @@ export function StepImpact({
 
   return (
     <div className="space-y-4">
-      {/* 사전 임팩트 리포트 (forecast) 진입점 — Express 와 동일 데이터 공유 */}
-      <div className="flex items-center justify-between gap-3 rounded-md border border-violet-200 bg-violet-50/40 px-4 py-2">
-        <div className="text-xs">
-          <span className="font-semibold text-violet-900">📊 사전 임팩트 리포트 (SROI Forecast)</span>
-          <span className="ml-2 text-muted-foreground">
-            impact-measurement 계수 기반 사회적 가치 예측 — 사후 실측 시 동일 계수로 비교
-          </span>
-        </div>
-        <Link
-          href={`/projects/${projectId}/impact-forecast`}
-          className="shrink-0 rounded border border-violet-400 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
+      {/* 사전 임팩트 리포트 인라인 카드 — C-8: 데이터 있으면 요약 표시, 없으면 생성 진입점 */}
+      {impactForecast ? (
+        <div
+          className={cn(
+            'rounded-md border px-4 py-3',
+            impactForecast.isStale
+              ? 'border-amber-300 bg-amber-50/40'
+              : 'border-violet-200 bg-violet-50/40',
+          )}
         >
-          열기 / 생성 →
-        </Link>
-      </div>
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span
+                  className={cn(
+                    'text-sm font-semibold',
+                    impactForecast.isStale ? 'text-amber-800' : 'text-violet-900',
+                  )}
+                >
+                  📊 사전 임팩트 리포트
+                </span>
+                {impactForecast.isStale && (
+                  <span className="rounded bg-amber-200/60 px-1.5 py-0.5 text-[10px] text-amber-900">
+                    재계산 필요
+                  </span>
+                )}
+                <span className="rounded bg-white/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  {impactForecast.calibration === 'auto-conservative'
+                    ? '🤖 AI 보수'
+                    : impactForecast.calibration === 'pm-locked'
+                      ? '🔒 PM 확정'
+                      : '✏ PM 보정'}
+                </span>
+              </div>
+              <div className="mt-1.5 flex flex-wrap items-baseline gap-4 text-xs">
+                <span>
+                  사회적 가치{' '}
+                  <strong
+                    className={cn(
+                      'text-base tabular-nums',
+                      impactForecast.isStale ? 'text-amber-900' : 'text-violet-900',
+                    )}
+                  >
+                    {(impactForecast.totalSocialValue / 100_000_000).toFixed(2)}억원
+                  </strong>
+                </span>
+                <span className="text-muted-foreground">
+                  수혜자{' '}
+                  <strong className="tabular-nums text-foreground">
+                    {impactForecast.beneficiaryCount.toLocaleString()}명
+                  </strong>
+                </span>
+                {totalBudgetVat && totalBudgetVat > 0 && (
+                  <span className="text-muted-foreground">
+                    SROI{' '}
+                    <strong className="tabular-nums text-foreground">
+                      1:
+                      {(
+                        impactForecast.totalSocialValue / totalBudgetVat
+                      ).toFixed(2)}
+                    </strong>
+                  </span>
+                )}
+              </div>
+            </div>
+            <Link
+              href={`/projects/${projectId}/impact-forecast`}
+              className={cn(
+                'shrink-0 rounded border bg-white px-2.5 py-1 text-[11px] font-medium',
+                impactForecast.isStale
+                  ? 'border-amber-400 text-amber-700 hover:bg-amber-100'
+                  : 'border-violet-400 text-violet-700 hover:bg-violet-100',
+              )}
+            >
+              {impactForecast.isStale ? '재계산 →' : '상세 / 보정 →'}
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between gap-3 rounded-md border border-violet-200 bg-violet-50/40 px-4 py-2">
+          <div className="text-xs">
+            <span className="font-semibold text-violet-900">
+              📊 사전 임팩트 리포트 (SROI Forecast)
+            </span>
+            <span className="ml-2 text-muted-foreground">
+              impact-measurement 계수 기반 사회적 가치 예측 — 1차본 승인 시
+              자동 생성, 또는 여기서 수동 생성
+            </span>
+          </div>
+          <Link
+            href={`/projects/${projectId}/impact-forecast`}
+            className="shrink-0 rounded border border-violet-400 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
+          >
+            생성하기 →
+          </Link>
+        </div>
+      )}
 
       {/* 이전 스텝 요약 (Step 2·3·4 → Step 5) */}
       <DataFlowBanner

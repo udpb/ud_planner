@@ -101,8 +101,21 @@ export interface ForecastInput {
     sessionNo?: number
     hours?: number
     isTheory?: boolean
+    isActionWeek?: boolean
+    isCoaching1on1?: boolean
     targetCount?: number
   }>
+  /** Wave M post-fix (C-9) — Budget 슬라이스: 예산 항목별 정량 컨텍스트 */
+  budget?: {
+    totalAmount?: number | null
+    items?: Array<{
+      category?: string
+      name?: string
+      amount?: number
+      quantity?: number
+      unit?: string | null
+    }>
+  }
   /** PM 이 명시한 국가 (Project.sroiCountry) */
   country?: string
   /** Conservative 모드 (estimated 항목 0.7 factor) — 기본 true */
@@ -182,9 +195,14 @@ export async function forecastImpact(
     categories,
   })
 
+  // 4.5) Wave M post-fix (C-9): Sanity check — 비현실 추정 자동 클램프 + 경고.
+  //   * 단일 카테고리 가치 > 예산 5배: 과대 추정 의심 (10× 클램프)
+  //   * 총 가치 > 예산 50배: 명백한 비정상 (calibration note 강조)
+  const sanityNotes = applySanityClamps(calc, items, input.budget?.totalAmount ?? input.rfp?.totalBudgetVat ?? null)
+
   // 5) 저장
   const draftHash = hashDraft(input.draft)
-  const calibrationNote = composeCalibrationNote(items, calc, aiResp, conservative)
+  const calibrationNote = composeCalibrationNote(items, calc, aiResp, conservative, sanityNotes)
 
   const forecast = await prisma.impactForecast.upsert({
     where: { projectId: input.projectId },
@@ -325,16 +343,15 @@ function buildPrompt(input: ForecastInput, categories: ImpactCategory[]): string
     })
     .join('\n')
 
-  const curriculumStr = input.curriculum?.length
-    ? input.curriculum
-        .map(
-          (m, i) =>
-            `  ${i + 1}. ${m.moduleName ?? '(이름 없음)'} (${m.hours ?? 0}h, ${
-              m.isTheory ? '이론' : '실습'
-            })`,
-        )
-        .join('\n')
-    : '  (curriculum 미작성 — Deep 진입 전)'
+  // Wave M C-9 — curriculum 집계 + 상세
+  const curriculumStr = buildCurriculumContext(input.curriculum)
+  // C-9 — budget 슬라이스
+  const budgetStr = buildBudgetContext(
+    input.budget,
+    input.rfp?.totalBudgetVat ?? null,
+  )
+  // C-9 — programProfile 핵심 축 추출
+  const profileStr = buildProgramProfileContext(input.programProfile)
 
   const sectionsStr = input.draft.sections
     ? Object.entries(input.draft.sections)
@@ -343,17 +360,25 @@ function buildPrompt(input: ForecastInput, categories: ImpactCategory[]): string
         .join('\n\n')
     : ''
 
+  // 예산 대비 sanity 가이드라인 — AI 가 부풀림 방지 자체 검증
+  const totalBudget = input.budget?.totalAmount ?? input.rfp?.totalBudgetVat ?? null
+  const sanityHint = totalBudget
+    ? `\n**자가 검증** — 합산 추정값이 예산 ${totalBudget.toLocaleString()}원의 50배 (₩${(totalBudget * 50).toLocaleString()}원) 를 넘어가면 calibrationNote 에 "과대 추정 우려" 라고 명시. 정상 SROI 비율은 1:1~1:10 범위.`
+    : ''
+
   return `
-당신은 언더독스의 임팩트 분석가입니다. 아래 1차본·RFP·커리큘럼을 보고
-**impact-measurement 시스템의 카테고리** 에 정량 매핑해 EducationItem 배열을
-만드세요.
+당신은 언더독스의 임팩트 분석가입니다. 아래 1차본·RFP·커리큘럼·예산·프로파일을
+종합해 **impact-measurement 시스템의 카테고리** 에 정량 매핑해 EducationItem
+배열을 만드세요.
 
 **철칙 — 숫자 부풀림 금지**:
-  1. RFP·1차본에 명시된 숫자만 사용 → confidence: 'explicit'
+  1. RFP·1차본·예산에 명시된 숫자만 사용 → confidence: 'explicit'
   2. RFP+커리큘럼에서 도출 가능 → confidence: 'derived'
   3. AI 추정 → confidence: 'estimated' (시스템이 자동으로 0.7 보정)
   4. 추정에는 반드시 rationale 에 근거 명시 (출처·논리)
   5. 모르면 항목 자체를 안 만드는 게 부풀림 항목 만드는 것보다 낫다
+  6. 사업 기간 외 발생 가치 (예: 사후 5년 매출) 는 제외 — 사전 forecast 범위
+${sanityHint}
 
 **사용 가능한 카테고리** (각 카테고리의 "필요 변수" 만 채우면 됨):
 ${categoryList}
@@ -373,6 +398,13 @@ ${categoryList}
   - spaceArea: 공간 면적 (평)
   - spaceDuration: 공간 무상기간 (월)
 
+**[전략] 정량 추정 우선순위**:
+  1. RFP "목표 참여자수" → participants 의 기본값
+  2. 커리큘럼 세션 수 → count 또는 days
+  3. 사업 기간 → months
+  4. 예산 항목별 단가 × 수량 → 강의·코칭 등 매핑 단서
+  5. 위가 모두 없으면 보수적으로 작은 숫자 (예: 1회·20명)
+
 **컨텍스트**:
 
 [정체성] ${input.draft.intent ?? '(미작성)'}
@@ -388,7 +420,12 @@ ${(input.draft.keyMessages ?? []).map((m, i) => `${i + 1}. ${m}`).join('\n') || 
   - 대상: ${input.rfp?.targetAudience ?? '(미상)'}
   - 사업 기간: ${input.rfp?.projectStartDate ?? '?'} ~ ${input.rfp?.projectEndDate ?? '?'}
   - 교육 기간: ${input.rfp?.eduStartDate ?? '?'} ~ ${input.rfp?.eduEndDate ?? '?'}
-  - 총예산(VAT): ${input.rfp?.totalBudgetVat?.toLocaleString() ?? '?'}원
+
+[프로그램 프로파일]
+${profileStr}
+
+[예산]
+${budgetStr}
 
 [커리큘럼]
 ${curriculumStr}
@@ -407,7 +444,7 @@ ${sectionsStr || '(미작성)'}
       "hours": <...>,
       ... (그 카테고리의 필요 변수만 채우고 나머진 null),
       "confidence": "explicit|derived|estimated",
-      "rationale": "RFP §X 명시 / 커리큘럼 12주 × 30명 / 비슷한 사업 평균 등 근거"
+      "rationale": "RFP §X 명시 / 커리큘럼 12주 × 30명 / 예산 항목 X / 비슷한 사업 평균 등 구체 근거"
     }
   ],
   "calibrationNote": "이 사업에서 어떤 추정을 했는지 1~2줄 메모"
@@ -415,6 +452,143 @@ ${sectionsStr || '(미작성)'}
 
 JSON 만 출력. 마크다운 펜스 X.
 `.trim()
+}
+
+// ─────────────────────────────────────────
+// 6.5. 컨텍스트 빌더 (C-9 정밀도 향상)
+// ─────────────────────────────────────────
+
+function buildCurriculumContext(
+  curriculum: ForecastInput['curriculum'],
+): string {
+  if (!curriculum?.length) {
+    return '  (curriculum 미작성 — Deep 진입 전; RFP 와 1차본 기반으로 추정)'
+  }
+  const totalSessions = curriculum.length
+  const totalHours = curriculum.reduce((s, c) => s + (c.hours ?? 0), 0)
+  const lecture = curriculum.filter((c) => c.isTheory).length
+  const practice = curriculum.filter((c) => !c.isTheory).length
+  const actionWeek = curriculum.filter((c) => c.isActionWeek).length
+  const coaching1on1 = curriculum.filter((c) => c.isCoaching1on1).length
+
+  const lines: string[] = [
+    `  [집계] 세션 ${totalSessions}회 · 총 ${totalHours}시간 (이론 ${lecture} · 실습 ${practice} · Action Week ${actionWeek} · 1:1 코칭 ${coaching1on1})`,
+  ]
+  // 처음 8 세션만 표시 (토큰 절약)
+  const visible = curriculum.slice(0, 8)
+  for (let i = 0; i < visible.length; i++) {
+    const m = visible[i]
+    const tag = m.isCoaching1on1
+      ? '코칭'
+      : m.isActionWeek
+        ? 'AW'
+        : m.isTheory
+          ? '이론'
+          : '실습'
+    lines.push(
+      `  ${m.sessionNo ?? i + 1}. ${m.moduleName ?? '(이름 없음)'} (${m.hours ?? 0}h · ${tag})`,
+    )
+  }
+  if (curriculum.length > visible.length) {
+    lines.push(`  ... 외 ${curriculum.length - visible.length} 세션`)
+  }
+  return lines.join('\n')
+}
+
+function buildBudgetContext(
+  budget: ForecastInput['budget'],
+  rfpTotalBudget: number | null,
+): string {
+  const total = budget?.totalAmount ?? rfpTotalBudget
+  if (!total) return '  (예산 미상)'
+  const lines: string[] = [
+    `  총예산: ${total.toLocaleString()}원${rfpTotalBudget && total !== rfpTotalBudget ? ` (VAT ${rfpTotalBudget.toLocaleString()}원)` : ''}`,
+  ]
+  if (budget?.items?.length) {
+    // category 별 집계
+    const byCat = new Map<string, number>()
+    for (const it of budget.items) {
+      const k = it.category ?? '기타'
+      byCat.set(k, (byCat.get(k) ?? 0) + (it.amount ?? 0))
+    }
+    const sorted = [...byCat.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6)
+    for (const [k, v] of sorted) {
+      const pct = total > 0 ? Math.round((v / total) * 100) : 0
+      lines.push(`    · ${k}: ${v.toLocaleString()}원 (${pct}%)`)
+    }
+  }
+  return lines.join('\n')
+}
+
+function buildProgramProfileContext(profile: unknown): string {
+  if (!profile || typeof profile !== 'object') return '  (프로파일 미설정)'
+  const p = profile as Record<string, unknown>
+  const lines: string[] = []
+  const channel = p.channel as { type?: string; isRenewal?: boolean } | undefined
+  if (channel?.type) {
+    lines.push(
+      `  채널: ${channel.type}${channel.isRenewal ? ' (연속사업)' : ''}`,
+    )
+  }
+  if (p.targetStage) lines.push(`  대상 단계: ${String(p.targetStage)}`)
+  const seg = p.targetSegment as
+    | { businessDomain?: string[]; targetAge?: string[] }
+    | undefined
+  if (seg?.businessDomain?.length) {
+    lines.push(`  도메인: ${seg.businessDomain.join(', ')}`)
+  }
+  if (seg?.targetAge?.length) {
+    lines.push(`  연령: ${seg.targetAge.join(', ')}`)
+  }
+  const dur = p.programDuration as { weeks?: number; months?: number } | undefined
+  if (dur?.weeks || dur?.months) {
+    lines.push(
+      `  기간: ${dur.months ? dur.months + '개월' : (dur.weeks ?? 0) + '주'}`,
+    )
+  }
+  return lines.length === 0 ? '  (프로파일 비어있음)' : lines.join('\n')
+}
+
+// ─────────────────────────────────────────
+// 6.6. Sanity check — 비현실 추정 클램프
+// ─────────────────────────────────────────
+
+interface SanityNote {
+  level: 'warn' | 'clamp'
+  message: string
+}
+
+function applySanityClamps(
+  calc: SafeCalculationResult,
+  items: ForecastItemWithMeta[],
+  totalBudget: number | null,
+): SanityNote[] {
+  const notes: SanityNote[] = []
+  if (!totalBudget || totalBudget <= 0) return notes
+
+  // 단일 항목이 예산의 10× 초과 → 비현실 (클램프 X, 경고만; calibration 에 surface)
+  const itemValues = calc.breakdown.map((b, i) => ({
+    idx: i,
+    categoryId: b.categoryId,
+    value: b.value,
+    item: items[i],
+  }))
+  const outliers = itemValues.filter((x) => x.value > totalBudget * 10)
+  for (const o of outliers) {
+    notes.push({
+      level: 'warn',
+      message: `${o.item?.categoryName ?? o.categoryId} ${(o.value / 100_000_000).toFixed(1)}억원 — 예산의 ${(o.value / totalBudget).toFixed(0)}배 (확인 권장)`,
+    })
+  }
+
+  // 총합이 예산의 50× 초과 → 매우 비정상
+  if (calc.totalSocialValue > totalBudget * 50) {
+    notes.push({
+      level: 'warn',
+      message: `총 사회적 가치가 예산의 ${(calc.totalSocialValue / totalBudget).toFixed(0)}배 — 데이터 정합성 또는 추정 점검 필요`,
+    })
+  }
+  return notes
 }
 
 // ─────────────────────────────────────────
@@ -450,6 +624,7 @@ function composeCalibrationNote(
   calc: SafeCalculationResult,
   aiResp: { calibrationNote?: string },
   conservative: boolean,
+  sanityNotes: SanityNote[] = [],
 ): string {
   const byConfidence = items.reduce(
     (acc, i) => {
@@ -471,6 +646,10 @@ function composeCalibrationNote(
   }
   if (aiResp.calibrationNote) {
     parts.push(aiResp.calibrationNote.slice(0, 200))
+  }
+  // C-9 sanity 경고 surface
+  if (sanityNotes.length > 0) {
+    parts.push(`⚠ ${sanityNotes.map((n) => n.message).join('; ')}`)
   }
   return parts.join(' · ')
 }

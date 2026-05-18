@@ -247,8 +247,13 @@ export async function recommendAssetsForWeakLenses(
           ? CHANNEL_ASSET_WEIGHTS[channel][asset.category as AssetCategory] ?? 1
           : 1
 
-        // Wave N4 — Win/Loss 가산점 (최대 +0.15)
-        const wlBonus = winLossMap.get(asset.id) ?? 0
+        // Wave N4 + C-7 — Win/Loss 가산점 (채널별 + time decay + Laplace smoothing)
+        const wl = winLossMap.get(asset.id)
+        const wlBonus = wl
+          ? channel && wl.perChannel[channel] !== undefined
+            ? wl.perChannel[channel]!
+            : wl.overall
+          : 0
 
         // 합산 — base * chWeight + vector + profile + winloss
         const raw =
@@ -264,7 +269,13 @@ export async function recommendAssetsForWeakLenses(
         if (profileBonus >= 0.1) reasons.push('프로파일 강 적합')
         if (vectorUsed && vectorScore >= 0.6) reasons.push(`의미 유사도 ${Math.round(vectorScore * 100)}%`)
         if (chWeight > 1.1 && channel) reasons.push(`${channel} 채널 강 가중`)
-        if (wlBonus > 0) reasons.push(`수주 사례 +${Math.round(wlBonus * 100)}%`)
+        if (wlBonus > 0) {
+          const channelLabel =
+            channel && wl?.perChannel[channel] !== undefined
+              ? `${channel} 채널`
+              : '과거 사례'
+          reasons.push(`${channelLabel} 학습 +${Math.round(wlBonus * 100)}%`)
+        }
 
         return {
           asset,
@@ -305,32 +316,107 @@ export async function recommendAssetsForWeakLenses(
 // ─────────────────────────────────────────
 
 /**
- * Wave N4 — 자산별 Win/Loss 가산점 맵.
+ * Wave N4 + C-7 (2026-05-15 후속) — 자산별 채널별 Win/Loss 가산점 맵.
  *
- * 룰: wonProject=true / 총 라벨된 사용 횟수 ≥ 3건 인 자산만 가산.
- * 가산값 = winRate * 0.15 (max +0.15).
+ * 룰:
+ *  1. 채널별로 분리 (B2G · B2B · renewal) — 같은 자산이라도 채널마다 효력 다름
+ *  2. Time decay — 최근 사용이 가산점에 더 강하게 영향 (half-life 1년)
+ *  3. TechScore 가중 — 높은 점수로 수주된 자산은 더 강하게 학습
+ *  4. Laplace smoothing — 표본 작을 때 극단값 방지 (α=1)
+ *  5. 가산값: rate > 0.5 일 때 (rate-0.5) × 0.3 (max +0.15). 낮으면 0.
  *
- * AssetUsage.wonProject 가 null 인 행은 카운트 제외 (아직 결과 미정).
+ * 호출자가 project 의 channel 을 함께 주면 그 채널의 학습률 우선,
+ * 없으면 overall (모든 채널 합산) 사용.
  */
-async function loadWinLossMap(): Promise<Map<string, number>> {
-  const rows = await prisma.assetUsage.groupBy({
-    by: ['assetId', 'wonProject'],
+interface ChannelWinRates {
+  /** 채널별 가산점 (이미 weight 적용 + smoothing 처리됨) */
+  perChannel: Partial<Record<Channel, number>>
+  /** 채널 무관 overall (fallback) */
+  overall: number
+  /** 가중 표본 수 (UI 표시용) */
+  effectiveSampleSize: number
+}
+
+async function loadWinLossMap(): Promise<Map<string, ChannelWinRates>> {
+  // 라벨된 (wonProject 결정됨) 사용 이력만
+  const rows = await prisma.assetUsage.findMany({
     where: { wonProject: { not: null } },
-    _count: { id: true },
+    select: {
+      assetId: true,
+      wonProject: true,
+      channel: true,
+      techScore: true,
+      createdAt: true,
+    },
   })
-  // assetId -> {wins, total}
-  const acc = new Map<string, { wins: number; total: number }>()
+  if (rows.length === 0) return new Map()
+
+  const now = Date.now()
+  const DAY_MS = 24 * 60 * 60 * 1000
+  const HALF_LIFE_DAYS = 365 // 1년 반감기
+
+  // 누적 (assetId, channel) 별
+  type Acc = { weightedWins: number; weightedTotal: number; rawCount: number }
+  const byChannel = new Map<string, Map<Channel | 'overall', Acc>>()
+
   for (const row of rows) {
-    const cur = acc.get(row.assetId) ?? { wins: 0, total: 0 }
-    cur.total += row._count.id
-    if (row.wonProject === true) cur.wins += row._count.id
-    acc.set(row.assetId, cur)
+    const ageDays = Math.max(0, (now - row.createdAt.getTime()) / DAY_MS)
+    const timeWeight = Math.exp(-ageDays / HALF_LIFE_DAYS) // 1.0 ~ 0 (1yr=0.37, 2yr=0.13)
+
+    // techScore 가중 (85+ 가 strong signal)
+    const ts = row.techScore ?? null
+    const tsWeight = ts == null ? 1 : ts >= 85 ? 1 : ts >= 70 ? 0.7 : 0.4
+
+    const w = timeWeight * tsWeight
+    const won = row.wonProject ? 1 : 0
+    const ch =
+      row.channel === 'B2G' || row.channel === 'B2B' || row.channel === 'renewal'
+        ? (row.channel as Channel)
+        : null
+
+    if (!byChannel.has(row.assetId))
+      byChannel.set(row.assetId, new Map())
+    const m = byChannel.get(row.assetId)!
+
+    // per channel
+    if (ch) {
+      const cur = m.get(ch) ?? { weightedWins: 0, weightedTotal: 0, rawCount: 0 }
+      cur.weightedWins += w * won
+      cur.weightedTotal += w
+      cur.rawCount++
+      m.set(ch, cur)
+    }
+    // overall (모든 채널 합)
+    const o = m.get('overall') ?? { weightedWins: 0, weightedTotal: 0, rawCount: 0 }
+    o.weightedWins += w * won
+    o.weightedTotal += w
+    o.rawCount++
+    m.set('overall', o)
   }
-  const out = new Map<string, number>()
-  for (const [assetId, { wins, total }] of acc) {
-    if (total < 3) continue // 표본 부족 — 가산 안 함
-    const rate = wins / total
-    out.set(assetId, 0.15 * rate)
+
+  // Laplace smoothing + bonus 변환
+  const ALPHA = 1
+  const out = new Map<string, ChannelWinRates>()
+  for (const [assetId, m] of byChannel) {
+    const overallAcc = m.get('overall')
+    if (!overallAcc || overallAcc.rawCount < 2) continue // 표본 너무 적으면 skip
+
+    const smoothedRate = (acc: Acc) =>
+      (acc.weightedWins + ALPHA) / (acc.weightedTotal + 2 * ALPHA)
+    const toBonus = (rate: number) => Math.max(0, (rate - 0.5) * 0.3)
+
+    const perChannel: Partial<Record<Channel, number>> = {}
+    for (const ch of ['B2G', 'B2B', 'renewal'] as Channel[]) {
+      const acc = m.get(ch)
+      if (!acc || acc.rawCount < 2) continue
+      perChannel[ch] = toBonus(smoothedRate(acc))
+    }
+    const overall = toBonus(smoothedRate(overallAcc))
+    out.set(assetId, {
+      perChannel,
+      overall,
+      effectiveSampleSize: overallAcc.weightedTotal,
+    })
   }
   return out
 }

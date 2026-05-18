@@ -57,6 +57,16 @@ async function getProject(id: string) {
       curriculum: { orderBy: { order: 'asc' } },
       // 2026-05-03 ADR-012: Task 모델 제거됨 — tasks include 제거
       proposalSections: { orderBy: { sectionNo: 'asc' } },
+      // C-8 — 사전 임팩트 forecast (Step 5 인라인 카드)
+      impactForecast: {
+        select: {
+          id: true,
+          totalSocialValue: true,
+          beneficiaryCount: true,
+          calibration: true,
+          generatedAt: true,
+        },
+      },
       _count: { select: { participants: true } },
     },
   })
@@ -506,6 +516,28 @@ export default async function ProjectDetailPage({
               budgetSlice={context?.budget}
               autoExtracted={context?.impact?.autoExtracted}
               context={context ?? undefined}
+              impactForecast={
+                project.impactForecast
+                  ? {
+                      id: project.impactForecast.id,
+                      totalSocialValue: Number(project.impactForecast.totalSocialValue),
+                      beneficiaryCount: project.impactForecast.beneficiaryCount,
+                      calibration: project.impactForecast.calibration,
+                      isStale: (() => {
+                        const genAt = project.impactForecast.generatedAt.getTime()
+                        const budgetAt = project.budget?.updatedAt?.getTime() ?? 0
+                        const curLatest = Math.max(
+                          0,
+                          ...project.curriculum.map((c) =>
+                            c.updatedAt?.getTime() ?? 0,
+                          ),
+                        )
+                        return budgetAt > genAt || curLatest > genAt
+                      })(),
+                    }
+                  : null
+              }
+              totalBudgetVat={project.totalBudgetVat}
             />
             {pmGuide && (
               <PmGuidePanel
