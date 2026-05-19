@@ -257,7 +257,27 @@ export default async function ProjectDetailPage({
                 {marginRate > 0 ? `${marginRate.toFixed(1)}%` : '—'}
               </span>
             </div>
-            <ProjectEditForm project={project} />
+            {/* E2 (2026-05-19) — Decimal serialization 우회. ProjectEditForm 에
+                전체 prisma project 객체를 넘기면 impactForecast.totalSocialValue
+                (Decimal) 가 Server→Client 직렬화 실패. 필요한 필드만 plain 전달. */}
+            <ProjectEditForm
+              project={{
+                id: project.id,
+                name: project.name,
+                client: project.client,
+                status: project.status,
+                projectType: project.projectType,
+                totalBudgetVat: project.totalBudgetVat,
+                supplyPrice: project.supplyPrice,
+                projectStartDate: project.projectStartDate,
+                projectEndDate: project.projectEndDate,
+                eduStartDate: project.eduStartDate,
+                eduEndDate: project.eduEndDate,
+                isBidWon: project.isBidWon,
+                techEvalScore: project.techEvalScore,
+                bidNotes: project.bidNotes,
+              }}
+            />
           </div>
         </div>
 

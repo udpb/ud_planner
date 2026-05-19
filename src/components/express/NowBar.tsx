@@ -35,6 +35,7 @@ import {
   Upload,
   MessageSquare,
   CheckCircle2,
+  Settings2,
 } from 'lucide-react'
 import { SLOT_LABELS, type SlotKey } from '@/lib/express/schema'
 
@@ -203,15 +204,15 @@ export function NowBar(props: Props) {
           loaderEl,
         }
       case 'deliver':
+        // E3 (2026-05-19) — 검수 통과 후 다음 액션은 "Step 1 정밀 기획" (워크플로 진행).
+        // 발주처 템플릿 다운로드는 More ▾ 팔레트에서 별도 접근.
         return {
-          label: '📥 발주처 템플릿 다운로드',
-          icon: <ClipboardList className="h-3.5 w-3.5" />,
-          onClick: undefined as never,
-          href: `/api/projects/${props.projectId}/export-budget-template`,
-          download: true,
-          disabled: false,
+          label: 'Step 1 정밀 기획으로 →',
+          icon: <Settings2 className="h-3.5 w-3.5" />,
+          onClick: () => props.onHandoffDeep('rfp'),
+          disabled: props.handingOff,
           tooltip:
-            '발주처 제출용 budget-template 양식 (1-1-1 주관부서 + 1-2 외부용)',
+            '검수 통과 — Express 내용 그대로 Deep Track Step 1 (RFP 분석) 으로 이동. 발주처 템플릿 다운로드는 More ▾ 에서.',
           loaderEl,
         }
     }
@@ -242,23 +243,8 @@ export function NowBar(props: Props) {
           다음 1 액션
         </span>
 
-        {/* Primary CTA — 단일 버튼. href 있으면 <a>, 없으면 <button> */}
-        {'href' in cta && cta.href ? (
-          <a
-            href={cta.href}
-            download={cta.download}
-            title={cta.tooltip}
-            className={cn(
-              'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm',
-              'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
-              cta.disabled && 'cursor-not-allowed opacity-50',
-            )}
-          >
-            {cta.loaderEl ?? cta.icon}
-            {cta.label}
-          </a>
-        ) : (
-          <button
+        {/* Primary CTA — 단일 버튼 (E3 이후 모든 stage 가 button — href 안 씀) */}
+        <button
             type="button"
             onClick={cta.onClick}
             disabled={cta.disabled}
@@ -272,7 +258,6 @@ export function NowBar(props: Props) {
             {cta.loaderEl ?? cta.icon}
             {cta.label}
           </button>
-        )}
 
         {/* More ▾ — Wave U / U2: Cmd+K 팔레트 호출. Cmd+K 모르는 PM 도 1 클릭. */}
         <button
