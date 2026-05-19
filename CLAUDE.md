@@ -15,7 +15,9 @@
 | **Wave C** | Forecast Enhancements | budget context · win-rate 학습 · Deep Step 5 통합 | C-7·C-8·C-9 ✅ 완료 |
 | **Wave P** | PM Polish | EvaluatorScoreBar · 자산 인용 1-click · 카드 explainability | P1·P2·P3 ✅ 완료 |
 | **Wave Q** | PM 자산 제안 → Admin 검수 | submitterNote · /api/content-hub/submit · /admin/review | ✅ 완료 (2026-05-19) |
-| **Wave U** ⭐ | **UX Redesign + ActionAI 디자인 토큰 (다음 진행)** | Now Bar · Cmd+K · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | 🔲 U1~U7 통째 9일 (B 옵션) |
+| **Wave U** ⭐ | **UX Redesign + ActionAI 디자인 토큰** | Now Bar · Cmd+K palette · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | ✅ 완료 (2026-05-19, 9일 통째) |
+| **Wave U 후속** | B1~B5 + D1~D4 + E1~E3 패치 | RFP 날짜 정규식 fallback · 검수 카드 스크롤 · Deep 자동 시드 뱃지 · 탭 효과 라벨 · 품질 순서 · DEV 권한 우회 · HTML 응답 감지 · autosave retry 중단 · Cmd+K crash · Decimal 직렬화 · Deep 인계 CTA | ✅ 완료 (2026-05-19) |
+| **Wave V** ⭐⭐⭐ | **Express+Deep 완전 통합 + AI 자동 채움 패러다임 (다음 진행)** | 단일 URL · 5 Stage progressive disclosure · AI 자동 60% 채움 · 코치/커리큘럼/리서치 자동 · PM 9 결정 지점만 · 질문 차등화 | 🔲 F1~F5 단계별 게이트 (ADR-015) |
 
 **중요 충돌**: `Phase M` ≠ `Wave M-Impact`. 둘 다 "M" 시작하지만 완전히 다른 영역.
 
@@ -40,7 +42,7 @@
 - **[docs/decisions/013-express-v2-auto-diagnosis.md](docs/decisions/013-express-v2-auto-diagnosis.md)** ⭐⭐ — Express 2.0 의사결정 (슬기님 03/25 + 사용자 통찰 기반)
 - **[docs/architecture/express-mode.md](docs/architecture/express-mode.md)** ⭐ — v2.0 (Express 2.0 자동 진단·채널 분기·사이드바 4 패널)
 - **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** — User flow ASCII 다이어그램 (v1.0 2026-04-29)
-- **[ROADMAP.md](ROADMAP.md)** — Phase + Wave 체크리스트. 완료: Phase A~L + I + J + 운영안정화 + **Wave N·M-Impact·C·P·Q·U** (2026-05-15~19). 다음: PM 1명 풀테스트 게이트 + Deep step-*.tsx 색상 sweep (후속).
+- **[ROADMAP.md](ROADMAP.md)** — Phase + Wave 체크리스트. 완료: Phase A~L + I + J + 운영안정화 + **Wave N·M-Impact·C·P·Q·U + U 후속** (2026-05-15~19). 다음: **Wave V — Express+Deep 완전 통합 + AI 자동 채움 (ADR-015)** — F1~F5 단계별 게이트.
 - `docs/archive/PRD-v7.1.md` — 이전 PRD (v8.0 으로 대체됨, 2026-05-03 ADR-013 채택)
 - **[REDESIGN.md](REDESIGN.md)** — 상세 설계 v2 (PipelineContext / PM 가이드 / 예상 점수)
 - **[docs/architecture/](docs/architecture/)** — 아키텍처 9문서

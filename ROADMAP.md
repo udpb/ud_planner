@@ -3,7 +3,7 @@
 > 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v8.0.md](PRD-v8.0.md)** ⭐⭐ (단일 진실 원본, v8.0 2026-05-03 — Express 2.0)
 > 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode v2.0** ⭐)
 > 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~**013** + Wave 명명 사전 §아래)
-> 마지막 업데이트: **2026-05-19** (Wave N·M-Impact·C·P·Q·**U** 완료 — UX 재설계 + ActionAI 토큰 + S1-S3 흡수 9일 통째)
+> 마지막 업데이트: **2026-05-19** (Wave N·M-Impact·C·P·Q·**U**+후속 완료 + **Wave V 결정 (ADR-015 — Express+Deep 완전 통합 + AI 자동 채움)** 단계별 진행 대기)
 
 ---
 
@@ -22,6 +22,8 @@
 | **Wave P** | PM Polish (P1·P2·P3) | EvaluatorScoreBar · 자산 인용 한 클릭 · 카드 explainability | ✅ 완료 |
 | **Wave Q** | PM 자산 제안 → Admin 검수 (단일 Q1 결과물) | submitterNote · reviewerNote · review API · 사이드바 진입점 | ✅ 완료 |
 | **Wave U** ⭐ | **UX Redesign + ActionAI Design Token (U1~U7)** | Now Bar · Cmd+K · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | ✅ **완료 (2026-05-19, B 옵션 통째)** |
+| **Wave U 후속** | B1~B5·D1~D4·E1~E3 패치 | RFP 날짜 fallback · 검수 카드 스크롤 · Deep 자동 시드 뱃지 · 탭 라벨 · 품질 순서 · DEV 권한 우회 · HTML 응답 감지 · autosave retry 중단 · Cmd+K crash · Decimal 직렬화 · Deep 인계 CTA | ✅ **완료 (2026-05-19)** |
+| **Wave V** ⭐⭐⭐ | **Express+Deep 완전 통합 + AI 자동 채움 패러다임 (ADR-015)** | 단일 URL · 5 Stage progressive disclosure · AI 자동 60% 채움 · 코치/커리큘럼/리서치 자동 · PM 9 결정 지점만 · 질문 차등화 | 🔲 **F1~F5 단계별 게이트 (사용자 ADR 검토 후 시작)** |
 
 **중요 충돌 메모**:
 - `Phase M3` (Express 2.0 의 sub-stage) ≠ `Wave M-Impact 3` (AI 매핑 forecastImpact)
@@ -840,4 +842,65 @@ Layer 3: 외부 인텔리전스 (AI + PM 수집)
 
 - `ExpressDraftSchema.risks?: RiskMitigationItemSchema[]` (optional — 기존 데이터 호환)
 - 신규 enum: `severity: critical|major|minor` · `source: ai-suggested|pm-direct`
+
+---
+
+## ⚡ Wave V — Express+Deep 완전 통합 + AI 자동 채움 패러다임 (다음 진행)
+
+> **결정**: ADR-015 채택 — Express vs Deep 화면 분리 폐지, 단일 URL + 5 Stage progressive disclosure + AI 가 1차본 60% 자동 채움. PM 은 결정 9 지점 + 튜닝 + 승인만.
+> **근거**: Wave U 풀테스트에서 본질 11개 이슈 발견. 5·6·7·9·11 은 단순 UI 패치 불가 → 패러다임 전환.
+> **사용자 인용**: "AI가 빠르게 채우고 흐름 잡고 → PM 튜닝/결정만. 어차피 끝까지 끌고 갈 거니까 통합."
+> **작업 방식**: F1~F5 **단계별 게이트** (사용자 화면 확인 OK 후 다음 F). 일괄 진행 X — "더 걸려도 되니까 완벽하게 하나씩".
+
+### F1~F5 작업 단위 + 게이트
+
+| PR | 작업 | 위임 | 검수 게이트 |
+|---|---|---|---|
+| **F1** | 코치 자동 추천 (RFP→필요수×5 + matchScore + 강점 1줄) | Agent: 점수 알고리즘 / 나: UI 통합 + 검수 | tsc·build·코드 line + 사용자 화면 OK |
+| **F2** | 커리큘럼 outline 자동 시드 + 예산 시드 | Agent: AI 프롬프트 / 나: 통합 + 검수 | 동일 |
+| **F3** | 외부 리서치 자동 (PM 직접 카드 → AI 자동 evidence) | Agent: AI 호출 / 나: 검수 | 동일 |
+| **F4** | 담당자 질문 차등화 (must-ask / nice-to-ask) | Agent: 휴리스틱 / 나: 통합 | 동일 |
+| **F5** | 5 Stage 완전 통합 + URL 통합 + AI 자동 60% 채움 | **나 직접** (가장 큰 변경) | tsc·build·회귀 테스트 + 사용자 화면 OK |
+
+**추정 시간**: 7~12일 (각 게이트마다 검수 결과에 따라 조정).
+
+### PM 9 결정 지점 (콘텐츠 작성 X)
+
+1. **P1** — RFP 파일 업로드 (30초)
+2. **P2** — AI 자동 채움 범위 [전체 60% / 주요 / 빈] 선택 (5초)
+3. **P3** — 채널 컨펌 (B2G/B2B/renewal, 10초)
+4. **P4** — 메인 솔루션 결정 (AI 3안 → 1 선택, 1분)
+5. **P5** — 차별화 자산 토글 (3분)
+6. **P6** — 코치 풀에서 N명 클릭 (5분)
+7. **P7** — Risk Mitigation 수락 + 추가 (5분)
+8. **P8** — 검수 튜닝 (10분)
+9. **P9** — 최종 승인 1 클릭 (5초)
+
+**합계 ≈ 30~45분 (북극성 충족) · PM 작성 글 0 줄**.
+
+### 5 Stage Progressive Disclosure
+
+- **S1 — RFP 분석** (RFP 결과 + 자동 채움 토글)
+- **S2 — 1차본 작성** (좌 챗봇 + 우 7 섹션 + SMART + Risk)
+- **S3 — 검수** (Inspector + 약점 lens 자산 추천)
+- **S4 — 정밀 편집** (커리큘럼 + 코치 + 예산 + 제안서 inline)
+- **S5 — 최종 승인·제출** (발주처 템플릿 + 임팩트 forecast)
+
+각 Stage 비활성 시 1줄 sticky 요약. NowBar 가 stage 전환 단일 진실.
+
+### 안전망
+
+1. AI 자동 채움 토글 — Off 면 기존 챗봇 모드 fallback
+2. Feature flag `EXPRESS_PARADIGM_V3=true/false` (운영 OFF 가능)
+3. inline citation 강제 + 검수 게이트
+4. PM 1명 풀테스트 (F5 완료 직후, Wave V 종료 전)
+5. expressDraft 스키마 호환 유지
+
+### 효과 (예측)
+
+- ✅ PM 작성 시간 90% ↓ (12 슬롯 답변 → 9 결정 클릭)
+- ✅ 외부 LLM 왔다갔다 100% ↓
+- ✅ Express vs Deep 화면 결정 부담 0
+- ✅ "2번 일" 0
+- ✅ 30~45분 북극성 충족 (지속)
 
