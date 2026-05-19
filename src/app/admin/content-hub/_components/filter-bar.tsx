@@ -41,6 +41,7 @@ const STAGE_OPTIONS = [
 ]
 const STATUS_OPTIONS = [
   { value: 'all', label: '활성(archived 제외)' },
+  { value: 'pending-review', label: '🔵 검수 대기 (PM 제안)' },
   { value: 'stable', label: '안정' },
   { value: 'developing', label: '개발 중' },
   { value: 'archived', label: '아카이브' },

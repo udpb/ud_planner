@@ -61,7 +61,11 @@ async function getAssets(params: SearchParams) {
   if (params.stage) where.valueChainStage = params.stage
 
   // 상태: 명시 없으면 archived 숨김
-  if (params.status) {
+  // 'pending-review': status='developing' AND submitterNote != null (PM 제안 검수 대기)
+  if (params.status === 'pending-review') {
+    where.status = 'developing'
+    where.submitterNote = { not: null }
+  } else if (params.status) {
     where.status = params.status
   } else {
     where.status = { not: 'archived' }
@@ -83,7 +87,10 @@ async function getAssets(params: SearchParams) {
       parent: { select: { id: true, name: true } },
       _count: { select: { children: true } },
     },
-    orderBy: { updatedAt: 'desc' },
+    orderBy:
+      params.status === 'pending-review'
+        ? { createdAt: 'asc' } // 검수 큐: 오래된 순 (FIFO)
+        : { updatedAt: 'desc' },
   })
 }
 
@@ -95,10 +102,38 @@ export default async function ContentHubPage({
   const params = await searchParams
   const assets = await getAssets(params)
 
+  // 검수 대기 큐 카운트 (배지용)
+  const pendingCount = await prisma.contentAsset.count({
+    where: { status: 'developing', submitterNote: { not: null } },
+  })
+
+  const isReviewMode = params.status === 'pending-review'
+
   return (
     <div className="flex flex-col overflow-hidden">
       <Header title="Content Hub" />
       <div className="flex-1 overflow-y-auto p-6">
+        {/* PM 제안 검수 큐 알림 — 대기 자산 있고 현재 필터 모드 아닐 때 */}
+        {pendingCount > 0 && !isReviewMode && (
+          <Link
+            href="/admin/content-hub?status=pending-review"
+            className="mb-3 flex items-center gap-2 rounded-md border border-blue-300 bg-blue-50/40 px-3 py-2 text-xs hover:bg-blue-50"
+          >
+            <span className="text-base">🔵</span>
+            <span>
+              <strong className="text-blue-900">PM 제안 {pendingCount}건</strong>{' '}
+              검수 대기 — 클릭해서 처리하기
+            </span>
+          </Link>
+        )}
+        {isReviewMode && (
+          <div className="mb-3 rounded-md border border-blue-300 bg-blue-50/40 px-3 py-2 text-xs text-blue-900">
+            🔵 <strong>PM 제안 검수 모드</strong> · 자산 카드의 [편집] → 페이지
+            하단에서 승인/반려 가능. 또는 직접 편집 후 status 를 stable 로
+            변경하면 추천 풀에 합류됩니다.
+          </div>
+        )}
+
         {/* 필터 바 + 새 자산 CTA */}
         <div className="mb-4 flex items-start justify-between gap-3">
           <FilterBar initial={params} />
@@ -203,6 +238,12 @@ export default async function ContentHubPage({
                                   </span>
                                 )}
                               </Link>
+                            )}
+                            {/* PM 제안 검수 모드: submitterNote 노출 */}
+                            {a.submitterNote && (
+                              <div className="mt-1 rounded border border-blue-200 bg-blue-50/40 px-1.5 py-0.5 text-[10px] text-blue-900">
+                                💬 {a.submitterNote}
+                              </div>
                             )}
                           </td>
                           <td className="px-4 py-3">

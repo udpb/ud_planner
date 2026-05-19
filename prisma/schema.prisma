@@ -568,6 +568,13 @@ model ContentAsset {
   createdById String?
   updatedById String?
 
+  // 2026-05-19 — PM 자산 제안 → admin 검수 워크플로
+  // submitterNote 가 있으면 "PM 제안 자산" (status=developing 일 때 검수 대기 큐 노출)
+  submitterNote String?   @db.Text // PM 이 "왜 자산화 가치가 있는지" 1줄 의견
+  reviewedById  String? // 승인/반려한 admin user.id
+  reviewedAt    DateTime?
+  reviewerNote  String?   @db.Text // 반려 사유 또는 승인 메모
+
   usages AssetUsage[]
 
   @@index([category])

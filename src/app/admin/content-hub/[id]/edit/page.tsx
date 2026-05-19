@@ -12,6 +12,8 @@ import { ArrowLeft } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { AssetForm, type AssetFormInitial } from '@/components/admin/asset-form'
 import { prisma } from '@/lib/prisma'
+import { auth } from '@/lib/auth'
+import { ReviewActions } from './review-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: '자산 편집 | Content Hub' }
@@ -37,6 +39,12 @@ export default async function EditAssetPage({ params }: Params) {
 
   // 자기 자신이 children 을 가진 경우 top-level 전용 → 부모 후보에서 자신 제외
   const parents = parentsRaw.filter((p) => p.id !== id)
+
+  // 검수 대기 자산이면 ReviewActions 노출 (ADMIN/DIRECTOR 만)
+  const session = await auth()
+  const role = (session?.user as { role?: string })?.role
+  const canReview = role === 'ADMIN' || role === 'DIRECTOR'
+  const isPendingReview = asset.status === 'developing' && !!asset.submitterNote
 
   const initial: AssetFormInitial = {
     id: asset.id,
@@ -81,6 +89,25 @@ export default async function EditAssetPage({ params }: Params) {
               이 자산은 {asset.children.length}개의 하위 자산을 가지고 있어 다른 자산의 하위(child)로 이동할 수 없습니다.
               아카이브 시 하위 자산은 유지됩니다.
             </p>
+          )}
+          {/* PM 제안 자산 검수 액션 */}
+          {isPendingReview && canReview && (
+            <div className="mt-3">
+              <ReviewActions
+                assetId={asset.id}
+                assetName={asset.name}
+                submitterNote={asset.submitterNote ?? ''}
+              />
+            </div>
+          )}
+          {isPendingReview && !canReview && asset.submitterNote && (
+            <div className="mt-3 rounded-md border border-blue-300 bg-blue-50/40 p-3 text-xs">
+              <div className="font-medium text-blue-900">💬 제안자 메모</div>
+              <p className="mt-0.5 text-blue-800">{asset.submitterNote}</p>
+              <p className="mt-1 text-[10px] text-blue-700/70">
+                ⓘ Admin/Director 만 승인·반려 가능
+              </p>
+            </div>
           )}
         </div>
         <AssetForm mode="edit" initial={initial} parents={parents} />

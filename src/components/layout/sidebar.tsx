@@ -33,6 +33,7 @@ const navItems: NavItem[] = [
     label: '자산',
     icon: Library,
     children: [
+      { href: '/content-hub/submit', label: '+ 새 자산 제안' },
       { href: '/admin/content-hub', label: '목록 (Content Hub)' },
       { href: '/admin/asset-insights', label: '인사이트' },
     ],
