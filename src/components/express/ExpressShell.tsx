@@ -697,9 +697,14 @@ export function ExpressShell(props: Props) {
         )}
       </div>
 
-      {/* Wave 2 #5: 검수 결과 상세 카드 — inspectorReport 있을 때만 */}
+      {/* Wave 2 #5: 검수 결과 상세 카드 — inspectorReport 있을 때만
+          B2 (2026-05-19): max-h + overflow-y-auto — 부모가 overflow-hidden 이라
+          긴 추천 리스트가 잘림. 카드 자체에서 스크롤. */}
       {inspectorReport && (
-        <div data-inspector-card className="border-b bg-muted/10 px-6 py-3">
+        <div
+          data-inspector-card
+          className="border-b bg-muted/10 px-6 py-3 max-h-[55vh] overflow-y-auto"
+        >
           <InspectorReportCard
             report={inspectorReport}
             onDismiss={() => {
@@ -969,13 +974,18 @@ export function ExpressShell(props: Props) {
                 onValueChange={(v) => setSidebarTab(v as SidebarTab)}
                 className="w-full"
               >
+                {/* B4 (2026-05-19) — 탭 라벨에 효과 명시. PM 이 클릭 전에 뭐가 나오는지 안다. */}
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger
                     value="diagnosis"
                     data-tab-trigger="diagnosis"
-                    className="relative text-xs"
+                    className="relative flex-col gap-0 py-1.5 text-xs"
+                    title="채널(B2G/B2B/renewal) · 프레임(CSR/일반) · 논리 흐름 · 팩트체크 4종 자동 진단"
                   >
-                    AI 진단
+                    <span className="font-semibold">AI 진단</span>
+                    <span className="text-[9px] font-normal opacity-70">
+                      채널·프레임·논리·팩트
+                    </span>
                     {!draft.meta.autoDiagnosis?.channel && (
                       <span
                         className="absolute -top-0.5 right-1 h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
@@ -986,9 +996,13 @@ export function ExpressShell(props: Props) {
                   <TabsTrigger
                     value="channel"
                     data-tab-trigger="channel"
-                    className="relative text-xs"
+                    className="relative flex-col gap-0 py-1.5 text-xs"
+                    title="채널 확정 + B2G 평가표 시뮬레이션 또는 renewal 작년 자료 추출"
                   >
-                    채널·전략
+                    <span className="font-semibold">채널·전략</span>
+                    <span className="text-[9px] font-normal opacity-70">
+                      확정 → 평가표/작년
+                    </span>
                     {draft.meta.autoDiagnosis?.channel &&
                       !draft.meta.autoDiagnosis.channel.confirmedByPm && (
                         <span
@@ -1000,12 +1014,16 @@ export function ExpressShell(props: Props) {
                   <TabsTrigger
                     value="client"
                     data-tab-trigger="client"
-                    className="text-xs"
+                    className="flex-col gap-0 py-1.5 text-xs"
+                    title="발주처 공식 문서 (계획안·예산서·내부 보고) 업로드 → 톤 추출"
                   >
-                    발주처
+                    <span className="font-semibold">발주처</span>
+                    <span className="text-[9px] font-normal opacity-70">
+                      문서 → 톤·KPI 추출
+                    </span>
                     {props.initialClientDoc && (
                       <span
-                        className="ml-1 h-1.5 w-1.5 rounded-full bg-green-500"
+                        className="ml-1 h-1.5 w-1.5 rounded-full bg-[color:var(--green)]"
                         title="문서 추출됨"
                       />
                     )}

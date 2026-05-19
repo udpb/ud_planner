@@ -9,6 +9,10 @@ export interface PipelineStep {
   label: string
   sublabel?: string
   done: boolean
+  /** B3 (2026-05-19) — Express/RFP 자동 시드 여부 (단계 카드에 뱃지 표시) */
+  autoSeeded?: boolean
+  /** autoSeeded 시 hover tooltip — "어디서 자동으로 채워졌는지" */
+  autoSeedSource?: string
 }
 
 interface PipelineNavProps {
@@ -49,7 +53,18 @@ export function PipelineNav({ steps, current }: PipelineNavProps) {
                 {step.done ? <Check className="h-3 w-3" /> : idx + 1}
               </span>
               <div className="text-left">
-                <div className="leading-tight">{step.label}</div>
+                <div className="flex items-center gap-1 leading-tight">
+                  {step.label}
+                  {/* B3 — RFP/Express 자동 시드 뱃지 */}
+                  {step.autoSeeded && (
+                    <span
+                      className="rounded border border-[color:var(--cyan)]/40 bg-[color:var(--cyan)]/10 px-1 py-0 text-[8px] font-semibold uppercase tracking-wider text-[color:var(--cyan)]"
+                      title={step.autoSeedSource ?? '자동 시드됨'}
+                    >
+                      자동
+                    </span>
+                  )}
+                </div>
                 {step.sublabel && (
                   <div
                     className={cn(

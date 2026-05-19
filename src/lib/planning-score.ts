@@ -246,6 +246,21 @@ export function calculatePlanningScore(data: ProjectData): PlanningScore {
     })
   }
 
+  // B5 (2026-05-19) — Deep pipeline 순서에 맞춰 정렬:
+  //   rfp → curriculum → coaches → budget → impact → proposal → evalAlignment.
+  // 기존 push 순서는 impact 가 2번째였지만 (Impact Value Chain 의미 중심),
+  // PM workflow (Deep pipeline) 와 어긋나서 사용자 혼란.
+  const ORDER: Record<string, number> = {
+    rfp: 0,
+    curriculum: 1,
+    coaches: 2,
+    budget: 3,
+    impact: 4,
+    proposal: 5,
+    evalAlignment: 6,
+  }
+  categories.sort((a, b) => (ORDER[a.key] ?? 99) - (ORDER[b.key] ?? 99))
+
   const total = categories.reduce((sum, c) => sum + c.score, 0)
   const maxTotal = categories.reduce((sum, c) => sum + c.max, 0)
 

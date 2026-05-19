@@ -137,12 +137,21 @@ export default async function ProjectDetailPage({
 
   // ADR-001: 스텝 순서 = rfp → curriculum → coaches → budget → impact → proposal
   // ADR-008 (2026-04-23): Step 4·5 의미 레이어 재정렬 — budget=② Input, impact=⑤ Outcome+SROI
+  //
+  // B3 (2026-05-19) — autoSeeded 플래그:
+  //   - rfp: 파싱 완료 = 항상 자동
+  //   - impact: logicModel 이 RFP→AI 자동 생성된 케이스 (Phase E 이상)
+  //   - proposal: Express handoff 로 ProposalSection 시드된 케이스
+  //   - curriculum/coaches/budget 는 PM 이 직접 — 자동 X
+  const hasExpressHandoff = project.proposalSections.length > 0 && !!project.expressDraft
   const steps: PipelineStep[] = [
     {
       key: 'rfp',
       label: 'RFP 분석',
       sublabel: project.rfpParsed ? '완료' : '미완료',
       done: !!project.rfpParsed,
+      autoSeeded: !!project.rfpParsed,
+      autoSeedSource: 'RFP 업로드 시 AI 파싱 자동 완료 (사업명·발주처·예산·평가배점·키워드)',
     },
     {
       key: 'curriculum',
@@ -173,6 +182,10 @@ export default async function ProjectDetailPage({
           : 'Logic Model ✓ · SROI 미산정'
         : '미완료',
       done: !!project.logicModel && !!project.sroiForecast,
+      autoSeeded: !!project.logicModel,
+      autoSeedSource: project.logicModel
+        ? 'Logic Model 은 RFP→AI 자동 생성 (impact-goal·outcome 체인). SROI 는 PM 보정.'
+        : undefined,
     },
     {
       key: 'proposal',
@@ -181,6 +194,10 @@ export default async function ProjectDetailPage({
         ? `${project.proposalSections.length}/7 섹션`
         : '미생성',
       done: project.proposalSections.length >= 7,
+      autoSeeded: hasExpressHandoff,
+      autoSeedSource: hasExpressHandoff
+        ? `Express 1차본 → ProposalSection ${project.proposalSections.length}건 자동 시드. Step 안에서 정밀 편집.`
+        : undefined,
     },
   ]
 
