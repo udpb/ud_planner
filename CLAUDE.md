@@ -2,6 +2,25 @@
 
 # UD-Ops Workspace — 개발 규칙
 
+## ⚠️ 명명 사전 (Naming Dictionary — Compact-safe, 2026-05-19)
+
+> 약어 충돌 방지. 컴팩트·요약 시 항상 풀네임 병기.
+
+| 코드 | 풀네임 | 영역 | 비고 |
+|---|---|---|---|
+| **Phase A~L** | 원본 12 Phase | 파이프라인 + Express L1~L6 base | ADR-001~011 |
+| **Phase M** | Express 2.0 (ADR-013) | Express UI — AI 자동 진단·채널 분기 | M0~M3 4 단계, 부분 완료 |
+| **Wave N** | Asset Architecture | `src/lib/ingest/*` · web/file ingester · vector · cron | N1~N5 ✅ 완료 (2026-05-15) |
+| **Wave M-Impact** ⚠ | Impact Measurement embed | `src/lib/impact/*` · ImpactForecast · forecast UI | M1~M5 ✅ 완료. **Phase M 과 다름!** |
+| **Wave C** | Forecast Enhancements | budget context · win-rate 학습 · Deep Step 5 통합 | C-7·C-8·C-9 ✅ 완료 |
+| **Wave P** | PM Polish | EvaluatorScoreBar · 자산 인용 1-click · 카드 explainability | P1·P2·P3 ✅ 완료 |
+| **Wave Q** | PM 자산 제안 → Admin 검수 | submitterNote · /api/content-hub/submit · /admin/review | ✅ 완료 (2026-05-19) |
+| **Wave U** ⭐ | **UX Redesign + ActionAI 디자인 토큰 (다음 진행)** | Now Bar · Cmd+K · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | 🔲 U1~U7 통째 9일 (B 옵션) |
+
+**중요 충돌**: `Phase M` ≠ `Wave M-Impact`. 둘 다 "M" 시작하지만 완전히 다른 영역.
+
+---
+
 ## 프로젝트 개요
 언더독스 교육 기획 자동화 웹앱. **Express (메인) + Deep (보조) 두 트랙**:
 
@@ -21,7 +40,7 @@
 - **[docs/decisions/013-express-v2-auto-diagnosis.md](docs/decisions/013-express-v2-auto-diagnosis.md)** ⭐⭐ — Express 2.0 의사결정 (슬기님 03/25 + 사용자 통찰 기반)
 - **[docs/architecture/express-mode.md](docs/architecture/express-mode.md)** ⭐ — v2.0 (Express 2.0 자동 진단·채널 분기·사이드바 4 패널)
 - **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** — User flow ASCII 다이어그램 (v1.0 2026-04-29)
-- **[ROADMAP.md](ROADMAP.md)** — Phase 체크리스트 (A~H + L + I + J 완료, **Phase M Express 2.0** 시작 대기)
+- **[ROADMAP.md](ROADMAP.md)** — Phase + Wave 체크리스트. 완료: Phase A~L + I + J + 운영안정화 + **Wave N·M-Impact·C·P·Q** (2026-05-15~19). 다음: **Wave U** UX Redesign + ActionAI 디자인 토큰 (9일 통째).
 - `docs/archive/PRD-v7.1.md` — 이전 PRD (v8.0 으로 대체됨, 2026-05-03 ADR-013 채택)
 - **[REDESIGN.md](REDESIGN.md)** — 상세 설계 v2 (PipelineContext / PM 가이드 / 예상 점수)
 - **[docs/architecture/](docs/architecture/)** — 아키텍처 9문서

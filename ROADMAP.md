@@ -2,8 +2,32 @@
 
 > 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v8.0.md](PRD-v8.0.md)** ⭐⭐ (단일 진실 원본, v8.0 2026-05-03 — Express 2.0)
 > 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode v2.0** ⭐)
-> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~**013**)
-> 마지막 업데이트: 2026-05-03 (**Phase M Express 2.0** — ADR-013 채택, AI 자동 진단 + 채널 분기 + 외부 LLM 최소화)
+> 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~**013** + Wave 명명 사전 §아래)
+> 마지막 업데이트: **2026-05-19** (Wave N·M-Impact·C·P·Q 완료 + **Wave U UX 재설계 + ActionAI 디자인 토큰** 시작 대기)
+
+---
+
+## 📖 명명 사전 (Naming Dictionary — 2026-05-19 정리)
+
+⚠️ **"Phase M (Express 2.0)" vs "Wave M-Impact (Impact embed)" 충돌 방지** — 두 코드 영역이 완전히 다르므로 약어 사용 시 항상 풀네임 병기.
+
+| 코드 | 풀네임 | 영역 | 상태 |
+|---|---|---|---|
+| **Phase A~L** | 원본 12 Phase | 파이프라인 + Express L1~L6 | ✅ 완료 |
+| **Phase M** | Express 2.0 (ADR-013) | Express UI — AI 자동 진단·채널 분기·외부 LLM 최소화 | 부분 완료 (channel detector / eval simulator / renewal seed 배포됨) |
+| **운영 안정화** | 30+ commits cleanup (2026-05-03) | 코드베이스 정리 | ✅ 완료 |
+| **Wave N** | Asset Architecture (N1~N5) | `src/lib/ingest/*` · web/file ingester · embed · freshness | ✅ 완료 |
+| **Wave M-Impact** | Impact Measurement embed (M1~M5) ⚠ Phase M 과 다름 | `src/lib/impact/*` · ImpactForecast 모델 · forecast UI | ✅ 완료 |
+| **Wave C** | Forecast Enhancements (C-7·C-8·C-9) | budget context · win-rate 학습 · Deep Step 5 통합 | ✅ 완료 |
+| **Wave P** | PM Polish (P1·P2·P3) | EvaluatorScoreBar · 자산 인용 한 클릭 · 카드 explainability | ✅ 완료 |
+| **Wave Q** | PM 자산 제안 → Admin 검수 (단일 Q1 결과물) | submitterNote · reviewerNote · review API · 사이드바 진입점 | ✅ 완료 |
+| **Wave U** ⭐ | **UX Redesign + ActionAI Design Token (U1~U7)** | Now Bar · Cmd+K · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | 🔲 **시작 대기 (B 옵션 — 9일 통째)** |
+
+**중요 충돌 메모**:
+- `Phase M3` (Express 2.0 의 sub-stage) ≠ `Wave M-Impact 3` (AI 매핑 forecastImpact)
+- 양쪽 모두 "M3" 로 표기될 수 있으므로 코드 주석·문서에 항상 풀네임.
+
+---
 
 ---
 
@@ -19,7 +43,7 @@
 
 ## 전체 진행 현황
 
-| Phase | 이름 | 상태 | 진행률 |
+| Phase / Wave | 이름 | 상태 | 진행률 |
 |-------|------|------|--------|
 | A | 골격 재구성 + 계약 정의 | ✅ 완료 | 100% |
 | B | Step 1 고도화 + Ingestion 뼈대 | ✅ 완료 | 100% |
@@ -29,18 +53,26 @@
 | **F** | **Impact Value Chain + SROI 수렴 (ADR-008)** | ✅ 완료 | 100% |
 | **G** | **UD Asset Registry v1 (ADR-009)** | ✅ 완료 | 100% |
 | **H** | **Content Hub v2 — DB + 계층 + 담당자 UI (ADR-010)** | ✅ 완료 | 100% |
-| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | ✅ **완료** | **L0~L6 모두 완료 (100%)** |
-| I | 안정화 + Manifest 강제 + 배포 | ✅ 완료 | 100% (I2/I3/I5 완료, I1/I4 후속) |
+| **L** ⭐ | **Express Mode — RFP → 30~45분 → 1차본 (ADR-011)** | ✅ 완료 | L0~L6 모두 완료 (100%) |
+| I | 안정화 + Manifest 강제 + 배포 | ✅ 완료 | 100% |
 | J | 엑셀 PoC | ✅ 완료 | 100% (J1 5시트 + J2 budget-template) |
-| **운영 안정화** ⭐ | **30+ 커밋 정리 (Phase 1·2·3 + Coach 통합)** | ✅ 완료 | **100%** (DIAGNOSIS-2026-05-03) |
-| **M** ⭐⭐ | **Express 2.0 — AI 자동 진단 + 채널 분기 (ADR-013)** | 🔲 시작 대기 | 0% (M0~M3 4 단계) |
+| **운영 안정화** | 30+ 커밋 정리 (2026-05-03) | ✅ 완료 | 100% |
+| **Phase M** ⭐ | **Express 2.0 — AI 자동 진단 + 채널 분기 (ADR-013)** | 🔶 부분 완료 | channel detector·eval simulator·renewal seed·markdown export 배포됨 |
+| **Wave N** | **Asset Architecture — lens 추천 / Web·File Ingester / Vector / Cron** | ✅ 완료 | N1~N5 (2026-05-15) |
+| **Wave M-Impact** | **Impact Measurement 임베드 — read-only DB · 엔진 · forecast · UI** | ✅ 완료 | M1~M5 (2026-05-15) |
+| **Wave C** | **Forecast 정밀도 + Win-rate 학습 + Deep Step 5 통합** | ✅ 완료 | C-7·C-8·C-9 (2026-05-15) |
+| **Wave P** | **PM Polish — 평가위원 점수판·자산 인용·explainability** | ✅ 완료 | P1·P2·P3 (2026-05-15) |
+| **Wave Q** | **PM 자산 제안 → Admin 검수 워크플로** | ✅ 완료 | submitterNote + review API (2026-05-19) |
+| **Wave U** ⭐⭐⭐ | **UX Redesign + ActionAI Design Token + S1-S3 흡수 (9일)** | 🔲 시작 대기 | U1~U7 통째 진행 (B 옵션 합의) |
 
-### Phase 진행 순서 (2026-05-03 합의)
+### 진행 순서 (2026-05-19 현재 위치)
 
 ```
-A → B → C → D → E → F → G → H → L → I → J → [운영 안정화] → M
-                                                              ▲
-                                                          (현재 위치 — Phase M 진입 직전)
+A → B → C → D → E → F → G → H → L → I → J → [운영 안정화]
+                                                ↓
+                                           Phase M 부분 + Wave N · M-Impact · C · P · Q (병렬 완료)
+                                                ↓
+                                     ▶ Wave U (UX Redesign + ActionAI 토큰) ◀ ← 다음 진행
 ```
 
 ---
@@ -732,3 +764,64 @@ Layer 2: 프로젝트 컨텍스트 (PipelineContext — 스텝 간 흐름)
 Layer 3: 외부 인텔리전스 (AI + PM 수집)
   티키타카 리서치 / AI 생성 / 수주 전략 인터뷰
 ```
+
+---
+
+## 🔧 Wave U — UX Redesign + ActionAI Design Token (다음 진행 — B 옵션 합의)
+
+> **결정**: 한 번에 9일 통째 진행 (Sprint 분할 X) — 일관성 우선
+> **근거**: 정보 과부하 (75개 연구 메타분석 46.7%) 해소 + 평가위원 신뢰도 ↑ + ActionAI ↔ ud-planner 브랜드 통일
+> **위험**: 학습 비용 + 디자인 마이그레이션 노동량 — 둘 다 완화책 적용
+
+### U1~U7 작업 목록
+
+| 코드 | 작업 | 시간 | 효용 |
+|---|---|---|---|
+| **U1** | **Now Bar** — 단일 액션 + 색상 7종 통일 + 정보 과부하 해소 | 1.5일 | ⭐⭐⭐⭐⭐ |
+| **U2** | **Cmd+K + "More ▾"** — 6 액션 → 2 primary + 4 in palette (모든 액션 1 클릭 거리 보장) | 1일 | ⭐⭐⭐⭐ |
+| **U3** | **S1 — Inline source citation** (자산↔본문↔markdown 자동 인용 마크) | 1.5일 | ⭐⭐⭐⭐⭐ |
+| **U4** | **S2 — SMART checklist** (Before/After 옆 인라인 5축 라이브) | 1일 | ⭐⭐⭐⭐ |
+| **U5** | **S3 — Risk Mitigation** (사이드바 새 탭 + 자동 추출) | 2일 | ⭐⭐⭐⭐ |
+| **U6** | **자산 추천 inline diff** (hover dropdown 폐지 → 카드 안 visible) | 1일 | ⭐⭐⭐ |
+| **U7** | **사이드바 Stage-aware 자동 활성 + ● active 라벨 + 자동 전환 토스트** | 1일 | ⭐⭐⭐ |
+
+**합계**: 9일
+
+### ActionAI 디자인 토큰 (필수 적용)
+
+> 출처: `C:\Users\USER\ActionAI\.claude\skills\actionai-design-system\SKILL.md`
+
+| Token | Hex | 용도 |
+|---|---|---|
+| `--action-orange` | `#FF8204` | 포인트·아이콘·브랜드 |
+| `--primary-orange` | `#E8541A` | CTA 버튼 (primary) |
+| `--orange3` | `#F05519` | hover·보조 primary |
+| `--orange2` | `#FFA40D` | 연한 오렌지·보조 강조 |
+| `--light-orange` | `#F0845A` | 틴트·배경 하이라이트 |
+| `--dark-charcoal` | `#373938` | 사이드바 배경 |
+| `--dark2` | `#2D2D2D` | 2차 다크 |
+| `--cyan` | `#06A9D0` | Team·secondary 강조 |
+| `--green` | `#2ECC71` | 성공·Gate 통과 |
+| `--light-beige` | `#F5F0EB` | 카드 배경 (본문 영역) |
+| `--warm-gray` | `#D8D4D7` | 다크 배경 위 보조 |
+
+- **폰트**: Poppins (영문 우선, 한글 시스템 fallback)
+- **금지**: 보라·파랑 (현 violet impact 카드·blue PM 제안 → Light Beige + Action Orange 또는 Cyan 으로 통일)
+- **사용 비율**: Action Orange 는 전체 UI 면적의 10~15% 이하 (CTA·아이콘만)
+
+### 안전망 (B 옵션 합의 시점)
+
+1. **모든 기존 기능 보존** — 단지 surface 위치만 변경. 기능 축소 0.
+2. **PM 학습 비용 완화**:
+   - U2 → "More ▾" 드롭다운 항상 visible (Cmd+K 모르는 PM 도 1 클릭)
+   - U7 → 자동 전환 시 1회 토스트 ("Stage 3 진입 — Impact 탭 자동 전환")
+3. **Rollback 가능** — feature flag 또는 git revert 가능 PR 단위 분할
+4. **풀테스트 게이트** — Wave U 완료 후 PM 1명 풀 1차본 작성 + 15분 인터뷰
+
+### Wave U 끝나면
+
+- ✅ 정보 과부하 70% ↓ (10+ source → 3 tier)
+- ✅ 평가위원 신뢰도 ↑↑ (verifiable proof + SMART + risk defense)
+- ✅ ActionAI ↔ ud-planner 디자인 통일
+- ✅ Cmd+K 확장성 — 향후 신규 기능 추가 시 UI 안 어지러워짐
+
