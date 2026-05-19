@@ -90,6 +90,12 @@ export function ExpressShell(props: Props) {
   // Wave 1 #12: persistent error 영구 표시 (toast 가 사라지면 안 되는 케이스)
   const [persistentErrors, setPersistentErrors] = useState<PersistentError[]>([])
   const consecutiveSaveFailRef = useRef<number>(0)
+  // D4 (2026-05-19) — 인증 실패 (401/403) 시 자동저장 영구 중단.
+  //   세션 만료 / 다른 PM 프로젝트 등은 retry 해도 동일 결과 → 콘솔 폭주 방지.
+  const autosaveDisabledRef = useRef<{ disabled: boolean; reason: string }>({
+    disabled: false,
+    reason: '',
+  })
 
   // Wave 4 #10: 모바일 view switcher — 채팅/미리보기/사이드바 中 하나만 표시
   // 데스크탑 (lg+) 에선 모두 동시 표시 (CSS 로 mobile 만 한정).
@@ -121,6 +127,61 @@ export function ExpressShell(props: Props) {
   const progress = calcProgress(draft, hasRfp)
 
   // ─────────────────────────────────────────
+  // D3 (2026-05-19) — fetch 응답 파싱 헬퍼.
+  //   세션 만료 시 NextAuth 가 /login HTML 을 반환 → r.json() 시
+  //   SyntaxError: Unexpected token '<' 발생. Content-Type 검사로 미리 차단.
+  // ─────────────────────────────────────────
+  type ApiError =
+    | { kind: 'auth-required'; status: number }
+    | { kind: 'forbidden'; status: number; message: string }
+    | { kind: 'http'; status: number; message: string }
+    | { kind: 'network'; message: string }
+
+  const parseApiResponse = useCallback(
+    async <T,>(r: Response): Promise<{ ok: true; data: T } | { ok: false; error: ApiError }> => {
+      const contentType = r.headers.get('content-type') ?? ''
+      // 1) 세션 만료 — NextAuth 가 /login HTML 반환 (200 이지만 HTML)
+      if (contentType.includes('text/html')) {
+        return { ok: false, error: { kind: 'auth-required', status: r.status } }
+      }
+      // 2) 401/403 — 인증/권한 실패
+      if (r.status === 401) {
+        return { ok: false, error: { kind: 'auth-required', status: 401 } }
+      }
+      if (r.status === 403) {
+        const body = await r.json().catch(() => null)
+        return {
+          ok: false,
+          error: { kind: 'forbidden', status: 403, message: body?.error ?? '권한 없음' },
+        }
+      }
+      // 3) 기타 HTTP 실패
+      if (!r.ok) {
+        const body = await r.json().catch(() => null)
+        return {
+          ok: false,
+          error: {
+            kind: 'http',
+            status: r.status,
+            message: body?.error ?? `HTTP ${r.status}`,
+          },
+        }
+      }
+      // 4) 정상 — JSON 파싱
+      try {
+        const data = (await r.json()) as T
+        return { ok: true, data }
+      } catch (e) {
+        return {
+          ok: false,
+          error: { kind: 'network', message: 'JSON 파싱 실패 — ' + String(e).slice(0, 80) },
+        }
+      }
+    },
+    [],
+  )
+
+  // ─────────────────────────────────────────
   // 자동 저장 (debounced 1500ms)
   // ─────────────────────────────────────────
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -128,6 +189,8 @@ export function ExpressShell(props: Props) {
 
   const triggerAutosave = useCallback(
     (nextDraft: ExpressDraft, nextState: ConversationState) => {
+      // D4 — autosave 가 영구 중단된 상태면 스케줄 안 함 (콘솔 폭주 방지)
+      if (autosaveDisabledRef.current.disabled) return
       if (saveTimer.current) clearTimeout(saveTimer.current)
       saveTimer.current = setTimeout(async () => {
         const json = JSON.stringify(nextDraft)
@@ -144,15 +207,45 @@ export function ExpressShell(props: Props) {
               cacheTurnsLimit: 30,
             }),
           })
-          if (!r.ok) {
-            // 검증 실패 시 응답 body 의 issues 까지 console 에 출력 (디버그)
-            const errBody = await r.json().catch(() => null)
-            console.warn(
-              `[ExpressShell] autosave HTTP ${r.status}:`,
-              errBody?.error ?? '(no error)',
-              errBody?.issues ?? [],
-            )
-            throw new Error(`HTTP ${r.status}`)
+          const parsed = await parseApiResponse<{ ok: true }>(r)
+          if (!parsed.ok) {
+            const e = parsed.error
+
+            // D4 — 401/403 은 retry 해도 동일 결과 → 영구 중단 + 명확한 배너
+            if (e.kind === 'auth-required' || e.kind === 'forbidden') {
+              autosaveDisabledRef.current = {
+                disabled: true,
+                reason: e.kind === 'auth-required' ? '세션 만료' : '권한 없음',
+              }
+              const title =
+                e.kind === 'auth-required'
+                  ? '세션 만료 — 다시 로그인 필요'
+                  : '권한 없음 — 다른 PM 의 프로젝트'
+              const message =
+                e.kind === 'auth-required'
+                  ? '세션이 만료되어 자동 저장이 중단됐습니다. 새 탭에서 로그인 후 이 탭을 새로고침하세요. 작성 내용은 화면에 남아있습니다.'
+                  : ('message' in e ? e.message : '권한 없음') +
+                    ' — Admin/Director 또는 본인 프로젝트만 저장 가능합니다.'
+              addOrReplaceError({
+                id: 'autosave-fail',
+                severity: 'critical',
+                title,
+                message,
+                action: {
+                  label: e.kind === 'auth-required' ? '로그인 페이지 열기' : '페이지 새로고침',
+                  onClick: () =>
+                    e.kind === 'auth-required'
+                      ? window.open('/login', '_blank')
+                      : router.refresh(),
+                },
+              })
+              setAutosaveStatus('error')
+              return
+            }
+
+            // 남은 케이스 — http / network (둘 다 message 있음)
+            console.warn('[ExpressShell] autosave HTTP error:', e)
+            throw new Error(`${e.kind}: ${e.message}`)
           }
           lastSavedRef.current = json
           setAutosaveStatus('saved')
@@ -171,7 +264,7 @@ export function ExpressShell(props: Props) {
               severity: 'critical',
               title: '자동 저장 실패 (3회 연속)',
               message:
-                '네트워크·세션 만료·DB 문제일 수 있습니다. 페이지를 새로고침 하거나, 작성한 내용을 별도 텍스트로 백업한 뒤 다시 시도해주세요.',
+                '네트워크·DB 문제일 수 있습니다. 페이지를 새로고침 하거나, 작성한 내용을 별도 텍스트로 백업한 뒤 다시 시도해주세요.',
               action: {
                 label: '페이지 새로고침',
                 onClick: () => router.refresh(),
@@ -182,7 +275,7 @@ export function ExpressShell(props: Props) {
         }
       }, 1500)
     },
-    [props.projectId],
+    [props.projectId, addOrReplaceError, dismissError, router, parseApiResponse],
   )
 
   useEffect(() => {
@@ -325,11 +418,33 @@ export function ExpressShell(props: Props) {
             forceSlot: forceSlot ?? null,
           }),
         })
-        if (!r.ok) {
-          const err = await r.text()
-          throw new Error(err)
+        // D3 — HTML 응답 (세션 만료) / 401/403 처리
+        const parsed = await parseApiResponse<{
+          draft: ExpressDraft
+          state: ConversationState
+          nextSlot: string | null
+          fellbackToPlaceholder?: boolean
+          validationErrors?: Array<{ slotKey: string; zodIssue: string; remediation: string }>
+        }>(r)
+        if (!parsed.ok) {
+          const e = parsed.error
+          if (e.kind === 'auth-required') {
+            toast.error('세션 만료 — 새 탭에서 로그인 후 이 페이지 새로고침', {
+              duration: 8000,
+              action: {
+                label: '로그인 열기',
+                onClick: () => window.open('/login', '_blank'),
+              },
+            })
+            return
+          }
+          if (e.kind === 'forbidden') {
+            toast.error('권한 없음 — ' + e.message, { duration: 6000 })
+            return
+          }
+          throw new Error(('message' in e ? e.message : 'unknown') as string)
         }
-        const data = await r.json()
+        const data = parsed.data
         startTransition(() => {
           setDraft(data.draft)
           setConvState(data.state)
@@ -338,7 +453,7 @@ export function ExpressShell(props: Props) {
         if (data.fellbackToPlaceholder) {
           toast.warning('AI 응답이 불안정했어요. 답을 더 짧게 또는 한 슬롯만 다뤄 보세요.')
         }
-        if (data.validationErrors?.length > 0) {
+        if (data.validationErrors && data.validationErrors.length > 0) {
           for (const v of data.validationErrors.slice(0, 2)) {
             toast.warning(`${v.slotKey}: ${v.zodIssue}`, {
               description: v.remediation,
@@ -353,7 +468,7 @@ export function ExpressShell(props: Props) {
         setPendingTurn(false)
       }
     },
-    [pendingTurn, props.projectId, draft, convState],
+    [pendingTurn, props.projectId, draft, convState, parseApiResponse],
   )
 
   // ─────────────────────────────────────────

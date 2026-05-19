@@ -82,6 +82,20 @@ export async function requireProjectAccess(projectId: string): Promise<
     return { ...authRes, projectExists: true }
   }
 
+  // D2 (2026-05-19) — dev 모드 우회:
+  //   로컬 dev 에서는 seed 의 mock PM 과 로그인 PM 의 user.id 가 다르기 때문에
+  //   '본인 프로젝트 X' 로 잘못 판정됨. dev 한정으로 PM role 도 통과.
+  //   운영(production) 에서는 그대로 403 — 다른 PM 프로젝트 접근 차단.
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (authRes.role === 'PM' || authRes.role === 'CM' || authRes.role === 'FM')
+  ) {
+    console.warn(
+      `[auth-helpers] DEV 모드 — PM role ${authRes.userId} 가 다른 사람의 프로젝트 ${projectId} 접근 허용 (운영에서는 403)`,
+    )
+    return { ...authRes, projectExists: true }
+  }
+
   // 다른 PM 의 프로젝트 — 403
   return {
     ...authRes,
