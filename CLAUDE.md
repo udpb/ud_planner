@@ -40,7 +40,7 @@
 - **[docs/decisions/013-express-v2-auto-diagnosis.md](docs/decisions/013-express-v2-auto-diagnosis.md)** ⭐⭐ — Express 2.0 의사결정 (슬기님 03/25 + 사용자 통찰 기반)
 - **[docs/architecture/express-mode.md](docs/architecture/express-mode.md)** ⭐ — v2.0 (Express 2.0 자동 진단·채널 분기·사이드바 4 패널)
 - **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** — User flow ASCII 다이어그램 (v1.0 2026-04-29)
-- **[ROADMAP.md](ROADMAP.md)** — Phase + Wave 체크리스트. 완료: Phase A~L + I + J + 운영안정화 + **Wave N·M-Impact·C·P·Q** (2026-05-15~19). 다음: **Wave U** UX Redesign + ActionAI 디자인 토큰 (9일 통째).
+- **[ROADMAP.md](ROADMAP.md)** — Phase + Wave 체크리스트. 완료: Phase A~L + I + J + 운영안정화 + **Wave N·M-Impact·C·P·Q·U** (2026-05-15~19). 다음: PM 1명 풀테스트 게이트 + Deep step-*.tsx 색상 sweep (후속).
 - `docs/archive/PRD-v7.1.md` — 이전 PRD (v8.0 으로 대체됨, 2026-05-03 ADR-013 채택)
 - **[REDESIGN.md](REDESIGN.md)** — 상세 설계 v2 (PipelineContext / PM 가이드 / 예상 점수)
 - **[docs/architecture/](docs/architecture/)** — 아키텍처 9문서

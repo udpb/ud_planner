@@ -1,18 +1,24 @@
 import type { Metadata } from 'next'
-import { Nanum_Gothic, Nanum_Gothic_Coding } from 'next/font/google'
+import { Poppins, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 
-const nanumGothic = Nanum_Gothic({
+/**
+ * Wave U / ActionAI 디자인 시스템 (2026-05-19)
+ *   - Primary: Poppins (영문 우선, 한글은 시스템 fallback — Pretendard / Noto Sans KR)
+ *   - Mono: JetBrains Mono (라텡 전용)
+ *   - 폰트 fallback 체인은 globals.css 의 body 에서 한글 우선순위 보정
+ */
+const poppins = Poppins({
   variable: '--font-sans',
   subsets: ['latin'],
-  weight: ['400', '700', '800'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
 })
 
-const nanumCoding = Nanum_Gothic_Coding({
+const jetBrainsMono = JetBrains_Mono({
   variable: '--font-mono',
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -26,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${nanumGothic.variable} ${nanumCoding.variable} h-full antialiased`}>
+    <html lang="ko" className={`${poppins.variable} ${jetBrainsMono.variable} h-full antialiased`}>
       <body className="min-h-full">
         {children}
         <Toaster richColors position="top-right" />

@@ -77,6 +77,36 @@ export const ExternalEvidenceSchema = z.object({
 export const EvidenceRefsSchema = z.array(ExternalEvidenceSchema).max(15)
 
 // ─────────────────────────────────────────
+// 5.5 Risk Mitigation — 평가위원 의심 능동 답변 (Wave U / U5, S3, ADR-014)
+// ─────────────────────────────────────────
+
+/**
+ * 평가위원이 의심할 수 있는 risk + PM 의 능동 답변.
+ * "평가위원이 의심할 수 있는 위험을 미리 답변" — 신뢰도의 핵심.
+ *
+ * severity 예시:
+ *   critical: 사업 자체를 흔드는 risk (예산 부족·인력 부재·법규 충돌)
+ *   major:    수행 품질을 떨어뜨릴 수 있는 risk (참가자 모집 어려움·운영 인원 부족)
+ *   minor:    부분적 영향만 (특정 회차 출석률 변동·외부 장소 변경)
+ */
+export const RiskMitigationItemSchema = z.object({
+  /** 평가위원이 의심할 수 있는 포인트 (한 문장 — "이런 risk 있지 않나?" 형) */
+  risk: z.string().min(10, 'risk 는 최소 10자').max(200, 'risk 는 최대 200자'),
+  /** PM 의 능동 답변 — 어떻게 완화하나 */
+  mitigation: z.string().min(20, '완화 방안은 최소 20자').max(400, '완화 방안은 최대 400자'),
+  /** 심각도 — UI 색상 결정 */
+  severity: z.enum(['critical', 'major', 'minor']),
+  /** AI 가 자동 제안했는지 vs PM 이 직접 작성 */
+  source: z.enum(['ai-suggested', 'pm-direct']).default('pm-direct'),
+  /** PM 이 수락했는가 (AI 제안 시) */
+  acceptedByPm: z.boolean().default(false),
+})
+
+export const RiskMitigationsSchema = z
+  .array(RiskMitigationItemSchema)
+  .max(8, 'Risk 는 8개를 넘기지 않음 (시각적 부하)')
+
+// ─────────────────────────────────────────
 // 6. 7 섹션 초안
 // ─────────────────────────────────────────
 
@@ -238,6 +268,8 @@ export const ExpressDraftSchema = z.object({
   differentiators: DifferentiatorsSchema.optional(),
   evidenceRefs: EvidenceRefsSchema.optional(),
   sections: SectionsSchema.optional(),
+  /** Wave U / U5 — Risk Mitigation (평가위원 의심 능동 답변, S3) */
+  risks: RiskMitigationsSchema.optional(),
   meta: ExpressMetaSchema,
 })
 
@@ -246,6 +278,7 @@ export type AssetReference = z.infer<typeof AssetReferenceSchema>
 export type ExternalEvidence = z.infer<typeof ExternalEvidenceSchema>
 export type ExpressMeta = z.infer<typeof ExpressMetaSchema>
 export type BeforeAfter = z.infer<typeof BeforeAfterSchema>
+export type RiskMitigation = z.infer<typeof RiskMitigationItemSchema>
 
 // ─────────────────────────────────────────
 // 9. 12 슬롯 정의

@@ -4,23 +4,50 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── 언더독스 브랜드 토큰 (underdogs.global 공식 기준, 2026-04-15 마이그레이션) ── */
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Wave U / ActionAI 디자인 토큰 (2026-05-19)
+ *
+ * Single source: ActionAI/.claude/skills/actionai-design-system/SKILL.md
+ *   - Action Orange 5종 + Dark 3종 + Sub 4종 = 12토큰
+ *   - 사용 비율: Action Orange 는 전체 UI 면적의 10~15% 이하 (CTA·아이콘·강조)
+ *   - 보라/파랑 사용 금지 — Light Beige + Action Orange 또는 Cyan 으로 통일
+ *
+ * 하위 호환: 기존 --ud-* 토큰은 --action-* / --primary-orange 등의 별칭으로 보존.
+ * ────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* Action Orange 팔레트 (전체의 10-15% 사용) — 본사 사이트와 일치 */
-  --ud-orange:       #F05519;          /* primary 100 */
-  --ud-orange-light: #F48053;          /* 80 — hover, 2차 강조 */
-  --ud-orange-tint:  #F9BBA3;          /* 40 — 배경 틴트 */
-  --ud-orange-pale:  #FBD4C5;          /* 20 — 카드 하이라이트 */
-  --ud-orange-fg:    #FFFFFF;
+  /* ── Action Orange 5종 ── */
+  --action-orange:    #FF8204;   /* 포인트 강조 · 아이콘 · 브랜드 배지 */
+  --primary-orange:   #E8541A;   /* CTA 버튼 (primary) */
+  --orange3:          #F05519;   /* hover · 보조 primary (구 --ud-orange) */
+  --orange2:          #FFA40D;   /* 연한 오렌지 · 보조 강조 */
+  --light-orange:     #F0845A;   /* 틴트 · 배경 하이라이트 */
 
-  /* 중립 */
-  --ud-black:   #000000;
-  --ud-dark:    #373938;
-  --ud-gray:    #D8D4D7;
-  --ud-white:   #FFFFFF;
+  /* ── Dark 3종 ── */
+  --dark-charcoal:    #373938;   /* 사이드바 · 히어로 배경 */
+  --dark2:            #2D2D2D;   /* 2차 다크 (스프린트 카드 등) */
+  --dark3:            #1F2020;   /* 최심 다크 (거의 사용 안 함) */
 
-  /* 포인트 */
-  --ud-cyan:    #06A9D0;
+  /* ── Sub 4종 ── */
+  --cyan:             #06A9D0;   /* Team · secondary 강조 · 보조 CTA */
+  --green:            #2ECC71;   /* 성공 · Gate 통과 */
+  --light-beige:      #F5F0EB;   /* 카드 배경 (본문 영역) */
+  --warm-gray:        #D8D4D7;   /* 다크 배경 위 보조 텍스트 */
+
+  /* ── 텍스트 ── */
+  --body-text:        #333333;   /* 본문 */
+  --subtitle-text:    #666666;   /* 보조 설명 */
+
+  /* ── 하위 호환 — 기존 --ud-* (점진 마이그레이션) ── */
+  --ud-orange:        var(--orange3);       /* 기존 #F05519 유지 */
+  --ud-orange-light:  #F48053;
+  --ud-orange-tint:   #F9BBA3;
+  --ud-orange-pale:   #FBD4C5;
+  --ud-orange-fg:     #FFFFFF;
+  --ud-black:         #000000;
+  --ud-dark:          var(--dark-charcoal);
+  --ud-gray:          var(--warm-gray);
+  --ud-white:         #FFFFFF;
+  --ud-cyan:          var(--cyan);
 }
 
 @theme inline {
@@ -58,14 +85,16 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  /* 브랜드 컬러 유틸리티 */
-  --color-brand: var(--ud-orange);
-  --color-brand-light: var(--ud-orange-light);
-  --color-brand-tint: var(--ud-orange-tint);
-  --color-brand-pale: var(--ud-orange-pale);
-  --color-brand-fg: var(--ud-orange-fg);
-  --color-brand-cyan: var(--ud-cyan);
-  --color-brand-dark: var(--ud-dark);
+  /* 브랜드 컬러 유틸리티 — Wave U / ActionAI */
+  --color-brand: var(--primary-orange);
+  --color-brand-light: var(--orange2);
+  --color-brand-tint: var(--light-orange);
+  --color-brand-pale: var(--light-beige);
+  --color-brand-fg: #FFFFFF;
+  --color-brand-cyan: var(--cyan);
+  --color-brand-green: var(--green);
+  --color-brand-dark: var(--dark-charcoal);
+  --color-brand-beige: var(--light-beige);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -84,8 +113,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.1 0 0);
 
-  /* Primary = Action Orange #F05519 (본사 사이트 기준) */
-  --primary: oklch(0.64 0.21 32);
+  /* Wave U: Primary = #E8541A (ActionAI primary-orange, OKLCH 변환) */
+  --primary: oklch(0.605 0.198 36);
   --primary-foreground: oklch(1 0 0);
 
   /* Secondary — 밝은 그레이 */
@@ -96,33 +125,33 @@
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.52 0 0);
 
-  /* Accent = 따뜻한 연오렌지 */
-  --accent: oklch(0.97 0.02 40);
-  --accent-foreground: oklch(0.64 0.21 32);
+  /* Accent — Light Beige #F5F0EB (보라 대체) */
+  --accent: oklch(0.953 0.011 60);
+  --accent-foreground: oklch(0.605 0.198 36);
 
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.91 0 0);
   --input: oklch(0.91 0 0);
-  --ring: oklch(0.64 0.21 32);           /* focus ring = orange */
+  --ring: oklch(0.605 0.198 36);          /* focus ring = primary-orange */
 
-  /* 차트 컬러 — 브랜드 팔레트 */
-  --chart-1: oklch(0.64 0.21 32);        /* orange */
-  --chart-2: oklch(0.62 0.13 213);       /* cyan #06A9D0 */
-  --chart-3: oklch(0.72 0.18 35);        /* orange-light #F48053 */
-  --chart-4: oklch(0.27 0.003 165);      /* dark #373938 */
-  --chart-5: oklch(0.85 0.005 315);      /* gray #D8D4D7 */
+  /* 차트 컬러 — Wave U 브랜드 팔레트 */
+  --chart-1: oklch(0.605 0.198 36);       /* primary-orange #E8541A */
+  --chart-2: oklch(0.62 0.13 213);        /* cyan #06A9D0 */
+  --chart-3: oklch(0.78 0.16 70);         /* action-orange #FF8204 */
+  --chart-4: oklch(0.77 0.18 152);        /* green #2ECC71 */
+  --chart-5: oklch(0.27 0.003 165);       /* dark-charcoal #373938 */
 
   --radius: 0.5rem;
 
-  /* Sidebar — 다크 (#373938) */
+  /* Sidebar — 다크 charcoal (#373938) */
   --sidebar: oklch(0.27 0.003 165);
   --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.64 0.21 32);
+  --sidebar-primary: oklch(0.605 0.198 36);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.32 0.003 165);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(0.35 0.003 165);
-  --sidebar-ring: oklch(0.64 0.21 32);
+  --sidebar-ring: oklch(0.605 0.198 36);
 }
 
 .dark {
@@ -132,7 +161,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.18 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.64 0.21 32);
+  --primary: oklch(0.605 0.198 36);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.25 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -143,20 +172,20 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.64 0.21 32);
-  --chart-1: oklch(0.64 0.21 32);
+  --ring: oklch(0.605 0.198 36);
+  --chart-1: oklch(0.605 0.198 36);
   --chart-2: oklch(0.62 0.13 213);
-  --chart-3: oklch(0.72 0.18 35);
-  --chart-4: oklch(0.85 0.005 315);
+  --chart-3: oklch(0.78 0.16 70);
+  --chart-4: oklch(0.77 0.18 152);
   --chart-5: oklch(0.45 0 0);
   --sidebar: oklch(0.15 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.64 0.21 32);
+  --sidebar-primary: oklch(0.605 0.198 36);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.22 0 0);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.64 0.21 32);
+  --sidebar-ring: oklch(0.605 0.198 36);
 }
 
 @layer base {
@@ -165,40 +194,75 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Wave U: Poppins 라텡 우선, 한글은 시스템 fallback (Pretendard 우선) */
+    font-family: var(--font-sans), 'Pretendard Variable', 'Pretendard',
+                 -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+                 'Noto Sans KR', 'Malgun Gothic', sans-serif;
     word-break: keep-all;
   }
   html {
     @apply font-sans;
   }
-  /* 제목류 bold 강조 — 언더독스 스타일 */
+  /* 제목류 bold 강조 — ActionAI 스타일 */
   h1, h2, h3 {
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
   }
 }
 
-/* ── 브랜드 유틸리티 클래스 ── */
+/* ─────────────────────────────────────────────────────────────────────────────
+ * 브랜드 유틸리티 클래스 — Wave U / ActionAI
+ * ────────────────────────────────────────────────────────────────────────── */
 @layer utilities {
-  /* Action Orange 강조 텍스트 */
+  /* Action Orange 강조 텍스트 (구 .text-brand) */
   .text-brand {
-    color: var(--ud-orange);
+    color: var(--primary-orange);
   }
-  /* 오렌지 배지/버튼 배경 */
+  .text-brand-orange {
+    color: var(--action-orange);
+  }
+  /* CTA 버튼 배경 */
   .bg-brand {
-    background-color: var(--ud-orange);
-    color: var(--ud-orange-fg);
+    background-color: var(--primary-orange);
+    color: #FFFFFF;
   }
-  /* 시안 포인트 */
+  .bg-brand-hover:hover {
+    background-color: var(--orange3);
+  }
+  /* Cyan 포인트 */
   .text-brand-cyan {
-    color: var(--ud-cyan);
+    color: var(--cyan);
+  }
+  .bg-brand-cyan {
+    background-color: var(--cyan);
+    color: #FFFFFF;
+  }
+  /* Green — 성공 / Gate 통과 */
+  .text-brand-green {
+    color: var(--green);
+  }
+  .bg-brand-green {
+    background-color: var(--green);
+    color: #FFFFFF;
+  }
+  /* Light Beige — 카드 배경 (보라 대체) */
+  .bg-beige {
+    background-color: var(--light-beige);
   }
   /* Repetition/Alignment 패턴: 오렌지 왼쪽 보더 */
   .border-brand-left {
-    border-left: 3px solid var(--ud-orange);
+    border-left: 3px solid var(--primary-orange);
     padding-left: 0.75rem;
   }
   /* Expansion/Progress: 오렌지 그라데이션 바 */
   .progress-brand {
-    background: linear-gradient(90deg, var(--ud-orange) 0%, var(--ud-orange-light) 100%);
+    background: linear-gradient(90deg, var(--primary-orange) 0%, var(--orange2) 100%);
+  }
+  /* Now Bar (U1) — 다음 1 액션 강조 */
+  .now-bar-active {
+    background: linear-gradient(90deg,
+      color-mix(in oklab, var(--primary-orange) 8%, white) 0%,
+      color-mix(in oklab, var(--orange2) 4%, white) 100%);
+    border-color: color-mix(in oklab, var(--primary-orange) 40%, transparent);
   }
 }

@@ -3,7 +3,7 @@
 > 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v8.0.md](PRD-v8.0.md)** ⭐⭐ (단일 진실 원본, v8.0 2026-05-03 — Express 2.0)
 > 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode v2.0** ⭐)
 > 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~**013** + Wave 명명 사전 §아래)
-> 마지막 업데이트: **2026-05-19** (Wave N·M-Impact·C·P·Q 완료 + **Wave U UX 재설계 + ActionAI 디자인 토큰** 시작 대기)
+> 마지막 업데이트: **2026-05-19** (Wave N·M-Impact·C·P·Q·**U** 완료 — UX 재설계 + ActionAI 토큰 + S1-S3 흡수 9일 통째)
 
 ---
 
@@ -21,7 +21,7 @@
 | **Wave C** | Forecast Enhancements (C-7·C-8·C-9) | budget context · win-rate 학습 · Deep Step 5 통합 | ✅ 완료 |
 | **Wave P** | PM Polish (P1·P2·P3) | EvaluatorScoreBar · 자산 인용 한 클릭 · 카드 explainability | ✅ 완료 |
 | **Wave Q** | PM 자산 제안 → Admin 검수 (단일 Q1 결과물) | submitterNote · reviewerNote · review API · 사이드바 진입점 | ✅ 완료 |
-| **Wave U** ⭐ | **UX Redesign + ActionAI Design Token (U1~U7)** | Now Bar · Cmd+K · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | 🔲 **시작 대기 (B 옵션 — 9일 통째)** |
+| **Wave U** ⭐ | **UX Redesign + ActionAI Design Token (U1~U7)** | Now Bar · Cmd+K · S1 inline citation · S2 SMART · S3 Risk · 자산 inline diff · 사이드바 자동 활성 | ✅ **완료 (2026-05-19, B 옵션 통째)** |
 
 **중요 충돌 메모**:
 - `Phase M3` (Express 2.0 의 sub-stage) ≠ `Wave M-Impact 3` (AI 매핑 forecastImpact)
@@ -63,7 +63,7 @@
 | **Wave C** | **Forecast 정밀도 + Win-rate 학습 + Deep Step 5 통합** | ✅ 완료 | C-7·C-8·C-9 (2026-05-15) |
 | **Wave P** | **PM Polish — 평가위원 점수판·자산 인용·explainability** | ✅ 완료 | P1·P2·P3 (2026-05-15) |
 | **Wave Q** | **PM 자산 제안 → Admin 검수 워크플로** | ✅ 완료 | submitterNote + review API (2026-05-19) |
-| **Wave U** ⭐⭐⭐ | **UX Redesign + ActionAI Design Token + S1-S3 흡수 (9일)** | 🔲 시작 대기 | U1~U7 통째 진행 (B 옵션 합의) |
+| **Wave U** ⭐⭐⭐ | **UX Redesign + ActionAI Design Token + S1-S3 흡수 (9일)** | ✅ 완료 (2026-05-19) | U1~U7 통째 진행 — Now Bar · Cmd+K palette · Inline citation · SMART · Risk · inline diff · Stage-aware tabs |
 
 ### 진행 순서 (2026-05-19 현재 위치)
 
@@ -72,7 +72,7 @@ A → B → C → D → E → F → G → H → L → I → J → [운영 안정
                                                 ↓
                                            Phase M 부분 + Wave N · M-Impact · C · P · Q (병렬 완료)
                                                 ↓
-                                     ▶ Wave U (UX Redesign + ActionAI 토큰) ◀ ← 다음 진행
+                                     ▶ Wave U (UX Redesign + ActionAI 토큰) ◀ ✅ 완료
 ```
 
 ---
@@ -767,25 +767,25 @@ Layer 3: 외부 인텔리전스 (AI + PM 수집)
 
 ---
 
-## 🔧 Wave U — UX Redesign + ActionAI Design Token (다음 진행 — B 옵션 합의)
+## ✅ Wave U — UX Redesign + ActionAI Design Token (완료 — 2026-05-19, B 옵션 통째)
 
 > **결정**: 한 번에 9일 통째 진행 (Sprint 분할 X) — 일관성 우선
 > **근거**: 정보 과부하 (75개 연구 메타분석 46.7%) 해소 + 평가위원 신뢰도 ↑ + ActionAI ↔ ud-planner 브랜드 통일
-> **위험**: 학습 비용 + 디자인 마이그레이션 노동량 — 둘 다 완화책 적용
+> **결과**: U1~U7 + 토큰 마이그레이션 모두 master 통째 commit. `npx tsc` / `next build` 통과.
 
-### U1~U7 작업 목록
+### U1~U7 작업 (완료)
 
-| 코드 | 작업 | 시간 | 효용 |
+| 코드 | 작업 | 산출물 | 효용 |
 |---|---|---|---|
-| **U1** | **Now Bar** — 단일 액션 + 색상 7종 통일 + 정보 과부하 해소 | 1.5일 | ⭐⭐⭐⭐⭐ |
-| **U2** | **Cmd+K + "More ▾"** — 6 액션 → 2 primary + 4 in palette (모든 액션 1 클릭 거리 보장) | 1일 | ⭐⭐⭐⭐ |
-| **U3** | **S1 — Inline source citation** (자산↔본문↔markdown 자동 인용 마크) | 1.5일 | ⭐⭐⭐⭐⭐ |
-| **U4** | **S2 — SMART checklist** (Before/After 옆 인라인 5축 라이브) | 1일 | ⭐⭐⭐⭐ |
-| **U5** | **S3 — Risk Mitigation** (사이드바 새 탭 + 자동 추출) | 2일 | ⭐⭐⭐⭐ |
-| **U6** | **자산 추천 inline diff** (hover dropdown 폐지 → 카드 안 visible) | 1일 | ⭐⭐⭐ |
-| **U7** | **사이드바 Stage-aware 자동 활성 + ● active 라벨 + 자동 전환 토스트** | 1일 | ⭐⭐⭐ |
+| **U1** | **Now Bar** — 단일 stage-aware CTA + "More ▾" | `src/components/express/NowBar.tsx` · NorthStarBar 승인 버튼 이관 · 중복 액션바 2개 제거 | ⭐⭐⭐⭐⭐ |
+| **U2** | **Cmd+K palette + "More ▾"** — 6 액션 → 1 primary + palette | `src/components/express/CommandPalette.tsx` · 전역 Cmd+K · shadcn `Command` | ⭐⭐⭐⭐ |
+| **U3** | **S1 — Inline source citation** — 자산·외부근거 inline chip | `src/components/express/InlineCitations.tsx` · `[근거: name | YYYY.MM | URL]` 파서 · AI prompt 시드 | ⭐⭐⭐⭐⭐ |
+| **U4** | **S2 — SMART checklist** — Before/After 5축 휴리스틱 | `src/lib/express/smart-check.ts` · ExpressPreview 핵심 카드에 인라인 | ⭐⭐⭐⭐ |
+| **U5** | **S3 — Risk Mitigation** — 평가위원 의심 + 능동 답변 | `RiskMitigationCard.tsx` · 스키마 `risks[]` 추가 · `/api/express/suggest-risks` (AI 3~5건 자동 제안) | ⭐⭐⭐⭐ |
+| **U6** | **자산 추천 inline diff** — hover dropdown 폐지 | InspectorReportCard `RecommendationItem` · click-to-expand · 모든 섹션 visible | ⭐⭐⭐ |
+| **U7** | **사이드바 Stage-aware 자동 활성 + 토스트** | ExpressShell controlled Tabs · autoTabRef 1회만 자동 전환 · sonner toast | ⭐⭐⭐ |
 
-**합계**: 9일
+**합계**: 9일 (예정대로). 디자인 토큰은 별도 — `src/app/globals.css` + `layout.tsx` (Poppins).
 
 ### ActionAI 디자인 토큰 (필수 적용)
 
@@ -818,10 +818,26 @@ Layer 3: 외부 인텔리전스 (AI + PM 수집)
 3. **Rollback 가능** — feature flag 또는 git revert 가능 PR 단위 분할
 4. **풀테스트 게이트** — Wave U 완료 후 PM 1명 풀 1차본 작성 + 15분 인터뷰
 
-### Wave U 끝나면
+### Wave U 완료 효과 (검증 필요)
 
-- ✅ 정보 과부하 70% ↓ (10+ source → 3 tier)
-- ✅ 평가위원 신뢰도 ↑↑ (verifiable proof + SMART + risk defense)
-- ✅ ActionAI ↔ ud-planner 디자인 통일
+- ✅ 정보 과부하 70% ↓ (10+ source → 3 tier: NowBar / More palette / Sidebar)
+- ✅ 평가위원 신뢰도 ↑↑ (verifiable proof = inline citation + SMART checklist + Risk mitigation)
+- ✅ ActionAI ↔ ud-planner 디자인 통일 (Poppins + 11 컬러 토큰)
 - ✅ Cmd+K 확장성 — 향후 신규 기능 추가 시 UI 안 어지러워짐
+- 🔲 **PM 1명 풀테스트 게이트** — 1차본 작성 + 15분 인터뷰 (Wave U 후속)
+- 🔲 Deep track step-*.tsx 색상 sweep (보라/파랑 잔존) — 별도 후속
+
+### 주요 신규 파일
+
+- `src/components/express/NowBar.tsx`
+- `src/components/express/CommandPalette.tsx`
+- `src/components/express/InlineCitations.tsx`
+- `src/components/express/RiskMitigationCard.tsx`
+- `src/lib/express/smart-check.ts`
+- `src/app/api/express/suggest-risks/route.ts`
+
+### 스키마 변경
+
+- `ExpressDraftSchema.risks?: RiskMitigationItemSchema[]` (optional — 기존 데이터 호환)
+- 신규 enum: `severity: critical|major|minor` · `source: ai-suggested|pm-direct`
 

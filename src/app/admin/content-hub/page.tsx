@@ -117,17 +117,17 @@ export default async function ContentHubPage({
         {pendingCount > 0 && !isReviewMode && (
           <Link
             href="/admin/content-hub?status=pending-review"
-            className="mb-3 flex items-center gap-2 rounded-md border border-blue-300 bg-blue-50/40 px-3 py-2 text-xs hover:bg-blue-50"
+            className="mb-3 flex items-center gap-2 rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] px-3 py-2 text-xs hover:bg-[color:var(--cyan)]/10"
           >
             <span className="text-base">🔵</span>
             <span>
-              <strong className="text-blue-900">PM 제안 {pendingCount}건</strong>{' '}
+              <strong className="text-[color:var(--cyan)]">PM 제안 {pendingCount}건</strong>{' '}
               검수 대기 — 클릭해서 처리하기
             </span>
           </Link>
         )}
         {isReviewMode && (
-          <div className="mb-3 rounded-md border border-blue-300 bg-blue-50/40 px-3 py-2 text-xs text-blue-900">
+          <div className="mb-3 rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] px-3 py-2 text-xs text-[color:var(--body-text)]">
             🔵 <strong>PM 제안 검수 모드</strong> · 자산 카드의 [편집] → 페이지
             하단에서 승인/반려 가능. 또는 직접 편집 후 status 를 stable 로
             변경하면 추천 풀에 합류됩니다.
@@ -241,7 +241,7 @@ export default async function ContentHubPage({
                             )}
                             {/* PM 제안 검수 모드: submitterNote 노출 */}
                             {a.submitterNote && (
-                              <div className="mt-1 rounded border border-blue-200 bg-blue-50/40 px-1.5 py-0.5 text-[10px] text-blue-900">
+                              <div className="mt-1 rounded border border-[color:var(--cyan)]/30 bg-[color:var(--light-beige)] px-1.5 py-0.5 text-[10px] text-[color:var(--body-text)]">
                                 💬 {a.submitterNote}
                               </div>
                             )}

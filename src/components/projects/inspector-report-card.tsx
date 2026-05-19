@@ -14,10 +14,22 @@
  * 사용: ExpressShell 의 검수 영역에서 inspectorReport 가 있으면 confirm 패널처럼 표시.
  */
 
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { CheckCircle2, AlertTriangle, XCircle, Sparkles, X, BookMarked, Plus } from 'lucide-react'
+import {
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  Sparkles,
+  X,
+  BookMarked,
+  Plus,
+  ChevronDown,
+  ChevronUp,
+  MessageSquare,
+} from 'lucide-react'
 
 interface InspectorIssue {
   lens: string
@@ -302,7 +314,7 @@ export function InspectorReportCard({
           </div>
         )}
 
-        {/* Wave N1 — 약점 lens 별 자산 추천 */}
+        {/* Wave U / U6 — 약점 lens 별 자산 추천 (inline diff, hover dropdown 폐지) */}
         {recommendations && recommendations.length > 0 && (
           <div className="rounded-md border border-primary/30 bg-primary/5 p-2">
             <div className="mb-1.5 flex items-center gap-1 text-[10px] font-medium text-primary">
@@ -310,115 +322,13 @@ export function InspectorReportCard({
               이 자산을 인용해 보강하세요 ({recommendations.length})
             </div>
             <ul className="space-y-1.5">
-              {recommendations.slice(0, 4).map((rec) => {
-                // P3 — 매칭 % 색상 분기 + 핵심 이유 1~2개 추출
-                const matchPct = Math.round(rec.score * 100)
-                const matchColor =
-                  matchPct >= 75
-                    ? 'bg-green-100 text-green-800'
-                    : matchPct >= 55
-                      ? 'bg-amber-100 text-amber-800'
-                      : 'bg-muted text-muted-foreground'
-                // reasons 중 winrate / 채널 / 의미 유사도 우선
-                const primaryReason = rec.reasons.find((r) =>
-                  /학습|채널|유사도|프로파일|수주|사례/.test(r),
-                )
-                const secondaryReason = rec.reasons.find(
-                  (r) => r !== primaryReason && !/카테고리|자산$/.test(r),
-                )
-                return (
-                <li
+              {recommendations.slice(0, 4).map((rec) => (
+                <RecommendationItem
                   key={rec.assetId}
-                  className="rounded border bg-white/70 p-1.5 text-[11px]"
-                >
-                  <div className="flex items-start gap-2">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-1">
-                        <span className="font-medium">{rec.name}</span>
-                        <Badge
-                          variant="outline"
-                          className="h-3.5 px-1 text-[9px] text-muted-foreground"
-                        >
-                          {LENS_LABEL[rec.lens] ?? rec.lens}
-                        </Badge>
-                        <Badge
-                          variant="outline"
-                          className="h-3.5 px-1 text-[9px] text-muted-foreground"
-                          title={`evidence: ${rec.evidenceType} · category: ${rec.category}`}
-                        >
-                          {rec.evidenceType} · {rec.category}
-                        </Badge>
-                        <span
-                          className={cn(
-                            'rounded px-1 py-0 text-[9px] font-medium',
-                            matchColor,
-                          )}
-                        >
-                          {matchPct}%
-                        </span>
-                      </div>
-                      {/* P3 — 왜 이 자산이 추천됐는지 한 줄 (가장 강력한 이유 위주) */}
-                      {(primaryReason || secondaryReason) && (
-                        <div className="mt-0.5 text-[10px] text-primary/80">
-                          ✓ {[primaryReason, secondaryReason].filter(Boolean).join(' · ')}
-                        </div>
-                      )}
-                      <div className="mt-0.5 line-clamp-2 leading-snug text-muted-foreground">
-                        {rec.narrativeSnippet}
-                      </div>
-                      {rec.keyNumbers.length > 0 && (
-                        <div className="mt-0.5 flex flex-wrap gap-1">
-                          {rec.keyNumbers.slice(0, 3).map((n, i) => (
-                            <span
-                              key={i}
-                              className="rounded bg-primary/10 px-1 py-0 text-[9px] text-primary"
-                            >
-                              {n}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    {onInsertAsset && (
-                      <div className="group relative shrink-0">
-                        <button
-                          onClick={() => onInsertAsset(rec, rec.suggestedSectionKey)}
-                          className="rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
-                          title={`섹션 ${rec.suggestedSectionKey} (${SECTION_LABEL[rec.suggestedSectionKey]}) 에 자동 추가`}
-                        >
-                          <Plus className="-mt-0.5 inline h-2.5 w-2.5" />
-                          섹션 {rec.suggestedSectionKey} 에 추가
-                        </button>
-                        {/* 호버 시 다른 섹션 선택 dropdown */}
-                        <div className="invisible absolute right-0 top-full z-10 mt-0.5 w-32 rounded-md border bg-white p-1 shadow-lg group-hover:visible">
-                          <div className="mb-0.5 px-1.5 py-0.5 text-[9px] text-muted-foreground">
-                            다른 섹션에 추가:
-                          </div>
-                          {(['1', '2', '3', '4', '6', '7'] as const)
-                            .filter((s) => s !== rec.suggestedSectionKey)
-                            .map((s) => (
-                              <button
-                                key={s}
-                                onClick={() => onInsertAsset(rec, s)}
-                                className="block w-full rounded px-1.5 py-0.5 text-left text-[10px] hover:bg-muted"
-                              >
-                                섹션 {s} · {SECTION_LABEL[s]}
-                              </button>
-                            ))}
-                          <div className="my-0.5 border-t" />
-                          <button
-                            onClick={() => onInsertAsset(rec, 'chat')}
-                            className="block w-full rounded px-1.5 py-0.5 text-left text-[10px] text-muted-foreground hover:bg-muted"
-                          >
-                            💬 챗봇 입력에 박기
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </li>
-                )
-              })}
+                  rec={rec}
+                  onInsert={onInsertAsset}
+                />
+              ))}
             </ul>
           </div>
         )}
@@ -432,5 +342,162 @@ export function InspectorReportCard({
         )}
       </CardContent>
     </Card>
+  )
+}
+
+// ─────────────────────────────────────────
+// Wave U / U6 — 추천 자산 1건 (inline diff 패널)
+//   hover dropdown 폐지. 클릭 → 인라인 expand → 섹션 선택 + 미리보기.
+// ─────────────────────────────────────────
+
+function RecommendationItem({
+  rec,
+  onInsert,
+}: {
+  rec: AssetRecommendationUI
+  onInsert?: (
+    asset: AssetRecommendationUI,
+    target: '1' | '2' | '3' | '4' | '5' | '6' | '7' | 'chat',
+  ) => void
+}) {
+  const [expanded, setExpanded] = useState(false)
+  const matchPct = Math.round(rec.score * 100)
+  const matchColor =
+    matchPct >= 75
+      ? 'bg-[color:var(--green)]/15 text-[color:var(--green)]'
+      : matchPct >= 55
+        ? 'bg-amber-100 text-amber-800'
+        : 'bg-muted text-muted-foreground'
+  const primaryReason = rec.reasons.find((r) =>
+    /학습|채널|유사도|프로파일|수주|사례/.test(r),
+  )
+  const secondaryReason = rec.reasons.find(
+    (r) => r !== primaryReason && !/카테고리|자산$/.test(r),
+  )
+
+  return (
+    <li className="rounded border bg-white/70 p-1.5 text-[11px]">
+      <div className="flex items-start gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-1">
+            <span className="font-medium">{rec.name}</span>
+            <Badge
+              variant="outline"
+              className="h-3.5 px-1 text-[9px] text-muted-foreground"
+            >
+              {LENS_LABEL[rec.lens] ?? rec.lens}
+            </Badge>
+            <Badge
+              variant="outline"
+              className="h-3.5 px-1 text-[9px] text-muted-foreground"
+              title={`evidence: ${rec.evidenceType} · category: ${rec.category}`}
+            >
+              {rec.evidenceType} · {rec.category}
+            </Badge>
+            <span className={cn('rounded px-1 py-0 text-[9px] font-medium', matchColor)}>
+              {matchPct}%
+            </span>
+          </div>
+          {(primaryReason || secondaryReason) && (
+            <div className="mt-0.5 text-[10px] text-primary/80">
+              ✓ {[primaryReason, secondaryReason].filter(Boolean).join(' · ')}
+            </div>
+          )}
+          <div className="mt-0.5 line-clamp-2 leading-snug text-muted-foreground">
+            {rec.narrativeSnippet}
+          </div>
+          {rec.keyNumbers.length > 0 && (
+            <div className="mt-0.5 flex flex-wrap gap-1">
+              {rec.keyNumbers.slice(0, 3).map((n, i) => (
+                <span
+                  key={i}
+                  className="rounded bg-primary/10 px-1 py-0 text-[9px] text-primary"
+                >
+                  {n}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        {onInsert && (
+          <div className="flex shrink-0 flex-col items-end gap-0.5">
+            <button
+              onClick={() => onInsert(rec, rec.suggestedSectionKey)}
+              className="flex items-center gap-1 rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
+              title={`섹션 ${rec.suggestedSectionKey} (${SECTION_LABEL[rec.suggestedSectionKey]}) 에 자동 추가`}
+            >
+              <Plus className="h-2.5 w-2.5" />
+              섹션 {rec.suggestedSectionKey}
+            </button>
+            <button
+              type="button"
+              onClick={() => setExpanded((e) => !e)}
+              className="flex items-center gap-0.5 text-[9px] text-muted-foreground hover:text-primary"
+              aria-expanded={expanded}
+            >
+              {expanded ? (
+                <>
+                  접기 <ChevronUp className="h-2.5 w-2.5" />
+                </>
+              ) : (
+                <>
+                  다른 섹션 · 미리보기 <ChevronDown className="h-2.5 w-2.5" />
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Wave U / U6 — inline expand 패널: 모든 섹션 선택 + 미리보기 */}
+      {expanded && onInsert && (
+        <div className="mt-2 rounded border border-dashed border-primary/30 bg-primary/5 p-1.5 space-y-1.5">
+          <div className="text-[9px] uppercase tracking-wider text-muted-foreground">
+            추가할 섹션
+          </div>
+          <div className="flex flex-wrap gap-1">
+            {(['1', '2', '3', '4', '6', '7'] as const).map((s) => {
+              const isRecommended = s === rec.suggestedSectionKey
+              return (
+                <button
+                  key={s}
+                  onClick={() => {
+                    onInsert(rec, s)
+                    setExpanded(false)
+                  }}
+                  className={cn(
+                    'rounded border px-1.5 py-0.5 text-[10px]',
+                    isRecommended
+                      ? 'border-primary/50 bg-primary/15 font-medium text-primary'
+                      : 'border-muted bg-white text-muted-foreground hover:border-primary/40 hover:text-primary',
+                  )}
+                  title={`섹션 ${s} (${SECTION_LABEL[s]}) 에 narrativeSnippet 추가`}
+                >
+                  {isRecommended && <Sparkles className="-mt-0.5 mr-0.5 inline h-2.5 w-2.5" />}
+                  섹션 {s} · {SECTION_LABEL[s]}
+                </button>
+              )
+            })}
+            <button
+              onClick={() => {
+                onInsert(rec, 'chat')
+                setExpanded(false)
+              }}
+              className="rounded border border-[color:var(--cyan)]/40 bg-[color:var(--cyan)]/10 px-1.5 py-0.5 text-[10px] text-[color:var(--cyan)] hover:bg-[color:var(--cyan)]/20"
+              title="섹션이 아닌 챗봇 입력창에 박기 — PM 이 다듬어 전송"
+            >
+              <MessageSquare className="-mt-0.5 mr-0.5 inline h-2.5 w-2.5" />
+              챗봇에 박기
+            </button>
+          </div>
+          <div className="text-[9px] uppercase tracking-wider text-muted-foreground">
+            추가될 내용 미리보기
+          </div>
+          <div className="rounded border bg-white p-1.5 text-[10px] leading-snug text-foreground/90">
+            [{rec.name}] {rec.narrativeSnippet}
+          </div>
+        </div>
+      )}
+    </li>
   )
 }

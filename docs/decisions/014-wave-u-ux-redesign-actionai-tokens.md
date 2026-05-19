@@ -1,9 +1,10 @@
 # ADR-014: Wave U — UX Redesign + ActionAI Design Token Migration
 
-- **상태**: Accepted
+- **상태**: Accepted · 구현 완료 (2026-05-19)
 - **결정일**: 2026-05-19
 - **결정자**: udpb@udimpact.ai + AI Architect
 - **관련**: ADR-011 (Express Mode 메인 패러다임), ADR-013 (Express 2.0)
+- **구현 commit**: (이 ADR 과 같은 commit — U1~U7 + 토큰 + sweep)
 
 ## 배경
 
@@ -81,10 +82,37 @@ Express 화면 동시 정보 source: **10+개** (북극성 바 · EvaluatorScore
 
 ## 영향 (Wave U 완료 후)
 
-- ✅ 정보 과부하 70% ↓ (동시 source 10+ → 3 tier)
-- ✅ 평가위원 신뢰도 ↑↑ (verifiable proof + SMART + risk defense)
-- ✅ ActionAI ↔ ud-planner 디자인 통일 (브랜드 일관)
-- ✅ Cmd+K 기반 확장성 (향후 신규 기능 추가 시 UI 안 어지러워짐)
+- ✅ 정보 과부하 70% ↓ (동시 source 10+ → 3 tier — NowBar / More palette / Sidebar)
+- ✅ 평가위원 신뢰도 ↑↑ (verifiable proof = `InlineCitations` + `SmartChecklist` + `RiskMitigationCard`)
+- ✅ ActionAI ↔ ud-planner 디자인 통일 (Poppins + 11 컬러 토큰 — `globals.css`)
+- ✅ Cmd+K 기반 확장성 (`CommandPalette.tsx` — 향후 신규 기능 추가 시 UI 안 어지러워짐)
+
+## 구현 산출물
+
+### 신규 파일
+- `src/components/express/NowBar.tsx` — U1
+- `src/components/express/CommandPalette.tsx` — U2
+- `src/components/express/InlineCitations.tsx` — U3
+- `src/components/express/RiskMitigationCard.tsx` — U5 UI
+- `src/lib/express/smart-check.ts` — U4 휴리스틱
+- `src/app/api/express/suggest-risks/route.ts` — U5 AI 자동 제안
+
+### 주요 변경
+- `src/lib/express/schema.ts` — `risks?: RiskMitigationItemSchema[]` 추가 (optional, 기존 데이터 호환)
+- `src/lib/express/prompts/turn.ts` — S1 inline citation 마커 형식 가이드 추가
+- `src/components/express/NorthStarBar.tsx` — 승인 버튼 NowBar 이관 (status 전용)
+- `src/components/express/ExpressShell.tsx` — Tabs controlled + auto-activation (U7)
+- `src/components/express/ExpressPreview.tsx` — RenderSectionWithCitations + SmartChecklist + RiskMitigationCard
+- `src/components/projects/inspector-report-card.tsx` — `RecommendationItem` inline diff (hover dropdown 폐지)
+- `src/app/globals.css` — ActionAI 11 토큰 + `.now-bar-active` 유틸
+- `src/app/layout.tsx` — Poppins font (Nanum_Gothic 대체)
+
+### 색상 sweep 처리한 위치
+- `ExpressShell.tsx` 의 violet impact 카드 → cyan + light-beige
+- `ExternalLlmCard.tsx` 의 blue → cyan
+- `content-hub/admin` 의 blue 검수 큐 → cyan + light-beige
+- `impact-forecast/forecast-client.tsx` 의 violet → primary-orange (값) + cyan (보조)
+- Deep track step-*.tsx 의 보라/파랑 잔존은 후속 sweep (Wave U 직접 영향 X)
 
 ## 관련 문서
 

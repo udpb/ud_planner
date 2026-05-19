@@ -269,6 +269,7 @@ export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function Express
         <div className="flex items-end gap-2">
           <Textarea
             ref={textareaRef}
+            data-express-chat-input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={

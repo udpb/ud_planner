@@ -58,11 +58,11 @@ export function ReviewActions({ assetId, assetName, submitterNote }: Props) {
   }
 
   return (
-    <div className="rounded-md border border-blue-300 bg-blue-50/60 p-3">
-      <div className="text-xs font-semibold text-blue-900">
+    <div className="rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] p-3">
+      <div className="text-xs font-semibold text-[color:var(--cyan)]">
         🔵 PM 제안 검수 대기
       </div>
-      <div className="mt-1 rounded bg-white/60 p-2 text-[11px] text-blue-800">
+      <div className="mt-1 rounded bg-white/70 p-2 text-[11px] text-[color:var(--body-text)]">
         💬 <strong>제안자 메모:</strong> {submitterNote}
       </div>
 

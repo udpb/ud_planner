@@ -5,7 +5,12 @@
  * (Phase L Wave L2, ADR-011 §3.2 장치 1)
  */
 
-import { Button } from '@/components/ui/button'
+/**
+ * Wave U / U1 (2026-05-19) — 승인 버튼은 NowBar 로 이관.
+ *   NorthStarBar 는 이제 "진행 표시 전용" (5단계 dot + 자동 저장 상태).
+ *   PM 이 클릭하는 CTA 는 모두 NowBar 에서 처리.
+ */
+
 import { cn } from '@/lib/utils'
 import { CheckCircle2, Loader2, AlertCircle, Sparkles } from 'lucide-react'
 import type { calcProgress } from '@/lib/express/schema'
@@ -13,8 +18,6 @@ import type { calcProgress } from '@/lib/express/schema'
 interface Props {
   progress: ReturnType<typeof calcProgress>
   autosaveStatus: 'idle' | 'saving' | 'saved' | 'error'
-  onSubmitDraft: () => void
-  submitting: boolean
   isCompleted: boolean
 }
 
@@ -34,8 +37,6 @@ const STAGE_TOOLTIP: Record<string, string> = {
 export function NorthStarBar({
   progress,
   autosaveStatus,
-  onSubmitDraft,
-  submitting,
   isCompleted,
 }: Props) {
   return (
@@ -142,27 +143,11 @@ export function NorthStarBar({
           )}
         </div>
 
-        {/* 1차본 승인 — 모바일에선 ml-0 (wrap 정렬) */}
-        {isCompleted ? (
-          <div className="rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-800 sm:px-3">
+        {/* 1차본 완성 status — 클릭 가능한 CTA 는 NowBar 로 이관 (Wave U / U1) */}
+        {isCompleted && (
+          <div className="rounded-md bg-[var(--green)]/15 px-2 py-1 text-xs font-medium text-[color:var(--green)] sm:px-3">
             1차본 완성 ✓
           </div>
-        ) : (
-          <Button
-            size="sm"
-            onClick={onSubmitDraft}
-            disabled={submitting || progress.overall < 60}
-            className="h-9 px-3 text-xs sm:ml-2 sm:h-9 sm:px-4"
-          >
-            {submitting ? (
-              <>
-                <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                승인 중
-              </>
-            ) : (
-              '1차본 승인'
-            )}
-          </Button>
         )}
       </div>
     </div>

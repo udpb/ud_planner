@@ -15,8 +15,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import {
   ALL_SLOTS,
   SLOT_LABELS,
@@ -29,8 +27,9 @@ import {
 import type { ConversationState, Turn } from '@/lib/express/conversation'
 import type { AssetMatch } from '@/lib/asset-registry-types'
 import type { AutoCitationsBundle } from '@/lib/express/auto-citations'
-import { Settings2 } from 'lucide-react'
 import { NorthStarBar } from './NorthStarBar'
+import { NowBar } from './NowBar'
+import { CommandPalette } from './CommandPalette'
 import { EvaluatorScoreBar } from './EvaluatorScoreBar'
 import { ExpressChat, type ExpressChatHandle } from './ExpressChat'
 import { ExpressPreview } from './ExpressPreview'
@@ -95,6 +94,18 @@ export function ExpressShell(props: Props) {
   // Wave 4 #10: 모바일 view switcher — 채팅/미리보기/사이드바 中 하나만 표시
   // 데스크탑 (lg+) 에선 모두 동시 표시 (CSS 로 mobile 만 한정).
   const [mobileView, setMobileView] = useState<'chat' | 'preview' | 'sidebar'>('chat')
+
+  // Wave U / U2 — Cmd+K 명령 팔레트
+  const [paletteOpen, setPaletteOpen] = useState<boolean>(false)
+
+  // Wave U / U7 — Stage-aware 사이드바 자동 활성. controlled tab value + 토스트.
+  type SidebarTab = 'diagnosis' | 'channel' | 'client'
+  const [sidebarTab, setSidebarTab] = useState<SidebarTab>('diagnosis')
+  // 자동 전환 1회만 — PM 수동 클릭 후엔 더이상 강제 전환 X (완화책)
+  const autoTabRef = useRef<{ toChannel: boolean; toClient: boolean }>({
+    toChannel: false,
+    toClient: false,
+  })
 
   const dismissError = useCallback((id: string) => {
     setPersistentErrors((es) => es.filter((e) => e.id !== id))
@@ -180,6 +191,49 @@ export function ExpressShell(props: Props) {
       if (saveTimer.current) clearTimeout(saveTimer.current)
     }
   }, [draft, convState, triggerAutosave])
+
+  // ─────────────────────────────────────────
+  // Wave U / U7 — Stage 전환 시 사이드바 자동 활성 (완화책: 1회만 자동, 토스트로 PM 인지)
+  //
+  // 전환 룰:
+  //   1. AI 진단 완료 + 채널 미확정 → 'channel' 탭으로 + 토스트
+  //   2. 채널 확정 + 발주처 문서 비어있음 → 'client' 탭으로 + 토스트 (한 번만)
+  //
+  // PM 이 수동으로 탭을 클릭하면 자동 전환 비활성 (autoTabRef 로 1회 제한).
+  // ─────────────────────────────────────────
+  const channelDetected = draft.meta.autoDiagnosis?.channel?.detected
+  const channelConfirmed = !!draft.meta.autoDiagnosis?.channel?.confirmedByPm
+  const hasClientDoc = !!props.initialClientDoc
+
+  useEffect(() => {
+    // 1) 진단 완료 + 채널 미확정 → channel 탭
+    if (
+      !autoTabRef.current.toChannel &&
+      channelDetected &&
+      !channelConfirmed &&
+      sidebarTab === 'diagnosis'
+    ) {
+      autoTabRef.current.toChannel = true
+      setSidebarTab('channel')
+      toast.info(`Stage 전환 — ${channelDetected} 채널 감지. 확정해주세요`, {
+        description: '사이드바 [채널·전략] 탭으로 자동 이동',
+      })
+      return
+    }
+    // 2) 채널 확정 + 발주처 문서 없음 → client 탭
+    if (
+      !autoTabRef.current.toClient &&
+      channelConfirmed &&
+      !hasClientDoc &&
+      sidebarTab === 'channel'
+    ) {
+      autoTabRef.current.toClient = true
+      setSidebarTab('client')
+      toast.info('Stage 전환 — 채널 확정. 발주처 문서 업로드 권장', {
+        description: '사이드바 [발주처] 탭으로 자동 이동',
+      })
+    }
+  }, [channelDetected, channelConfirmed, hasClientDoc, sidebarTab])
 
   // ─────────────────────────────────────────
   // RFP 없이 진입 했을 때 — RFP 업로드 우선 안내
@@ -442,7 +496,6 @@ export function ExpressShell(props: Props) {
   const [deepSuggestions, setDeepSuggestions] = useState<
     Array<{ targetStep: string; reason: string }>
   >([])
-  const [dismissFinalize, setDismissFinalize] = useState<boolean>(false)
 
   // Wave M4 — 1차본 승인 시 자동 생성된 사전 임팩트 리포트
   // C-8: 서버 props 초기값 + Stale (curriculum/budget 변경 후) 표시
@@ -507,6 +560,33 @@ export function ExpressShell(props: Props) {
 
   return (
     <>
+      {/* Wave U / U2 — Cmd+K 명령 팔레트 (전역 단축키) */}
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        projectId={props.projectId}
+        hasRfp={hasRfp}
+        progress={progress.overall}
+        isCompleted={!!draft.meta.isCompleted}
+        submitting={submitting}
+        handingOff={handingOff}
+        onUploadRfp={() => setShowRfpDialog(true)}
+        onRunDiagnosis={() => setSidebarTab('diagnosis')}
+        onJumpToChannel={() => setSidebarTab('channel')}
+        onJumpToClientDoc={() => setSidebarTab('client')}
+        onJumpToChat={() => {
+          const el = document.querySelector('[data-express-chat-input]')
+          if (el instanceof HTMLElement) el.focus()
+        }}
+        onSubmitDraft={handleSubmitDraft}
+        onRunInspector={runInspector}
+        onScrollToInspector={() => {
+          const el = document.querySelector('[data-inspector-card]')
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }}
+        onHandoffDeep={handoffToDeep}
+      />
+
       {/* RFP 업로드 모달 */}
       {showRfpDialog && (
         <RfpUploadDialog
@@ -525,14 +605,43 @@ export function ExpressShell(props: Props) {
         />
       )}
 
-      {/* 북극성 바 */}
+      {/* 북극성 바 (진행 표시 전용) + Now Bar (다음 1 액션 — Wave U / U1) */}
       <div className="sticky top-0 z-20 border-b bg-background">
         <NorthStarBar
           progress={progress}
           autosaveStatus={autosaveStatus}
-          onSubmitDraft={handleSubmitDraft}
-          submitting={submitting}
           isCompleted={draft.meta.isCompleted}
+        />
+        <NowBar
+          projectId={props.projectId}
+          hasRfp={hasRfp}
+          hasDiagnosis={!!draft.meta.autoDiagnosis?.channel}
+          channelConfirmed={!!draft.meta.autoDiagnosis?.channel?.confirmedByPm}
+          nextSlot={nextSlot}
+          progress={progress.overall}
+          isCompleted={!!draft.meta.isCompleted}
+          hasInspectorReport={!!inspectorReport}
+          criticalIssueCount={
+            inspectorReport?.issues.filter((i) => i.severity === 'critical').length ?? 0
+          }
+          inspectorPassed={!!inspectorReport?.passed}
+          submitting={submitting}
+          handingOff={handingOff}
+          onUploadRfp={() => setShowRfpDialog(true)}
+          onRunDiagnosis={() => setSidebarTab('diagnosis')}
+          onJumpToChannel={() => setSidebarTab('channel')}
+          onJumpToChat={() => {
+            const el = document.querySelector('[data-express-chat-input]')
+            if (el instanceof HTMLElement) el.focus()
+          }}
+          onSubmitDraft={handleSubmitDraft}
+          onRunInspector={runInspector}
+          onScrollToInspector={() => {
+            const el = document.querySelector('[data-inspector-card]')
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }}
+          onHandoffDeep={handoffToDeep}
+          onOpenPalette={() => setPaletteOpen(true)}
         />
         {/* P1 — 평가위원 점수판 (항상 노출) */}
         <EvaluatorScoreBar
@@ -645,133 +754,8 @@ export function ExpressShell(props: Props) {
         </div>
       )}
 
-      {/* Wave 2.5 / 2026-05-15 재구성:
-          액션 hub 를 두 부분으로 분리.
-          1) 승인 영역 (1차본 미완성 시만): "✓ 1차본 승인 + 검수" 단일 CTA
-          2) 산출물 액션바 (항상 노출): Deep / 검수 / 임팩트 / 마크다운 / 엑셀 / 발주처 템플릿
-             — 1차본 승인 후에도 PM 이 산출물에 다시 접근해야 함.
-      */}
-
-      {/* 1) 승인 영역 — 1차본 미완성 시만 */}
-      {!draft.meta.isCompleted && !dismissFinalize && (
-        <div
-          className={cn(
-            'border-b px-3 py-2 sm:px-6 sm:py-3',
-            progress.overall >= 50
-              ? 'border-primary/40 bg-gradient-to-r from-orange-50/60 via-orange-50/30 to-background'
-              : 'border-muted bg-muted/20',
-          )}
-        >
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span
-              className={cn(
-                'text-xs font-semibold sm:text-sm',
-                progress.overall >= 50 ? 'text-primary' : 'text-muted-foreground',
-              )}
-            >
-              {progress.overall >= 50
-                ? `🎯 1차본 ${progress.overall}% — 승인 준비됨`
-                : `⏳ 1차본 ${progress.overall}% — 더 채워주세요`}
-            </span>
-            <button
-              type="button"
-              onClick={handleSubmitDraft}
-              disabled={submitting || handingOff || progress.overall < 50}
-              className={cn(
-                'rounded-md px-3 py-1 text-xs font-medium disabled:opacity-50',
-                progress.overall >= 50
-                  ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed',
-              )}
-              title={
-                progress.overall < 50
-                  ? '50% 이상 채워야 승인 가능'
-                  : '자동 검수 + Project 필드·ProposalSection 시드 + 사전 임팩트 forecast'
-              }
-            >
-              {submitting ? '승인 중...' : '✓ 1차본 승인 + 검수 + 임팩트 forecast'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setDismissFinalize(true)}
-              className="ml-auto text-xs text-muted-foreground hover:text-foreground"
-              title="패널 숨기기"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 2) 산출물 액션바 — 항상 노출 (1차본 완성 후에도) */}
-      <div className="border-b bg-muted/10 px-3 py-2 sm:px-6 sm:py-2.5">
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          <span className="text-xs font-medium text-muted-foreground">
-            {draft.meta.isCompleted
-              ? `✅ 1차본 완성 ${progress.overall}% · 산출물:`
-              : `📦 산출물 / 다음 단계:`}
-          </span>
-          <button
-            type="button"
-            onClick={() => handoffToDeep('rfp')}
-            disabled={handingOff || submitting}
-            className="flex items-center gap-1 rounded-md border border-primary/40 bg-background px-3 py-1 text-xs text-primary hover:bg-primary/10 disabled:opacity-50"
-            title="Express 진행 내용 그대로 Deep Track 으로 인계 후 Step 1 이동"
-          >
-            <Settings2 className="h-3 w-3" />
-            {handingOff ? '인계 중...' : '정밀 기획 (Deep) →'}
-          </button>
-          <button
-            type="button"
-            onClick={runInspector}
-            disabled={progress.overall < 50}
-            className={cn(
-              'rounded-md border px-3 py-1 text-xs',
-              progress.overall < 50
-                ? 'cursor-not-allowed border-muted bg-muted/40 text-muted-foreground/60'
-                : 'bg-background text-muted-foreground hover:border-primary/40 hover:text-primary',
-            )}
-            title={
-              progress.overall < 50
-                ? '1차본 50% 이상이어야 의미있는 검수 가능'
-                : '평가위원 시각 7 렌즈 자동 검수 (점수 + 이슈 표시)'
-            }
-          >
-            🔍 검수
-          </button>
-          <Link
-            href={`/projects/${props.projectId}/impact-forecast`}
-            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="1차본 → 사전 임팩트 리포트 (SROI 계수 기반 사회적 가치 추정)"
-          >
-            📊 임팩트 리포트
-          </Link>
-          <a
-            href={`/api/projects/${props.projectId}/export-markdown`}
-            download
-            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="1차본 전체 → Markdown 다운로드 (PPT/HWP 변환은 PM 후처리)"
-          >
-            📝 마크다운
-          </a>
-          <a
-            href={`/api/projects/${props.projectId}/export-excel`}
-            download
-            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="내부 검토용 5 시트 엑셀 (요약·커리큘럼·코치·예산·SROI)"
-          >
-            📥 내부 엑셀
-          </a>
-          <a
-            href={`/api/projects/${props.projectId}/export-budget-template`}
-            download
-            className="rounded-md border bg-background px-3 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-primary"
-            title="발주처 제출용 budget-template 양식 (1-1-1 주관부서 + 1-2 외부용)"
-          >
-            📋 발주처 템플릿
-          </a>
-        </div>
-      </div>
+      {/* Wave U / U1 (2026-05-19): 기존 "승인 영역" + "산출물 액션바" 두 블록은
+          NowBar (위) 로 통합. PM 이 동시에 마주하던 7개 액션 → 단일 CTA + More ▾ 6개. */}
 
       {/* Wave M4 — 1차본 완료 시 사전 임팩트 리포트 카드. C-8: stale 표시 추가 */}
       {impactForecast && (
@@ -780,14 +764,14 @@ export function ExpressShell(props: Props) {
             'border-b px-6 py-3',
             impactForecast.isStale
               ? 'border-amber-300 bg-amber-50/40'
-              : 'border-violet-300 bg-violet-50/40',
+              : 'border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)]',
           )}
         >
           <div className="flex flex-wrap items-center gap-3">
             <span
               className={cn(
                 'text-sm font-semibold',
-                impactForecast.isStale ? 'text-amber-800' : 'text-violet-700',
+                impactForecast.isStale ? 'text-amber-800' : 'text-[color:var(--primary-orange)]',
               )}
             >
               📊 사전 임팩트 리포트
@@ -801,7 +785,7 @@ export function ExpressShell(props: Props) {
               사회적 가치{' '}
               <strong
                 className={
-                  impactForecast.isStale ? 'text-amber-900' : 'text-violet-900'
+                  impactForecast.isStale ? 'text-amber-900' : 'text-[color:var(--dark-charcoal)]'
                 }
               >
                 {(impactForecast.totalSocialValue / 100_000_000).toFixed(2)}억원
@@ -817,7 +801,7 @@ export function ExpressShell(props: Props) {
                 'rounded px-1.5 py-0.5 text-[10px]',
                 impactForecast.isStale
                   ? 'bg-amber-100 text-amber-800'
-                  : 'bg-violet-100 text-violet-800',
+                  : 'bg-[color:var(--cyan)]/15 text-[color:var(--cyan)]',
               )}
               title={
                 impactForecast.calibration === 'auto-conservative'
@@ -839,7 +823,7 @@ export function ExpressShell(props: Props) {
                 'rounded-md border bg-background px-3 py-1 text-xs',
                 impactForecast.isStale
                   ? 'border-amber-400 text-amber-700 hover:bg-amber-100'
-                  : 'border-violet-400 text-violet-700 hover:bg-violet-100',
+                  : 'border-[color:var(--cyan)]/40 text-[color:var(--cyan)] hover:bg-[color:var(--cyan)]/10',
               )}
             >
               {impactForecast.isStale ? '재계산 →' : '상세 보기 + 보정 →'}
@@ -855,7 +839,7 @@ export function ExpressShell(props: Props) {
           <p
             className={cn(
               'mt-1 text-[10px]',
-              impactForecast.isStale ? 'text-amber-700/80' : 'text-violet-700/70',
+              impactForecast.isStale ? 'text-amber-700/80' : 'text-[color:var(--primary-orange)]/70',
             )}
           >
             {impactForecast.isStale
@@ -980,9 +964,17 @@ export function ExpressShell(props: Props) {
                 mobileView === 'preview' && 'hidden lg:block',
               )}
             >
-              <Tabs defaultValue="diagnosis" className="w-full">
+              <Tabs
+                value={sidebarTab}
+                onValueChange={(v) => setSidebarTab(v as SidebarTab)}
+                className="w-full"
+              >
                 <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="diagnosis" className="relative text-xs">
+                  <TabsTrigger
+                    value="diagnosis"
+                    data-tab-trigger="diagnosis"
+                    className="relative text-xs"
+                  >
                     AI 진단
                     {!draft.meta.autoDiagnosis?.channel && (
                       <span
@@ -991,7 +983,11 @@ export function ExpressShell(props: Props) {
                       />
                     )}
                   </TabsTrigger>
-                  <TabsTrigger value="channel" className="relative text-xs">
+                  <TabsTrigger
+                    value="channel"
+                    data-tab-trigger="channel"
+                    className="relative text-xs"
+                  >
                     채널·전략
                     {draft.meta.autoDiagnosis?.channel &&
                       !draft.meta.autoDiagnosis.channel.confirmedByPm && (
@@ -1001,7 +997,11 @@ export function ExpressShell(props: Props) {
                         />
                       )}
                   </TabsTrigger>
-                  <TabsTrigger value="client" className="text-xs">
+                  <TabsTrigger
+                    value="client"
+                    data-tab-trigger="client"
+                    className="text-xs"
+                  >
                     발주처
                     {props.initialClientDoc && (
                       <span
@@ -1088,6 +1088,9 @@ export function ExpressShell(props: Props) {
                 onToggleDiff={handleToggleDiff}
                 currentSlot={nextSlot}
                 projectId={props.projectId}
+                onUpdateRisks={(next) =>
+                  setDraft((d) => ({ ...d, risks: next }))
+                }
               />
             </div>
           </div>

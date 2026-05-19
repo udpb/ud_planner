@@ -191,7 +191,7 @@ export function ImpactForecastClient({
   return (
     <div className="space-y-4">
       {/* 요약 카드 */}
-      <Card className="border-violet-300 bg-violet-50/40">
+      <Card className="border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)]">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center justify-between text-sm">
             <span>요약</span>
@@ -210,7 +210,7 @@ export function ImpactForecastClient({
               <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
                 총 사회적 가치
               </div>
-              <div className="mt-1 text-2xl font-bold tabular-nums text-violet-900">
+              <div className="mt-1 text-2xl font-bold tabular-nums text-[color:var(--primary-orange)]">
                 {(forecast.totalSocialValue / 100_000_000).toFixed(2)}억원
               </div>
               <div className="text-[10px] tabular-nums text-muted-foreground">
@@ -320,7 +320,7 @@ export function ImpactForecastClient({
                   </div>
                   <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-muted">
                     <div
-                      className="h-full bg-violet-400"
+                      className="h-full bg-[color:var(--cyan)]"
                       style={{ width: `${pct}%` }}
                     />
                   </div>

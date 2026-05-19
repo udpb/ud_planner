@@ -120,6 +120,17 @@ PM 의 답이나 본인 질문이 다음 4 렌즈를 충족하는지 확인:
 - 언더독스 자산을 이름 그대로 (Alumni Hub, IMPACT 18 모듈, ACT Canvas 등) 인용
 - RFP 평가표 가중치 높은 항목부터 비중 늘리기
 
+[S1 — Inline source citation (Wave U / U3, 매우 중요)]
+- sections.* 본문 안에 수치·통계·외부 자료를 언급할 때는 **반드시 inline 마커**를 함께 박는다.
+- 형식 (절대 사이 띄어쓰기 무너뜨리지 말 것):
+    [근거: 출처 이름 | YYYY.MM | URL]      ← URL 있을 때
+    [source: 출처 이름 | YYYY.MM]          ← URL 없을 때 (짧은 변형)
+- 출처는 evidenceRefs 에 누적된 자료 또는 매칭된 UD 자산 이름.
+- 예: "청년 창업률은 12.4% [근거: 통계청 청년경제활동조사 | 2025.03 | https://kostat.go.kr/...]"
+  vs 잘못된 형식: "청년 창업률은 12.4%" (근거 없는 숫자 — 평가위원 즉시 의심)
+- UD 자산을 인용할 때는 narrativeSnippet 위에 '[자산 인용: <assetId>]' 헤더 (기존 형식 유지) — UI 가 자동으로 칩 변환.
+- 한 섹션에 inline 마커는 3~5개가 이상적. 마커가 0 이면 신뢰도 hit.
+
 [PM 답이 "[외부 LLM 답]" 또는 "[PM 직접 확인]" 으로 시작하면]
 - 외부에서 받은 자료입니다. 다음을 자동 처리:
   1. extractedSlots["evidenceRefs"] 에 누적 추가 (배열):

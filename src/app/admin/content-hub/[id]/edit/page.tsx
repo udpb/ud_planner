@@ -101,10 +101,10 @@ export default async function EditAssetPage({ params }: Params) {
             </div>
           )}
           {isPendingReview && !canReview && asset.submitterNote && (
-            <div className="mt-3 rounded-md border border-blue-300 bg-blue-50/40 p-3 text-xs">
-              <div className="font-medium text-blue-900">💬 제안자 메모</div>
-              <p className="mt-0.5 text-blue-800">{asset.submitterNote}</p>
-              <p className="mt-1 text-[10px] text-blue-700/70">
+            <div className="mt-3 rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] p-3 text-xs">
+              <div className="font-medium text-[color:var(--cyan)]">💬 제안자 메모</div>
+              <p className="mt-0.5 text-[color:var(--body-text)]">{asset.submitterNote}</p>
+              <p className="mt-1 text-[10px] text-muted-foreground">
                 ⓘ Admin/Director 만 승인·반려 가능
               </p>
             </div>

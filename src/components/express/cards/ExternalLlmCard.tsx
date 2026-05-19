@@ -34,10 +34,10 @@ export function ExternalLlmCard({ topic, generatedPrompt, onPaste }: Props) {
   }
 
   return (
-    <Card className="border-blue-200 bg-blue-50/50">
+    <Card className="border-[color:var(--cyan)]/30 bg-[color:var(--light-beige)]">
       <CardContent className="space-y-3 p-4">
         <div className="flex items-center gap-2 text-sm font-semibold">
-          <Search className="h-4 w-4 text-blue-600" />
+          <Search className="h-4 w-4 text-[color:var(--cyan)]" />
           외부 LLM 카드 — {topic}
         </div>
 

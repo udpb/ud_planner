@@ -23,6 +23,10 @@ import {
 } from '@/lib/express/schema'
 import type { AssetMatch } from '@/lib/asset-registry-types'
 import type { AutoCitationsBundle, AutoCitation } from '@/lib/express/auto-citations'
+import { RenderSectionWithCitations } from './InlineCitations'
+import { evaluateSmart, smartOverall } from '@/lib/express/smart-check'
+import { RiskMitigationCard } from './RiskMitigationCard'
+import type { RiskMitigation } from '@/lib/express/schema'
 import {
   CheckCircle2,
   Circle,
@@ -41,6 +45,7 @@ interface Props {
   currentSlot: string | null
   projectId: string
   onToggleDiff: (assetId: string) => void
+  onUpdateRisks: (next: RiskMitigation[]) => void
 }
 
 const ALL_SECTIONS: SectionKey[] = ['1', '2', '3', '4', '5', '6', '7']
@@ -52,6 +57,7 @@ export function ExpressPreview({
   currentSlot,
   projectId,
   onToggleDiff,
+  onUpdateRisks,
 }: Props) {
   const intent = draft.intent
   const km = draft.keyMessages?.[0] ?? ''
@@ -70,16 +76,25 @@ export function ExpressPreview({
             </div>
             <div className="mt-1 text-base font-semibold leading-snug">{headlineText}</div>
             {draft.beforeAfter?.before && draft.beforeAfter?.after && (
-              <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
-                <div className="rounded-md border bg-background p-2">
-                  <div className="font-medium text-muted-foreground">Before</div>
-                  <div className="mt-0.5 line-clamp-3">{draft.beforeAfter.before}</div>
+              <>
+                <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
+                  <div className="rounded-md border bg-background p-2">
+                    <div className="font-medium text-muted-foreground">Before</div>
+                    <div className="mt-0.5 line-clamp-3">{draft.beforeAfter.before}</div>
+                  </div>
+                  <div className="rounded-md border bg-background p-2">
+                    <div className="font-medium text-primary">After</div>
+                    <div className="mt-0.5 line-clamp-3">{draft.beforeAfter.after}</div>
+                  </div>
                 </div>
-                <div className="rounded-md border bg-background p-2">
-                  <div className="font-medium text-primary">After</div>
-                  <div className="mt-0.5 line-clamp-3">{draft.beforeAfter.after}</div>
-                </div>
-              </div>
+                {/* Wave U / U4 — SMART checklist (5축 휴리스틱) */}
+                <SmartChecklist
+                  before={draft.beforeAfter.before}
+                  after={draft.beforeAfter.after}
+                  keyMessages={draft.keyMessages ?? []}
+                  intent={draft.intent}
+                />
+              </>
             )}
             {(draft.keyMessages?.length ?? 0) > 0 && (
               <div className="mt-3 flex flex-wrap gap-1.5">
@@ -126,11 +141,16 @@ export function ExpressPreview({
                     {text.length} / 800
                   </div>
                 </CardHeader>
-                <CardContent className="pt-0">
+                <CardContent
+                  className="pt-0"
+                  data-preview-section={sec}
+                >
                   {text ? (
-                    <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/85">
-                      {text}
-                    </div>
+                    <RenderSectionWithCitations
+                      text={text}
+                      matchedAssets={matchedAssets}
+                      onRemoveAsset={(assetId) => onToggleDiff(assetId)}
+                    />
                   ) : (
                     <div className="text-sm italic text-muted-foreground">
                       (아직 작성 전 — 챗봇이 채워나가요)
@@ -194,6 +214,13 @@ export function ExpressPreview({
           </Card>
         )}
 
+        {/* Wave U / U5 — Risk Mitigation (S3) */}
+        <RiskMitigationCard
+          projectId={projectId}
+          risks={draft.risks ?? []}
+          onChange={onUpdateRisks}
+        />
+
         {/* 부차 기능 1줄 자동 인용 */}
         <Card className="border-dashed">
           <CardHeader className="pb-2">
@@ -213,6 +240,66 @@ export function ExpressPreview({
             </p>
           </CardContent>
         </Card>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// Wave U / U4 — SMART checklist (Before/After 5축 평가)
+//   휴리스틱만 사용 — AI 호출 0. 매 키 입력마다 즉시 평가.
+//   PM 에게 미흡 축을 즉각 보여줘 작성 가이드 (Specific / Measurable /
+//   Achievable / Relevant / Time-bound).
+// ─────────────────────────────────────────
+
+function SmartChecklist({
+  before,
+  after,
+  keyMessages,
+  intent,
+}: {
+  before: string
+  after: string
+  keyMessages: string[]
+  intent?: string
+}) {
+  const scores = evaluateSmart({ before, after, keyMessages, intent })
+  const overall = smartOverall(scores)
+  const overallPct = Math.round(overall * 100)
+  // 색상 — 80%+ 녹색, 50%+ 오렌지, 미만 회색
+  const overallTone =
+    overallPct >= 80
+      ? 'text-[color:var(--green)]'
+      : overallPct >= 50
+        ? 'text-[color:var(--primary-orange)]'
+        : 'text-muted-foreground'
+
+  return (
+    <div className="mt-3 rounded-md border bg-background/60 p-2">
+      <div className="mb-1.5 flex items-center justify-between">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          SMART 체크
+        </span>
+        <span className={cn('text-xs font-semibold tabular-nums', overallTone)}>
+          {overallPct}% ({scores.filter((s) => s.passed).length}/5)
+        </span>
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {scores.map((s) => (
+          <span
+            key={s.axis}
+            title={s.hint}
+            className={cn(
+              'inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-medium leading-tight cursor-help',
+              s.passed
+                ? 'border-[color:var(--green)]/40 bg-[color:var(--green)]/10 text-[color:var(--green)]'
+                : 'border-muted bg-muted/40 text-muted-foreground',
+            )}
+          >
+            {s.passed ? '✓' : '○'}
+            {s.label}
+          </span>
+        ))}
       </div>
     </div>
   )
