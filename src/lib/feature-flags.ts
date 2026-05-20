@@ -22,7 +22,9 @@
  * 변경 시 dev 서버 재시작 필수 (Next.js env reload).
  */
 export function isExpressParadigmV3(): boolean {
-  return process.env.EXPRESS_PARADIGM_V3 === 'true'
+  // .trim() — 일부 CLI/shell 이 env 값에 trailing whitespace 를 붙이는 케이스 방어
+  // (예: Vercel CLI stdin pipe 가 "true  " 로 저장하는 케이스 관측됨).
+  return (process.env.EXPRESS_PARADIGM_V3 ?? '').trim() === 'true'
 }
 
 /**
