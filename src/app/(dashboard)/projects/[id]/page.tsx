@@ -25,6 +25,15 @@ import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import Link from 'next/link'
 import { Sparkles } from 'lucide-react'
+// Wave V / F0 (ADR-015) — Feature flag + 5 Stage 통합 페이지
+import { isExpressParadigmV3 } from '@/lib/feature-flags'
+import { loadExpressInitialProps } from '@/lib/express/load-express-props'
+import {
+  StageShell,
+  computeCurrentStage,
+  computeStageDoneFlags,
+} from '@/components/projects/stages/StageShell'
+import { mapStepQueryToStage } from '@/components/projects/stages/stage-mapping'
 
 export const dynamic = 'force-dynamic'
 
@@ -87,9 +96,16 @@ export default async function ProjectDetailPage({
 }) {
   const { id } = await params
   const { step = 'rfp' } = await searchParams
-  const [project, context] = await Promise.all([
+
+  // Wave V / F0 (ADR-015) — Feature flag 분기.
+  // flag ON: 5 Stage 통합 페이지. ExpressShell 초기 props 도 함께 로드.
+  // flag OFF: 기존 step 분기 그대로 — 회귀 0.
+  const v3 = isExpressParadigmV3()
+
+  const [project, context, expressProps] = await Promise.all([
     getProject(id),
     buildPipelineContext(id).catch(() => null),
+    v3 ? loadExpressInitialProps(id) : Promise.resolve(null),
   ])
   if (!project) notFound()
 
@@ -221,15 +237,18 @@ export default async function ProjectDetailPage({
           <span className="text-sm text-muted-foreground">{project.client}</span>
 
           <div className="ml-auto flex items-center gap-5">
-            {/* Phase L (ADR-011): Express 화면으로 이동 */}
-            <Link
-              href={`/projects/${project.id}/express`}
-              className="flex items-center gap-1.5 rounded-md border border-primary/40 bg-primary/5 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/10"
-              title="Express 1차본 화면 — RFP→1차본 30~45분"
-            >
-              <Sparkles className="h-3 w-3" />
-              Express
-            </Link>
+            {/* Phase L (ADR-011): Express 화면으로 이동.
+                Wave V / F0: flag ON 일 땐 통합 페이지라 별도 Express 링크 불필요 → hide. */}
+            {!v3 && (
+              <Link
+                href={`/projects/${project.id}/express`}
+                className="flex items-center gap-1.5 rounded-md border border-primary/40 bg-primary/5 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/10"
+                title="Express 1차본 화면 — RFP→1차본 30~45분"
+              >
+                <Sparkles className="h-3 w-3" />
+                Express
+              </Link>
+            )}
             <div className="text-sm">
               <span className="text-muted-foreground">총 예산 </span>
               <span className="font-semibold">
@@ -293,7 +312,154 @@ export default async function ProjectDetailPage({
       {/* Planning quality scorecard */}
       <PlanningScorecard score={planningScore} />
 
-      {/* Step content */}
+      {/* Step content — Wave V / F0 분기 */}
+      {v3 && expressProps ? (
+        <StageShell
+          projectId={project.id}
+          initialStage={computeCurrentStage({
+            hasRfp: !!project.rfpParsed,
+            isExpressCompleted:
+              expressProps.initialDraft.meta.isCompleted === true,
+            inspectorPassed: undefined, // F0: server 가 모름
+            proposalSectionsCount: project.proposalSections.length,
+            projectStatus: project.status,
+          })}
+          initialOverrideStage={mapStepQueryToStage(step)}
+          summaryInput={{
+            rfpParsed: (project.rfpParsed as RfpParsed | null) ?? null,
+            draftProgressOverall: expressProps.initialProgress.overall,
+            curriculumCount: project.curriculum.length,
+            coachAssignmentCount: project.coachAssignments.length,
+            budgetMarginRate: project.budget?.marginRate ?? null,
+            proposalSectionsCount: project.proposalSections.length,
+            socialValueEok: expressProps.initialImpactForecast
+              ? expressProps.initialImpactForecast.totalSocialValue / 100_000_000
+              : undefined,
+          }}
+          doneFlags={computeStageDoneFlags({
+            hasRfp: !!project.rfpParsed,
+            isExpressCompleted:
+              expressProps.initialDraft.meta.isCompleted === true,
+            inspectorPassed: undefined,
+            proposalSectionsCount: project.proposalSections.length,
+          })}
+          stepRfpProps={{
+            projectId: project.id,
+            initialParsed: project.rfpParsed as unknown as RfpParsed | null,
+            initialRfpSlice: {
+              proposalBackground: project.proposalBackground,
+              proposalConcept: project.proposalConcept,
+              keyPlanningPoints: Array.isArray(project.keyPlanningPoints)
+                ? (project.keyPlanningPoints as string[])
+                : null,
+              confirmedAt:
+                project.proposalBackground || project.proposalConcept
+                  ? project.updatedAt.toISOString()
+                  : null,
+            },
+            initialProfile: (project.programProfile as unknown as ProgramProfile) ?? null,
+            initialRenewalContext: (project.renewalContext as any) ?? null,
+            assetMatches,
+            initialAcceptedAssetIds,
+          }}
+          expressShellProps={expressProps}
+          curriculumProps={{
+            projectId: project.id,
+            initialItems: project.curriculum.map((c) => ({
+              id: c.id,
+              sessionNo: c.sessionNo,
+              title: c.title,
+              durationHours: c.durationHours,
+              lectureMinutes: (c as any).lectureMinutes ?? 15,
+              practiceMinutes: (c as any).practiceMinutes ?? 35,
+              isTheory: c.isTheory,
+              isActionWeek: c.isActionWeek,
+              isCoaching1on1: (c as any).isCoaching1on1 ?? false,
+              isLocked: (c as any).isLocked ?? false,
+              date: c.date,
+              venue: c.venue,
+              isOnline: c.isOnline,
+              notes: c.notes,
+              order: c.order,
+            })),
+            rfpKeywords: (project.rfpParsed as any)?.keywords ?? [],
+            rfpObjectives: (project.rfpParsed as any)?.objectives ?? [],
+            logicModelActivities: (project.logicModel as any)?.activity ?? [],
+            supplyPrice: project.supplyPrice ?? 0,
+            coachAssignmentCount: project.coachAssignments.length,
+            rfpSlice: context?.rfp,
+            strategySlice: context?.strategy,
+          }}
+          coachAssignProps={{
+            projectId: project.id,
+            assignedCoachIds: project.coachAssignments.map((a) => a.coach.id),
+          }}
+          budgetProps={{
+            projectId: project.id,
+            initialBudget: project.budget
+              ? {
+                  pcTotal: project.budget.pcTotal,
+                  acTotal: project.budget.acTotal,
+                  margin: project.budget.margin,
+                  marginRate: project.budget.marginRate,
+                  marginWarning: project.budget.marginRate < 10,
+                  supplyPrice: project.supplyPrice ?? 0,
+                  totalBudgetVat: project.totalBudgetVat ?? 0,
+                }
+              : null,
+            initialPcItems: [],
+            initialAcItems:
+              project.budget?.items
+                .filter((i) => i.type === 'AC')
+                .map((i) => ({
+                  id: i.id,
+                  wbsCode: i.wbsCode,
+                  category: i.category,
+                  name: i.name,
+                  unit: i.unit ?? '',
+                  unitPrice: i.unitPrice,
+                  quantity: i.quantity,
+                  amount: i.amount,
+                  isEstimated: i.notes?.includes('추정') ?? false,
+                })) ?? [],
+            curriculumSlice: context?.curriculum,
+            coachesSlice: context?.coaches,
+          }}
+          proposalProps={{
+            projectId: project.id,
+            hasLogicModel: !!project.logicModel,
+            initialSections: project.proposalSections as any,
+            evalCriteria: (project.rfpParsed as any)?.evalCriteria ?? [],
+            pipelineContext: context ?? undefined,
+          }}
+          coachSummary={{
+            count: project.coachAssignments.length,
+            totalFee: totalCoachFee,
+          }}
+          impactForecast={
+            project.impactForecast
+              ? {
+                  id: project.impactForecast.id,
+                  totalSocialValue: Number(project.impactForecast.totalSocialValue),
+                  beneficiaryCount: project.impactForecast.beneficiaryCount,
+                  calibration: project.impactForecast.calibration,
+                  isStale: (() => {
+                    const genAt = project.impactForecast.generatedAt.getTime()
+                    const budgetAt = project.budget?.updatedAt?.getTime() ?? 0
+                    const curLatest = Math.max(
+                      0,
+                      ...project.curriculum.map((c) => c.updatedAt?.getTime() ?? 0),
+                    )
+                    return budgetAt > genAt || curLatest > genAt
+                  })(),
+                }
+              : null
+          }
+          proposalReady={project.proposalSections.length >= 7}
+          draftProgressOverall={expressProps.initialProgress.overall}
+          isExpressCompleted={expressProps.initialDraft.meta.isCompleted === true}
+        />
+      ) : (
       <div className="flex-1 overflow-y-auto p-6">
 
         {/* ── Step 1: RFP 분석 + 기획 방향 ── */}
@@ -607,6 +773,7 @@ export default async function ProjectDetailPage({
         )}
 
       </div>
+      )}
     </div>
   )
 }
