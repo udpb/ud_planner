@@ -10,11 +10,13 @@
  */
 
 import type { ComponentProps } from 'react'
+import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { CurriculumBoard } from '@/app/(dashboard)/projects/[id]/curriculum-board'
 import { CoachAssign } from '@/app/(dashboard)/projects/[id]/coach-assign'
 import { BudgetDashboard } from '@/app/(dashboard)/projects/[id]/budget-dashboard'
 import { StepProposal } from '@/app/(dashboard)/projects/[id]/step-proposal'
+import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
 import { Calendar, Users, Wallet, FileText } from 'lucide-react'
 
 interface Props {
@@ -64,10 +66,27 @@ export function StageS4({
             ) : null
           }
         />
+        {/* F1 (ADR-015) — AI 자동 추천 풀 inline.
+            카드 클릭 → 모달 안의 같은 풀에서 선택하도록 안내 (CoachAssign controlled open 은 F5).
+            F0 의 알려진 limitation (배정 테이블 inline X) 은 F5 에서 통합. */}
+        <div className="mt-3">
+          <AutoRecommendedPool
+            projectId={coachAssignProps.projectId}
+            mode="inline"
+            assignedCoachIds={coachAssignProps.assignedCoachIds}
+            onOpenAssignModal={(rec) => {
+              toast.info(
+                rec
+                  ? `"${rec.name}" 선택 — 아래 [코치 배정] 버튼으로 모달 열어 확정`
+                  : '아래 [코치 배정] 버튼으로 모달 열기',
+                { duration: 4000 },
+              )
+            }}
+          />
+        </div>
         <div className="mt-3 flex justify-end">
           <CoachAssign {...coachAssignProps} />
         </div>
-        {/* 배정된 코치 테이블은 기존 page.tsx 의 inline 코드에 있음 — F0 에선 코치 배정 액션 버튼만 노출하고 테이블은 S4 펼침의 다른 영역으로 분리하지 않음. 사용자가 ?step=coaches 로 점프하면 기존 페이지에서 확인 가능. F5 에서 통합. */}
       </section>
 
       {/* ③ 예산 */}

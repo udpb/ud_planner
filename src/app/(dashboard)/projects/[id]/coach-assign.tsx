@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { Loader2, Search, UserPlus, ExternalLink, X } from 'lucide-react'
+import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
+import type { CoachRecommendation } from '@/lib/coaches/types'
 
 // coach-finder와 동일한 상수 (호환)
 const EXPERTISE_OPTIONS = [
@@ -71,9 +73,41 @@ interface AssignForm {
 interface Props {
   projectId: string
   assignedCoachIds: string[]
+  /**
+   * F1 (ADR-015) — AI 자동 추천 풀 노출 여부.
+   * Wave V flag ON 환경 (V3 StageS4) 에선 true. flag OFF 환경 (기존 Deep step) 에선 부모가 false 전달 가능.
+   * default true — 모달이 열렸을 때 항상 추천 풀 시도 (RFP 없으면 컴포넌트가 안내).
+   */
+  enableAutoPool?: boolean
 }
 
-export function CoachAssign({ projectId, assignedCoachIds }: Props) {
+/**
+ * F1 — CoachRecommendation → CoachResult 변환 (pickCoach 호출용).
+ * AutoRecommendedPool 은 CoachRecommendation 그대로 onPick, coach-assign 이 CoachResult 로 변환.
+ */
+function recToCoachResult(r: CoachRecommendation): CoachResult {
+  return {
+    id: r.coachId,
+    githubId: r.githubId,
+    name: r.name,
+    organization: r.organization,
+    position: r.position,
+    tier: r.tier,
+    category: '', // CoachRecommendation 에 없음 — 빈 string (UI 표시 없음)
+    expertise: r.expertise,
+    regions: r.regions,
+    roles: [],
+    photoUrl: r.photoUrl,
+    careerYears: null,
+    satisfactionAvg: null,
+    collaborationCount: 0,
+    intro: null,
+    lectureRateMain: r.lectureRateMain,
+    coachRateMain: r.coachRateMain,
+  }
+}
+
+export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [q, setQ] = useState('')
@@ -184,7 +218,23 @@ export function CoachAssign({ projectId, assignedCoachIds }: Props) {
         <div className={picked ? 'grid grid-cols-[minmax(0,1fr)_360px] gap-6' : 'flex'}>
           {/* 왼쪽: 검색 */}
           <div className="flex-1 space-y-3">
-            {/* 검색창 */}
+            {/* F1 (ADR-015) — AI 자동 추천 풀. 모달 열리면 항상 fetch (RFP 없으면 빈 안내).
+                enableAutoPool=false (부모 명시) 시 hide — flag OFF 환경 회귀 가드. */}
+            {enableAutoPool && (
+              <AutoRecommendedPool
+                projectId={projectId}
+                mode="modal"
+                assignedCoachIds={assignedCoachIds}
+                onPick={(r) => pickCoach(recToCoachResult(r))}
+              />
+            )}
+
+            {/* 검색창 — AI 추천 외 추가 후보 */}
+            {enableAutoPool && (
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground pt-2 border-t">
+                검색 — 추천 풀 외 추가 후보
+              </div>
+            )}
             <div className="flex gap-2">
               <Input
                 placeholder="이름, 소속, 키워드 검색"
