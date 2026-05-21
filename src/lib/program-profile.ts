@@ -188,6 +188,85 @@ export const PROJECT_TASK_VALUES = [
 ] as const
 export type ProjectTaskType = (typeof PROJECT_TASK_VALUES)[number]
 
+// ─────────────────────────────────────────────────────────────────
+// 축 13. 액트프러너 유니버스 (F1.5, 2026-05-20 / PDF 02 §3)
+// ─────────────────────────────────────────────────────────────────
+//
+// 9 타깃 분류 — Core 4 (핵심 비즈니스) + Strategic 5 (미래 전략·ESG).
+// PDF "데이터센터 운영계획안" §3.2~3.3 + "액트프러너 연구기획안" §3 정의.
+//
+// RFP detectedTasks·targetStage·keywords 와 휴리스틱 매핑하여 자동 추정 가능
+// (또는 PM 직접 선택). optional — 기존 ProgramProfile 데이터 호환 보존.
+//
+// 활용:
+//   - datacenter-stats.ts 의 universe-tagged stat 매칭
+//   - F3 외부 리서치 자동 시 우선순위 결정
+//   - F4 담당자 질문 차등화 (universe 별 must-ask)
+//   - 추천 자산·코치 매칭 시 추가 가중치 (ADR-016 후속)
+
+export const ACTPRENEUR_UNIVERSE_VALUES = [
+  // Core 4 (핵심 비즈니스 — 운영 경험·수익성·수주 경쟁력 상위)
+  'startup', // 1. 스타트업
+  'sme', // 2. SME (소상공인·소공인·소기업)
+  'local-creator', // 3. 로컬 크리에이터 (정주형)
+  'culture-1person', // 4. 1인 창작·문화예술
+  // Strategic 5 (미래 전략·ESG — 신규 시장·가치 확산)
+  'hr-corporate', // 5. HR 인재 (사내 혁신가)
+  'senior', // 6. 시니어 (은퇴 후 창업가)
+  'next-gen', // 7. 다음세대 (예비 혁신가·청소년)
+  'di-inclusive', // 8. D&I 기반 (포용적 실행가)
+  'global-innovator', // 9. 글로벌 혁신가 (크로스보더)
+] as const
+export type ActpreneurUniverse = (typeof ACTPRENEUR_UNIVERSE_VALUES)[number]
+
+export const ACTPRENEUR_UNIVERSE_LABELS: Record<ActpreneurUniverse, string> = {
+  startup: '스타트업',
+  sme: 'SME (소상공인·소기업)',
+  'local-creator': '로컬 크리에이터',
+  'culture-1person': '1인 창작·문화예술',
+  'hr-corporate': 'HR 인재 (사내 혁신가)',
+  senior: '시니어 (은퇴 후 창업가)',
+  'next-gen': '다음세대',
+  'di-inclusive': 'D&I 기반',
+  'global-innovator': '글로벌 혁신가',
+}
+
+/**
+ * RFP keywords + targetStage + detectedTasks 휴리스틱 매핑.
+ *
+ * 단일 universe 가 아니라 후보 list 반환 — PM 이 1~2개 선택.
+ */
+export function suggestActpreneurUniverses(input: {
+  keywords?: string[]
+  targetStage?: string[]
+  targetSegment?: string
+  detectedTasks?: ProjectTaskType[]
+}): ActpreneurUniverse[] {
+  const keywords = (input.keywords ?? []).join(' ').toLowerCase()
+  const stage = (input.targetStage ?? []).join(' ').toLowerCase()
+  const segment = (input.targetSegment ?? '').toLowerCase()
+  const haystack = `${keywords} ${stage} ${segment}`
+
+  const matches: ActpreneurUniverse[] = []
+
+  // 9 타깃 키워드 휴리스틱 매핑 (PDF 정의 기반)
+  if (/스타트업|초기.*창업|벤처|예비창업|아이디어유/.test(haystack)) matches.push('startup')
+  if (/소상공인|소공인|소기업|sme|골목상권|영세/.test(haystack)) matches.push('sme')
+  if (/로컬|지역|지방|크리에이터.*지역|정주/.test(haystack)) matches.push('local-creator')
+  if (/문화|예술|크리에이터|창작|솔로프러너|1인 창조|콘텐츠/.test(haystack))
+    matches.push('culture-1person')
+  if (/사내.*혁신|hr|기업.*인재|사내벤처|애자일|기업가형 인재/.test(haystack))
+    matches.push('hr-corporate')
+  if (/시니어|은퇴|중장년|5060|숙련|경험.*자본/.test(haystack)) matches.push('senior')
+  if (/청소년|대학생|청년|예비.*혁신|다음세대|next.*gen/.test(haystack))
+    matches.push('next-gen')
+  if (/d&i|다양성|포용|여성|이주민|장애|취약/.test(haystack)) matches.push('di-inclusive')
+  if (/글로벌|해외|크로스보더|아시아|일본|인도|cross.?border/.test(haystack))
+    matches.push('global-innovator')
+
+  return matches
+}
+
 export const COACHING_STYLE_VALUES = ['1:1', '팀코칭', '혼합', '해당없음'] as const
 export type CoachingStyle = (typeof COACHING_STYLE_VALUES)[number]
 
@@ -377,6 +456,10 @@ export interface ProgramProfile {
   primaryImpact: PrimaryImpact[] // 최소 1, 최대 3
   // 축 13
   aftercare: Aftercare
+
+  // 축 14 (F1.5, 2026-05-20) — 9 타깃 액트프러너 유니버스 (optional, 후속 자동 추정)
+  // 빈 배열이면 PDF datacenter-stats 매칭에서 universe 가중치 X (keyword 만 사용).
+  actpreneurUniverses?: ActpreneurUniverse[]
 
   // 메타
   version: '1.0' | '1.1'

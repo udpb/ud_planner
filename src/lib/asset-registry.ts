@@ -587,6 +587,142 @@ export const UD_ASSETS_SEED: UdAsset[] = [
     status: 'stable',
     lastReviewedAt: '2026-04-24',
   },
+
+  // ══════════════════════════════════════════
+  // 데이터 센터 (8) — 2026 운영계획안 + 연구기획안 자산화 (F1.5 · 2026-05-20)
+  //
+  // 모든 자산은 외부 검증·11년 누적 데이터 기반 — 평가위원이 의심하기 어려운
+  // "압도적 정량 증빙". RFP 의 evidence-based bidding 요구에 정면 대응.
+  // ══════════════════════════════════════════
+  {
+    id: 'asset-actt-5competency',
+    name: 'ACTT 액트프러너십 5대 역량 진단 (외부 검증)',
+    category: 'methodology',
+    applicableSections: ['proposal-background', 'coaches', 'impact'],
+    valueChainStage: 'activity',
+    evidenceType: 'methodology',
+    keywords: [
+      'ACTT', '액트프러너십', '5대 역량', '진단', 'GEPXR',
+      '실행력', '리더십', '문제해결', '협업', '시장중심',
+      '외부 검증', '임팩트 리서치랩',
+    ],
+    narrativeSnippet:
+      'ACTT(Actpreneur Competency Test) 는 언더독스가 자체 개발한 액트프러너십 역량 진단 도구로, 10개 차원·30 문항·5점 리커트 척도로 인지→적용→실행 3단계 갭을 정량화한다. 2024 임팩트 리서치랩 협업 사회성과 연구(N=1,002) 에서 5대 역량(실행력·리더십·문제해결·협업·시장중심) 평균 4.09/5.0, 역량-성과 상관계수 r=.78 로 외부 검증 완료. 사전·사후 비교로 교육 효과를 실증한다.',
+    keyNumbers: ['5대 역량', '15 세부 지표', '평균 4.09/5.0', 'r=.78', 'N=1,002'],
+    status: 'stable',
+    sourceReferences: ['임팩트 리서치랩 「언더독스 사회성과 연구」 2024.01'],
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-dogs-personality',
+    name: 'DOGS 창업가 성향 진단 (4주축 12유형)',
+    category: 'methodology',
+    applicableSections: ['proposal-background', 'coaches', 'curriculum'],
+    valueChainStage: 'input',
+    evidenceType: 'methodology',
+    keywords: [
+      'DOGS', '창업가 성향', '진단', 'Director', 'Organizer', 'Guider', 'Supporter',
+      '4주축', '12유형', '코호트 분석',
+    ],
+    narrativeSnippet:
+      'DOGS(Driver/Organizer/Guider/Supporter) 진단은 창업가의 본원적 성향과 행동 패턴을 4주축·12세부 유형으로 분류하는 자체 IP. 디지털 설문(31항+인구통계) 기반으로 운영되며 응답 결과를 자동 코드체계로 분류한다. 2025 하나소셜벤처유니버시티 3기 30개 거점대학 1,500명 전수 진단에서 대학별 분포 차이 p<.001 통계 유의 — 진단 도구 변별력 정량 입증. 우수 60팀 발굴→12팀 최종 선발에 적용해 사업 ROI 직접 증명.',
+    keyNumbers: ['4 주축', '12 유형', '31 항목', '1,500명', 'p<.001'],
+    status: 'stable',
+    sourceReferences: ['하나소셜벤처유니버시티 최종결과보고서 2026.01'],
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-actpreneur-graduation-rate',
+    name: '액트프러너 교육 수료율 86.8% (404 프로그램, 16,076명)',
+    category: 'data',
+    applicableSections: ['impact', 'proposal-background', 'org-team'],
+    valueChainStage: 'outcome',
+    evidenceType: 'quantitative',
+    keywords: ['수료율', '실행률', '교육 완수', '누적 수료', '운영 성과'],
+    narrativeSnippet:
+      '2015~2024 누적 404개 프로그램에서 16,076명 액트프러너를 수료까지 이끌어낸 평균 수료율 86.8% — 단순 참가가 아니라 끝까지 실행한 모수 기준. 1,500명 단일 운영 사례(하나SVU 3기) 에서도 86.8% 동일 달성으로 재현 가능성 입증. 발주처가 가장 의심하는 "참가자가 도중 이탈하지 않나" 의 정면 답변이다.',
+    keyNumbers: ['86.8%', '16,076명', '404 프로그램', '재현 가능'],
+    status: 'stable',
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-competency-outcome-correlation',
+    name: '역량-성과 상관 r=.78 (액트프러너십이 비즈니스 성과를 만든다)',
+    category: 'data',
+    applicableSections: ['impact', 'proposal-background'],
+    valueChainStage: 'outcome',
+    evidenceType: 'quantitative',
+    keywords: ['상관계수', '역량-성과', '인과관계', '회귀분석', '학술 통계'],
+    narrativeSnippet:
+      '임팩트 리서치랩 협업 연구(N=1,002) 에서 ACTT 5대 역량의 사전·사후 변화와 비즈니스 성과(매출·고용·생존) 의 상관계수 r=.78 — 학술적 강한 상관. 직관에 의존하던 창업가 자질을 학술적 기준으로 규명하고 외부 인용 가능한 객관 정량 토대 확보. 후속 KPI 설계·임팩트 측정·관리(IMM) 표준 체계의 통계적 근거.',
+    keyNumbers: ['r=.78', 'N=1,002', '강한 상관'],
+    status: 'stable',
+    sourceReferences: ['임팩트 리서치랩 「언더독스 사회성과 연구」 2024.01'],
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-pre-post-delta',
+    name: '사전→사후 실행단계 변화량 +1.10 (코칭 효과 정량 입증)',
+    category: 'data',
+    applicableSections: ['impact', 'curriculum', 'coaches'],
+    valueChainStage: 'outcome',
+    evidenceType: 'quantitative',
+    keywords: ['사전사후', '변화량', '델타', '코칭 효과', '실행력 향상', 'Action Week'],
+    narrativeSnippet:
+      'ACTT 인지→적용→실행 3단계 매트릭스에서 실행단계 변화량 +1.10 (사전→사후) — 5대 역량 중 최대치. "아는 것" 보다 "하는 것" 에 코칭이 결정적 영향을 미친다는 정량 증거. Top 20% 우수 코호트(N=234) 의 평균 Δ0.67 격차로 우수팀 패턴 추출 가능. Action Week 등 실행 중심 회차 설계의 정량 근거.',
+    keyNumbers: ['+1.10', 'Δ0.67', 'Top 20%', 'N=234'],
+    status: 'stable',
+    sourceReferences: ['임팩트 리서치랩 「언더독스 사회성과 연구」 2024.01'],
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-actpreneur-universe-30k',
+    name: '액트프러너 30,000+ 명 누적 실증 데이터',
+    category: 'data',
+    applicableSections: ['proposal-background', 'org-team', 'impact'],
+    valueChainStage: 'input',
+    evidenceType: 'quantitative',
+    keywords: ['액트프러너', '누적 모수', '실증 데이터', '11년', '코호트', 'big data'],
+    narrativeSnippet:
+      '2015~2026 11년간 30,000명 이상 액트프러너를 직접 육성하며 축적한 현장 실증 데이터. 단순 참가자 명단이 아니라 DOGS·ACTT 진단 응답 + LMS 학습 로그 + 코칭 일지 + 결과 보고가 결합된 입체 데이터셋. 9 타깃 유니버스(스타트업·SME·로컬·문화예술·HR·시니어·다음세대·D&I·글로벌) 의 보편적 성공·생존 패턴을 추출하는 독보적 지식 자본 — 타 기관이 모방할 수 없는 11년 격차.',
+    keyNumbers: ['30,000+ 명', '11년', '9 타깃 유니버스'],
+    status: 'stable',
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-asia-imm-standard',
+    name: 'Asia IMM 표준 (아시아형 임팩트 측정 가이드라인)',
+    category: 'framework',
+    applicableSections: ['impact', 'proposal-background'],
+    valueChainStage: 'outcome',
+    evidenceType: 'structural',
+    keywords: [
+      'Asia IMM', '임팩트 측정', '아시아 표준', '글로벌 룰메이커', 'IMM',
+      '크로스보더', '혁신 지수',
+    ],
+    narrativeSnippet:
+      '서구권 중심의 평가 방식을 넘어 아시아 생태계에 최적화된 독자적 임팩트 측정·관리 가이드라인(Asia IMM). 한국·일본·인도네시아·인도 4개국 액트프러너 실증 데이터를 통합 분석해 아시아 액트프러너 크로스보더 혁신 지수로 발간 예정. 글로벌 ODA·임팩트 투자사·정부 부처가 인용하는 신뢰 기준으로 자리매김 중. 본 사업 임팩트 보고에 적용 시 발주처 KPI 와 글로벌 표준 동시 충족.',
+    keyNumbers: ['4개국', 'IMM 표준', 'WB·ADB 협의'],
+    status: 'developing',
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-global-partners-520',
+    name: '아시아 520+ 글로벌 파트너십 + 4개국 거점 (KR·ID·JP·IN)',
+    category: 'human',
+    applicableSections: ['org-team', 'proposal-background', 'coaches'],
+    valueChainStage: 'input',
+    evidenceType: 'structural',
+    keywords: [
+      '글로벌 파트너', '아시아 거점', '크로스보더', '국제 협력',
+      '일본 도쿄', '인도 뉴델리', 'UDI Japan',
+    ],
+    narrativeSnippet:
+      '서울 본사 외 일본(도쿄·UDI Japan) + 인도(뉴델리) 현지 법인 + 인도네시아 네트워크 + 아시아 전역 160개 이상 글로벌 파트너를 포함한 520+ 협력 파트너십. 한국 내수가 아닌 크로스보더 사업·해외 확장 RFP 에 즉시 응답 가능한 운영 인프라. 글로벌 휴먼 코치 255명 + 30+ AI 기술 파트너 얼라이언스로 데이터 수집·분석·확산 전 단계에서 검증망 활용 가능.',
+    keyNumbers: ['520+ 파트너', '4개국', '255명 코치', '30+ AI 파트너'],
+    status: 'stable',
+    lastReviewedAt: '2026-05-20',
+  },
 ]
 
 // ═════════════════════════════════════════════════════════════
