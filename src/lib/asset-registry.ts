@@ -596,7 +596,7 @@ export const UD_ASSETS_SEED: UdAsset[] = [
   // ══════════════════════════════════════════
   {
     id: 'asset-actt-5competency',
-    name: 'ACTT 액트프러너십 5대 역량 진단 (외부 검증)',
+    name: 'ACTT 액트프러너십 5대 역량 진단 (사전·사후 2회, 외부 검증)',
     category: 'methodology',
     applicableSections: ['proposal-background', 'coaches', 'impact'],
     valueChainStage: 'activity',
@@ -604,29 +604,32 @@ export const UD_ASSETS_SEED: UdAsset[] = [
     keywords: [
       'ACTT', '액트프러너십', '5대 역량', '진단', 'GEPXR',
       '실행력', '리더십', '문제해결', '협업', '시장중심',
-      '외부 검증', '임팩트 리서치랩',
+      '외부 검증', '임팩트 리서치랩', '사전사후', '교육효과', 'pre-post',
     ],
     narrativeSnippet:
-      'ACTT(Actpreneur Competency Test) 는 언더독스가 자체 개발한 액트프러너십 역량 진단 도구로, 10개 차원·30 문항·5점 리커트 척도로 인지→적용→실행 3단계 갭을 정량화한다. 2024 임팩트 리서치랩 협업 사회성과 연구(N=1,002) 에서 5대 역량(실행력·리더십·문제해결·협업·시장중심) 평균 4.09/5.0, 역량-성과 상관계수 r=.78 로 외부 검증 완료. 사전·사후 비교로 교육 효과를 실증한다.',
-    keyNumbers: ['5대 역량', '15 세부 지표', '평균 4.09/5.0', 'r=.78', 'N=1,002'],
+      'ACTT(Actpreneur Competency Test) 는 언더독스가 자체 개발한 액트프러너십 역량 진단 도구로, 10개 차원·30 문항·5점 리커트 척도로 인지→적용→실행 3단계 갭을 정량화한다. **교육 사전·사후 2회 실시 (pre/post)** — 사전 진단으로 참가자 기초 역량을 측정하고, 사후 진단으로 교육·코칭에 따른 변화량(Δ)을 정량 입증한다. 2024 임팩트 리서치랩 협업 사회성과 연구(N=1,002) 에서 5대 역량(실행력·리더십·문제해결·협업·시장중심) 평균 4.09/5.0, 역량-성과 상관계수 r=.78 외부 검증 완료. 사전→사후 실행단계 변화량 +1.10 — 평가위원의 "이 교육이 실제 효과 있나?" 의심에 정량 답변.',
+    keyNumbers: [
+      '5대 역량', '15 세부 지표', '평균 4.09/5.0', 'r=.78', 'N=1,002',
+      '사전·사후 2회', 'Δ+1.10',
+    ],
     status: 'stable',
     sourceReferences: ['임팩트 리서치랩 「언더독스 사회성과 연구」 2024.01'],
     lastReviewedAt: '2026-05-20',
   },
   {
     id: 'asset-dogs-personality',
-    name: 'DOGS 창업가 성향 진단 (4주축 12유형)',
+    name: 'DOGS 창업가 성향 진단 + 대화카드 (교육 시작 전 1회, 네트워킹·밍글링 도구)',
     category: 'methodology',
     applicableSections: ['proposal-background', 'coaches', 'curriculum'],
     valueChainStage: 'input',
     evidenceType: 'methodology',
     keywords: [
       'DOGS', '창업가 성향', '진단', 'Director', 'Organizer', 'Guider', 'Supporter',
-      '4주축', '12유형', '코호트 분석',
+      '4주축', '12유형', '코호트 분석', '대화카드', '네트워킹', '밍글링', '팀빌딩',
     ],
     narrativeSnippet:
-      'DOGS(Driver/Organizer/Guider/Supporter) 진단은 창업가의 본원적 성향과 행동 패턴을 4주축·12세부 유형으로 분류하는 자체 IP. 디지털 설문(31항+인구통계) 기반으로 운영되며 응답 결과를 자동 코드체계로 분류한다. 2025 하나소셜벤처유니버시티 3기 30개 거점대학 1,500명 전수 진단에서 대학별 분포 차이 p<.001 통계 유의 — 진단 도구 변별력 정량 입증. 우수 60팀 발굴→12팀 최종 선발에 적용해 사업 ROI 직접 증명.',
-    keyNumbers: ['4 주축', '12 유형', '31 항목', '1,500명', 'p<.001'],
+      'DOGS(Director/Organizer/Guider/Supporter) 진단은 창업가의 본원적 성향과 행동 패턴을 4주축·12세부 유형으로 분류하는 자체 IP. **교육 시작 전 1회** 실시(31항 + 인구통계, 디지털 설문). 단순 분류 도구가 아니라 **DOGS 대화카드** 를 결합해 참가자들이 서로의 성향을 직관적으로 이해하고 팀을 빌드하는 **네트워킹·밍글링 도구** 로 운영 — 초반 라포 형성 + 협업 패턴 자동 조성. 2025 하나소셜벤처유니버시티 3기 30개 거점대학 1,500명 전수 진단에서 대학별 분포 차이 p<.001 통계 유의 — 진단 도구 변별력 정량 입증. 우수 60팀 발굴→12팀 최종 선발에 적용해 사업 ROI 직접 증명.',
+    keyNumbers: ['4 주축', '12 유형', '31 항목', '1,500명', 'p<.001', '교육 시작 전 1회'],
     status: 'stable',
     sourceReferences: ['하나소셜벤처유니버시티 최종결과보고서 2026.01'],
     lastReviewedAt: '2026-05-20',
@@ -704,6 +707,23 @@ export const UD_ASSETS_SEED: UdAsset[] = [
       '서구권 중심의 평가 방식을 넘어 아시아 생태계에 최적화된 독자적 임팩트 측정·관리 가이드라인(Asia IMM). 한국·일본·인도네시아·인도 4개국 액트프러너 실증 데이터를 통합 분석해 아시아 액트프러너 크로스보더 혁신 지수로 발간 예정. 글로벌 ODA·임팩트 투자사·정부 부처가 인용하는 신뢰 기준으로 자리매김 중. 본 사업 임팩트 보고에 적용 시 발주처 KPI 와 글로벌 표준 동시 충족.',
     keyNumbers: ['4개국', 'IMM 표준', 'WB·ADB 협의'],
     status: 'developing',
+    lastReviewedAt: '2026-05-20',
+  },
+  {
+    id: 'asset-5d-competency',
+    name: '5D 핵심역량 진단 (Global · AI · Data · Finance · Domain)',
+    category: 'methodology',
+    applicableSections: ['proposal-background', 'curriculum', 'coaches', 'impact'],
+    valueChainStage: 'activity',
+    evidenceType: 'methodology',
+    keywords: [
+      '5D', '핵심역량', 'Global', 'AI', 'Data', 'Finance', 'Domain',
+      '글로벌', '데이터', '재무', '도메인', '진단', '5축',
+    ],
+    narrativeSnippet:
+      '5D 핵심역량 진단은 ACTT 의 일반 액트프러너십 5대 역량과 별도로 **시대가 요구하는 5가지 핵심역량 — Global(글로벌)·AI·Data(데이터)·Finance(재무)·Domain(도메인 전문성)** 을 정량 측정하는 진단 IP. AI 시대·크로스보더 경제·데이터 기반 의사결정이 일상화된 환경에서 창업가가 갖춰야 할 보편 역량을 5축으로 코드화. ACTT(역량 일반) + 5D(시대 필수역량) 이중 진단으로 참가자 약점 축을 정확히 짚어 맞춤 커리큘럼·코칭 매칭 가능. 평가위원의 "AI/글로벌 시대 적합성" 질문에 정량 답변.',
+    keyNumbers: ['5축', 'Global·AI·Data·Finance·Domain'],
+    status: 'stable',
     lastReviewedAt: '2026-05-20',
   },
   {
