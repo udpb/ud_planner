@@ -215,6 +215,20 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
     }
   }
 
+  // F3 (Wave V) — flag ON 시 'external-llm' 카드를 'auto-research' 로 자동 rewrite.
+  // PM 이 외부 LLM 가서 복사/붙여넣기 없이 AI 가 직접 리서치 + evidence 자동 누적.
+  // 'pm-direct' (발주처 통화) 는 결정·관계 영역이라 유지.
+  if (parsed.externalLookupNeeded && parsed.externalLookupNeeded.type === 'external-llm') {
+    const { isExpressParadigmV3 } = await import('@/lib/feature-flags')
+    if (isExpressParadigmV3()) {
+      parsed.externalLookupNeeded = {
+        ...parsed.externalLookupNeeded,
+        type: 'auto-research',
+        // generatedPrompt 는 보존 — fallback 시 ExternalLlmCard 에서 사용 가능
+      }
+    }
+  }
+
   // 외부 LLM 카드 운영 로그 (Phase L L3)
   if (parsed.externalLookupNeeded) {
     const c = parsed.externalLookupNeeded

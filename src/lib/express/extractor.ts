@@ -215,11 +215,12 @@ export function mergeExtractedSlots(
           topic: String(v.topic).slice(0, 60),
           source: String(v.source ?? '미상').slice(0, 200),
           summary: String(v.summary).slice(0, 400),
-          fetchedVia: ((['pm-direct', 'external-llm', 'auto-extract'] as const).includes(
+          // F3 (Wave V): 'auto-research' 포함
+          fetchedVia: ((['pm-direct', 'external-llm', 'auto-extract', 'auto-research'] as const).includes(
             v.fetchedVia as 'pm-direct',
           )
             ? v.fetchedVia
-            : 'pm-direct') as 'pm-direct' | 'external-llm' | 'auto-extract',
+            : 'pm-direct') as 'pm-direct' | 'external-llm' | 'auto-extract' | 'auto-research',
           capturedAt: new Date().toISOString(),
         }))
       if (refs.length > 0) {

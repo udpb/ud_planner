@@ -1065,6 +1065,12 @@ export function ExpressShell(props: Props) {
             projectId={props.projectId}
             onSendMessage={handleSendMessage}
             onUploadRfp={() => setShowRfpDialog(true)}
+            // F3 (Wave V) — AutoResearchCard 가 accept-research 호출 후 draft 갱신
+            draft={draft}
+            onResearchAccept={(updatedDraft) => {
+              setDraft(updatedDraft)
+              toast.success('근거가 sections 에 자동 인용됐어요. 우측 미리보기 확인.')
+            }}
           />
         </div>
 

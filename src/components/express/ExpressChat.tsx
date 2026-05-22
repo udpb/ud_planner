@@ -20,7 +20,9 @@ import type { Turn, ExternalLookupRequest } from '@/lib/express/conversation'
 import { ExternalLlmCard } from './cards/ExternalLlmCard'
 import { PmDirectCard } from './cards/PmDirectCard'
 import { AutoExtractCard } from './cards/AutoExtractCard'
+import { AutoResearchCard } from './cards/AutoResearchCard'
 import { cn } from '@/lib/utils'
+import type { ExpressDraft } from '@/lib/express/schema'
 
 interface Props {
   turns: Turn[]
@@ -33,6 +35,9 @@ interface Props {
   projectId?: string
   onSendMessage: (pmInput: string, forceSlot?: string | null) => void
   onUploadRfp: () => void
+  // F3 (Wave V) — AutoResearchCard 가 accept-research 호출 후 부모에 draft 전달
+  draft?: ExpressDraft
+  onResearchAccept?: (updatedDraft: ExpressDraft) => void
 }
 
 /**
@@ -55,6 +60,8 @@ export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function Express
     projectId,
     onSendMessage,
     onUploadRfp,
+    draft,
+    onResearchAccept,
   },
   ref,
 ) {
@@ -217,6 +224,9 @@ export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function Express
               turn={t}
               isLatestAi={t.id === lastAiId && !pendingTurn}
               onSendMessage={onSendMessage}
+              projectId={projectId}
+              draft={draft}
+              onResearchAccept={onResearchAccept}
             />
           ))
         })()}
@@ -323,15 +333,24 @@ function truncateForCard(text: string): string {
 // Turn 말풍선 + (마지막 AI 턴이면) 인라인 카드
 // ─────────────────────────────────────────
 
+interface TurnBubbleProps {
+  turn: Turn
+  isLatestAi: boolean
+  onSendMessage: (text: string) => void
+  // F3 (Wave V) — AutoResearchCard 가 필요로 하는 props
+  projectId?: string
+  draft?: ExpressDraft
+  onResearchAccept?: (updatedDraft: ExpressDraft) => void
+}
+
 function TurnBubble({
   turn,
   isLatestAi,
   onSendMessage,
-}: {
-  turn: Turn
-  isLatestAi: boolean
-  onSendMessage: (text: string) => void
-}) {
+  projectId,
+  draft,
+  onResearchAccept,
+}: TurnBubbleProps) {
   const isAi = turn.role === 'ai'
   const card = turn.externalLookupNeeded
   // 카드가 있고 active 상태면 메시지 본문은 한 줄로 짧게 (사용자 시선 카드로 유도).
@@ -393,6 +412,27 @@ function TurnBubble({
               topic={card.topic}
               autoNote={card.autoNote ?? ''}
               onAcknowledge={() => onSendMessage('[확인]')}
+            />
+          )}
+          {/* F3 (Wave V) — AI 자동 리서치 카드 (Tier 1 datacenter-stats → Tier 2 Gemini grounding) */}
+          {card.type === 'auto-research' && projectId && draft && (
+            <AutoResearchCard
+              projectId={projectId}
+              topic={card.topic}
+              draft={draft}
+              onAccept={(updatedDraft) => {
+                if (onResearchAccept) {
+                  onResearchAccept(updatedDraft as ExpressDraft)
+                }
+                onSendMessage('[자동 리서치 수락]')
+              }}
+              onFallbackManual={() => {
+                // 폴백 — 수동 모드로 전환 (기존 ExternalLlmCard 흐름 그대로 사용 권유)
+                onSendMessage('[자동 리서치 거절 — 수동 모드]')
+              }}
+              onCancel={() => {
+                onSendMessage('[자동 리서치 취소]')
+              }}
             />
           )}
         </div>

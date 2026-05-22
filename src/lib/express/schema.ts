@@ -70,7 +70,8 @@ export const ExternalEvidenceSchema = z.object({
   topic: z.string().min(2).max(60),
   source: z.string().min(2).max(200),
   summary: z.string().min(20).max(400),
-  fetchedVia: z.enum(['pm-direct', 'external-llm', 'auto-extract']),
+  // F3 (Wave V): 'auto-research' 추가 — AI 자동 리서치 (Tier 1 + 2) 로 가져온 evidence
+  fetchedVia: z.enum(['pm-direct', 'external-llm', 'auto-extract', 'auto-research']),
   capturedAt: z.string().datetime().optional(),
 })
 

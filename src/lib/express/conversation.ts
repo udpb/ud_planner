@@ -15,7 +15,10 @@ import { z } from 'zod'
 
 // 순서 — TurnSchema 가 ExternalLookupRequestSchema 참조하므로 위에서 먼저 정의
 export const ExternalLookupRequestSchema = z.object({
-  type: z.enum(['pm-direct', 'external-llm', 'auto-extract']),
+  // F3 (Wave V): 'auto-research' 추가 — AI 자동 리서치 (Tier 1 datacenter-stats →
+  // Tier 2 Gemini grounding → Tier 3 PM 검토). flag ON 시 process-turn 이
+  // 'external-llm' 을 자동으로 'auto-research' 로 rewrite.
+  type: z.enum(['pm-direct', 'external-llm', 'auto-extract', 'auto-research']),
   topic: z.string(),
   /** external-llm 일 때만 — AI 가 만든 외부 LLM 프롬프트 */
   generatedPrompt: z.string().optional(),
