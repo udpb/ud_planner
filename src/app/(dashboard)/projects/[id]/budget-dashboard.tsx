@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator'
 import { AlertTriangle, Calculator, CheckCircle2, Pencil, RefreshCw } from 'lucide-react'
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import type { CurriculumSlice, CoachesSlice } from '@/lib/pipeline-context'
+// F2 (Wave V) — 자동 시드 마커
+import { SeedBadge } from '@/components/projects/auto-seed/SeedBadge'
 
 interface PcItem {
   coachId: string
@@ -297,7 +299,10 @@ export function BudgetDashboard({
                   <td className="px-4 py-2.5">
                     {item.name}
                     {item.isEstimated && (
-                      <span className="ml-1.5 text-[10px] text-muted-foreground/60">추정</span>
+                      <>
+                        <span className="ml-1.5 text-[10px] text-muted-foreground/60">추정</span>
+                        <SeedBadge source="AI" label="AI 자동" className="ml-1.5" />
+                      </>
                     )}
                   </td>
                   {editingId === item.id ? (

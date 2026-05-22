@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+// F2 (Wave V) — auto-seed 엔진 (CostStandard 우선 + FALLBACK)
+import { loadCostRates } from '@/lib/budget/cost-defaults'
+import { seedAcItems, type OperationFormat } from '@/lib/budget/auto-seed'
 
 // CoachAssignment role → payRole 매핑 (coach-finder RATE_TABLE 기준)
 const ROLE_TO_PAY_ROLE: Record<string, string> = {
@@ -83,26 +86,39 @@ export async function POST(req: NextRequest) {
       isEstimated: false,
     }))
 
-    // 기존 AC 항목 없으면 세션 수 기반 기본 추정
+    // F2 (Wave V): 기존 AC 항목 없으면 auto-seed 엔진으로 동적 카테고리 시드.
+    //   - CostStandard 우선 + FALLBACK_RATES 안전망
+    //   - 운영 형식 (offline/online/hybrid) 별 카테고리 다름 — 정형화 회피
+    //   - 회귀 가드: flag 무관 항상 신규 로직 (단가는 같거나 더 정확, 응답 형태 동일)
     if (acItems.length === 0) {
-      const sessionCount = project.curriculum.filter((c) => !c.isCoaching1on1).length
-      const participantCount = (project.rfpParsed as any)?.targetCount ?? 30
+      const participantCount = (project.rfpParsed as { targetCount?: number })?.targetCount ?? 30
+      // 운영 형식 추정 (RFP 또는 PM 명시 — 현 단계는 default 'offline')
+      // TODO F5: RFP 의 keywords 에서 'online'/'온라인'/'화상' 매칭 시 'online' 또는 'hybrid'
+      const operationFormat: OperationFormat = 'offline'
 
-      const estimates = [
-        { wbsCode: 'AC-06', category: '식음료비', name: '교육 중 다과비', unit: '인·회', unitPrice: 10000, quantity: participantCount * sessionCount },
-        { wbsCode: 'AC-11', category: '장소비', name: '교육장 임차비', unit: '일', unitPrice: 500000, quantity: Math.max(1, Math.ceil(sessionCount / 2)) },
-        { wbsCode: 'AC-08', category: '교통비', name: '강사 교통비 (서울)', unit: '인·회', unitPrice: 30000, quantity: project.coachAssignments.length * sessionCount },
-      ]
+      const rates = await loadCostRates(prisma)
+      const seed = seedAcItems({
+        curriculum: project.curriculum.map((c) => ({
+          isTheory: c.isTheory,
+          isActionWeek: c.isActionWeek,
+          isCoaching1on1: c.isCoaching1on1,
+          durationHours: c.durationHours,
+        })),
+        coachCount: project.coachAssignments.length,
+        targetCount: participantCount,
+        operationFormat,
+        rates,
+      })
 
-      acItems = estimates.map((e) => ({
+      acItems = seed.acItems.map((i) => ({
         id: '',
-        wbsCode: e.wbsCode,
-        category: e.category,
-        name: e.name,
-        unit: e.unit,
-        unitPrice: e.unitPrice,
-        quantity: e.quantity,
-        amount: e.unitPrice * e.quantity,
+        wbsCode: i.wbsCode,
+        category: i.category,
+        name: i.name,
+        unit: i.unit,
+        unitPrice: i.unitPrice,
+        quantity: i.quantity,
+        amount: i.amount,
         isEstimated: true,
       }))
     }

@@ -24,10 +24,18 @@ export interface CurriculumSession {
   impactModuleCode?: string | null
   // Logic Model 항목 연결 (예: ["OC-1", "OP-2"]) — 이 세션이 어떤 outcome/output에 기여하는지
   logicModelLinks?: string[]
+  // F2 (Wave V, 2026-05-22) — 진단 IP 자동 회차 메타.
+  // ACTT 사전·사후는 페어 강제, DOGS·5D 는 AI 판단.
+  // prisma.CurriculumItem 에는 신규 컬럼 X — notes prefix 또는 client-side state 로 보관 (H.1.f 옵션 A).
+  // 옵션 B (schema 마이그레이션) 는 F5 또는 ADR-016 후속에서 처리.
+  isDiagnostic?: boolean
+  diagnosticType?: 'DOGS' | 'ACTT_PRE' | 'FIVE_D' | 'ACTT_POST'
+  autoSeeded?: boolean // F2 자동 시드 결과 (PM 수동 작성과 구별)
 }
 
 export interface CurriculumInsight {
-  type: 'info' | 'tip' | 'asset'
+  // F2: 'diagnostic' 타입 추가 — 진단 IP 자동 회차 안내용
+  type: 'info' | 'tip' | 'asset' | 'diagnostic'
   message: string
 }
 

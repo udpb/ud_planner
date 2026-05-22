@@ -20,6 +20,8 @@ import { validateCurriculumRules, type RuleViolation } from '@/lib/curriculum-ru
 import { DataFlowBanner } from '@/components/projects/data-flow-banner'
 import { sectionLabel } from '@/lib/eval-strategy'
 import type { RfpSlice, StrategySlice } from '@/lib/pipeline-context'
+// F2 (Wave V) — 자동 시드 마커 시각화
+import { SeedBadge } from '@/components/projects/auto-seed/SeedBadge'
 
 interface CurriculumItem {
   id: string
@@ -40,8 +42,40 @@ interface CurriculumItem {
 }
 
 interface CurriculumInsight {
-  type: 'info' | 'tip' | 'asset'
+  /** F2 (Wave V): 'diagnostic' 타입 추가 — 진단 IP 자동 회차 안내용 */
+  type: 'info' | 'tip' | 'asset' | 'diagnostic'
   message: string
+}
+
+/**
+ * F2 — notes prefix 파싱 ([DIAGNOSTIC:ACTT_PRE] 또는 [AUTOSEEDED]).
+ * curriculum-ai/route 가 DB notes 에 prefix 박아둠 (H.1.f 옵션 A).
+ */
+function parseSessionMeta(notes: string | null): {
+  isDiagnostic: boolean
+  diagnosticType?: 'DOGS' | 'ACTT_PRE' | 'FIVE_D' | 'ACTT_POST'
+  autoSeeded: boolean
+} {
+  if (!notes) return { isDiagnostic: false, autoSeeded: false }
+  const diagMatch = notes.match(/\[DIAGNOSTIC:(DOGS|ACTT_PRE|FIVE_D|ACTT_POST)\]/)
+  const autoMatch = notes.includes('[AUTOSEEDED]')
+  return {
+    isDiagnostic: !!diagMatch,
+    diagnosticType: diagMatch?.[1] as
+      | 'DOGS'
+      | 'ACTT_PRE'
+      | 'FIVE_D'
+      | 'ACTT_POST'
+      | undefined,
+    autoSeeded: autoMatch,
+  }
+}
+
+const DIAGNOSTIC_LABEL: Record<string, string> = {
+  DOGS: 'DOGS 진단',
+  ACTT_PRE: 'ACTT 사전',
+  FIVE_D: '5D 핵심역량',
+  ACTT_POST: 'ACTT 사후',
 }
 
 interface Props {
@@ -88,6 +122,9 @@ function SessionCard({
   const hasViolation = violations.some((v) => v.affectedSessions?.includes(item.sessionNo))
   const isBlockViolation = violations.some((v) => v.action === 'BLOCK' && v.affectedSessions?.includes(item.sessionNo))
 
+  // F2 (Wave V) — notes prefix 에서 진단 회차/자동 시드 메타 파싱
+  const sessionMeta = parseSessionMeta(item.notes)
+
   return (
     <div ref={setNodeRef} style={style} className={cn(
       'group relative rounded-lg border bg-card transition-colors',
@@ -133,6 +170,16 @@ function SessionCard({
               <Badge variant="outline" className="h-4 px-1.5 text-[10px] border-amber-400 text-amber-700 bg-amber-50">
                 <AlertTriangle className="h-2.5 w-2.5 mr-0.5" />연속 이론
               </Badge>
+            )}
+            {/* F2 (Wave V) — 진단 IP 자동 회차 / 자동 시드 마커 */}
+            {sessionMeta.isDiagnostic && sessionMeta.diagnosticType && (
+              <SeedBadge
+                source="AI"
+                label={DIAGNOSTIC_LABEL[sessionMeta.diagnosticType] ?? '진단'}
+              />
+            )}
+            {sessionMeta.autoSeeded && !sessionMeta.isDiagnostic && (
+              <SeedBadge source="AI" label="AI 자동" />
             )}
           </div>
 
@@ -191,6 +238,8 @@ const INSIGHT_ICON = {
   info: <Info className="h-3.5 w-3.5 shrink-0 text-blue-500" />,
   tip: <Lightbulb className="h-3.5 w-3.5 shrink-0 text-amber-500" />,
   asset: <Sparkles className="h-3.5 w-3.5 shrink-0 text-primary" />,
+  // F2 (Wave V) — 진단 IP 자동 회차 안내용
+  diagnostic: <Sparkles className="h-3.5 w-3.5 shrink-0 text-[color:var(--primary-orange)]" />,
 }
 
 export function CurriculumBoard({

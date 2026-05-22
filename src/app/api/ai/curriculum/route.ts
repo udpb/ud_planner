@@ -16,6 +16,11 @@ import type { ExternalResearch } from '@/lib/ai/research'
 import type { CurriculumInsight } from '@/lib/ai/curriculum-types'
 import type { ImpactModuleContext } from '@/lib/ud-brand'
 import type { PlanningChannel } from '@/lib/planning-direction'
+// F2 (Wave V) — 진단 IP 자동 주입 + topic citation
+import { injectDiagnosticSessions, type DiagnosticType } from '@/lib/curriculum/diagnostic-injector'
+import { suggestTopicsForCurriculum } from '@/lib/curriculum/topic-suggester'
+import { isExpressParadigmV3 } from '@/lib/feature-flags'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60 // 60초 — Vercel Hobby 한계, mode='outline'/'details' 로 분할
@@ -286,8 +291,41 @@ export async function POST(req: NextRequest) {
       aiResult.data.sessions,
     )
 
+    // F2 (Wave V) — 진단 IP 자동 주입 + topic citation enrich
+    // flag ON 일 때만 적용 (회귀 가드).
+    // 핵심: ACTT 사전·사후는 페어 강제, DOGS·5D 는 휴리스틱.
+    let sessionsAfterDiagnostic = sessionsWithCoaching
+    let diagnosticAdded: Array<{ type: DiagnosticType; sessionNo: number; reason: string }> = []
+    let diagnosticRationale: string[] = []
+    let topicAppliedCount = 0
+    const v3Enabled = isExpressParadigmV3()
+    if (v3Enabled && ctx.rfp?.parsed) {
+      const rfpParsed = ctx.rfp.parsed as RfpParsed
+      // 명시적으로 끄려면 body.skipDiagnostics===true (단 ACTT 페어는 여전히 강제)
+      const skipOptional = body?.skipDiagnostics === true
+      const diagResult = injectDiagnosticSessions({
+        sessions: sessionsWithCoaching,
+        rfp: rfpParsed,
+        universes: ctx.meta?.programProfile?.actpreneurUniverses,
+        skipOptionalDiagnostics: skipOptional,
+      })
+      sessionsAfterDiagnostic = diagResult.sessions
+      diagnosticAdded = diagResult.added
+      diagnosticRationale = diagResult.rationale
+
+      // topic suggester — 일반 회차에 stat citation 분배 (정형화 회피: 1 회차당 1개)
+      const topicResult = suggestTopicsForCurriculum({
+        sessions: sessionsAfterDiagnostic,
+        rfp: rfpParsed,
+        universes: ctx.meta?.programProfile?.actpreneurUniverses,
+        maxCitationsPerSession: 1,
+      })
+      sessionsAfterDiagnostic = topicResult.sessions
+      topicAppliedCount = topicResult.appliedCount
+    }
+
     // 기획자용 안내 메시지 생성
-    const advisoryInsights = buildAdvisoryInsights(sessionsWithCoaching)
+    const advisoryInsights = buildAdvisoryInsights(sessionsAfterDiagnostic)
     const allInsights: CurriculumInsight[] = [...advisoryInsights]
 
     if (addedPairs > 0) {
@@ -297,9 +335,24 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Rule Engine 검증 (R-001 ~ R-004)
+    // F2 — 진단 회차 자동 추가 안내
+    if (diagnosticAdded.length > 0) {
+      const types = diagnosticAdded.map((d) => d.type).join(', ')
+      allInsights.unshift({
+        type: 'diagnostic',
+        message: `진단 IP ${diagnosticAdded.length}회차 자동 추가됨 (${types}). ACTT 사전·사후 페어는 성장 변화량(Δ) 측정의 필수 — 임의 제거 시 평가위원 검증 불가.`,
+      })
+    }
+    if (topicAppliedCount > 0) {
+      allInsights.push({
+        type: 'info',
+        message: `데이터 센터 통계 ${topicAppliedCount}건이 회차 notes 에 참고 인용으로 자동 추가됨 (정형화 회피 — 회차당 1건).`,
+      })
+    }
+
+    // Rule Engine 검증 (R-001 ~ R-004) — 진단 회차 포함된 최종 sessions 기준
     const ruleResult = validateCurriculumRules(
-      sessionsWithCoaching.map((s) => ({
+      sessionsAfterDiagnostic.map((s) => ({
         sessionNo: s.sessionNo,
         isTheory: s.isTheory,
         isActionWeek: s.isActionWeek,
@@ -316,7 +369,7 @@ export async function POST(req: NextRequest) {
           message: '커리큘럼 설계 규칙을 충족하지 못합니다. 수정 후 다시 시도해주세요.',
           violations: ruleResult.violations,
           curriculum: {
-            sessions: sessionsWithCoaching,
+            sessions: sessionsAfterDiagnostic,
             designRationale: aiResult.data.designRationale,
             appliedDirection: aiResult.data.appliedDirection,
             insights: allInsights,
@@ -335,36 +388,59 @@ export async function POST(req: NextRequest) {
     }
 
     // DB 저장 — 기존 커리큘럼 교체 (projectId 단위)
+    // F2: 진단 회차 메타 (isDiagnostic/diagnosticType/autoSeeded) 는 notes prefix 로 영속화
+    //     (H.1.f 옵션 A — schema 마이그레이션 없이). Read 시 prefix 파싱.
     await prisma.curriculumItem.deleteMany({
       where: { projectId, moduleId: null },
     })
     await prisma.curriculumItem.createMany({
-      data: sessionsWithCoaching.map((s, i) => ({
-        projectId,
-        sessionNo: s.sessionNo,
-        title: s.title,
-        durationHours: s.durationHours,
-        lectureMinutes: s.lectureMinutes,
-        practiceMinutes: s.practiceMinutes,
-        isTheory: s.isTheory,
-        isActionWeek: s.isActionWeek,
-        isCoaching1on1: s.isCoaching1on1,
-        impactModuleCode: s.impactModuleCode ?? null,
-        notes: s.notes,
-        order: i,
-      })),
+      data: sessionsAfterDiagnostic.map((s, i) => {
+        // notes prefix: F2 진단 회차 / 자동 시드 메타 보관
+        const metaPrefix: string[] = []
+        if (s.isDiagnostic && s.diagnosticType) {
+          metaPrefix.push(`[DIAGNOSTIC:${s.diagnosticType}]`)
+        }
+        if (s.autoSeeded) {
+          metaPrefix.push('[AUTOSEEDED]')
+        }
+        const notesWithMeta =
+          metaPrefix.length > 0 ? `${metaPrefix.join(' ')} ${s.notes}` : s.notes
+
+        return {
+          projectId,
+          sessionNo: s.sessionNo,
+          title: s.title,
+          durationHours: s.durationHours,
+          lectureMinutes: s.lectureMinutes,
+          practiceMinutes: s.practiceMinutes,
+          isTheory: s.isTheory,
+          isActionWeek: s.isActionWeek,
+          isCoaching1on1: s.isCoaching1on1,
+          impactModuleCode: s.impactModuleCode ?? null,
+          notes: notesWithMeta,
+          order: i,
+        }
+      }),
     })
 
-    // 응답 — 기존 UI 호환 (curriculum.sessions / rationale / insights) + 신규 필드
+    // 응답 — 기존 UI 호환 (curriculum.sessions / rationale / insights) + F2 신규 필드
     return NextResponse.json({
       curriculum: {
-        sessions: sessionsWithCoaching,
+        sessions: sessionsAfterDiagnostic,
         rationale: aiResult.data.designRationale,
         designRationale: aiResult.data.designRationale,
         appliedDirection: aiResult.data.appliedDirection,
         insights: allInsights,
-        totalHours: sessionsWithCoaching.reduce((sum, s) => sum + s.durationHours, 0),
+        totalHours: sessionsAfterDiagnostic.reduce((sum, s) => sum + s.durationHours, 0),
       },
+      // F2 (Wave V) — 자동 시드 메타
+      autoSeed: v3Enabled
+        ? {
+            diagnosticAdded,
+            diagnosticRationale,
+            topicCitationsApplied: topicAppliedCount,
+          }
+        : null,
     })
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : '생성 실패'
