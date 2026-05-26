@@ -260,6 +260,14 @@ export default async function ProjectDetailPage({
             >
               🧠 Brain
             </Link>
+            {/* ADR-018 UX v2 미리보기 — Adaptive Stage Layout (PR #2~5 진행 중) */}
+            <Link
+              href={`/projects/${project.id}/v2`}
+              className="flex items-center gap-1 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100"
+              title="UX v2 미리보기 (ADR-018 Adaptive Stage Layout)"
+            >
+              ✨ v2
+            </Link>
             <div className="text-sm">
               <span className="text-muted-foreground">총 예산 </span>
               <span className="font-semibold">
