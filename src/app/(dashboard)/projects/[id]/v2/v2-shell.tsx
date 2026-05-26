@@ -17,6 +17,13 @@ import { BrainDock } from '@/components/shell/BrainDock'
 import { S1HeroCenter, type S1AnalysisResult } from '@/components/stages/S1HeroCenter'
 import { S2ChatCanvas } from '@/components/stages/S2ChatCanvas'
 import { S3Checklist, type LensScore, type AssetRow } from '@/components/stages/S3Checklist'
+import {
+  S4Workspace,
+  type CurriculumWeek,
+  type CoachInfo,
+  type BudgetItem,
+  type ProposalSectionRef,
+} from '@/components/stages/S4Workspace'
 
 export interface V2ShellProps {
   projectId: string
@@ -39,6 +46,15 @@ export interface V2ShellProps {
   /** S2 슬롯 진행 — ExpressDraft 에서 도출 */
   slotsFilled: number
   slotsTotal: number
+  /** S4 Workspace 데이터 (real) */
+  s4Curriculum: CurriculumWeek[]
+  s4Coaches: CoachInfo[]
+  s4Budget: {
+    totalKrw: number
+    items: BudgetItem[]
+    marginPct?: number | null
+  }
+  s4Proposal: { sections: ProposalSectionRef[] }
 }
 
 export function V2Shell({
@@ -54,6 +70,10 @@ export function V2Shell({
   analysis,
   slotsFilled,
   slotsTotal,
+  s4Curriculum,
+  s4Coaches,
+  s4Budget,
+  s4Proposal,
 }: V2ShellProps) {
   const router = useRouter()
   const [brainOpen, setBrainOpen] = useState(false)
@@ -209,7 +229,16 @@ export function V2Shell({
             onProceedToS4={() => setActiveStage('S4')}
           />
         )}
-        {activeStage === 'S4' && <StagePlaceholder stage="S4" label="정밀 편집" phase="E" />}
+        {activeStage === 'S4' && (
+          <S4Workspace
+            projectId={projectId}
+            curriculum={s4Curriculum}
+            coaches={s4Coaches}
+            budget={s4Budget}
+            proposal={s4Proposal}
+            onProceedToS5={() => setActiveStage('S5')}
+          />
+        )}
         {activeStage === 'S5' && <StagePlaceholder stage="S5" label="최종 승인" phase="F" />}
       </main>
 
