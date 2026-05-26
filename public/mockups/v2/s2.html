@@ -2,142 +2,221 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>S2 1차본 작성 — UX v2</title>
+<title>S2 · 1차본 작성 — UD-Planner UX v2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="./_shared.css" />
 <style>
   .s2-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    height: 100%;
-    min-height: calc(100vh - 44px - 52px - 64px);
-    padding: 16px 24px;
+    gap: 2px;
+    background: var(--hairline);
+    min-height: calc(100vh - 56px - 158px - 72px);
   }
 
-  /* 좌 챗봇 panel */
-  .chat-panel {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
+  /* Panel — chat */
+  .panel {
+    background: var(--white);
+    display: flex; flex-direction: column;
     overflow: hidden;
   }
-  .chat-panel__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
+  .panel__head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 2px solid var(--primary-orange);
   }
-  .chat-panel__title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-  .chat-panel__title .icon { color: var(--orange); }
-  .chat-panel__progress {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 11px; color: var(--text-muted);
+  .panel__title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--primary-orange);
+  }
+  .panel__title::before {
+    content: ''; width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--primary-orange);
+  }
+  .panel__title-en {
+    color: var(--dark-charcoal);
+    letter-spacing: 0;
+    text-transform: none;
+    font-style: italic;
+    font-size: 13px;
+  }
+  .panel__progress {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px;
+    color: var(--subtitle-text);
   }
   .slot-bar {
-    width: 100px; height: 4px; background: var(--bg-muted); border-radius: 999px; overflow: hidden;
+    width: 120px; height: 6px;
+    background: var(--hairline);
+    overflow: hidden;
   }
-  .slot-bar__fill { background: var(--orange); height: 100%; border-radius: 999px; }
+  .slot-bar__fill {
+    height: 100%;
+    background: var(--primary-orange);
+  }
+  .slot-num {
+    font-weight: 700; font-size: 12px;
+    color: var(--dark-charcoal);
+  }
 
   .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 18px;
+    flex: 1; overflow-y: auto;
+    padding: 24px;
+    background: var(--light-beige);
   }
-  .msg { margin-bottom: 16px; }
-  .msg.ai { display: flex; gap: 10px; }
-  .msg .avatar-sm {
-    width: 28px; height: 28px; flex-shrink: 0;
-    border-radius: 999px;
-    background: var(--orange-10);
-    color: var(--orange);
+  .msg { margin-bottom: 18px; }
+  .msg.ai { display: flex; gap: 12px; }
+  .msg__avatar {
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+    background: var(--primary-orange);
+    color: var(--white);
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: 12px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.5px;
   }
   .msg__bubble {
-    background: var(--beige);
-    border-radius: 14px;
-    padding: 10px 14px;
-    font-size: 13px;
-    line-height: 1.5;
-    max-width: 85%;
+    background: var(--white);
+    border-top: 2px solid var(--primary-orange);
+    padding: 14px 18px;
+    font-size: 13px; line-height: 1.7;
+    color: var(--body-text);
+    max-width: 90%;
+    box-shadow: 0 1px 0 var(--hairline);
   }
+  .msg__bubble strong { color: var(--dark-charcoal); font-weight: 700; }
   .msg.pm { text-align: right; }
-  .msg.pm .msg__bubble { background: var(--orange-10); display: inline-block; text-align: left; }
-
-  .quick-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; padding-left: 38px; }
-  .chip-action {
-    padding: 4px 10px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 11px;
-    color: var(--text-muted);
-    cursor: pointer;
+  .msg.pm .msg__bubble {
+    background: var(--dark-charcoal);
+    color: var(--warm-gray);
+    border-top-color: var(--cyan);
+    display: inline-block;
+    text-align: left;
   }
-  .chip-action:hover { background: var(--orange-10); color: var(--orange); border-color: var(--orange-40); }
-  .chip-action.is-primary { background: var(--orange); color: white; border-color: var(--orange); }
+  .msg.pm .msg__bubble strong { color: var(--white); }
+
+  .quick-chips {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-top: 10px;
+    padding-left: 44px;
+  }
+  .chip-action {
+    display: inline-flex; align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    background: var(--white);
+    border: 1px solid var(--hairline-strong);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--subtitle-text);
+    transition: all 0.15s;
+  }
+  .chip-action:hover {
+    border-color: var(--primary-orange);
+    color: var(--primary-orange);
+  }
+  .chip-action.is-primary {
+    background: var(--primary-orange);
+    color: var(--white);
+    border-color: var(--primary-orange);
+  }
+  .chip-action.is-primary:hover { background: var(--orange3); border-color: var(--orange3); color: var(--white); }
 
   .chat-input {
-    border-top: 1px solid var(--border);
-    padding: 12px 18px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
+    display: flex; gap: 8px;
+    padding: 16px 24px;
+    background: var(--white);
+    border-top: 1px solid var(--hairline);
   }
   .chat-input input {
     flex: 1;
-    border: 1px solid var(--border);
-    background: var(--bg-soft);
-    border-radius: 10px;
-    padding: 8px 12px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--hairline-strong);
+    background: var(--white);
     font-size: 13px;
+    color: var(--body-text);
   }
+  .chat-input input:focus { outline: none; border-color: var(--primary-orange); }
+  .chat-input button {
+    height: 40px;
+    padding: 0 18px;
+    background: var(--dark-charcoal);
+    color: var(--white);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .chat-input button:hover { background: var(--primary-orange); }
 
-  /* 우 미리보기 panel */
-  .preview-panel {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow-y: auto;
-    padding: 22px 24px;
-  }
-  .preview-panel__title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); margin-bottom: 4px; }
-  .preview-panel__hint { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
+  /* Panel — preview */
+  .preview-panel { background: var(--light-beige); }
+  .preview-panel .panel__head { background: var(--white); }
+  .preview-panel .panel__head { border-bottom-color: var(--dark-charcoal); }
+  .preview-panel .panel__title { color: var(--dark-charcoal); }
+  .preview-panel .panel__title::before { background: var(--dark-charcoal); }
 
-  .section {
-    margin-bottom: 18px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--border);
+  .preview-body {
+    flex: 1; overflow-y: auto;
+    padding: 18px;
   }
-  .section:last-child { border: none; }
-  .section__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .section__num { font-size: 11px; font-weight: 700; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-  .section__title { font-size: 14px; font-weight: 700; flex: 1; margin: 0 10px; }
-  .section__status {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-weight: 600;
+  .section-card {
+    background: var(--white);
+    margin-bottom: 2px;
+    padding: 18px 22px;
+    border-left: 4px solid var(--hairline-strong);
+    transition: border-color 0.15s;
   }
-  .section__status.is-filled { background: rgba(16, 185, 129, .12); color: #047857; }
-  .section__status.is-partial { background: var(--orange-10); color: var(--orange); }
-  .section__status.is-empty { background: var(--bg-muted); color: var(--text-muted); }
+  .section-card.is-filled { border-left-color: var(--green); }
+  .section-card.is-partial { border-left-color: var(--primary-orange); }
+  .section-card.is-empty { background: var(--light-beige); }
 
-  .section__body { font-size: 12px; line-height: 1.65; color: var(--text); }
-  .section__body.is-empty { color: var(--text-soft); font-style: italic; }
-  .section__body .citation {
+  .section-card__head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .section-card__num {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--subtitle-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .section-card__title {
+    font-size: 14px; font-weight: 700;
+    color: var(--dark-charcoal);
+    flex: 1;
+    letter-spacing: -0.2px;
+  }
+  .section-card__status {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+  }
+  .section-card.is-filled .section-card__status { background: var(--green); color: var(--white); }
+  .section-card.is-partial .section-card__status { background: var(--primary-orange); color: var(--white); }
+  .section-card.is-empty .section-card__status { background: var(--hairline-strong); color: var(--subtitle-text); }
+
+  .section-card__body {
+    font-size: 12px; line-height: 1.7;
+    color: var(--body-text);
+    margin-top: 4px;
+  }
+  .section-card.is-empty .section-card__body {
+    color: var(--subtitle-text);
+    font-style: italic;
+    font-size: 11px;
+  }
+  .citation {
     display: inline-block;
-    padding: 1px 6px;
-    background: var(--beige);
-    border-radius: 4px;
-    font-size: 10px;
-    color: var(--orange);
-    font-weight: 600;
+    padding: 1px 8px;
+    background: var(--light-beige);
+    border-left: 2px solid var(--primary-orange);
+    font-size: 10px; font-weight: 600;
+    color: var(--primary-orange);
+    margin-left: 4px;
   }
 </style>
 </head>
@@ -145,185 +224,208 @@
 
 <div class="shell">
 
-  <!-- Top bar -->
-  <div class="topbar">
-    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+  <!-- TopBar -->
+  <header class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Planner</a>
+    <span class="topbar__badge">v2</span>
     <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
-    <div class="topbar__stages">
-      <span class="stage-chip is-done">S1 RFP</span>
-      <span class="stage-chip is-active">S2 1차본</span>
-      <span class="stage-chip is-pending">S3 검수</span>
-      <span class="stage-chip is-pending">S4 정밀</span>
-      <span class="stage-chip is-pending">S5 승인</span>
-    </div>
-    <div class="topbar__progress">
-      <div class="progress-bar"><div class="progress-bar__fill" style="width: 35%"></div></div>
-      <span class="progress-pct">35%</span>
-    </div>
+    <nav class="stage-journey">
+      <div class="stage-step is-done">
+        <div class="stage-step__id">Stage 01</div>
+        <div class="stage-step__name">RFP 분석</div>
+      </div>
+      <div class="stage-step is-active">
+        <div class="stage-step__id">Stage 02</div>
+        <div class="stage-step__name">1차본</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 03</div>
+        <div class="stage-step__name">검수</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 04</div>
+        <div class="stage-step__name">정밀</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 05</div>
+        <div class="stage-step__name">승인</div>
+      </div>
+    </nav>
     <div class="topbar__right">
       <button class="btn-brain">🧠 Brain</button>
       <span class="avatar">PM</span>
     </div>
-  </div>
+  </header>
 
   <!-- Sub-header -->
   <div class="subheader">
-    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
-    <div class="subheader__meta">
-      <span class="badge b2g">B2G</span>
-      <span class="stat">발주처 · <strong>한국외국어대학교</strong></span>
-      <span class="stat">예산 · <strong>0.20억</strong></span>
-      <span class="stat">평가배점 · <strong>5개</strong></span>
+    <div class="subheader__top">
+      <div class="subheader__title-block">
+        <div class="subheader__eyebrow">Project · Drafting · 35%</div>
+        <h1 class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</h1>
+      </div>
+      <div class="subheader__actions">
+        <button class="btn-secondary">편집</button>
+        <a class="btn-secondary" href="#">v1 화면</a>
+      </div>
     </div>
-    <div class="subheader__actions">
-      <button class="btn-secondary">편집</button>
-      <a class="btn-secondary" href="#">v1 화면</a>
+    <div class="subheader__meta">
+      <span class="meta-pill"><span class="badge-channel">B2G</span></span>
+      <span class="meta-pill"><span class="label">발주처</span><span class="value">한국외국어대학교</span></span>
+      <span class="meta-pill"><span class="label">예산</span><span class="value big accent">0.20<span style="font-size:11px;">억</span></span></span>
+      <span class="meta-pill"><span class="label">평가배점</span><span class="value">5개</span></span>
+      <span class="meta-pill"><span class="label">슬롯</span><span class="value">5 / 12</span></span>
     </div>
   </div>
 
-  <!-- Main canvas — Chat-Canvas (좌 챗봇 + 우 7섹션 미리보기) -->
-  <div class="canvas">
-    <div class="canvas__main" style="padding: 0;">
-      <div class="s2-grid">
+  <!-- Canvas: S2 Chat-Canvas -->
+  <main class="canvas">
+    <div class="s2-grid">
 
-        <!-- 좌: 챗봇 -->
-        <div class="chat-panel">
-          <div class="chat-panel__head">
-            <div class="chat-panel__title"><span class="icon">✨</span>AI 1차본 빌더</div>
-            <div class="chat-panel__progress">
-              <span>슬롯 5/12</span>
-              <div class="slot-bar"><div class="slot-bar__fill" style="width: 42%"></div></div>
-            </div>
-          </div>
-          <div class="chat-messages">
-            <div class="msg ai">
-              <div class="avatar-sm">AI</div>
-              <div>
-                <div class="msg__bubble">
-                  좋아요! 다음 슬롯은 <strong>Before/After</strong> 입니다.<br/>
-                  이 사업이 끝났을 때 안산 청년 창업가들의 <strong>전·후 모습</strong>이 어떻게 달라져야 할까요?
-                </div>
-                <div class="quick-chips">
-                  <span class="chip-action is-primary">✨ AI 가 제안하기</span>
-                  <span class="chip-action">예시 5개 보기</span>
-                  <span class="chip-action">유사 사업 참고</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="msg pm">
-              <div class="msg__bubble">
-                Before: 시장 진입 막막 / 자금 부족<br/>
-                After: 12주 후 검증된 MVP + 시드 투자 연결
-              </div>
-            </div>
-
-            <div class="msg ai">
-              <div class="avatar-sm">AI</div>
-              <div>
-                <div class="msg__bubble">
-                  좋습니다! 이걸로 <strong>섹션 2 (핵심 메시지)</strong> 와 <strong>섹션 5 (예상 결과)</strong> 자동 채울게요.<br/>
-                  다음 슬롯 <strong>차별화 자산</strong> 으로 넘어갈까요?
-                </div>
-                <div class="quick-chips">
-                  <span class="chip-action is-primary">다음 슬롯 →</span>
-                  <span class="chip-action">먼저 확인</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="chat-input">
-            <input type="text" placeholder="추가 의견이나 질문..." />
-            <button class="btn-secondary">↑</button>
+      <!-- LEFT — Chat panel -->
+      <div class="panel">
+        <div class="panel__head">
+          <div class="panel__title">●<span class="panel__title-en">AI 1차본 빌더</span></div>
+          <div class="panel__progress">
+            <span>Slot</span>
+            <span class="slot-num">5 / 12</span>
+            <div class="slot-bar"><div class="slot-bar__fill" style="width: 42%"></div></div>
           </div>
         </div>
 
-        <!-- 우: 7섹션 미리보기 -->
-        <div class="preview-panel">
-          <div class="preview-panel__title">📄 1차본 미리보기</div>
-          <div class="preview-panel__hint">AI 자동 채워지면 실시간 반영 · 클릭으로 인라인 편집</div>
-
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">01</span>
-              <span class="section__title">제안 배경</span>
-              <span class="section__status is-filled">완성</span>
-            </div>
-            <div class="section__body">
-              안산은 ERICA 등 우수 대학이 있음에도 청년 창업 생태계가 분절되어 있다.
-              <span class="citation">[근거: 안산시 청년정책 보고서 2025]</span>
+        <div class="chat-messages">
+          <div class="msg ai">
+            <div class="msg__avatar">AI</div>
+            <div>
+              <div class="msg__bubble">
+                좋아요! 다음 슬롯은 <strong>Before / After</strong> 입니다.<br/>
+                이 사업이 끝났을 때 안산 청년 창업가들의 <strong>전·후 모습</strong>이 어떻게 달라져야 할까요?
+              </div>
+              <div class="quick-chips">
+                <span class="chip-action is-primary">✨ AI 가 제안하기</span>
+                <span class="chip-action">예시 5개 보기</span>
+                <span class="chip-action">유사 사업 참고</span>
+              </div>
             </div>
           </div>
 
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">02</span>
-              <span class="section__title">핵심 메시지</span>
-              <span class="section__status is-partial">진행중</span>
+          <div class="msg pm">
+            <div class="msg__bubble">
+              <strong>Before:</strong> 시장 진입 막막 / 자금 부족<br/>
+              <strong>After:</strong> 12 주 후 검증된 MVP + 시드 투자 연결
             </div>
-            <div class="section__body">
+          </div>
+
+          <div class="msg ai">
+            <div class="msg__avatar">AI</div>
+            <div>
+              <div class="msg__bubble">
+                좋습니다! 이걸로 <strong>섹션 2 (핵심 메시지)</strong> 와 <strong>섹션 5 (예상 결과)</strong> 자동 채울게요.<br/>
+                다음 슬롯 <strong>차별화 자산</strong> 으로 넘어갈까요?
+              </div>
+              <div class="quick-chips">
+                <span class="chip-action is-primary">다음 슬롯 →</span>
+                <span class="chip-action">먼저 확인</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input type="text" placeholder="추가 의견이나 질문을 입력하세요..." />
+          <button>↑ SEND</button>
+        </div>
+      </div>
+
+      <!-- RIGHT — Preview panel -->
+      <div class="panel preview-panel">
+        <div class="panel__head">
+          <div class="panel__title">●<span class="panel__title-en">1차본 미리보기</span></div>
+          <div class="panel__progress"><span>섹션 2 / 7 완성</span></div>
+        </div>
+
+        <div class="preview-body">
+          <div class="section-card is-filled">
+            <div class="section-card__head">
+              <span class="section-card__num">01</span>
+              <span class="section-card__title">제안 배경</span>
+              <span class="section-card__status">완성</span>
+            </div>
+            <div class="section-card__body">
+              안산은 ERICA 등 우수 대학이 있음에도 청년 창업 생태계가 분절되어 있다.
+              <span class="citation">근거: 안산시 청년정책 보고서 · 2025.03</span>
+            </div>
+          </div>
+
+          <div class="section-card is-partial">
+            <div class="section-card__head">
+              <span class="section-card__num">02</span>
+              <span class="section-card__title">핵심 메시지</span>
+              <span class="section-card__status">진행</span>
+            </div>
+            <div class="section-card__body">
               "안산 청년 창업가의 진짜 무대를 만든다 — 검증된 MVP + 시드 연결까지"
             </div>
           </div>
 
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">03</span>
-              <span class="section__title">차별화</span>
-              <span class="section__status is-empty">대기</span>
+          <div class="section-card is-empty">
+            <div class="section-card__head">
+              <span class="section-card__num">03</span>
+              <span class="section-card__title">차별화</span>
+              <span class="section-card__status">대기</span>
             </div>
-            <div class="section__body is-empty">PM 결정 대기 — Brain 자산 8건 매칭됨</div>
+            <div class="section-card__body">PM 결정 대기 · Brain 자산 8건 매칭됨</div>
           </div>
 
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">04</span>
-              <span class="section__title">실행 계획</span>
-              <span class="section__status is-empty">대기</span>
+          <div class="section-card is-empty">
+            <div class="section-card__head">
+              <span class="section-card__num">04</span>
+              <span class="section-card__title">실행 계획</span>
+              <span class="section-card__status">대기</span>
             </div>
-            <div class="section__body is-empty">자동 채움 예정</div>
+            <div class="section-card__body">자동 채움 예정</div>
           </div>
 
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">05</span>
-              <span class="section__title">예상 결과</span>
-              <span class="section__status is-partial">진행중</span>
+          <div class="section-card is-partial">
+            <div class="section-card__head">
+              <span class="section-card__num">05</span>
+              <span class="section-card__title">예상 결과</span>
+              <span class="section-card__status">진행</span>
             </div>
-            <div class="section__body">
-              12주 후: MVP 검증 80% · 시드 연결 12팀 · 누적 매출 9.2억원
+            <div class="section-card__body">
+              12 주 후 MVP 검증 80% · 시드 연결 12 팀 · 누적 매출 9.2 억원
             </div>
           </div>
 
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">06</span>
-              <span class="section__title">사회적 가치</span>
-              <span class="section__status is-empty">대기</span>
+          <div class="section-card is-empty">
+            <div class="section-card__head">
+              <span class="section-card__num">06</span>
+              <span class="section-card__title">사회적 가치 · SROI</span>
+              <span class="section-card__status">대기</span>
             </div>
-            <div class="section__body is-empty">SROI 계산 예정</div>
+            <div class="section-card__body">SROI 계산 예정 (impact-measurement DB)</div>
           </div>
 
-          <div class="section">
-            <div class="section__head">
-              <span class="section__num">07</span>
-              <span class="section__title">부속 자료</span>
-              <span class="section__status is-empty">대기</span>
+          <div class="section-card is-empty">
+            <div class="section-card__head">
+              <span class="section-card__num">07</span>
+              <span class="section-card__title">부속 자료</span>
+              <span class="section-card__status">대기</span>
             </div>
-            <div class="section__body is-empty">자동 첨부 예정</div>
+            <div class="section-card__body">자동 첨부 예정</div>
           </div>
         </div>
-
       </div>
+
     </div>
-  </div>
+  </main>
 
   <!-- NowBar -->
   <div class="nowbar">
     <div class="nowbar__icon">✨</div>
     <div class="nowbar__text">
-      <div class="nowbar__ctx">S2 1차본 작성 · 슬롯 5/12 완료</div>
-      <div class="nowbar__msg">다음 슬롯: 차별화 자산 (Brain 8건 매칭됨)</div>
+      <div class="nowbar__ctx">Next · Stage 02 · Slot 6 / 12</div>
+      <div class="nowbar__msg">차별화 자산 결정 — Brain 매칭 8건 중 수락할 것 선택</div>
       <div class="nowbar__hint">AI 자동 추천 또는 직접 입력 · 평균 1~2분</div>
     </div>
     <button class="btn-primary">
@@ -337,7 +439,7 @@
 
 <!-- Mockup nav -->
 <div class="mockup-nav">
-  <a href="./index.html">← 전체</a>
+  <a href="./index.html">← All</a>
   <a href="./s1.html">S1</a>
   <a class="is-current" href="./s2.html">S2</a>
   <a href="./s3.html">S3</a>

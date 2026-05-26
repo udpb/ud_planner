@@ -2,128 +2,300 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>S1 RFP 분석 — UX v2</title>
+<title>S1 · RFP 분석 — UD-Planner UX v2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="./_shared.css" />
 <style>
-  .s1-wrap { max-width: 720px; margin: 0 auto; padding: 64px 24px; text-align: center; }
-  .s1-icon { font-size: 48px; margin-bottom: 20px; }
-  .s1-title { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
-  .s1-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 40px; }
-  .dropzone {
-    border: 2px dashed var(--border-strong);
-    border-radius: 20px;
-    padding: 56px 24px;
-    background: var(--bg);
-    cursor: pointer;
-    transition: all .15s;
+  /* S1 — Hero center · 대용량 dropzone + 안내 카드 */
+  .s1-wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+  .s1-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--primary-orange);
     margin-bottom: 16px;
   }
-  .dropzone:hover { border-color: var(--orange); background: var(--orange-10); }
-  .dropzone .upload-icon { font-size: 40px; margin-bottom: 12px; color: var(--text-muted); }
-  .dropzone .main-text { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .dropzone .meta { font-size: 12px; color: var(--text-muted); }
-  .text-mode-link {
-    display: inline-block;
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 32px;
-    text-decoration: underline;
+  .s1-eyebrow::before {
+    content: ''; width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--primary-orange);
+  }
+  .s1-title {
+    font-size: clamp(32px, 4.5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -1.2px;
+    color: var(--dark-charcoal);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .s1-title .accent { color: var(--primary-orange); font-style: italic; }
+  .s1-sub {
+    font-size: 15px; color: var(--subtitle-text);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 580px;
+  }
+
+  /* Dropzone (sharp · 4px orange border-top · ghost) */
+  .dropzone {
+    background: var(--white);
+    border-top: 4px solid var(--primary-orange);
+    padding: 80px 32px;
+    text-align: center;
     cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+    margin-bottom: 2px;
   }
-  .info-card {
-    text-align: left;
-    background: var(--beige);
-    border-radius: 14px;
-    padding: 18px;
-    margin-top: 8px;
+  .dropzone:hover {
+    background: var(--light-beige);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
   }
-  .info-card h4 { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
-  .info-card ul { list-style: none; font-size: 11px; color: var(--text-muted); line-height: 1.85; }
-  .info-card li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+  .dropzone__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 64px; height: 64px;
+    background: var(--primary-orange);
+    color: var(--white);
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+  .dropzone__main {
+    font-size: 22px; font-weight: 700;
+    color: var(--dark-charcoal);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .dropzone__hint {
+    font-size: 13px; color: var(--subtitle-text);
+  }
+  .dropzone__formats {
+    display: inline-flex; gap: 1px;
+    margin-top: 24px;
+    background: var(--hairline);
+  }
+  .dropzone__format {
+    background: var(--white);
+    padding: 8px 16px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--subtitle-text);
+  }
+
+  .or-divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 24px 0;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--subtitle-text);
+    text-transform: uppercase;
+  }
+  .or-divider::before, .or-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--hairline-strong);
+  }
+
+  .text-mode-btn {
+    display: block;
+    width: 100%;
+    background: var(--white);
+    border-top: 2px solid var(--cyan);
+    padding: 28px 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 48px;
+  }
+  .text-mode-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+  .text-mode-btn__label {
+    font-size: 11px; font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .text-mode-btn__main {
+    font-size: 16px; font-weight: 600;
+    color: var(--dark-charcoal);
+  }
+
+  /* AFTER analysis section */
+  .after-analysis {
+    background: var(--dark-charcoal);
+    color: var(--white);
+    padding: 36px 32px;
+    border-top: 3px solid var(--action-orange);
+    position: relative;
+    overflow: hidden;
+  }
+  .after-analysis::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,130,4,0.08) 100%);
+  }
+  .after-analysis__label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--action-orange);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .after-analysis__label::before {
+    content: ''; display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--action-orange);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .after-analysis h3 {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .after-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    position: relative;
+  }
+  .after-item {
+    font-size: 13px;
+    color: var(--warm-gray);
+    line-height: 1.65;
+    padding-left: 20px;
+    position: relative;
+  }
+  .after-item::before {
+    content: '✓';
+    position: absolute; left: 0; top: 0;
+    color: var(--action-orange);
+    font-weight: 700;
+  }
 </style>
 </head>
 <body>
 
 <div class="shell">
 
-  <!-- Top bar -->
-  <div class="topbar">
-    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+  <!-- TopBar -->
+  <header class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Planner</a>
+    <span class="topbar__badge">v2</span>
     <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
-    <div class="topbar__stages">
-      <span class="stage-chip is-active">S1 RFP</span>
-      <span class="stage-chip is-pending">S2 1차본</span>
-      <span class="stage-chip is-pending">S3 검수</span>
-      <span class="stage-chip is-pending">S4 정밀</span>
-      <span class="stage-chip is-pending">S5 승인</span>
-    </div>
-    <div class="topbar__progress">
-      <div class="progress-bar"><div class="progress-bar__fill" style="width: 0%"></div></div>
-      <span class="progress-pct">0%</span>
-    </div>
+    <nav class="stage-journey">
+      <div class="stage-step is-active">
+        <div class="stage-step__id">Stage 01</div>
+        <div class="stage-step__name">RFP 분석</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 02</div>
+        <div class="stage-step__name">1차본</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 03</div>
+        <div class="stage-step__name">검수</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 04</div>
+        <div class="stage-step__name">정밀</div>
+      </div>
+      <div class="stage-step is-pending">
+        <div class="stage-step__id">Stage 05</div>
+        <div class="stage-step__name">승인</div>
+      </div>
+    </nav>
     <div class="topbar__right">
       <button class="btn-brain">🧠 Brain</button>
       <span class="avatar">PM</span>
     </div>
-  </div>
+  </header>
 
   <!-- Sub-header -->
   <div class="subheader">
-    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
-    <div class="subheader__meta">
-      <span class="badge b2g">B2G</span>
-      <span class="stat">발주처 · <strong>한국외국어대학교</strong></span>
-      <span class="stat">예산 · <strong>0.20억</strong></span>
-    </div>
-    <div class="subheader__actions">
-      <button class="btn-secondary">편집</button>
-      <a class="btn-secondary" href="../../projects/cmpcgyyx7000004joclxcdlgh">v1 화면</a>
-    </div>
-  </div>
-
-  <!-- Main canvas — Hero center -->
-  <div class="canvas">
-    <div class="canvas__main">
-      <div class="s1-wrap">
-        <div class="s1-icon">📄</div>
-        <div class="s1-title">RFP 업로드해서 분석 시작</div>
-        <div class="s1-sub">PDF · DOCX · HWP 지원 · AI 가 자동 파싱 (~30초)</div>
-
-        <label class="dropzone">
-          <div class="upload-icon">⬆</div>
-          <div class="main-text">드래그 & 드롭 또는 클릭해서 업로드</div>
-          <div class="meta">최대 20MB · 1개 파일</div>
-        </label>
-
-        <a class="text-mode-link">또는 텍스트 직접 붙여넣기 →</a>
-
-        <div class="info-card">
-          <h4>분석 완료 후 자동으로:</h4>
-          <ul>
-            <li>사업명 · 발주처 · 예산 · 평가배점 · 키워드 추출</li>
-            <li>Logic Model 자동 생성</li>
-            <li>유사 수주 자산 (Brain matching) 자동 매칭</li>
-            <li>S2 (1차본) AI 자동 60% 채움 옵션 제시</li>
-          </ul>
-        </div>
+    <div class="subheader__top">
+      <div class="subheader__title-block">
+        <div class="subheader__eyebrow">Project · In Progress</div>
+        <h1 class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</h1>
+      </div>
+      <div class="subheader__actions">
+        <button class="btn-secondary">편집</button>
+        <a class="btn-secondary" href="#">v1 화면</a>
       </div>
     </div>
+    <div class="subheader__meta">
+      <span class="meta-pill"><span class="badge-channel">B2G</span></span>
+      <span class="meta-pill"><span class="label">발주처</span><span class="value">한국외국어대학교</span></span>
+      <span class="meta-pill"><span class="label">예산</span><span class="value big accent">0.20<span style="font-size:11px; margin-left:2px;">억</span></span></span>
+      <span class="meta-pill"><span class="label">평가배점</span><span class="value">5개</span></span>
+      <span class="meta-pill"><span class="label">진행도</span><span class="value">0%</span></span>
+    </div>
   </div>
+
+  <!-- Canvas: S1 Hero center -->
+  <main class="canvas">
+    <div class="s1-wrap">
+
+      <div class="s1-eyebrow">Stage 01 · RFP Analysis</div>
+      <h1 class="s1-title">RFP 를 분석해서<br/><span class="accent">기획 1차본</span>의 출발점을 잡습니다</h1>
+      <p class="s1-sub">
+        PDF · DOCX · HWP 파일을 업로드하면 AI 가 ~30 초 안에 사업명 · 발주처 · 예산 · 평가배점 · 키워드를 자동 추출하고
+        Logic Model + Brain 매칭까지 한 번에 처리합니다.
+      </p>
+
+      <!-- Dropzone -->
+      <label class="dropzone">
+        <div class="dropzone__icon">⬆</div>
+        <div class="dropzone__main">RFP 파일을 드래그 & 드롭</div>
+        <div class="dropzone__hint">또는 영역을 클릭해서 선택 · 최대 20MB</div>
+        <div class="dropzone__formats">
+          <span class="dropzone__format">PDF</span>
+          <span class="dropzone__format">DOCX</span>
+          <span class="dropzone__format">DOC</span>
+          <span class="dropzone__format">HWP</span>
+        </div>
+      </label>
+
+      <div class="or-divider">또는</div>
+
+      <button class="text-mode-btn">
+        <div class="text-mode-btn__label">Paste Text</div>
+        <div class="text-mode-btn__main">RFP 본문을 직접 붙여넣기</div>
+      </button>
+
+      <!-- After analysis preview -->
+      <div class="after-analysis">
+        <div class="after-analysis__label">After Analysis · Automatic</div>
+        <h3>분석 완료 후 자동으로 처리되는 것</h3>
+        <div class="after-list">
+          <div class="after-item">사업명 · 발주처 · 예산 · 평가배점 · 키워드 추출</div>
+          <div class="after-item">Logic Model 자동 생성 (impact·outcome·activity·input)</div>
+          <div class="after-item">유사 수주 자산 (Brain matching) 자동 매칭</div>
+          <div class="after-item">S2 (1차본) AI 자동 60% 채움 옵션 제시</div>
+          <div class="after-item">발주처 평가배점 가중치 inspector 사전 적용</div>
+          <div class="after-item">Risk Mitigation 후보 3~5건 자동 제안</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
 
   <!-- NowBar -->
   <div class="nowbar">
     <div class="nowbar__icon">⚡</div>
     <div class="nowbar__text">
-      <div class="nowbar__ctx">S1 RFP 분석</div>
-      <div class="nowbar__msg">RFP 업로드 또는 텍스트 붙여넣기를 시작해주세요</div>
-      <div class="nowbar__hint">AI 가 자동 파싱 · ~30초 이내</div>
+      <div class="nowbar__ctx">Next · Stage 01 · RFP Analysis</div>
+      <div class="nowbar__msg">RFP 파일 업로드 또는 텍스트 붙여넣기로 분석을 시작하세요</div>
+      <div class="nowbar__hint">AI 가 자동 파싱 · ~30초 이내 · 분석 후 Stage 02 로 이동</div>
     </div>
-    <button class="btn-primary" disabled style="opacity:.5; cursor:not-allowed">
-      RFP 업로드 후 활성화
+    <button class="btn-primary is-disabled">
+      RFP 입력 후 활성화
     </button>
   </div>
 
@@ -131,7 +303,7 @@
 
 <!-- Mockup nav -->
 <div class="mockup-nav">
-  <a href="./index.html">← 전체</a>
+  <a href="./index.html">← All</a>
   <a class="is-current" href="./s1.html">S1</a>
   <a href="./s2.html">S2</a>
   <a href="./s3.html">S3</a>
