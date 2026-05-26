@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>UD-Planner UX v2 — Mockup Index</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./_shared.css" />
+<style>
+  body { background: var(--bg); }
+  .wrap { max-width: 1024px; margin: 0 auto; padding: 64px 24px; }
+  .hero { text-align: center; margin-bottom: 56px; }
+  .hero h1 { font-size: 32px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
+  .hero p { font-size: 14px; color: var(--text-muted); max-width: 620px; margin: 0 auto 24px; }
+  .hero .tag { display: inline-block; padding: 4px 12px; background: var(--orange-10); color: var(--orange); border-radius: 999px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+
+  .principle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 40px 0 56px; }
+  .principle { padding: 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); }
+  .principle .icon { font-size: 24px; margin-bottom: 8px; }
+  .principle h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .principle p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  .stages-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  .stages-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 56px; }
+  .stage-card {
+    display: block;
+    padding: 20px 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+    transition: all .15s;
+  }
+  .stage-card:hover { border-color: var(--orange-40); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+  .stage-card .id { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+  .stage-card .name { font-size: 16px; font-weight: 700; margin: 4px 0 6px; }
+  .stage-card .essence { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .stage-card .mode { display: inline-block; margin-top: 10px; padding: 2px 8px; background: var(--beige); border-radius: 999px; font-size: 10px; font-weight: 600; color: var(--charcoal); }
+
+  .shell-section { background: var(--bg-soft); padding: 32px; border-radius: 16px; }
+  .shell-ascii {
+    font-family: 'Menlo', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    background: var(--bg);
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .token-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .token { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); font-size: 11px; }
+  .token .swatch { width: 12px; height: 12px; border-radius: 999px; }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="tag">ADR-018 · UX v2 Mockup</div>
+    <h1>UD-Planner — Adaptive Stage Layout</h1>
+    <p>5 Stage 적응형 레이아웃. 각 Stage 본질에 맞는 다른 화면 풍경. 단일 진행도. AI 동행 Dock.</p>
+  </div>
+
+  <!-- 4 원칙 -->
+  <div class="principle-grid">
+    <div class="principle">
+      <div class="icon">🎯</div>
+      <h3>단일 진행도</h3>
+      <p>Top bar Stage chip 만. 좌·우·중복 모두 제거.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🔄</div>
+      <h3>적응형 캔버스</h3>
+      <p>Stage 마다 본질에 맞는 다른 화면 모드.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">💡</div>
+      <h3>NowBar 단일 CTA</h3>
+      <p>다음 액션 1개. PM 의 인지 부담 0.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🧠</div>
+      <h3>Brain Dock 동행</h3>
+      <p>우측 슬라이드. 기본 닫힘, 필요할 때만.</p>
+    </div>
+  </div>
+
+  <!-- Shell -->
+  <div class="shell-section">
+    <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">공통 Shell — 모든 Stage 공통</h2>
+    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+      Top bar 44px (단일 진행도) · Sub-header 52px (사업 메타) · Main Canvas (full width) · NowBar 64px (단일 CTA) · Brain Dock 320px (우측 toggle)
+    </p>
+<pre class="shell-ascii">┌──── Top 44px ─────────────────────────────────────────────────┐
+│ UD·Ops  ← 한국외대 RISE ▾   ✓S1 ✓S2 ●S3 ○S4 ○S5  ━━━━ 75%  🧠Brain  PM │
+├──── Sub-header 52px ──────────────────────────────────────────┤
+│ 2026 안산 임팩트 챌린지  B2G · ERICA IC · 0.20억           [편집] [v1] │
+├──── Main Canvas (Stage 별 적응형) ─────────────────────────────┤
+│                                                                │
+│       (S1 Hero / S2 Chat-Canvas / S3 Checklist /              │
+│        S4 Workspace / S5 Summary)                              │
+│                                                                │
+├──── NowBar 64px ──────────────────────────────────────────────┤
+│ 💡 다음 액션 · S3 검수 중                              [실행 →] │
+└────────────────────────────────────────────────────────────────┘</pre>
+
+    <!-- Color tokens -->
+    <h3 style="font-size: 13px; font-weight: 700; margin: 18px 0 6px;">디자인 토큰</h3>
+    <div class="token-row">
+      <span class="token"><span class="swatch" style="background:#F05519"></span> Action Orange</span>
+      <span class="token"><span class="swatch" style="background:#373938"></span> Charcoal</span>
+      <span class="token"><span class="swatch" style="background:#F5F0EB"></span> Beige</span>
+      <span class="token"><span class="swatch" style="background:#06A9D0"></span> Cyan</span>
+      <span class="token"><span class="swatch" style="background:#10B981"></span> Green</span>
+      <span class="token"><span class="swatch" style="background:#EF4444"></span> Red</span>
+      <span class="token"><span class="swatch" style="background:#8B5CF6"></span> Purple (Brain)</span>
+    </div>
+  </div>
+
+  <!-- 5 Stages -->
+  <div class="stages-section" style="margin-top: 48px;">
+    <h2>5 Stage — 각자 다른 화면 풍경</h2>
+    <div class="stages-grid">
+      <a class="stage-card" href="./s1.html">
+        <div class="id">S1</div>
+        <div class="name">RFP 분석</div>
+        <div class="essence">RFP 파일 업로드 + AI 자동 파싱 · 결과 카드</div>
+        <span class="mode">Hero Center</span>
+      </a>
+      <a class="stage-card" href="./s2.html">
+        <div class="id">S2</div>
+        <div class="name">1차본 작성</div>
+        <div class="essence">AI 와 대화하며 결정 · 좌 챗봇 + 우 7섹션 미리보기</div>
+        <span class="mode">Chat-Canvas</span>
+      </a>
+      <a class="stage-card" href="./s3.html">
+        <div class="id">S3</div>
+        <div class="name">검수</div>
+        <div class="essence">Inspector 7 lens · 약점 자산 추천 + diff</div>
+        <span class="mode">Checklist+Diff</span>
+      </a>
+      <a class="stage-card" href="./s4.html">
+        <div class="id">S4</div>
+        <div class="name">정밀 편집</div>
+        <div class="essence">커리큘럼·코치·예산·제안서 4 도메인</div>
+        <span class="mode">Workspace Tabs</span>
+      </a>
+      <a class="stage-card" href="./s5.html">
+        <div class="id">S5</div>
+        <div class="name">최종 승인</div>
+        <div class="essence">요약 + 사회적 가치 + 큰 승인 버튼</div>
+        <span class="mode">Summary</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    UD-Planner · ADR-018 Adaptive Stage Layout · 2026-05-27 ·
+    <a href="https://github.com/udpb/ud_planner" target="_blank" style="color: var(--orange);">github</a>
+  </footer>
+</div>
+
+</body>
+</html>

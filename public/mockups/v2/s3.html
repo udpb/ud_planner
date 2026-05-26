@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>S3 검수 — UX v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./_shared.css" />
+<style>
+  .s3-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .s3-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .score-badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #047857, #10B981);
+    color: white;
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+  }
+  .score-badge .score { font-size: 36px; font-weight: 800; line-height: 1; }
+  .score-badge .label { font-size: 11px; opacity: .85; }
+  .score-badge .pass { font-size: 13px; font-weight: 700; }
+
+  .lens-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .lens {
+    padding: 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .lens:hover { border-color: var(--orange-40); }
+  .lens__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .lens__name { font-size: 12px; font-weight: 700; }
+  .lens__score { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .lens.is-pass .lens__score { color: var(--green); }
+  .lens.is-pass { border-color: rgba(16, 185, 129, .35); background: rgba(16, 185, 129, .04); }
+  .lens.is-weak .lens__score { color: var(--amber); }
+  .lens.is-weak { border-color: rgba(245, 158, 11, .35); background: rgba(245, 158, 11, .04); }
+  .lens.is-fail .lens__score { color: var(--red); }
+  .lens.is-fail { border-color: rgba(239, 68, 68, .35); background: rgba(239, 68, 68, .04); }
+  .lens__hint { font-size: 11px; color: var(--text-muted); }
+
+  .recommend-section {
+    background: var(--bg);
+    border: 1px solid var(--amber);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .recommend-section h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .recommend-section h3::before { content: '🟡 '; }
+  .recommend-section .sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+
+  .asset-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: var(--bg-soft);
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .asset-row:hover { background: var(--orange-10); border-color: var(--orange-40); }
+  .asset-row__check {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border-strong);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .asset-row__body { flex: 1; min-width: 0; }
+  .asset-row__name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .asset-row__snippet { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .asset-row__meta { display: flex; gap: 8px; font-size: 11px; color: var(--text-muted); flex-shrink: 0; align-items: center; }
+  .badge-sm { padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 600; }
+  .badge-sm.high { background: var(--orange-10); color: var(--orange); }
+  .badge-sm.cite-count { background: var(--bg-muted); color: var(--text-muted); }
+  .preview-btn {
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Diff preview */
+  .diff-section {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .diff-section h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .diff-line { display: flex; gap: 12px; padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; font-size: 12px; }
+  .diff-line.add { background: rgba(16, 185, 129, .08); color: #047857; }
+  .diff-line.add::before { content: '+'; color: #047857; font-weight: 700; }
+  .diff-line.context { color: var(--text-muted); }
+  .diff-line.context::before { content: ' '; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+    <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
+    <div class="topbar__stages">
+      <span class="stage-chip is-done">S1 RFP</span>
+      <span class="stage-chip is-done">S2 1차본</span>
+      <span class="stage-chip is-active">S3 검수</span>
+      <span class="stage-chip is-pending">S4 정밀</span>
+      <span class="stage-chip is-pending">S5 승인</span>
+    </div>
+    <div class="topbar__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" style="width: 65%"></div></div>
+      <span class="progress-pct">65%</span>
+    </div>
+    <div class="topbar__right">
+      <button class="btn-brain">🧠 Brain</button>
+      <span class="avatar">PM</span>
+    </div>
+  </div>
+
+  <!-- Sub-header -->
+  <div class="subheader">
+    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
+    <div class="subheader__meta">
+      <span class="badge b2g">B2G</span>
+      <span class="stat">예산 · <strong>0.20억</strong></span>
+      <span class="stat">1차본 · <strong>완성</strong></span>
+    </div>
+    <div class="subheader__actions">
+      <button class="btn-secondary">편집</button>
+      <a class="btn-secondary" href="#">v1 화면</a>
+    </div>
+  </div>
+
+  <!-- Main canvas — Checklist + Diff -->
+  <div class="canvas">
+    <div class="canvas__main">
+      <div class="s3-wrap">
+
+        <div class="s3-header">
+          <div>
+            <h1 class="h2">🔍 검수 결과</h1>
+            <p class="text-muted text-small" style="margin-top: 4px;">Inspector 7 lens · 자동 검수 완료 · 약점 보강 권장 2건</p>
+          </div>
+          <div class="score-badge">
+            <div>
+              <div class="label">평가위원 시뮬 점수</div>
+              <div class="score">78</div>
+            </div>
+            <div class="pass">✓ 통과 임계점 75 점 초과</div>
+          </div>
+        </div>
+
+        <!-- 7 lens grid -->
+        <div class="lens-grid">
+          <div class="lens is-pass">
+            <div class="lens__head"><span class="lens__name">시장 통계</span><span class="lens__score">95</span></div>
+            <div class="lens__hint">통계청 + 안산시 데이터 인용 정확</div>
+          </div>
+          <div class="lens is-pass">
+            <div class="lens__head"><span class="lens__name">평가배점 매핑</span><span class="lens__score">88</span></div>
+            <div class="lens__hint">5개 배점 모두 본문 반영</div>
+          </div>
+          <div class="lens is-weak">
+            <div class="lens__head"><span class="lens__name">차별화</span><span class="lens__score">62</span></div>
+            <div class="lens__hint">자산 추가 권장 (Brain 5건)</div>
+          </div>
+          <div class="lens is-pass">
+            <div class="lens__head"><span class="lens__name">Before/After</span><span class="lens__score">82</span></div>
+            <div class="lens__hint">SMART 5축 모두 통과</div>
+          </div>
+          <div class="lens is-pass">
+            <div class="lens__head"><span class="lens__name">실행 가능성</span><span class="lens__score">80</span></div>
+            <div class="lens__hint">예산·기간·인력 합리적</div>
+          </div>
+          <div class="lens is-weak">
+            <div class="lens__head"><span class="lens__name">Risk 대응</span><span class="lens__score">68</span></div>
+            <div class="lens__hint">2건 추가 권장</div>
+          </div>
+          <div class="lens is-pass">
+            <div class="lens__head"><span class="lens__name">사회적 가치</span><span class="lens__score">85</span></div>
+            <div class="lens__hint">SROI 2.3억 계산 명확</div>
+          </div>
+          <div class="lens" style="border-style:dashed; opacity:.6">
+            <div class="lens__head"><span class="lens__name">발주처 특수</span><span class="lens__score" style="color:var(--text-muted)">—</span></div>
+            <div class="lens__hint">발주처 정보 부족</div>
+          </div>
+        </div>
+
+        <!-- Asset 추천 (약점 lens 보강) -->
+        <div class="recommend-section">
+          <h3>차별화 보강 — 자산 추천 5건</h3>
+          <p class="sub">Brain matching 0.84+ · 클릭하면 inline diff 미리보기 → 수락 시 자동 본문 반영</p>
+
+          <div class="asset-row">
+            <div class="asset-row__check"></div>
+            <div class="asset-row__body">
+              <div class="asset-row__name">ACTT 5단계 실행 루프 방법론</div>
+              <div class="asset-row__snippet">"창업가의 가설 → 실행 → 검증 → 학습 → 재실행 의 5단계 사이클을 12주에 4번 반복하여..."</div>
+            </div>
+            <div class="asset-row__meta">
+              <span class="badge-sm high">high</span>
+              <span class="badge-sm cite-count">인용 142</span>
+              <button class="preview-btn">미리보기</button>
+            </div>
+          </div>
+
+          <div class="asset-row">
+            <div class="asset-row__check"></div>
+            <div class="asset-row__body">
+              <div class="asset-row__name">DOGS 리더십 — 4 유형 진단·코칭</div>
+              <div class="asset-row__snippet">"Dynamic·Organize·Generate·Steady 4 유형 진단으로 팀별 맞춤형 코칭..."</div>
+            </div>
+            <div class="asset-row__meta">
+              <span class="badge-sm high">high</span>
+              <span class="badge-sm cite-count">인용 87</span>
+              <button class="preview-btn">미리보기</button>
+            </div>
+          </div>
+
+          <div class="asset-row">
+            <div class="asset-row__check" style="background:var(--orange); border-color:var(--orange)"></div>
+            <div class="asset-row__body">
+              <div class="asset-row__name">5D 진단 — AI 시대 창업가 5 역량</div>
+              <div class="asset-row__snippet">"Discover·Define·Design·Deliver·Direct 5D 사이클로 AI 협력 역량을 정량 측정..."</div>
+            </div>
+            <div class="asset-row__meta">
+              <span class="badge-sm high">high</span>
+              <span class="badge-sm cite-count">인용 54</span>
+              <button class="preview-btn">미리보기</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inline diff preview -->
+        <div class="diff-section">
+          <h3>📝 인라인 diff 미리보기 — 5D 진단 추가 시</h3>
+          <div class="diff-line context">## 3. 차별화 — 안산 청년 창업가의 진짜 무대</div>
+          <div class="diff-line context">기존 ACTT 5단계 + DOGS 리더십 4유형 진단으로...</div>
+          <div class="diff-line add">+ <strong>5D 진단</strong> (AI 시대 창업가 5 역량) 을 도입하여 12주 차수마다 정량 측정.</div>
+          <div class="diff-line add">+ 평균 30% 성장 입증 (인용 54건, 누적 만족도 94%).</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- NowBar -->
+  <div class="nowbar">
+    <div class="nowbar__icon">🟡</div>
+    <div class="nowbar__text">
+      <div class="nowbar__ctx">S3 검수 · 통과 (78점)</div>
+      <div class="nowbar__msg">약점 lens 보강 권장 — 자산 3건 수락 시 점수 +8 예상</div>
+      <div class="nowbar__hint">또는 보강 없이 바로 S4 정밀 편집 진입 가능</div>
+    </div>
+    <button class="btn-secondary" style="margin-right:6px">바로 S4 →</button>
+    <button class="btn-primary">
+      3건 모두 수락 + 본문 반영
+      <span class="eta">+8점</span>
+      <span class="arrow">→</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- Mockup nav -->
+<div class="mockup-nav">
+  <a href="./index.html">← 전체</a>
+  <a href="./s1.html">S1</a>
+  <a href="./s2.html">S2</a>
+  <a class="is-current" href="./s3.html">S3</a>
+  <a href="./s4.html">S4</a>
+  <a href="./s5.html">S5</a>
+</div>
+
+</body>
+</html>

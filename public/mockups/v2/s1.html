@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>S1 RFP 분석 — UX v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./_shared.css" />
+<style>
+  .s1-wrap { max-width: 720px; margin: 0 auto; padding: 64px 24px; text-align: center; }
+  .s1-icon { font-size: 48px; margin-bottom: 20px; }
+  .s1-title { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
+  .s1-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 40px; }
+  .dropzone {
+    border: 2px dashed var(--border-strong);
+    border-radius: 20px;
+    padding: 56px 24px;
+    background: var(--bg);
+    cursor: pointer;
+    transition: all .15s;
+    margin-bottom: 16px;
+  }
+  .dropzone:hover { border-color: var(--orange); background: var(--orange-10); }
+  .dropzone .upload-icon { font-size: 40px; margin-bottom: 12px; color: var(--text-muted); }
+  .dropzone .main-text { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .dropzone .meta { font-size: 12px; color: var(--text-muted); }
+  .text-mode-link {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .info-card {
+    text-align: left;
+    background: var(--beige);
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 8px;
+  }
+  .info-card h4 { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+  .info-card ul { list-style: none; font-size: 11px; color: var(--text-muted); line-height: 1.85; }
+  .info-card li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+    <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
+    <div class="topbar__stages">
+      <span class="stage-chip is-active">S1 RFP</span>
+      <span class="stage-chip is-pending">S2 1차본</span>
+      <span class="stage-chip is-pending">S3 검수</span>
+      <span class="stage-chip is-pending">S4 정밀</span>
+      <span class="stage-chip is-pending">S5 승인</span>
+    </div>
+    <div class="topbar__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" style="width: 0%"></div></div>
+      <span class="progress-pct">0%</span>
+    </div>
+    <div class="topbar__right">
+      <button class="btn-brain">🧠 Brain</button>
+      <span class="avatar">PM</span>
+    </div>
+  </div>
+
+  <!-- Sub-header -->
+  <div class="subheader">
+    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
+    <div class="subheader__meta">
+      <span class="badge b2g">B2G</span>
+      <span class="stat">발주처 · <strong>한국외국어대학교</strong></span>
+      <span class="stat">예산 · <strong>0.20억</strong></span>
+    </div>
+    <div class="subheader__actions">
+      <button class="btn-secondary">편집</button>
+      <a class="btn-secondary" href="../../projects/cmpcgyyx7000004joclxcdlgh">v1 화면</a>
+    </div>
+  </div>
+
+  <!-- Main canvas — Hero center -->
+  <div class="canvas">
+    <div class="canvas__main">
+      <div class="s1-wrap">
+        <div class="s1-icon">📄</div>
+        <div class="s1-title">RFP 업로드해서 분석 시작</div>
+        <div class="s1-sub">PDF · DOCX · HWP 지원 · AI 가 자동 파싱 (~30초)</div>
+
+        <label class="dropzone">
+          <div class="upload-icon">⬆</div>
+          <div class="main-text">드래그 & 드롭 또는 클릭해서 업로드</div>
+          <div class="meta">최대 20MB · 1개 파일</div>
+        </label>
+
+        <a class="text-mode-link">또는 텍스트 직접 붙여넣기 →</a>
+
+        <div class="info-card">
+          <h4>분석 완료 후 자동으로:</h4>
+          <ul>
+            <li>사업명 · 발주처 · 예산 · 평가배점 · 키워드 추출</li>
+            <li>Logic Model 자동 생성</li>
+            <li>유사 수주 자산 (Brain matching) 자동 매칭</li>
+            <li>S2 (1차본) AI 자동 60% 채움 옵션 제시</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NowBar -->
+  <div class="nowbar">
+    <div class="nowbar__icon">⚡</div>
+    <div class="nowbar__text">
+      <div class="nowbar__ctx">S1 RFP 분석</div>
+      <div class="nowbar__msg">RFP 업로드 또는 텍스트 붙여넣기를 시작해주세요</div>
+      <div class="nowbar__hint">AI 가 자동 파싱 · ~30초 이내</div>
+    </div>
+    <button class="btn-primary" disabled style="opacity:.5; cursor:not-allowed">
+      RFP 업로드 후 활성화
+    </button>
+  </div>
+
+</div>
+
+<!-- Mockup nav -->
+<div class="mockup-nav">
+  <a href="./index.html">← 전체</a>
+  <a class="is-current" href="./s1.html">S1</a>
+  <a href="./s2.html">S2</a>
+  <a href="./s3.html">S3</a>
+  <a href="./s4.html">S4</a>
+  <a href="./s5.html">S5</a>
+</div>
+
+</body>
+</html>
