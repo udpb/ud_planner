@@ -2,289 +2,420 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>S4 정밀 편집 — UX v2</title>
+<title>S4 · 정밀 편집 — UD-Planner UX v2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="./_shared.css" />
 <style>
-  .s4-wrap { padding: 24px; }
+  .s4-wrap { padding: 40px 32px; max-width: 1280px; margin: 0 auto; }
+
+  /* Tabs (sharp · UPPERCASE · orange active border-bottom) */
   .s4-tabs {
     display: flex;
-    gap: 4px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 24px;
+    gap: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 32px;
   }
   .s4-tab {
-    padding: 10px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    cursor: pointer;
-    display: inline-flex; align-items: center; gap: 8px;
-    transition: all .12s;
-  }
-  .s4-tab:hover { color: var(--text); }
-  .s4-tab.is-active { color: var(--orange); border-bottom-color: var(--orange); }
-  .s4-tab .badge-count {
-    font-size: 10px;
-    padding: 1px 6px;
-    background: var(--bg-muted);
-    border-radius: 999px;
-    font-weight: 600;
-  }
-  .s4-tab.is-active .badge-count { background: var(--orange-10); color: var(--orange); }
-
-  /* Tab content — 커리큘럼 (active) */
-  .curriculum-toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .curriculum-toolbar h2 { font-size: 16px; font-weight: 700; }
-  .curriculum-toolbar h2 small { font-weight: 500; color: var(--text-muted); margin-left: 8px; font-size: 12px; }
-  .toolbar-actions { display: flex; gap: 6px; }
-  .btn-primary-sm {
-    padding: 6px 12px;
-    background: var(--orange);
-    color: white;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .curriculum-grid {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .curriculum-row {
-    display: grid;
-    grid-template-columns: 60px 1fr 100px 120px 100px;
-    gap: 16px;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    align-items: center;
-    transition: background .1s;
-    cursor: pointer;
-  }
-  .curriculum-row:hover { background: var(--bg-soft); }
-  .curriculum-row:last-child { border-bottom: none; }
-  .curriculum-row.header {
-    background: var(--bg-muted);
-    font-size: 10px;
-    color: var(--text-muted);
-    font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px 24px;
+    background: transparent;
+    border-bottom: 3px solid transparent;
+    color: var(--subtitle-text);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    letter-spacing: .05em;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .s4-tab:hover { color: var(--dark-charcoal); background: var(--light-beige); }
+  .s4-tab.is-active {
+    color: var(--primary-orange);
+    border-bottom-color: var(--primary-orange);
+    background: var(--white);
+  }
+  .s4-tab__count {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px;
+    background: var(--light-beige);
+    color: var(--subtitle-text);
+    letter-spacing: 0.5px;
+  }
+  .s4-tab.is-active .s4-tab__count {
+    background: var(--primary-orange);
+    color: var(--white);
+  }
+
+  /* Layout — 좌 main + 우 stats */
+  .s4-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .toolbar__title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--dark-charcoal); }
+  .toolbar__sub {
+    font-size: 12px; font-weight: 500;
+    color: var(--subtitle-text);
+    margin-left: 12px;
+  }
+  .toolbar__actions { display: flex; gap: 6px; }
+  .btn-add {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    background: var(--primary-orange);
+    color: var(--white);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .btn-add:hover { background: var(--orange3); }
+
+  /* Curriculum grid (table-like, sharp, 2px gap construction blocks) */
+  .curri-grid {
+    background: var(--hairline);
+    display: grid;
+    gap: 1px;
+  }
+  .curri-row {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 60px 1fr 100px 160px 80px;
+    gap: 16px;
+    padding: 16px 20px;
+    align-items: center;
+    transition: background 0.12s;
+    cursor: pointer;
+  }
+  .curri-row:hover { background: var(--light-beige); }
+  .curri-row.header {
+    background: var(--dark-charcoal);
+    color: var(--warm-gray);
     cursor: default;
   }
-  .curriculum-row.header:hover { background: var(--bg-muted); }
-  .week-num { font-weight: 700; font-size: 14px; }
-  .session-title { font-size: 13px; font-weight: 600; }
-  .session-title small { display: block; font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
-  .session-type {
-    display: inline-block;
-    padding: 2px 8px;
-    background: var(--bg-muted);
-    border-radius: 999px;
-    font-size: 10px;
-    font-weight: 600;
+  .curri-row.header:hover { background: var(--dark-charcoal); }
+  .curri-row.header > * {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--warm-gray);
   }
-  .session-type.theory { background: rgba(6, 169, 208, .12); color: #0369A1; }
-  .session-type.action { background: rgba(245, 158, 11, .12); color: #B45309; }
-  .session-type.lecture { background: var(--orange-10); color: var(--orange); }
-  .duration { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-  .edit-link { font-size: 11px; color: var(--text-muted); }
-  .edit-link:hover { color: var(--orange); }
+  .curri-week {
+    font-size: 14px; font-weight: 700;
+    color: var(--primary-orange);
+    font-style: italic;
+    letter-spacing: -0.3px;
+  }
+  .curri-name {
+    font-size: 14px; font-weight: 600;
+    color: var(--dark-charcoal);
+    letter-spacing: -0.2px;
+  }
+  .curri-name small {
+    display: block;
+    font-size: 11px;
+    color: var(--subtitle-text);
+    font-weight: 400;
+    margin-top: 3px;
+    letter-spacing: 0;
+  }
+  .curri-type {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 10px;
+  }
+  .curri-type.theory { background: rgba(6,169,208,.1); color: var(--cyan); }
+  .curri-type.action { background: rgba(255,130,4,.12); color: var(--action-orange); }
+  .curri-type.lecture { background: rgba(232,84,26,.1); color: var(--primary-orange); }
+  .curri-duration {
+    font-size: 12px;
+    color: var(--body-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .curri-duration strong { color: var(--dark-charcoal); font-weight: 600; }
+  .curri-edit {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--subtitle-text);
+    text-align: right;
+  }
+  .curri-row:hover .curri-edit { color: var(--primary-orange); }
 
-  /* Side stats */
-  .s4-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
-  .s4-side .stat-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
+  /* Stats column (right) */
+  .stats-column { display: flex; flex-direction: column; gap: 2px; background: var(--hairline); }
+  .stat-card {
+    background: var(--white);
+    border-top: 3px solid var(--primary-orange);
+    padding: 22px 20px;
+  }
+  .stat-card.cyan { border-top-color: var(--cyan); }
+  .stat-card.green { border-top-color: var(--green); }
+  .stat-card__label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--primary-orange);
     margin-bottom: 12px;
   }
-  .stat-card h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); margin-bottom: 8px; }
-  .stat-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; }
-  .stat-row strong { font-weight: 700; font-variant-numeric: tabular-nums; }
-  .stat-row.warn strong { color: var(--amber); }
-  .stat-row.ok strong { color: var(--green); }
+  .stat-card.cyan .stat-card__label { color: var(--cyan); }
+  .stat-card.green .stat-card__label { color: var(--green); }
+
+  .stat-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 12px;
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row__label { color: var(--subtitle-text); }
+  .stat-row__value {
+    font-weight: 700;
+    color: var(--dark-charcoal);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-row__value.big {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--primary-orange);
+  }
+  .stat-row.is-warn .stat-row__value { color: var(--action-orange); }
+  .stat-row.is-ok .stat-row__value { color: var(--green); }
+  .stat-row.is-ok .stat-row__value::before { content: '✓ '; }
 </style>
 </head>
 <body>
 
 <div class="shell">
 
-  <!-- Top bar -->
-  <div class="topbar">
-    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+  <!-- TopBar -->
+  <header class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Planner</a>
+    <span class="topbar__badge">v2</span>
     <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
-    <div class="topbar__stages">
-      <span class="stage-chip is-done">S1 RFP</span>
-      <span class="stage-chip is-done">S2 1차본</span>
-      <span class="stage-chip is-done">S3 검수</span>
-      <span class="stage-chip is-active">S4 정밀</span>
-      <span class="stage-chip is-pending">S5 승인</span>
-    </div>
-    <div class="topbar__progress">
-      <div class="progress-bar"><div class="progress-bar__fill" style="width: 85%"></div></div>
-      <span class="progress-pct">85%</span>
-    </div>
+    <nav class="stage-journey">
+      <div class="stage-step is-done"><div class="stage-step__id">Stage 01</div><div class="stage-step__name">RFP 분석</div></div>
+      <div class="stage-step is-done"><div class="stage-step__id">Stage 02</div><div class="stage-step__name">1차본</div></div>
+      <div class="stage-step is-done"><div class="stage-step__id">Stage 03</div><div class="stage-step__name">검수</div></div>
+      <div class="stage-step is-active"><div class="stage-step__id">Stage 04</div><div class="stage-step__name">정밀</div></div>
+      <div class="stage-step is-pending"><div class="stage-step__id">Stage 05</div><div class="stage-step__name">승인</div></div>
+    </nav>
     <div class="topbar__right">
       <button class="btn-brain">🧠 Brain</button>
       <span class="avatar">PM</span>
     </div>
-  </div>
+  </header>
 
   <!-- Sub-header -->
   <div class="subheader">
-    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
-    <div class="subheader__meta">
-      <span class="badge b2g">B2G</span>
-      <span class="stat">검수 · <strong>78점 통과</strong></span>
-      <span class="stat">예산 · <strong>0.20억</strong></span>
-    </div>
-    <div class="subheader__actions">
-      <button class="btn-secondary">편집</button>
-      <a class="btn-secondary" href="#">v1 화면</a>
-    </div>
-  </div>
-
-  <!-- Main canvas — Workspace tabs -->
-  <div class="canvas">
-    <div class="canvas__main">
-      <div class="s4-wrap">
-
-        <!-- 4 tabs -->
-        <div class="s4-tabs">
-          <div class="s4-tab is-active">📚 커리큘럼 <span class="badge-count">12회차</span></div>
-          <div class="s4-tab">👥 코치 <span class="badge-count">8명</span></div>
-          <div class="s4-tab">💰 예산 <span class="badge-count">마진 18%</span></div>
-          <div class="s4-tab">📝 제안서 <span class="badge-count">7/7</span></div>
-        </div>
-
-        <div class="s4-layout">
-
-          <!-- 좌: 커리큘럼 grid -->
-          <div class="s4-main">
-            <div class="curriculum-toolbar">
-              <h2>안산 임팩트 챌린지 12주차 <small>· 이론 4 · Action Week 3 · 강연 5</small></h2>
-              <div class="toolbar-actions">
-                <button class="btn-secondary">AI 재생성</button>
-                <button class="btn-primary-sm">+ 회차 추가</button>
-              </div>
-            </div>
-
-            <div class="curriculum-grid">
-              <div class="curriculum-row header">
-                <span>회차</span><span>세션명</span><span>유형</span><span>강사</span><span></span>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W1</span>
-                <div class="session-title">OT · AI 시대 창업 마인드셋<small>5D 진단 (사전) 포함</small></div>
-                <span class="session-type theory">이론</span>
-                <span class="duration">3h · 김창업</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W2</span>
-                <div class="session-title">고객 검증 워크숍 1<small>Mom Test + 인터뷰 설계</small></div>
-                <span class="session-type theory">이론</span>
-                <span class="duration">3h · 이검증</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W3</span>
-                <div class="session-title">Action Week · 인터뷰 10건<small>실제 잠재고객 인터뷰</small></div>
-                <span class="session-type action">실행</span>
-                <span class="duration">7d · self-action</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W4</span>
-                <div class="session-title">MVP 설계 워크숍<small>가설 우선순위·기술 스택</small></div>
-                <span class="session-type theory">이론</span>
-                <span class="duration">3h · 박MVP</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W5</span>
-                <div class="session-title">특강 · 글로벌 시장 진입 사례<small>스타트업 3 founder</small></div>
-                <span class="session-type lecture">강연</span>
-                <span class="duration">2h · 특별 연사</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W6</span>
-                <div class="session-title">Action Week · MVP 제작<small>실제 코딩/디자인 6일</small></div>
-                <span class="session-type action">실행</span>
-                <span class="duration">7d · self-action</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W7</span>
-                <div class="session-title">..</div>
-                <span></span>
-                <span></span>
-                <a class="edit-link">편집 →</a>
-              </div>
-              <div class="curriculum-row">
-                <span class="week-num">W12</span>
-                <div class="session-title">데모데이 · 시드 IR<small>안산 시장·투자자 초청</small></div>
-                <span class="session-type lecture">강연</span>
-                <span class="duration">5h · 외부</span>
-                <a class="edit-link">편집 →</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 우: 사이드 통계 -->
-          <div class="s4-side">
-            <div class="stat-card">
-              <h3>커리큘럼 구조</h3>
-              <div class="stat-row"><span>총 회차</span><strong>12회차</strong></div>
-              <div class="stat-row"><span>총 시간</span><strong>52h</strong></div>
-              <div class="stat-row ok"><span>이론·실행 비율</span><strong>4:3 ✓</strong></div>
-              <div class="stat-row warn"><span>R-002 Action Week</span><strong>경고 0건 ✓</strong></div>
-            </div>
-
-            <div class="stat-card">
-              <h3>코치 배정</h3>
-              <div class="stat-row"><span>메인 코치</span><strong>2명</strong></div>
-              <div class="stat-row"><span>보조 코치</span><strong>4명</strong></div>
-              <div class="stat-row"><span>특강 연사</span><strong>2명</strong></div>
-              <div class="stat-row"><span>총 강사료</span><strong>3,200만원</strong></div>
-            </div>
-
-            <div class="stat-card">
-              <h3>예산</h3>
-              <div class="stat-row"><span>총 예산</span><strong>0.20억</strong></div>
-              <div class="stat-row"><span>인건비</span><strong>1,360만원</strong></div>
-              <div class="stat-row"><span>강사료</span><strong>3,200만원</strong></div>
-              <div class="stat-row"><span>운영비</span><strong>1,440만원</strong></div>
-              <div class="stat-row ok"><span>마진율</span><strong>18.0% ✓</strong></div>
-            </div>
-          </div>
-
-        </div>
+    <div class="subheader__top">
+      <div class="subheader__title-block">
+        <div class="subheader__eyebrow">Project · Precision Editing · 85%</div>
+        <h1 class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</h1>
+      </div>
+      <div class="subheader__actions">
+        <button class="btn-secondary">편집</button>
+        <a class="btn-secondary" href="#">v1 화면</a>
       </div>
     </div>
+    <div class="subheader__meta">
+      <span class="meta-pill"><span class="badge-channel">B2G</span></span>
+      <span class="meta-pill"><span class="label">검수</span><span class="value">86점 ✓</span></span>
+      <span class="meta-pill"><span class="label">예산</span><span class="value big accent">0.20<span style="font-size:11px;">억</span></span></span>
+      <span class="meta-pill"><span class="label">마진</span><span class="value">18.0%</span></span>
+      <span class="meta-pill"><span class="label">코치</span><span class="value">8명</span></span>
+    </div>
   </div>
+
+  <!-- Canvas -->
+  <main class="canvas">
+    <div class="s4-wrap">
+
+      <!-- 4 tabs -->
+      <div class="s4-tabs">
+        <button class="s4-tab is-active">
+          Curriculum <span class="s4-tab__count">12W</span>
+        </button>
+        <button class="s4-tab">
+          Coaches <span class="s4-tab__count">8</span>
+        </button>
+        <button class="s4-tab">
+          Budget <span class="s4-tab__count">18%</span>
+        </button>
+        <button class="s4-tab">
+          Proposal <span class="s4-tab__count">7/7</span>
+        </button>
+      </div>
+
+      <div class="s4-layout">
+
+        <!-- LEFT: Curriculum grid -->
+        <div>
+          <div class="toolbar">
+            <div>
+              <span class="toolbar__title">안산 임팩트 챌린지 12주차</span>
+              <span class="toolbar__sub">이론 4 · Action Week 3 · 강연 5</span>
+            </div>
+            <div class="toolbar__actions">
+              <button class="btn-secondary">AI 재생성</button>
+              <button class="btn-add">+ 회차 추가</button>
+            </div>
+          </div>
+
+          <div class="curri-grid">
+            <div class="curri-row header">
+              <span>WEEK</span><span>SESSION</span><span>TYPE</span><span>강사 · 시간</span><span></span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W1</span>
+              <div class="curri-name">
+                OT · AI 시대 창업 마인드셋
+                <small>5D 진단 (사전) 포함 · CORE 4강 마인드셋</small>
+              </div>
+              <span class="curri-type theory">이론</span>
+              <span class="curri-duration"><strong>3h</strong> · 김창업</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W2</span>
+              <div class="curri-name">
+                고객 검증 워크숍
+                <small>Mom Test + 인터뷰 설계 · ACTT 1단계</small>
+              </div>
+              <span class="curri-type theory">이론</span>
+              <span class="curri-duration"><strong>3h</strong> · 이검증</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W3</span>
+              <div class="curri-name">
+                Action Week · 인터뷰 10건
+                <small>실제 잠재고객 인터뷰 6일 · 자율 실행</small>
+              </div>
+              <span class="curri-type action">실행</span>
+              <span class="curri-duration"><strong>7d</strong> · self</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W4</span>
+              <div class="curri-name">
+                MVP 설계 워크숍
+                <small>가설 우선순위 · 기술 스택 결정</small>
+              </div>
+              <span class="curri-type theory">이론</span>
+              <span class="curri-duration"><strong>3h</strong> · 박MVP</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W5</span>
+              <div class="curri-name">
+                특강 · 글로벌 시장 진입
+                <small>스타트업 3 founder 패널 · 1:1 코칭</small>
+              </div>
+              <span class="curri-type lecture">강연</span>
+              <span class="curri-duration"><strong>2h</strong> · 외부</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W6</span>
+              <div class="curri-name">
+                Action Week · MVP 제작
+                <small>실제 코딩/디자인 6일 + 코치 sync 2회</small>
+              </div>
+              <span class="curri-type action">실행</span>
+              <span class="curri-duration"><strong>7d</strong> · self</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W7</span>
+              <div class="curri-name">
+                중간 점검 · 시장 검증 발표
+                <small>각 팀 5분 발표 + 멘토 피드백</small>
+              </div>
+              <span class="curri-type theory">이론</span>
+              <span class="curri-duration"><strong>3h</strong> · 김멘토</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week" style="opacity:.5">W8~W11</span>
+              <div class="curri-name" style="opacity:.7">...4 회차 더</div>
+              <span></span>
+              <span></span>
+              <span class="curri-edit">펼치기 ↓</span>
+            </div>
+
+            <div class="curri-row">
+              <span class="curri-week">W12</span>
+              <div class="curri-name">
+                데모데이 · 시드 IR
+                <small>안산 시장 · 투자자 초청 · 시드 연결 1차 발표</small>
+              </div>
+              <span class="curri-type lecture">강연</span>
+              <span class="curri-duration"><strong>5h</strong> · 외부</span>
+              <span class="curri-edit">편집 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Stats -->
+        <div class="stats-column">
+          <div class="stat-card">
+            <div class="stat-card__label">Curriculum</div>
+            <div class="stat-row"><span class="stat-row__label">총 회차</span><span class="stat-row__value big">12</span></div>
+            <div class="stat-row"><span class="stat-row__label">총 시간</span><span class="stat-row__value">52h</span></div>
+            <div class="stat-row is-ok"><span class="stat-row__label">이론 · 실행</span><span class="stat-row__value">4 : 3</span></div>
+            <div class="stat-row is-ok"><span class="stat-row__label">R-002 위반</span><span class="stat-row__value">0건</span></div>
+          </div>
+
+          <div class="stat-card cyan">
+            <div class="stat-card__label">Coaches</div>
+            <div class="stat-row"><span class="stat-row__label">메인 코치</span><span class="stat-row__value">2명</span></div>
+            <div class="stat-row"><span class="stat-row__label">보조 코치</span><span class="stat-row__value">4명</span></div>
+            <div class="stat-row"><span class="stat-row__label">특강 연사</span><span class="stat-row__value">2명</span></div>
+            <div class="stat-row"><span class="stat-row__label">총 강사료</span><span class="stat-row__value">3,200만</span></div>
+          </div>
+
+          <div class="stat-card green">
+            <div class="stat-card__label">Budget</div>
+            <div class="stat-row"><span class="stat-row__label">총 예산</span><span class="stat-row__value big">0.20<span style="font-size:11px;">억</span></span></div>
+            <div class="stat-row"><span class="stat-row__label">인건비</span><span class="stat-row__value">1,360만</span></div>
+            <div class="stat-row"><span class="stat-row__label">강사료</span><span class="stat-row__value">3,200만</span></div>
+            <div class="stat-row"><span class="stat-row__label">운영비</span><span class="stat-row__value">1,440만</span></div>
+            <div class="stat-row is-ok"><span class="stat-row__label">마진율</span><span class="stat-row__value">18.0%</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
 
   <!-- NowBar -->
   <div class="nowbar">
     <div class="nowbar__icon">📚</div>
     <div class="nowbar__text">
-      <div class="nowbar__ctx">S4 정밀 편집 · 4 도메인 (커리큘럼·코치·예산·제안서)</div>
-      <div class="nowbar__msg">모든 도메인 정합성 OK — S5 최종 승인으로 진입 가능</div>
-      <div class="nowbar__hint">또는 탭별 상세 편집 계속</div>
+      <div class="nowbar__ctx">Next · Stage 04 · Precision Editing</div>
+      <div class="nowbar__msg">모든 도메인 정합성 OK — Stage 05 최종 승인으로 진입 가능</div>
+      <div class="nowbar__hint">또는 4 탭 (커리큘럼 · 코치 · 예산 · 제안서) 상세 편집 계속</div>
     </div>
+    <button class="btn-ghost-light">탭 더 보기</button>
     <button class="btn-primary">
-      S5 최종 승인 →
+      Stage 05 최종 승인
+      <span class="arrow">→</span>
     </button>
   </div>
 
@@ -292,7 +423,7 @@
 
 <!-- Mockup nav -->
 <div class="mockup-nav">
-  <a href="./index.html">← 전체</a>
+  <a href="./index.html">← All</a>
   <a href="./s1.html">S1</a>
   <a href="./s2.html">S2</a>
   <a href="./s3.html">S3</a>

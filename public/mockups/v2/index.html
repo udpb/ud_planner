@@ -2,169 +2,442 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>UD-Planner UX v2 — Mockup Index</title>
+<title>UD-Planner UX v2 — ActionAI Design System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="./_shared.css" />
 <style>
-  body { background: var(--bg); }
-  .wrap { max-width: 1024px; margin: 0 auto; padding: 64px 24px; }
-  .hero { text-align: center; margin-bottom: 56px; }
-  .hero h1 { font-size: 32px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
-  .hero p { font-size: 14px; color: var(--text-muted); max-width: 620px; margin: 0 auto 24px; }
-  .hero .tag { display: inline-block; padding: 4px 12px; background: var(--orange-10); color: var(--orange); border-radius: 999px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+  body { background: var(--white); }
 
-  .principle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 40px 0 56px; }
-  .principle { padding: 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); }
-  .principle .icon { font-size: 24px; margin-bottom: 8px; }
-  .principle h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .principle p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-
-  .stages-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-  .stages-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 56px; }
-  .stage-card {
-    display: block;
-    padding: 20px 16px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--bg);
-    transition: all .15s;
+  /* HERO (charcoal · italic brand · big bold orange numbers) */
+  .hero {
+    background: var(--dark-charcoal);
+    color: var(--white);
+    padding: 80px 32px 64px;
+    position: relative;
+    overflow: hidden;
   }
-  .stage-card:hover { border-color: var(--orange-40); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
-  .stage-card .id { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-  .stage-card .name { font-size: 16px; font-weight: 700; margin: 4px 0 6px; }
-  .stage-card .essence { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-  .stage-card .mode { display: inline-block; margin-top: 10px; padding: 2px 8px; background: var(--beige); border-radius: 999px; font-size: 10px; font-weight: 600; color: var(--charcoal); }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 55%; height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(232,84,26,0.10) 100%);
+    pointer-events: none;
+  }
+  .hero-ghost {
+    position: absolute;
+    right: -60px; bottom: -80px;
+    font-size: 380px; font-weight: 700; font-style: italic;
+    color: var(--primary-orange); opacity: 0.06;
+    line-height: 1; pointer-events: none;
+  }
+  .hero-accent-line {
+    position: absolute;
+    bottom: 0; left: 6%;
+    width: 280px; height: 3px;
+    background: var(--action-orange);
+    opacity: 0.5;
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 600;
+    color: var(--action-orange);
+    letter-spacing: 2px; text-transform: uppercase;
+    border: 1px solid rgba(255,130,4,.35);
+    padding: 6px 14px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+  .hero h1 .accent { color: var(--action-orange); font-style: italic; }
+  .hero p {
+    font-size: 15px; color: var(--warm-gray);
+    max-width: 620px;
+    line-height: 1.7;
+    margin-top: 24px;
+  }
 
-  .shell-section { background: var(--bg-soft); padding: 32px; border-radius: 16px; }
+  /* 4 principles (border-top accent cards · 2px gap construction) */
+  .principles {
+    background: var(--light-beige);
+    padding: 64px 32px;
+  }
+  .principles-inner { max-width: 1200px; margin: 0 auto; }
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-grid);
+    margin-top: 24px;
+  }
+  .principle {
+    background: var(--white);
+    border-top: 4px solid var(--primary-orange);
+    padding: 32px 28px;
+    transition: transform 0.2s;
+  }
+  .principle:hover { transform: translateY(-4px); }
+  .principle:nth-child(2) { border-top-color: var(--orange3); }
+  .principle:nth-child(3) { border-top-color: var(--action-orange); }
+  .principle:nth-child(4) { border-top-color: var(--cyan); }
+  .principle-num {
+    font-size: 11px; font-weight: 600;
+    color: var(--primary-orange);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .principle:nth-child(4) .principle-num { color: var(--cyan); }
+  .principle h3 {
+    font-size: 18px; font-weight: 700;
+    color: var(--dark-charcoal);
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+  }
+  .principle p {
+    font-size: 13px; color: var(--body-text);
+    line-height: 1.7;
+  }
+
+  /* SHELL spec section (white) */
+  .spec-section {
+    background: var(--white);
+    padding: 80px 32px;
+  }
+  .spec-inner { max-width: 1200px; margin: 0 auto; }
+  .spec-header { margin-bottom: 48px; }
+  .spec-header .section-label { margin-bottom: 16px; }
+  .spec-header h2 {
+    font-size: 36px; font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--dark-charcoal);
+    line-height: 1.18;
+    margin-bottom: 12px;
+  }
+  .spec-header p {
+    font-size: 14px; color: var(--subtitle-text);
+    max-width: 720px;
+  }
   .shell-ascii {
-    font-family: 'Menlo', monospace;
-    font-size: 11px;
-    line-height: 1.5;
-    background: var(--bg);
-    padding: 18px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
+    background: var(--dark-charcoal);
+    color: var(--warm-gray);
+    padding: 32px;
+    font-family: 'Poppins', monospace;
+    font-size: 11px; line-height: 1.85;
     white-space: pre;
     overflow-x: auto;
   }
+  .shell-ascii .orange { color: var(--action-orange); }
 
-  .token-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
-  .token { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); font-size: 11px; }
-  .token .swatch { width: 12px; height: 12px; border-radius: 999px; }
+  /* Token grid */
+  .tokens-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 3px solid var(--primary-orange);
+  }
+  .token-cell {
+    background: var(--white);
+    padding: 20px 16px;
+  }
+  .token-cell .swatch {
+    width: 100%; height: 60px;
+    margin-bottom: 12px;
+  }
+  .token-cell .token-name {
+    font-size: 11px; font-weight: 600;
+    color: var(--dark-charcoal);
+    margin-bottom: 2px;
+  }
+  .token-cell .token-hex {
+    font-family: 'Poppins', monospace;
+    font-size: 10px;
+    color: var(--subtitle-text);
+    letter-spacing: 0.5px;
+  }
 
-  footer { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border); }
+  /* 5 stages preview (dark section · big numbers) */
+  .stages-section {
+    background: var(--dark-charcoal);
+    color: var(--white);
+    padding: 80px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stages-section::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,130,4,0.06) 100%);
+  }
+  .stages-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .stages-section .section-label { color: var(--action-orange); }
+  .stages-section .section-label::before { background: var(--action-orange); }
+  .stages-section h2 {
+    font-size: 36px; font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .stages-section .sub {
+    font-size: 14px; color: var(--warm-gray);
+    margin-bottom: 48px;
+    max-width: 720px;
+  }
+  .stages-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--gap-grid);
+  }
+  .stage-card {
+    display: block;
+    background: var(--dark2);
+    border-top: 3px solid var(--action-orange);
+    padding: 32px 24px 28px;
+    color: var(--white);
+    transition: all 0.25s;
+    position: relative;
+  }
+  .stage-card:hover {
+    background: var(--primary-orange);
+    transform: translateY(-4px);
+  }
+  .stage-card:hover .stage-card__mode { color: rgba(255,255,255,.85); }
+  .stage-card:hover .stage-card__id { color: var(--white); opacity: 1; }
+  .stage-card__id {
+    font-size: 11px; font-weight: 600;
+    color: var(--action-orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
+  .stage-card__num {
+    font-size: 44px; font-weight: 700;
+    color: var(--action-orange);
+    line-height: 1;
+    font-style: italic;
+    margin-bottom: 16px;
+    transition: color 0.25s;
+  }
+  .stage-card:hover .stage-card__num { color: var(--white); }
+  .stage-card__name {
+    font-size: 17px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  .stage-card__essence {
+    font-size: 12px;
+    color: var(--warm-gray);
+    line-height: 1.6;
+    min-height: 60px;
+  }
+  .stage-card:hover .stage-card__essence { color: rgba(255,255,255,.95); }
+  .stage-card__mode {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--action-orange);
+  }
+
+  /* Footer */
+  footer {
+    background: var(--dark3);
+    padding: 32px;
+    text-align: center;
+    color: rgba(255,255,255,.45);
+    font-size: 11px;
+  }
+  footer a { color: var(--action-orange); }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <div class="hero">
-    <div class="tag">ADR-018 · UX v2 Mockup</div>
-    <h1>UD-Planner — Adaptive Stage Layout</h1>
-    <p>5 Stage 적응형 레이아웃. 각 Stage 본질에 맞는 다른 화면 풍경. 단일 진행도. AI 동행 Dock.</p>
-  </div>
-
-  <!-- 4 원칙 -->
-  <div class="principle-grid">
-    <div class="principle">
-      <div class="icon">🎯</div>
-      <h3>단일 진행도</h3>
-      <p>Top bar Stage chip 만. 좌·우·중복 모두 제거.</p>
-    </div>
-    <div class="principle">
-      <div class="icon">🔄</div>
-      <h3>적응형 캔버스</h3>
-      <p>Stage 마다 본질에 맞는 다른 화면 모드.</p>
-    </div>
-    <div class="principle">
-      <div class="icon">💡</div>
-      <h3>NowBar 단일 CTA</h3>
-      <p>다음 액션 1개. PM 의 인지 부담 0.</p>
-    </div>
-    <div class="principle">
-      <div class="icon">🧠</div>
-      <h3>Brain Dock 동행</h3>
-      <p>우측 슬라이드. 기본 닫힘, 필요할 때만.</p>
-    </div>
-  </div>
-
-  <!-- Shell -->
-  <div class="shell-section">
-    <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">공통 Shell — 모든 Stage 공통</h2>
-    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-      Top bar 44px (단일 진행도) · Sub-header 52px (사업 메타) · Main Canvas (full width) · NowBar 64px (단일 CTA) · Brain Dock 320px (우측 toggle)
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ghost">"</div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-inner">
+    <span class="hero-badge">ADR-018 · UX v2 Mockup</span>
+    <h1>UD <span class="accent">·</span>Planner</h1>
+    <h1><span class="accent">Adaptive Stage</span> Layout</h1>
+    <p>
+      5 Stage 적응형 레이아웃. 각 Stage 본질에 맞는 다른 화면 풍경.<br/>
+      단일 진행도 · AI 동행 Dock · 데이터 흐름 위에서 PM 의 결정만.
     </p>
-<pre class="shell-ascii">┌──── Top 44px ─────────────────────────────────────────────────┐
-│ UD·Ops  ← 한국외대 RISE ▾   ✓S1 ✓S2 ●S3 ○S4 ○S5  ━━━━ 75%  🧠Brain  PM │
-├──── Sub-header 52px ──────────────────────────────────────────┤
-│ 2026 안산 임팩트 챌린지  B2G · ERICA IC · 0.20억           [편집] [v1] │
-├──── Main Canvas (Stage 별 적응형) ─────────────────────────────┤
-│                                                                │
-│       (S1 Hero / S2 Chat-Canvas / S3 Checklist /              │
-│        S4 Workspace / S5 Summary)                              │
-│                                                                │
-├──── NowBar 64px ──────────────────────────────────────────────┤
-│ 💡 다음 액션 · S3 검수 중                              [실행 →] │
-└────────────────────────────────────────────────────────────────┘</pre>
+  </div>
+</section>
 
-    <!-- Color tokens -->
-    <h3 style="font-size: 13px; font-weight: 700; margin: 18px 0 6px;">디자인 토큰</h3>
-    <div class="token-row">
-      <span class="token"><span class="swatch" style="background:#F05519"></span> Action Orange</span>
-      <span class="token"><span class="swatch" style="background:#373938"></span> Charcoal</span>
-      <span class="token"><span class="swatch" style="background:#F5F0EB"></span> Beige</span>
-      <span class="token"><span class="swatch" style="background:#06A9D0"></span> Cyan</span>
-      <span class="token"><span class="swatch" style="background:#10B981"></span> Green</span>
-      <span class="token"><span class="swatch" style="background:#EF4444"></span> Red</span>
-      <span class="token"><span class="swatch" style="background:#8B5CF6"></span> Purple (Brain)</span>
+<!-- 4 PRINCIPLES -->
+<section class="principles">
+  <div class="principles-inner">
+    <span class="section-label">Design Principles · 4</span>
+    <h2 class="t-h2" style="margin-bottom: 8px;">화면 설계의 4가지 원칙</h2>
+    <p class="t-body" style="color: var(--subtitle-text); margin-bottom: 8px;">
+      모든 Stage 화면이 이 원칙을 따른다. 다른 길은 없다.
+    </p>
+
+    <div class="principles-grid">
+      <div class="principle">
+        <div class="principle-num">01 · Single Progress</div>
+        <h3>단일 진행도</h3>
+        <p>Top bar 의 Stage journey 가 유일. 좌·우·다른 어디에도 중복 X.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02 · Adaptive Canvas</div>
+        <h3>적응형 캔버스</h3>
+        <p>Stage 마다 본질에 맞는 다른 화면 모드. 동일 shell 안의 다른 풍경.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03 · NowBar CTA</div>
+        <h3>단일 다음 액션</h3>
+        <p>NowBar 가 항상 1 액션만 명시. PM 의 인지 부담 0.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04 · Brain Dock</div>
+        <h3>AI 동행 도크</h3>
+        <p>우측 슬라이드. 기본 닫힘, 필요할 때만 펼침. 컨텍스트 스위칭 0.</p>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- 5 Stages -->
-  <div class="stages-section" style="margin-top: 48px;">
-    <h2>5 Stage — 각자 다른 화면 풍경</h2>
+<!-- SHELL SPEC -->
+<section class="spec-section">
+  <div class="spec-inner">
+    <div class="spec-header">
+      <span class="section-label">Shell Layout</span>
+      <h2>공통 Shell — 모든 Stage 가 공유</h2>
+      <p>
+        TopBar 56px (charcoal · stage journey) → Sub-header (사업 메타) → Adaptive Canvas → NowBar 72px (charcoal · single CTA)
+      </p>
+    </div>
+
+<pre class="shell-ascii">┌──── <span class="orange">TopBar 56px</span> · charcoal · italic brand ─────────────────────────────────────────┐
+│ <span class="orange">UD·Planner</span>  ← 한국외대 RISE ▾   <span class="orange">●S1 ●S2 ●S3 ○S4 ○S5</span>      🧠 BRAIN   PM │
+├──── Sub-header · 사업 메타 ─────────────────────────────────────────────────────┤
+│ <span class="orange">●</span> PROJECT · IN PROGRESS                                                       │
+│ 2026 안산 임팩트 챌린지 with ERICA IC                            [편집] [v1 화면]│
+│ <span class="orange">B2G</span> │ 발주처 ERICA · 예산 0.20억 · 평가배점 5개 · 마진 18%                    │
+├──── Adaptive Canvas (Stage 별 본질 화면) ─────────────────────────────────────┤
+│                                                                                │
+│       <span class="orange">Hero center</span>  ·  <span class="orange">Chat-Canvas</span>  ·  <span class="orange">Checklist+Diff</span>  ·  <span class="orange">Workspace</span>  ·  <span class="orange">Summary</span>          │
+│                                                                                │
+├──── <span class="orange">NowBar 72px</span> · charcoal · single CTA ──────────────────────────────────────┤
+│ ⚡ NEXT · S2 1차본 작성 중                                       [실행 →]      │
+└────────────────────────────────────────────────────────────────────────────────┘</pre>
+
+    <!-- TOKENS -->
+    <div style="margin-top: 56px;">
+      <span class="section-label">Color Tokens</span>
+      <h3 class="t-h3" style="margin-bottom: 16px;">Action Orange · Charcoal · Beige</h3>
+
+      <div class="tokens-row">
+        <div class="token-cell">
+          <div class="swatch" style="background: #E8541A"></div>
+          <div class="token-name">PRIMARY ORANGE</div>
+          <div class="token-hex">#E8541A</div>
+        </div>
+        <div class="token-cell">
+          <div class="swatch" style="background: #F05519"></div>
+          <div class="token-name">ORANGE3 · HOVER</div>
+          <div class="token-hex">#F05519</div>
+        </div>
+        <div class="token-cell">
+          <div class="swatch" style="background: #FF8204"></div>
+          <div class="token-name">ACTION ORANGE</div>
+          <div class="token-hex">#FF8204</div>
+        </div>
+        <div class="token-cell">
+          <div class="swatch" style="background: #373938"></div>
+          <div class="token-name">DARK CHARCOAL</div>
+          <div class="token-hex">#373938</div>
+        </div>
+        <div class="token-cell">
+          <div class="swatch" style="background: #F5F0EB"></div>
+          <div class="token-name">LIGHT BEIGE</div>
+          <div class="token-hex">#F5F0EB</div>
+        </div>
+        <div class="token-cell">
+          <div class="swatch" style="background: #06A9D0"></div>
+          <div class="token-name">CYAN · ACCENT</div>
+          <div class="token-hex">#06A9D0</div>
+        </div>
+        <div class="token-cell">
+          <div class="swatch" style="background: #2ECC71"></div>
+          <div class="token-name">GREEN · PASS</div>
+          <div class="token-hex">#2ECC71</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 16px; font-size: 11px; color: var(--subtitle-text);">
+        Action Orange 가 전체 UI 면적의 <strong style="color: var(--primary-orange);">10~15%</strong> 를 초과하면 안 됨.
+        CTA · 활성 stage · 아이콘 포인트 · 강조 숫자만.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 STAGES -->
+<section class="stages-section">
+  <div class="stages-inner">
+    <span class="section-label">5 Stage · Adaptive</span>
+    <h2>각 Stage 의 본질에 맞는<br/>다른 화면 풍경</h2>
+    <p class="sub">RFP 업로드부터 최종 승인까지. 같은 shell 안에서 5번 다른 모드로 PM 의 결정만.</p>
+
     <div class="stages-grid">
       <a class="stage-card" href="./s1.html">
-        <div class="id">S1</div>
-        <div class="name">RFP 분석</div>
-        <div class="essence">RFP 파일 업로드 + AI 자동 파싱 · 결과 카드</div>
-        <span class="mode">Hero Center</span>
+        <div class="stage-card__id">Stage 01</div>
+        <div class="stage-card__num">01</div>
+        <div class="stage-card__name">RFP 분석</div>
+        <div class="stage-card__essence">RFP 파일 업로드 + AI 자동 파싱. 사업명·발주처·예산·평가배점 추출.</div>
+        <div class="stage-card__mode">→ Hero Center</div>
       </a>
       <a class="stage-card" href="./s2.html">
-        <div class="id">S2</div>
-        <div class="name">1차본 작성</div>
-        <div class="essence">AI 와 대화하며 결정 · 좌 챗봇 + 우 7섹션 미리보기</div>
-        <span class="mode">Chat-Canvas</span>
+        <div class="stage-card__id">Stage 02</div>
+        <div class="stage-card__num">02</div>
+        <div class="stage-card__name">1차본 작성</div>
+        <div class="stage-card__essence">AI 와 대화하며 결정. 좌 챗봇 + 우 7섹션 미리보기.</div>
+        <div class="stage-card__mode">→ Chat-Canvas</div>
       </a>
       <a class="stage-card" href="./s3.html">
-        <div class="id">S3</div>
-        <div class="name">검수</div>
-        <div class="essence">Inspector 7 lens · 약점 자산 추천 + diff</div>
-        <span class="mode">Checklist+Diff</span>
+        <div class="stage-card__id">Stage 03</div>
+        <div class="stage-card__num">03</div>
+        <div class="stage-card__name">검수</div>
+        <div class="stage-card__essence">Inspector 7 lens · 약점 자산 추천 · inline diff 미리보기.</div>
+        <div class="stage-card__mode">→ Checklist+Diff</div>
       </a>
       <a class="stage-card" href="./s4.html">
-        <div class="id">S4</div>
-        <div class="name">정밀 편집</div>
-        <div class="essence">커리큘럼·코치·예산·제안서 4 도메인</div>
-        <span class="mode">Workspace Tabs</span>
+        <div class="stage-card__id">Stage 04</div>
+        <div class="stage-card__num">04</div>
+        <div class="stage-card__name">정밀 편집</div>
+        <div class="stage-card__essence">커리큘럼 · 코치 · 예산 · 제안서 4 도메인 워크스페이스.</div>
+        <div class="stage-card__mode">→ Workspace Tabs</div>
       </a>
       <a class="stage-card" href="./s5.html">
-        <div class="id">S5</div>
-        <div class="name">최종 승인</div>
-        <div class="essence">요약 + 사회적 가치 + 큰 승인 버튼</div>
-        <span class="mode">Summary</span>
+        <div class="stage-card__id">Stage 05</div>
+        <div class="stage-card__num">05</div>
+        <div class="stage-card__name">최종 승인</div>
+        <div class="stage-card__essence">요약 + 사회적 가치 + 큰 승인 버튼. 1 click 으로 잠금.</div>
+        <div class="stage-card__mode">→ Summary</div>
       </a>
     </div>
   </div>
+</section>
 
-  <footer>
-    UD-Planner · ADR-018 Adaptive Stage Layout · 2026-05-27 ·
-    <a href="https://github.com/udpb/ud_planner" target="_blank" style="color: var(--orange);">github</a>
-  </footer>
-</div>
+<footer>
+  UD · Planner · ADR-018 Adaptive Stage Layout · 2026-05-27 ·
+  <a href="https://github.com/udpb/ud_planner" target="_blank">github/udpb/ud_planner</a>
+</footer>
 
 </body>
 </html>
