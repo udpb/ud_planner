@@ -6,12 +6,41 @@
   "functions": {
     "src/app/api/**/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/cron/brain/concept-evolution/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/v1/inference/match-tuple/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/v1/brain/match/route.ts": {
+      "maxDuration": 30
     }
   },
   "crons": [
     {
       "path": "/api/cron/asset-freshness",
       "schedule": "0 0 1 * *"
+    },
+    {
+      "path": "/api/cron/brain/concept-evolution",
+      "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/cron/brain/rfp-concept",
+      "schedule": "0 22 * * *"
+    },
+    {
+      "path": "/api/cron/brain/winrate",
+      "schedule": "0 0 * * 1"
+    },
+    {
+      "path": "/api/cron/brain/status-transition",
+      "schedule": "0 0 1 * *"
+    },
+    {
+      "path": "/api/cron/brain/freshness-v2",
+      "schedule": "30 0 1 * *"
     }
   ]
 }
