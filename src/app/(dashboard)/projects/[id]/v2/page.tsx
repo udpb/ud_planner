@@ -146,13 +146,24 @@ export default async function ProjectV2Page({
     0,
   )
 
+  // Channel 추론 (programProfile 또는 projectType 에서)
+  const channel =
+    (project.programProfile as { channel?: string } | null)?.channel ??
+    (project.projectType === 'B2G' || project.projectType === 'B2B' || project.projectType === 'B2C'
+      ? project.projectType
+      : null)
+
   return (
     <V2Shell
       projectId={project.id}
       projectName={project.name}
+      channel={channel}
+      client={project.client}
+      totalBudget={project.totalBudgetVat}
+      evalCount={analysis?.evalCriteria.length ?? null}
+      progressPct={progressPct}
       stages={stages}
       currentStage={currentStage}
-      progressPct={progressPct}
       analysis={analysis}
     />
   )

@@ -1,23 +1,14 @@
 'use client'
 /**
- * BrainDock — UX v2 (ADR-018)
+ * BrainDock — UX v2 (ADR-018 · mockup _shared.css 1:1)
  *
- * 우 320px slide-open 도크. 기본 closed (메인 영역 최대 확보).
+ * 우 360px slide-open dock · charcoal header · beige body.
  *
- * 영역:
- *   - 자산 매칭 (수락/거절 chip)
- *   - 유사 사업 (top 5)
- *   - AI 채팅 (단순 prompt + response)
- *   - 빠른 액션 (자산 매칭 cmd, Brain Dashboard 링크)
- *
- * ActionAI v-07 Tutor Drawer 패턴.
- * BrainPanel (W31) 의 4+1 영역과 통합 가능.
+ * Mockup 참조: /public/mockups/v2/_shared.css `.brain-dock` ~ `.dock-asset`
  */
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { X, Brain, Sparkles, Network, FileText, ExternalLink } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 export interface BrainDockMatchedAsset {
   assetId: string
@@ -47,6 +38,8 @@ export interface BrainDockProps {
   citedAssetIds?: Set<string>
 }
 
+type DockTab = 'assets' | 'patterns' | 'chat'
+
 export function BrainDock({
   open,
   onClose,
@@ -57,58 +50,74 @@ export function BrainDock({
   onAssetReject,
   citedAssetIds,
 }: BrainDockProps) {
-  const [tab, setTab] = useState<'assets' | 'patterns' | 'chat'>('assets')
+  const [tab, setTab] = useState<DockTab>('assets')
 
   return (
     <>
-      {/* 배경 dim (모바일/태블릿에서) */}
+      {/* 배경 dim (모바일) */}
       {open && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-30 bg-black/30 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-20 bg-black/30 md:hidden"
         />
       )}
 
       <aside
-        className={cn(
-          'fixed right-0 top-11 z-40 flex h-[calc(100vh-2.75rem)] flex-col border-l bg-background shadow-lg transition-transform',
-          'w-[320px]',
-          open ? 'translate-x-0' : 'translate-x-full',
-        )}
+        className="fixed right-0 z-[25] flex flex-col bg-white transition-transform duration-200"
+        style={{
+          top: 56,
+          width: 360,
+          height: 'calc(100vh - 56px - 72px)',
+          borderLeft: '2px solid var(--dark-charcoal)',
+          transform: open ? 'translateX(0)' : 'translateX(100%)',
+        }}
       >
-        {/* 헤더 */}
-        <div className="flex h-11 items-center justify-between border-b px-3">
-          <div className="flex items-center gap-2">
-            <Brain className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-semibold">Brain</span>
-          </div>
+        {/* charcoal header */}
+        <div
+          className="flex h-[52px] items-center justify-between px-[18px] text-white"
+          style={{ background: 'var(--dark-charcoal)' }}
+        >
+          <span className="text-[11px] font-bold uppercase tracking-[2px]">
+            <span style={{ color: 'var(--action-orange)' }}>●</span>
+            <span className="ml-2">Brain</span>
+          </span>
           <button
             onClick={onClose}
-            className="rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="h-6 w-6 text-[18px] leading-none transition-colors"
+            style={{ color: 'var(--warm-gray)' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--action-orange)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--warm-gray)'
+            }}
             title="닫기"
           >
-            <X className="h-4 w-4" />
+            ×
           </button>
         </div>
 
-        {/* 탭 */}
-        <div className="flex border-b text-xs">
-          <TabButton active={tab === 'assets'} onClick={() => setTab('assets')}>
-            <Sparkles className="h-3.5 w-3.5" />
-            자산 {matchedAssets.length > 0 && <span className="ml-0.5 opacity-70">{matchedAssets.length}</span>}
-          </TabButton>
-          <TabButton active={tab === 'patterns'} onClick={() => setTab('patterns')}>
-            <FileText className="h-3.5 w-3.5" />
-            유사 사업 {similarPatterns.length > 0 && <span className="ml-0.5 opacity-70">{similarPatterns.length}</span>}
-          </TabButton>
-          <TabButton active={tab === 'chat'} onClick={() => setTab('chat')}>
-            <Network className="h-3.5 w-3.5" />
+        {/* tabs */}
+        <div
+          className="flex"
+          style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
+        >
+          <DockTabBtn active={tab === 'assets'} onClick={() => setTab('assets')}>
+            자산 {matchedAssets.length > 0 && <span className="opacity-70">· {matchedAssets.length}</span>}
+          </DockTabBtn>
+          <DockTabBtn active={tab === 'patterns'} onClick={() => setTab('patterns')}>
+            유사사업 {similarPatterns.length > 0 && <span className="opacity-70">· {similarPatterns.length}</span>}
+          </DockTabBtn>
+          <DockTabBtn active={tab === 'chat'} onClick={() => setTab('chat')}>
             채팅
-          </TabButton>
+          </DockTabBtn>
         </div>
 
-        {/* 콘텐츠 */}
-        <div className="min-h-0 flex-1 overflow-y-auto p-3">
+        {/* body */}
+        <div
+          className="flex-1 overflow-y-auto p-4"
+          style={{ background: 'var(--light-beige)' }}
+        >
           {tab === 'assets' && (
             <AssetsTab
               matchedAssets={matchedAssets}
@@ -121,22 +130,27 @@ export function BrainDock({
           {tab === 'chat' && <ChatTab />}
         </div>
 
-        {/* 푸터 — Brain Dashboard 링크 */}
-        <div className="border-t p-3">
+        {/* footer */}
+        <div
+          className="p-3"
+          style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
+        >
           <Link
             href="/admin/brain"
-            className="flex items-center justify-between rounded-md border bg-purple-50/50 px-2.5 py-1.5 text-[11px] font-medium text-purple-700 hover:bg-purple-50"
+            className="flex items-center justify-between bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.5px] transition-colors"
+            style={{ color: 'var(--primary-orange)', border: '1px solid var(--hairline-strong, #e4dfd6)' }}
           >
             <span>Brain Dashboard 열기</span>
-            <ExternalLink className="h-3 w-3" />
+            <span>→</span>
           </Link>
           {projectId && (
             <Link
               href={`/projects/${projectId}/brain`}
-              className="mt-1.5 flex items-center justify-between rounded-md border bg-gray-50 px-2.5 py-1.5 text-[11px] font-medium text-foreground hover:bg-gray-100"
+              className="mt-1.5 flex items-center justify-between bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.5px]"
+              style={{ color: 'var(--body-text, #333)', border: '1px solid var(--hairline-strong, #e4dfd6)' }}
             >
               <span>4+1 통합 패널</span>
-              <ExternalLink className="h-3 w-3" />
+              <span>→</span>
             </Link>
           )}
         </div>
@@ -145,7 +159,7 @@ export function BrainDock({
   )
 }
 
-function TabButton({
+function DockTabBtn({
   active,
   onClick,
   children,
@@ -157,12 +171,12 @@ function TabButton({
   return (
     <button
       onClick={onClick}
-      className={cn(
-        'flex flex-1 items-center justify-center gap-1 border-b-2 px-2 py-2 transition',
-        active
-          ? 'border-primary text-primary'
-          : 'border-transparent text-muted-foreground hover:bg-muted hover:text-foreground',
-      )}
+      className="flex-1 px-2 py-3 text-center text-[10px] font-semibold uppercase tracking-[1.2px] transition-colors"
+      style={{
+        color: active ? 'var(--primary-orange)' : 'var(--subtitle-text)',
+        borderBottom: active ? '2px solid var(--primary-orange)' : '2px solid transparent',
+        background: active ? 'rgba(232,84,26,.04)' : 'transparent',
+      }}
     >
       {children}
     </button>
@@ -182,8 +196,15 @@ function AssetsTab({
 }) {
   if (matchedAssets.length === 0) {
     return (
-      <div className="rounded border border-dashed bg-muted/40 p-4 text-center text-[11px] text-muted-foreground">
-        🔍 RFP 분석 후 자산 매칭이 표시됩니다
+      <div
+        className="p-6 text-center text-[11px]"
+        style={{
+          color: 'var(--subtitle-text)',
+          background: '#ffffff',
+          border: '1px dashed var(--hairline-strong, #e4dfd6)',
+        }}
+      >
+        RFP 분석 후 자산 매칭이 표시됩니다
       </div>
     )
   }
@@ -194,40 +215,72 @@ function AssetsTab({
         return (
           <div
             key={a.assetId}
-            className="rounded-lg border bg-card p-2.5"
+            className="bg-white p-3.5 transition-transform hover:-translate-y-0.5"
+            style={{ borderTop: '3px solid var(--primary-orange)' }}
           >
-            <div className="mb-1 flex items-center justify-between gap-2">
-              <span className="truncate text-xs font-medium">{a.name}</span>
-              <span className="shrink-0 font-mono text-[10px] text-muted-foreground">
+            <div className="mb-1.5 flex items-center justify-between gap-2">
+              <span
+                className="truncate text-[13px] font-semibold"
+                style={{ color: 'var(--dark-charcoal)' }}
+              >
+                {a.name}
+              </span>
+              <span
+                className="flex-shrink-0 text-[11px] font-bold tabular-nums"
+                style={{ color: 'var(--primary-orange)' }}
+              >
                 {a.matchScore.toFixed(2)}
               </span>
             </div>
             {a.snippet && (
-              <p className="mb-2 line-clamp-2 text-[10px] text-foreground/70">{a.snippet}</p>
+              <p
+                className="mb-2.5 line-clamp-2 text-[11px] leading-[1.65]"
+                style={{ color: 'var(--subtitle-text)' }}
+              >
+                {a.snippet}
+              </p>
             )}
             <div className="flex items-center gap-1.5">
               {cited ? (
-                <span className="inline-flex items-center gap-0.5 rounded border border-green-300 bg-green-50 px-1.5 py-0.5 text-[9px] text-green-700">
+                <span
+                  className="px-2 py-1 text-[9px] font-semibold uppercase tracking-[1px]"
+                  style={{
+                    color: 'var(--green)',
+                    background: 'rgba(46,204,113,.08)',
+                    border: '1px solid rgba(46,204,113,.3)',
+                  }}
+                >
                   ✓ 인용됨
                 </span>
               ) : (
                 <>
                   <button
                     onClick={() => onAccept?.(a.assetId)}
-                    className="rounded border border-orange-300 bg-orange-50 px-2 py-0.5 text-[10px] text-orange-700 hover:bg-orange-100"
+                    className="px-3 py-1 text-[10px] font-bold uppercase tracking-[1px] text-white transition-colors hover:opacity-90"
+                    style={{ background: 'var(--primary-orange)' }}
                   >
                     수락
                   </button>
                   <button
                     onClick={() => onReject?.(a.assetId)}
-                    className="rounded border bg-card px-2 py-0.5 text-[10px] text-muted-foreground hover:bg-muted"
+                    className="px-3 py-1 text-[10px] font-semibold uppercase tracking-[1px]"
+                    style={{
+                      color: 'var(--subtitle-text)',
+                      border: '1px solid var(--hairline-strong, #e4dfd6)',
+                    }}
                   >
                     거절
                   </button>
                 </>
               )}
               {a.sourceTier === 'high' && (
-                <span className="ml-auto rounded bg-orange-100 px-1.5 py-0.5 text-[9px] text-orange-700">
+                <span
+                  className="ml-auto px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[1px]"
+                  style={{
+                    color: 'var(--action-orange)',
+                    background: 'rgba(255,130,4,.1)',
+                  }}
+                >
                   high
                 </span>
               )}
@@ -242,8 +295,15 @@ function AssetsTab({
 function PatternsTab({ patterns }: { patterns: BrainDockSimilarPattern[] }) {
   if (patterns.length === 0) {
     return (
-      <div className="rounded border border-dashed bg-muted/40 p-4 text-center text-[11px] text-muted-foreground">
-        📋 유사 수주 사업이 매칭되면 표시됩니다
+      <div
+        className="p-6 text-center text-[11px]"
+        style={{
+          color: 'var(--subtitle-text)',
+          background: '#ffffff',
+          border: '1px dashed var(--hairline-strong, #e4dfd6)',
+        }}
+      >
+        유사 수주 사업이 매칭되면 표시됩니다
       </div>
     )
   }
@@ -252,10 +312,16 @@ function PatternsTab({ patterns }: { patterns: BrainDockSimilarPattern[] }) {
       {patterns.map((p) => (
         <li
           key={p.patternId}
-          className="flex items-center justify-between gap-2 rounded border bg-card px-2.5 py-1.5"
+          className="flex items-center justify-between gap-2 bg-white px-3 py-2"
+          style={{ borderLeft: '3px solid var(--primary-orange)' }}
         >
-          <span className="truncate">{p.sourceProject}</span>
-          <span className="shrink-0 font-mono text-[10px] text-muted-foreground">
+          <span className="truncate" style={{ color: 'var(--body-text)' }}>
+            {p.sourceProject}
+          </span>
+          <span
+            className="flex-shrink-0 text-[10px] font-bold tabular-nums"
+            style={{ color: 'var(--primary-orange)' }}
+          >
             {p.matchScore.toFixed(2)}
           </span>
         </li>
@@ -267,8 +333,15 @@ function PatternsTab({ patterns }: { patterns: BrainDockSimilarPattern[] }) {
 function ChatTab() {
   return (
     <div className="flex h-full flex-col">
-      <div className="flex-1 rounded border border-dashed bg-muted/40 p-4 text-center text-[11px] text-muted-foreground">
-        💬 AI 채팅 (예정)
+      <div
+        className="flex-1 p-6 text-center text-[11px] leading-[1.7]"
+        style={{
+          color: 'var(--subtitle-text)',
+          background: '#ffffff',
+          border: '1px dashed var(--hairline-strong, #e4dfd6)',
+        }}
+      >
+        AI 채팅 (예정)
         <br />
         Brain 에 질문하기 · 자산 검색 · 인사이트 요청
       </div>
