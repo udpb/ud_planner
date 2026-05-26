@@ -15,6 +15,7 @@ import { SubHeader } from '@/components/shell/SubHeader'
 import { NowBar } from '@/components/shell/NowBar'
 import { BrainDock } from '@/components/shell/BrainDock'
 import { S1HeroCenter, type S1AnalysisResult } from '@/components/stages/S1HeroCenter'
+import { S2ChatCanvas } from '@/components/stages/S2ChatCanvas'
 
 export interface V2ShellProps {
   projectId: string
@@ -34,6 +35,9 @@ export interface V2ShellProps {
   currentStage: StageId
   /** S1 분석 결과 (null 이면 미분석) */
   analysis: S1AnalysisResult | null
+  /** S2 슬롯 진행 — ExpressDraft 에서 도출 */
+  slotsFilled: number
+  slotsTotal: number
 }
 
 export function V2Shell({
@@ -47,6 +51,8 @@ export function V2Shell({
   stages,
   currentStage: initialStage,
   analysis,
+  slotsFilled,
+  slotsTotal,
 }: V2ShellProps) {
   const router = useRouter()
   const [brainOpen, setBrainOpen] = useState(false)
@@ -186,7 +192,13 @@ export function V2Shell({
             onProceedToS2={() => setActiveStage('S2')}
           />
         )}
-        {activeStage === 'S2' && <StagePlaceholder stage="S2" label="1차본 작성" phase="C" />}
+        {activeStage === 'S2' && (
+          <S2ChatCanvas
+            projectId={projectId}
+            slotsFilled={slotsFilled}
+            slotsTotal={slotsTotal}
+          />
+        )}
         {activeStage === 'S3' && <StagePlaceholder stage="S3" label="검수" phase="D" />}
         {activeStage === 'S4' && <StagePlaceholder stage="S4" label="정밀 편집" phase="E" />}
         {activeStage === 'S5' && <StagePlaceholder stage="S5" label="최종 승인" phase="F" />}

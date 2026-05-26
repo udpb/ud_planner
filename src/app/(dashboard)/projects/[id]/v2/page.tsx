@@ -10,6 +10,7 @@ import { notFound, redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/lib/auth'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
+import { ExpressDraftSchema, listFilledSlots, ALL_SLOTS } from '@/lib/express/schema'
 import { V2Shell } from './v2-shell'
 
 export const dynamic = 'force-dynamic'
@@ -73,6 +74,7 @@ export default async function ProjectV2Page({
       rfpParsed: true,
       logicModel: true,
       programProfile: true,
+      expressDraft: true,
       curriculum: { select: { id: true } },
       coachAssignments: { select: { id: true } },
       budget: { select: { id: true } },
@@ -153,6 +155,11 @@ export default async function ProjectV2Page({
       ? project.projectType
       : null)
 
+  // ExpressDraft 슬롯 진행도
+  const draftParsed = ExpressDraftSchema.safeParse(project.expressDraft)
+  const slotsFilled = draftParsed.success ? listFilledSlots(draftParsed.data).length : 0
+  const slotsTotal = ALL_SLOTS.length
+
   return (
     <V2Shell
       projectId={project.id}
@@ -165,6 +172,8 @@ export default async function ProjectV2Page({
       stages={stages}
       currentStage={currentStage}
       analysis={analysis}
+      slotsFilled={slotsFilled}
+      slotsTotal={slotsTotal}
     />
   )
 }
