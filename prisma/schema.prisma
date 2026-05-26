@@ -530,10 +530,20 @@ model ContentAsset {
   name     String
   category String // AssetCategory 유니온 (methodology · content · product · human · data · framework)
 
+  // Wave W W8 (2026-05-25): 자산 분류 (제안서 추출 자산 vs ud Labs 내부 자산)
+  // - 'proposal': 기존 — 제안서에서 추출된 narrative chunk (default, 기존 데이터 호환)
+  // - 'methodology': ud Labs — AX 가이드북, UOR 시리즈, 진단도구 등 회사 IP
+  // - 'case': ud Labs — 코칭일지, 창업가 인터뷰 (사례 narrative)
+  // - 'company': ud Labs — 회사소개서, R&D 사업계획서 (회사 메타)
+  assetType String @default("proposal")
+
   // 계층 — 상품 → 세션/주차/챕터 (1 단)
   parentId String?
   parent   ContentAsset?  @relation("ContentAssetHierarchy", fields: [parentId], references: [id])
   children ContentAsset[] @relation("ContentAssetHierarchy")
+
+  // Wave W W14 — Concept (Ontology) back-ref
+  concepts AssetConcept[]
 
   // 3중 태그 (Phase G UdAsset 동일)
   applicableSections Json // ProposalSectionKey[]
@@ -561,6 +571,14 @@ model ContentAsset {
   version          Int      @default(1)
   sourceReferences Json? // string[] — 외부 원본 URL
   lastReviewedAt   DateTime
+
+  // Wave W (PRD-v11.0 §4.3 — Sphere 2 ingest):
+  // 자료 source 추적 + 신뢰도 tier + 학습 메트릭
+  sourceTier  String?   @default("medium") // high | medium | low | internal
+  sourceType  String?   @default("manual") // 'drive' | 'slack' | 'manual' | 'product-api' | 'archive'
+  sourceRef   String? // Drive file ID 또는 Slack message permalink 또는 product API URL
+  publishedAt DateTime? // 외부 자료의 원본 발행일 (freshness)
+  winRate     Float? // AssetUsage 기반 cron 매주 재계산 (Laplace + half-life 1yr)
 
   // 감사
   createdAt   DateTime @default(now())
@@ -610,10 +628,15 @@ model AssetUsage {
   notes      String?
   createdAt  DateTime     @default(now())
 
+  // Wave W (PRD-v11.0 §4.3): PM 거절 신호 (부정 학습)
+  // PM 이 추천 자산을 거절한 케이스 — recommend-weak-lens 의 wlBonus 차감
+  rejectedByPm Boolean @default(false)
+
   @@index([assetId])
   @@index([projectId])
   @@index([wonProject])
   @@index([channel])
+  @@index([rejectedByPm])
 }
 
 /**
@@ -1097,10 +1120,184 @@ model WinningPattern {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   approvedBy String? // userId
-  embedding  Json? // pgvector 전환 전까지는 Json
+  embedding  Json? // pgvector 전환 전까지는 Json (기존 호환)
+
+  // Wave W (PRD-v11.0 §4.3 — Sphere 2 3-tuple 학습):
+  // 제안서 1건을 Message + LogicStructure + Content 3 차원으로 분해 저장.
+  // 단어 단위 RAG chunk 의 4 한계 (단어 매몰·과노출·반복·맥락 손실) 대응의 핵심.
+
+  // ─ Tuple 1: Message (slogan + keyMessages + beforeAfter + tonePatterns)
+  message       Json? // { slogan, keyMessages[3], beforeAfter:{before,after} }
+  messageVector Float[] // 768 dim · Gemini text-embedding-004
+  tonePatterns  Json? // { openings[], transitions[], closingPhrases[], avoidedWords[], signatureNumbers[] }
+
+  // ─ Tuple 2: LogicStructure (nodes + edges + sectionOrder)
+  logicGraph       Json? // { nodes:[{id,type,label}], edges:[{from,to,relation}], sectionOrder[] }
+  logicGraphVector Float[] // 768 dim · graph 직렬화 후 text-embedding-004 적용
+
+  // ─ Tuple 3: Content (인용한 ContentAsset id 들)
+  contentRefs String[] // ContentAsset.id[] — 이 제안서가 인용한 자산
+
+  // ─ 패배 패턴도 동등 학습 (outcome='lost' 시)
+  lossReason     String? // 짧은 분류 (예산 미달 · 이해관계자 조율 지연 · 기술 점수 70 이하)
+  lessonsLearned String? @db.Text // 자연어 메모
 
   @@index([sectionKey, channelType, outcome])
   @@index([sourceProject])
+}
+
+// ─────────────────────────────────────────
+// Wave W W6 (2026-05-25): 사업별 예산 항목 (산출내역서 XLSX) — 학습 자산
+//
+// master sheet 의 "산출내역서" 컬럼 hyperlink → XLSX download → LLM 으로 표 정규화 → 다수.
+// 매칭 시 비슷한 사업의 예산 구조 참조 가능 (PM 가 새 사업 예산 잡을 때 인용).
+//
+// 기존 Project 의 BudgetItem (line 436) 과 분리 — 그것은 PM 이 운영용 예산 작성,
+// 이것은 과거 수주 사업의 예산을 학습해 신규 사업 인용용.
+// ─────────────────────────────────────────
+
+model ProposalBudgetItem {
+  id              String  @id @default(cuid())
+
+  // 출처
+  sourceProject   String  // WinningPattern.sourceProject 와 일치 — 사업 단위 group by
+  sourceRef       String? // "sheet-row-N:drive-FILEID" (recall 용)
+  driveFileId     String? // 원본 XLSX file ID
+
+  // 분류
+  channelType     String? // 'B2G' | 'B2B' | 'renewal'
+  category        String  // '인건비' | '운영비' | '재료비' | '외주비' | '강사료' | '회의비' | '기타'
+
+  // 항목
+  itemName        String  // 예: "운영 인건비" / "코치 강사료" / "교재 인쇄비"
+  description     String? @db.Text // 상세 사유·산출 근거
+
+  // 수치
+  unit            String? // '명' | '회' | '시간' | '식' | '건' | '월'
+  quantity        Float?
+  unitPrice       Float?  // 단가 (원)
+  amount          Float   // 금액 (원) — 필수
+
+  // 메타
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceProject])
+  @@index([category])
+  @@index([channelType, category])
+}
+
+// ─────────────────────────────────────────
+// Wave W W14 (2026-05-26): Concept (Ontology) — Sphere 2 의 의미 그래프
+//
+// 자산을 횡단하는 "개념" 을 entity 로 승격.
+// 예: "액트프러너", "ACTT", "DOGS", "5D", "GEPXR", "예비창업패키지" 등.
+//
+// 효과:
+//   - 매칭 시 keyword 매칭 → concept 매칭 (의미 정확)
+//   - 자산 간 관계 그래프 (RDF triple)
+//   - 자기 강화 — 어떤 concept 이 자주 인용·수주 자동 학습
+//
+// Layer 3 (온톨로지) 의 기초. Layer 4 (자가 강화) · Layer 5 (자기 인식) 의 전제.
+// ─────────────────────────────────────────
+
+model Concept {
+  id          String   @id @default(cuid())
+  name        String   @unique // canonical name (예: "액트프러너")
+  type        String   // 'methodology' | 'metric' | 'persona' | 'domain' | 'tool' | 'partnership' | 'framework' | 'event-type'
+  description String?  @db.Text // LLM 정의 (1~2 줄)
+  aliases     String[] // 다른 표현: ["Actpreneur", "Act-Preneur", "액트프러너십"]
+
+  // 의미 벡터 (semantic search)
+  embedding      Float[]
+  embeddingModel String?  // 예: 'gemini-embedding-001'
+  embeddedAt     DateTime?
+
+  // 계층 (선택) — 액트프러너 → Act-preneur 7steps
+  parentId String?
+  parent   Concept?  @relation("ConceptHierarchy", fields: [parentId], references: [id])
+  children Concept[] @relation("ConceptHierarchy")
+
+  // 자동 갱신 통계 (Layer 4·5)
+  assetCount   Int    @default(0) // AssetConcept count
+  patternCount Int    @default(0) // PatternConcept count
+  usageCount   Int    @default(0) // PM 인용 누적 (AssetUsage 합산)
+  winRate      Float? // PM 인용된 사업의 수주율
+  lastUsedAt   DateTime?
+
+  // 메타
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // m2m
+  assets   AssetConcept[]
+  patterns PatternConcept[]
+
+  // W17: ConceptRelation (RDF triple)
+  outgoingRelations ConceptRelation[] @relation("ConceptRelationFrom")
+  incomingRelations ConceptRelation[] @relation("ConceptRelationTo")
+
+  @@index([type])
+  @@index([name])
+}
+
+model AssetConcept {
+  assetId   String
+  conceptId String
+
+  // 자산에서 이 개념의 중심도
+  weight Float   @default(1.0) // 0~1
+  isCore Boolean @default(false) // 핵심 개념 (1자산당 1~2개)
+
+  asset   ContentAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  concept Concept      @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([assetId, conceptId])
+  @@index([conceptId])
+}
+
+model PatternConcept {
+  patternId String
+  conceptId String
+  weight    Float    @default(1.0)
+  isCore    Boolean  @default(false)
+  concept   Concept  @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([patternId, conceptId])
+  @@index([conceptId])
+  @@index([patternId])
+}
+
+// W17 (2026-05-26): Concept 간 관계 (RDF triple) — Layer 3 의미 그래프 완성
+//
+// 같은 자산·패턴에서 함께 등장하는 Concept 쌍 → co-occurrence 강도 측정.
+// 향후 evolve: 'co-occurs' → 'causes', 'enables', 'measures', 'parent-of' 등.
+model ConceptRelation {
+  id          String   @id @default(cuid())
+  fromId      String
+  toId        String
+  /** 관계 유형: co-occurs (default) | parent-of | causes | enables | measures */
+  type        String   @default("co-occurs")
+  /** 강도 (0~1) — 함께 등장 횟수 ÷ max(from·to 등장 횟수) */
+  strength    Float    @default(0)
+  /** 함께 등장 횟수 (asset + pattern 합산) */
+  coOccurCount Int     @default(0)
+  /** 검증 메모 (LLM 추후 added) */
+  reason      String?  @db.Text
+
+  from        Concept  @relation("ConceptRelationFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to          Concept  @relation("ConceptRelationTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([fromId, toId, type])
+  @@index([fromId])
+  @@index([toId])
+  @@index([strength])
 }
 
 // Phase E (ADR-006): 프로파일 태그 자동완성 + 재사용률 집계

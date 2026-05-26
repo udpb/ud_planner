@@ -70,3 +70,7 @@ guidebook-site/site/
 /playwright-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Sphere 2 — service account key + 제안서 마스터 시트 + batch result
+.secrets/
+

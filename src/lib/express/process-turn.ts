@@ -23,7 +23,14 @@ import type { ProgramProfile } from '@/lib/program-profile'
 import type { AssetMatch } from '@/lib/asset-registry'
 
 import { buildTurnPrompt, buildFirstTurnPrompt } from './prompts'
-import { TurnResponseSchema, type TurnResponse, type ConversationState, type Turn, newTurnId } from './conversation'
+import {
+  TurnResponseSchema,
+  type TurnResponse,
+  type ConversationState,
+  type Turn,
+  newTurnId,
+  normalizeChecklistItems,
+} from './conversation'
 import { mergeExtractedSlots, filterKnownSlots } from './extractor'
 import { selectNextSlot } from './slot-priority'
 import type { ExpressDraft } from './schema'
@@ -32,6 +39,8 @@ import {
   coerceToTurnResponse,
   extractMarkdownSections,
 } from './process-turn/helpers'
+// F4 (Wave V, ADR-015 §7): pm-direct 카드 must/nice 분류 hint
+import { classifyByHeuristic } from './question-classifier'
 
 // ─────────────────────────────────────────
 // 1. 입출력 타입
@@ -74,6 +83,19 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
     ? input.forceSlot
     : selectNextSlot(input.draft, input.rfp)
 
+  // F4 (Wave V, ADR-015 §7): pm-direct 카드 발동 시 must/nice 차등을 위한
+  // 휴리스틱 hint. RFP 결손 + 채널 룰만 보고 가벼운 분류. 매 턴 계산 비용 거의 0
+  // (zod-validate 안 함, pure 함수). first-turn 에선 carry 안 함 — RFP 첫 분석
+  // 직후라 차등 의미 약함.
+  const channel = input.rfp?.projectType  // 'B2G' | 'B2B' (renewal 은 추후 별도 시그널)
+  const questionHints = input.firstTurn
+    ? []
+    : classifyByHeuristic({
+        rfp: input.rfp,
+        profile: input.profile,
+        channel,
+      })
+
   const prompt = input.firstTurn && input.rfp
     ? buildFirstTurnPrompt({
         rfp: input.rfp,
@@ -88,6 +110,7 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
         matchedAssets: input.matchedAssets,
         pmInput: input.pmInput,
         currentSlot,
+        questionHints,
       })
 
   const pmTurn: Turn | undefined = input.pmInput
@@ -229,13 +252,27 @@ export async function processTurn(input: ProcessTurnInput): Promise<ProcessTurnR
     }
   }
 
-  // 외부 LLM 카드 운영 로그 (Phase L L3)
+  // 외부 LLM 카드 운영 로그 (Phase L L3 + F4)
   if (parsed.externalLookupNeeded) {
     const c = parsed.externalLookupNeeded
+    // F4: pm-direct 일 때 must/nice 카운트 (분류기 동작 확인 + AI 응답 품질 모니터)
+    let pmDirectExtra = ''
+    if (c.type === 'pm-direct') {
+      const normalized = normalizeChecklistItems(c.checklistItems)
+      const mustCount = normalized.filter((it) => it.classification === 'must').length
+      const niceCount = normalized.filter((it) => it.classification === 'nice').length
+      pmDirectExtra = ` (checklist ${normalized.length} — must ${mustCount}, nice ${niceCount})`
+      // 분류 균형 경고 — must=0 이면 AI 가 룰 무시한 신호
+      if (mustCount === 0 && normalized.length > 0) {
+        console.warn(
+          `[express-turn] ⚠️ pm-direct 카드 must=0 — AI 가 분류 룰 무시 (모두 nice). prompts 점검 필요`,
+        )
+      }
+    }
     console.log(
       `[express-turn] 🔔 ${c.type} card → "${c.topic}"` +
         (c.type === 'external-llm' ? ` (prompt ${c.generatedPrompt?.length ?? 0}b)` : '') +
-        (c.type === 'pm-direct' ? ` (checklist ${c.checklistItems?.length ?? 0})` : ''),
+        pmDirectExtra,
     )
   } else if (input.state.turns.length >= 4 && input.state.turns.length % 4 === 0) {
     // PM 이 4턴 이상 진행 중인데 외부 카드 한 번도 없으면 prompts 튜닝 신호

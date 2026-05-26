@@ -28,12 +28,15 @@ import { Sparkles } from 'lucide-react'
 // Wave V / F0 (ADR-015) — Feature flag + 5 Stage 통합 페이지
 import { isExpressParadigmV3 } from '@/lib/feature-flags'
 import { loadExpressInitialProps } from '@/lib/express/load-express-props'
+import { StageShell } from '@/components/projects/stages/StageShell'
+// 2026-05-22 fix: computeCurrentStage / computeStageDoneFlags 는 stage-mapping.ts
+// (pure) 에서 직접 import. StageShell ('use client') 에서 import 하면 Next.js 가
+// 같이 client-only 로 격리해 server component 에서 호출 시 런타임 에러.
 import {
-  StageShell,
+  mapStepQueryToStage,
   computeCurrentStage,
   computeStageDoneFlags,
-} from '@/components/projects/stages/StageShell'
-import { mapStepQueryToStage } from '@/components/projects/stages/stage-mapping'
+} from '@/components/projects/stages/stage-mapping'
 
 export const dynamic = 'force-dynamic'
 
