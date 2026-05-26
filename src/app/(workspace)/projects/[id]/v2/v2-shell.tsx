@@ -158,33 +158,69 @@ export function V2Shell({
     }
     if (activeStage === 'S2') {
       return {
-        context: 'Next · Stage 02 · 1차본 작성',
-        message: 'S2 Chat-Canvas (Phase C 에서 wire up 예정)',
-        hint: '슬롯 12개 진행 · 7 섹션 자동 채움',
-        actions: [],
+        context: `Next · Stage 02 · Slot ${slotsFilled} / ${slotsTotal}`,
+        message:
+          slotsFilled >= slotsTotal
+            ? '슬롯 완료 — S3 검수 단계로 진행하세요'
+            : '슬롯 채우기 — AI 자동 추천 또는 직접 입력',
+        hint: '평균 30~45분 · slot 완료 후 자동 S3 진입',
+        actions:
+          slotsFilled >= slotsTotal
+            ? [
+                {
+                  label: 'S3 검수로 진행',
+                  onClick: () => setActiveStage('S3'),
+                  variant: 'primary' as const,
+                },
+              ]
+            : [],
       }
     }
     if (activeStage === 'S3') {
       return {
-        context: 'Next · Stage 03 · 검수',
-        message: 'S3 Checklist + Diff (Phase D 에서 wire up 예정)',
-        hint: '7 lens 점수 + asset 추천 + inline diff',
-        actions: [],
+        context: 'Next · Stage 03 · Asset Boost',
+        message: '약점 lens 보강 — Brain 자산 추천 수락 시 점수 +N',
+        hint: '또는 보강 없이 바로 Stage 04 정밀 편집 진입 가능',
+        actions: [
+          {
+            label: '바로 S4 정밀 편집',
+            onClick: () => setActiveStage('S4'),
+            variant: 'primary' as const,
+          },
+        ],
       }
     }
     if (activeStage === 'S4') {
       return {
-        context: 'Next · Stage 04 · 정밀 편집',
-        message: 'S4 Workspace Tabs (Phase E 에서 wire up 예정)',
-        hint: 'Curriculum · Coaches · Budget · Proposal 4 tab',
-        actions: [],
+        context: 'Next · Stage 04 · Precision Editing',
+        message: '모든 도메인 정합성 OK — Stage 05 최종 승인으로 진입 가능',
+        hint: '또는 4 탭 (커리큘럼 · 코치 · 예산 · 제안서) 상세 편집 계속',
+        actions: [
+          {
+            label: 'Stage 05 최종 승인',
+            onClick: () => setActiveStage('S5'),
+            variant: 'primary' as const,
+          },
+        ],
       }
     }
     return {
-      context: 'Next · Stage 05 · 최종 승인',
-      message: 'S5 Summary (Phase F 에서 wire up 예정)',
-      hint: 'Impact forecast + 3 summary cell + 최종 approve',
-      actions: [],
+      context: 'Next · Stage 05 · Final Approval',
+      message: s5IsApproved
+        ? '✓ 승인 완료 · 제출됨'
+        : '모든 검증 통과 — 메인 캔버스의 승인 버튼 사용',
+      hint: s5IsApproved
+        ? '편집 잠금 상태. 필요 시 재오픈 가능.'
+        : '또는 이전 Stage 로 돌아가서 수정 가능',
+      actions: s5IsApproved
+        ? []
+        : [
+            {
+              label: '← S4 정밀 편집',
+              onClick: () => setActiveStage('S4'),
+              variant: 'secondary' as const,
+            },
+          ],
     }
   })()
 
