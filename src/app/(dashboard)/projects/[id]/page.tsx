@@ -252,6 +252,14 @@ export default async function ProjectDetailPage({
                 Express
               </Link>
             )}
+            {/* W31 (Phase E): Brain 4+1 통합 — matchTuple → 5초 통합 답변 */}
+            <Link
+              href={`/projects/${project.id}/brain`}
+              className="flex items-center gap-1.5 rounded-md border border-purple-400/40 bg-purple-500/5 px-2.5 py-1 text-xs font-medium text-purple-700 hover:bg-purple-500/10"
+              title="Brain 4+1 — 유사 사업·자산·Concept 통합 매칭"
+            >
+              🧠 Brain
+            </Link>
             <div className="text-sm">
               <span className="text-muted-foreground">총 예산 </span>
               <span className="font-semibold">
