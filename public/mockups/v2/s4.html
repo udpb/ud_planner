@@ -133,9 +133,20 @@
     letter-spacing: 1.5px; text-transform: uppercase;
     padding: 4px 10px;
   }
-  .curri-type.theory { background: rgba(6,169,208,.1); color: var(--cyan); }
-  .curri-type.action { background: rgba(255,130,4,.12); color: var(--action-orange); }
-  .curri-type.lecture { background: rgba(232,84,26,.1); color: var(--primary-orange); }
+  /* 단순화 — 3 type 을 outline/filled/dark 로 분리 (모두 orange family) */
+  .curri-type.theory {
+    background: transparent;
+    color: var(--subtitle-text);
+    border: 1px solid var(--hairline-strong);
+  }
+  .curri-type.action {
+    background: var(--primary-orange);
+    color: var(--white);
+  }
+  .curri-type.lecture {
+    background: var(--dark-charcoal);
+    color: var(--white);
+  }
   .curri-duration {
     font-size: 12px;
     color: var(--body-text);
@@ -157,16 +168,13 @@
     border-top: 3px solid var(--primary-orange);
     padding: 22px 20px;
   }
-  .stat-card.cyan { border-top-color: var(--cyan); }
-  .stat-card.green { border-top-color: var(--green); }
+  /* 단순화 — 모든 stat-card primary-orange 단일 */
   .stat-card__label {
     font-size: 10px; font-weight: 700;
     letter-spacing: 1.5px; text-transform: uppercase;
     color: var(--primary-orange);
     margin-bottom: 12px;
   }
-  .stat-card.cyan .stat-card__label { color: var(--cyan); }
-  .stat-card.green .stat-card__label { color: var(--green); }
 
   .stat-row {
     display: flex; justify-content: space-between; align-items: center;
@@ -382,7 +390,7 @@
             <div class="stat-row is-ok"><span class="stat-row__label">R-002 위반</span><span class="stat-row__value">0건</span></div>
           </div>
 
-          <div class="stat-card cyan">
+          <div class="stat-card">
             <div class="stat-card__label">Coaches</div>
             <div class="stat-row"><span class="stat-row__label">메인 코치</span><span class="stat-row__value">2명</span></div>
             <div class="stat-row"><span class="stat-row__label">보조 코치</span><span class="stat-row__value">4명</span></div>
@@ -390,7 +398,7 @@
             <div class="stat-row"><span class="stat-row__label">총 강사료</span><span class="stat-row__value">3,200만</span></div>
           </div>
 
-          <div class="stat-card green">
+          <div class="stat-card">
             <div class="stat-card__label">Budget</div>
             <div class="stat-row"><span class="stat-row__label">총 예산</span><span class="stat-row__value big">0.20<span style="font-size:11px;">억</span></span></div>
             <div class="stat-row"><span class="stat-row__label">인건비</span><span class="stat-row__value">1,360만</span></div>
@@ -406,7 +414,7 @@
 
   <!-- NowBar -->
   <div class="nowbar">
-    <div class="nowbar__icon">📚</div>
+    <div class="nowbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="nowbar__text">
       <div class="nowbar__ctx">Next · Stage 04 · Precision Editing</div>
       <div class="nowbar__msg">모든 도메인 정합성 OK — Stage 05 최종 승인으로 진입 가능</div>
