@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>S2 1차본 작성 — UX v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./_shared.css" />
+<style>
+  .s2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    height: 100%;
+    min-height: calc(100vh - 44px - 52px - 64px);
+    padding: 16px 24px;
+  }
+
+  /* 좌 챗봇 panel */
+  .chat-panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-panel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chat-panel__title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .chat-panel__title .icon { color: var(--orange); }
+  .chat-panel__progress {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: var(--text-muted);
+  }
+  .slot-bar {
+    width: 100px; height: 4px; background: var(--bg-muted); border-radius: 999px; overflow: hidden;
+  }
+  .slot-bar__fill { background: var(--orange); height: 100%; border-radius: 999px; }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+  }
+  .msg { margin-bottom: 16px; }
+  .msg.ai { display: flex; gap: 10px; }
+  .msg .avatar-sm {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--orange-10);
+    color: var(--orange);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+  .msg__bubble {
+    background: var(--beige);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 85%;
+  }
+  .msg.pm { text-align: right; }
+  .msg.pm .msg__bubble { background: var(--orange-10); display: inline-block; text-align: left; }
+
+  .quick-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; padding-left: 38px; }
+  .chip-action {
+    padding: 4px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .chip-action:hover { background: var(--orange-10); color: var(--orange); border-color: var(--orange-40); }
+  .chip-action.is-primary { background: var(--orange); color: white; border-color: var(--orange); }
+
+  .chat-input {
+    border-top: 1px solid var(--border);
+    padding: 12px 18px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .chat-input input {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* 우 미리보기 panel */
+  .preview-panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow-y: auto;
+    padding: 22px 24px;
+  }
+  .preview-panel__title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); margin-bottom: 4px; }
+  .preview-panel__hint { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
+
+  .section {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border: none; }
+  .section__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .section__num { font-size: 11px; font-weight: 700; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .section__title { font-size: 14px; font-weight: 700; flex: 1; margin: 0 10px; }
+  .section__status {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .section__status.is-filled { background: rgba(16, 185, 129, .12); color: #047857; }
+  .section__status.is-partial { background: var(--orange-10); color: var(--orange); }
+  .section__status.is-empty { background: var(--bg-muted); color: var(--text-muted); }
+
+  .section__body { font-size: 12px; line-height: 1.65; color: var(--text); }
+  .section__body.is-empty { color: var(--text-soft); font-style: italic; }
+  .section__body .citation {
+    display: inline-block;
+    padding: 1px 6px;
+    background: var(--beige);
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+    <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
+    <div class="topbar__stages">
+      <span class="stage-chip is-done">S1 RFP</span>
+      <span class="stage-chip is-active">S2 1차본</span>
+      <span class="stage-chip is-pending">S3 검수</span>
+      <span class="stage-chip is-pending">S4 정밀</span>
+      <span class="stage-chip is-pending">S5 승인</span>
+    </div>
+    <div class="topbar__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" style="width: 35%"></div></div>
+      <span class="progress-pct">35%</span>
+    </div>
+    <div class="topbar__right">
+      <button class="btn-brain">🧠 Brain</button>
+      <span class="avatar">PM</span>
+    </div>
+  </div>
+
+  <!-- Sub-header -->
+  <div class="subheader">
+    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
+    <div class="subheader__meta">
+      <span class="badge b2g">B2G</span>
+      <span class="stat">발주처 · <strong>한국외국어대학교</strong></span>
+      <span class="stat">예산 · <strong>0.20억</strong></span>
+      <span class="stat">평가배점 · <strong>5개</strong></span>
+    </div>
+    <div class="subheader__actions">
+      <button class="btn-secondary">편집</button>
+      <a class="btn-secondary" href="#">v1 화면</a>
+    </div>
+  </div>
+
+  <!-- Main canvas — Chat-Canvas (좌 챗봇 + 우 7섹션 미리보기) -->
+  <div class="canvas">
+    <div class="canvas__main" style="padding: 0;">
+      <div class="s2-grid">
+
+        <!-- 좌: 챗봇 -->
+        <div class="chat-panel">
+          <div class="chat-panel__head">
+            <div class="chat-panel__title"><span class="icon">✨</span>AI 1차본 빌더</div>
+            <div class="chat-panel__progress">
+              <span>슬롯 5/12</span>
+              <div class="slot-bar"><div class="slot-bar__fill" style="width: 42%"></div></div>
+            </div>
+          </div>
+          <div class="chat-messages">
+            <div class="msg ai">
+              <div class="avatar-sm">AI</div>
+              <div>
+                <div class="msg__bubble">
+                  좋아요! 다음 슬롯은 <strong>Before/After</strong> 입니다.<br/>
+                  이 사업이 끝났을 때 안산 청년 창업가들의 <strong>전·후 모습</strong>이 어떻게 달라져야 할까요?
+                </div>
+                <div class="quick-chips">
+                  <span class="chip-action is-primary">✨ AI 가 제안하기</span>
+                  <span class="chip-action">예시 5개 보기</span>
+                  <span class="chip-action">유사 사업 참고</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="msg pm">
+              <div class="msg__bubble">
+                Before: 시장 진입 막막 / 자금 부족<br/>
+                After: 12주 후 검증된 MVP + 시드 투자 연결
+              </div>
+            </div>
+
+            <div class="msg ai">
+              <div class="avatar-sm">AI</div>
+              <div>
+                <div class="msg__bubble">
+                  좋습니다! 이걸로 <strong>섹션 2 (핵심 메시지)</strong> 와 <strong>섹션 5 (예상 결과)</strong> 자동 채울게요.<br/>
+                  다음 슬롯 <strong>차별화 자산</strong> 으로 넘어갈까요?
+                </div>
+                <div class="quick-chips">
+                  <span class="chip-action is-primary">다음 슬롯 →</span>
+                  <span class="chip-action">먼저 확인</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="추가 의견이나 질문..." />
+            <button class="btn-secondary">↑</button>
+          </div>
+        </div>
+
+        <!-- 우: 7섹션 미리보기 -->
+        <div class="preview-panel">
+          <div class="preview-panel__title">📄 1차본 미리보기</div>
+          <div class="preview-panel__hint">AI 자동 채워지면 실시간 반영 · 클릭으로 인라인 편집</div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">01</span>
+              <span class="section__title">제안 배경</span>
+              <span class="section__status is-filled">완성</span>
+            </div>
+            <div class="section__body">
+              안산은 ERICA 등 우수 대학이 있음에도 청년 창업 생태계가 분절되어 있다.
+              <span class="citation">[근거: 안산시 청년정책 보고서 2025]</span>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">02</span>
+              <span class="section__title">핵심 메시지</span>
+              <span class="section__status is-partial">진행중</span>
+            </div>
+            <div class="section__body">
+              "안산 청년 창업가의 진짜 무대를 만든다 — 검증된 MVP + 시드 연결까지"
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">03</span>
+              <span class="section__title">차별화</span>
+              <span class="section__status is-empty">대기</span>
+            </div>
+            <div class="section__body is-empty">PM 결정 대기 — Brain 자산 8건 매칭됨</div>
+          </div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">04</span>
+              <span class="section__title">실행 계획</span>
+              <span class="section__status is-empty">대기</span>
+            </div>
+            <div class="section__body is-empty">자동 채움 예정</div>
+          </div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">05</span>
+              <span class="section__title">예상 결과</span>
+              <span class="section__status is-partial">진행중</span>
+            </div>
+            <div class="section__body">
+              12주 후: MVP 검증 80% · 시드 연결 12팀 · 누적 매출 9.2억원
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">06</span>
+              <span class="section__title">사회적 가치</span>
+              <span class="section__status is-empty">대기</span>
+            </div>
+            <div class="section__body is-empty">SROI 계산 예정</div>
+          </div>
+
+          <div class="section">
+            <div class="section__head">
+              <span class="section__num">07</span>
+              <span class="section__title">부속 자료</span>
+              <span class="section__status is-empty">대기</span>
+            </div>
+            <div class="section__body is-empty">자동 첨부 예정</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- NowBar -->
+  <div class="nowbar">
+    <div class="nowbar__icon">✨</div>
+    <div class="nowbar__text">
+      <div class="nowbar__ctx">S2 1차본 작성 · 슬롯 5/12 완료</div>
+      <div class="nowbar__msg">다음 슬롯: 차별화 자산 (Brain 8건 매칭됨)</div>
+      <div class="nowbar__hint">AI 자동 추천 또는 직접 입력 · 평균 1~2분</div>
+    </div>
+    <button class="btn-primary">
+      차별화 자산 자동 추천 보기
+      <span class="eta">~10초</span>
+      <span class="arrow">→</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- Mockup nav -->
+<div class="mockup-nav">
+  <a href="./index.html">← 전체</a>
+  <a href="./s1.html">S1</a>
+  <a class="is-current" href="./s2.html">S2</a>
+  <a href="./s3.html">S3</a>
+  <a href="./s4.html">S4</a>
+  <a href="./s5.html">S5</a>
+</div>
+
+</body>
+</html>

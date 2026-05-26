@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>S5 최종 승인 — UX v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./_shared.css" />
+<style>
+  .s5-wrap { max-width: 820px; margin: 0 auto; padding: 48px 24px; }
+
+  .approval-hero { text-align: center; margin-bottom: 40px; }
+  .approval-hero .icon { font-size: 56px; margin-bottom: 12px; }
+  .approval-hero h1 { font-size: 28px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
+  .approval-hero p { font-size: 14px; color: var(--text-muted); }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .summary-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .summary-card .label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .summary-card .value { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .summary-card .meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .summary-card.highlight { background: linear-gradient(135deg, var(--orange-10), white); border-color: var(--orange-40); }
+  .summary-card.highlight .value { color: var(--orange); }
+
+  .impact-card {
+    background: linear-gradient(135deg, #047857, #10B981);
+    color: white;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-md);
+  }
+  .impact-card .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .impact-card .head-label { font-size: 12px; opacity: .85; }
+  .impact-card .head-icon { font-size: 24px; }
+  .impact-card .total { font-size: 40px; font-weight: 800; line-height: 1; }
+  .impact-card .total-unit { font-size: 16px; opacity: .85; font-weight: 600; margin-left: 6px; }
+  .impact-card .beneficiary { font-size: 13px; margin-top: 8px; opacity: .9; }
+  .impact-card .breakdown {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,.2);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .impact-card .br-item { font-size: 11px; }
+  .impact-card .br-item .br-label { opacity: .8; }
+  .impact-card .br-item .br-val { font-size: 16px; font-weight: 700; margin-top: 2px; }
+
+  .checklist {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 24px;
+  }
+  .checklist h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .check-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 12px; }
+  .check-item .ic {
+    width: 18px; height: 18px;
+    border-radius: 999px;
+    background: var(--green);
+    color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+
+  .pdf-preview {
+    background: var(--beige);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .pdf-preview .pdf-icon {
+    width: 48px; height: 60px;
+    background: white;
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .pdf-preview .info { flex: 1; }
+  .pdf-preview h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .pdf-preview .info-meta { font-size: 11px; color: var(--text-muted); }
+  .pdf-preview .actions { display: flex; gap: 6px; }
+
+  .approval-zone {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+  }
+  .approval-zone p { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .btn-approve-final {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 36px;
+    background: linear-gradient(135deg, var(--orange), #D9491A);
+    color: white;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(240, 85, 25, .4);
+    transition: all .15s;
+  }
+  .btn-approve-final:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(240, 85, 25, .5); }
+  .btn-approve-final .icon { font-size: 20px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="topbar__logo" href="./index.html">UD·Ops</a>
+    <a class="topbar__project" href="#">← 한국외대 RISE 사업단 <span class="chev">▾</span></a>
+    <div class="topbar__stages">
+      <span class="stage-chip is-done">S1 RFP</span>
+      <span class="stage-chip is-done">S2 1차본</span>
+      <span class="stage-chip is-done">S3 검수</span>
+      <span class="stage-chip is-done">S4 정밀</span>
+      <span class="stage-chip is-active">S5 승인</span>
+    </div>
+    <div class="topbar__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" style="width: 100%"></div></div>
+      <span class="progress-pct">100%</span>
+    </div>
+    <div class="topbar__right">
+      <button class="btn-brain">🧠 Brain</button>
+      <span class="avatar">PM</span>
+    </div>
+  </div>
+
+  <!-- Sub-header -->
+  <div class="subheader">
+    <div class="subheader__title">2026 안산 임팩트 챌린지 with ERICA IC</div>
+    <div class="subheader__meta">
+      <span class="badge b2g">B2G</span>
+      <span class="stat">검수 · <strong>86점</strong></span>
+      <span class="stat">예산 · <strong>0.20억</strong></span>
+      <span class="stat">마진 · <strong>18.0%</strong></span>
+    </div>
+    <div class="subheader__actions">
+      <button class="btn-secondary">← S4로 돌아가기</button>
+    </div>
+  </div>
+
+  <!-- Main canvas — Summary -->
+  <div class="canvas">
+    <div class="canvas__main">
+      <div class="s5-wrap">
+
+        <div class="approval-hero">
+          <div class="icon">🎯</div>
+          <h1>최종 확인 및 승인</h1>
+          <p>모든 검증 통과. 승인 후 편집 잠금, 발주처 제출 PDF 자동 생성.</p>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="label">📝 1차본</div>
+            <div class="value">7/7</div>
+            <div class="meta">섹션 완성 · SMART 통과</div>
+          </div>
+          <div class="summary-card highlight">
+            <div class="label">🔍 검수 점수</div>
+            <div class="value">86</div>
+            <div class="meta">평가위원 시뮬 · 통과 ✓</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">💰 마진</div>
+            <div class="value">18.0%</div>
+            <div class="meta">목표 15% 초과 달성</div>
+          </div>
+        </div>
+
+        <!-- Impact -->
+        <div class="impact-card">
+          <div class="head">
+            <span class="head-label">사회적 가치 forecast · SROI</span>
+            <span class="head-icon">✨</span>
+          </div>
+          <div>
+            <span class="total">2.3</span><span class="total-unit">억원</span>
+          </div>
+          <div class="beneficiary">📊 직접 수혜 <strong>120명</strong> · 간접 수혜 <strong>440명</strong> · ROI <strong>1,150%</strong></div>
+          <div class="breakdown">
+            <div class="br-item">
+              <div class="br-label">교육 효과</div>
+              <div class="br-val">0.8억</div>
+            </div>
+            <div class="br-item">
+              <div class="br-label">창업 매출 증대</div>
+              <div class="br-val">1.1억</div>
+            </div>
+            <div class="br-item">
+              <div class="br-label">지역 일자리</div>
+              <div class="br-val">0.4억</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="checklist">
+          <h3>✓ 최종 검증 통과 항목</h3>
+          <div class="check-item"><span class="ic">✓</span><span>1차본 7섹션 완성 · SMART · Risk Mitigation · inline citation</span></div>
+          <div class="check-item"><span class="ic">✓</span><span>커리큘럼 12회차 · Action Week 3 · R-002 경고 0</span></div>
+          <div class="check-item"><span class="ic">✓</span><span>코치 8명 배정 · 단가 협의 완료</span></div>
+          <div class="check-item"><span class="ic">✓</span><span>예산 0.20억 · 마진 18.0% · 항목별 정합</span></div>
+          <div class="check-item"><span class="ic">✓</span><span>임팩트 Value Chain 5단계 정합 · SROI 2.3억</span></div>
+          <div class="check-item"><span class="ic">✓</span><span>Inspector 7 lens · 86점 (통과 임계 75 초과)</span></div>
+        </div>
+
+        <!-- PDF preview -->
+        <div class="pdf-preview">
+          <div class="pdf-icon">📄</div>
+          <div class="info">
+            <h4>제안서 1차본 (7섹션)</h4>
+            <div class="info-meta">PDF · 24p · 사회적가치 forecast 포함 · 한국외국어대학교 템플릿</div>
+          </div>
+          <div class="actions">
+            <button class="btn-secondary">미리보기</button>
+            <button class="btn-secondary">다운로드</button>
+          </div>
+        </div>
+
+        <!-- Approval zone -->
+        <div class="approval-zone">
+          <p>승인 시 status = SUBMITTED. 이후 편집은 잠금 (필요 시 재오픈 가능).</p>
+          <button class="btn-approve-final">
+            <span class="icon">✅</span>
+            승인 및 제출
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- NowBar -->
+  <div class="nowbar">
+    <div class="nowbar__icon">🎯</div>
+    <div class="nowbar__text">
+      <div class="nowbar__ctx">S5 최종 승인 · 모든 검증 통과</div>
+      <div class="nowbar__msg">승인 1 클릭으로 제출 완료 · 편집 잠금</div>
+      <div class="nowbar__hint">필요 시 이전 Stage 로 돌아가서 수정 가능</div>
+    </div>
+    <button class="btn-primary" style="background: var(--green)">
+      ✅ 최종 승인
+    </button>
+  </div>
+
+</div>
+
+<!-- Mockup nav -->
+<div class="mockup-nav">
+  <a href="./index.html">← 전체</a>
+  <a href="./s1.html">S1</a>
+  <a href="./s2.html">S2</a>
+  <a href="./s3.html">S3</a>
+  <a href="./s4.html">S4</a>
+  <a class="is-current" href="./s5.html">S5</a>
+</div>
+
+</body>
+</html>
