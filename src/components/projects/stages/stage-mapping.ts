@@ -188,3 +188,31 @@ export function mapStepQueryToStage(step: string | undefined): StageId | null {
       return null
   }
 }
+
+// ─────────────────────────────────────────
+// 4. 5 stage 의 done flag 일괄 판정 (server-side helper)
+// ─────────────────────────────────────────
+//
+// 2026-05-22 fix: 기존 StageShell.tsx ('use client') 에 있던 정의를 본 모듈로
+// 이동. Next.js 가 'use client' 모듈의 모든 export 를 client-only 로 격리하기
+// 때문에 server component (page.tsx) 가 같이 import 하면 runtime 에러
+// ("client function from the server").
+
+/**
+ * Project 데이터로 5 stage 의 done flag 일괄 판정.
+ * page.tsx 가 호출 후 StageShell 의 doneFlags 로 전달.
+ */
+export function computeStageDoneFlags(input: {
+  hasRfp: boolean
+  isExpressCompleted: boolean
+  inspectorPassed?: boolean
+  proposalSectionsCount: number
+}): Record<StageId, boolean> {
+  return {
+    S1: input.hasRfp,
+    S2: input.isExpressCompleted,
+    S3: input.inspectorPassed === true,
+    S4: input.proposalSectionsCount >= 7,
+    S5: false, // S5 는 PM 제출/사후 단계 — F0 에선 done 판정 X
+  }
+}

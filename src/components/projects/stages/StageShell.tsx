@@ -154,25 +154,7 @@ export function StageShell(props: Props) {
   )
 }
 
-/**
- * Server-side helper — Project 데이터로 5 stage 의 done flag 일괄 판정.
- *
- * page.tsx 에서 호출 후 StageShell 의 doneFlags 로 전달.
- */
-export function computeStageDoneFlags(input: {
-  hasRfp: boolean
-  isExpressCompleted: boolean
-  inspectorPassed?: boolean
-  proposalSectionsCount: number
-}): Record<StageId, boolean> {
-  return {
-    S1: input.hasRfp,
-    S2: input.isExpressCompleted,
-    S3: input.inspectorPassed === true,
-    S4: input.proposalSectionsCount >= 7,
-    S5: false, // S5 는 PM 제출/사후 단계 — F0 에선 done 판정 X
-  }
-}
-
-/** computeCurrentStage 의 server-side wrapper — page.tsx 가 쓰기 편하게 re-export */
-export { computeCurrentStage } from './stage-mapping'
+// computeCurrentStage / computeStageDoneFlags 는 모두 server/client 양쪽에서
+// 호출되는 pure 함수라 stage-mapping.ts 로 이동 (2026-05-22 fix).
+// page.tsx 가 본 모듈에서 import 하면 'use client' 격리로 인해
+// "client function from the server" 런타임 에러 발생.

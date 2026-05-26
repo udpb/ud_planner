@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UD-Planner — PRD v11.0 · P1 + Hub · Sphere 2 3-Tuple Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nanum+Gothic:wght@400;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --action-orange: #F05519;
+  --primary-orange: #F05519;
+  --orange-soft: #F48053;
+  --orange-pale: #FBD4C5;
+  --dark-charcoal: #373938;
+  --dark2: #2D2D2D;
+  --warm-gray: #D8D4D7;
+  --cyan: #06A9D0;
+  --light-beige: #F5F0EB;
+  --warm-paper: #FBF9F6;
+  --white: #FFFFFF;
+  --body-text: #1F1E1F;
+  --subtitle-text: #5C5B5C;
+  --green: #5A7B55;
+  --purple: #8E44AD;
+  --keep: #5A7B55;
+  --adjust: #C68A2E;
+  --drop: #D9534F;
+  --live: #2B7A3F;
+  --plan: #C97828;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nanum Gothic', 'Poppins', sans-serif; color: var(--body-text); background: var(--white); line-height: 1.7; -webkit-font-smoothing: antialiased; word-break: keep-all; }
+@media print { .no-print { display: none !important; } .page-break { page-break-before: always; } section { break-inside: avoid; } }
+code, pre { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.doc-wrapper { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+/* Cover */
+.cover { background: var(--dark-charcoal); min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+.cover::after { content: ''; position: absolute; top: 0; right: 0; width: 45%; height: 100%; background: linear-gradient(135deg, transparent 50%, rgba(240,85,25,0.08) 100%); pointer-events: none; }
+.cover-inner { max-width: 1080px; margin: 0 auto; padding: 80px 32px; position: relative; z-index: 2; width: 100%; }
+.cover-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--action-orange); border: 1px solid rgba(240,85,25,0.4); padding: 6px 14px; margin-bottom: 32px; }
+.cover h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; color: var(--white); line-height: 1.12; margin-bottom: 8px; }
+.cover h1 span { color: var(--action-orange); }
+.cover-sub { font-size: 18px; font-weight: 400; color: var(--warm-gray); margin-top: 24px; max-width: 760px; line-height: 1.7; }
+.cover-meta { margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, max-content)); gap: 32px; }
+.cover-meta dt { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--action-orange); margin-bottom: 4px; }
+.cover-meta dd { font-size: 14px; color: rgba(255,255,255,0.8); }
+.cover-quote { margin-top: 48px; padding: 22px 28px; background: rgba(255,255,255,0.04); border-left: 3px solid var(--action-orange); font-size: 15px; color: rgba(255,255,255,0.9); font-style: italic; line-height: 1.7; max-width: 820px; }
+.cover-quote .quote-attr { display: block; margin-top: 10px; font-size: 11px; letter-spacing: 1px; color: var(--action-orange); text-transform: uppercase; font-style: normal; }
+
+/* Sidebar */
+.sidebar { position: fixed; top: 0; left: 0; width: 290px; height: 100vh; background: var(--dark-charcoal); border-right: 3px solid var(--primary-orange); padding: 32px 20px; overflow-y: auto; z-index: 50; transform: translateX(-100%); transition: transform 0.35s ease; }
+.sidebar.open { transform: translateX(0); }
+.sidebar-brand { font-weight: 800; font-size: 18px; color: var(--white); margin-bottom: 6px; }
+.sidebar-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--action-orange); margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sidebar a { display: block; font-size: 12px; color: rgba(255,255,255,0.65); text-decoration: none; padding: 6px 12px; border-left: 2px solid transparent; }
+.sidebar a:hover { color: var(--action-orange); border-left-color: var(--action-orange); padding-left: 18px; }
+.sidebar a.chapter { color: var(--action-orange); font-weight: 700; font-size: 11px; letter-spacing: 2px; padding: 14px 12px 4px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; }
+.sidebar a.chapter:first-of-type { border-top: 0; margin-top: 0; }
+
+.menu-toggle { position: fixed; top: 20px; left: 20px; z-index: 60; width: 42px; height: 42px; background: var(--dark-charcoal); border: 1px solid rgba(240,85,25,0.4); color: var(--action-orange); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.menu-toggle:hover { background: var(--primary-orange); color: white; }
+
+.main-content { padding: 80px 0 60px; }
+
+/* Section */
+.sec-header { margin-bottom: 36px; padding-top: 56px; }
+.sec-num { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary-orange); display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.sec-num::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--primary-orange); flex-shrink: 0; }
+.sec-header h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; color: var(--dark-charcoal); line-height: 1.25; margin-bottom: 4px; }
+.sec-header h3 { font-size: clamp(13px, 1.6vw, 16px); font-weight: 500; color: var(--subtitle-text); margin-bottom: 16px; }
+.sec-divider { width: 56px; height: 3px; background: var(--primary-orange); }
+
+.sub-heading { font-size: 19px; font-weight: 800; color: var(--dark-charcoal); margin: 36px 0 14px; padding-left: 14px; border-left: 3px solid var(--primary-orange); }
+.sub-heading-sm { font-size: 16px; font-weight: 700; color: var(--dark-charcoal); margin: 24px 0 8px; padding-left: 14px; border-left: 3px solid var(--orange-soft); }
+
+p { margin-bottom: 12px; font-size: 14px; }
+p.lead { font-size: 16px; font-weight: 500; color: var(--dark-charcoal); }
+strong.orange { color: var(--primary-orange); }
+strong.cyan { color: var(--cyan); }
+strong.green { color: var(--keep); }
+
+/* Chapter Divider */
+.chapter-divider { background: var(--dark-charcoal); padding: 64px 0; margin: 80px 0 56px; position: relative; overflow: hidden; }
+.chapter-divider::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 80% 20%, rgba(240,85,25,0.08) 0%, transparent 50%); pointer-events: none; }
+.chapter-divider-inner { max-width: 1080px; margin: 0 auto; padding: 0 32px; position: relative; }
+.chapter-num-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--action-orange); text-transform: uppercase; margin-bottom: 12px; }
+.chapter-divider h1 { font-size: clamp(36px, 5.5vw, 52px); color: var(--white); font-weight: 800; line-height: 1.18; margin-bottom: 18px; }
+.chapter-divider h1 .em { color: var(--action-orange); }
+.chapter-divider .ch-lead { font-size: 16px; color: rgba(255,255,255,0.78); max-width: 760px; line-height: 1.7; margin-bottom: 24px; }
+.chapter-divider .ch-toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+.chapter-divider .ch-toc-item { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+.chapter-divider .ch-toc-item a { display: block; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.92); text-decoration: none; margin-top: 4px; padding-bottom: 2px; border-bottom: 1px solid transparent; letter-spacing: 0; text-transform: none; }
+.chapter-divider .ch-toc-item a:hover { border-bottom-color: var(--action-orange); color: var(--action-orange); }
+
+/* Tables */
+.prd-table { width: 100%; border-collapse: collapse; margin: 20px 0 32px; font-size: 13px; }
+.prd-table th { background: var(--dark-charcoal); color: var(--white); font-weight: 700; font-size: 12px; letter-spacing: 0.5px; text-align: left; padding: 12px 16px; }
+.prd-table td { padding: 12px 16px; border-bottom: 1px solid #eee; vertical-align: top; }
+.prd-table tr:nth-child(even) td { background: var(--light-beige); }
+.prd-table .label-cell { font-weight: 700; color: var(--primary-orange); white-space: nowrap; width: 160px; }
+.prd-table .live-cell { background: rgba(43,122,63,0.10) !important; color: #1F5A2E; font-weight: 700; }
+.prd-table .plan-cell { background: rgba(201,120,40,0.10) !important; color: #6B4A12; font-weight: 700; }
+
+/* Cards */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; margin: 20px 0 32px; }
+.card-grid-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.card { background: var(--light-beige); border-top: 4px solid var(--primary-orange); padding: 24px 22px; }
+.card.cyan-top { border-top-color: var(--cyan); }
+.card.green-top { border-top-color: var(--keep); }
+.card.purple-top { border-top-color: var(--purple); }
+.card.dark-top { border-top-color: var(--dark-charcoal); }
+.card-title { font-size: 15px; font-weight: 800; color: var(--dark-charcoal); margin-bottom: 2px; }
+.card-title-meta { font-size: 11px; font-weight: 700; color: var(--primary-orange); margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+.card p { font-size: 13px; margin-bottom: 6px; }
+.card ul { margin: 4px 0 0; padding-left: 18px; font-size: 12.5px; }
+.card ul li { margin-bottom: 4px; }
+
+/* Spec Grid */
+.spec-grid { display: grid; grid-template-columns: 200px 1fr; gap: 0; margin: 20px 0 32px; border-top: 2px solid var(--dark-charcoal); }
+.spec-label { font-size: 12px; font-weight: 700; color: var(--primary-orange); padding: 12px 16px; background: var(--light-beige); border-bottom: 1px solid #e8e4df; letter-spacing: 0.5px; }
+.spec-value { font-size: 13px; padding: 12px 16px; border-bottom: 1px solid #eee; }
+
+/* Info Box */
+.info-box { background: var(--light-beige); border-left: 4px solid var(--primary-orange); padding: 20px 24px; margin: 20px 0 32px; }
+.info-box.cyan { border-left-color: var(--cyan); background: rgba(6,169,208,0.04); }
+.info-box.warning { border-left-color: var(--orange-soft); background: #FFF5F0; }
+.info-box.dark { background: var(--dark2); border-left-color: var(--action-orange); }
+.info-box.dark p, .info-box.dark li { color: rgba(255,255,255,0.88); }
+.info-box.dark strong { color: var(--action-orange); }
+.info-box p { margin-bottom: 8px; font-size: 13px; }
+.info-box p:last-child { margin-bottom: 0; }
+.info-box .quote-large { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.5; }
+.info-box.green { border-left-color: var(--keep); background: rgba(90,123,85,0.06); }
+
+/* Numbered List */
+.num-list { list-style: none; counter-reset: numlist; margin: 16px 0 32px; }
+.num-list li { counter-increment: numlist; display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #f0ede8; font-size: 14px; }
+.num-list li::before { content: counter(numlist, decimal-leading-zero); flex-shrink: 0; width: 32px; height: 32px; background: var(--primary-orange); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.num-list li .li-meta { display: block; font-size: 12px; color: var(--subtitle-text); margin-top: 3px; }
+
+/* Code & Algorithm */
+pre.code { background: var(--dark2); color: #C8D1FF; padding: 20px 24px; margin: 12px 0 24px; overflow-x: auto; font-size: 12px; line-height: 1.7; border-left: 3px solid var(--action-orange); }
+pre.code .cm { color: #7A7775; }
+pre.code .kw { color: var(--action-orange); }
+pre.code .str { color: #A8E1B5; }
+pre.code .num { color: #F9BBA3; }
+pre.code .fn { color: #6FB8D6; }
+
+pre.algo { background: #1F1E1F; color: #E8E4DF; padding: 22px 26px; margin: 16px 0 28px; overflow-x: auto; font-size: 12.5px; line-height: 1.75; border-left: 3px solid var(--cyan); }
+pre.algo .step { color: var(--action-orange); font-weight: 700; }
+pre.algo .var { color: #C8D1FF; }
+pre.algo .key { color: #F9BBA3; }
+pre.algo .com { color: #888; font-style: italic; }
+
+/* Schema Block */
+.schema-block { background: var(--warm-paper); border: 1px solid #e8e4df; padding: 20px 24px; margin: 16px 0 28px; }
+.schema-block .schema-title { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--primary-orange); text-transform: uppercase; margin-bottom: 10px; }
+.schema-block .schema-name { font-size: 16px; font-weight: 800; color: var(--dark-charcoal); margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; }
+.schema-block table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.schema-block table td { padding: 6px 10px; border-bottom: 1px solid #f0ede8; vertical-align: top; }
+.schema-block table td:first-child { font-weight: 700; color: var(--primary-orange); font-family: 'JetBrains Mono', monospace; width: 200px; }
+.schema-block table td:nth-child(2) { font-family: 'JetBrains Mono', monospace; color: var(--cyan); width: 180px; font-size: 11px; }
+
+/* API Block */
+.api-block { background: var(--dark2); color: #C8D1FF; padding: 18px 22px; margin: 8px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.85; border-left: 3px solid var(--cyan); }
+.api-block .method { color: var(--action-orange); font-weight: 700; display: inline-block; min-width: 60px; }
+.api-block .path { color: #C8D1FF; }
+.api-block .desc { color: #888; font-size: 11px; margin-left: 8px; }
+
+.api-spec { background: var(--white); border: 1px solid #e8e4df; padding: 20px 24px; margin: 16px 0 28px; }
+.api-spec .api-name { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--primary-orange); margin-bottom: 10px; }
+.api-spec .api-name .api-method { background: var(--action-orange); color: white; padding: 2px 8px; font-size: 11px; margin-right: 8px; }
+.api-spec .api-row { display: grid; grid-template-columns: 100px 1fr; gap: 12px; padding: 6px 0; font-size: 12px; border-bottom: 1px solid #f0ede8; }
+.api-spec .api-row:last-child { border-bottom: 0; }
+.api-spec .api-row strong { color: var(--primary-orange); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
+.api-spec .api-row code { background: var(--light-beige); padding: 1px 6px; color: var(--primary-orange); font-size: 11px; }
+
+/* 3-tuple Diagram (Chapter 4 의 핵심) */
+.tuple-diag { margin: 28px 0; padding: 24px; background: var(--warm-paper); border: 1px solid #e8e4df; }
+.tuple-row { display: grid; grid-template-columns: 110px 1fr 200px; gap: 0; background: var(--white); border: 1px solid #e8e4df; margin-bottom: 14px; align-items: stretch; }
+.tuple-side { display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 18px 8px; }
+.tuple-side.t1 { background: var(--primary-orange); }
+.tuple-side.t2 { background: var(--cyan); }
+.tuple-side.t3 { background: var(--keep); }
+.tuple-side .num { font-size: 28px; font-weight: 800; margin-bottom: 2px; }
+.tuple-side .label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
+.tuple-body { padding: 20px 24px; border-right: 1px solid #f0ede8; }
+.tuple-body h4 { font-size: 17px; font-weight: 800; color: var(--dark-charcoal); margin-bottom: 4px; }
+.tuple-body .tuple-tag { font-size: 11px; font-weight: 700; color: var(--primary-orange); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+.tuple-body .tuple-desc { font-size: 13px; line-height: 1.7; }
+.tuple-body code { background: rgba(240,85,25,0.08); padding: 1px 6px; color: var(--primary-orange); font-size: 11px; }
+.tuple-meta { padding: 18px 18px; background: var(--light-beige); font-size: 11px; line-height: 1.6; }
+.tuple-meta strong { color: var(--primary-orange); display: block; margin-bottom: 6px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* 11-product Map (Chapter 1 핵심 도식) */
+.product-map { margin: 28px 0; padding: 32px; background: var(--dark-charcoal); position: relative; }
+.product-map .pm-center { text-align: center; margin-bottom: 24px; }
+.product-map .pm-center .pm-hub { display: inline-block; background: var(--action-orange); color: white; padding: 18px 36px; font-weight: 800; font-size: 18px; }
+.product-map .pm-center .pm-hub small { display: block; font-size: 11px; font-weight: 400; opacity: 0.9; margin-top: 4px; letter-spacing: 1px; }
+.product-map .pm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+.product-map .pm-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-top: 3px solid var(--orange-soft); padding: 14px 16px; color: white; }
+.product-map .pm-tile.live { border-top-color: var(--keep); }
+.product-map .pm-tile.plan { border-top-color: var(--plan); }
+.product-map .pm-tile .pm-num { font-size: 10px; font-weight: 700; color: var(--action-orange); letter-spacing: 1.5px; margin-bottom: 4px; }
+.product-map .pm-tile .pm-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.product-map .pm-tile .pm-role { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.55; margin-bottom: 6px; }
+.product-map .pm-tile .pm-status { font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+.product-map .pm-tile.live .pm-status { color: var(--keep); }
+.product-map .pm-tile.plan .pm-status { color: var(--plan); }
+
+/* Sprint Card */
+.sprint-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 2px; margin: 20px 0 32px; }
+.sprint-card { padding: 24px 20px; color: white; }
+.sprint-card.w1 { background: var(--primary-orange); }
+.sprint-card.w2 { background: var(--dark-charcoal); }
+.sprint-card.w3 { background: var(--cyan); }
+.sprint-card.w4 { background: var(--orange-soft); color: var(--dark-charcoal); }
+.sprint-card.w5 { background: var(--keep); }
+.sprint-card.w6 { background: var(--dark2); }
+.sprint-card.w7 { background: var(--purple); }
+.sprint-day { font-size: 11px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; margin-bottom: 6px; }
+.sprint-label { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.sprint-label-ko { font-size: 13px; font-weight: 600; margin-bottom: 12px; opacity: 0.9; }
+.sprint-desc { font-size: 12px; line-height: 1.65; opacity: 0.92; }
+
+/* Flow Diagram */
+.flow-diag { margin: 28px 0; padding: 24px; background: var(--warm-paper); border: 1px solid #e8e4df; }
+.flow-step { display: grid; grid-template-columns: 28px 1fr; gap: 14px; padding: 10px 0; align-items: flex-start; }
+.flow-step + .flow-step { border-top: 1px dashed #e0dad3; }
+.flow-step .flow-num { width: 28px; height: 28px; background: var(--dark-charcoal); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.flow-step.s1 .flow-num { background: var(--primary-orange); }
+.flow-step.s2 .flow-num { background: var(--cyan); }
+.flow-step.s3 .flow-num { background: var(--keep); }
+.flow-step.s4 .flow-num { background: var(--orange-soft); color: var(--dark-charcoal); }
+.flow-step .flow-body .flow-actor { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--primary-orange); text-transform: uppercase; margin-bottom: 2px; }
+.flow-step .flow-body .flow-action { font-size: 13.5px; font-weight: 600; color: var(--dark-charcoal); }
+.flow-step .flow-body .flow-detail { font-size: 12px; color: var(--subtitle-text); margin-top: 3px; }
+.flow-step .flow-body code { background: rgba(240,85,25,0.08); padding: 1px 6px; color: var(--primary-orange); font-size: 11px; }
+
+/* Formula Block */
+.formula { background: var(--white); border: 2px solid var(--primary-orange); padding: 20px 26px; margin: 16px 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 2; }
+.formula .var { color: var(--primary-orange); font-weight: 700; }
+.formula .op { color: var(--dark-charcoal); font-weight: 700; }
+.formula .num { color: var(--cyan); font-weight: 700; }
+.formula .comment { color: var(--subtitle-text); font-size: 11px; font-family: 'Nanum Gothic', sans-serif; font-style: italic; }
+
+/* Quote */
+.quote-box { background: var(--warm-paper); border: 1px solid #e8e4df; padding: 22px 28px 22px 60px; margin: 20px 0; position: relative; }
+.quote-box::before { content: '"'; position: absolute; top: -4px; left: 16px; font-size: 80px; color: var(--orange-pale); font-family: 'Poppins', serif; font-weight: 700; line-height: 1; }
+.quote-box .quote-text { font-size: 15px; color: var(--dark-charcoal); font-style: italic; line-height: 1.7; }
+.quote-box .quote-attr { font-size: 11px; color: var(--subtitle-text); margin-top: 12px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* Changelog */
+.changelog { margin: 28px 0; }
+.changelog-entry { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid #f0ede8; align-items: flex-start; }
+.changelog-entry .ver { font-size: 13px; font-weight: 700; color: var(--primary-orange); font-family: 'JetBrains Mono', monospace; }
+.changelog-entry .ver-date { display: block; font-size: 11px; color: var(--subtitle-text); font-weight: 400; margin-top: 2px; }
+.changelog-entry .ver-body { font-size: 13px; }
+
+/* Footer */
+.doc-footer { background: var(--dark-charcoal); border-top: 3px solid var(--primary-orange); padding: 48px 32px 32px; margin-top: 100px; }
+.doc-footer-inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.doc-footer-brand { font-weight: 800; font-size: 18px; color: var(--white); }
+.doc-footer-copy { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+@media (max-width: 720px) {
+  .doc-wrapper { padding: 0 16px; }
+  .cover-inner { padding: 60px 16px; }
+  .tuple-row { grid-template-columns: 1fr; }
+  .tuple-side { padding: 14px 8px; flex-direction: row; gap: 12px; }
+  .sprint-grid { grid-template-columns: 1fr; }
+  .spec-grid { grid-template-columns: 1fr; }
+  .changelog-entry { grid-template-columns: 1fr; }
+  .api-spec .api-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle no-print" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="목차">☰</button>
+
+<nav class="sidebar no-print">
+  <div class="sidebar-brand">underdogs.</div>
+  <div class="sidebar-label">UD-Planner · PRD v11.0</div>
+
+  <a href="#ch-summary" class="chapter">CHAPTER 0 · 요약</a>
+  <a href="#sec0">00. Executive Summary</a>
+
+  <a href="#ch1" class="chapter">CHAPTER 1 · 정체</a>
+  <a href="#sec1">01. 정체 + 11 product</a>
+
+  <a href="#ch2" class="chapter">CHAPTER 2 · 사용자</a>
+  <a href="#sec2">02. 3 페르소나</a>
+
+  <a href="#ch3" class="chapter">CHAPTER 3 · 흐름</a>
+  <a href="#sec3">03. 6 Stage 워크플로</a>
+
+  <a href="#ch4" class="chapter">CHAPTER 4 · AI 두뇌 ⭐</a>
+  <a href="#sec4-1">4.1 3-tuple 정의</a>
+  <a href="#sec4-2">4.2 학습 입력 7 자산</a>
+  <a href="#sec4-3">4.3 ingest 알고리즘 (구현)</a>
+  <a href="#sec4-4">4.4 매칭 알고리즘 (구현)</a>
+  <a href="#sec4-5">4.5 생성 시 강제 룰</a>
+  <a href="#sec4-6">4.6 학습 메트릭 + 버전</a>
+
+  <a href="#ch5" class="chapter">CHAPTER 5 · 통합</a>
+  <a href="#sec5">05. 11 product 연결</a>
+
+  <a href="#ch6" class="chapter">CHAPTER 6 · UI</a>
+  <a href="#sec6">06. UI/UX 설계</a>
+
+  <a href="#ch7" class="chapter">CHAPTER 7 · 기술</a>
+  <a href="#sec7">07. 스택 + 성능</a>
+
+  <a href="#ch8" class="chapter">CHAPTER 8 · 위험</a>
+  <a href="#sec8">08. 위험 + 대응</a>
+
+  <a href="#ch9" class="chapter">CHAPTER 9 · 지표</a>
+  <a href="#sec9">09. 성공 지표</a>
+
+  <a href="#ch10" class="chapter">CHAPTER 10 · 로드맵</a>
+  <a href="#sec10">10. Q2~Q4 로드맵</a>
+  <a href="#sec11">11. Phase W1~W7</a>
+
+  <a href="#ch11" class="chapter">CHAPTER 11 · Open</a>
+  <a href="#sec12">12. 미해결 질문</a>
+
+  <a href="#ch12" class="chapter">CHAPTER 12 · 부록</a>
+  <a href="#sec13">13. 변경 이력</a>
+  <a href="#sec14">14. 참조</a>
+</nav>
+
+<header class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">Product Requirements Document · v11.0</div>
+    <h1>UD-<span>Planner</span></h1>
+    <h1 style="font-size:clamp(28px,4vw,44px);color:var(--action-orange);font-weight:800;margin-top:12px;">
+      11 Product Hub + Sphere 2 3-Tuple Learning
+    </h1>
+    <p class="cover-sub" style="font-size:20px;color:var(--white);font-weight:500;">
+      <strong style="color:var(--action-orange);">언더독스의 에셋 + RFP + 학습된 자산</strong> → 제안서 자동화.<br>
+      제안서 1건을 <strong style="color:var(--action-orange);">메시지 · 논리구조 · 내용</strong> 3-tuple 로 분해 학습.
+    </p>
+    <p class="cover-sub">
+      UD Labs 의 6 product (Coach Finder · Coaching Log · ActionAI · AILaunchpad · UCA Textbook · ud-ai-guidelines) 가 자산 source.
+      Sphere 2 (AI 두뇌) 는 제안서를 단어 chunk 가 아닌 의미 단위 3-tuple 로 학습 — 메시지 (의미 vector + 톤 패턴) · 논리구조 (Logic Model graph) · 내용 (MMR 다양성 강제 RAG).
+    </p>
+    <div class="cover-quote">
+      "제안서 하나를 학습하더라도 전체 맥락들과 메세지 그 안에서 제안서 논리구조와 내용들 이런 것들도 학습을 하는 Sphere 2 가 되어야해. 잘못 RAG 청크하면 다 단어 단위만 남고 또 막 특정 단어들이 과하게 노출되거나 계속 동일한 단어가 반복해서 출력되거나 하니까."
+      <span class="quote-attr">— udpb@udimpact.ai · 2026-05-23 (v11.0 트리거)</span>
+    </div>
+    <dl class="cover-meta">
+      <div><dt>Version</dt><dd>v11.0 — Draft</dd></div>
+      <div><dt>Date</dt><dd>2026-05-23</dd></div>
+      <div><dt>Status</dt><dd>Living Document</dd></div>
+      <div><dt>Owner</dt><dd>udpb@udimpact.ai</dd></div>
+      <div><dt>위치</dt><dd>11 product 의 P1 + hub</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="doc-wrapper main-content">
+
+<!-- ═════════ CHAPTER 0 ═════════ -->
+<div class="chapter-divider" id="ch-summary">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 00 / Twelve</div>
+    <h1>요약 — <span class="em">한 페이지</span></h1>
+    <p class="ch-lead">
+      v11.0 의 본질 변화 5가지. 그 다음 12 Chapter 가 이 5가지의 상세화.
+    </p>
+  </div>
+</div>
+
+<section id="sec0">
+  <div class="sec-header">
+    <div class="sec-num">Section 00 · Executive Summary</div>
+    <h2>요약 — 5 본질</h2>
+    <h3>UD-Planner 의 청사진 한 페이지</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <ol class="num-list">
+    <li><strong>심지</strong> — <strong class="orange">언더독스의 에셋 + RFP + 학습된 자산 → 제안서 자동화</strong>. PRD 의 모든 결정이 이 한 줄의 표현. <span class="li-meta">자료가 들어와도 심지는 바뀌지 않음</span></li>
+    <li><strong>UD-Planner = P1 + hub</strong> — 11 product 중 P1 이지만, P2 가이드북 · P5 Coach Finder · P6 Coaching Log · P11 KSVA 와의 통합 청사진. <span class="li-meta">근거: ud-ai-guidelines/UD-products-PRD-v2.html §P10 통합 매핑</span></li>
+    <li><strong>Sphere 2 = 3-tuple 학습</strong> — 제안서 1건 ingest 시 LLM 3 호출로 <strong class="orange">메시지 · 논리구조 · 내용</strong> 분해. 매칭 시 3 차원 병렬. 단어 chunk 만의 RAG 한계 대응. <span class="li-meta">Chapter 4 가 PRD 의 핵심</span></li>
+    <li><strong>데이터 허브 (P10) = Sphere 2 학습 source</strong> — 7 자산 (사업 마스터 · 학습 진도 · 코칭 일지 · 예산 · 임팩트 · 제안서 아카이브 · 코치 평가). xAPI 표준 Q2 통합 청사진. <span class="li-meta">3-tuple 의 자연 분해와 정합</span></li>
+    <li><strong>채널별 가중치 + tonePatterns</strong> — B2G/B2B/renewal 별 매칭 가중치 + 수주 사례의 표현 패턴 (openings · transitions · avoidedWords) 학습. <span class="li-meta">반복 출력 방지 메커니즘</span></li>
+  </ol>
+
+  <div class="info-box dark">
+    <p class="quote-large">"가벼운 PM 도구 위에, 자산이 자라면 제안서가 자란다. 단, 그 학습이 단어가 아니라 메시지·논리·내용의 3-tuple 위에서 이뤄진다."</p>
+  </div>
+</section>
+
+<!-- ═════════ CHAPTER 1 ═════════ -->
+<div class="chapter-divider" id="ch1">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 01 / Twelve</div>
+    <h1>정체 + <span class="em">11 product</span> 관계</h1>
+    <p class="ch-lead">
+      UD-Planner 는 11 product 의 P1 이지만 동시에 모든 다운스트림의 중심축. UD Labs 가 운영하는 product 들의 자산이 모이는 곳.
+    </p>
+  </div>
+</div>
+
+<section id="sec1">
+  <div class="sec-header">
+    <div class="sec-num">Section 01 · Identity + 11 Product</div>
+    <h2>UD-Planner 의 정체</h2>
+    <h3>P1 + 11 product hub</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="spec-grid">
+    <div class="spec-label">제품 이름</div>
+    <div class="spec-value"><strong>UD-Planner</strong> (P1)</div>
+    <div class="spec-label">정체</div>
+    <div class="spec-value">언더독스 11 product 의 제안서 자동화 중심축. RFP → 30~45분 → 당선 가능한 1차본 7섹션.</div>
+    <div class="spec-label">북극성</div>
+    <div class="spec-value"><strong class="orange">RFP → 30~45분 → 당선 1차본 7섹션</strong> (ADR-011 부터 유지)</div>
+    <div class="spec-label">본질</div>
+    <div class="spec-value"><strong>11 product 의 hub + 3-tuple 학습 Sphere 2.</strong> UD Labs 가 운영하는 product 의 자산이 자라면 UD-Planner 의 제안서가 자란다.</div>
+    <div class="spec-label">사용자</div>
+    <div class="spec-value">PM (주 사용자) · UD Labs (P3·P6 등 자산 source) · 경영진 (의사결정) · 데이터 분석팀 (P10 통합)</div>
+    <div class="spec-label">자산 source</div>
+    <div class="spec-value">6 product API (Coach Finder · Coaching Log · UD LMS · KSVA Impact · UCA · ActionAI) + Google Drive + Slack 아카이브 · 통합 청사진은 P10 데이터 허브</div>
+    <div class="spec-label">스택</div>
+    <div class="spec-value">Next.js 16 · Prisma 7 · PostgreSQL (Neon) · Supabase pgvector · Gemini 3.1 Pro / Claude 4.6 · xAPI emitter (Q2)</div>
+    <div class="spec-label">Production</div>
+    <div class="spec-value">https://ud-planner.vercel.app (2026-04-29 가동)</div>
+  </div>
+
+  <div class="sub-heading">11 Product Map — UD-Planner 가 중심</div>
+
+  <div class="product-map">
+    <div class="pm-center">
+      <div class="pm-hub">
+        UD-Planner (P1)
+        <small>11 PRODUCT HUB · CENTRAL AXIS</small>
+      </div>
+    </div>
+    <div class="pm-grid">
+      <div class="pm-tile plan">
+        <div class="pm-num">P5</div>
+        <div class="pm-name">Coach Finder</div>
+        <div class="pm-role">코치 800명 풀 + AI 추천 (pgvector + Gemini)</div>
+        <div class="pm-status">📅 계획</div>
+      </div>
+      <div class="pm-tile plan">
+        <div class="pm-num">P6</div>
+        <div class="pm-name">Coaching Log</div>
+        <div class="pm-role">STT → 18 구조화 필드 + evidence</div>
+        <div class="pm-status">📅 계획</div>
+      </div>
+      <div class="pm-tile plan">
+        <div class="pm-num">P3</div>
+        <div class="pm-name">UD LMS</div>
+        <div class="pm-role">VOD + AI Chat + Act Canvas + KPI</div>
+        <div class="pm-status">📅 계획</div>
+      </div>
+      <div class="pm-tile plan">
+        <div class="pm-num">P11</div>
+        <div class="pm-name">KSVA 임팩트</div>
+        <div class="pm-role">ESG SROI 예측 (16 카테고리 × 4국)</div>
+        <div class="pm-status">📅 Q3</div>
+      </div>
+      <div class="pm-tile plan">
+        <div class="pm-num">P2</div>
+        <div class="pm-name">PM 가이드북</div>
+        <div class="pm-role">신입 PM 교육 + 케이스북 + 채널 전략</div>
+        <div class="pm-status">📅 학습 source</div>
+      </div>
+      <div class="pm-tile plan">
+        <div class="pm-num">P4</div>
+        <div class="pm-name">Act-preneur Boost</div>
+        <div class="pm-role">창업팀 Phase 진행 + 시장 반응 패턴</div>
+        <div class="pm-status">📅 Q4</div>
+      </div>
+      <div class="pm-tile">
+        <div class="pm-num">P7</div>
+        <div class="pm-name">UCA 교재</div>
+        <div class="pm-role">신규 코치 IMPACT 방법론 양성 (6단계 18 모듈)</div>
+        <div class="pm-status">간접 ref</div>
+      </div>
+      <div class="pm-tile">
+        <div class="pm-num">P8</div>
+        <div class="pm-name">Simulator</div>
+        <div class="pm-role">AI 페르소나 코칭 시뮬레이션 (10 상황)</div>
+        <div class="pm-status">간접 ref</div>
+      </div>
+      <div class="pm-tile">
+        <div class="pm-num">P9</div>
+        <div class="pm-name">AX 사전학습</div>
+        <div class="pm-role">B2B 컨설팅 사전 교육 (6 병목 + 5 단계)</div>
+        <div class="pm-status">간접 ref</div>
+      </div>
+      <div class="pm-tile">
+        <div class="pm-num">P10</div>
+        <div class="pm-name">데이터 허브</div>
+        <div class="pm-role">전체 아카이빙 + xAPI LRS + RAG 인덱스</div>
+        <div class="pm-status">📅 Q2 통합</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-heading">Connection 청사진 (계획)</div>
+
+  <p style="font-size:12px;color:var(--subtitle-text);margin-bottom:14px;">아래 9 연결은 ud-ai-guidelines/UD-products-PRD-v2.html §통합 매핑 의 청사진. 각 항목은 실제 코드 검증 후 LIVE 로 승격.</p>
+
+  <table class="prd-table">
+    <thead><tr><th>From</th><th>To</th><th>트리거</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">UD-Planner</td><td>Coach Finder</td><td>코치풀 sync (Supabase coaches_directory)</td><td class="plan-cell">📅 계획</td></tr>
+      <tr><td class="label-cell">UD-Planner</td><td>Coach Finder</td><td>RFP 도메인 → 코치 매칭 추천</td><td class="plan-cell">📅 계획</td></tr>
+      <tr><td class="label-cell">UD-Planner</td><td>Coaching Log</td><td>'won' 액션 → projects 자동 생성</td><td class="plan-cell">📅 계획</td></tr>
+      <tr><td class="label-cell">UD-Planner</td><td>KSVA (P11)</td><td>1차본 → 사전 임팩트 forecast</td><td class="plan-cell">📅 Q3</td></tr>
+      <tr><td class="label-cell">Coach Finder</td><td>Coaching Log</td><td>선택 코치 → projects.coach_id 배정</td><td class="plan-cell">📅 계획</td></tr>
+      <tr><td class="label-cell">UD LMS</td><td>Coaching Log</td><td>학습자 로그 → 코치 사전 확인</td><td class="plan-cell">📅 계획</td></tr>
+      <tr><td class="label-cell">Coach Finder</td><td>UD-Planner</td><td>코치 평가 → 프로필 가중치</td><td class="plan-cell">📅 Q2</td></tr>
+      <tr><td class="label-cell">UCA</td><td>Coach Finder</td><td>L3+ 인증 → 풀 자동 등록</td><td class="plan-cell">📅 Q3</td></tr>
+      <tr><td class="label-cell">Coaching Log</td><td>UD-Planner</td><td>코칭 결과 → 차기 제안 인용</td><td class="plan-cell">📅 Q3</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════════ CHAPTER 2 ═════════ -->
+<div class="chapter-divider" id="ch2">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 02 / Twelve</div>
+    <h1>3 페르소나 — <span class="em">누가</span> 어떻게 쓰는가</h1>
+    <p class="ch-lead">
+      PM (주) · UD Labs (간접 — 자료 source provider) · 경영진 · 데이터 분석팀.
+      한 UI 가 모든 페르소나를 책임지지 않음.
+    </p>
+  </div>
+</div>
+
+<section id="sec2">
+  <div class="sec-header">
+    <div class="sec-num">Section 02 · Personas</div>
+    <h2>3 사용자 페르소나</h2>
+    <h3>각자 다른 UI · 다른 권한</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="card-grid card-grid-3">
+    <div class="card">
+      <div class="card-title-meta">Primary</div>
+      <div class="card-title">🎯 PM</div>
+      <p style="margin-top:8px;"><strong>역할</strong>: RFP 받아 1차본 작성 · 발주처 통화 · 최종 승인</p>
+      <p><strong>시간</strong>: RFP 1건당 30~45분 (북극성) · 월 5~10 프로젝트</p>
+      <p><strong>UI</strong>: <code>/projects/[id]</code></p>
+      <p><strong>결정 점</strong>: 9개 (P1~P9)</p>
+      <p><strong>안 함</strong>: 자료 등록 · 자료 분류 · 외부 자료 검수</p>
+    </div>
+    <div class="card cyan-top">
+      <div class="card-title-meta">Indirect Source</div>
+      <div class="card-title">📚 UD Labs</div>
+      <p style="margin-top:8px;"><strong>역할</strong>: 콘텐츠·코치·임팩트 자료 운영 (P3 LMS · P5 Coach Finder · P6 Coaching Log)</p>
+      <p><strong>UI</strong>: 각 product 의 자체 admin (UD-Planner UI 안 들어옴)</p>
+      <p><strong>자산 source</strong>: 각 product DB + Google Drive + Slack 아카이브</p>
+      <p><strong>UD-Planner 와의 관계</strong>: 자료 source provider — 우리 시스템은 read-only sync</p>
+    </div>
+    <div class="card green-top">
+      <div class="card-title-meta">Secondary</div>
+      <div class="card-title">📊 경영진 + 데이터 분석</div>
+      <p style="margin-top:8px;"><strong>역할</strong>: 수주율 추적 · 의사결정 · 데이터 허브 (P10) 운영</p>
+      <p><strong>UI</strong>: <code>/admin/metrics</code> · <code>/admin/asset-insights</code></p>
+      <p><strong>핵심 권한</strong>: KPI 대시보드 · 채널별 win-rate 매트릭스 · 학습 메트릭</p>
+      <p><strong>안 함</strong>: PM 의 1차본 작성</p>
+    </div>
+  </div>
+
+  <div class="info-box cyan">
+    <p><strong>경계 원칙</strong>: UD Labs 는 ud-planner UI 를 보지 않는다. PM 은 각 product API 를 직접 호출하지 않는다 — UD-Planner UI 가 추상화. 경영진은 작성 UI 안 본다. <strong>한 product 가 세 페르소나를 동시 책임지지 않음</strong>.</p>
+  </div>
+</section>
+
+<!-- ═════════ CHAPTER 3 ═════════ -->
+<div class="chapter-divider" id="ch3">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 03 / Twelve</div>
+    <h1>6 Stage <span class="em">워크플로</span></h1>
+    <p class="ch-lead">
+      RFP → Message → Logic → Content → 예산·임팩트 → 출력. PM 의 mental milestone 이 6 Stage 로 명확히 분리.
+    </p>
+  </div>
+</div>
+
+<section id="sec3">
+  <div class="sec-header">
+    <div class="sec-num">Section 03 · 6 Stage Workflow</div>
+    <h2>6 Stage 워크플로</h2>
+    <h3>PM 의 mental milestone</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <table class="prd-table">
+    <thead><tr><th style="width:90px;">Stage</th><th>이름</th><th>PM 결정</th><th>Sphere 2 호출</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">S1</td><td><strong>이해 (Understand)</strong></td><td>RFP 업로드 · 자동 분석 · 채널 컨펌</td><td><code>parse-rfp</code> · <code>auto-diagnose</code></td></tr>
+      <tr style="background:rgba(240,85,25,0.06);"><td class="label-cell" style="color:var(--orange3);">S2 ⭐</td><td><strong>메시지 결정 (Message)</strong></td><td>핵심 메시지 1줄 + Before/After + 키 메시지 3개</td><td><code>match-messages</code> · <code>suggest-keymessages</code></td></tr>
+      <tr style="background:rgba(6,169,208,0.05);"><td class="label-cell" style="color:var(--cyan);">S3 ⭐</td><td><strong>논리구조 (Logic)</strong></td><td>Activity → Output → Outcome → Impact chain 확정</td><td><code>match-logic-graph</code></td></tr>
+      <tr><td class="label-cell">S4</td><td><strong>내용 작성 (Draft)</strong></td><td>챗봇 흐름 · 7섹션 점진 작성 (S2·S3 자동 주입)</td><td><code>draft-turn</code> · <code>extract-slots</code></td></tr>
+      <tr><td class="label-cell">S5</td><td><strong>예산·임팩트</strong></td><td>예산 자동 시드 · SROI forecast · 검수 7+1 lens</td><td><code>budget-seed</code> · <code>impact-forecast</code> · <code>inspect</code></td></tr>
+      <tr><td class="label-cell">S6</td><td><strong>확정 · 제출</strong></td><td>최종 승인 · Deep 전환 또는 발주처 제출</td><td><code>handoff-to-deep</code> · <code>export-*</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box warning">
+    <p><strong>S2 메시지 + S3 논리구조 가 분리된 이유</strong> — Sphere 2 의 3-tuple 중 Message · LogicStructure 가 각각 PM 의사결정 단계와 정합. PM 이 한 화면에서 둘을 동시 결정하면 인지 부하 ↑. 데이터 허브 (P10) 의 자연 분해와도 일치.</p>
+  </div>
+</section>
+
+<!-- ═════════ CHAPTER 4 ⭐ ═════════ -->
+<div class="chapter-divider" id="ch4">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 04 / Twelve · 핵심</div>
+    <h1>Sphere 2 — <span class="em">AI 두뇌의</span> 3-tuple 학습</h1>
+    <p class="ch-lead">
+      이 chapter 가 PRD 의 핵심. 단어 단위 RAG chunk 의 4 한계 (단어 매몰·과노출·반복·맥락 손실) 를 의미 단위 3-tuple 분해로 대응. 실제 구현 수준 — DB schema · API · pseudocode 포함.
+    </p>
+    <div class="ch-toc">
+      <div class="ch-toc-item"><span>Section 4.1</span><a href="#sec4-1">3-tuple 정의</a></div>
+      <div class="ch-toc-item"><span>Section 4.2</span><a href="#sec4-2">학습 입력 7 자산</a></div>
+      <div class="ch-toc-item"><span>Section 4.3</span><a href="#sec4-3">ingest 알고리즘</a></div>
+      <div class="ch-toc-item"><span>Section 4.4</span><a href="#sec4-4">매칭 알고리즘</a></div>
+      <div class="ch-toc-item"><span>Section 4.5</span><a href="#sec4-5">생성 시 강제 룰</a></div>
+      <div class="ch-toc-item"><span>Section 4.6</span><a href="#sec4-6">학습 메트릭 + 버전</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4.1 3-tuple 정의 ══ -->
+<section id="sec4-1">
+  <div class="sec-header">
+    <div class="sec-num">Section 4.1 · 3-Tuple Definition</div>
+    <h2>3-tuple 정의</h2>
+    <h3>제안서 1건 = (Message + LogicStructure + Content)</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <p class="lead">RAG 의 4 한계 (단어 매몰·과노출·반복·맥락 손실) 는 모두 <strong>"제안서를 단어 단위 chunk 로만 학습한다"</strong> 는 단일 원인. 해소책은 <strong class="orange">제안서를 의미 단위 3 차원으로 분해</strong>.</p>
+
+  <div class="tuple-diag">
+    <div class="tuple-row">
+      <div class="tuple-side t1">
+        <div class="num">1️⃣</div>
+        <div class="label">MESSAGE</div>
+      </div>
+      <div class="tuple-body">
+        <h4>메시지 — 설득의 핵심</h4>
+        <div class="tuple-tag">제안의 정체성 · "왜 우리인가"</div>
+        <div class="tuple-desc">
+          핵심 1줄 슬로건 + 키 메시지 3개 + Before/After 차이 + 톤 패턴. <strong>단어 X — 의미 vector 와 표현 패턴</strong>.
+          <br><br>예: <code>"데스밸리 통과 95%"</code> · <code>"실행 보장 시스템"</code> · <code>tone: openings=["우리는 ··· 합니다"]</code>
+        </div>
+      </div>
+      <div class="tuple-meta">
+        <strong>DB</strong>
+        WinningPattern.message<br>
+        WinningPattern.tonePatterns
+        <strong style="margin-top:10px;">매칭</strong>
+        cosine + 채널 가중치
+        <strong style="margin-top:10px;">L1 입력</strong>
+        S2 "메시지 결정" Stage
+      </div>
+    </div>
+
+    <div class="tuple-row">
+      <div class="tuple-side t2">
+        <div class="num">2️⃣</div>
+        <div class="label">LOGIC</div>
+      </div>
+      <div class="tuple-body">
+        <h4>논리구조 — 섹션 간 인과 chain</h4>
+        <div class="tuple-tag">"무엇 → 무엇" graph · 맥락의 chain</div>
+        <div class="tuple-desc">
+          Activity → Output → Outcome → Impact (Logic Model). 섹션 간 인과 관계 graph (nodes + edges). <strong>chunk X — 전체 chain 보존</strong>.
+          <br><br>예: <code>S1 시장 통계 → S2 문제 정의 → S3 해법(우리 자산) → S6 KPI</code> 순서·의존성 모두 graph 로
+        </div>
+      </div>
+      <div class="tuple-meta">
+        <strong>DB</strong>
+        WinningPattern.logicGraph<br>
+        (nodes + edges JSON)
+        <strong style="margin-top:10px;">매칭</strong>
+        subgraph isomorphism + edit distance
+        <strong style="margin-top:10px;">L1 입력</strong>
+        S3 "논리구조" Stage
+      </div>
+    </div>
+
+    <div class="tuple-row">
+      <div class="tuple-side t3">
+        <div class="num">3️⃣</div>
+        <div class="label">CONTENT</div>
+      </div>
+      <div class="tuple-body">
+        <h4>내용 — 구체 fact · 수치 · 인용</h4>
+        <div class="tuple-tag">"숫자 · 출처 · 인용" · 평가위원 검증 대상</div>
+        <div class="tuple-desc">
+          각 섹션의 fact · 수치 · 인용 (RAG chunk). <strong>hybrid retrieval (BM25 + embedding) + MMR 다양성 강제</strong>.
+          <br><br>예: <code>"누적 20,211명"</code> · <code>"운영 32개월"</code> · <code>"[근거: 통계청 2026.03]"</code>
+        </div>
+      </div>
+      <div class="tuple-meta">
+        <strong>DB</strong>
+        ContentAsset.embedding<br>
+        ContentAsset.keyNumbers
+        <strong style="margin-top:10px;">매칭</strong>
+        BM25 + embedding + MMR
+        <strong style="margin-top:10px;">L1 입력</strong>
+        S4 "내용 작성" Stage
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box dark">
+    <p><strong>핵심 통찰</strong>: 제안서 1건을 단어 단위 chunk 로만 학습하면 RAG 4 한계 모두 발생. 3-tuple 분해 시:</p>
+    <p>• Message 는 <strong style="color:var(--action-orange);">단어 X</strong> — 의미 vector → 단어 매몰 해소</p>
+    <p>• LogicStructure 는 <strong style="color:var(--action-orange);">graph</strong> — 섹션 간 chain → 맥락 손실 해소</p>
+    <p>• Content 는 <strong style="color:var(--action-orange);">MMR 다양성</strong> → 과노출 + 반복 해소</p>
+  </div>
+</section>
+
+<!-- ══ 4.2 학습 입력 7 자산 ══ -->
+<section id="sec4-2">
+  <div class="sec-header">
+    <div class="sec-num">Section 4.2 · Learning Sources</div>
+    <h2>학습 입력 — 7 자산 (P10 데이터 허브)</h2>
+    <h3>각 자산이 3-tuple 의 어느 차원에 기여하는가</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <table class="prd-table">
+    <thead><tr><th style="width:60px;">#</th><th>P10 자산</th><th>source product</th><th>3-tuple 기여</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">1</td><td>사업 마스터 (30 필드)</td><td>UD-Planner</td><td>Message + LogicStructure (제안서 메타)</td></tr>
+      <tr><td class="label-cell">2</td><td>학습자 진도</td><td>P3 UD LMS</td><td>Content (효과 검증 fact)</td></tr>
+      <tr><td class="label-cell">3</td><td>코칭 일지 (38 컬럼)</td><td>P6 Coaching Log</td><td>Content (evidence quote · 18 구조화 필드)</td></tr>
+      <tr><td class="label-cell">4</td><td>예산 실적 vs 계획</td><td>UD-Planner</td><td>Content (예산 fact)</td></tr>
+      <tr><td class="label-cell">5</td><td>임팩트 측정</td><td>P11 KSVA</td><td>Content (SROI 정량 수치)</td></tr>
+      <tr style="background:rgba(240,85,25,0.06);"><td class="label-cell" style="color:var(--orange3);">6 ⭐</td><td><strong>제안서 아카이브 + 수주 결과</strong></td><td>UD-Planner + UD Labs Drive</td><td><strong>Message + LogicStructure 의 핵심 학습 source</strong></td></tr>
+      <tr><td class="label-cell">7</td><td>코치 평가·역량</td><td>P5 Coach Finder</td><td>Content (코치 fact)</td></tr>
+    </tbody>
+  </table>
+
+  <p>P10 의 7 자산 중 <strong class="orange">#6 제안서 아카이브</strong> 가 Sphere 2 학습의 가장 중요한 source. 수주 (won) + 패배 (lost) + 진행 (pending) 모두 학습 대상.</p>
+
+  <div class="sub-heading">xAPI 표준 통합 (Q2 청사진)</div>
+
+<pre class="code">
+<span class="cm">// 5 product 에 xAPI emitter 부착 → 데이터 허브 (LRS) 통합</span>
+
+  <span class="kw">UD-Planner</span>      ──┐
+  <span class="kw">UD LMS</span> (P3)      ──┤
+  <span class="kw">Coaching Log</span> (P6)──┼─► xAPI emitter ──► <span class="kw">LRS (Learning Record Store)</span>
+  <span class="kw">Coach Finder</span> (P5)──┤                          │
+  <span class="kw">UCA</span> (P7)         ──┘                          ▼
+                                            ┌─────────────────────┐
+                                            │  RAG 인덱스          │
+                                            │  + 단일 ID           │
+                                            │  + 권한 통합 (RLS)   │
+                                            └─────────────────────┘
+                                                       │
+                                                       ▼
+                                            <span class="kw">Sphere 2 학습 입력</span>
+</pre>
+</section>
+
+<!-- ══ 4.3 ingest 알고리즘 (구현) ══ -->
+<section id="sec4-3">
+  <div class="sec-header">
+    <div class="sec-num">Section 4.3 · Ingest Algorithm</div>
+    <h2>ingest 알고리즘 — 실제 구현</h2>
+    <h3>제안서 1건 → 3 LLM 호출 → DB 저장</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <p>제안서 (수주·패배·진행) 가 P10 데이터 허브 (또는 UD Labs Drive) 에 추가되면 cron 이 감지 → 3-tuple 분해 ingest.</p>
+
+  <div class="sub-heading">DB Schema 확장 (v11.0 신규)</div>
+
+  <div class="schema-block">
+    <div class="schema-title">신규 모델 1 / 3</div>
+    <div class="schema-name">WinningPattern (확장)</div>
+    <table>
+      <tr><td>id</td><td>String @id</td><td>고유 ID</td></tr>
+      <tr><td>sourceProject</td><td>String</td><td>source 프로젝트 코드</td></tr>
+      <tr><td>outcome</td><td>String</td><td>'won' / 'lost' / 'pending'</td></tr>
+      <tr><td>channel</td><td>String</td><td>B2G / B2B / renewal</td></tr>
+      <tr><td><strong>message</strong></td><td>Json</td><td>{slogan, keyMessages[3], beforeAfter}</td></tr>
+      <tr><td><strong>messageVector</strong></td><td>Vector(768)</td><td>pgvector — message 의 embedding</td></tr>
+      <tr><td><strong>tonePatterns</strong></td><td>Json?</td><td>{openings[], transitions[], closingPhrases[], avoidedWords[], signatureNumbers[]}</td></tr>
+      <tr><td><strong>logicGraph</strong></td><td>Json</td><td>{nodes:[{id,type,label}], edges:[{from,to,relation}], sectionOrder:[]}</td></tr>
+      <tr><td><strong>logicGraphVector</strong></td><td>Vector(768)</td><td>graph2vec embedding</td></tr>
+      <tr><td>contentRefs</td><td>String[]</td><td>ContentAsset.id 배열 (이 제안서가 인용한 자산)</td></tr>
+      <tr><td>sourceProfile</td><td>Json</td><td>ProgramProfile snapshot</td></tr>
+      <tr><td>lossReason</td><td>String?</td><td>패배 사유 (outcome='lost' 시)</td></tr>
+      <tr><td>lessonsLearned</td><td>String?</td><td>자연어 메모</td></tr>
+      <tr><td>createdAt</td><td>DateTime</td><td>자동</td></tr>
+    </table>
+  </div>
+
+  <div class="schema-block">
+    <div class="schema-title">신규 모델 2 / 3</div>
+    <div class="schema-name">ContentAsset (확장)</div>
+    <table>
+      <tr><td>id</td><td>String @id</td><td>고유 ID</td></tr>
+      <tr><td>name</td><td>String</td><td>자산 이름</td></tr>
+      <tr><td>narrativeSnippet</td><td>String</td><td>본문 (200~800자)</td></tr>
+      <tr><td><strong>embedding</strong></td><td>Vector(768)</td><td>pgvector — 의미 매칭용</td></tr>
+      <tr><td>keyNumbers</td><td>Json</td><td>[{value, unit, context, source}]</td></tr>
+      <tr><td>category</td><td>String</td><td>methodology / content / product / data / framework</td></tr>
+      <tr><td>evidenceType</td><td>String</td><td>quantitative / structural / narrative / visual</td></tr>
+      <tr><td>applicableSections</td><td>String[]</td><td>['1','2','6'] 등</td></tr>
+      <tr><td>sourceTier</td><td>String</td><td>high / medium / low / internal</td></tr>
+      <tr><td>sourceUrl</td><td>String?</td><td>원본 URL (Drive / Slack / 외부)</td></tr>
+      <tr><td>sourceType</td><td>String</td><td>'drive' / 'slack' / 'manual' / 'product-api'</td></tr>
+      <tr><td>publishedAt</td><td>DateTime?</td><td>원본 발행일</td></tr>
+      <tr><td>winRate</td><td>Float?</td><td>cron 으로 매주 재계산 (AssetUsage 기반)</td></tr>
+    </table>
+  </div>
+
+  <div class="schema-block">
+    <div class="schema-title">신규 모델 3 / 3</div>
+    <div class="schema-name">AssetUsage (확장)</div>
+    <table>
+      <tr><td>id</td><td>String @id</td><td>고유 ID</td></tr>
+      <tr><td>assetId</td><td>String</td><td>ContentAsset FK</td></tr>
+      <tr><td>projectId</td><td>String</td><td>Project FK</td></tr>
+      <tr><td>sectionKey</td><td>String</td><td>'1' / '2' / '6' 등</td></tr>
+      <tr><td>channel</td><td>String</td><td>B2G/B2B/renewal</td></tr>
+      <tr><td>acceptedByPm</td><td>Boolean</td><td>PM 수락 여부</td></tr>
+      <tr><td><strong>rejectedByPm</strong></td><td>Boolean</td><td>v11.0 신규 — PM 거절 (부정 학습)</td></tr>
+      <tr><td>wonProject</td><td>Boolean?</td><td>최종 수주 결과 (Project.isBidWon cascade)</td></tr>
+      <tr><td>techScore</td><td>Int?</td><td>기술 평가 점수</td></tr>
+    </table>
+  </div>
+
+  <div class="sub-heading">ingest API endpoint (3 LLM 호출)</div>
+
+  <div class="api-spec">
+    <div class="api-name"><span class="api-method">POST</span>/api/v1/inference/extract-tuple</div>
+    <div class="api-row"><strong>Input</strong><span><code>{proposalText: string, sourceProject: string, outcome: 'won'|'lost'|'pending', channel: 'B2G'|'B2B'|'renewal'}</code></span></div>
+    <div class="api-row"><strong>LLM #1</strong><span>Message 추출 (Gemini 3.1 Pro · 400 토큰) — slogan + keyMessages 3 + tonePatterns</span></div>
+    <div class="api-row"><strong>LLM #2</strong><span>LogicStructure 추출 (Gemini · 600 토큰) — Activity→Output→Outcome→Impact graph</span></div>
+    <div class="api-row"><strong>LLM #3</strong><span>Content chunk + keyNumbers (Gemini · 800 토큰) — hierarchical semantic chunking</span></div>
+    <div class="api-row"><strong>Embedding</strong><span>Gemini text-embedding-004 (messageVector · logicGraphVector · 각 chunk)</span></div>
+    <div class="api-row"><strong>저장</strong><span>WinningPattern row 1 + ContentAsset row N (관련 자산) + chunk vector</span></div>
+    <div class="api-row"><strong>Output</strong><span><code>{patternId, contentAssetIds: string[], confidence: number}</code></span></div>
+    <div class="api-row"><strong>비용</strong><span>제안서 1건 ≈ $0.015 (Gemini 3.1 Pro · 1800 토큰 총합)</span></div>
+  </div>
+
+  <div class="sub-heading">ingest pseudocode</div>
+
+<pre class="algo">
+<span class="step">함수 extractTuple(proposalText, sourceProject, outcome, channel):</span>
+
+  <span class="com">// 1. Message 추출 (LLM #1)</span>
+  <span class="var">messagePrompt</span> = "이 제안서의:
+    - 핵심 1줄 슬로건
+    - 키 메시지 3개 (각 8~80자)
+    - Before/After 차이
+    - 톤 패턴: openings, transitions, closingPhrases, avoidedWords, signatureNumbers
+    JSON 으로 반환"
+
+  <span class="var">message</span> = <span class="key">invokeAi</span>(messagePrompt, proposalText, maxTokens=<span class="key">AI_TOKENS.STANDARD</span>)
+  <span class="var">messageVector</span> = <span class="key">embed</span>(message.slogan + " " + message.keyMessages.join(" "))
+
+  <span class="com">// 2. LogicStructure 추출 (LLM #2)</span>
+  <span class="var">logicPrompt</span> = "이 제안서의 논리 chain:
+    - Activity → Output → Outcome → Impact 각 노드 (label, type)
+    - 노드 간 edges (from, to, relation: 'causes'|'enables'|'precedes')
+    - 7섹션의 순서 (sectionOrder)
+    JSON graph 형식"
+
+  <span class="var">logicGraph</span> = <span class="key">invokeAi</span>(logicPrompt, proposalText, maxTokens=<span class="key">AI_TOKENS.STANDARD</span>)
+  <span class="var">logicGraphVector</span> = <span class="key">graph2vec</span>(logicGraph)  <span class="com">// node2vec + edge encoding</span>
+
+  <span class="com">// 3. Content chunk 추출 (LLM #3 + 직접 분할)</span>
+  <span class="var">chunks</span> = <span class="key">semanticChunking</span>(proposalText, {
+    minChars: <span class="key">200</span>, maxChars: <span class="key">800</span>,
+    splitOn: ["section_boundary", "topic_shift"]
+  })
+
+  <span class="var">contentAssets</span> = []
+  <span class="key">for</span> <span class="var">chunk</span> <span class="key">in</span> chunks:
+    <span class="var">enrichPrompt</span> = "이 chunk 의:
+      - category (methodology/content/product/data/framework)
+      - evidenceType (quantitative/structural/narrative/visual)
+      - applicableSections (1~7)
+      - keyNumbers [{value, unit, context}]
+      - sourceTier 추정 (high/medium/low/internal)
+      JSON 으로"
+
+    <span class="var">meta</span> = <span class="key">invokeAi</span>(enrichPrompt, chunk, maxTokens=<span class="key">AI_TOKENS.SHORT</span>)
+    <span class="var">embedding</span> = <span class="key">embed</span>(chunk)
+
+    contentAssets.push({
+      narrativeSnippet: chunk,
+      embedding,
+      keyNumbers: meta.keyNumbers,
+      category: meta.category,
+      evidenceType: meta.evidenceType,
+      applicableSections: meta.applicableSections,
+      sourceTier: meta.sourceTier,
+      sourceProject
+    })
+
+  <span class="com">// 4. DB 저장 (transaction)</span>
+  <span class="var">pattern</span> = <span class="key">prisma.winningPattern.create</span>({
+    sourceProject, outcome, channel,
+    message, messageVector,
+    tonePatterns: message.tonePatterns,
+    logicGraph, logicGraphVector,
+    contentRefs: contentAssets.map(a => a.id),
+    sourceProfile: <span class="key">getProgramProfile</span>(sourceProject)
+  })
+
+  <span class="key">return</span> { patternId: pattern.id, contentAssetIds, confidence: meta.confidence }
+</pre>
+
+  <div class="info-box warning">
+    <p><strong>비용 통제</strong>: 월 50 신규 제안서 가정 시 $0.75/월. cron batch 로 hourly. 실패 시 retry max 3.</p>
+  </div>
+</section>
+
+<!-- ══ 4.4 매칭 알고리즘 (구현) ══ -->
+<section id="sec4-4">
+  <div class="sec-header">
+    <div class="sec-num">Section 4.4 · Matching Algorithm</div>
+    <h2>매칭 알고리즘 — 실제 구현</h2>
+    <h3>새 RFP 의 3-tuple 후보 → 3 차원 병렬 매칭 → 통합</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <p>새 RFP 가 들어오면 Sphere 2 가 3 차원 각각에서 매칭. 결과를 통합해 LLM prompt 에 주입.</p>
+
+  <div class="sub-heading">매칭 점수 — 통합 공식</div>
+
+  <div class="formula">
+    <span class="comment">// 한 WinningPattern + ContentAsset 후보의 매칭 점수 (0~1)</span><br>
+    <span class="var">matchScore</span> <span class="op">=</span><br>
+    &nbsp;&nbsp;<span class="num">0.35</span> <span class="op">×</span> <span class="var">messageSim</span>      <span class="comment">// cosine(rfpMessageVec, patternMessageVec)</span><br>
+    <span class="op">+</span> <span class="num">0.30</span> <span class="op">×</span> <span class="var">logicSim</span>        <span class="comment">// graph 유사도 (subgraph + edit distance)</span><br>
+    <span class="op">+</span> <span class="num">0.20</span> <span class="op">×</span> <span class="var">contentSim</span>      <span class="comment">// BM25 + embedding hybrid</span><br>
+    <span class="op">+</span> <span class="num">0.10</span> <span class="op">×</span> <span class="var">channelMatch</span>    <span class="comment">// 채널 일치 가중치</span><br>
+    <span class="op">+</span> <span class="num">0.05</span> <span class="op">×</span> <span class="var">winRateBonus</span>    <span class="comment">// 과거 win-rate (Laplace + half-life 1yr)</span><br>
+    <br>
+    <span class="comment">// MMR 다양성 강제 (top N 결과)</span><br>
+    <span class="var">mmrScore</span> <span class="op">=</span> <span class="num">0.7</span> <span class="op">×</span> <span class="var">matchScore</span> <span class="op">−</span> <span class="num">0.3</span> <span class="op">×</span> <span class="var">maxSimToSelected</span>
+  </div>
+
+  <div class="sub-heading">매칭 API endpoint</div>
+
+  <div class="api-spec">
+    <div class="api-name"><span class="api-method">POST</span>/api/v1/inference/match-tuple</div>
+    <div class="api-row"><strong>Input</strong><span><code>{rfp: RfpParsed, profile: ProgramProfile, channel: 'B2G'|'B2B'|'renewal', limit: number}</code></span></div>
+    <div class="api-row"><strong>Step 1</strong><span>RFP 의 3-tuple 후보 추정 (LLM, ~600 토큰)</span></div>
+    <div class="api-row"><strong>Step 2</strong><span>3 차원 병렬 매칭:<br>· Message: pgvector cosine query top 20<br>· LogicGraph: graph similarity top 20<br>· Content: hybrid (BM25 + embedding) top 50</span></div>
+    <div class="api-row"><strong>Step 3</strong><span>통합 점수 계산 + 채널·win-rate 가중치 + MMR 다양성</span></div>
+    <div class="api-row"><strong>Output</strong><span><code>{messages: [{patternId, score}], logics: [{patternId, score}], contents: [{assetId, score, sectionHint}]}</code></span></div>
+    <div class="api-row"><strong>응답 시간</strong><span>p50 < 800ms · p95 < 1500ms (Supabase pgvector + 자체 graph 매칭)</span></div>
+  </div>
+
+  <div class="sub-heading">매칭 pseudocode</div>
+
+<pre class="algo">
+<span class="step">함수 matchTuple(rfp, profile, channel, limit=10):</span>
+
+  <span class="com">// 1. RFP 의 3-tuple 후보 추정 (LLM)</span>
+  <span class="var">rfpTuple</span> = <span class="key">extractRfpTuple</span>(rfp, profile, channel)
+  <span class="com">// rfpTuple = {messageVec, logicGraph, contentKeywords, contentEmbedding}</span>
+
+  <span class="com">// 2. 3 차원 병렬 매칭</span>
+  <span class="var">[messages, logics, contents]</span> = <span class="key">Promise.all</span>([
+
+    <span class="com">// Message 매칭 — pgvector cosine</span>
+    <span class="key">prisma.$queryRaw</span>`
+      SELECT id, 1 - (messageVector <#> ${rfpTuple.messageVec}) AS sim,
+             channel, outcome, message
+      FROM winning_pattern
+      WHERE outcome IN ('won', 'pending')
+      ORDER BY messageVector <#> ${rfpTuple.messageVec}
+      LIMIT 20
+    `,
+
+    <span class="com">// LogicGraph 매칭 — graph2vec 기반 cosine + edit distance 결합</span>
+    <span class="key">matchLogicGraphs</span>(rfpTuple.logicGraph, {
+      topK: 20,
+      method: 'hybrid'  <span class="com">// graph2vec cosine 0.7 + edit distance 0.3</span>
+    }),
+
+    <span class="com">// Content 매칭 — BM25 + embedding hybrid</span>
+    <span class="key">hybridContentSearch</span>({
+      bm25Query: rfpTuple.contentKeywords,
+      embedding: rfpTuple.contentEmbedding,
+      filter: { channel, sourceTier: ['high', 'internal'] },
+      topK: 50
+    })
+  ])
+
+  <span class="com">// 3. 통합 점수 + 채널·win-rate 가중치</span>
+  <span class="var">scored</span> = []
+  <span class="key">for</span> <span class="var">m</span> <span class="key">in</span> messages:
+    <span class="var">pattern</span> = <span class="key">prisma.winningPattern.findUnique</span>({ id: m.id })
+    <span class="var">channelMatch</span> = (pattern.channel === channel) ? <span class="num">1.0</span> : <span class="num">0.5</span>
+    <span class="var">winRate</span> = <span class="key">computeWinRate</span>(pattern.sourceProject)  <span class="com">// Laplace + half-life</span>
+
+    <span class="var">matchScore</span> =
+      <span class="num">0.35</span> * m.sim
+      + <span class="num">0.30</span> * <span class="key">findInArray</span>(logics, m.id)?.score ?? <span class="num">0</span>
+      + <span class="num">0.20</span> * <span class="key">avgContentSim</span>(pattern.contentRefs, contents)
+      + <span class="num">0.10</span> * channelMatch
+      + <span class="num">0.05</span> * winRate
+
+    scored.push({ patternId: m.id, matchScore, message: pattern.message })
+
+  scored.sort((a, b) => b.matchScore - a.matchScore)
+
+  <span class="com">// 4. MMR 다양성 강제 (반복 출력 방지)</span>
+  <span class="var">selected</span> = []
+  <span class="key">for</span> <span class="var">candidate</span> <span class="key">in</span> scored:
+    <span class="key">if</span> selected.length >= limit: <span class="key">break</span>
+
+    <span class="var">maxSim</span> = <span class="key">max</span>(selected.map(s => <span class="key">cosine</span>(candidate.messageVec, s.messageVec)))
+    <span class="var">mmrScore</span> = <span class="num">0.7</span> * candidate.matchScore - <span class="num">0.3</span> * maxSim
+
+    <span class="key">if</span> mmrScore >= <span class="num">0.45</span>:  <span class="com">// threshold</span>
+      selected.push(candidate)
+
+  <span class="key">return</span> { messages: selected, logics, contents }
+</pre>
+
+  <div class="info-box cyan">
+    <p><strong>매칭의 본질</strong>: 3 차원 (메시지·논리구조·내용) 병렬 매칭 + 통합 점수 + MMR 다양성. 단어 단위 cosine 한 번이 아닌, 의미 단위로 3 번 매칭 후 통합 점수 결합.</p>
+  </div>
+</section>
+
+<!-- ══ 4.5 생성 시 강제 룰 ══ -->
+<section id="sec4-5">
+  <div class="sec-header">
+    <div class="sec-num">Section 4.5 · Generation Rules</div>
+    <h2>생성 시 강제 룰</h2>
+    <h3>LLM prompt 에 다양성 + 톤 일관성 강제</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <p>매칭 결과를 LLM 에 그냥 주입하면 — LLM 이 표면 단어를 복사해 같은 표현 반복. 강제 룰 4 가지:</p>
+
+  <ol class="num-list">
+    <li><strong>tonePatterns.avoidedWords 명시</strong> — prompt 에 "다음 단어 사용 금지: [...avoidedWords]" 직접 명시. LLM 이 그 단어 회피. <span class="li-meta">반복 단어 방지</span></li>
+    <li><strong>"이전 섹션과 다른 표현으로" 강제</strong> — 다음 섹션 생성 시 prompt 에 이전 섹션 텍스트 일부 포함하고 "이전과 다른 어휘로" 명시. <span class="li-meta">반복 출력 방지</span></li>
+    <li><strong>MMR 결과 다양성 ≥ 0.7</strong> — 매칭 단계에서 이미 적용 → LLM 받는 자산이 표현 다양. <span class="li-meta">과노출 방지</span></li>
+    <li><strong>logicGraph 의 sectionOrder 강제</strong> — sections 순서는 매칭된 logic chain 따름. PM 이 임의 변경 X. <span class="li-meta">맥락 손실 방지</span></li>
+  </ol>
+
+  <div class="sub-heading">생성 prompt 패턴</div>
+
+<pre class="code">
+<span class="cm">// 1차본 sections.{n} 생성 시 prompt 구조</span>
+
+<span class="kw">[현재 채울 섹션]</span>
+<span class="str">"${sectionKey} (${sectionLabel})"</span>
+
+<span class="kw">[매칭된 메시지 — 변형해 keyMessage 로]</span>
+- 슬로건: <span class="str">${pattern.message.slogan}</span>
+- 키 메시지: <span class="str">${pattern.message.keyMessages.join(", ")}</span>
+- Before/After: <span class="str">${pattern.message.beforeAfter}</span>
+
+<span class="kw">[매칭된 LogicChain — 이 순서·인과 따름]</span>
+<span class="str">${formatLogicGraph(pattern.logicGraph, sectionKey)}</span>
+
+<span class="kw">[매칭된 Content (MMR top 5)]</span>
+1. <span class="str">"${content[0].narrativeSnippet}"</span> [근거: <span class="str">${content[0].sourceUrl}</span>]
+2. <span class="str">"${content[1].narrativeSnippet}"</span> ...
+
+<span class="kw">[톤·표현 강제 룰] ⭐</span>
+- 다음 단어 사용 금지: <span class="str">${tonePatterns.avoidedWords.join(", ")}</span>
+- 시작 표현: <span class="str">${tonePatterns.openings[0]}</span> 같은 패턴
+- 전환 표현: <span class="str">${tonePatterns.transitions.join(" / ")}</span>
+- 이전 섹션 (sections.${sectionKey - 1}) 의 어휘와 다르게:
+  이전: <span class="str">"${prevSection.slice(0, 200)}..."</span>
+  → 이번 섹션은 다른 어휘로 같은 의미 전달
+
+<span class="kw">[금지]</span>
+- "다양한", "최선을 다해" 같은 추상 표현
+- 근거 없는 수치
+- 이전 섹션과 같은 시작 패턴
+
+<span class="kw">[출력]</span>
+sections.${sectionKey} (300~700자, inline citation 3~5개 포함)
+</pre>
+</section>
+
+<!-- ══ 4.6 학습 메트릭 + 버전 관리 ══ -->
+<section id="sec4-6">
+  <div class="sec-header">
+    <div class="sec-num">Section 4.6 · Learning Metrics</div>
+    <h2>학습 메트릭 + 버전 관리</h2>
+    <h3>Sphere 2 가 진화하는지 어떻게 측정하는가</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="sub-heading">학습 메트릭 5</div>
+
+  <table class="prd-table">
+    <thead><tr><th>메트릭</th><th>측정</th><th>목표</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">단어 매몰률</td><td>RFP 의 표현 변형 100 sample 중 슬롯 추출 실패 비율</td><td>≤ 5%</td></tr>
+      <tr><td class="label-cell">반복 출력률</td><td>1차본 7 섹션 간 동일 어휘 ≥ 5회 등장 비율</td><td>≤ 10%</td></tr>
+      <tr><td class="label-cell">맥락 유지율</td><td>섹션 순서가 매칭 logic chain 의 sectionOrder 와 일치</td><td>≥ 90%</td></tr>
+      <tr><td class="label-cell">자산 다양성 (MMR)</td><td>매칭 top 10 자산의 pairwise cosine 평균</td><td>≤ 0.6 (다양성 ↑)</td></tr>
+      <tr><td class="label-cell">PM 수정율</td><td>1차본 → PM 최종 승인 사이 수정된 문자 수 / 총 문자 수</td><td>≤ 30%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub-heading">버전 관리 자동화</div>
+
+  <p>Sphere 2 의 prompt 와 가중치는 시간이 지나며 진화. 매주 cron 이 데이터 허브 변화 감지 → 변경 제안.</p>
+
+<pre class="algo">
+<span class="step">함수 weeklyPromptUpdate():</span>
+
+  <span class="com">// 1. 최근 7일간 신규 데이터 측정</span>
+  <span class="var">newPatterns</span> = <span class="key">prisma.winningPattern.count</span>({ createdAt: { gte: <span class="key">last7d</span> } })
+  <span class="var">winRateShift</span> = <span class="key">computeWinRateShift</span>()  <span class="com">// 채널별 win-rate 변화</span>
+
+  <span class="com">// 2. 메트릭 dashboard 자동 갱신</span>
+  <span class="key">updateMetricsDashboard</span>({
+    newPatterns, winRateShift,
+    avgPmEditRatio: <span class="key">computeAvgPmEdit</span>(),
+    avgMmrDiversity: <span class="key">computeAvgMmrDiversity</span>()
+  })
+
+  <span class="com">// 3. 임계값 위반 시 alert</span>
+  <span class="key">if</span> newPatterns >= <span class="num">10</span> <span class="key">or</span> winRateShift > <span class="num">0.05</span>:
+    <span class="key">notifyAdmin</span>({
+      type: 'prompt-update-suggested',
+      reason: 'sufficient new data',
+      diff: <span class="key">suggestPromptDiff</span>()  <span class="com">// LLM 으로 prompt 개선 제안</span>
+    })
+
+  <span class="com">// 4. 다음 cron 예약</span>
+  <span class="key">scheduleNext</span>(now + <span class="num">7d</span>)
+</pre>
+</section>
+
+<!-- ═════════ CHAPTER 5 ═════════ -->
+<div class="chapter-divider" id="ch5">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 05 / Twelve</div>
+    <h1>데이터 흐름 — <span class="em">11 product</span> 통합</h1>
+    <p class="ch-lead">
+      9 connection 청사진 + xAPI Q2 통합 계획. UD-Planner 가 hub 로 동작하는 흐름. 각 연결은 코드 검증 후 LIVE 로 승격.
+    </p>
+  </div>
+</div>
+
+<section id="sec5">
+  <div class="sec-header">
+    <div class="sec-num">Section 05 · Integration</div>
+    <h2>11 product 통합</h2>
+    <h3>API endpoint 매핑 + 시나리오</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="sub-heading">UD-Planner → 다른 product API 호출</div>
+
+  <div class="api-block">
+    <span class="method">GET</span><span class="path">/api/v1/coaches/recommend?rfp={text}&n=5</span><span class="desc">Coach Finder — RFP → top 5 코치</span><br>
+    <span class="method">POST</span><span class="path">/api/v1/coaching-log/projects</span><span class="desc">Coaching Log — 'won' 시 projects 생성</span><br>
+    <span class="method">GET</span><span class="path">/api/v1/coaches/{id}/sessions</span><span class="desc">Coaching Log — 코치의 과거 세션 (사례)</span><br>
+    <span class="method">GET</span><span class="path">/api/v1/lms/students?cohort={id}</span><span class="desc">UD LMS — 학습자 진도 (사례 자료)</span><br>
+    <span class="method">POST</span><span class="path">/api/v1/impact/forecast</span><span class="desc">KSVA — SROI 예측 (Q3 예정)</span><br>
+    <span class="method">GET</span><span class="path">/api/v1/data-hub/winning-patterns?profile={...}</span><span class="desc">데이터 허브 — 유사 수주 패턴 (Q2 예정)</span>
+  </div>
+
+  <div class="sub-heading">시나리오 — PM 의 RFP 처리 1건 전체 흐름</div>
+
+  <div class="flow-diag">
+    <div class="flow-step s1">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <div class="flow-actor">PM @ UD-Planner</div>
+        <div class="flow-action">RFP PDF 업로드 (/projects/new)</div>
+        <div class="flow-detail">parse-rfp + auto-diagnose · 채널 자동 추론</div>
+      </div>
+    </div>
+    <div class="flow-step s2">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <div class="flow-actor">Sphere 2</div>
+        <div class="flow-action">3-tuple 매칭 (Message + Logic + Content 병렬)</div>
+        <div class="flow-detail">WinningPattern 5 + ContentAsset 30 후보 + MMR top 10</div>
+      </div>
+    </div>
+    <div class="flow-step s3">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <div class="flow-actor">UD-Planner → Coach Finder</div>
+        <div class="flow-action">코치 매칭 호출 (RFP 도메인·예산)</div>
+        <div class="flow-detail">GET /api/v1/coaches/recommend → top 5 코치</div>
+      </div>
+    </div>
+    <div class="flow-step s1">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <div class="flow-actor">PM @ UD-Planner</div>
+        <div class="flow-action">S2 메시지 결정 + S3 논리구조 컨펌 + S4 챗봇 1차본</div>
+        <div class="flow-detail">9 결정 점 (P1~P9) 소요 24분 + AI 호출 15~20분</div>
+      </div>
+    </div>
+    <div class="flow-step s4">
+      <div class="flow-num">5</div>
+      <div class="flow-body">
+        <div class="flow-actor">UD-Planner → KSVA</div>
+        <div class="flow-action">사전 임팩트 forecast (SROI 예측)</div>
+        <div class="flow-detail">POST /api/v1/impact/forecast (Q3 예정)</div>
+      </div>
+    </div>
+    <div class="flow-step s1">
+      <div class="flow-num">6</div>
+      <div class="flow-body">
+        <div class="flow-actor">PM @ UD-Planner</div>
+        <div class="flow-action">S6 최종 승인 ('won' 또는 'lost' 라벨)</div>
+        <div class="flow-detail">→ Coaching Log 에 projects 자동 생성 · WinningPattern 자동 ingest (Sphere 2 학습)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ CHAPTER 6 ═════════ -->
+<div class="chapter-divider" id="ch6">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 06 / Twelve</div>
+    <h1>UI/UX <span class="em">설계</span></h1>
+    <p class="ch-lead">
+      6 Stage Progressive Disclosure + NowBar 단일 CTA + 데이터 단일 sync. PM 인지 부하 최소화 7 원칙.
+    </p>
+  </div>
+</div>
+
+<section id="sec6">
+  <div class="sec-header">
+    <div class="sec-num">Section 06 · UI/UX</div>
+    <h2>UI/UX 설계</h2>
+    <h3>PM 인지 부하 최소화 7 원칙</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <ol class="num-list">
+    <li><strong>단일 진행도</strong> — NorthStarBar (6 dot S1~S6). 진행도 표시는 한 곳에만.</li>
+    <li><strong>Accordion 강제</strong> — 한 번에 1 Stage 펼침. 빠른 전환은 Cmd+숫자.</li>
+    <li><strong>데이터 단일 sync</strong> — proposalBackground = sections.1 자동 양방향. 같은 정보를 두 곳에서 다시 작성 X.</li>
+    <li><strong>placeholder 없음</strong> — 모든 Stage 가 실제 작업 surface.</li>
+    <li><strong>PmGuide 3 카드</strong> — Stage 별 다른 3 카드 (현재 Stage 관련만). 사이드바 정보 폭발 방지.</li>
+    <li><strong>3-tuple 시각화</strong> — S2·S3·S4 가 각각 Message·Logic·Content 명시적 매핑.</li>
+    <li><strong>담당자 질문 must/nice 차등</strong> — PmDirectCard 의 분류 차등 표시.</li>
+  </ol>
+</section>
+
+<!-- ═════════ CHAPTER 7 ═════════ -->
+<div class="chapter-divider" id="ch7">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 07 / Twelve</div>
+    <h1>기술 스택 + <span class="em">성능</span></h1>
+    <p class="ch-lead">
+      Next.js + Prisma + Supabase pgvector + xAPI emitter (Q2). 월 운영비 $30~50.
+    </p>
+  </div>
+</div>
+
+<section id="sec7">
+  <div class="sec-header">
+    <div class="sec-num">Section 07 · Tech Stack</div>
+    <h2>기술 스택 + 성능</h2>
+    <h3>Next.js + Prisma + pgvector + xAPI emitter</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="spec-grid">
+    <div class="spec-label">AI Primary</div>
+    <div class="spec-value">Google Gemini 3.1 Pro Preview</div>
+    <div class="spec-label">AI Fallback</div>
+    <div class="spec-value">Claude Sonnet 4.6</div>
+    <div class="spec-label">Embedding</div>
+    <div class="spec-value">Gemini text-embedding-004 (768 dim)</div>
+    <div class="spec-label">Vector store</div>
+    <div class="spec-value">Supabase pgvector (cosine index, IVF + HNSW)</div>
+    <div class="spec-label">Graph similarity</div>
+    <div class="spec-value">graph2vec + edit distance (자체 구현, ~50 line)</div>
+    <div class="spec-label">단일 진입점</div>
+    <div class="spec-value"><code>invokeAi()</code> · provider/model 중립</div>
+    <div class="spec-label">DB</div>
+    <div class="spec-value">Neon PostgreSQL · 33+15 모델 (v11.0)</div>
+    <div class="spec-label">자료 source</div>
+    <div class="spec-value">6 product API + Google Drive API + Slack API + xAPI emitter (Q2 계획)</div>
+    <div class="spec-label">cron</div>
+    <div class="spec-value">Vercel Cron · hourly (자료 sync) · daily (embedding 갱신) · weekly (prompt update suggestion)</div>
+    <div class="spec-label">성능 목표</div>
+    <div class="spec-value">RFP 파싱 < 5분 · 1차본 7섹션 < 25분 · 검수 < 5분 · 전체 < 45분</div>
+    <div class="spec-label">월 운영비</div>
+    <div class="spec-value">~$30~50 (AI + Supabase Pro + Drive/Slack API 무료)</div>
+  </div>
+</section>
+
+<!-- ═════════ CHAPTER 8 ═════════ -->
+<div class="chapter-divider" id="ch8">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 08 / Twelve</div>
+    <h1>위험 + <span class="em">대응</span></h1>
+    <p class="ch-lead">
+      4 위험 (AI 환각 · 채널 편차 · 데이터 품질 · 학습곡선) + 대응 방법.
+    </p>
+  </div>
+</div>
+
+<section id="sec8">
+  <div class="sec-header">
+    <div class="sec-num">Section 08 · Risks</div>
+    <h2>위험 + 대응</h2>
+    <h3>예측 가능한 4 위험</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <table class="prd-table">
+    <thead><tr><th>위험</th><th>증상</th><th>대응</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">AI 환각</td><td>잘못된 수치·출처 자동 생성</td><td>inline citation 강제 + 검수 게이트 + tonePatterns.avoidedWords</td></tr>
+      <tr><td class="label-cell">채널 편차</td><td>B2G vs B2B vs renewal 표현 차이 큰데 일률 적용</td><td>채널별 매칭 가중치 (channelMatch 0.1) + Inspector 채널 lens</td></tr>
+      <tr><td class="label-cell">데이터 품질</td><td>P10 자산 신뢰도 편차 (high/medium/low)</td><td>sourceTier 가중치 + UD Labs 검수 큐 + confidence ≥ 0.8 자동 publish</td></tr>
+      <tr><td class="label-cell">학습곡선</td><td>PM 의 9 결정 점 익숙해지는데 시간</td><td>PM 가이드북 (P2) · 신입 온보딩 시 시뮬레이터 활용</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════════ CHAPTER 9 ═════════ -->
+<div class="chapter-divider" id="ch9">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 09 / Twelve</div>
+    <h1>성공 지표 — <span class="em">v11.0 검증</span></h1>
+    <p class="ch-lead">
+      4 정량 KPI + 4 정성 검증.
+    </p>
+  </div>
+</div>
+
+<section id="sec9">
+  <div class="sec-header">
+    <div class="sec-num">Section 09 · KPI</div>
+    <h2>성공 지표</h2>
+    <h3>정량 + 정성 8 측정</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="card-grid card-grid-4">
+    <div class="card">
+      <div class="card-title-meta">정량 1</div>
+      <div class="card-title">PM 작성 시간</div>
+      <p style="margin-top:8px;font-size:24px;color:var(--primary-orange);font-weight:800;">30~45분</p>
+      <p style="font-size:11px;color:var(--subtitle-text);">RFP 1건당 목표 작성 시간</p>
+    </div>
+    <div class="card cyan-top">
+      <div class="card-title-meta">정량 2</div>
+      <div class="card-title">PM 수정율</div>
+      <p style="margin-top:8px;font-size:24px;color:var(--primary-orange);font-weight:800;">≤ 30%</p>
+      <p style="font-size:11px;color:var(--subtitle-text);">1차본 → 최종 승인 사이 수정 비율</p>
+    </div>
+    <div class="card green-top">
+      <div class="card-title-meta">정량 3</div>
+      <div class="card-title">수주율 변화</div>
+      <p style="margin-top:8px;font-size:24px;color:var(--primary-orange);font-weight:800;">+5~10%p</p>
+      <p style="font-size:11px;color:var(--subtitle-text);">가동 6개월 후 baseline 대비</p>
+    </div>
+    <div class="card purple-top">
+      <div class="card-title-meta">정량 4</div>
+      <div class="card-title">단어 매몰 해소</div>
+      <p style="margin-top:8px;font-size:24px;color:var(--primary-orange);font-weight:800;">95%+</p>
+      <p style="font-size:11px;color:var(--subtitle-text);">RFP 표현 변형 100 sample</p>
+    </div>
+  </div>
+
+  <div class="sub-heading">정성 검증 4</div>
+
+  <ol class="num-list">
+    <li><strong>PM 풀테스트</strong> — W4 후 PM 2명이 실제 RFP 로 1차본. 시간 + 인터뷰. <span class="li-meta">목표: PM 명확성 점수</span></li>
+    <li><strong>UD Labs sync 검증</strong> — Drive 신규 자료 → ud-planner 반영 시간. <span class="li-meta">목표: 평균 1시간</span></li>
+    <li><strong>Sphere 2 매칭 정확도</strong> — 100 RFP sample 의 3-tuple 매칭. <span class="li-meta">목표: matchScore p50 ≥ 0.6</span></li>
+    <li><strong>Connection 안정도</strong> — Coach Finder · Coaching Log · LMS API uptime. <span class="li-meta">목표: 99.5%+</span></li>
+  </ol>
+</section>
+
+<!-- ═════════ CHAPTER 10 ═════════ -->
+<div class="chapter-divider" id="ch10">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 10 / Twelve</div>
+    <h1>Q2~Q4 <span class="em">로드맵</span> + Phase W1~W7</h1>
+    <p class="ch-lead">
+      v11.0 실행 — 7 Phase · 약 4~5주 · 각 Phase 독립 PR + 사용자 게이트.
+    </p>
+  </div>
+</div>
+
+<section id="sec10">
+  <div class="sec-header">
+    <div class="sec-num">Section 10 · Q2~Q4 Roadmap</div>
+    <h2>Q2~Q4 2026 로드맵</h2>
+    <h3>큰 그림 (xAPI · 채널 학습 · IMPACT · 글로벌)</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <ol class="num-list">
+    <li><strong>Q2 (2026.06~07)</strong> — v11.0 W1~W7 완료. xAPI emitter 5 product 부착. 데이터 허브 LRS 시작. <span class="li-meta">UD-Planner 기준</span></li>
+    <li><strong>Q3 (2026.08~09)</strong> — KSVA (P11) 통합. 채널별 가중치 학습. 신규 콘텐츠 자동 제안 trigger. <span class="li-meta">Sphere 2 진화</span></li>
+    <li><strong>Q4 (2026.10~12)</strong> — Act-preneur (P4) 통합. 글로벌 확장 (한·영·일·인도네시아). Sphere 2 graph-augmented. <span class="li-meta">대형 확장</span></li>
+  </ol>
+</section>
+
+<section id="sec11">
+  <div class="sec-header">
+    <div class="sec-num">Section 11 · Phase W1~W7</div>
+    <h2>Phase W1~W7 — v11.0 실행</h2>
+    <h3>4~5주 · 7 마일스톤</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="sprint-grid">
+    <div class="sprint-card w1">
+      <div class="sprint-day">PHASE · 0.5주</div>
+      <div class="sprint-label">W1</div>
+      <div class="sprint-label-ko">DB schema 확장</div>
+      <div class="sprint-desc">WinningPattern + ContentAsset + AssetUsage 신규 컬럼 + pgvector index</div>
+    </div>
+    <div class="sprint-card w2">
+      <div class="sprint-day">PHASE · 1주</div>
+      <div class="sprint-label">W2</div>
+      <div class="sprint-label-ko">Sphere 2 ingest 알고리즘</div>
+      <div class="sprint-desc">extract-tuple API · LLM 3 호출 · message·logic·content 분해</div>
+    </div>
+    <div class="sprint-card w3">
+      <div class="sprint-day">PHASE · 1주</div>
+      <div class="sprint-label">W3</div>
+      <div class="sprint-label-ko">Sphere 2 매칭 알고리즘</div>
+      <div class="sprint-desc">match-tuple API · 3 차원 병렬 + 통합 점수 + MMR 다양성</div>
+    </div>
+    <div class="sprint-card w4">
+      <div class="sprint-day">PHASE · 1주</div>
+      <div class="sprint-label">W4</div>
+      <div class="sprint-label-ko">UI 정리 + 6 Stage</div>
+      <div class="sprint-desc">PipelineNav 폐지 · S3 (Logic) Stage 신설 · 데이터 sync · F4 흡수</div>
+    </div>
+    <div class="sprint-card w5">
+      <div class="sprint-day">PHASE · 0.5주</div>
+      <div class="sprint-label">W5</div>
+      <div class="sprint-label-ko">Drive + Slack sync</div>
+      <div class="sprint-desc">Google Drive API + Slack API · IngestionJob 자동 생성</div>
+    </div>
+    <div class="sprint-card w6">
+      <div class="sprint-day">PHASE · 0.5주</div>
+      <div class="sprint-label">W6</div>
+      <div class="sprint-label-ko">생성 시 강제 룰</div>
+      <div class="sprint-desc">tonePatterns 활용 + MMR · "이전 섹션과 다른 표현" prompt 통합</div>
+    </div>
+    <div class="sprint-card w7">
+      <div class="sprint-day">PHASE · 0.5주</div>
+      <div class="sprint-label">W7</div>
+      <div class="sprint-label-ko">학습 메트릭 + 풀테스트</div>
+      <div class="sprint-desc">5 메트릭 dashboard · PM 풀테스트 · v11.1 후속 결정</div>
+    </div>
+  </div>
+
+  <div class="info-box green">
+    <p><strong>Phase 순서 합리화</strong>: W1 schema → W2 ingest → W3 match → W4 UI 통합 → W5 외부 source → W6 강제 룰 → W7 메트릭. 각 Phase 독립 PR · 사용자 게이트.</p>
+  </div>
+</section>
+
+<!-- ═════════ CHAPTER 11 ═════════ -->
+<div class="chapter-divider" id="ch11">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 11 / Twelve</div>
+    <h1>미해결 <span class="em">질문</span></h1>
+    <p class="ch-lead">
+      v11.0 의 4 open issue. W7 풀테스트 후 v11.1 에서 답.
+    </p>
+  </div>
+</div>
+
+<section id="sec12">
+  <div class="sec-header">
+    <div class="sec-num">Section 12 · Open Issues</div>
+    <h2>미해결 질문</h2>
+    <h3>v11.1 에서 답할 4 issue</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <ol class="num-list">
+    <li><strong>Message 의 설득력 정량화 기준?</strong> — keyMessage 의 "당선 가능성" 을 사후 win-rate 외에 사전 측정 가능한가?</li>
+    <li><strong>당선 패턴 vs 고객 특수성 밸런스?</strong> — 매번 다른 발주처라 일반 패턴 외에 특수 요소 가중 어떻게?</li>
+    <li><strong>프롬프트 업데이트 주기?</strong> — 매주 cron 제안 vs 분기 1회 admin 검토</li>
+    <li><strong>실패 제안서도 학습 데이터로?</strong> — outcome='lost' 의 negative gradient 가 학습에 유효한가?</li>
+  </ol>
+</section>
+
+<!-- ═════════ CHAPTER 12 ═════════ -->
+<div class="chapter-divider" id="ch12">
+  <div class="chapter-divider-inner">
+    <div class="chapter-num-label">Chapter 12 / Twelve · Appendix</div>
+    <h1>변경 이력 + <span class="em">참조</span></h1>
+    <p class="ch-lead">
+      살아있는 문서. 각 Phase 완료 시 changelog 직접 update.
+    </p>
+  </div>
+</div>
+
+<section id="sec13">
+  <div class="sec-header">
+    <div class="sec-num">Section 13 · Changelog</div>
+    <h2>변경 이력</h2>
+    <h3>v11.0 부터의 살아있는 기록</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="changelog">
+    <div class="changelog-entry">
+      <div class="ver">v11.0<span class="ver-date">2026-05-23</span></div>
+      <div class="ver-body">
+        <strong>11 product hub + Sphere 2 3-tuple 학습 채택.</strong> 6 product API 가 자산 source. Sphere 2 가 제안서를 Message·LogicStructure·Content 3-tuple 로 분해 학습. P10 데이터 허브의 7 자산과 자연 정합. xAPI Q2 통합 청사진 흡수.
+        <br><span style="font-size:11px;color:var(--subtitle-text);">트리거: 사용자 "Sphere 2 를 어떻게 똑똑하게 학습시킬 것인가" + ud-ai-guidelines 마스터 자료 정독.</span>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="ver">v10.0<span class="ver-date">2026-05-23</span></div>
+      <div class="ver-body">
+        3 Sphere (PM 도구 / AI 두뇌 / UD Labs 자료실 = Drive + Slack). Phase W1~W5 정의.
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="ver">v9.0<span class="ver-date">2026-05-22</span></div>
+      <div class="ver-body">
+        4 Layer 아키텍처 (Lean Core + Inference + Asset Pipeline + Data Pipeline).
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="ver">— planned<span class="ver-date">W3 완료 시</span></div>
+      <div class="ver-body">
+        3-tuple 매칭 알고리즘 성능 측정 · 가중치 fine-tune 결과.
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="ver">— planned<span class="ver-date">W7 완료 시</span></div>
+      <div class="ver-body">
+        PM 풀테스트 + 4 open issue 답 + 수주율 baseline 측정.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec14">
+  <div class="sec-header">
+    <div class="sec-num">Section 14 · References</div>
+    <h2>참조 + 인용</h2>
+    <h3>11 product PRD · ADR · 외부 자료 · 사용자 인용</h3>
+    <div class="sec-divider"></div>
+  </div>
+
+  <div class="sub-heading">11 product 마스터 자료</div>
+  <ul style="list-style:none;padding-left:0;font-size:13px;line-height:2;">
+    <li>📄 <code>ud-ai-guidelines/UD-products-PRD-v2.html</code> (138KB · 11 product 상세 PRD)</li>
+    <li>📄 <code>ud-ai-guidelines/ud-system-architecture.html</code> (66KB · 3-Layer + Data Topology)</li>
+    <li>📄 <code>ud-ai-guidelines/ud-assets-playbook.html</code> (53KB · 4 category 자산 분류)</li>
+    <li>📄 <code>ud-ai-guidelines/UD-LMS-PRD.md</code> (30KB · LMS 스펙)</li>
+    <li>📄 <code>ud-ai-guidelines/guide/01~07.md</code> (개발 방법론 7 원칙)</li>
+  </ul>
+
+  <div class="sub-heading">관련 ADR</div>
+  <table class="prd-table">
+    <thead><tr><th>ADR</th><th>제목</th><th>v11.0 관계</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">ADR-008</td><td>Impact Value Chain</td><td>LogicStructure 의 5단계 chain</td></tr>
+      <tr><td class="label-cell">ADR-009</td><td>UD Asset Registry</td><td>ContentAsset 의 기반</td></tr>
+      <tr><td class="label-cell">ADR-011</td><td>Express Mode</td><td>북극성 유지</td></tr>
+      <tr><td class="label-cell">ADR-013</td><td>Express 2.0</td><td>채널 분기 유지</td></tr>
+      <tr><td class="label-cell">ADR-015</td><td>Wave V</td><td>F4 흡수 · F5 → W4 진화</td></tr>
+      <tr><td class="label-cell">ADR-017</td><td>Wave W 톤 자산화</td><td>W6 흡수</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub-heading">외부 best practice</div>
+  <ul style="list-style:none;padding-left:0;font-size:13px;line-height:2;">
+    <li>🌐 Arphie vs Loopio (Loopio 17.5h · Arphie 6h · UD-Planner 0.75h)</li>
+    <li>🌐 RAG 2026 — modular · agentic · graph-augmented · hybrid</li>
+    <li>🌐 MMR (Maximum Marginal Relevance) — Carbonell & Goldstein 1998</li>
+    <li>🌐 graph2vec — Narayanan et al. 2017</li>
+  </ul>
+
+  <div class="sub-heading">사용자 인용 (v11.0 의사결정 트레이스)</div>
+
+  <div class="quote-box">
+    <div class="quote-text">"제안서 하나를 학습하더라도 전체 맥락들과 메세지 그 안에서 제안서 논리구조와 내용들 이런 것들도 학습을 하는 sphere 2 가 되어야해."</div>
+    <div class="quote-attr">— udpb@udimpact.ai · 2026-05-23 (v11.0 핵심 트리거)</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote-text">"잘못 RAG 청크하면 다 단어 단위만 남고 또 막 특정 단어들이 과하게 노출되거나 계속 동일한 단어가 반복해서 출력되거나 하니까."</div>
+    <div class="quote-attr">— udpb@udimpact.ai · 2026-05-23 (3-tuple 분해 동기)</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote-text">"이름에 집중하기보다는 전체 의도를 파악해줘. 그리고 넌 이미 coach-finder랑 impact리포트랑은 연결되어 있어."</div>
+    <div class="quote-attr">— udpb@udimpact.ai · 2026-05-23 (11 product 시각)</div>
+  </div>
+
+  <div class="sub-heading">선행 PRD</div>
+  <ul style="list-style:none;padding-left:0;font-size:13px;line-height:2;">
+    <li>📚 v10.0 — 3 Sphere Hybrid (2026-05-23)</li>
+    <li>📚 v9.0 — 4 Layer (2026-05-22)</li>
+    <li>📚 <code>PRD-v8.0.md</code> — Express 2.0 (2026-05-03)</li>
+    <li>📚 <code>docs/archive/PRD-v7.1.md · PRD-v6.0.md · PRD-v5.0.md</code></li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="doc-footer">
+  <div class="doc-footer-inner">
+    <div class="doc-footer-brand">underdogs. UD-Planner PRD v11.0</div>
+    <div class="doc-footer-copy">Living Document · 2026-05-23 · /PRD.html · 11 Product Hub + 3-Tuple Sphere 2</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.sidebar a').forEach(a => {
+  a.addEventListener('click', () => document.querySelector('.sidebar').classList.remove('open'));
+});
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar a[href^="#"]');
+function highlight() {
+  let active = '';
+  sections.forEach(s => {
+    const top = s.getBoundingClientRect().top;
+    if (top < 100) active = s.id;
+  });
+  navLinks.forEach(a => {
+    const isActive = a.getAttribute('href') === '#' + active;
+    a.style.color = isActive ? 'var(--action-orange)' : '';
+    a.style.fontWeight = isActive ? '700' : '';
+  });
+}
+window.addEventListener('scroll', highlight);
+highlight();
+</script>
+
+</body>
+</html>

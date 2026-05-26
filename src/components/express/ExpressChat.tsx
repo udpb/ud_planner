@@ -401,6 +401,8 @@ function TurnBubble({
             />
           )}
           {card.type === 'pm-direct' && (
+            // F4 (Wave V, ADR-015 §7): checklistItems 가 union (string | object).
+            // PmDirectCard 내부 normalizeChecklistItems 가 둘 다 처리 (회귀 호환).
             <PmDirectCard
               topic={card.topic}
               checklistItems={card.checklistItems ?? []}

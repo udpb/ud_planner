@@ -14,6 +14,60 @@ import { z } from 'zod'
 // ─────────────────────────────────────────
 
 // 순서 — TurnSchema 가 ExternalLookupRequestSchema 참조하므로 위에서 먼저 정의
+
+/**
+ * F4 (Wave V, ADR-015 §7): pm-direct 카드의 checklistItem 차등화.
+ *
+ * 기존 형식 (string) 은 회귀 호환을 위해 union 으로 유지 — 과거 expressTurnsCache
+ * 의 직렬화된 turn 데이터가 깨지면 안 됨. normalizeChecklistItems() 가 둘 다
+ * `NormalizedChecklistItem` 으로 변환.
+ *
+ * - must: RFP 누락 정보 / 발주처 우선순위 직접 영향 / 평가배점 가중 항목
+ * - nice: 통화 시간 여유 시 추가 질문 (작년 회고·코치 신뢰 등)
+ */
+export const ChecklistItemSchema = z.union([
+  // 회귀 호환 — 기존 string[] 캐시
+  z.string(),
+  // F4 신규 — 분류 + 근거
+  z.object({
+    item: z.string(),
+    classification: z.enum(['must', 'nice']).default('must'),
+    reason: z.string().max(120).optional(),
+  }),
+])
+
+export type ChecklistItem = z.infer<typeof ChecklistItemSchema>
+
+export interface NormalizedChecklistItem {
+  item: string
+  classification: 'must' | 'nice'
+  reason?: string
+}
+
+/**
+ * 회귀 호환 normalizer — string[] / object[] 어느 쪽이 와도 동일 형식 반환.
+ * UI · 로깅 · prompt 어디서나 이 함수를 거쳐 사용.
+ */
+export function normalizeChecklistItems(
+  items: readonly ChecklistItem[] | undefined | null,
+): NormalizedChecklistItem[] {
+  if (!items || items.length === 0) return []
+  return items.map((it) => {
+    if (typeof it === 'string') {
+      return {
+        item: it,
+        classification: 'must' as const,
+        reason: '회귀 호환 — 분류 정보 없음',
+      }
+    }
+    return {
+      item: it.item,
+      classification: it.classification ?? 'must',
+      reason: it.reason,
+    }
+  })
+}
+
 export const ExternalLookupRequestSchema = z.object({
   // F3 (Wave V): 'auto-research' 추가 — AI 자동 리서치 (Tier 1 datacenter-stats →
   // Tier 2 Gemini grounding → Tier 3 PM 검토). flag ON 시 process-turn 이
@@ -22,8 +76,13 @@ export const ExternalLookupRequestSchema = z.object({
   topic: z.string(),
   /** external-llm 일 때만 — AI 가 만든 외부 LLM 프롬프트 */
   generatedPrompt: z.string().optional(),
-  /** pm-direct 일 때만 — PM 이 통화·확인할 항목 */
-  checklistItems: z.array(z.string()).optional(),
+  /**
+   * pm-direct 일 때만 — PM 이 통화·확인할 항목.
+   *
+   * F4 (ADR-015 §7): 항목별 must/nice 차등 + 분류 근거 (reason). 회귀 호환을
+   * 위해 string[] 도 받음 → UI/로깅에선 normalizeChecklistItems() 거쳐 사용.
+   */
+  checklistItems: z.array(ChecklistItemSchema).optional(),
   /** auto-extract 일 때 — 자동으로 무엇이 채워졌는지 한 줄 설명 */
   autoNote: z.string().optional(),
 })
