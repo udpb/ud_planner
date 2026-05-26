@@ -14,18 +14,14 @@
  */
 
 :root {
-  /* Brand palette (ActionAI 공식) */
+  /* ── Simplified palette (orange family + charcoal + beige + 1 success) ─── */
   --action-orange: #FF8204;
-  --orange2: #FFA40D;
-  --orange3: #F05519;
-  --primary-orange: #E8541A;
-  --light-orange: #F0845A;
+  --orange3: #F05519;            /* hover */
+  --primary-orange: #E8541A;     /* primary accent */
   --dark-charcoal: #373938;
   --dark2: #2D2D2D;
-  --dark3: #1F2020;
   --warm-gray: #D8D4D7;
-  --cyan: #06A9D0;
-  --green: #2ECC71;
+  --green: #2ECC71;              /* 완료 / 통과 신호 전용 (성공 lens 1 사용처) */
   --light-beige: #F5F0EB;
   --white: #FFFFFF;
   --body-text: #333333;
@@ -34,18 +30,19 @@
   --hairline-strong: #e4dfd6;
 
   /* Spacing */
-  --gap-grid: 2px;  /* construction block 간격 */
+  --gap-grid: 2px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', 'Pretendard Variable', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--body-text);
   background: var(--white);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: 'kern' 1;
+  font-variant-numeric: tabular-nums;
 }
 
 button, input, textarea, select { font: inherit; }
@@ -389,7 +386,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 11px;
   font-weight: 700;
   color: var(--primary-orange);
-  font-family: 'Poppins', monospace;
+  font-variant-numeric: tabular-nums;
 }
 .dock-asset__snippet {
   font-size: 11px; line-height: 1.65;
@@ -492,11 +489,13 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-primary .arrow { font-size: 16px; line-height: 1; }
 .btn-primary.is-disabled {
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.35);
+  background: transparent;
+  color: var(--warm-gray);
+  border: 1px solid rgba(216,212,215,.35);
   box-shadow: none;
   cursor: not-allowed;
 }
+.btn-primary.is-disabled:hover { transform: none; box-shadow: none; }
 .btn-ghost-light {
   height: 44px;
   padding: 0 18px;

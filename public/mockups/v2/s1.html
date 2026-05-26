@@ -69,7 +69,7 @@
     margin-bottom: 24px;
   }
   .dropzone__main {
-    font-size: 22px; font-weight: 700;
+    font-size: 28px; font-weight: 700;
     color: var(--dark-charcoal);
     letter-spacing: -0.5px;
     margin-bottom: 8px;
@@ -106,17 +106,21 @@
     display: block;
     width: 100%;
     background: var(--white);
-    border-top: 2px solid var(--cyan);
+    border-top: 2px solid var(--hairline-strong);
     padding: 28px 32px;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s;
     margin-bottom: 48px;
   }
-  .text-mode-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+  .text-mode-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    border-top-color: var(--primary-orange);
+  }
   .text-mode-btn__label {
     font-size: 11px; font-weight: 700;
-    color: var(--cyan);
+    color: var(--subtitle-text);
     letter-spacing: 2px; text-transform: uppercase;
     margin-bottom: 6px;
   }
@@ -251,7 +255,7 @@
 
       <!-- Dropzone -->
       <label class="dropzone">
-        <div class="dropzone__icon">⬆</div>
+        <div class="dropzone__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
         <div class="dropzone__main">RFP 파일을 드래그 & 드롭</div>
         <div class="dropzone__hint">또는 영역을 클릭해서 선택 · 최대 20MB</div>
         <div class="dropzone__formats">
@@ -288,7 +292,7 @@
 
   <!-- NowBar -->
   <div class="nowbar">
-    <div class="nowbar__icon">⚡</div>
+    <div class="nowbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="nowbar__text">
       <div class="nowbar__ctx">Next · Stage 01 · RFP Analysis</div>
       <div class="nowbar__msg">RFP 파일 업로드 또는 텍스트 붙여넣기로 분석을 시작하세요</div>

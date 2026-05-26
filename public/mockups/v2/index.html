@@ -86,14 +86,14 @@
   .principle:hover { transform: translateY(-4px); }
   .principle:nth-child(2) { border-top-color: var(--orange3); }
   .principle:nth-child(3) { border-top-color: var(--action-orange); }
-  .principle:nth-child(4) { border-top-color: var(--cyan); }
+  .principle:nth-child(4) { border-top-color: var(--primary-orange); }
   .principle-num {
     font-size: 11px; font-weight: 600;
     color: var(--primary-orange);
     letter-spacing: 1.5px; text-transform: uppercase;
     margin-bottom: 16px;
   }
-  .principle:nth-child(4) .principle-num { color: var(--cyan); }
+  .principle:nth-child(4) .principle-num { color: var(--primary-orange); }
   .principle h3 {
     font-size: 18px; font-weight: 700;
     color: var(--dark-charcoal);
@@ -128,7 +128,7 @@
     background: var(--dark-charcoal);
     color: var(--warm-gray);
     padding: 32px;
-    font-family: 'Poppins', monospace;
+    font-variant-numeric: tabular-nums;
     font-size: 11px; line-height: 1.85;
     white-space: pre;
     overflow-x: auto;
@@ -157,7 +157,7 @@
     margin-bottom: 2px;
   }
   .token-cell .token-hex {
-    font-family: 'Poppins', monospace;
+    font-variant-numeric: tabular-nums;
     font-size: 10px;
     color: var(--subtitle-text);
     letter-spacing: 0.5px;
@@ -251,7 +251,7 @@
 
   /* Footer */
   footer {
-    background: var(--dark3);
+    background: var(--dark2);
     padding: 32px;
     text-align: center;
     color: rgba(255,255,255,.45);
@@ -268,8 +268,8 @@
   <div class="hero-accent-line"></div>
   <div class="hero-inner">
     <span class="hero-badge">ADR-018 · UX v2 Mockup</span>
-    <h1>UD <span class="accent">·</span>Planner</h1>
-    <h1><span class="accent">Adaptive Stage</span> Layout</h1>
+    <h1>UD<span class="accent">·</span>Planner</h1>
+    <h1>Adaptive Stage <span class="accent">Layout.</span></h1>
     <p>
       5 Stage 적응형 레이아웃. 각 Stage 본질에 맞는 다른 화면 풍경.<br/>
       단일 진행도 · AI 동행 Dock · 데이터 흐름 위에서 PM 의 결정만.

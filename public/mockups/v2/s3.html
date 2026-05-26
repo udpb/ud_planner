@@ -121,9 +121,9 @@
     cursor: pointer;
   }
   .lens:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,.06); }
+  /* 단순화 — pass = green (성공 신호), weak = orange (강조), fail 미사용 */
   .lens.is-pass { border-top-color: var(--green); }
-  .lens.is-weak { border-top-color: var(--action-orange); }
-  .lens.is-fail { border-top-color: #E74C3C; }
+  .lens.is-weak { border-top-color: var(--primary-orange); }
 
   .lens__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
   .lens__name {
@@ -138,7 +138,7 @@
     font-variant-numeric: tabular-nums;
   }
   .lens.is-pass .lens__score { color: var(--green); }
-  .lens.is-weak .lens__score { color: var(--action-orange); }
+  .lens.is-weak .lens__score { color: var(--primary-orange); }
   .lens__hint {
     font-size: 11px;
     color: var(--subtitle-text);
@@ -279,7 +279,8 @@
     border-radius: 50%;
   }
   .diff__lines {
-    font-family: 'Poppins', monospace;
+    font-family: 'Poppins', monospace; /* diff 코드 — fall-back monospace OK */
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     line-height: 1.85;
   }
@@ -501,7 +502,7 @@
 
   <!-- NowBar -->
   <div class="nowbar">
-    <div class="nowbar__icon">!</div>
+    <div class="nowbar__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="nowbar__text">
       <div class="nowbar__ctx">Next · Stage 03 · Asset Boost</div>
       <div class="nowbar__msg">약점 lens 보강 — 3건 수락 시 점수 +8 (78 → 86)</div>
