@@ -16,6 +16,7 @@ import { NowBar } from '@/components/shell/NowBar'
 import { BrainDock } from '@/components/shell/BrainDock'
 import { S1HeroCenter, type S1AnalysisResult } from '@/components/stages/S1HeroCenter'
 import { S2ChatCanvas } from '@/components/stages/S2ChatCanvas'
+import { S3Checklist, type LensScore, type AssetRow } from '@/components/stages/S3Checklist'
 
 export interface V2ShellProps {
   projectId: string
@@ -199,7 +200,15 @@ export function V2Shell({
             slotsTotal={slotsTotal}
           />
         )}
-        {activeStage === 'S3' && <StagePlaceholder stage="S3" label="검수" phase="D" />}
+        {activeStage === 'S3' && (
+          <S3Checklist
+            projectId={projectId}
+            overallScore={MOCK_S3.overallScore}
+            lenses={MOCK_S3.lenses}
+            recommendedAssets={MOCK_S3.assets}
+            onProceedToS4={() => setActiveStage('S4')}
+          />
+        )}
         {activeStage === 'S4' && <StagePlaceholder stage="S4" label="정밀 편집" phase="E" />}
         {activeStage === 'S5' && <StagePlaceholder stage="S5" label="최종 승인" phase="F" />}
       </main>
@@ -217,6 +226,66 @@ export function V2Shell({
       <NowBar {...nowBarProps} />
     </div>
   )
+}
+
+// ─────────────────────────────────────────
+// MOCK DATA — Phase D 후속 PR 에서 real Inspector 호출로 교체 예정
+// ─────────────────────────────────────────
+
+const MOCK_S3 = {
+  overallScore: 78,
+  lenses: [
+    { name: '시장 통계', score: 95, status: 'pass' as const, hint: '통계청 + 안산시 데이터 인용 정확' },
+    { name: '평가배점', score: 88, status: 'pass' as const, hint: '5개 배점 모두 본문 반영' },
+    { name: '차별화', score: 62, status: 'weak' as const, hint: '자산 추가 권장 · Brain 5건' },
+    { name: 'Before / After', score: 82, status: 'pass' as const, hint: 'SMART 5축 모두 통과' },
+    { name: '실행 가능성', score: 80, status: 'pass' as const, hint: '예산 · 기간 · 인력 합리적' },
+    { name: 'Risk 대응', score: 68, status: 'weak' as const, hint: '2건 추가 권장' },
+    { name: '사회적 가치', score: 85, status: 'pass' as const, hint: 'SROI 2.3억 계산 명확' },
+    { name: '발주처 특수', score: null, status: 'unknown' as const, hint: '발주처 정보 부족' },
+  ] satisfies LensScore[],
+  assets: [
+    {
+      assetId: 'mock-actt',
+      name: 'ACTT 5단계 실행 루프 방법론',
+      snippet:
+        '창업가의 가설 → 실행 → 검증 → 학습 → 재실행 의 5단계 사이클을 12주에 4번 반복하여...',
+      tier: 'high' as const,
+      citationCount: 142,
+    },
+    {
+      assetId: 'mock-dogs',
+      name: 'DOGS 리더십 — 4 유형 진단 · 코칭',
+      snippet:
+        'Dynamic · Organize · Generate · Steady 4 유형 진단으로 팀별 맞춤형 코칭...',
+      tier: 'high' as const,
+      citationCount: 87,
+    },
+    {
+      assetId: 'mock-5d',
+      name: '5D 진단 — AI 시대 창업가 5 역량',
+      snippet:
+        'Discover · Define · Design · Deliver · Direct 5D 사이클로 AI 협력 역량을 정량 측정...',
+      tier: 'high' as const,
+      citationCount: 54,
+    },
+    {
+      assetId: 'mock-uca',
+      name: 'UCA — 임팩트 사이클 진단·코치 매칭',
+      snippet:
+        'UCA Underdogs Coach Academy 운영의 4 mod 진단 + 코치 풀 자동 매칭...',
+      tier: 'mid' as const,
+      citationCount: 38,
+    },
+    {
+      assetId: 'mock-impact',
+      name: 'IMPACT 6단계 — 18모듈 54질문',
+      snippet:
+        'I·M·P·A·C·T 6 단계 18 모듈 54 핵심 질문 기반 자산 인계...',
+      tier: 'mid' as const,
+      citationCount: 31,
+    },
+  ] satisfies AssetRow[],
 }
 
 function StagePlaceholder({
