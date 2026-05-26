@@ -1,19 +1,22 @@
 'use client'
 /**
- * S1HeroCenter — UX v2 (ADR-018) S1 RFP 분석 stage
+ * S1HeroCenter — UX v2 (ADR-018 · mockup s1.html 1:1)
  *
- * 본질: 업로드 + 분석 대기.
+ * Stage 01 · RFP Analysis · Hero center.
  *
- * 레이아웃 (Hero center):
- *   - 미분석 상태: 큰 dropzone (PDF/DOCX/HWP) + 텍스트 붙여넣기 옵션
- *   - 분석 완료: 추출 결과 카드 (사업명·발주처·예산·평가배점·키워드) + S2 진입 CTA
+ * 레이아웃 (mockup s1.html):
+ *   - eyebrow ● Stage 01 · RFP Analysis
+ *   - big title (clamp 32~48px) + italic orange "기획 1차본" accent
+ *   - sub copy (~580px)
+ *   - dropzone (white · border-top 4px orange · 80×32 padding · 64×64 orange icon box)
+ *   - or-divider (hairline · UPPERCASE "또는")
+ *   - text-mode-btn (white · border-top 2px hairline)
+ *   - after-analysis (dark-charcoal · border-top 3px action-orange · 2col grid)
  *
- * 단순함이 핵심 — 다른 요소 X. NowBar 가 다음 액션 안내.
+ * 분석 완료 상태: hero 가 결과 카드로 collapse · NowBar 가 S2 CTA 안내
  */
 
 import { useState, useTransition } from 'react'
-import { FileText, Upload, Check, Sparkles } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 export interface S1AnalysisResult {
   projectName?: string | null
@@ -21,9 +24,7 @@ export interface S1AnalysisResult {
   totalBudget?: number | null
   evalCriteria?: { item: string; score: number }[]
   keywords?: string[]
-  /** 자동 매칭된 자산 수 */
   matchedAssetCount?: number
-  /** Logic Model 자동 생성 여부 */
   hasLogicModel?: boolean
 }
 
@@ -31,13 +32,18 @@ export interface S1HeroCenterProps {
   projectId: string
   /** 이미 분석 완료된 경우 결과 (null 이면 미분석) */
   analysis?: S1AnalysisResult | null
-  /** 업로드 / 텍스트 파싱 callback. 자동으로 server side parse-rfp 호출 */
+  /** 업로드 / 텍스트 파싱 callback */
   onAnalyze?: (params: { file?: File; text?: string }) => Promise<void>
   /** S2 진입 callback */
   onProceedToS2?: () => void
 }
 
-export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: S1HeroCenterProps) {
+export function S1HeroCenter({
+  projectId,
+  analysis,
+  onAnalyze,
+  onProceedToS2,
+}: S1HeroCenterProps) {
   const [pending, startTransition] = useTransition()
   const [dragOver, setDragOver] = useState(false)
   const [textMode, setTextMode] = useState(false)
@@ -52,20 +58,51 @@ export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: 
 
   if (isCompleted) {
     return (
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-12">
-        {/* 완료 배지 */}
-        <div className="flex items-center gap-2 rounded-full border border-green-300 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700">
-          <Check className="h-4 w-4" />
-          RFP 분석 완료
+      <div className="mx-auto max-w-[880px] px-8 pb-20 pt-20">
+        {/* eyebrow */}
+        <div
+          className="mb-4 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+          style={{ color: 'var(--primary-orange)' }}
+        >
+          <span
+            className="h-2 w-2 rounded-full"
+            style={{ background: 'var(--primary-orange)' }}
+          />
+          Stage 01 · RFP Analysis · 완료
         </div>
 
-        <h1 className="text-center text-2xl font-bold tracking-tight">
-          {analysis!.projectName}
+        {/* title */}
+        <h1
+          className="mb-3 font-bold leading-[1.1] tracking-[-1.2px]"
+          style={{
+            color: 'var(--dark-charcoal)',
+            fontSize: 'clamp(28px, 3.5vw, 38px)',
+          }}
+        >
+          <span style={{ color: 'var(--primary-orange)', fontStyle: 'italic' }}>
+            {analysis!.projectName}
+          </span>
+          <br />
+          분석 완료 · S2 진입 준비
         </h1>
 
         {/* 추출 결과 카드 */}
-        <div className="w-full rounded-xl border bg-card p-5">
-          <div className="grid gap-4 sm:grid-cols-2">
+        <div
+          className="mt-10 bg-white p-8"
+          style={{ borderTop: '4px solid var(--primary-orange)' }}
+        >
+          <div
+            className="mb-5 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+            style={{ color: 'var(--primary-orange)' }}
+          >
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ background: 'var(--primary-orange)' }}
+            />
+            Extracted · Automatic
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
             <ResultRow label="발주처" value={analysis!.client ?? '—'} />
             <ResultRow
               label="총 예산"
@@ -74,6 +111,8 @@ export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: 
                   ? `${(analysis!.totalBudget / 1e8).toFixed(2)}억`
                   : '—'
               }
+              accent
+              big
             />
             <ResultRow
               label="평가배점"
@@ -86,35 +125,48 @@ export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: 
           </div>
 
           {/* 자동 처리 결과 */}
-          <div className="mt-5 space-y-1.5 border-t pt-4">
-            <BulletItem
+          <div
+            className="mt-6 grid gap-3 pt-5 sm:grid-cols-2"
+            style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
+          >
+            <CheckBullet
               done={!!analysis!.hasLogicModel}
-              text="Logic Model 자동 생성"
+              text="Logic Model 자동 생성 완료"
             />
-            <BulletItem
+            <CheckBullet
               done={(analysis!.matchedAssetCount ?? 0) > 0}
-              text={`유사 수주 자산 ${analysis!.matchedAssetCount ?? 0}건 자동 매칭`}
+              text={`유사 자산 ${analysis!.matchedAssetCount ?? 0}건 자동 매칭`}
             />
           </div>
         </div>
 
         {/* 진행 CTA */}
-        <button
-          onClick={onProceedToS2}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90"
-        >
-          <Sparkles className="h-4 w-4" />
-          S2 1차본 작성으로
-        </button>
-        <p className="text-[11px] text-muted-foreground">
-          AI 가 자동으로 60% 채우고, PM 은 9개 결정만 (30~45분)
-        </p>
+        <div className="mt-10 flex items-center justify-center">
+          <button
+            onClick={onProceedToS2}
+            className="inline-flex items-center gap-2.5 px-7 text-[14px] font-semibold tracking-[0.3px] text-white transition-all duration-200 hover:-translate-y-0.5"
+            style={{
+              height: 52,
+              background: 'var(--primary-orange)',
+              boxShadow: '0 4px 12px rgba(232,84,26,.25)',
+            }}
+          >
+            S2 1차본 작성으로
+            <span
+              className="px-1.5 py-0.5 text-[10px] font-medium tracking-[0.5px]"
+              style={{ background: 'rgba(255,255,255,.18)' }}
+            >
+              ~30분
+            </span>
+            <span className="text-[16px] leading-none">→</span>
+          </button>
+        </div>
       </div>
     )
   }
 
   // ─────────────────────────────────────────
-  // 미분석 — Hero dropzone
+  // 미분석 — Hero center (mockup s1.html 정확 일치)
   // ─────────────────────────────────────────
 
   async function handleFile(file: File) {
@@ -144,17 +196,46 @@ export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: 
   }
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 px-4 py-12">
-      <div className="text-center">
-        <h1 className="mb-2 text-2xl font-bold tracking-tight">
-          📄 RFP 업로드해서 분석 시작
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          PDF · DOCX · HWP 지원 · AI 가 자동 파싱
-        </p>
+    <div className="mx-auto max-w-[880px] px-8 py-20">
+      {/* eyebrow ● Stage 01 · RFP Analysis */}
+      <div
+        className="mb-4 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+        style={{ color: 'var(--primary-orange)' }}
+      >
+        <span
+          className="h-2 w-2 rounded-full"
+          style={{ background: 'var(--primary-orange)' }}
+        />
+        Stage 01 · RFP Analysis
       </div>
 
-      {/* Dropzone */}
+      {/* big title */}
+      <h1
+        className="mb-3 font-bold leading-[1.1] tracking-[-1.2px]"
+        style={{
+          color: 'var(--dark-charcoal)',
+          fontSize: 'clamp(32px, 4.5vw, 48px)',
+        }}
+      >
+        RFP 를 분석해서
+        <br />
+        <span style={{ color: 'var(--primary-orange)', fontStyle: 'italic' }}>
+          기획 1차본
+        </span>
+        의 출발점을 잡습니다
+      </h1>
+
+      {/* sub copy */}
+      <p
+        className="mb-10 max-w-[580px] text-[15px] leading-[1.7]"
+        style={{ color: 'var(--subtitle-text)' }}
+      >
+        PDF · DOCX · HWP 파일을 업로드하면 AI 가 ~30 초 안에 사업명 · 발주처 · 예산 ·
+        평가배점 · 키워드를 자동 추출하고 Logic Model + Brain 매칭까지 한 번에
+        처리합니다.
+      </p>
+
+      {/* Dropzone — file mode */}
       {!textMode && (
         <label
           onDragOver={(e) => {
@@ -168,35 +249,73 @@ export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: 
             const file = e.dataTransfer.files[0]
             if (file) handleFile(file)
           }}
-          className={cn(
-            'flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-dashed p-12 transition cursor-pointer',
-            dragOver
-              ? 'border-primary bg-primary/5'
-              : pending
-                ? 'border-muted bg-muted/30 cursor-wait'
-                : 'border-muted-foreground/30 hover:border-primary/60 hover:bg-primary/5',
-          )}
+          className="relative block cursor-pointer bg-white px-8 py-20 text-center transition-all duration-200 hover:-translate-y-0.5"
+          style={{
+            borderTop: '4px solid var(--primary-orange)',
+            boxShadow: dragOver
+              ? '0 12px 32px rgba(0,0,0,.12)'
+              : '0 1px 0 var(--hairline, #f0ede8)',
+            background: dragOver ? 'var(--light-beige)' : '#ffffff',
+            transform: dragOver ? 'translateY(-2px)' : 'translateY(0)',
+            marginBottom: 2,
+            cursor: pending ? 'wait' : 'pointer',
+          }}
         >
-          {pending ? (
-            <>
-              <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-              <div className="text-sm font-medium text-muted-foreground">
-                AI 가 RFP 분석 중... (~30초)
-              </div>
-            </>
-          ) : (
-            <>
-              <Upload className="h-10 w-10 text-muted-foreground" />
-              <div className="text-center">
-                <div className="text-base font-medium">
-                  드래그 & 드롭 또는 클릭해서 업로드
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  최대 20MB · PDF · DOCX · HWP
-                </div>
-              </div>
-            </>
+          <div className="mb-6 flex justify-center">
+            <div
+              className="inline-flex h-16 w-16 items-center justify-center text-white"
+              style={{ background: 'var(--primary-orange)' }}
+            >
+              {pending ? (
+                <div className="h-7 w-7 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+              )}
+            </div>
+          </div>
+
+          <div
+            className="mb-2 text-[28px] font-bold tracking-[-0.5px]"
+            style={{ color: 'var(--dark-charcoal)' }}
+          >
+            {pending ? 'AI 가 RFP 분석 중...' : 'RFP 파일을 드래그 & 드롭'}
+          </div>
+          <div className="text-[13px]" style={{ color: 'var(--subtitle-text)' }}>
+            {pending
+              ? '~30 초 이내 자동 처리'
+              : '또는 영역을 클릭해서 선택 · 최대 20MB'}
+          </div>
+
+          {!pending && (
+            <div
+              className="mt-6 inline-flex gap-px"
+              style={{ background: 'var(--hairline, #f0ede8)' }}
+            >
+              {(['PDF', 'DOCX', 'DOC', 'HWP'] as const).map((fmt) => (
+                <span
+                  key={fmt}
+                  className="bg-white px-4 py-2 text-[10px] font-bold tracking-[1.5px]"
+                  style={{ color: 'var(--subtitle-text)' }}
+                >
+                  {fmt}
+                </span>
+              ))}
+            </div>
           )}
+
           <input
             type="file"
             accept=".pdf,.docx,.doc,.hwp"
@@ -210,88 +329,261 @@ export function S1HeroCenter({ projectId, analysis, onAnalyze, onProceedToS2 }: 
         </label>
       )}
 
-      {/* 텍스트 모드 */}
-      {textMode && (
-        <div className="w-full space-y-2">
-          <textarea
-            value={rawText}
-            onChange={(e) => setRawText(e.target.value)}
-            rows={10}
-            placeholder="RFP 본문을 붙여넣어주세요 (최소 200자)"
-            className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
-            disabled={pending}
+      {/* or-divider */}
+      {!textMode && (
+        <div
+          className="my-6 flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[2px]"
+          style={{ color: 'var(--subtitle-text)' }}
+        >
+          <div
+            className="h-px flex-1"
+            style={{ background: 'var(--hairline-strong, #e4dfd6)' }}
           />
-          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-            <span>{rawText.length} 자</span>
-            <button
-              onClick={handleText}
-              disabled={pending || rawText.length < 200}
-              className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
-            >
-              {pending ? '분석 중...' : '분석 시작'}
-            </button>
+          또는
+          <div
+            className="h-px flex-1"
+            style={{ background: 'var(--hairline-strong, #e4dfd6)' }}
+          />
+        </div>
+      )}
+
+      {/* text-mode-btn */}
+      {!textMode && (
+        <button
+          onClick={() => setTextMode(true)}
+          disabled={pending}
+          className="mb-12 block w-full cursor-pointer bg-white px-8 py-7 text-center transition-all duration-200 hover:-translate-y-0.5"
+          style={{
+            borderTop: '2px solid var(--hairline-strong, #e4dfd6)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderTopColor = 'var(--primary-orange)'
+            e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,.06)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderTopColor = 'var(--hairline-strong, #e4dfd6)'
+            e.currentTarget.style.boxShadow = 'none'
+          }}
+        >
+          <div
+            className="mb-1.5 text-[11px] font-bold uppercase tracking-[2px]"
+            style={{ color: 'var(--subtitle-text)' }}
+          >
+            Paste Text
+          </div>
+          <div
+            className="text-[16px] font-semibold"
+            style={{ color: 'var(--dark-charcoal)' }}
+          >
+            RFP 본문을 직접 붙여넣기
+          </div>
+        </button>
+      )}
+
+      {/* textarea mode */}
+      {textMode && (
+        <div className="mb-12 space-y-3">
+          <div
+            className="bg-white p-6"
+            style={{ borderTop: '4px solid var(--primary-orange)' }}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <div
+                className="text-[10px] font-bold uppercase tracking-[2px]"
+                style={{ color: 'var(--primary-orange)' }}
+              >
+                ● Paste RFP Text
+              </div>
+              <button
+                onClick={() => {
+                  setTextMode(false)
+                  setError(null)
+                }}
+                className="text-[11px] font-semibold uppercase tracking-[1px]"
+                style={{ color: 'var(--subtitle-text)' }}
+              >
+                ← 파일 모드
+              </button>
+            </div>
+            <textarea
+              value={rawText}
+              onChange={(e) => setRawText(e.target.value)}
+              rows={12}
+              placeholder="RFP 본문을 붙여넣어주세요 (최소 200자)"
+              className="w-full resize-y bg-white px-4 py-3 text-[13px] leading-[1.65]"
+              style={{
+                color: 'var(--body-text, #333)',
+                border: '1px solid var(--hairline-strong, #e4dfd6)',
+                fontFamily: 'inherit',
+              }}
+              disabled={pending}
+            />
+            <div className="mt-3 flex items-center justify-between">
+              <span
+                className="text-[11px] tabular-nums"
+                style={{ color: 'var(--subtitle-text)' }}
+              >
+                {rawText.length} / 최소 200 자
+              </span>
+              <button
+                onClick={handleText}
+                disabled={pending || rawText.length < 200}
+                className="inline-flex h-11 items-center gap-2.5 px-[22px] text-[13px] font-semibold tracking-[0.3px] text-white transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{
+                  background:
+                    rawText.length >= 200 && !pending
+                      ? 'var(--primary-orange)'
+                      : 'rgba(0,0,0,.15)',
+                  boxShadow:
+                    rawText.length >= 200 && !pending
+                      ? '0 4px 12px rgba(232,84,26,.25)'
+                      : 'none',
+                }}
+              >
+                {pending ? '분석 중...' : '분석 시작'}
+                {!pending && <span className="text-[16px] leading-none">→</span>}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* 모드 전환 */}
-      <button
-        onClick={() => {
-          setTextMode((t) => !t)
-          setError(null)
-        }}
-        disabled={pending}
-        className="text-[11px] text-muted-foreground underline hover:text-foreground"
-      >
-        {textMode ? '← 파일 업로드로' : '또는 텍스트 직접 붙여넣기 →'}
-      </button>
-
       {/* 에러 표시 */}
       {error && (
-        <div className="w-full rounded-md border border-red-300 bg-red-50 px-3 py-2 text-xs text-red-700">
-          ⚠ {error}
+        <div
+          className="mb-6 px-4 py-3 text-[12px] font-medium"
+          style={{
+            color: 'var(--primary-orange)',
+            background: 'rgba(232,84,26,.08)',
+            border: '1px solid rgba(232,84,26,.3)',
+          }}
+        >
+          ● {error}
         </div>
       )}
 
-      {/* 분석 후 가능한 것들 (안내) */}
-      <div className="mt-4 w-full rounded-xl border bg-muted/30 p-4 text-[11px] text-muted-foreground">
-        <div className="mb-1 font-medium text-foreground">분석 완료 후 자동으로:</div>
-        <ul className="space-y-0.5">
-          <li>✓ 사업명 · 발주처 · 예산 · 평가배점 자동 추출</li>
-          <li>✓ Logic Model 자동 생성</li>
-          <li>✓ 유사 수주 자산 (Brain matching) 자동 매칭</li>
-          <li>✓ S2 (1차본) 자동 60% 채움 옵션</li>
-        </ul>
+      {/* After analysis preview — dark section */}
+      <div
+        className="relative overflow-hidden p-9 text-white"
+        style={{
+          background: 'var(--dark-charcoal)',
+          borderTop: '3px solid var(--action-orange)',
+        }}
+      >
+        {/* gradient overlay (mockup .after-analysis::before) */}
+        <div
+          className="pointer-events-none absolute right-0 top-0 h-full w-2/5"
+          style={{
+            background:
+              'linear-gradient(135deg, transparent 50%, rgba(255,130,4,0.08) 100%)',
+          }}
+        />
+
+        <div
+          className="relative mb-3 text-[10px] font-semibold uppercase tracking-[2px]"
+          style={{ color: 'var(--action-orange)' }}
+        >
+          <span
+            className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            style={{ background: 'var(--action-orange)' }}
+          />
+          After Analysis · Automatic
+        </div>
+        <h3 className="relative mb-4 text-[22px] font-bold tracking-[-0.5px]">
+          분석 완료 후 자동으로 처리되는 것
+        </h3>
+        <div className="relative grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {AFTER_ITEMS.map((text) => (
+            <AfterItem key={text} text={text} />
+          ))}
+        </div>
       </div>
 
-      <p className="text-[10px] text-muted-foreground">project: {projectId}</p>
+      <p
+        className="mt-6 text-[10px] uppercase tracking-[1.5px]"
+        style={{ color: 'var(--subtitle-text)' }}
+      >
+        Project · {projectId}
+      </p>
     </div>
   )
 }
 
-function ResultRow({ label, value }: { label: string; value: string }) {
+const AFTER_ITEMS = [
+  '사업명 · 발주처 · 예산 · 평가배점 · 키워드 추출',
+  'Logic Model 자동 생성 (impact·outcome·activity·input)',
+  '유사 수주 자산 (Brain matching) 자동 매칭',
+  'S2 (1차본) AI 자동 60% 채움 옵션 제시',
+  '발주처 평가배점 가중치 inspector 사전 적용',
+  'Risk Mitigation 후보 3~5건 자동 제안',
+]
+
+function AfterItem({ text }: { text: string }) {
+  return (
+    <div
+      className="relative pl-5 text-[13px] leading-[1.65]"
+      style={{ color: 'var(--warm-gray)' }}
+    >
+      <span
+        className="absolute left-0 top-0 font-bold"
+        style={{ color: 'var(--action-orange)' }}
+      >
+        ✓
+      </span>
+      {text}
+    </div>
+  )
+}
+
+function ResultRow({
+  label,
+  value,
+  accent,
+  big,
+}: {
+  label: string
+  value: string
+  accent?: boolean
+  big?: boolean
+}) {
   return (
     <div>
-      <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+      <div
+        className="mb-1.5 text-[10px] font-semibold uppercase tracking-[1.5px]"
+        style={{ color: 'var(--subtitle-text)' }}
+      >
         {label}
       </div>
-      <div className="text-sm font-semibold">{value}</div>
+      <div
+        className="font-bold"
+        style={{
+          color: accent ? 'var(--primary-orange)' : 'var(--dark-charcoal)',
+          fontSize: big ? '24px' : '16px',
+          letterSpacing: big ? '-0.5px' : '-0.2px',
+          fontStyle: accent && big ? 'italic' : 'normal',
+        }}
+      >
+        {value}
+      </div>
     </div>
   )
 }
 
-function BulletItem({ done, text }: { done: boolean; text: string }) {
+function CheckBullet({ done, text }: { done: boolean; text: string }) {
   return (
-    <div className="flex items-center gap-2 text-xs">
+    <div className="flex items-center gap-2.5">
       <span
-        className={cn(
-          'flex h-4 w-4 items-center justify-center rounded-full',
-          done ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground',
-        )}
+        className="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center text-[12px] font-bold text-white"
+        style={{ background: done ? 'var(--green)' : 'var(--hairline-strong, #e4dfd6)' }}
       >
-        {done && <Check className="h-2.5 w-2.5" />}
+        {done ? '✓' : ''}
       </span>
-      <span className={done ? 'text-foreground' : 'text-muted-foreground'}>{text}</span>
+      <span
+        className="text-[13px]"
+        style={{ color: done ? 'var(--dark-charcoal)' : 'var(--subtitle-text)' }}
+      >
+        {text}
+      </span>
     </div>
   )
 }
