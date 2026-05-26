@@ -45,6 +45,7 @@
 
   /* Dropzone (sharp · 4px orange border-top · ghost) */
   .dropzone {
+    display: block;                   /* ← <label> 기본 inline 이라서 레이아웃 깨졌던 버그 fix */
     background: var(--white);
     border-top: 4px solid var(--primary-orange);
     padding: 80px 32px;
@@ -54,6 +55,10 @@
     position: relative;
     box-shadow: 0 1px 0 var(--hairline);
     margin-bottom: 2px;
+  }
+  .dropzone__icon-wrap {
+    display: flex; justify-content: center;
+    margin-bottom: 24px;
   }
   .dropzone:hover {
     background: var(--light-beige);
@@ -65,8 +70,6 @@
     width: 64px; height: 64px;
     background: var(--primary-orange);
     color: var(--white);
-    font-size: 32px;
-    margin-bottom: 24px;
   }
   .dropzone__main {
     font-size: 28px; font-weight: 700;
@@ -255,7 +258,9 @@
 
       <!-- Dropzone -->
       <label class="dropzone">
-        <div class="dropzone__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="dropzone__icon-wrap">
+          <div class="dropzone__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        </div>
         <div class="dropzone__main">RFP 파일을 드래그 & 드롭</div>
         <div class="dropzone__hint">또는 영역을 클릭해서 선택 · 최대 20MB</div>
         <div class="dropzone__formats">
