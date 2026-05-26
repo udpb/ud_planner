@@ -24,6 +24,7 @@ import {
   type BudgetItem,
   type ProposalSectionRef,
 } from '@/components/stages/S4Workspace'
+import { S5Summary } from '@/components/stages/S5Summary'
 
 export interface V2ShellProps {
   projectId: string
@@ -55,6 +56,12 @@ export interface V2ShellProps {
     marginPct?: number | null
   }
   s4Proposal: { sections: ProposalSectionRef[] }
+  /** S5 데이터 */
+  s5InspectorScore: number
+  s5SocialValueKrw: number | null
+  s5BeneficiaryCount: number | null
+  s5ImpactBreakdown: { label: string; valueKrw: number }[]
+  s5IsApproved: boolean
 }
 
 export function V2Shell({
@@ -74,11 +81,26 @@ export function V2Shell({
   s4Coaches,
   s4Budget,
   s4Proposal,
+  s5InspectorScore,
+  s5SocialValueKrw,
+  s5BeneficiaryCount,
+  s5ImpactBreakdown,
+  s5IsApproved,
 }: V2ShellProps) {
   const router = useRouter()
   const [brainOpen, setBrainOpen] = useState(false)
   const [activeStage, setActiveStage] = useState<StageId>(initialStage)
   const [, startTransition] = useTransition()
+
+  async function handleApprove() {
+    const res = await fetch(`/api/projects/${projectId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'SUBMITTED' }),
+    })
+    if (!res.ok) throw new Error(`승인 실패: HTTP ${res.status}`)
+    startTransition(() => router.refresh())
+  }
 
   async function handleAnalyze({ file, text }: { file?: File; text?: string }) {
     if (file) {
@@ -239,7 +261,25 @@ export function V2Shell({
             onProceedToS5={() => setActiveStage('S5')}
           />
         )}
-        {activeStage === 'S5' && <StagePlaceholder stage="S5" label="최종 승인" phase="F" />}
+        {activeStage === 'S5' && (
+          <S5Summary
+            projectId={projectId}
+            proposalCompleteCount={
+              s4Proposal.sections.filter((s) => s.status === 'complete').length
+            }
+            proposalTotal={s4Proposal.sections.length || 7}
+            inspectorScore={s5InspectorScore}
+            marginPct={s4Budget.marginPct ?? null}
+            socialValueKrw={s5SocialValueKrw}
+            directBeneficiaries={s5BeneficiaryCount}
+            indirectBeneficiaries={null}
+            roiPct={null}
+            impactBreakdown={s5ImpactBreakdown}
+            isApproved={s5IsApproved}
+            onApprove={handleApprove}
+            onBackToS4={() => setActiveStage('S4')}
+          />
+        )}
       </main>
 
       {/* Brain Dock */}

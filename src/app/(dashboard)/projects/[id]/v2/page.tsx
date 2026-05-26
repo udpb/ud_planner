@@ -115,6 +115,13 @@ export default async function ProjectV2Page({
         select: { id: true, sectionNo: true, title: true, isApproved: true },
         orderBy: { sectionNo: 'asc' },
       },
+      impactForecast: {
+        select: {
+          totalSocialValue: true,
+          beneficiaryCount: true,
+          breakdownJson: true,
+        },
+      },
       status: true,
     },
   })
@@ -182,6 +189,27 @@ export default async function ProjectV2Page({
       status: s.isApproved ? ('complete' as const) : ('pending' as const),
     })),
   }
+
+  // S5 데이터
+  const s5InspectorScore = isReviewed ? 86 : hasDraft ? 78 : 0 // mock — 실 Inspector 호출은 후속
+  const s5SocialValue = project.impactForecast?.totalSocialValue
+    ? Number(project.impactForecast.totalSocialValue)
+    : null
+  type ImpactBreakdownEntry = {
+    categoryName?: string | null
+    categoryId?: string | null
+    value?: number | null
+    combinedProxyValue?: number | null
+  }
+  const s5ImpactBreakdown = Array.isArray(project.impactForecast?.breakdownJson)
+    ? (project.impactForecast!.breakdownJson as ImpactBreakdownEntry[])
+        .slice(0, 3)
+        .map((b) => ({
+          label: b.categoryName ?? b.categoryId ?? '카테고리',
+          valueKrw: Number(b.value ?? b.combinedProxyValue ?? 0),
+        }))
+        .filter((b) => b.valueKrw > 0)
+    : []
 
   const stages = [
     { id: 'S1' as const, status: hasRfp ? ('done' as const) : ('active' as const) },
@@ -264,6 +292,11 @@ export default async function ProjectV2Page({
       s4Coaches={s4Coaches}
       s4Budget={s4Budget}
       s4Proposal={s4Proposal}
+      s5InspectorScore={s5InspectorScore}
+      s5SocialValueKrw={s5SocialValue}
+      s5BeneficiaryCount={project.impactForecast?.beneficiaryCount ?? null}
+      s5ImpactBreakdown={s5ImpactBreakdown}
+      s5IsApproved={isApproved}
     />
   )
 }
