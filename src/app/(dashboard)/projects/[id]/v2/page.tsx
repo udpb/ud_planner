@@ -75,10 +75,46 @@ export default async function ProjectV2Page({
       logicModel: true,
       programProfile: true,
       expressDraft: true,
-      curriculum: { select: { id: true } },
-      coachAssignments: { select: { id: true } },
-      budget: { select: { id: true } },
-      proposalSections: { select: { id: true } },
+      curriculum: {
+        select: {
+          id: true,
+          sessionNo: true,
+          title: true,
+          track: true,
+          durationHours: true,
+          module: { select: { name: true } },
+        },
+        orderBy: { sessionNo: 'asc' },
+      },
+      coachAssignments: {
+        select: {
+          id: true,
+          role: true,
+          totalFee: true,
+          sessions: true,
+          coach: { select: { name: true } },
+        },
+      },
+      budget: {
+        select: {
+          id: true,
+          pcTotal: true,
+          acTotal: true,
+          margin: true,
+          marginRate: true,
+          items: {
+            select: {
+              id: true,
+              category: true,
+              amount: true,
+            },
+          },
+        },
+      },
+      proposalSections: {
+        select: { id: true, sectionNo: true, title: true, isApproved: true },
+        orderBy: { sectionNo: 'asc' },
+      },
       status: true,
     },
   })
@@ -96,6 +132,56 @@ export default async function ProjectV2Page({
     project.coachAssignments.length > 0 ||
     !!project.budget
   const isApproved = project.status === 'SUBMITTED'
+
+  // S4 데이터 변환 (S4Workspace props 형태로)
+  const s4Curriculum = project.curriculum.map((c) => ({
+    week: c.sessionNo,
+    name: c.title,
+    description: c.module?.name,
+    type:
+      c.track === 'action'
+        ? ('action' as const)
+        : c.track === 'lecture'
+          ? ('lecture' as const)
+          : ('theory' as const),
+    duration: `${c.durationHours ?? 0}h`,
+    instructor: undefined,
+  }))
+  const s4Coaches = project.coachAssignments.map((c) => ({
+    id: c.id,
+    name: c.coach?.name ?? '—',
+    role:
+      c.role === 'MAIN_COACH'
+        ? ('메인' as const)
+        : c.role === 'SPECIAL_LECTURER' || c.role === 'LECTURER'
+          ? ('특강' as const)
+          : ('보조' as const),
+    feeKrw: c.totalFee ?? null,
+    modulesAssigned: c.sessions ?? 0,
+  }))
+  const s4Budget = {
+    totalKrw: project.budget?.acTotal ?? project.totalBudgetVat ?? 0,
+    items:
+      project.budget?.items.reduce<{ category: string; amountKrw: number }[]>(
+        (acc, item) => {
+          const existing = acc.find((a) => a.category === item.category)
+          if (existing) existing.amountKrw += item.amount
+          else acc.push({ category: item.category, amountKrw: item.amount })
+          return acc
+        },
+        [],
+      ) ?? [],
+    marginPct: project.budget?.marginRate
+      ? project.budget.marginRate * 100
+      : null,
+  }
+  const s4Proposal = {
+    sections: project.proposalSections.map((s) => ({
+      num: String(s.sectionNo).padStart(2, '0'),
+      title: s.title,
+      status: s.isApproved ? ('complete' as const) : ('pending' as const),
+    })),
+  }
 
   const stages = [
     { id: 'S1' as const, status: hasRfp ? ('done' as const) : ('active' as const) },
@@ -174,6 +260,10 @@ export default async function ProjectV2Page({
       analysis={analysis}
       slotsFilled={slotsFilled}
       slotsTotal={slotsTotal}
+      s4Curriculum={s4Curriculum}
+      s4Coaches={s4Coaches}
+      s4Budget={s4Budget}
+      s4Proposal={s4Proposal}
     />
   )
 }
