@@ -1,69 +1,93 @@
 'use client'
 /**
- * NowBar — UX v2 (ADR-018)
+ * NowBar — UX v2 (ADR-018 · mockup _shared.css 1:1)
  *
- * 64px sticky bottom. 단일 다음 액션 CTA. Stage 전환의 단일 진실.
+ * 72px sticky bottom · 다크 charcoal · border-top 3px orange.
  *
  * 영역:
- *   좌: 💡 다음 액션 설명 + Stage 컨텍스트
- *   우: Primary CTA (큰 버튼) + (옵션) Secondary action
+ *   좌: orange icon-box (40×40) + 컨텍스트 라벨 + 메시지 + hint
+ *   우: primary button (sharp · big orange shadow) + (옵션) ghost light
  *
- * Stage 자동 전환: 이 NowBar 의 CTA 가 stage 완료 → 다음 stage 로 전환.
+ * Mockup 참조: /public/mockups/v2/_shared.css `.nowbar`
  */
-
-import { ArrowRight, Sparkles } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 export interface NowBarAction {
   label: string
   onClick?: () => void
   href?: string
   variant?: 'primary' | 'secondary'
-  icon?: React.ReactNode
-  /** ETA 예: "~30초" */
+  /** ETA 라벨 — "~30초" 등 */
   eta?: string
   disabled?: boolean
 }
 
 export interface NowBarProps {
-  /** 컨텍스트 라벨 — "S2 1차본 작성 중" 등 */
+  /** UPPERCASE 컨텍스트 — "Next · Stage 01" 등 */
   context?: string
-  /** 메인 문구 — "다음: Before/After 채우기" 등 */
+  /** 메인 문구 */
   message: string
+  /** 보조 hint */
+  hint?: string
   /** 1~2 액션 */
   actions: NowBarAction[]
-  /** 좌측 보조 메시지 (옵션) — 진행률 등 */
-  hint?: string
 }
 
-export function NowBar({ context, message, actions, hint }: NowBarProps) {
+export function NowBar({ context, message, hint, actions }: NowBarProps) {
   return (
-    <div className="sticky bottom-0 z-30 border-t bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-4 px-4">
-        {/* 좌측 — 컨텍스트 + 메시지 */}
-        <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <div className="min-w-0">
-            {context && (
-              <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                {context}
-              </div>
-            )}
-            <div className="truncate text-sm font-medium text-foreground">{message}</div>
-            {hint && (
-              <div className="truncate text-[10px] text-muted-foreground">{hint}</div>
-            )}
-          </div>
-        </div>
+    <div
+      className="sticky bottom-0 z-30 flex h-[72px] items-center gap-5 px-8 text-white"
+      style={{
+        background: 'var(--dark-charcoal)',
+        borderTop: '3px solid var(--action-orange)',
+      }}
+    >
+      {/* icon box (orange · sharp · 40×40) */}
+      <div
+        className="flex h-10 w-10 flex-shrink-0 items-center justify-center text-white"
+        style={{ background: 'var(--primary-orange)' }}
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </div>
 
-        {/* 우측 — 액션 1~2개 */}
-        <div className="flex shrink-0 items-center gap-2">
-          {actions.map((a, i) => (
-            <ActionButton key={i} action={a} />
-          ))}
+      {/* 좌측 text block */}
+      <div className="min-w-0 flex-1">
+        {context && (
+          <div
+            className="text-[9px] font-semibold uppercase tracking-[1.5px]"
+            style={{ color: 'var(--action-orange)' }}
+          >
+            {context}
+          </div>
+        )}
+        <div className="mt-0.5 truncate text-[15px] font-semibold tracking-[-0.2px] text-white">
+          {message}
         </div>
+        {hint && (
+          <div
+            className="mt-0.5 truncate text-[11px]"
+            style={{ color: 'var(--warm-gray)' }}
+          >
+            {hint}
+          </div>
+        )}
+      </div>
+
+      {/* 우측 actions */}
+      <div className="flex flex-shrink-0 items-center gap-2">
+        {actions.map((a, i) => (
+          <ActionButton key={i} action={a} />
+        ))}
       </div>
     </div>
   )
@@ -71,38 +95,69 @@ export function NowBar({ context, message, actions, hint }: NowBarProps) {
 
 function ActionButton({ action }: { action: NowBarAction }) {
   const isPrimary = action.variant !== 'secondary'
-  const baseClass = cn(
-    'inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed',
-    isPrimary
-      ? 'bg-primary text-white hover:bg-primary/90 shadow-sm'
-      : 'border bg-card text-foreground hover:bg-muted',
-  )
+  const isDisabled = action.disabled
+
+  // primary 스타일 (mockup .btn-primary)
+  const primaryStyle: React.CSSProperties = isDisabled
+    ? {
+        background: 'transparent',
+        color: 'var(--warm-gray)',
+        border: '1px solid rgba(216,212,215,.35)',
+        boxShadow: 'none',
+      }
+    : {
+        background: 'var(--primary-orange)',
+        color: '#ffffff',
+        boxShadow: '0 4px 12px rgba(232,84,26,.25)',
+      }
+
+  // secondary (.btn-ghost-light)
+  const secondaryStyle: React.CSSProperties = {
+    background: 'transparent',
+    color: 'var(--warm-gray)',
+    border: '1px solid rgba(255,255,255,.15)',
+  }
+
   const content = (
     <>
-      {action.icon}
-      <span>{action.label}</span>
+      <span className="text-[13px] font-semibold tracking-[0.3px]">{action.label}</span>
       {action.eta && (
         <span
-          className={cn(
-            'rounded px-1.5 py-0.5 text-[9px] font-normal',
-            isPrimary ? 'bg-white/20' : 'bg-muted',
-          )}
+          className="px-[7px] py-[3px] text-[10px] font-medium tracking-[0.5px]"
+          style={{
+            background: isPrimary && !isDisabled ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.05)',
+          }}
         >
           {action.eta}
         </span>
       )}
-      {isPrimary && <ArrowRight className="h-3.5 w-3.5" />}
+      {isPrimary && !isDisabled && <span className="text-[16px] leading-none">→</span>}
     </>
   )
-  if (action.href) {
+
+  const cls = isDisabled
+    ? 'cursor-not-allowed'
+    : 'transition-all duration-200 hover:-translate-y-0.5'
+
+  if (action.href && !isDisabled) {
     return (
-      <a href={action.href} className={baseClass}>
+      <a
+        href={action.href}
+        className={`inline-flex h-11 items-center gap-2.5 px-[22px] ${cls}`}
+        style={isPrimary ? primaryStyle : secondaryStyle}
+      >
         {content}
       </a>
     )
   }
+
   return (
-    <button onClick={action.onClick} disabled={action.disabled} className={baseClass}>
+    <button
+      onClick={action.onClick}
+      disabled={isDisabled}
+      className={`inline-flex h-11 items-center gap-2.5 px-[22px] ${cls}`}
+      style={isPrimary ? primaryStyle : secondaryStyle}
+    >
       {content}
     </button>
   )
