@@ -91,7 +91,7 @@ export function S4Workspace({
   }
 
   return (
-    <div className="mx-auto max-w-[1280px] px-6 py-6">
+    <div className="mx-auto max-w-[1440px] px-8 py-6">
       {/* 4 tabs */}
       <div
         className="mb-5 flex gap-0 bg-white"
@@ -111,7 +111,7 @@ export function S4Workspace({
       {/* Layout — main + stats */}
       <div
         className="grid"
-        style={{ gridTemplateColumns: '1fr 280px', gap: 20 }}
+        style={{ gridTemplateColumns: '1fr 320px', gap: 24 }}
       >
         {/* LEFT main */}
         <div>

@@ -168,7 +168,7 @@ export function S3Checklist({
   }
 
   return (
-    <div className="mx-auto max-w-[1200px] px-6 py-6">
+    <div className="mx-auto max-w-[1440px] px-8 py-6">
       {/* Status banner — real / fallback / loading */}
       {loading && (
         <div
@@ -224,7 +224,7 @@ export function S3Checklist({
       <div
         className="mb-5 grid"
         style={{
-          gridTemplateColumns: '180px 1fr',
+          gridTemplateColumns: '220px 1fr',
           gap: 2,
           background: 'var(--hairline, #f0ede8)',
         }}
