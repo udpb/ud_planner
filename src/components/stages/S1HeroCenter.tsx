@@ -58,14 +58,14 @@ export function S1HeroCenter({
 
   if (isCompleted) {
     return (
-      <div className="mx-auto max-w-[880px] px-8 pb-20 pt-20">
+      <div className="mx-auto max-w-[780px] px-6 py-8">
         {/* eyebrow */}
         <div
-          className="mb-4 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+          className="mb-2.5 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
           style={{ color: 'var(--primary-orange)' }}
         >
           <span
-            className="h-2 w-2 rounded-full"
+            className="h-1.5 w-1.5 rounded-full"
             style={{ background: 'var(--primary-orange)' }}
           />
           Stage 01 · RFP Analysis · 완료
@@ -73,36 +73,35 @@ export function S1HeroCenter({
 
         {/* title */}
         <h1
-          className="mb-3 font-bold leading-[1.1] tracking-[-1.2px]"
-          style={{
-            color: 'var(--dark-charcoal)',
-            fontSize: 'clamp(28px, 3.5vw, 38px)',
-          }}
+          className="mb-2 text-xl font-bold leading-[1.25] tracking-[-0.3px]"
+          style={{ color: 'var(--dark-charcoal)' }}
         >
           <span style={{ color: 'var(--primary-orange)', fontStyle: 'italic' }}>
             {analysis!.projectName}
           </span>
-          <br />
-          분석 완료 · S2 진입 준비
+          {' — '}분석 완료
         </h1>
+        <p className="mb-6 text-sm" style={{ color: 'var(--subtitle-text)' }}>
+          S2 1차본 작성 단계로 진입할 수 있습니다.
+        </p>
 
         {/* 추출 결과 카드 */}
         <div
-          className="mt-10 bg-white p-8"
-          style={{ borderTop: '4px solid var(--primary-orange)' }}
+          className="bg-white p-5"
+          style={{ borderTop: '3px solid var(--primary-orange)' }}
         >
           <div
-            className="mb-5 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+            className="mb-3 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
             style={{ color: 'var(--primary-orange)' }}
           >
             <span
-              className="h-2 w-2 rounded-full"
+              className="h-1.5 w-1.5 rounded-full"
               style={{ background: 'var(--primary-orange)' }}
             />
             Extracted · Automatic
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <ResultRow label="발주처" value={analysis!.client ?? '—'} />
             <ResultRow
               label="총 예산"
@@ -126,39 +125,38 @@ export function S1HeroCenter({
 
           {/* 자동 처리 결과 */}
           <div
-            className="mt-6 grid gap-3 pt-5 sm:grid-cols-2"
+            className="mt-4 grid gap-2 pt-3 sm:grid-cols-2"
             style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
           >
             <CheckBullet
               done={!!analysis!.hasLogicModel}
-              text="Logic Model 자동 생성 완료"
+              text="Logic Model 자동 생성"
             />
             <CheckBullet
               done={(analysis!.matchedAssetCount ?? 0) > 0}
-              text={`유사 자산 ${analysis!.matchedAssetCount ?? 0}건 자동 매칭`}
+              text={`유사 자산 ${analysis!.matchedAssetCount ?? 0}건 매칭`}
             />
           </div>
         </div>
 
         {/* 진행 CTA */}
-        <div className="mt-10 flex items-center justify-center">
+        <div className="mt-6 flex items-center justify-center">
           <button
             onClick={onProceedToS2}
-            className="inline-flex items-center gap-2.5 px-7 text-[14px] font-semibold tracking-[0.3px] text-white transition-all duration-200 hover:-translate-y-0.5"
+            className="inline-flex h-10 items-center gap-2 px-5 text-sm font-semibold tracking-[0.2px] text-white transition-all duration-200 hover:-translate-y-0.5"
             style={{
-              height: 52,
               background: 'var(--primary-orange)',
-              boxShadow: '0 4px 12px rgba(232,84,26,.25)',
+              boxShadow: '0 3px 10px rgba(232,84,26,.22)',
             }}
           >
             S2 1차본 작성으로
             <span
-              className="px-1.5 py-0.5 text-[10px] font-medium tracking-[0.5px]"
+              className="px-1.5 py-0.5 text-[9px] font-medium tracking-[0.4px]"
               style={{ background: 'rgba(255,255,255,.18)' }}
             >
               ~30분
             </span>
-            <span className="text-[16px] leading-none">→</span>
+            <span className="text-[13px] leading-none">→</span>
           </button>
         </div>
       </div>
@@ -196,29 +194,25 @@ export function S1HeroCenter({
   }
 
   return (
-    <div className="mx-auto max-w-[880px] px-8 py-20">
+    <div className="mx-auto max-w-[780px] px-6 py-10">
       {/* eyebrow ● Stage 01 · RFP Analysis */}
       <div
-        className="mb-4 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+        className="mb-2.5 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         <span
-          className="h-2 w-2 rounded-full"
+          className="h-1.5 w-1.5 rounded-full"
           style={{ background: 'var(--primary-orange)' }}
         />
         Stage 01 · RFP Analysis
       </div>
 
-      {/* big title */}
+      {/* title */}
       <h1
-        className="mb-3 font-bold leading-[1.1] tracking-[-1.2px]"
-        style={{
-          color: 'var(--dark-charcoal)',
-          fontSize: 'clamp(32px, 4.5vw, 48px)',
-        }}
+        className="mb-2 text-2xl font-bold leading-[1.2] tracking-[-0.4px]"
+        style={{ color: 'var(--dark-charcoal)' }}
       >
-        RFP 를 분석해서
-        <br />
+        RFP 를 분석해서{' '}
         <span style={{ color: 'var(--primary-orange)', fontStyle: 'italic' }}>
           기획 1차본
         </span>
@@ -227,12 +221,11 @@ export function S1HeroCenter({
 
       {/* sub copy */}
       <p
-        className="mb-10 max-w-[580px] text-[15px] leading-[1.7]"
+        className="mb-6 max-w-[560px] text-sm leading-[1.65]"
         style={{ color: 'var(--subtitle-text)' }}
       >
-        PDF · DOCX · HWP 파일을 업로드하면 AI 가 ~30 초 안에 사업명 · 발주처 · 예산 ·
-        평가배점 · 키워드를 자동 추출하고 Logic Model + Brain 매칭까지 한 번에
-        처리합니다.
+        PDF · DOCX · HWP 업로드 시 AI 가 ~30 초 안에 사업명·발주처·예산·평가배점·키워드를 자동 추출하고
+        Logic Model + Brain 매칭까지 한 번에 처리합니다.
       </p>
 
       {/* Dropzone — file mode */}
@@ -249,11 +242,11 @@ export function S1HeroCenter({
             const file = e.dataTransfer.files[0]
             if (file) handleFile(file)
           }}
-          className="relative block cursor-pointer bg-white px-8 py-20 text-center transition-all duration-200 hover:-translate-y-0.5"
+          className="relative block cursor-pointer bg-white px-6 py-10 text-center transition-all duration-200 hover:-translate-y-0.5"
           style={{
-            borderTop: '4px solid var(--primary-orange)',
+            borderTop: '3px solid var(--primary-orange)',
             boxShadow: dragOver
-              ? '0 12px 32px rgba(0,0,0,.12)'
+              ? '0 10px 24px rgba(0,0,0,.10)'
               : '0 1px 0 var(--hairline, #f0ede8)',
             background: dragOver ? 'var(--light-beige)' : '#ffffff',
             transform: dragOver ? 'translateY(-2px)' : 'translateY(0)',
@@ -261,17 +254,17 @@ export function S1HeroCenter({
             cursor: pending ? 'wait' : 'pointer',
           }}
         >
-          <div className="mb-6 flex justify-center">
+          <div className="mb-3.5 flex justify-center">
             <div
-              className="inline-flex h-16 w-16 items-center justify-center text-white"
+              className="inline-flex h-11 w-11 items-center justify-center text-white"
               style={{ background: 'var(--primary-orange)' }}
             >
               {pending ? (
-                <div className="h-7 w-7 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
               ) : (
                 <svg
-                  width="28"
-                  height="28"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -288,26 +281,26 @@ export function S1HeroCenter({
           </div>
 
           <div
-            className="mb-2 text-[28px] font-bold tracking-[-0.5px]"
+            className="mb-1 text-lg font-bold tracking-[-0.3px]"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             {pending ? 'AI 가 RFP 분석 중...' : 'RFP 파일을 드래그 & 드롭'}
           </div>
-          <div className="text-[13px]" style={{ color: 'var(--subtitle-text)' }}>
+          <div className="text-xs" style={{ color: 'var(--subtitle-text)' }}>
             {pending
               ? '~30 초 이내 자동 처리'
-              : '또는 영역을 클릭해서 선택 · 최대 20MB'}
+              : '또는 클릭해서 파일 선택 · 최대 20MB'}
           </div>
 
           {!pending && (
             <div
-              className="mt-6 inline-flex gap-px"
+              className="mt-3.5 inline-flex gap-px"
               style={{ background: 'var(--hairline, #f0ede8)' }}
             >
               {(['PDF', 'DOCX', 'DOC', 'HWP'] as const).map((fmt) => (
                 <span
                   key={fmt}
-                  className="bg-white px-4 py-2 text-[10px] font-bold tracking-[1.5px]"
+                  className="bg-white px-2.5 py-1 text-[9px] font-bold tracking-[1.2px]"
                   style={{ color: 'var(--subtitle-text)' }}
                 >
                   {fmt}
@@ -332,7 +325,7 @@ export function S1HeroCenter({
       {/* or-divider */}
       {!textMode && (
         <div
-          className="my-6 flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[2px]"
+          className="my-4 flex items-center gap-3 text-[9px] font-semibold uppercase tracking-[1.5px]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           <div
@@ -352,13 +345,13 @@ export function S1HeroCenter({
         <button
           onClick={() => setTextMode(true)}
           disabled={pending}
-          className="mb-12 block w-full cursor-pointer bg-white px-8 py-7 text-center transition-all duration-200 hover:-translate-y-0.5"
+          className="mb-6 block w-full cursor-pointer bg-white px-5 py-4 text-center transition-all duration-200 hover:-translate-y-0.5"
           style={{
             borderTop: '2px solid var(--hairline-strong, #e4dfd6)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderTopColor = 'var(--primary-orange)'
-            e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,.06)'
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,.05)'
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderTopColor = 'var(--hairline-strong, #e4dfd6)'
@@ -366,13 +359,13 @@ export function S1HeroCenter({
           }}
         >
           <div
-            className="mb-1.5 text-[11px] font-bold uppercase tracking-[2px]"
+            className="mb-1 text-[10px] font-bold uppercase tracking-[1.5px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
             Paste Text
           </div>
           <div
-            className="text-[16px] font-semibold"
+            className="text-sm font-semibold"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             RFP 본문을 직접 붙여넣기
@@ -382,14 +375,14 @@ export function S1HeroCenter({
 
       {/* textarea mode */}
       {textMode && (
-        <div className="mb-12 space-y-3">
+        <div className="mb-6 space-y-2">
           <div
-            className="bg-white p-6"
-            style={{ borderTop: '4px solid var(--primary-orange)' }}
+            className="bg-white p-4"
+            style={{ borderTop: '3px solid var(--primary-orange)' }}
           >
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-2.5 flex items-center justify-between">
               <div
-                className="text-[10px] font-bold uppercase tracking-[2px]"
+                className="text-[10px] font-bold uppercase tracking-[1.5px]"
                 style={{ color: 'var(--primary-orange)' }}
               >
                 ● Paste RFP Text
@@ -399,7 +392,7 @@ export function S1HeroCenter({
                   setTextMode(false)
                   setError(null)
                 }}
-                className="text-[11px] font-semibold uppercase tracking-[1px]"
+                className="text-[10px] font-semibold uppercase tracking-[1px]"
                 style={{ color: 'var(--subtitle-text)' }}
               >
                 ← 파일 모드
@@ -408,9 +401,9 @@ export function S1HeroCenter({
             <textarea
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
-              rows={12}
+              rows={10}
               placeholder="RFP 본문을 붙여넣어주세요 (최소 200자)"
-              className="w-full resize-y bg-white px-4 py-3 text-[13px] leading-[1.65]"
+              className="w-full resize-y bg-white px-3 py-2 text-xs leading-[1.6]"
               style={{
                 color: 'var(--body-text, #333)',
                 border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -418,9 +411,9 @@ export function S1HeroCenter({
               }}
               disabled={pending}
             />
-            <div className="mt-3 flex items-center justify-between">
+            <div className="mt-2.5 flex items-center justify-between">
               <span
-                className="text-[11px] tabular-nums"
+                className="text-[10px] tabular-nums"
                 style={{ color: 'var(--subtitle-text)' }}
               >
                 {rawText.length} / 최소 200 자
@@ -428,7 +421,7 @@ export function S1HeroCenter({
               <button
                 onClick={handleText}
                 disabled={pending || rawText.length < 200}
-                className="inline-flex h-11 items-center gap-2.5 px-[22px] text-[13px] font-semibold tracking-[0.3px] text-white transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex h-9 items-center gap-2 px-4 text-xs font-semibold tracking-[0.2px] text-white transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
                 style={{
                   background:
                     rawText.length >= 200 && !pending
@@ -436,12 +429,12 @@ export function S1HeroCenter({
                       : 'rgba(0,0,0,.15)',
                   boxShadow:
                     rawText.length >= 200 && !pending
-                      ? '0 4px 12px rgba(232,84,26,.25)'
+                      ? '0 3px 10px rgba(232,84,26,.22)'
                       : 'none',
                 }}
               >
                 {pending ? '분석 중...' : '분석 시작'}
-                {!pending && <span className="text-[16px] leading-none">→</span>}
+                {!pending && <span className="text-[13px] leading-none">→</span>}
               </button>
             </div>
           </div>
@@ -451,7 +444,7 @@ export function S1HeroCenter({
       {/* 에러 표시 */}
       {error && (
         <div
-          className="mb-6 px-4 py-3 text-[12px] font-medium"
+          className="mb-4 px-3 py-2 text-xs font-medium"
           style={{
             color: 'var(--primary-orange)',
             background: 'rgba(232,84,26,.08)',
@@ -464,10 +457,10 @@ export function S1HeroCenter({
 
       {/* After analysis preview — dark section */}
       <div
-        className="relative overflow-hidden p-9 text-white"
+        className="relative overflow-hidden p-5 text-white"
         style={{
           background: 'var(--dark-charcoal)',
-          borderTop: '3px solid var(--action-orange)',
+          borderTop: '2px solid var(--action-orange)',
         }}
       >
         {/* gradient overlay (mockup .after-analysis::before) */}
@@ -480,19 +473,19 @@ export function S1HeroCenter({
         />
 
         <div
-          className="relative mb-3 text-[10px] font-semibold uppercase tracking-[2px]"
+          className="relative mb-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
           style={{ color: 'var(--action-orange)' }}
         >
           <span
-            className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
             style={{ background: 'var(--action-orange)' }}
           />
           After Analysis · Automatic
         </div>
-        <h3 className="relative mb-4 text-[22px] font-bold tracking-[-0.5px]">
+        <h3 className="relative mb-3 text-base font-bold tracking-[-0.3px]">
           분석 완료 후 자동으로 처리되는 것
         </h3>
-        <div className="relative grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="relative grid grid-cols-1 gap-2 sm:grid-cols-2">
           {AFTER_ITEMS.map((text) => (
             <AfterItem key={text} text={text} />
           ))}
@@ -500,7 +493,7 @@ export function S1HeroCenter({
       </div>
 
       <p
-        className="mt-6 text-[10px] uppercase tracking-[1.5px]"
+        className="mt-4 text-[9px] uppercase tracking-[1.2px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         Project · {projectId}
@@ -521,7 +514,7 @@ const AFTER_ITEMS = [
 function AfterItem({ text }: { text: string }) {
   return (
     <div
-      className="relative pl-5 text-[13px] leading-[1.65]"
+      className="relative pl-4 text-xs leading-[1.6]"
       style={{ color: 'var(--warm-gray)' }}
     >
       <span
@@ -549,7 +542,7 @@ function ResultRow({
   return (
     <div>
       <div
-        className="mb-1.5 text-[10px] font-semibold uppercase tracking-[1.5px]"
+        className="mb-1 text-[9px] font-semibold uppercase tracking-[1.2px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         {label}
@@ -558,8 +551,8 @@ function ResultRow({
         className="font-bold"
         style={{
           color: accent ? 'var(--primary-orange)' : 'var(--dark-charcoal)',
-          fontSize: big ? '24px' : '16px',
-          letterSpacing: big ? '-0.5px' : '-0.2px',
+          fontSize: big ? '18px' : '13px',
+          letterSpacing: big ? '-0.3px' : '-0.1px',
           fontStyle: accent && big ? 'italic' : 'normal',
         }}
       >
@@ -571,15 +564,15 @@ function ResultRow({
 
 function CheckBullet({ done, text }: { done: boolean; text: string }) {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-2">
       <span
-        className="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center text-[12px] font-bold text-white"
+        className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center text-[10px] font-bold text-white"
         style={{ background: done ? 'var(--green)' : 'var(--hairline-strong, #e4dfd6)' }}
       >
         {done ? '✓' : ''}
       </span>
       <span
-        className="text-[13px]"
+        className="text-xs"
         style={{ color: done ? 'var(--dark-charcoal)' : 'var(--subtitle-text)' }}
       >
         {text}

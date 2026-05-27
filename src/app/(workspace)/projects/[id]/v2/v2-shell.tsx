@@ -257,7 +257,7 @@ export function V2Shell({
         className="flex-1 overflow-y-auto transition-[margin]"
         style={{
           background: 'var(--light-beige)',
-          marginRight: brainOpen ? 360 : 0,
+          marginRight: brainOpen ? 320 : 0,
           transitionDuration: '200ms',
         }}
       >
@@ -401,9 +401,9 @@ function StagePlaceholder({
   phase: string
 }) {
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-center gap-3 px-4 py-24 text-center">
+    <div className="mx-auto flex max-w-2xl flex-col items-center gap-2.5 px-4 py-16 text-center">
       <div
-        className="px-3 py-1 text-[10px] font-semibold uppercase tracking-[2px]"
+        className="px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[1.5px]"
         style={{
           color: 'var(--primary-orange)',
           border: '1px solid rgba(232,84,26,.3)',
@@ -413,12 +413,12 @@ function StagePlaceholder({
         Phase {phase} · 구현 예정
       </div>
       <h1
-        className="text-[28px] font-bold tracking-[-0.5px]"
+        className="text-xl font-bold tracking-[-0.3px]"
         style={{ color: 'var(--dark-charcoal)' }}
       >
         {stage} · {label}
       </h1>
-      <p className="text-[13px]" style={{ color: 'var(--subtitle-text)' }}>
+      <p className="text-xs" style={{ color: 'var(--subtitle-text)' }}>
         ADR-018 Adaptive Stage Layout · Phase {phase} 진행 중
       </p>
     </div>

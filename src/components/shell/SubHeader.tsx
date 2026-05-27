@@ -43,34 +43,34 @@ export function SubHeader({
 }: SubHeaderProps) {
   return (
     <div
-      className="bg-white px-8 pb-[18px] pt-[22px]"
+      className="bg-white px-5 pb-3 pt-3.5"
       style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
     >
       {/* 상단 */}
-      <div className="mb-3 flex items-start justify-between gap-4">
+      <div className="mb-2.5 flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div
-            className="mb-1.5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[1.5px]"
+            className="mb-1 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[1.2px]"
             style={{ color: 'var(--primary-orange)' }}
           >
             <span
-              className="h-2 w-2 flex-shrink-0 rounded-full"
+              className="h-1.5 w-1.5 flex-shrink-0 rounded-full"
               style={{ background: 'var(--primary-orange)' }}
             />
             {status}
           </div>
           <h1
-            className="max-w-[760px] text-[22px] font-bold leading-[1.25] tracking-[-0.5px]"
+            className="max-w-[760px] text-base font-bold leading-[1.3] tracking-[-0.3px]"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             {title}
           </h1>
         </div>
-        <div className="flex flex-shrink-0 gap-1.5">
+        <div className="flex flex-shrink-0 gap-1">
           {onEdit && (
             <button
               onClick={onEdit}
-              className="h-[34px] bg-white px-3.5 text-[12px] font-semibold uppercase tracking-[0.2px] transition-colors"
+              className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px] transition-colors"
               style={{
                 color: 'var(--body-text, #333)',
                 border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -90,7 +90,7 @@ export function SubHeader({
           {v1Href && (
             <Link
               href={v1Href}
-              className="inline-flex h-[34px] items-center bg-white px-3.5 text-[12px] font-semibold uppercase tracking-[0.2px] transition-colors"
+              className="inline-flex h-7 items-center bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px] transition-colors"
               style={{
                 color: 'var(--body-text, #333)',
                 border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -105,13 +105,13 @@ export function SubHeader({
       {/* 하단 meta-pill row */}
       {meta && (
         <div
-          className="flex flex-wrap items-center pt-3"
+          className="flex flex-wrap items-center pt-2"
           style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
         >
           {meta.channel && (
             <MetaPill first>
               <span
-                className="inline-flex h-[22px] items-center px-2.5 text-[10px] font-bold uppercase tracking-[1.5px]"
+                className="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-[1.2px]"
                 style={{
                   color: 'var(--primary-orange)',
                   border: '1px solid rgba(232,84,26,.3)',
@@ -162,9 +162,9 @@ function MetaPill({
 }) {
   return (
     <div
-      className="flex h-6 items-center gap-1.5 text-[12px]"
+      className="flex h-5 items-center gap-1.5 text-[11px]"
       style={{
-        padding: first ? '0 16px 0 0' : '0 16px',
+        padding: first ? '0 12px 0 0' : '0 12px',
         color: 'var(--subtitle-text)',
         borderRight: '1px solid var(--hairline, #f0ede8)',
       }}
@@ -172,7 +172,7 @@ function MetaPill({
       {children}
       {label && (
         <span
-          className="text-[9px] font-semibold uppercase tracking-[1px]"
+          className="text-[9px] font-semibold uppercase tracking-[0.8px]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           {label}
@@ -183,7 +183,8 @@ function MetaPill({
           className="font-semibold"
           style={{
             color: accent ? 'var(--primary-orange)' : 'var(--body-text)',
-            fontSize: big ? '14px' : '12px',
+            fontSize: big ? '13px' : '11px',
+            fontStyle: big && accent ? 'italic' : 'normal',
           }}
         >
           {value}
