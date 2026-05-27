@@ -74,3 +74,4 @@ guidebook-site/site/
 # Sphere 2 — service account key + 제안서 마스터 시트 + batch result
 .secrets/
 
+.claude/scheduled_tasks.lock
