@@ -43,14 +43,14 @@ export function SubHeader({
 }: SubHeaderProps) {
   return (
     <div
-      className="bg-white px-10 pb-3 pt-3.5"
+      className="bg-white px-10 pb-3.5 pt-4"
       style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
     >
       {/* 상단 */}
-      <div className="mb-2.5 flex items-start justify-between gap-3">
+      <div className="mb-3 flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div
-            className="mb-1 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[1.2px]"
+            className="mb-1.5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[1.4px]"
             style={{ color: 'var(--primary-orange)' }}
           >
             <span
@@ -60,17 +60,17 @@ export function SubHeader({
             {status}
           </div>
           <h1
-            className="max-w-[760px] text-base font-bold leading-[1.3] tracking-[-0.3px]"
+            className="max-w-[900px] text-xl font-bold leading-[1.3] tracking-[-0.4px]"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             {title}
           </h1>
         </div>
-        <div className="flex flex-shrink-0 gap-1">
+        <div className="flex flex-shrink-0 gap-1.5">
           {onEdit && (
             <button
               onClick={onEdit}
-              className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px] transition-colors"
+              className="h-8 bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.3px] transition-colors"
               style={{
                 color: 'var(--body-text, #333)',
                 border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -90,7 +90,7 @@ export function SubHeader({
           {v1Href && (
             <Link
               href={v1Href}
-              className="inline-flex h-7 items-center bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px] transition-colors"
+              className="inline-flex h-8 items-center bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.3px] transition-colors"
               style={{
                 color: 'var(--body-text, #333)',
                 border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -105,13 +105,13 @@ export function SubHeader({
       {/* 하단 meta-pill row */}
       {meta && (
         <div
-          className="flex flex-wrap items-center pt-2"
+          className="flex flex-wrap items-center pt-2.5"
           style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
         >
           {meta.channel && (
             <MetaPill first>
               <span
-                className="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-[1.2px]"
+                className="inline-flex h-[22px] items-center px-2.5 text-[10px] font-bold uppercase tracking-[1.3px]"
                 style={{
                   color: 'var(--primary-orange)',
                   border: '1px solid rgba(232,84,26,.3)',
@@ -128,13 +128,13 @@ export function SubHeader({
           {meta.totalBudget != null && (
             <MetaPill label="예산">
               <span
-                className="text-[13px] font-bold italic tabular-nums"
+                className="text-[15px] font-bold italic tabular-nums"
                 style={{ color: 'var(--primary-orange)' }}
               >
                 {(meta.totalBudget / 1e8).toFixed(2)}
               </span>
               <span
-                className="ml-0.5 text-[9px] font-medium"
+                className="ml-0.5 text-[10px] font-medium"
                 style={{ color: 'var(--subtitle-text)' }}
               >
                 억
@@ -170,16 +170,16 @@ function MetaPill({
 }) {
   return (
     <div
-      className="flex h-5 items-center gap-1.5 text-[11px]"
+      className="flex h-[22px] items-center gap-2 text-[12px]"
       style={{
-        padding: first ? '0 12px 0 0' : '0 12px',
+        padding: first ? '0 14px 0 0' : '0 14px',
         color: 'var(--subtitle-text)',
         borderRight: '1px solid var(--hairline, #f0ede8)',
       }}
     >
       {label && (
         <span
-          className="text-[9px] font-semibold uppercase tracking-[0.8px]"
+          className="text-[10px] font-semibold uppercase tracking-[1px]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           {label}
@@ -190,7 +190,7 @@ function MetaPill({
           className="font-semibold"
           style={{
             color: accent ? 'var(--primary-orange)' : 'var(--body-text)',
-            fontSize: big ? '13px' : '11px',
+            fontSize: big ? '15px' : '12px',
             fontStyle: big && accent ? 'italic' : 'normal',
           }}
         >

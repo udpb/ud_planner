@@ -143,7 +143,7 @@ export function S2ChatCanvas({
 
   return (
     <div
-      className="grid h-[calc(100vh-44px-110px-56px)] grid-cols-2"
+      className="grid h-[calc(100vh-48px-120px-64px)] grid-cols-2"
       style={{ gap: 2, background: 'var(--hairline, #f0ede8)' }}
     >
       {/* LEFT — Chat panel */}

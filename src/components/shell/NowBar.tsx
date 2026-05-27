@@ -35,20 +35,20 @@ export interface NowBarProps {
 export function NowBar({ context, message, hint, actions }: NowBarProps) {
   return (
     <div
-      className="sticky bottom-0 z-30 flex h-[56px] items-center gap-3.5 px-8 text-white"
+      className="sticky bottom-0 z-30 flex h-16 items-center gap-4 px-8 text-white"
       style={{
         background: 'var(--dark-charcoal)',
-        borderTop: '2px solid var(--action-orange)',
+        borderTop: '3px solid var(--action-orange)',
       }}
     >
-      {/* icon box (orange · sharp · 32×32) */}
+      {/* icon box (orange · sharp · 36×36) */}
       <div
-        className="flex h-8 w-8 flex-shrink-0 items-center justify-center text-white"
+        className="flex h-9 w-9 flex-shrink-0 items-center justify-center text-white"
         style={{ background: 'var(--primary-orange)' }}
       >
         <svg
-          width="14"
-          height="14"
+          width="16"
+          height="16"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -64,18 +64,18 @@ export function NowBar({ context, message, hint, actions }: NowBarProps) {
       <div className="min-w-0 flex-1">
         {context && (
           <div
-            className="text-[9px] font-semibold uppercase tracking-[1.2px]"
+            className="text-[10px] font-semibold uppercase tracking-[1.4px]"
             style={{ color: 'var(--action-orange)' }}
           >
             {context}
           </div>
         )}
-        <div className="mt-0.5 truncate text-[13px] font-semibold tracking-[-0.1px] text-white">
+        <div className="mt-0.5 truncate text-[15px] font-semibold tracking-[-0.2px] text-white">
           {message}
         </div>
         {hint && (
           <div
-            className="mt-0.5 truncate text-[10px]"
+            className="mt-0.5 truncate text-[11px]"
             style={{ color: 'var(--warm-gray)' }}
           >
             {hint}
@@ -120,10 +120,10 @@ function ActionButton({ action }: { action: NowBarAction }) {
 
   const content = (
     <>
-      <span className="text-[12px] font-semibold tracking-[0.2px]">{action.label}</span>
+      <span className="text-[13px] font-semibold tracking-[0.2px]">{action.label}</span>
       {action.eta && (
         <span
-          className="px-1.5 py-0.5 text-[9px] font-medium tracking-[0.4px]"
+          className="px-1.5 py-0.5 text-[10px] font-medium tracking-[0.4px]"
           style={{
             background: isPrimary && !isDisabled ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.05)',
           }}
@@ -131,7 +131,7 @@ function ActionButton({ action }: { action: NowBarAction }) {
           {action.eta}
         </span>
       )}
-      {isPrimary && !isDisabled && <span className="text-[13px] leading-none">→</span>}
+      {isPrimary && !isDisabled && <span className="text-[15px] leading-none">→</span>}
     </>
   )
 
@@ -143,7 +143,7 @@ function ActionButton({ action }: { action: NowBarAction }) {
     return (
       <a
         href={action.href}
-        className={`inline-flex h-9 items-center gap-2 px-4 ${cls}`}
+        className={`inline-flex h-10 items-center gap-2 px-5 ${cls}`}
         style={isPrimary ? primaryStyle : secondaryStyle}
       >
         {content}
@@ -155,7 +155,7 @@ function ActionButton({ action }: { action: NowBarAction }) {
     <button
       onClick={action.onClick}
       disabled={isDisabled}
-      className={`inline-flex h-9 items-center gap-2 px-4 ${cls}`}
+      className={`inline-flex h-10 items-center gap-2 px-5 ${cls}`}
       style={isPrimary ? primaryStyle : secondaryStyle}
     >
       {content}

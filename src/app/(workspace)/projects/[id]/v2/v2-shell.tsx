@@ -257,7 +257,7 @@ export function V2Shell({
         className="flex-1 overflow-y-auto transition-[margin]"
         style={{
           background: 'var(--light-beige)',
-          marginRight: brainOpen ? 320 : 0,
+          marginRight: brainOpen ? 360 : 0,
           transitionDuration: '200ms',
         }}
       >

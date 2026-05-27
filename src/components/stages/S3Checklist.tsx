@@ -168,7 +168,10 @@ export function S3Checklist({
   }
 
   return (
-    <div className="mx-auto max-w-[1760px] px-10 py-6">
+    <div
+      className="mx-auto px-10 py-7"
+      style={{ width: 'min(95vw, 1900px)' }}
+    >
       {/* Status banner — real / fallback / loading */}
       {loading && (
         <div
@@ -222,44 +225,44 @@ export function S3Checklist({
 
       {/* Score banner */}
       <div
-        className="mb-5 grid"
+        className="mb-6 grid"
         style={{
-          gridTemplateColumns: '220px 1fr',
+          gridTemplateColumns: '260px 1fr',
           gap: 2,
           background: 'var(--hairline, #f0ede8)',
         }}
       >
         {/* Left — orange num */}
         <div
-          className="p-5 text-center text-white"
+          className="p-6 text-center text-white"
           style={{ background: 'var(--primary-orange)' }}
         >
           <div
-            className="mb-1 text-[9px] font-semibold uppercase tracking-[1.5px]"
+            className="mb-2 text-[10px] font-semibold uppercase tracking-[1.8px]"
             style={{ opacity: 0.85 }}
           >
             Inspector Score
           </div>
           <div
-            className="font-bold italic leading-none tracking-[-1px]"
-            style={{ fontSize: '36px' }}
+            className="font-bold italic leading-none tracking-[-1.5px]"
+            style={{ fontSize: '48px' }}
           >
             {overallScore}
             <span
-              className="ml-0.5 text-xs font-medium"
+              className="ml-1 text-sm font-medium"
               style={{ opacity: 0.85 }}
             >
               /100
             </span>
           </div>
-          <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.8px]">
+          <div className="mt-3 text-[11px] font-semibold uppercase tracking-[1px]">
             {isPass ? '✓ 통과' : '✗ 미통과'} (임계 {passThreshold})
           </div>
         </div>
 
         {/* Right — dark info */}
         <div
-          className="relative overflow-hidden p-5 text-white"
+          className="relative overflow-hidden p-6 text-white"
           style={{ background: 'var(--dark-charcoal)' }}
         >
           <div
@@ -270,7 +273,7 @@ export function S3Checklist({
             }}
           />
           <div
-            className="relative mb-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
+            className="relative mb-2.5 text-[10px] font-semibold uppercase tracking-[1.8px]"
             style={{ color: 'var(--action-orange)' }}
           >
             <span
@@ -279,7 +282,7 @@ export function S3Checklist({
             />
             Inspector · 7 Lens · Auto Review
           </div>
-          <h2 className="relative mb-1.5 text-base font-bold tracking-[-0.3px]">
+          <h2 className="relative mb-2 text-lg font-bold tracking-[-0.3px]">
             {isPass
               ? weakCount === 0
                 ? '검수 통과 — 모든 lens 안정'
@@ -287,7 +290,7 @@ export function S3Checklist({
               : '검수 미통과 — 보강 필요'}
           </h2>
           <p
-            className="relative max-w-[500px] text-xs leading-[1.6]"
+            className="relative max-w-[560px] text-[13px] leading-[1.65]"
             style={{ color: 'var(--warm-gray)' }}
           >
             {lenses.length} lens 중 {passCount} lens 통과
@@ -312,7 +315,7 @@ export function S3Checklist({
 
       {/* 7 Lens grid */}
       <div
-        className="mb-2 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
+        className="mb-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[1.8px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         <span
@@ -323,7 +326,7 @@ export function S3Checklist({
       </div>
 
       <div
-        className="mb-5 grid"
+        className="mb-6 grid"
         style={{
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 2,
@@ -338,16 +341,16 @@ export function S3Checklist({
       {/* Recommend */}
       {recommendedAssets.length > 0 && (
         <div
-          className="bg-white p-5"
+          className="bg-white p-7"
           style={{ borderTop: '3px solid var(--action-orange)' }}
         >
-          <div className="mb-1 flex items-center justify-between">
+          <div className="mb-1.5 flex items-center justify-between">
             <div
-              className="flex items-center gap-2.5 text-sm font-bold tracking-[-0.2px]"
+              className="flex items-center gap-3 text-base font-bold tracking-[-0.2px]"
               style={{ color: 'var(--dark-charcoal)' }}
             >
               <span
-                className="inline-flex h-5 w-5 items-center justify-center text-xs font-bold italic text-white"
+                className="inline-flex h-6 w-6 items-center justify-center text-sm font-bold italic text-white"
                 style={{ background: 'var(--action-orange)' }}
               >
                 !
@@ -355,14 +358,14 @@ export function S3Checklist({
               차별화 보강 — Brain 자산 추천 {recommendedAssets.length}건
             </div>
             <div
-              className="text-[10px] font-bold uppercase tracking-[1.2px]"
+              className="text-[11px] font-bold uppercase tracking-[1.4px]"
               style={{ color: 'var(--action-orange)' }}
             >
               수락 시 +{estimatedBoost} 점
             </div>
           </div>
           <p
-            className="mb-3.5 text-xs"
+            className="mb-5 text-[13px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
             Brain matching score 0.84+ · 클릭으로 선택 → inline diff 미리보기 → 수락 시
@@ -502,28 +505,28 @@ function LensCard({ lens }: { lens: LensScore }) {
 
   return (
     <div
-      className="cursor-pointer bg-white px-3.5 py-3 transition-transform duration-150 hover:-translate-y-0.5"
+      className="cursor-pointer bg-white px-4 py-4 transition-transform duration-150 hover:-translate-y-0.5"
       style={{
         borderTop: `3px solid ${borderColor}`,
         opacity: isUnknown ? 0.5 : 1,
       }}
     >
-      <div className="mb-1.5 flex items-baseline justify-between">
+      <div className="mb-2 flex items-baseline justify-between">
         <span
-          className="text-[10px] font-bold uppercase tracking-[0.8px]"
+          className="text-[11px] font-bold uppercase tracking-[1px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           {lens.name}
         </span>
         <span
-          className="text-lg font-bold italic leading-none tabular-nums"
+          className="text-2xl font-bold italic leading-none tabular-nums"
           style={{ color: scoreColor }}
         >
           {lens.score != null ? lens.score : '—'}
         </span>
       </div>
       <div
-        className="text-[10px] leading-[1.4]"
+        className="text-[11px] leading-[1.45]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         {lens.hint}
@@ -544,15 +547,15 @@ function AssetCard({
   return (
     <div
       onClick={onToggle}
-      className="grid cursor-pointer items-center gap-3 px-3.5 py-3 transition-colors"
+      className="grid cursor-pointer items-center gap-4 px-5 py-4 transition-colors"
       style={{
         background: selected ? 'rgba(232,84,26,.06)' : '#ffffff',
-        gridTemplateColumns: '20px 1fr auto',
+        gridTemplateColumns: '24px 1fr auto',
       }}
     >
       {/* check */}
       <div
-        className="relative h-4 w-4"
+        className="relative h-5 w-5"
         style={{
           background: selected ? 'var(--primary-orange)' : '#ffffff',
           border: selected
@@ -562,7 +565,7 @@ function AssetCard({
       >
         {selected && (
           <span
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold text-white"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-white"
             style={{ lineHeight: 1 }}
           >
             ✓
@@ -573,13 +576,13 @@ function AssetCard({
       {/* info */}
       <div className="min-w-0">
         <div
-          className="mb-0.5 text-xs font-bold tracking-[-0.1px]"
+          className="mb-1 text-[14px] font-bold tracking-[-0.1px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           {asset.name}
         </div>
         <div
-          className="line-clamp-2 text-[11px] leading-[1.45]"
+          className="line-clamp-2 text-[12px] leading-[1.55]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           "{asset.snippet}"
@@ -587,9 +590,9 @@ function AssetCard({
       </div>
 
       {/* meta */}
-      <div className="flex flex-shrink-0 items-center gap-2">
+      <div className="flex flex-shrink-0 items-center gap-2.5">
         <span
-          className="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[1px]"
+          className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-[1.1px]"
           style={{
             background:
               asset.tier === 'high'
@@ -601,12 +604,12 @@ function AssetCard({
           {asset.tier}
         </span>
         <span
-          className="text-[10px] font-semibold"
+          className="text-[11px] font-semibold"
           style={{ color: 'var(--subtitle-text)' }}
         >
           인용{' '}
           <strong
-            className="text-xs italic"
+            className="text-sm italic"
             style={{ color: 'var(--primary-orange)' }}
           >
             {asset.citationCount}

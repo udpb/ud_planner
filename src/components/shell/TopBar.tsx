@@ -47,7 +47,7 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header
-      className="sticky top-0 z-30 flex h-11 items-center gap-4 px-8 text-white"
+      className="sticky top-0 z-30 flex h-12 items-center gap-5 px-8 text-white"
       style={{
         background: 'var(--dark-charcoal)',
         borderBottom: '1px solid rgba(255,255,255,.08)',
@@ -56,14 +56,14 @@ export function TopBar({
       {/* 좌: italic logo */}
       <Link
         href="/"
-        className="text-sm font-bold italic tracking-tight text-white"
+        className="text-base font-bold italic tracking-tight text-white"
       >
         UD·Planner
       </Link>
 
       {/* v2 badge */}
       <span
-        className="px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[1.2px]"
+        className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[1.3px]"
         style={{
           color: 'var(--action-orange)',
           border: '1px solid rgba(255,130,4,.4)',
@@ -76,13 +76,13 @@ export function TopBar({
       {projectSwitchHref ? (
         <Link
           href={projectSwitchHref}
-          className="flex max-w-[240px] items-center gap-1 truncate px-2 py-1 text-xs font-medium text-white/85 transition-colors hover:text-[var(--action-orange)]"
+          className="flex max-w-[280px] items-center gap-1 truncate px-2 py-1 text-[13px] font-medium text-white/85 transition-colors hover:text-[var(--action-orange)]"
         >
           <span className="truncate">← {projectName}</span>
-          <span className="ml-0.5 text-[9px] opacity-55">▾</span>
+          <span className="ml-0.5 text-[10px] opacity-55">▾</span>
         </Link>
       ) : (
-        <span className="max-w-[240px] truncate text-xs font-medium text-white/85">
+        <span className="max-w-[280px] truncate text-[13px] font-medium text-white/85">
           {projectName}
         </span>
       )}
@@ -101,10 +101,10 @@ export function TopBar({
       </nav>
 
       {/* 우: Brain + avatar */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         <button
           onClick={onBrainToggle}
-          className="inline-flex h-7 items-center gap-1 px-2.5 text-[10px] font-semibold uppercase tracking-[0.4px] transition-colors"
+          className="inline-flex h-8 items-center gap-1.5 px-3 text-[11px] font-semibold uppercase tracking-[0.5px] transition-colors"
           style={{
             color: brainOpen ? 'var(--dark-charcoal)' : 'var(--action-orange)',
             background: brainOpen ? 'var(--action-orange)' : 'transparent',
@@ -112,10 +112,10 @@ export function TopBar({
           }}
           title="Brain — 자산 매칭 · 유사 사업 · AI 채팅"
         >
-          Brain
+          🧠 Brain
         </button>
         <div
-          className="flex h-7 w-7 items-center justify-center text-[10px] font-bold tracking-[0.5px] text-white"
+          className="flex h-8 w-8 items-center justify-center text-[11px] font-bold tracking-[0.5px] text-white"
           style={{ background: 'rgba(255,255,255,.08)' }}
           title={userInitials}
         >
@@ -177,14 +177,14 @@ function StageStep({
       }}
     >
       <div
-        className="mb-0.5 text-[8px] font-semibold uppercase tracking-[1.1px]"
+        className="mb-0.5 text-[9px] font-semibold uppercase tracking-[1.2px]"
         style={{ color: idColor }}
       >
         Stage {idNum}
         {isDone && ' ✓'}
       </div>
       <div
-        className="text-[11px] font-semibold tracking-[-0.1px]"
+        className="text-[12px] font-semibold tracking-[-0.1px]"
         style={{ color: nameColor }}
       >
         {STAGE_NAME[id]}
