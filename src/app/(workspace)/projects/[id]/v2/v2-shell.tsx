@@ -283,6 +283,7 @@ export function V2Shell({
             lenses={MOCK_S3.lenses}
             recommendedAssets={MOCK_S3.assets}
             onProceedToS4={() => setActiveStage('S4')}
+            draftReady={slotsFilled >= 10}
           />
         )}
         {activeStage === 'S4' && (

@@ -4,19 +4,24 @@
  *
  * Stage 03 · 검수 · Inspector 7-lens + asset 추천 + inline diff.
  *
- * 레이아웃:
- *   - score-banner (240px orange num + 1fr dark info)
- *   - 7 lens grid (4col · 2px gap · border-top color by status)
- *   - recommend block (border-top 4px action-orange · asset list)
- *   - inline diff (dark-charcoal · monospace · + add / context)
- *
- * Wire up 상태:
- *   - Inspector lens 점수: mock (Phase D 후속 PR 에서 real inspector 호출 예정)
- *   - Brain asset 추천: real (/api/v1/inference/match-tuple — props 로 받음)
- *   - inline diff: mock (자산 수락 시 diff 생성은 후속)
+ * Wire up 상태 (Phase G — 2026-05-27):
+ *   - Inspector lens 점수: ✅ real /api/express/inspect 호출
+ *   - Brain asset 추천: ✅ real (recommendations from same endpoint)
+ *   - inline diff: 자산 선택 시 클라이언트 측 mock preview (자산 인용 자동 본문 반영은 후속)
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+/** Inspector lens slug → 한국어 라벨 */
+const LENS_LABELS: Record<string, string> = {
+  market: '시장 분석',
+  statistics: '통계 인용',
+  problem: '문제 정의',
+  'before-after': 'Before/After',
+  'key-messages': '핵심 메시지',
+  differentiators: '차별화',
+  tone: '톤·문체',
+}
 
 export type LensStatus = 'pass' | 'weak' | 'unknown'
 
@@ -37,35 +42,121 @@ export interface AssetRow {
 
 export interface S3ChecklistProps {
   projectId: string
-  /** 0~100 인스펙터 종합 점수 */
+  /** Fallback (DB draft 가 없거나 inspector 실패 시 보여줄 기본 점수) */
   overallScore: number
   /** 통과 임계 (기본 75) */
   passThreshold?: number
-  /** 7 lens 점수 (또는 mock) */
+  /** Fallback lens scores (DB draft 가 없거나 inspector 실패 시) */
   lenses: LensScore[]
-  /** Brain 추천 자산 */
+  /** Fallback asset 추천 */
   recommendedAssets: AssetRow[]
   /** 자산 수락 콜백 */
   onAcceptAssets?: (ids: string[]) => Promise<void>
   /** Stage 04 진입 콜백 */
   onProceedToS4?: () => void
+  /** ExpressDraft 가 충분히 채워졌는지 (10+ slots) — true 일 때만 inspector 자동 호출 */
+  draftReady?: boolean
 }
 
 export function S3Checklist({
   projectId,
-  overallScore,
+  overallScore: fallbackScore,
   passThreshold = 75,
-  lenses,
-  recommendedAssets,
+  lenses: fallbackLenses,
+  recommendedAssets: fallbackAssets,
   onAcceptAssets,
   onProceedToS4,
+  draftReady,
 }: S3ChecklistProps) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [realScore, setRealScore] = useState<number | null>(null)
+  const [realLenses, setRealLenses] = useState<LensScore[] | null>(null)
+  const [realAssets, setRealAssets] = useState<AssetRow[] | null>(null)
+  const [fellbackToHeuristic, setFellbackToHeuristic] = useState(false)
+
+  // draftReady 일 때 자동 fetch /api/express/inspect
+  useEffect(() => {
+    if (!draftReady) return
+    let cancelled = false
+    setLoading(true)
+    setError(null)
+    fetch('/api/express/inspect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId }),
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        return res.json() as Promise<{
+          report?: {
+            overallScore: number
+            lensScores: Record<string, number>
+            issues?: { lens: string; issue: string }[]
+          }
+          recommendations?: {
+            assetId: string
+            name: string
+            narrativeSnippet: string
+            score: number
+          }[]
+          fellbackToHeuristic?: boolean
+        }>
+      })
+      .then((data) => {
+        if (cancelled) return
+        if (data.report) {
+          setRealScore(Math.round(data.report.overallScore))
+          // lensScores → LensScore[]
+          const hints: Record<string, string> = {}
+          data.report.issues?.forEach((iss) => {
+            if (!hints[iss.lens]) hints[iss.lens] = iss.issue
+          })
+          const lensArr: LensScore[] = Object.entries(data.report.lensScores).map(
+            ([slug, score]) => ({
+              name: LENS_LABELS[slug] ?? slug,
+              score: Math.round(score),
+              status:
+                score >= 75 ? 'pass' : score >= 0 ? 'weak' : 'unknown',
+              hint: hints[slug] ?? (score >= 75 ? '통과' : '보강 권장'),
+            }),
+          )
+          setRealLenses(lensArr)
+        }
+        if (data.recommendations) {
+          const assetsArr: AssetRow[] = data.recommendations.slice(0, 5).map((r) => ({
+            assetId: r.assetId,
+            name: r.name,
+            snippet: r.narrativeSnippet,
+            tier: r.score >= 0.85 ? 'high' : r.score >= 0.7 ? 'mid' : 'low',
+            citationCount: 0, // recommendations 에는 인용 카운트 없음 — 향후 보강
+          }))
+          setRealAssets(assetsArr)
+        }
+        setFellbackToHeuristic(!!data.fellbackToHeuristic)
+      })
+      .catch((e) => {
+        if (cancelled) return
+        setError(e instanceof Error ? e.message : '검수 호출 실패')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [draftReady, projectId])
+
+  // real 데이터 우선, 없으면 fallback (mock)
+  const overallScore = realScore ?? fallbackScore
+  const lenses = realLenses ?? fallbackLenses
+  const recommendedAssets = realAssets ?? fallbackAssets
 
   const isPass = overallScore >= passThreshold
   const weakCount = lenses.filter((l) => l.status === 'weak').length
   const passCount = lenses.filter((l) => l.status === 'pass').length
-  const estimatedBoost = selected.size * 3 // 임시 — 자산당 3점 가산
+  const estimatedBoost = selected.size * 3 // 자산당 3점 가산 (휴리스틱)
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -78,6 +169,57 @@ export function S3Checklist({
 
   return (
     <div className="mx-auto max-w-[1200px] px-6 py-6">
+      {/* Status banner — real / fallback / loading */}
+      {loading && (
+        <div
+          className="mb-3 flex items-center gap-2 px-3 py-2 text-[11px]"
+          style={{
+            background: 'rgba(232,84,26,.06)',
+            color: 'var(--primary-orange)',
+            border: '1px solid rgba(232,84,26,.25)',
+          }}
+        >
+          <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          AI 검수 진행 중 · 약 30~60초 소요
+        </div>
+      )}
+      {error && !loading && (
+        <div
+          className="mb-3 px-3 py-2 text-[11px]"
+          style={{
+            background: 'rgba(232,84,26,.06)',
+            color: 'var(--primary-orange)',
+            border: '1px solid rgba(232,84,26,.25)',
+          }}
+        >
+          ● 검수 호출 실패 — 기본 값 표시 중 ({error})
+        </div>
+      )}
+      {fellbackToHeuristic && !loading && !error && (
+        <div
+          className="mb-3 px-3 py-2 text-[11px]"
+          style={{
+            background: 'rgba(255,130,4,.06)',
+            color: 'var(--action-orange)',
+            border: '1px solid rgba(255,130,4,.25)',
+          }}
+        >
+          ● AI 검수 실패 → 휴리스틱 fallback 사용 중 · 1차본 보강 후 재시도 권장
+        </div>
+      )}
+      {!draftReady && !loading && (
+        <div
+          className="mb-3 px-3 py-2 text-[11px]"
+          style={{
+            color: 'var(--subtitle-text)',
+            border: '1px dashed var(--hairline-strong, #e4dfd6)',
+            background: '#ffffff',
+          }}
+        >
+          ● 데모 값 표시 중 · S2 슬롯 채우기 완료 후 자동 검수 호출
+        </div>
+      )}
+
       {/* Score banner */}
       <div
         className="mb-5 grid"
