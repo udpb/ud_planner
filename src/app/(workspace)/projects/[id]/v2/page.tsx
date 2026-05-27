@@ -11,6 +11,7 @@ import { prisma } from '@/lib/prisma'
 import { auth } from '@/lib/auth'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import { ExpressDraftSchema, listFilledSlots, ALL_SLOTS } from '@/lib/express/schema'
+import { listActiveCategories } from '@/lib/impact/db'
 import { V2Shell } from './v2-shell'
 
 export const dynamic = 'force-dynamic'
@@ -201,13 +202,31 @@ export default async function ProjectV2Page({
     value?: number | null
     combinedProxyValue?: number | null
   }
+  // categoryId → 친화적 이름 매핑 (impact_categories.name 한국어)
+  const categoryNameMap = new Map<string, string>()
+  if (Array.isArray(project.impactForecast?.breakdownJson)) {
+    try {
+      const cats = await listActiveCategories()
+      cats.forEach((c) => categoryNameMap.set(c.id, c.name))
+    } catch (e) {
+      // impact-measurement DB 미연결 — UUID fallback 유지
+      console.warn('[v2/page] listActiveCategories 실패 (UUID fallback):', e)
+    }
+  }
   const s5ImpactBreakdown = Array.isArray(project.impactForecast?.breakdownJson)
     ? (project.impactForecast!.breakdownJson as ImpactBreakdownEntry[])
+        // value 큰 순 top 3
+        .slice()
+        .sort((a, b) => Number(b.value ?? 0) - Number(a.value ?? 0))
         .slice(0, 3)
-        .map((b) => ({
-          label: b.categoryName ?? b.categoryId ?? '카테고리',
-          valueKrw: Number(b.value ?? b.combinedProxyValue ?? 0),
-        }))
+        .map((b) => {
+          const id = b.categoryId ?? ''
+          const friendly = b.categoryName ?? categoryNameMap.get(id) ?? null
+          return {
+            label: friendly ?? '기타 카테고리',
+            valueKrw: Number(b.value ?? b.combinedProxyValue ?? 0),
+          }
+        })
         .filter((b) => b.valueKrw > 0)
     : []
 

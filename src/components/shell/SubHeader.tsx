@@ -126,12 +126,20 @@ export function SubHeader({
             <MetaPill label="발주처" value={meta.client} />
           )}
           {meta.totalBudget != null && (
-            <MetaPill
-              label="예산"
-              value={`${(meta.totalBudget / 1e8).toFixed(2)}억`}
-              big
-              accent
-            />
+            <MetaPill label="예산">
+              <span
+                className="text-[13px] font-bold italic tabular-nums"
+                style={{ color: 'var(--primary-orange)' }}
+              >
+                {(meta.totalBudget / 1e8).toFixed(2)}
+              </span>
+              <span
+                className="ml-0.5 text-[9px] font-medium"
+                style={{ color: 'var(--subtitle-text)' }}
+              >
+                억
+              </span>
+            </MetaPill>
           )}
           {meta.evalCount != null && (
             <MetaPill label="평가배점" value={`${meta.evalCount}개`} />
@@ -169,7 +177,6 @@ function MetaPill({
         borderRight: '1px solid var(--hairline, #f0ede8)',
       }}
     >
-      {children}
       {label && (
         <span
           className="text-[9px] font-semibold uppercase tracking-[0.8px]"
@@ -190,6 +197,7 @@ function MetaPill({
           {value}
         </span>
       )}
+      {children}
     </div>
   )
 }

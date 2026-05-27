@@ -144,14 +144,14 @@ export function S5Summary({
           Stage 05 · Final Approval
         </div>
         <h1
-          className="relative mb-2 text-xl font-bold leading-[1.25] tracking-[-0.4px]"
+          className="relative mb-2 text-lg font-bold leading-[1.3] tracking-[-0.3px]"
         >
           {isApproved ? (
             <>
               <span style={{ color: 'var(--action-orange)', fontStyle: 'italic' }}>
                 최종 승인
               </span>
-              {' '}완료 — 제출됨
+              {' '}완료 · 제출됨
             </>
           ) : (
             <>
