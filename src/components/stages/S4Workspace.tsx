@@ -91,7 +91,7 @@ export function S4Workspace({
   }
 
   return (
-    <div className="mx-auto max-w-[1440px] px-8 py-6">
+    <div className="mx-auto max-w-[1760px] px-10 py-6">
       {/* 4 tabs */}
       <div
         className="mb-5 flex gap-0 bg-white"

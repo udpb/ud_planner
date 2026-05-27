@@ -47,7 +47,7 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header
-      className="sticky top-0 z-30 flex h-11 items-center gap-4 px-6 text-white"
+      className="sticky top-0 z-30 flex h-11 items-center gap-4 px-8 text-white"
       style={{
         background: 'var(--dark-charcoal)',
         borderBottom: '1px solid rgba(255,255,255,.08)',

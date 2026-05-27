@@ -103,7 +103,7 @@ export function S5Summary({
   }
 
   return (
-    <div className="mx-auto max-w-[1040px] px-8 py-6">
+    <div className="mx-auto max-w-[1200px] px-8 py-6">
       {/* Approval Hero */}
       <div
         className="relative mb-[2px] overflow-hidden px-6 py-7 text-center text-white"
