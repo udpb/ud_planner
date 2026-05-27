@@ -35,7 +35,7 @@ export interface NowBarProps {
 export function NowBar({ context, message, hint, actions }: NowBarProps) {
   return (
     <div
-      className="sticky bottom-0 z-30 flex h-[56px] items-center gap-3.5 px-6 text-white"
+      className="sticky bottom-0 z-30 flex h-[56px] items-center gap-3.5 px-8 text-white"
       style={{
         background: 'var(--dark-charcoal)',
         borderTop: '2px solid var(--action-orange)',
