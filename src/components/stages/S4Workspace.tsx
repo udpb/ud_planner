@@ -141,6 +141,19 @@ export function S4Workspace({
                   : undefined
               }
             />
+            <StatRow
+              label="실전 주간"
+              value={
+                curriculum.filter((c) => c.type === 'action').length > 0
+                  ? '포함'
+                  : '미포함'
+              }
+              status={
+                curriculum.filter((c) => c.type === 'action').length > 0
+                  ? 'ok'
+                  : 'warn'
+              }
+            />
           </StatCard>
 
           <StatCard label="Coaches">

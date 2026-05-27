@@ -38,7 +38,7 @@ export interface BrainDockProps {
   citedAssetIds?: Set<string>
 }
 
-type DockTab = 'assets' | 'patterns' | 'chat'
+type DockTab = 'assets' | 'patterns'
 
 export function BrainDock({
   open,
@@ -108,9 +108,6 @@ export function BrainDock({
           <DockTabBtn active={tab === 'patterns'} onClick={() => setTab('patterns')}>
             유사사업 {similarPatterns.length > 0 && <span className="opacity-70">· {similarPatterns.length}</span>}
           </DockTabBtn>
-          <DockTabBtn active={tab === 'chat'} onClick={() => setTab('chat')}>
-            채팅
-          </DockTabBtn>
         </div>
 
         {/* body */}
@@ -127,7 +124,6 @@ export function BrainDock({
             />
           )}
           {tab === 'patterns' && <PatternsTab patterns={similarPatterns} />}
-          {tab === 'chat' && <ChatTab />}
         </div>
 
         {/* footer */}
@@ -330,21 +326,4 @@ function PatternsTab({ patterns }: { patterns: BrainDockSimilarPattern[] }) {
   )
 }
 
-function ChatTab() {
-  return (
-    <div className="flex h-full flex-col">
-      <div
-        className="flex-1 p-6 text-center text-[11px] leading-[1.7]"
-        style={{
-          color: 'var(--subtitle-text)',
-          background: '#ffffff',
-          border: '1px dashed var(--hairline-strong, #e4dfd6)',
-        }}
-      >
-        AI 채팅 (예정)
-        <br />
-        Brain 에 질문하기 · 자산 검색 · 인사이트 요청
-      </div>
-    </div>
-  )
-}
+// ChatTab 제거 (mockup 에 없음 · /api/express/turn 연동은 후속 PR 에서 별도 위치 wire-up 예정)
