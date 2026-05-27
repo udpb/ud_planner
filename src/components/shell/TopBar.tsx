@@ -162,18 +162,17 @@ function StageStep({
   const borderBottom = isActive
     ? '3px solid var(--primary-orange)'
     : '3px solid transparent'
-  const cursor = isPending ? 'not-allowed' : 'pointer'
-  const opacity = isPending ? 0.5 : 1
+  // pending stage 도 preview 가능 — opacity 만 낮추고 클릭은 허용
+  const opacity = isPending ? 0.55 : 1
 
   return (
     <button
-      onClick={isPending ? undefined : onClick}
-      disabled={isPending}
+      onClick={onClick}
       className="relative flex flex-1 flex-col justify-center px-4 text-left transition-colors"
       style={{
         background: bg,
         borderBottom,
-        cursor,
+        cursor: 'pointer',
         opacity,
       }}
     >
