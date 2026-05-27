@@ -4,20 +4,17 @@
  *
  * Stage 02 · 1차본 작성 · 2 column grid (chat | preview).
  *
- * 레이아웃:
- *   좌 panel: AI 챗봇 (slot progression bar · ai/pm 메시지 · quick chips · chat input)
- *   우 panel: 1차본 미리보기 (7 section card · is-filled/is-partial/is-empty)
- *   gap: 2px (construction grid · hairline)
- *
- * Wire up 상태:
- *   - Slot 진행도: real (props 로 받음)
- *   - Chat: mock messages (Phase C 후속에서 /api/express/turn 연동 예정)
- *   - 7 section card: real (ExpressDraft 의 sections 매핑)
+ * Wire up 상태 (Phase H — 2026-05-27):
+ *   - Slot 진행도: ✅ real (ExpressDraft.listFilledSlots)
+ *   - Chat: ✅ real /api/express/turn 호출
+ *   - quickReplies → chips · pm input → AI 응답 + slot 채움 자동 반영
+ *   - 7 section card: 기본 placeholder (후속 PR — ExpressDraft.sections 매핑 추가 예정)
  *
  * Mockup 참조: /public/mockups/v2/_shared.css + s2.html
  */
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export type SectionStatus = 'filled' | 'partial' | 'empty'
 
@@ -78,14 +75,71 @@ export function S2ChatCanvas({
   sections,
   initialMessages,
 }: S2ChatCanvasProps) {
-  const [messages] = useState<S2ChatMessage[]>(initialMessages ?? MOCK_MESSAGES)
+  const router = useRouter()
+  const [messages, setMessages] = useState<S2ChatMessage[]>(
+    initialMessages ?? MOCK_MESSAGES,
+  )
   const [input, setInput] = useState('')
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const slotPct = slotsTotal > 0 ? Math.min(100, (slotsFilled / slotsTotal) * 100) : 0
   const filledSections = (sections ?? DEFAULT_SECTIONS).filter(
     (s) => s.status === 'filled',
   ).length
   const totalSections = (sections ?? DEFAULT_SECTIONS).length
+
+  /** /api/express/turn 호출 + AI 응답 append + slot refresh */
+  async function sendTurn(pmText: string) {
+    if (sending) return
+    if (!pmText.trim()) return
+    setSending(true)
+    setError(null)
+    // Optimistic PM message append
+    setMessages((prev) => [...prev, { role: 'pm', text: pmText }])
+    setInput('')
+    try {
+      const res = await fetch('/api/express/turn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId, pmInput: pmText }),
+      })
+      if (!res.ok) {
+        if (res.status === 429) {
+          const data = (await res.json().catch(() => ({}))) as {
+            retryAfterSec?: number
+          }
+          throw new Error(`잠시 후 다시 시도 (${data.retryAfterSec ?? 30}초)`)
+        }
+        throw new Error(`HTTP ${res.status}`)
+      }
+      const data = (await res.json()) as {
+        aiTurn?: { text: string; quickReplies?: string[] }
+      }
+      if (data.aiTurn) {
+        const chips = (data.aiTurn.quickReplies ?? []).slice(0, 4).map((label, i) => ({
+          label,
+          primary: i === 0,
+        }))
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'ai',
+            text: data.aiTurn!.text,
+            chips: chips.length > 0 ? chips : undefined,
+          },
+        ])
+      }
+      // slot count refresh — server-side props 갱신
+      router.refresh()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'AI 응답 실패')
+      // PM message 취소 (마지막 turn 제거)
+      setMessages((prev) => prev.slice(0, -1))
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <div
@@ -131,21 +185,62 @@ export function S2ChatCanvas({
           style={{ background: 'var(--light-beige)' }}
         >
           {messages.map((m, i) => (
-            <ChatMessage key={i} message={m} />
+            <ChatMessage
+              key={i}
+              message={m}
+              onChipClick={(label) => sendTurn(label)}
+            />
           ))}
+          {sending && (
+            <div className="mb-3 flex gap-2.5">
+              <div
+                className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-[10px] font-bold text-white"
+                style={{ background: 'var(--primary-orange)' }}
+              >
+                AI
+              </div>
+              <div
+                className="flex items-center gap-1.5 bg-white px-3 py-2 text-xs"
+                style={{
+                  borderTop: '2px solid var(--primary-orange)',
+                  color: 'var(--subtitle-text)',
+                }}
+              >
+                <span className="inline-block h-2 w-2 animate-pulse rounded-full" style={{ background: 'var(--primary-orange)' }} />
+                AI 응답 생성 중...
+              </div>
+            </div>
+          )}
+          {error && (
+            <div
+              className="mb-3 px-3 py-2 text-[10px] font-medium"
+              style={{
+                color: 'var(--primary-orange)',
+                background: 'rgba(232,84,26,.08)',
+                border: '1px solid rgba(232,84,26,.3)',
+              }}
+            >
+              ● {error}
+            </div>
+          )}
         </div>
 
         {/* chat-input */}
-        <div
+        <form
           className="flex gap-1.5 bg-white px-4 py-2.5"
           style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
+          onSubmit={(e) => {
+            e.preventDefault()
+            void sendTurn(input)
+          }}
         >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="추가 의견이나 질문을 입력하세요..."
-            className="h-8 flex-1 bg-white px-3 text-xs focus:outline-none"
+            placeholder={sending ? '응답 대기 중...' : '추가 의견이나 질문을 입력하세요...'}
+            disabled={sending}
+            className="h-8 flex-1 bg-white px-3 text-xs focus:outline-none disabled:opacity-60"
             style={{
               color: 'var(--body-text, #333)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -158,10 +253,13 @@ export function S2ChatCanvas({
             }}
           />
           <button
-            className="h-8 px-3 text-[10px] font-semibold uppercase tracking-[0.8px] text-white transition-colors"
+            type="submit"
+            disabled={sending || !input.trim()}
+            className="h-8 px-3 text-[10px] font-semibold uppercase tracking-[0.8px] text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             style={{ background: 'var(--dark-charcoal)' }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--primary-orange)'
+              if (!sending && input.trim())
+                e.currentTarget.style.background = 'var(--primary-orange)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'var(--dark-charcoal)'
@@ -169,7 +267,7 @@ export function S2ChatCanvas({
           >
             ↑ Send
           </button>
-        </div>
+        </form>
       </div>
 
       {/* RIGHT — Preview panel */}
@@ -237,7 +335,13 @@ function PanelHead({
   )
 }
 
-function ChatMessage({ message }: { message: S2ChatMessage }) {
+function ChatMessage({
+  message,
+  onChipClick,
+}: {
+  message: S2ChatMessage
+  onChipClick?: (label: string) => void
+}) {
   if (message.role === 'pm') {
     return (
       <div className="mb-3 text-right">
@@ -278,7 +382,8 @@ function ChatMessage({ message }: { message: S2ChatMessage }) {
             {message.chips.map((c, i) => (
               <button
                 key={i}
-                className="inline-flex h-6 items-center px-2.5 text-[10px] font-semibold tracking-[0.2px] transition-colors"
+                onClick={() => onChipClick?.(c.label)}
+                className="inline-flex h-6 items-center px-2.5 text-[10px] font-semibold tracking-[0.2px] transition-colors hover:-translate-y-px"
                 style={
                   c.primary
                     ? {
