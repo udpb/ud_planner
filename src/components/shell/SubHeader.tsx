@@ -43,7 +43,7 @@ export function SubHeader({
 }: SubHeaderProps) {
   return (
     <div
-      className="bg-white px-5 pb-3 pt-3.5"
+      className="bg-white px-8 pb-3 pt-3.5"
       style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
     >
       {/* 상단 */}
