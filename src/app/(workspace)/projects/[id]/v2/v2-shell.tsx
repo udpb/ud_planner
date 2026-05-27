@@ -234,10 +234,8 @@ export function V2Shell({
         brainOpen={brainOpen}
         onBrainToggle={() => setBrainOpen((v) => !v)}
         onStageClick={(id) => {
-          const stage = stages.find((s) => s.id === id)
-          if (stage && stage.status !== 'pending') {
-            setActiveStage(id)
-          }
+          // pending stage 도 preview 가능 — 데이터 없어도 placeholder 로 보임
+          setActiveStage(id)
         }}
       />
 
