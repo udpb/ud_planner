@@ -213,6 +213,43 @@
 /* ─────────────────────────────────────────────────────────────────────────────
  * 브랜드 유틸리티 클래스 — Wave U / ActionAI
  * ────────────────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Print styles — UX v2 PDF export (인쇄 → PDF 저장)
+ * S5 의 "인쇄 / PDF" 버튼은 window.print() 호출. 브라우저 인쇄 대화상자에서
+ * "PDF 로 저장" 선택 시 깔끔한 PDF 생성.
+ * ────────────────────────────────────────────────────────────────────────── */
+@media print {
+  /* Shell 영역 숨김 — TopBar / SubHeader actions / NowBar / BrainDock */
+  header.sticky.top-0,
+  .sticky.bottom-0,
+  aside[class*="fixed"][class*="right-0"],
+  /* SubHeader 의 우측 actions */
+  div[class*="subheader__actions"],
+  /* S5 의 approve button + export block 인쇄 시 제외 */
+  .no-print {
+    display: none !important;
+  }
+  /* 인쇄 시 fullwidth + 화이트 배경 */
+  body {
+    background: #ffffff !important;
+    color: #000000;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  /* 페이지 break */
+  h1, h2, h3 {
+    break-after: avoid;
+  }
+  /* link URL 표시 안 함 */
+  a[href]::after {
+    content: '' !important;
+  }
+}
+
 @layer utilities {
   /* Action Orange 강조 텍스트 (구 .text-brand) */
   .text-brand {
