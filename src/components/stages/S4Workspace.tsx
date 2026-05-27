@@ -91,10 +91,10 @@ export function S4Workspace({
   }
 
   return (
-    <div className="mx-auto max-w-[1280px] px-8 py-10">
+    <div className="mx-auto max-w-[1280px] px-6 py-6">
       {/* 4 tabs */}
       <div
-        className="mb-8 flex gap-0 bg-white"
+        className="mb-5 flex gap-0 bg-white"
         style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
       >
         {(Object.keys(TAB_INFO) as S4Tab[]).map((t) => (
@@ -111,7 +111,7 @@ export function S4Workspace({
       {/* Layout — main + stats */}
       <div
         className="grid"
-        style={{ gridTemplateColumns: '1fr 320px', gap: 32 }}
+        style={{ gridTemplateColumns: '1fr 280px', gap: 20 }}
       >
         {/* LEFT main */}
         <div>
@@ -191,7 +191,7 @@ export function S4Workspace({
       </div>
 
       <p
-        className="mt-8 text-[10px] uppercase tracking-[1.5px]"
+        className="mt-5 text-[9px] uppercase tracking-[1.2px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         Project · {projectId}
@@ -214,12 +214,12 @@ function TabButton({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2.5 px-6 py-[18px] text-[12px] font-bold uppercase tracking-[1.5px] transition-colors"
+      className="flex items-center gap-1.5 px-4 py-3 text-[11px] font-bold uppercase tracking-[1.2px] transition-colors"
       style={{
         color: active ? 'var(--primary-orange)' : 'var(--subtitle-text)',
         borderBottom: active
-          ? '3px solid var(--primary-orange)'
-          : '3px solid transparent',
+          ? '2px solid var(--primary-orange)'
+          : '2px solid transparent',
         background: active ? '#ffffff' : 'transparent',
       }}
       onMouseEnter={(e) => {
@@ -237,7 +237,7 @@ function TabButton({
     >
       {label}
       <span
-        className="px-2 py-[2px] text-[10px] font-semibold tracking-[0.5px]"
+        className="px-1.5 py-[2px] text-[9px] font-semibold tracking-[0.4px]"
         style={{
           background: active ? 'var(--primary-orange)' : 'var(--light-beige)',
           color: active ? '#ffffff' : 'var(--subtitle-text)',
@@ -257,38 +257,38 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
   return (
     <div>
       {/* Toolbar */}
-      <div className="mb-5 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <div>
           <span
-            className="text-[22px] font-bold tracking-[-0.5px]"
+            className="text-base font-bold tracking-[-0.2px]"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             커리큘럼 {curriculum.length}주차
           </span>
           <span
-            className="ml-3 text-[12px] font-medium"
+            className="ml-2 text-[11px] font-medium"
             style={{ color: 'var(--subtitle-text)' }}
           >
             이론 {theoryCount} · 실행 {actionCount} · 강연 {lectureCount}
           </span>
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1">
           <button
-            className="h-[34px] bg-white px-3.5 text-[12px] font-semibold uppercase tracking-[0.2px]"
+            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px]"
             style={{
-              color: 'var(--body-text, #333)',
+              color: 'var(--subtitle-text)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
             }}
             disabled
           >
-            AI 재생성 (후속)
+            AI 재생성
           </button>
           <button
-            className="inline-flex h-9 items-center gap-1.5 px-4 text-[11px] font-bold uppercase tracking-[1px] text-white"
-            style={{ background: 'var(--primary-orange)' }}
+            className="inline-flex h-7 items-center gap-1 px-2.5 text-[10px] font-bold uppercase tracking-[0.8px] text-white"
+            style={{ background: 'var(--primary-orange)', opacity: 0.6 }}
             disabled
           >
-            + 회차 추가 (후속)
+            + 회차 추가
           </button>
         </div>
       </div>
@@ -300,17 +300,17 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
       >
         {/* header */}
         <div
-          className="grid items-center gap-4 px-5 py-4"
+          className="grid items-center gap-3 px-4 py-2.5"
           style={{
             background: 'var(--dark-charcoal)',
             color: 'var(--warm-gray)',
-            gridTemplateColumns: '60px 1fr 100px 160px 80px',
+            gridTemplateColumns: '50px 1fr 80px 140px 60px',
           }}
         >
           {['WEEK', 'SESSION', 'TYPE', '강사 · 시간', ''].map((h, i) => (
             <span
               key={i}
-              className="text-[10px] font-bold uppercase tracking-[1.5px]"
+              className="text-[9px] font-bold uppercase tracking-[1.2px]"
             >
               {h}
             </span>
@@ -319,7 +319,7 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
 
         {curriculum.length === 0 ? (
           <div
-            className="bg-white p-12 text-center text-[13px]"
+            className="bg-white p-8 text-center text-xs"
             style={{ color: 'var(--subtitle-text)' }}
           >
             아직 커리큘럼이 생성되지 않았습니다 · 이전 stage 에서 자동 생성 필요
@@ -348,8 +348,8 @@ function CurriculumRow({ week }: { week: CurriculumWeek }) {
 
   return (
     <div
-      className="grid cursor-pointer items-center gap-4 bg-white px-5 py-4 transition-colors"
-      style={{ gridTemplateColumns: '60px 1fr 100px 160px 80px' }}
+      className="grid cursor-pointer items-center gap-3 bg-white px-4 py-2.5 transition-colors"
+      style={{ gridTemplateColumns: '50px 1fr 80px 140px 60px' }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = 'var(--light-beige)'
       }}
@@ -358,21 +358,21 @@ function CurriculumRow({ week }: { week: CurriculumWeek }) {
       }}
     >
       <span
-        className="text-[14px] font-bold italic tracking-[-0.3px]"
+        className="text-xs font-bold italic tracking-[-0.2px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         W{week.week}
       </span>
       <div>
         <div
-          className="text-[14px] font-semibold tracking-[-0.2px]"
+          className="text-xs font-semibold tracking-[-0.1px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           {week.name}
         </div>
         {week.description && (
           <div
-            className="mt-1 text-[11px]"
+            className="mt-0.5 text-[10px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
             {week.description}
@@ -380,20 +380,20 @@ function CurriculumRow({ week }: { week: CurriculumWeek }) {
         )}
       </div>
       <span
-        className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-[1.5px]"
+        className="inline-block px-2 py-0.5 text-[9px] font-bold uppercase tracking-[1.2px]"
         style={typeStyle}
       >
         {typeLabel}
       </span>
       <span
-        className="text-[12px] tabular-nums"
+        className="text-[11px] tabular-nums"
         style={{ color: 'var(--body-text, #333)' }}
       >
         <strong className="font-semibold">{week.duration}</strong>
         {week.instructor && ` · ${week.instructor}`}
       </span>
       <span
-        className="text-right text-[10px] font-bold uppercase tracking-[1.2px]"
+        className="text-right text-[9px] font-bold uppercase tracking-[1px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         편집 →
@@ -406,7 +406,7 @@ function CoachesTab({ coaches }: { coaches: CoachInfo[] }) {
   if (coaches.length === 0) {
     return (
       <div
-        className="bg-white p-12 text-center text-[13px]"
+        className="bg-white p-8 text-center text-xs"
         style={{ color: 'var(--subtitle-text)' }}
       >
         아직 코치가 배정되지 않았습니다
@@ -414,19 +414,19 @@ function CoachesTab({ coaches }: { coaches: CoachInfo[] }) {
     )
   }
   return (
-    <div className="grid" style={{ gap: 2, background: 'var(--hairline, #f0ede8)' }}>
+    <div className="grid" style={{ gap: 1, background: 'var(--hairline, #f0ede8)' }}>
       <div
-        className="grid items-center gap-4 px-5 py-4"
+        className="grid items-center gap-3 px-4 py-2.5"
         style={{
           background: 'var(--dark-charcoal)',
           color: 'var(--warm-gray)',
-          gridTemplateColumns: '1fr 100px 120px 100px',
+          gridTemplateColumns: '1fr 80px 100px 80px',
         }}
       >
         {['NAME', 'ROLE', 'FEE', 'MODULES'].map((h) => (
           <span
             key={h}
-            className="text-[10px] font-bold uppercase tracking-[1.5px]"
+            className="text-[9px] font-bold uppercase tracking-[1.2px]"
           >
             {h}
           </span>
@@ -435,17 +435,17 @@ function CoachesTab({ coaches }: { coaches: CoachInfo[] }) {
       {coaches.map((c) => (
         <div
           key={c.id}
-          className="grid items-center gap-4 bg-white px-5 py-4"
-          style={{ gridTemplateColumns: '1fr 100px 120px 100px' }}
+          className="grid items-center gap-3 bg-white px-4 py-2.5"
+          style={{ gridTemplateColumns: '1fr 80px 100px 80px' }}
         >
           <span
-            className="text-[14px] font-semibold"
+            className="text-xs font-semibold"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             {c.name}
           </span>
           <span
-            className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-[1.5px]"
+            className="inline-block px-2 py-0.5 text-[9px] font-bold uppercase tracking-[1.2px]"
             style={{
               background:
                 c.role === '메인'
@@ -463,13 +463,13 @@ function CoachesTab({ coaches }: { coaches: CoachInfo[] }) {
             {c.role}
           </span>
           <span
-            className="text-[12px] tabular-nums"
+            className="text-[11px] tabular-nums"
             style={{ color: 'var(--body-text, #333)' }}
           >
             {c.feeKrw != null ? formatKrw(c.feeKrw) : '—'}
           </span>
           <span
-            className="text-[12px] tabular-nums"
+            className="text-[11px] tabular-nums"
             style={{ color: 'var(--subtitle-text)' }}
           >
             {c.modulesAssigned ?? 0} mod
@@ -483,22 +483,22 @@ function CoachesTab({ coaches }: { coaches: CoachInfo[] }) {
 function BudgetTab({ budget }: { budget: S4WorkspaceProps['budget'] }) {
   return (
     <div
-      className="bg-white p-8"
-      style={{ borderTop: '4px solid var(--primary-orange)' }}
+      className="bg-white p-5"
+      style={{ borderTop: '3px solid var(--primary-orange)' }}
     >
       <div
-        className="mb-4 text-[10px] font-bold uppercase tracking-[2px]"
+        className="mb-2.5 text-[10px] font-bold uppercase tracking-[1.5px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         ● 총 예산
       </div>
       <div
-        className="mb-8 text-[64px] font-bold italic leading-none tracking-[-2px]"
+        className="mb-5 text-[32px] font-bold italic leading-none tracking-[-1px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         {(budget.totalKrw / 1e8).toFixed(2)}
         <span
-          className="ml-2 text-[16px] font-medium not-italic"
+          className="ml-1.5 text-xs font-medium not-italic"
           style={{ color: 'var(--subtitle-text)' }}
         >
           억원
@@ -510,34 +510,34 @@ function BudgetTab({ budget }: { budget: S4WorkspaceProps['budget'] }) {
         style={{ gap: 1, background: 'var(--hairline, #f0ede8)' }}
       >
         <div
-          className="grid items-center gap-4 px-5 py-4"
+          className="grid items-center gap-3 px-4 py-2.5"
           style={{
             background: 'var(--dark-charcoal)',
             color: 'var(--warm-gray)',
             gridTemplateColumns: '1fr auto',
           }}
         >
-          <span className="text-[10px] font-bold uppercase tracking-[1.5px]">
+          <span className="text-[9px] font-bold uppercase tracking-[1.2px]">
             CATEGORY
           </span>
-          <span className="text-[10px] font-bold uppercase tracking-[1.5px]">
+          <span className="text-[9px] font-bold uppercase tracking-[1.2px]">
             AMOUNT (KRW)
           </span>
         </div>
         {budget.items.map((item) => (
           <div
             key={item.category}
-            className="grid items-center gap-4 bg-white px-5 py-3.5"
+            className="grid items-center gap-3 bg-white px-4 py-2"
             style={{ gridTemplateColumns: '1fr auto' }}
           >
             <span
-              className="text-[13px]"
+              className="text-xs"
               style={{ color: 'var(--body-text, #333)' }}
             >
               {item.category}
             </span>
             <span
-              className="text-[14px] font-bold tabular-nums"
+              className="text-xs font-bold tabular-nums"
               style={{ color: 'var(--dark-charcoal)' }}
             >
               {formatKrw(item.amountKrw)}
@@ -548,17 +548,17 @@ function BudgetTab({ budget }: { budget: S4WorkspaceProps['budget'] }) {
 
       {budget.marginPct != null && (
         <div
-          className="mt-6 flex items-center justify-between bg-white p-5"
-          style={{ borderTop: '3px solid var(--green)' }}
+          className="mt-3.5 flex items-center justify-between bg-white p-3.5"
+          style={{ borderTop: '2px solid var(--green)' }}
         >
           <span
-            className="text-[12px] font-semibold uppercase tracking-[1.5px]"
+            className="text-[10px] font-semibold uppercase tracking-[1.2px]"
             style={{ color: 'var(--green)' }}
           >
             ✓ 마진율
           </span>
           <span
-            className="text-[28px] font-bold italic tabular-nums"
+            className="text-lg font-bold italic tabular-nums"
             style={{ color: 'var(--green)' }}
           >
             {budget.marginPct.toFixed(1)}%
@@ -577,46 +577,46 @@ function ProposalTab({
   return (
     <div
       className="grid"
-      style={{ gap: 2, background: 'var(--hairline, #f0ede8)' }}
+      style={{ gap: 1, background: 'var(--hairline, #f0ede8)' }}
     >
       <div
-        className="grid items-center gap-4 px-5 py-4"
+        className="grid items-center gap-3 px-4 py-2.5"
         style={{
           background: 'var(--dark-charcoal)',
           color: 'var(--warm-gray)',
-          gridTemplateColumns: '60px 1fr 100px',
+          gridTemplateColumns: '50px 1fr 80px',
         }}
       >
-        <span className="text-[10px] font-bold uppercase tracking-[1.5px]">
+        <span className="text-[9px] font-bold uppercase tracking-[1.2px]">
           NUM
         </span>
-        <span className="text-[10px] font-bold uppercase tracking-[1.5px]">
+        <span className="text-[9px] font-bold uppercase tracking-[1.2px]">
           SECTION
         </span>
-        <span className="text-[10px] font-bold uppercase tracking-[1.5px]">
+        <span className="text-[9px] font-bold uppercase tracking-[1.2px]">
           STATUS
         </span>
       </div>
       {proposal.sections.map((s) => (
         <div
           key={s.num}
-          className="grid items-center gap-4 bg-white px-5 py-4"
-          style={{ gridTemplateColumns: '60px 1fr 100px' }}
+          className="grid items-center gap-3 bg-white px-4 py-2.5"
+          style={{ gridTemplateColumns: '50px 1fr 80px' }}
         >
           <span
-            className="text-[14px] font-bold italic tracking-[-0.3px]"
+            className="text-xs font-bold italic tracking-[-0.2px]"
             style={{ color: 'var(--primary-orange)' }}
           >
             {s.num}
           </span>
           <span
-            className="text-[14px] font-semibold"
+            className="text-xs font-semibold"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             {s.title}
           </span>
           <span
-            className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-[1.5px]"
+            className="inline-block px-2 py-0.5 text-[9px] font-bold uppercase tracking-[1.2px]"
             style={{
               background:
                 s.status === 'complete'
@@ -646,11 +646,11 @@ function StatCard({
 }) {
   return (
     <div
-      className="bg-white px-5 py-[22px]"
-      style={{ borderTop: '3px solid var(--primary-orange)' }}
+      className="bg-white px-3.5 py-3"
+      style={{ borderTop: '2px solid var(--primary-orange)' }}
     >
       <div
-        className="mb-3 text-[10px] font-bold uppercase tracking-[1.5px]"
+        className="mb-2 text-[9px] font-bold uppercase tracking-[1.2px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         {label}
@@ -685,7 +685,7 @@ function StatRow({
 
   return (
     <div
-      className="flex items-center justify-between py-2 text-[12px]"
+      className="flex items-center justify-between py-1.5 text-[11px]"
       style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
     >
       <span style={{ color: 'var(--subtitle-text)' }}>{label}</span>
@@ -693,7 +693,7 @@ function StatRow({
         className="font-bold tabular-nums"
         style={{
           color: valueColor,
-          fontSize: big ? '16px' : '12px',
+          fontSize: big ? '14px' : '11px',
           fontStyle: big && accent ? 'italic' : 'normal',
         }}
       >
@@ -702,7 +702,7 @@ function StatRow({
         {suffix && (
           <span
             className="ml-0.5 not-italic"
-            style={{ fontSize: '11px', color: 'var(--subtitle-text)' }}
+            style={{ fontSize: '10px', color: 'var(--subtitle-text)' }}
           >
             {suffix}
           </span>

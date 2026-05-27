@@ -77,47 +77,47 @@ export function S3Checklist({
   }
 
   return (
-    <div className="mx-auto max-w-[1200px] px-8 py-12">
+    <div className="mx-auto max-w-[1200px] px-6 py-6">
       {/* Score banner */}
       <div
-        className="mb-8 grid"
+        className="mb-5 grid"
         style={{
-          gridTemplateColumns: '240px 1fr',
+          gridTemplateColumns: '180px 1fr',
           gap: 2,
           background: 'var(--hairline, #f0ede8)',
         }}
       >
         {/* Left — orange num */}
         <div
-          className="p-8 text-center text-white"
+          className="p-5 text-center text-white"
           style={{ background: 'var(--primary-orange)' }}
         >
           <div
-            className="mb-2 text-[10px] font-semibold uppercase tracking-[2px]"
+            className="mb-1 text-[9px] font-semibold uppercase tracking-[1.5px]"
             style={{ opacity: 0.85 }}
           >
             Inspector Score
           </div>
           <div
-            className="font-bold italic leading-none tracking-[-2px]"
-            style={{ fontSize: '64px' }}
+            className="font-bold italic leading-none tracking-[-1px]"
+            style={{ fontSize: '36px' }}
           >
             {overallScore}
             <span
-              className="ml-1 text-[16px] font-medium"
+              className="ml-0.5 text-xs font-medium"
               style={{ opacity: 0.85 }}
             >
               /100
             </span>
           </div>
-          <div className="mt-3 text-[11px] font-semibold uppercase tracking-[1px]">
+          <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.8px]">
             {isPass ? '✓ 통과' : '✗ 미통과'} (임계 {passThreshold})
           </div>
         </div>
 
         {/* Right — dark info */}
         <div
-          className="relative overflow-hidden p-8 text-white"
+          className="relative overflow-hidden p-5 text-white"
           style={{ background: 'var(--dark-charcoal)' }}
         >
           <div
@@ -128,16 +128,16 @@ export function S3Checklist({
             }}
           />
           <div
-            className="relative mb-3 text-[10px] font-semibold uppercase tracking-[2px]"
+            className="relative mb-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
             style={{ color: 'var(--action-orange)' }}
           >
             <span
-              className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
               style={{ background: 'var(--action-orange)' }}
             />
             Inspector · 7 Lens · Auto Review
           </div>
-          <h2 className="relative mb-2 text-[24px] font-bold tracking-[-0.5px]">
+          <h2 className="relative mb-1.5 text-base font-bold tracking-[-0.3px]">
             {isPass
               ? weakCount === 0
                 ? '검수 통과 — 모든 lens 안정'
@@ -145,7 +145,7 @@ export function S3Checklist({
               : '검수 미통과 — 보강 필요'}
           </h2>
           <p
-            className="relative max-w-[520px] text-[13px] leading-[1.7]"
+            className="relative max-w-[500px] text-xs leading-[1.6]"
             style={{ color: 'var(--warm-gray)' }}
           >
             {lenses.length} lens 중 {passCount} lens 통과
@@ -170,18 +170,18 @@ export function S3Checklist({
 
       {/* 7 Lens grid */}
       <div
-        className="mb-3.5 inline-flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[2px]"
+        className="mb-2 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         <span
-          className="h-2 w-2 rounded-full"
+          className="h-1.5 w-1.5 rounded-full"
           style={{ background: 'var(--primary-orange)' }}
         />
         Inspector · 7 Lens · Detail
       </div>
 
       <div
-        className="mb-10 grid"
+        className="mb-5 grid"
         style={{
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 2,
@@ -196,16 +196,16 @@ export function S3Checklist({
       {/* Recommend */}
       {recommendedAssets.length > 0 && (
         <div
-          className="bg-white p-8"
-          style={{ borderTop: '4px solid var(--action-orange)' }}
+          className="bg-white p-5"
+          style={{ borderTop: '3px solid var(--action-orange)' }}
         >
-          <div className="mb-1.5 flex items-center justify-between">
+          <div className="mb-1 flex items-center justify-between">
             <div
-              className="flex items-center gap-3 text-[18px] font-bold tracking-[-0.3px]"
+              className="flex items-center gap-2.5 text-sm font-bold tracking-[-0.2px]"
               style={{ color: 'var(--dark-charcoal)' }}
             >
               <span
-                className="inline-flex h-7 w-7 items-center justify-center text-[14px] font-bold italic text-white"
+                className="inline-flex h-5 w-5 items-center justify-center text-xs font-bold italic text-white"
                 style={{ background: 'var(--action-orange)' }}
               >
                 !
@@ -213,14 +213,14 @@ export function S3Checklist({
               차별화 보강 — Brain 자산 추천 {recommendedAssets.length}건
             </div>
             <div
-              className="text-[11px] font-bold uppercase tracking-[1.5px]"
+              className="text-[10px] font-bold uppercase tracking-[1.2px]"
               style={{ color: 'var(--action-orange)' }}
             >
               수락 시 +{estimatedBoost} 점
             </div>
           </div>
           <p
-            className="mb-6 text-[13px]"
+            className="mb-3.5 text-xs"
             style={{ color: 'var(--subtitle-text)' }}
           >
             Brain matching score 0.84+ · 클릭으로 선택 → inline diff 미리보기 → 수락 시
@@ -246,14 +246,14 @@ export function S3Checklist({
       {/* Diff preview (selected 가 있을 때만) */}
       {selected.size > 0 && (
         <div
-          className="mt-8 p-8 text-white"
+          className="mt-5 p-5 text-white"
           style={{
             background: 'var(--dark-charcoal)',
-            borderTop: '3px solid var(--primary-orange)',
+            borderTop: '2px solid var(--primary-orange)',
           }}
         >
           <div
-            className="mb-4 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[2px]"
+            className="mb-2.5 inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[1.5px]"
             style={{ color: 'var(--action-orange)' }}
           >
             <span
@@ -263,7 +263,7 @@ export function S3Checklist({
             Inline Diff · 선택 자산 {selected.size}건 추가 시
           </div>
           <div
-            className="text-[12px] leading-[1.85] tabular-nums"
+            className="text-[11px] leading-[1.7] tabular-nums"
             style={{
               fontFamily: "'Poppins', monospace",
               color: 'var(--warm-gray)',
@@ -297,10 +297,10 @@ export function S3Checklist({
       )}
 
       {/* 액션 */}
-      <div className="mt-10 flex items-center justify-end gap-3">
+      <div className="mt-5 flex items-center justify-end gap-2">
         <button
           onClick={onProceedToS4}
-          className="inline-flex h-11 items-center bg-white px-5 text-[12px] font-semibold uppercase tracking-[1px] transition-colors"
+          className="inline-flex h-9 items-center bg-white px-3.5 text-[11px] font-semibold uppercase tracking-[0.8px] transition-colors"
           style={{
             color: 'var(--subtitle-text)',
             border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -314,26 +314,26 @@ export function S3Checklist({
               await onAcceptAssets?.([...selected])
               setSelected(new Set())
             }}
-            className="inline-flex h-11 items-center gap-2.5 px-[22px] text-[13px] font-semibold tracking-[0.3px] text-white transition-all duration-200 hover:-translate-y-0.5"
+            className="inline-flex h-9 items-center gap-2 px-4 text-xs font-semibold tracking-[0.2px] text-white transition-all duration-200 hover:-translate-y-0.5"
             style={{
               background: 'var(--primary-orange)',
-              boxShadow: '0 4px 12px rgba(232,84,26,.25)',
+              boxShadow: '0 3px 10px rgba(232,84,26,.22)',
             }}
           >
             {selected.size}건 수락 + 본문 반영
             <span
-              className="px-1.5 py-0.5 text-[10px] font-medium"
+              className="px-1.5 py-0.5 text-[9px] font-medium"
               style={{ background: 'rgba(255,255,255,.18)' }}
             >
               +{estimatedBoost}
             </span>
-            <span className="text-[16px] leading-none">→</span>
+            <span className="text-[13px] leading-none">→</span>
           </button>
         )}
       </div>
 
       <p
-        className="mt-6 text-[10px] uppercase tracking-[1.5px]"
+        className="mt-4 text-[9px] uppercase tracking-[1.2px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         Project · {projectId}
@@ -360,28 +360,28 @@ function LensCard({ lens }: { lens: LensScore }) {
 
   return (
     <div
-      className="cursor-pointer bg-white px-5 py-[22px] transition-transform duration-150 hover:-translate-y-1"
+      className="cursor-pointer bg-white px-3.5 py-3 transition-transform duration-150 hover:-translate-y-0.5"
       style={{
         borderTop: `3px solid ${borderColor}`,
         opacity: isUnknown ? 0.5 : 1,
       }}
     >
-      <div className="mb-2 flex items-baseline justify-between">
+      <div className="mb-1.5 flex items-baseline justify-between">
         <span
-          className="text-[11px] font-bold uppercase tracking-[1px]"
+          className="text-[10px] font-bold uppercase tracking-[0.8px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           {lens.name}
         </span>
         <span
-          className="text-[28px] font-bold italic leading-none tabular-nums"
+          className="text-lg font-bold italic leading-none tabular-nums"
           style={{ color: scoreColor }}
         >
           {lens.score != null ? lens.score : '—'}
         </span>
       </div>
       <div
-        className="text-[11px] leading-[1.5]"
+        className="text-[10px] leading-[1.4]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         {lens.hint}
@@ -402,15 +402,15 @@ function AssetCard({
   return (
     <div
       onClick={onToggle}
-      className="grid cursor-pointer items-center gap-4 px-5 py-[18px] transition-colors"
+      className="grid cursor-pointer items-center gap-3 px-3.5 py-3 transition-colors"
       style={{
         background: selected ? 'rgba(232,84,26,.06)' : '#ffffff',
-        gridTemplateColumns: '24px 1fr auto',
+        gridTemplateColumns: '20px 1fr auto',
       }}
     >
       {/* check */}
       <div
-        className="relative h-5 w-5"
+        className="relative h-4 w-4"
         style={{
           background: selected ? 'var(--primary-orange)' : '#ffffff',
           border: selected
@@ -420,7 +420,7 @@ function AssetCard({
       >
         {selected && (
           <span
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[12px] font-bold text-white"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold text-white"
             style={{ lineHeight: 1 }}
           >
             ✓
@@ -431,13 +431,13 @@ function AssetCard({
       {/* info */}
       <div className="min-w-0">
         <div
-          className="mb-1 text-[14px] font-bold tracking-[-0.2px]"
+          className="mb-0.5 text-xs font-bold tracking-[-0.1px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           {asset.name}
         </div>
         <div
-          className="line-clamp-2 text-[12px] leading-[1.55]"
+          className="line-clamp-2 text-[11px] leading-[1.45]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           "{asset.snippet}"
@@ -445,9 +445,9 @@ function AssetCard({
       </div>
 
       {/* meta */}
-      <div className="flex flex-shrink-0 items-center gap-2.5">
+      <div className="flex flex-shrink-0 items-center gap-2">
         <span
-          className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-[1.2px]"
+          className="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[1px]"
           style={{
             background:
               asset.tier === 'high'
@@ -459,12 +459,12 @@ function AssetCard({
           {asset.tier}
         </span>
         <span
-          className="text-[11px] font-semibold"
+          className="text-[10px] font-semibold"
           style={{ color: 'var(--subtitle-text)' }}
         >
           인용{' '}
           <strong
-            className="text-[14px] italic"
+            className="text-xs italic"
             style={{ color: 'var(--primary-orange)' }}
           >
             {asset.citationCount}

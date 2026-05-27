@@ -103,13 +103,13 @@ export function S5Summary({
   }
 
   return (
-    <div className="mx-auto max-w-[960px] px-8 py-12">
+    <div className="mx-auto max-w-[880px] px-6 py-6">
       {/* Approval Hero */}
       <div
-        className="relative mb-[2px] overflow-hidden px-12 py-14 text-center text-white"
+        className="relative mb-[2px] overflow-hidden px-6 py-7 text-center text-white"
         style={{
           background: 'var(--dark-charcoal)',
-          borderTop: '4px solid var(--action-orange)',
+          borderTop: '3px solid var(--action-orange)',
         }}
       >
         {/* gradient overlay */}
@@ -124,9 +124,9 @@ export function S5Summary({
         <span
           className="pointer-events-none absolute font-bold italic leading-none"
           style={{
-            right: -40,
-            bottom: -60,
-            fontSize: 200,
+            right: -30,
+            bottom: -40,
+            fontSize: 140,
             color: 'var(--action-orange)',
             opacity: 0.08,
           }}
@@ -135,7 +135,7 @@ export function S5Summary({
         </span>
 
         <div
-          className="relative mb-6 inline-block px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[2px]"
+          className="relative mb-3.5 inline-block px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[1.5px]"
           style={{
             color: 'var(--action-orange)',
             border: '1px solid rgba(255,130,4,.4)',
@@ -144,8 +144,7 @@ export function S5Summary({
           Stage 05 · Final Approval
         </div>
         <h1
-          className="relative mb-3 font-bold leading-[1.15] tracking-[-1px]"
-          style={{ fontSize: 'clamp(32px, 4.5vw, 44px)' }}
+          className="relative mb-2 text-xl font-bold leading-[1.25] tracking-[-0.4px]"
         >
           {isApproved ? (
             <>
@@ -156,8 +155,7 @@ export function S5Summary({
             </>
           ) : (
             <>
-              모든 검증 통과
-              <br />
+              모든 검증 통과 ·{' '}
               <span style={{ color: 'var(--action-orange)', fontStyle: 'italic' }}>
                 최종 승인
               </span>
@@ -166,7 +164,7 @@ export function S5Summary({
           )}
         </h1>
         <p
-          className="relative mx-auto max-w-[600px] text-[14px] leading-[1.7]"
+          className="relative mx-auto max-w-[520px] text-xs leading-[1.6]"
           style={{ color: 'var(--warm-gray)' }}
         >
           {isApproved
@@ -188,12 +186,12 @@ export function S5Summary({
           label="제안서 1차본"
           num={String(proposalCompleteCount)}
           unit={`/${proposalTotal}`}
-          meta="섹션 완성 · SMART 통과"
+          meta="섹션 완성"
         />
         <SummaryCell
           label="Inspector Score"
           num={String(inspectorScore)}
-          meta={`평가위원 시뮬 · ${inspectorScore >= 75 ? '통과 ✓' : '미통과'}`}
+          meta={`${inspectorScore >= 75 ? '통과 ✓' : '미통과'}`}
         />
         <SummaryCell
           label="Margin · 마진율"
@@ -201,7 +199,7 @@ export function S5Summary({
           unit="%"
           meta={
             marginPct != null && marginPct >= 15
-              ? '목표 15% 초과 달성'
+              ? '목표 15% 초과'
               : '목표 미달'
           }
         />
@@ -210,7 +208,7 @@ export function S5Summary({
       {/* Impact block */}
       {socialValueKrw != null && (
         <div
-          className="relative mb-[2px] overflow-hidden p-12 text-white"
+          className="relative mb-[2px] overflow-hidden p-6 text-white"
           style={{
             background:
               'linear-gradient(135deg, var(--primary-orange), var(--orange3))',
@@ -220,40 +218,38 @@ export function S5Summary({
           <div
             className="pointer-events-none absolute"
             style={{
-              right: -30,
-              top: -20,
-              width: 220,
-              height: 220,
-              border: '3px solid rgba(255,255,255,.08)',
+              right: -20,
+              top: -15,
+              width: 140,
+              height: 140,
+              border: '2px solid rgba(255,255,255,.08)',
             }}
           />
 
           <div
-            className="relative mb-5 text-[10px] font-bold uppercase tracking-[2px]"
+            className="relative mb-3 text-[9px] font-bold uppercase tracking-[1.5px]"
             style={{ opacity: 0.85 }}
           >
             ● Social Value Forecast · SROI
           </div>
           <div
-            className="relative mb-2 font-bold italic leading-none tracking-[-2px]"
-            style={{ fontSize: 'clamp(56px, 8vw, 88px)' }}
+            className="relative mb-1.5 text-[36px] font-bold italic leading-none tracking-[-1px]"
           >
             {(socialValueKrw / 1e8).toFixed(1)}
             <span
-              className="ml-2 text-[24px] font-semibold"
+              className="ml-1.5 text-sm font-semibold"
               style={{ opacity: 0.85 }}
             >
               억원
             </span>
           </div>
           <p
-            className="relative mb-6 max-w-[520px] text-[14px] leading-[1.7]"
+            className="relative mb-4 max-w-[500px] text-xs leading-[1.6]"
             style={{ opacity: 0.95 }}
           >
             impact-measurement DB 의 16 카테고리 계수로 산정한 사회적 가치.
-            <br />
             {directBeneficiaries != null && (
-              <>직접 수혜 {directBeneficiaries}명</>
+              <> 직접 수혜 {directBeneficiaries}명</>
             )}
             {indirectBeneficiaries != null && (
               <> · 간접 수혜 {indirectBeneficiaries}명</>
@@ -263,22 +259,22 @@ export function S5Summary({
 
           {impactBreakdown && impactBreakdown.length > 0 && (
             <div
-              className="relative grid pt-6"
+              className="relative grid pt-3.5"
               style={{
                 gridTemplateColumns: `repeat(${Math.min(impactBreakdown.length, 3)}, 1fr)`,
-                gap: 32,
+                gap: 16,
                 borderTop: '1px solid rgba(255,255,255,.18)',
               }}
             >
               {impactBreakdown.slice(0, 3).map((b) => (
                 <div key={b.label}>
                   <div
-                    className="mb-1.5 text-[10px] font-semibold uppercase tracking-[1.5px]"
+                    className="mb-1 truncate text-[9px] font-semibold uppercase tracking-[1.2px]"
                     style={{ opacity: 0.85 }}
                   >
                     {b.label}
                   </div>
-                  <div className="text-[24px] font-bold italic">
+                  <div className="text-base font-bold italic">
                     {(b.valueKrw / 1e8).toFixed(1)} 억
                   </div>
                 </div>
@@ -290,28 +286,28 @@ export function S5Summary({
 
       {/* Checklist */}
       <div
-        className="mb-[2px] bg-white px-9 py-8"
-        style={{ borderTop: '3px solid var(--green)' }}
+        className="mb-[2px] bg-white px-5 py-4"
+        style={{ borderTop: '2px solid var(--green)' }}
       >
         <div
-          className="mb-2 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[2px]"
+          className="mb-1.5 inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[1.5px]"
           style={{ color: 'var(--green)' }}
         >
           <span
-            className="h-2 w-2 rounded-full"
+            className="h-1.5 w-1.5 rounded-full"
             style={{ background: 'var(--green)' }}
           />
           Verification · {passedCount === checklist.length ? 'Passed' : 'Partial'}
         </div>
         <h3
-          className="mb-5 text-[20px] font-bold tracking-[-0.3px]"
+          className="mb-3 text-sm font-bold tracking-[-0.2px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           최종 검증 항목 · {passedCount} / {checklist.length}
         </h3>
         <div
           className="grid"
-          style={{ gridTemplateColumns: '1fr 1fr', gap: 14 }}
+          style={{ gridTemplateColumns: '1fr 1fr', gap: 8 }}
         >
           {checklist.map((c, i) => (
             <CheckItem key={i} passed={c.passed} label={c.label} />
@@ -321,19 +317,19 @@ export function S5Summary({
 
       {/* PDF preview block */}
       <div
-        className="mb-8 flex items-center gap-5 px-7 py-6"
+        className="mb-5 flex items-center gap-3 px-4 py-3"
         style={{
           background: 'var(--light-beige)',
-          borderLeft: '4px solid var(--primary-orange)',
+          borderLeft: '3px solid var(--primary-orange)',
         }}
       >
         <div
-          className="inline-flex flex-shrink-0 items-center justify-center text-[22px]"
+          className="inline-flex flex-shrink-0 items-center justify-center text-sm"
           style={{
-            width: 56,
-            height: 72,
+            width: 40,
+            height: 52,
             background: '#ffffff',
-            borderTop: '3px solid var(--primary-orange)',
+            borderTop: '2px solid var(--primary-orange)',
             color: 'var(--primary-orange)',
             fontWeight: 700,
             fontStyle: 'italic',
@@ -343,38 +339,38 @@ export function S5Summary({
         </div>
         <div className="flex-1">
           <div
-            className="mb-1 text-[14px] font-bold"
+            className="mb-0.5 text-xs font-bold"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             제안서 1차본 ({proposalTotal}섹션) — Final
           </div>
           <div
-            className="text-[11px] tracking-[0.3px]"
+            className="text-[10px] tracking-[0.2px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
             PDF · 24p · 사회적가치 forecast 포함 · 발주처 템플릿
           </div>
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1">
           <button
-            className="h-[34px] bg-white px-3.5 text-[12px] font-semibold uppercase tracking-[0.2px]"
+            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px]"
             style={{
-              color: 'var(--body-text, #333)',
+              color: 'var(--subtitle-text)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
             }}
             disabled
           >
-            미리보기 (후속)
+            미리보기
           </button>
           <button
-            className="h-[34px] bg-white px-3.5 text-[12px] font-semibold uppercase tracking-[0.2px]"
+            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px]"
             style={{
-              color: 'var(--body-text, #333)',
+              color: 'var(--subtitle-text)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
             }}
             disabled
           >
-            다운로드 (후속)
+            다운로드
           </button>
         </div>
       </div>
@@ -382,7 +378,7 @@ export function S5Summary({
       {/* Error */}
       {error && (
         <div
-          className="mb-6 px-4 py-3 text-[12px] font-medium"
+          className="mb-4 px-3 py-2 text-xs font-medium"
           style={{
             color: 'var(--primary-orange)',
             background: 'rgba(232,84,26,.08)',
@@ -394,18 +390,18 @@ export function S5Summary({
       )}
 
       {/* Approve block */}
-      <div className="py-10 text-center">
+      <div className="py-6 text-center">
         {isApproved ? (
           <>
             <p
-              className="mb-6 text-[13px]"
+              className="mb-4 text-xs"
               style={{ color: 'var(--subtitle-text)' }}
             >
               ✓ 이 프로젝트는 이미 승인 · 제출 완료되었습니다.
             </p>
             <button
               onClick={onBackToS4}
-              className="inline-flex h-11 items-center bg-white px-5 text-[12px] font-semibold uppercase tracking-[1px]"
+              className="inline-flex h-9 items-center bg-white px-4 text-[11px] font-semibold uppercase tracking-[0.8px]"
               style={{
                 color: 'var(--subtitle-text)',
                 border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -417,23 +413,22 @@ export function S5Summary({
         ) : (
           <>
             <p
-              className="mb-6 text-[12px]"
+              className="mb-4 text-[11px]"
               style={{ color: 'var(--subtitle-text)' }}
             >
-              승인 시 status = SUBMITTED · 편집 잠금. 잠금 후에도 필요 시 재오픈
-              가능.
+              승인 시 status = SUBMITTED · 편집 잠금. 잠금 후에도 필요 시 재오픈 가능.
             </p>
             <button
               onClick={handleApprove}
               disabled={pending || passedCount < checklist.length}
-              className="inline-flex items-center gap-3.5 px-14 py-5 text-[16px] font-bold uppercase tracking-[0.5px] text-white transition-all duration-200 hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2.5 px-8 py-3 text-sm font-bold uppercase tracking-[0.4px] text-white transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               style={{
                 background: 'var(--primary-orange)',
-                boxShadow: '0 12px 32px rgba(232,84,26,.35)',
+                boxShadow: '0 6px 18px rgba(232,84,26,.28)',
               }}
             >
               <span
-                className="inline-flex h-7 w-7 items-center justify-center text-[14px]"
+                className="inline-flex h-5 w-5 items-center justify-center text-xs"
                 style={{ background: 'rgba(255,255,255,.18)' }}
               >
                 ✓
@@ -445,7 +440,7 @@ export function S5Summary({
       </div>
 
       <p
-        className="mt-2 text-center text-[10px] uppercase tracking-[1.5px]"
+        className="mt-1 text-center text-[9px] uppercase tracking-[1.2px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         Project · {projectId}
@@ -467,23 +462,23 @@ function SummaryCell({
 }) {
   return (
     <div
-      className="bg-white px-7 py-8 text-center"
-      style={{ borderTop: '4px solid var(--primary-orange)' }}
+      className="bg-white px-4 py-4 text-center"
+      style={{ borderTop: '3px solid var(--primary-orange)' }}
     >
       <div
-        className="mb-4 text-[10px] font-bold uppercase tracking-[2px]"
+        className="mb-2 text-[9px] font-bold uppercase tracking-[1.5px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         {label}
       </div>
       <div
-        className="font-bold italic leading-none tracking-[-1.5px]"
-        style={{ color: 'var(--primary-orange)', fontSize: 48 }}
+        className="font-bold italic leading-none tracking-[-0.8px]"
+        style={{ color: 'var(--primary-orange)', fontSize: 28 }}
       >
         {num}
         {unit && (
           <span
-            className="ml-1 text-[14px] font-medium not-italic"
+            className="ml-0.5 text-xs font-medium not-italic"
             style={{ color: 'var(--subtitle-text)' }}
           >
             {unit}
@@ -492,7 +487,7 @@ function SummaryCell({
       </div>
       {meta && (
         <div
-          className="mt-3 text-[12px]"
+          className="mt-2 text-[10px]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           {meta}
@@ -505,11 +500,11 @@ function SummaryCell({
 function CheckItem({ passed, label }: { passed: boolean; label: string }) {
   return (
     <div
-      className="flex items-center gap-3 text-[13px]"
+      className="flex items-center gap-2 text-[11px]"
       style={{ color: 'var(--body-text, #333)' }}
     >
       <span
-        className="inline-flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center text-[11px] font-bold text-white"
+        className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center text-[9px] font-bold text-white"
         style={{
           background: passed ? 'var(--green)' : 'var(--hairline-strong, #e4dfd6)',
         }}

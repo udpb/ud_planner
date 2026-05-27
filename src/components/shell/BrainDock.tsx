@@ -65,25 +65,25 @@ export function BrainDock({
       <aside
         className="fixed right-0 z-[25] flex flex-col bg-white transition-transform duration-200"
         style={{
-          top: 56,
-          width: 360,
-          height: 'calc(100vh - 56px - 72px)',
+          top: 44,
+          width: 320,
+          height: 'calc(100vh - 44px - 56px)',
           borderLeft: '2px solid var(--dark-charcoal)',
           transform: open ? 'translateX(0)' : 'translateX(100%)',
         }}
       >
         {/* charcoal header */}
         <div
-          className="flex h-[52px] items-center justify-between px-[18px] text-white"
+          className="flex h-10 items-center justify-between px-3.5 text-white"
           style={{ background: 'var(--dark-charcoal)' }}
         >
-          <span className="text-[11px] font-bold uppercase tracking-[2px]">
+          <span className="text-[10px] font-bold uppercase tracking-[1.5px]">
             <span style={{ color: 'var(--action-orange)' }}>●</span>
-            <span className="ml-2">Brain</span>
+            <span className="ml-1.5">Brain</span>
           </span>
           <button
             onClick={onClose}
-            className="h-6 w-6 text-[18px] leading-none transition-colors"
+            className="h-5 w-5 text-base leading-none transition-colors"
             style={{ color: 'var(--warm-gray)' }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'var(--action-orange)'
@@ -115,7 +115,7 @@ export function BrainDock({
 
         {/* body */}
         <div
-          className="flex-1 overflow-y-auto p-4"
+          className="flex-1 overflow-y-auto p-3"
           style={{ background: 'var(--light-beige)' }}
         >
           {tab === 'assets' && (
@@ -132,12 +132,12 @@ export function BrainDock({
 
         {/* footer */}
         <div
-          className="p-3"
+          className="p-2.5"
           style={{ borderTop: '1px solid var(--hairline, #f0ede8)' }}
         >
           <Link
             href="/admin/brain"
-            className="flex items-center justify-between bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.5px] transition-colors"
+            className="flex items-center justify-between bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.4px] transition-colors"
             style={{ color: 'var(--primary-orange)', border: '1px solid var(--hairline-strong, #e4dfd6)' }}
           >
             <span>Brain Dashboard 열기</span>
@@ -146,7 +146,7 @@ export function BrainDock({
           {projectId && (
             <Link
               href={`/projects/${projectId}/brain`}
-              className="mt-1.5 flex items-center justify-between bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.5px]"
+              className="mt-1 flex items-center justify-between bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.4px]"
               style={{ color: 'var(--body-text, #333)', border: '1px solid var(--hairline-strong, #e4dfd6)' }}
             >
               <span>4+1 통합 패널</span>
@@ -171,7 +171,7 @@ function DockTabBtn({
   return (
     <button
       onClick={onClick}
-      className="flex-1 px-2 py-3 text-center text-[10px] font-semibold uppercase tracking-[1.2px] transition-colors"
+      className="flex-1 px-1.5 py-2 text-center text-[9px] font-semibold uppercase tracking-[1px] transition-colors"
       style={{
         color: active ? 'var(--primary-orange)' : 'var(--subtitle-text)',
         borderBottom: active ? '2px solid var(--primary-orange)' : '2px solid transparent',
