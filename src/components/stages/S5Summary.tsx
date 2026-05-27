@@ -315,16 +315,16 @@ export function S5Summary({
         </div>
       </div>
 
-      {/* PDF preview block */}
+      {/* Export block — Markdown 다운로드 + Browser print-to-PDF */}
       <div
-        className="mb-5 flex items-center gap-3 px-4 py-3"
+        className="no-print mb-5 flex items-center gap-3 px-4 py-3"
         style={{
           background: 'var(--light-beige)',
           borderLeft: '3px solid var(--primary-orange)',
         }}
       >
         <div
-          className="inline-flex flex-shrink-0 items-center justify-center text-sm"
+          className="inline-flex flex-shrink-0 items-center justify-center text-[10px]"
           style={{
             width: 40,
             height: 52,
@@ -335,43 +335,63 @@ export function S5Summary({
             fontStyle: 'italic',
           }}
         >
-          PDF
+          .MD
         </div>
         <div className="flex-1">
           <div
             className="mb-0.5 text-xs font-bold"
             style={{ color: 'var(--dark-charcoal)' }}
           >
-            제안서 1차본 ({proposalTotal}섹션) — Final
+            제안서 1차본 ({proposalTotal}섹션) — Markdown 내보내기
           </div>
           <div
             className="text-[10px] tracking-[0.2px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
-            PDF · 24p · 사회적가치 forecast 포함 · 발주처 템플릿
+            .md 파일 · 발주처 템플릿용 · 브라우저 인쇄로 PDF 변환 가능
           </div>
         </div>
         <div className="flex gap-1">
           <button
-            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px]"
+            onClick={() => {
+              if (typeof window !== 'undefined') window.print()
+            }}
+            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px] transition-colors"
             style={{
-              color: 'var(--subtitle-text)',
+              color: 'var(--body-text, #333)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
             }}
-            disabled
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--primary-orange)'
+              e.currentTarget.style.color = 'var(--primary-orange)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--hairline-strong, #e4dfd6)'
+              e.currentTarget.style.color = 'var(--body-text, #333)'
+            }}
+            title="브라우저 인쇄 대화상자 → PDF 로 저장"
           >
-            미리보기
+            인쇄 / PDF
           </button>
-          <button
-            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px]"
+          <a
+            href={`/api/projects/${projectId}/export-markdown`}
+            className="inline-flex h-7 items-center bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px] transition-colors"
             style={{
-              color: 'var(--subtitle-text)',
+              color: 'var(--body-text, #333)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
             }}
-            disabled
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--primary-orange)'
+              e.currentTarget.style.color = 'var(--primary-orange)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--hairline-strong, #e4dfd6)'
+              e.currentTarget.style.color = 'var(--body-text, #333)'
+            }}
+            title=".md 파일 다운로드"
           >
-            다운로드
-          </button>
+            .md 다운로드
+          </a>
         </div>
       </div>
 
@@ -390,7 +410,7 @@ export function S5Summary({
       )}
 
       {/* Approve block */}
-      <div className="py-6 text-center">
+      <div className="no-print py-6 text-center">
         {isApproved ? (
           <>
             <p
