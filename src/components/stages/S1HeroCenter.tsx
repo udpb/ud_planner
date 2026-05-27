@@ -58,7 +58,10 @@ export function S1HeroCenter({
 
   if (isCompleted) {
     return (
-      <div className="mx-auto max-w-[1040px] px-8 py-8">
+      <div
+        className="mx-auto px-8 py-10"
+        style={{ width: 'min(85vw, 1100px)' }}
+      >
         {/* eyebrow */}
         <div
           className="mb-2.5 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"
@@ -194,7 +197,10 @@ export function S1HeroCenter({
   }
 
   return (
-    <div className="mx-auto max-w-[1040px] px-8 py-10">
+    <div
+      className="mx-auto px-8 py-12"
+      style={{ width: 'min(85vw, 1100px)' }}
+    >
       {/* eyebrow ● Stage 01 · RFP Analysis */}
       <div
         className="mb-2.5 inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[1.5px]"

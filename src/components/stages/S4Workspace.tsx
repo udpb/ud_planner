@@ -91,10 +91,13 @@ export function S4Workspace({
   }
 
   return (
-    <div className="mx-auto max-w-[1760px] px-10 py-6">
+    <div
+      className="mx-auto px-10 py-7"
+      style={{ width: 'min(95vw, 1900px)' }}
+    >
       {/* 4 tabs */}
       <div
-        className="mb-5 flex gap-0 bg-white"
+        className="mb-6 flex gap-0 bg-white"
         style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
       >
         {(Object.keys(TAB_INFO) as S4Tab[]).map((t) => (
@@ -111,7 +114,7 @@ export function S4Workspace({
       {/* Layout — main + stats */}
       <div
         className="grid"
-        style={{ gridTemplateColumns: '1fr 320px', gap: 24 }}
+        style={{ gridTemplateColumns: '1fr 340px', gap: 28 }}
       >
         {/* LEFT main */}
         <div>
@@ -227,7 +230,7 @@ function TabButton({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1.5 px-4 py-3 text-[11px] font-bold uppercase tracking-[1.2px] transition-colors"
+      className="flex items-center gap-2 px-5 py-3.5 text-[12px] font-bold uppercase tracking-[1.4px] transition-colors"
       style={{
         color: active ? 'var(--primary-orange)' : 'var(--subtitle-text)',
         borderBottom: active
@@ -250,7 +253,7 @@ function TabButton({
     >
       {label}
       <span
-        className="px-1.5 py-[2px] text-[9px] font-semibold tracking-[0.4px]"
+        className="px-2 py-[2px] text-[10px] font-semibold tracking-[0.5px]"
         style={{
           background: active ? 'var(--primary-orange)' : 'var(--light-beige)',
           color: active ? '#ffffff' : 'var(--subtitle-text)',
@@ -270,24 +273,24 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
   return (
     <div>
       {/* Toolbar */}
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div>
           <span
-            className="text-base font-bold tracking-[-0.2px]"
+            className="text-lg font-bold tracking-[-0.2px]"
             style={{ color: 'var(--dark-charcoal)' }}
           >
             커리큘럼 {curriculum.length}주차
           </span>
           <span
-            className="ml-2 text-[11px] font-medium"
+            className="ml-3 text-[12px] font-medium"
             style={{ color: 'var(--subtitle-text)' }}
           >
             이론 {theoryCount} · 실행 {actionCount} · 강연 {lectureCount}
           </span>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
           <button
-            className="h-7 bg-white px-2.5 text-[10px] font-semibold uppercase tracking-[0.2px]"
+            className="h-8 bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.3px]"
             style={{
               color: 'var(--subtitle-text)',
               border: '1px solid var(--hairline-strong, #e4dfd6)',
@@ -297,7 +300,7 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
             AI 재생성
           </button>
           <button
-            className="inline-flex h-7 items-center gap-1 px-2.5 text-[10px] font-bold uppercase tracking-[0.8px] text-white"
+            className="inline-flex h-8 items-center gap-1 px-3 text-[11px] font-bold uppercase tracking-[1px] text-white"
             style={{ background: 'var(--primary-orange)', opacity: 0.6 }}
             disabled
           >
@@ -313,17 +316,17 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
       >
         {/* header */}
         <div
-          className="grid items-center gap-3 px-4 py-2.5"
+          className="grid items-center gap-4 px-5 py-3"
           style={{
             background: 'var(--dark-charcoal)',
             color: 'var(--warm-gray)',
-            gridTemplateColumns: '50px 1fr 80px 140px 60px',
+            gridTemplateColumns: '60px 1fr 100px 180px 80px',
           }}
         >
           {['WEEK', 'SESSION', 'TYPE', '강사 · 시간', ''].map((h, i) => (
             <span
               key={i}
-              className="text-[9px] font-bold uppercase tracking-[1.2px]"
+              className="text-[10px] font-bold uppercase tracking-[1.4px]"
             >
               {h}
             </span>
@@ -332,7 +335,7 @@ function CurriculumTab({ curriculum }: { curriculum: CurriculumWeek[] }) {
 
         {curriculum.length === 0 ? (
           <div
-            className="bg-white p-8 text-center text-xs"
+            className="bg-white p-10 text-center text-[13px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
             아직 커리큘럼이 생성되지 않았습니다 · 이전 stage 에서 자동 생성 필요
@@ -361,8 +364,8 @@ function CurriculumRow({ week }: { week: CurriculumWeek }) {
 
   return (
     <div
-      className="grid cursor-pointer items-center gap-3 bg-white px-4 py-2.5 transition-colors"
-      style={{ gridTemplateColumns: '50px 1fr 80px 140px 60px' }}
+      className="grid cursor-pointer items-center gap-4 bg-white px-5 py-3.5 transition-colors"
+      style={{ gridTemplateColumns: '60px 1fr 100px 180px 80px' }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = 'var(--light-beige)'
       }}
@@ -371,21 +374,21 @@ function CurriculumRow({ week }: { week: CurriculumWeek }) {
       }}
     >
       <span
-        className="text-xs font-bold italic tracking-[-0.2px]"
+        className="text-[15px] font-bold italic tracking-[-0.2px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         W{week.week}
       </span>
       <div>
         <div
-          className="text-xs font-semibold tracking-[-0.1px]"
+          className="text-[14px] font-semibold tracking-[-0.1px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           {week.name}
         </div>
         {week.description && (
           <div
-            className="mt-0.5 text-[10px]"
+            className="mt-0.5 text-[11px]"
             style={{ color: 'var(--subtitle-text)' }}
           >
             {week.description}
@@ -393,20 +396,20 @@ function CurriculumRow({ week }: { week: CurriculumWeek }) {
         )}
       </div>
       <span
-        className="inline-block px-2 py-0.5 text-[9px] font-bold uppercase tracking-[1.2px]"
+        className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-[1.4px]"
         style={typeStyle}
       >
         {typeLabel}
       </span>
       <span
-        className="text-[11px] tabular-nums"
+        className="text-[12px] tabular-nums"
         style={{ color: 'var(--body-text, #333)' }}
       >
         <strong className="font-semibold">{week.duration}</strong>
         {week.instructor && ` · ${week.instructor}`}
       </span>
       <span
-        className="text-right text-[9px] font-bold uppercase tracking-[1px]"
+        className="text-right text-[10px] font-bold uppercase tracking-[1.2px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         편집 →
@@ -659,11 +662,11 @@ function StatCard({
 }) {
   return (
     <div
-      className="bg-white px-3.5 py-3"
-      style={{ borderTop: '2px solid var(--primary-orange)' }}
+      className="bg-white px-5 py-4"
+      style={{ borderTop: '3px solid var(--primary-orange)' }}
     >
       <div
-        className="mb-2 text-[9px] font-bold uppercase tracking-[1.2px]"
+        className="mb-3 text-[10px] font-bold uppercase tracking-[1.4px]"
         style={{ color: 'var(--primary-orange)' }}
       >
         {label}
@@ -698,7 +701,7 @@ function StatRow({
 
   return (
     <div
-      className="flex items-center justify-between py-1.5 text-[11px]"
+      className="flex items-center justify-between py-2 text-[12px]"
       style={{ borderBottom: '1px solid var(--hairline, #f0ede8)' }}
     >
       <span style={{ color: 'var(--subtitle-text)' }}>{label}</span>
@@ -706,7 +709,7 @@ function StatRow({
         className="font-bold tabular-nums"
         style={{
           color: valueColor,
-          fontSize: big ? '14px' : '11px',
+          fontSize: big ? '18px' : '13px',
           fontStyle: big && accent ? 'italic' : 'normal',
         }}
       >
@@ -715,7 +718,7 @@ function StatRow({
         {suffix && (
           <span
             className="ml-0.5 not-italic"
-            style={{ fontSize: '10px', color: 'var(--subtitle-text)' }}
+            style={{ fontSize: '11px', color: 'var(--subtitle-text)' }}
           >
             {suffix}
           </span>

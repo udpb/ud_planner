@@ -103,13 +103,16 @@ export function S5Summary({
   }
 
   return (
-    <div className="mx-auto max-w-[1200px] px-8 py-6">
+    <div
+      className="mx-auto px-10 py-8"
+      style={{ width: 'min(90vw, 1400px)' }}
+    >
       {/* Approval Hero */}
       <div
-        className="relative mb-[2px] overflow-hidden px-6 py-7 text-center text-white"
+        className="relative mb-[2px] overflow-hidden px-8 py-10 text-center text-white"
         style={{
           background: 'var(--dark-charcoal)',
-          borderTop: '3px solid var(--action-orange)',
+          borderTop: '4px solid var(--action-orange)',
         }}
       >
         {/* gradient overlay */}
@@ -124,9 +127,9 @@ export function S5Summary({
         <span
           className="pointer-events-none absolute font-bold italic leading-none"
           style={{
-            right: -30,
-            bottom: -40,
-            fontSize: 140,
+            right: -40,
+            bottom: -60,
+            fontSize: 200,
             color: 'var(--action-orange)',
             opacity: 0.08,
           }}
@@ -135,7 +138,7 @@ export function S5Summary({
         </span>
 
         <div
-          className="relative mb-3.5 inline-block px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[1.5px]"
+          className="relative mb-5 inline-block px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[2px]"
           style={{
             color: 'var(--action-orange)',
             border: '1px solid rgba(255,130,4,.4)',
@@ -144,7 +147,7 @@ export function S5Summary({
           Stage 05 · Final Approval
         </div>
         <h1
-          className="relative mb-2 text-lg font-bold leading-[1.3] tracking-[-0.3px]"
+          className="relative mb-3 text-2xl font-bold leading-[1.25] tracking-[-0.5px]"
         >
           {isApproved ? (
             <>
@@ -164,7 +167,7 @@ export function S5Summary({
           )}
         </h1>
         <p
-          className="relative mx-auto max-w-[520px] text-xs leading-[1.6]"
+          className="relative mx-auto max-w-[620px] text-[13px] leading-[1.65]"
           style={{ color: 'var(--warm-gray)' }}
         >
           {isApproved
@@ -208,7 +211,7 @@ export function S5Summary({
       {/* Impact block */}
       {socialValueKrw != null && (
         <div
-          className="relative mb-[2px] overflow-hidden p-6 text-white"
+          className="relative mb-[2px] overflow-hidden p-9 text-white"
           style={{
             background:
               'linear-gradient(135deg, var(--primary-orange), var(--orange3))',
@@ -218,33 +221,33 @@ export function S5Summary({
           <div
             className="pointer-events-none absolute"
             style={{
-              right: -20,
-              top: -15,
-              width: 140,
-              height: 140,
-              border: '2px solid rgba(255,255,255,.08)',
+              right: -30,
+              top: -20,
+              width: 200,
+              height: 200,
+              border: '3px solid rgba(255,255,255,.08)',
             }}
           />
 
           <div
-            className="relative mb-3 text-[9px] font-bold uppercase tracking-[1.5px]"
+            className="relative mb-4 text-[10px] font-bold uppercase tracking-[1.8px]"
             style={{ opacity: 0.85 }}
           >
             ● Social Value Forecast · SROI
           </div>
           <div
-            className="relative mb-1.5 text-[36px] font-bold italic leading-none tracking-[-1px]"
+            className="relative mb-2 text-[56px] font-bold italic leading-none tracking-[-1.5px]"
           >
             {(socialValueKrw / 1e8).toFixed(1)}
             <span
-              className="ml-1.5 text-sm font-semibold"
+              className="ml-2 text-lg font-semibold"
               style={{ opacity: 0.85 }}
             >
               억원
             </span>
           </div>
           <p
-            className="relative mb-4 max-w-[500px] text-xs leading-[1.6]"
+            className="relative mb-5 max-w-[560px] text-[13px] leading-[1.65]"
             style={{ opacity: 0.95 }}
           >
             impact-measurement DB 의 16 카테고리 계수로 산정한 사회적 가치.
@@ -259,22 +262,22 @@ export function S5Summary({
 
           {impactBreakdown && impactBreakdown.length > 0 && (
             <div
-              className="relative grid pt-3.5"
+              className="relative grid pt-5"
               style={{
                 gridTemplateColumns: `repeat(${Math.min(impactBreakdown.length, 3)}, 1fr)`,
-                gap: 16,
+                gap: 24,
                 borderTop: '1px solid rgba(255,255,255,.18)',
               }}
             >
               {impactBreakdown.slice(0, 3).map((b) => (
                 <div key={b.label}>
                   <div
-                    className="mb-1 truncate text-[9px] font-semibold uppercase tracking-[1.2px]"
+                    className="mb-1.5 truncate text-[10px] font-semibold uppercase tracking-[1.4px]"
                     style={{ opacity: 0.85 }}
                   >
                     {b.label}
                   </div>
-                  <div className="text-base font-bold italic">
+                  <div className="text-xl font-bold italic">
                     {(b.valueKrw / 1e8).toFixed(1)} 억
                   </div>
                 </div>
@@ -286,28 +289,28 @@ export function S5Summary({
 
       {/* Checklist */}
       <div
-        className="mb-[2px] bg-white px-5 py-4"
-        style={{ borderTop: '2px solid var(--green)' }}
+        className="mb-[2px] bg-white px-8 py-7"
+        style={{ borderTop: '3px solid var(--green)' }}
       >
         <div
-          className="mb-1.5 inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[1.5px]"
+          className="mb-2 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[1.8px]"
           style={{ color: 'var(--green)' }}
         >
           <span
-            className="h-1.5 w-1.5 rounded-full"
+            className="h-2 w-2 rounded-full"
             style={{ background: 'var(--green)' }}
           />
           Verification · {passedCount === checklist.length ? 'Passed' : 'Partial'}
         </div>
         <h3
-          className="mb-3 text-sm font-bold tracking-[-0.2px]"
+          className="mb-5 text-lg font-bold tracking-[-0.3px]"
           style={{ color: 'var(--dark-charcoal)' }}
         >
           최종 검증 항목 · {passedCount} / {checklist.length}
         </h3>
         <div
           className="grid"
-          style={{ gridTemplateColumns: '1fr 1fr', gap: 8 }}
+          style={{ gridTemplateColumns: '1fr 1fr', gap: 14 }}
         >
           {checklist.map((c, i) => (
             <CheckItem key={i} passed={c.passed} label={c.label} />
@@ -441,14 +444,14 @@ export function S5Summary({
             <button
               onClick={handleApprove}
               disabled={pending || passedCount < checklist.length}
-              className="inline-flex items-center gap-2.5 px-8 py-3 text-sm font-bold uppercase tracking-[0.4px] text-white transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-3 px-12 py-4 text-base font-bold uppercase tracking-[0.5px] text-white transition-all duration-200 hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-60"
               style={{
                 background: 'var(--primary-orange)',
-                boxShadow: '0 6px 18px rgba(232,84,26,.28)',
+                boxShadow: '0 10px 28px rgba(232,84,26,.32)',
               }}
             >
               <span
-                className="inline-flex h-5 w-5 items-center justify-center text-xs"
+                className="inline-flex h-6 w-6 items-center justify-center text-sm"
                 style={{ background: 'rgba(255,255,255,.18)' }}
               >
                 ✓
@@ -482,23 +485,23 @@ function SummaryCell({
 }) {
   return (
     <div
-      className="bg-white px-4 py-4 text-center"
-      style={{ borderTop: '3px solid var(--primary-orange)' }}
+      className="bg-white px-6 py-6 text-center"
+      style={{ borderTop: '4px solid var(--primary-orange)' }}
     >
       <div
-        className="mb-2 text-[9px] font-bold uppercase tracking-[1.5px]"
+        className="mb-3 text-[10px] font-bold uppercase tracking-[1.8px]"
         style={{ color: 'var(--subtitle-text)' }}
       >
         {label}
       </div>
       <div
-        className="font-bold italic leading-none tracking-[-0.8px]"
-        style={{ color: 'var(--primary-orange)', fontSize: 28 }}
+        className="font-bold italic leading-none tracking-[-1.2px]"
+        style={{ color: 'var(--primary-orange)', fontSize: 42 }}
       >
         {num}
         {unit && (
           <span
-            className="ml-0.5 text-xs font-medium not-italic"
+            className="ml-1 text-sm font-medium not-italic"
             style={{ color: 'var(--subtitle-text)' }}
           >
             {unit}
@@ -507,7 +510,7 @@ function SummaryCell({
       </div>
       {meta && (
         <div
-          className="mt-2 text-[10px]"
+          className="mt-3 text-[11px]"
           style={{ color: 'var(--subtitle-text)' }}
         >
           {meta}
@@ -520,11 +523,11 @@ function SummaryCell({
 function CheckItem({ passed, label }: { passed: boolean; label: string }) {
   return (
     <div
-      className="flex items-center gap-2 text-[11px]"
+      className="flex items-center gap-2.5 text-[13px]"
       style={{ color: 'var(--body-text, #333)' }}
     >
       <span
-        className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center text-[9px] font-bold text-white"
+        className="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center text-[11px] font-bold text-white"
         style={{
           background: passed ? 'var(--green)' : 'var(--hairline-strong, #e4dfd6)',
         }}

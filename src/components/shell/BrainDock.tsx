@@ -65,9 +65,9 @@ export function BrainDock({
       <aside
         className="fixed right-0 z-[25] flex flex-col bg-white transition-transform duration-200"
         style={{
-          top: 44,
-          width: 320,
-          height: 'calc(100vh - 44px - 56px)',
+          top: 48,
+          width: 360,
+          height: 'calc(100vh - 48px - 64px)',
           borderLeft: '2px solid var(--dark-charcoal)',
           transform: open ? 'translateX(0)' : 'translateX(100%)',
         }}
