@@ -53,11 +53,11 @@ export function currentSlotGuide(currentSlot: string | null, matchedAssets?: Ass
           ? '\n' +
             '\n- ⭐⭐ keyMessages 3개 모두 채워지면 **반드시** 동시에 **messageHierarchy** 도 produce (Phase M-fix-1):\n' +
             '  extractedSlots["messageHierarchy"] = [\n' +
-            '    { key: <keyMessages.0 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."] },\n' +
-            '    { key: <keyMessages.1 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."] },\n' +
-            '    { key: <keyMessages.2 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."] }\n' +
+            '    { key: <keyMessages.0 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."], sourceTrace: {...} },\n' +
+            '    { key: <keyMessages.1 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."], sourceTrace: {...} },\n' +
+            '    { key: <keyMessages.2 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."], sourceTrace: {...} }\n' +
             '  ]\n' +
-            '\n  ⚠️ **3가지 필수 규칙**:\n' +
+            '\n  ⚠️ **4가지 필수 규칙**:\n' +
             '  1. **key 는 위 [이미 채워진 슬롯] 의 keyMessages.0/1/2 값과 100% 동일** — 재구성·재해석 금지!\n' +
             '     (반드시 글자 그대로 복사. 다른 표현으로 바꾸면 안 됨.)\n' +
             '  2. **sub 는 각 hierarchy 당 최소 2개** (15~200자) — 메시지 어떻게/왜/누구와\n' +
@@ -65,6 +65,14 @@ export function currentSlotGuide(currentSlot: string | null, matchedAssets?: Ass
             '  3. **quantProofs 는 각 hierarchy 당 최소 2개** (5~150자) — 수치+단위+출처/년도 필수\n' +
             '     UD_TRACK_RECORD 활용: 누적 500억원 / 창업가 20,211명 / 코치 800명 / 30개 거점 / BB+ 신용등급\n' +
             '     또는 매칭된 자산의 narrativeSnippet 정량 부분 인용\n' +
+            '  4. **sourceTrace** (Phase G2 — PM 신뢰도 ↑):\n' +
+            '     {\n' +
+            '       "matchedAssetIds": ["인용한 자산 ID 1~3개 (위 [매칭된 UD 자산] 목록의 ID)"],\n' +
+            '       "patternIds": ["인용한 패턴 ID 1~2개 (예: youth-village-5-core-messages · pyramid-principle)"],\n' +
+            '       "reasoning": "이 hierarchy 의 추론 근거 한 줄 (200자 이내)"\n' +
+            '     }\n' +
+            '     예: { matchedAssetIds: ["actt-pre-post"], patternIds: ["quantitative-saturation"],\n' +
+            '           reasoning: "ACTT 사전·사후 페어 진단 자산 + 정량 포화 패턴 + PM keyMessages.0 의 \\"진단\\" 키워드 매칭" }\n' +
             '\n  이 hierarchy 가 발주처 제출 .md 의 핵심 — sub/quantProofs 가 빈 채로 가면 PM 가치 0.'
           : '')
       )
@@ -141,7 +149,12 @@ function sectionMetaHint(
     `\n- ⭐ One Page One Thesis (청년마을 PDF 학습): 본문과 함께 **sectionMeta** 도 produce:\n` +
     `  extractedSlots["sectionMeta"] = { "${sectionKey}": {\n` +
     `    "subtitle": ": <부제 — 카테고리 라벨, 80자 이내, 콜론으로 시작>",\n` +
-    `    "headline": "<단일 주장 한 문장 — 200자 이내, 정량 포함 권장>"\n` +
+    `    "headline": "<단일 주장 한 문장 — 200자 이내, 정량 포함 권장>",\n` +
+    `    "sourceTrace": {\n` +
+    `      "matchedAssetIds": ["인용 자산 ID 1~3개"],\n` +
+    `      "patternIds": ["인용 패턴 ID 1~2개"],\n` +
+    `      "reasoning": "헤드라인 추론 근거 한 줄 (200자 이내)"\n` +
+    `    }\n` +
     `  } }\n` +
     `  ⚠️ headline 값 안에 큰따옴표(\\") 직접 포함 금지 — 렌더가 자동으로 큰따옴표로 감싸짐.\n` +
     `  예: subtitle ": ${subtitleExample}" / headline "${headlineExample}"` +

@@ -45,6 +45,22 @@ export const KeyMessagesSchema = z
 // 각 keyMessage 당 3-3 hierarchy → 평가위원 헤드라인 훑기 + 디테일 증명
 // ─────────────────────────────────────────
 
+/**
+ * Phase G2 — Reasoning Trace (2026-05-28)
+ * AI 가 hierarchy/sectionMeta 를 생성한 이유를 PM 에게 노출.
+ * - matchedAssetIds: 인용한 자산 ID (asset-registry 의 ContentAsset.id)
+ * - patternIds: 인용한 패턴 ID (proposal-patterns/index.ts 의 PROPOSAL_PATTERNS.id)
+ * - reasoning: 1줄 추론 근거 (예: "PM 의 keyMessages.0 + RFP 의 ROI 키워드 매칭")
+ *
+ * 모든 필드 optional — LLM 이 일부만 채워도 hierarchy 생성 자체는 통과.
+ */
+export const SourceTraceSchema = z.object({
+  matchedAssetIds: z.array(z.string().max(80)).max(5).optional(),
+  patternIds: z.array(z.string().max(80)).max(3).optional(),
+  reasoning: z.string().max(200).optional(),
+})
+export type SourceTrace = z.infer<typeof SourceTraceSchema>
+
 export const MessageHierarchyItemSchema = z.object({
   /** 한 줄 선언적 키 메시지 (헤드라인 — One Page One Thesis 용) */
   key: z
@@ -61,6 +77,8 @@ export const MessageHierarchyItemSchema = z.object({
     .array(z.string().min(5, '정량 근거는 최소 5자').max(150, '정량 근거는 최대 150자'))
     .min(0)
     .max(5),
+  /** Phase G2 — AI 가 왜 이 hierarchy 를 생성했는지 reasoning trace (optional) */
+  sourceTrace: SourceTraceSchema.optional(),
 })
 
 export const MessageHierarchySchema = z
@@ -158,6 +176,8 @@ export const SectionWithHeadlineSchema = z.object({
   headline: z.string().max(200).optional(),
   /** 본문 (기존 SectionDraftSchema 와 동일) */
   content: z.string().max(2000),
+  /** Phase G2 — sectionMeta 생성 reasoning trace (optional) */
+  sourceTrace: SourceTraceSchema.optional(),
 })
 
 // 하위 호환: 기존 sections.N 는 string 으로 그대로 받되, 새 client 는 object 도 가능
