@@ -295,7 +295,7 @@ export function S3Checklist({
               className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
               style={{ background: 'var(--action-orange)' }}
             />
-            Inspector · 7 Lens · Auto Review
+            Inspector · 11 Lens · Auto Review
           </div>
           <h2 className="relative mb-2 text-lg font-bold tracking-[-0.3px]">
             {isPass
@@ -328,7 +328,7 @@ export function S3Checklist({
         </div>
       </div>
 
-      {/* 7 Lens grid */}
+      {/* 11 Lens grid (Phase J: 7 → 11 — detail-completeness · competitive-context · off-record-insight · quantitative-saturation 추가) */}
       <div
         className="mb-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[1.8px]"
         style={{ color: 'var(--primary-orange)' }}
@@ -337,7 +337,7 @@ export function S3Checklist({
           className="h-1.5 w-1.5 rounded-full"
           style={{ background: 'var(--primary-orange)' }}
         />
-        Inspector · 7 Lens · Detail
+        Inspector · 11 Lens · Detail
       </div>
 
       <div

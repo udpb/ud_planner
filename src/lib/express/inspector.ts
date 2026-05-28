@@ -28,6 +28,8 @@ import {
   type SectionKey,
   type Channel,
 } from './schema'
+// Phase M-fix-3 — Inspector suggestion 에 패턴 cheat-sheet 주입
+import { PROPOSAL_PATTERNS, formatPatternCompact } from '@/lib/proposal-patterns'
 
 // ─────────────────────────────────────────
 // 1. 결과 스키마
@@ -338,7 +340,18 @@ ${sections}
     - 미달 시: critical (모호 표현 3건+) / major (정량 < 3건/섹션) / minor (근거 부족)
 
 JSON 만 출력. 설명·마크다운 없이.
+
+────────────────────────────────────────────
+[추천 제안서 패턴 (Phase K 학습 카탈로그) — issue.suggestion 작성 시 인용 가능]
+${formatPatternsForPrompt()}
+
+위 패턴 ID 를 issue.suggestion 에 인용하면 PM 이 한 번 클릭으로 패턴 가이드 확장 가능.
+예: "differentiators 약함 → ▶ [youth-village-5-core-messages] 5 카테고리 hierarchy 적용 권장"
 `.trim()
+}
+
+function formatPatternsForPrompt(): string {
+  return PROPOSAL_PATTERNS.map(formatPatternCompact).join('\n')
 }
 
 // ─────────────────────────────────────────

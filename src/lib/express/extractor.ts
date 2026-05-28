@@ -10,6 +10,7 @@
 import {
   IntentSchema,
   KeyMessagesSchema,
+  MessageHierarchySchema,
   ALL_SLOTS,
   type ExpressDraft,
   type SectionKey,
@@ -145,6 +146,74 @@ export function mergeExtractedSlots(
       continue
     }
 
+    // messageHierarchy — Phase M-fix-1 (Phase J schema 연동)
+    // 형식: [{ key: 헤드라인 8~80자, sub: 0~5개 15~200자, quantProofs: 0~5개 5~150자 }]
+    if (key === 'messageHierarchy' && Array.isArray(value)) {
+      // 1차 cleanup — 각 항목 정리 + 길이 trim
+      const cleaned = value
+        .map((v) => v as Record<string, unknown>)
+        .filter((v) => v && typeof v === 'object' && typeof v.key === 'string')
+        .map((v) => ({
+          key: String(v.key).trim().slice(0, 80),
+          sub: Array.isArray(v.sub)
+            ? (v.sub as unknown[])
+                .map((s) => String(s).trim())
+                .filter((s) => s.length >= 15 && s.length <= 200)
+                .slice(0, 5)
+            : [],
+          quantProofs: Array.isArray(v.quantProofs)
+            ? (v.quantProofs as unknown[])
+                .map((s) => String(s).trim())
+                .filter((s) => s.length >= 5 && s.length <= 150)
+                .slice(0, 5)
+            : [],
+        }))
+        .filter((h) => h.key.length >= 8)
+        .slice(0, 5)
+      const r = MessageHierarchySchema.safeParse(cleaned)
+      if (r.success) {
+        next.messageHierarchy = r.data
+        accepted.push('messageHierarchy')
+      } else {
+        rejected.push(key)
+        errors.push({
+          slotKey: key,
+          zodIssue: r.error.issues[0]?.message ?? 'messageHierarchy 검증 실패',
+          remediation: '각 hierarchy 항목은 key(8~80자) + sub(15~200자, 0~5개) + quantProofs(5~150자, 0~5개)',
+        })
+      }
+      continue
+    }
+
+    // sectionMeta — Phase M-fix-2 (Phase J schema 연동)
+    // 형식: { "1": { headline: "큰따옴표 헤드라인", subtitle: ": 부제목" }, ... }
+    if (key === 'sectionMeta' && typeof value === 'object' && value !== null) {
+      const obj = value as Record<string, unknown>
+      const merged = { ...(next.sectionMeta ?? {}) } as Record<string, { headline?: string; subtitle?: string }>
+      for (const [sk, sv] of Object.entries(obj)) {
+        if (!['1', '2', '3', '4', '5', '6', '7'].includes(sk)) continue
+        if (!sv || typeof sv !== 'object') continue
+        const meta = sv as Record<string, unknown>
+        const cleaned: { headline?: string; subtitle?: string } = {}
+        if (typeof meta.headline === 'string') {
+          const h = meta.headline.trim().slice(0, 200)
+          if (h.length > 0) cleaned.headline = h
+        }
+        if (typeof meta.subtitle === 'string') {
+          const s = meta.subtitle.trim().slice(0, 80)
+          if (s.length > 0) cleaned.subtitle = s
+        }
+        if (Object.keys(cleaned).length > 0) {
+          merged[sk] = { ...(merged[sk] ?? {}), ...cleaned }
+        }
+      }
+      if (Object.keys(merged).length > 0) {
+        next.sectionMeta = merged as ExpressDraft['sectionMeta']
+        accepted.push('sectionMeta')
+      }
+      continue
+    }
+
     // differentiators
     if (key === 'differentiators' && Array.isArray(value)) {
       const refs = value
@@ -265,6 +334,10 @@ const KNOWN_SLOT_PREFIXES = new Set<string>([
   'keyMessages.0',
   'keyMessages.1',
   'keyMessages.2',
+  // Phase M-fix-1 — keyMessages 진화 버전 (선언적 헤드라인 + sub + quantProofs)
+  'messageHierarchy',
+  // Phase M-fix-2 — sections 의 부제·헤드라인 분리 (One Page One Thesis)
+  'sectionMeta',
   'differentiators',
   'evidenceRefs',
   'sections',
