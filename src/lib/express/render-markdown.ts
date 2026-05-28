@@ -20,7 +20,14 @@
  * 관련: docs/decisions/013-express-v2-auto-diagnosis.md §결정 §3 (M3-1)
  */
 
-import type { ExpressDraft, AutoDiagnosis, Department, Channel } from './schema'
+import type {
+  ExpressDraft,
+  AutoDiagnosis,
+  Department,
+  Channel,
+  MessageHierarchy,
+  SectionMeta,
+} from './schema'
 import { SECTION_LABELS } from './schema'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
 import { UD_TRACK_RECORD } from '@/lib/ud-brand'
@@ -137,11 +144,34 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
   }
 
   // 4. 핵심 메시지 ────────────────────────────────
-  const kms = (draft.keyMessages ?? []).filter((m) => m?.trim())
-  if (kms.length > 0) {
-    parts.push(`## 💬 핵심 메시지\n`)
-    kms.forEach((m, i) => parts.push(`${i + 1}. ${m}`))
-    parts.push('')
+  // Phase L — messageHierarchy 가 채워져 있으면 우선 사용 (key + sub + quantProofs)
+  //          없으면 기존 keyMessages 사용 (하위 호환)
+  const hierarchy = (draft.messageHierarchy ?? []).filter((m) => m.key?.trim())
+  if (hierarchy.length > 0) {
+    parts.push(`## 💬 핵심 메시지 hierarchy\n`)
+    hierarchy.forEach((item, i) => {
+      // 카테고리 라벨 + 큰 따옴표 헤드라인 (One Page One Thesis 적용)
+      parts.push(`### ${i + 1}. "${item.key}"`)
+      if (item.sub.length > 0) {
+        for (const s of item.sub) {
+          parts.push(`- ${s}`)
+        }
+      }
+      if (item.quantProofs.length > 0) {
+        parts.push('  **정량 근거**:')
+        for (const q of item.quantProofs) {
+          parts.push(`  - ${q}`)
+        }
+      }
+      parts.push('')
+    })
+  } else {
+    const kms = (draft.keyMessages ?? []).filter((m) => m?.trim())
+    if (kms.length > 0) {
+      parts.push(`## 💬 핵심 메시지\n`)
+      kms.forEach((m, i) => parts.push(`${i + 1}. ${m}`))
+      parts.push('')
+    }
   }
 
   // 5. 차별화 자산 (수락된 것만) ─────────────────
@@ -159,10 +189,13 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
 
   // 6. 7섹션 본문 ─────────────────────────────────
   // PR1: sections.5/7 fallback · PR3: 경어체 자동 변환 + 길이 marker
+  // Phase L: sectionMeta (headline·subtitle) → One Page One Thesis 패턴 적용
   const sectionKeys = ['1', '2', '3', '4', '5', '6', '7'] as const
   for (const k of sectionKeys) {
     let text = draft.sections?.[k]?.trim()
     const isFallback = !text
+    const meta = draft.sectionMeta?.[k]
+
     // sections.5 fallback — budget 데이터 있을 때
     if (!text && k === '5') {
       text = buildSection5Fallback(project.totalBudgetVat, budget)
@@ -183,9 +216,22 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
       : ''
     const fallbackMarker = isFallback ? ' _(자동 생성 · PM 보완 권장)_' : ''
 
-    parts.push(
-      `## ${k}. ${SECTION_LABELS[k]}${fallbackMarker}${lengthMarker}\n\n${polishedText}\n`,
-    )
+    // Phase L — 헤더: ## N. 라벨 + (sectionMeta.subtitle 있으면 콜론으로 부제)
+    let header = `## ${k}. ${SECTION_LABELS[k]}`
+    if (meta?.subtitle) header += ` ${meta.subtitle}`
+    header += `${fallbackMarker}${lengthMarker}`
+
+    parts.push(header)
+    parts.push('')
+
+    // Phase L — One Page One Thesis: headline 있으면 큰 따옴표 인용 표시
+    if (meta?.headline) {
+      parts.push(`> **"${meta.headline}"**`)
+      parts.push('')
+    }
+
+    parts.push(polishedText)
+    parts.push('')
   }
 
   // PR2: 자동 일관성 경고 (SROI 본문/forecast 모순 · 채널 톤 mismatch)
@@ -193,13 +239,16 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
     draft,
     forecastTotalSocialValue: input.impactForecast?.totalSocialValue,
   })
-  if (consistencyWarnings.length > 0) {
+  // Phase L — 품질 경고 (MECE 패턴 검증 · 모호 표현 · 정량 포화)
+  const qualityWarnings = buildQualityWarnings(draft)
+  const allWarnings = [...consistencyWarnings, ...qualityWarnings]
+  if (allWarnings.length > 0) {
     parts.push('\n---\n')
     parts.push(
       '<!-- ai-consistency: 발주처 제출 전 PM 확인 권장 -->\n',
     )
-    parts.push('## ⚠ 자동 일관성 경고 (PM 확인)\n')
-    for (const w of consistencyWarnings) {
+    parts.push('## ⚠ 자동 품질 점검 (PM 확인)\n')
+    for (const w of allWarnings) {
       parts.push(`- **${w.title}**: ${w.detail}`)
       if (w.suggestion) parts.push(`  - 💡 ${w.suggestion}`)
     }
@@ -533,4 +582,154 @@ function hasClientDoc(doc: NonNullable<StrategicNotes['clientOfficialDoc']>): bo
     (doc.policies?.length ?? 0) > 0 ||
     (doc.track?.length ?? 0) > 0
   )
+}
+
+// ─────────────────────────────────────────
+// Phase L — 품질 점검 (MECE 일관성 · 모호 표현 · 정량 포화)
+// ─────────────────────────────────────────
+
+/** 한글 숫자 → 아라비아 숫자 변환 (1~10) */
+const KO_NUM: Record<string, number> = {
+  한: 1, 두: 2, 세: 3, 네: 4, 다섯: 5, 여섯: 6, 일곱: 7, 여덟: 8, 아홉: 9, 열: 10,
+}
+
+/** 모호 표현 — 정량 근거로 대체 권장 */
+const AMBIGUOUS_EXPRESSIONS = [
+  '많은', '다양한', '충분한', '대부분', '상당한', '여러', '풍부한', '폭넓은',
+  '여러가지', '여러 가지', '많이', '광범위한', '수많은', '대다수',
+]
+
+/**
+ * Phase L — 품질 점검 워닝 빌더.
+ *
+ * 1. MECE 일관성: "N가지/N대 요소/N단계" 선언과 실제 항목 수 불일치 검출
+ * 2. 모호 표현: '많은/다양한/충분한' 등 정량 근거로 대체 권장
+ * 3. 정량 포화: messageHierarchy 의 quantProofs 합이 5건 미만 → UD_TRACK_RECORD 인용 제안
+ */
+export function buildQualityWarnings(draft: ExpressDraft): ConsistencyWarning[] {
+  const warnings: ConsistencyWarning[] = []
+
+  // ─ 1. MECE 일관성 검사 ─
+  // "N가지" / "N대 요소" / "N개의 기둥" / "N단계" 선언과 실제 bullet/번호 항목 수 비교
+  const sectionMap = (draft.sections ?? {}) as Record<string, string | undefined>
+  for (const [k, text] of Object.entries(sectionMap)) {
+    if (!text) continue
+    const meceIssues = detectMeceMismatch(text)
+    for (const issue of meceIssues) {
+      warnings.push({
+        title: `섹션 ${k} MECE 불일치`,
+        detail: `"${issue.declared}" 선언했으나 실제 항목 ${issue.found}개 발견`,
+        suggestion: `선언 숫자(${issue.declaredCount})와 실제 항목 수(${issue.found})를 일치시키거나, 선언 문장을 제거하세요.`,
+      })
+    }
+  }
+
+  // ─ 2. 모호 표현 검출 ─
+  // sections 전체에서 '많은/다양한/충분한' 등 정량 없는 표현 카운트
+  const allText = Object.values(sectionMap).filter(Boolean).join('\n')
+  const ambiguousHits = AMBIGUOUS_EXPRESSIONS.flatMap((kw) => {
+    const matches = allText.match(new RegExp(kw, 'g'))
+    return matches ? Array(matches.length).fill(kw) : []
+  })
+  if (ambiguousHits.length >= 3) {
+    const counts = ambiguousHits.reduce<Record<string, number>>((acc, kw) => {
+      acc[kw] = (acc[kw] ?? 0) + 1
+      return acc
+    }, {})
+    const top = Object.entries(counts)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5)
+      .map(([kw, n]) => `'${kw}' ${n}회`)
+      .join(', ')
+    warnings.push({
+      title: '모호 표현 과다 (정량 대체 권장)',
+      detail: `총 ${ambiguousHits.length}건 모호 표현 (${top})`,
+      suggestion: `'많은 코치' → '코치 ${UD_TRACK_RECORD.totalCoaches}명' / '다양한 지역' → '${UD_TRACK_RECORD.regionalHubs}개 거점' / '풍부한 실적' → '${UD_TRACK_RECORD.cumulativeRevenueBillions}억원 누적 수주' 식으로 UD_TRACK_RECORD 수치 인용 권장.`,
+    })
+  }
+
+  // ─ 3. 정량 포화 검사 ─
+  // messageHierarchy 있을 때 quantProofs 총합 / 없으면 본문에서 숫자 패턴 카운트
+  const hierarchy = draft.messageHierarchy ?? []
+  if (hierarchy.length > 0) {
+    const totalQuant = hierarchy.reduce((s, h) => s + h.quantProofs.length, 0)
+    if (totalQuant < 5) {
+      warnings.push({
+        title: '정량 근거 부족 (메시지 hierarchy)',
+        detail: `messageHierarchy 의 quantProofs 총 ${totalQuant}건 (권장 5건+)`,
+        suggestion: `UD_TRACK_RECORD 핵심 수치 활용: 누적 ${UD_TRACK_RECORD.cumulativeRevenueBillions}억원 / 창업가 ${UD_TRACK_RECORD.totalGraduates.toLocaleString()}명 / 코치 ${UD_TRACK_RECORD.totalCoaches}명 / ${UD_TRACK_RECORD.regionalHubs}개 거점 / 신용등급 ${UD_TRACK_RECORD.creditRating} / 동시 운영 ${UD_TRACK_RECORD.simultaneousCapacity.toLocaleString()}명.`,
+      })
+    }
+  } else {
+    // 본문에서 숫자 + 단위 패턴 카운트 (간이 정량 포화 측정)
+    const quantPattern = /\d+(?:[,.]\d+)?\s*(?:%|명|건|개|년|개월|주|회|억|만원|원|점|등급)/g
+    const quantHits = (allText.match(quantPattern) ?? []).length
+    if (quantHits < 8 && allText.length > 500) {
+      warnings.push({
+        title: '정량 근거 부족 (본문 전체)',
+        detail: `본문 정량 표현 ${quantHits}건 (권장 8건+)`,
+        suggestion: `숫자·년도·기관명 인용으로 신뢰도 강화. UD_TRACK_RECORD 핵심: 누적 ${UD_TRACK_RECORD.cumulativeRevenueBillions}억원 / 창업가 ${UD_TRACK_RECORD.totalGraduates.toLocaleString()}명 / 코치 ${UD_TRACK_RECORD.totalCoaches}명.`,
+      })
+    }
+  }
+
+  return warnings
+}
+
+interface MeceIssue {
+  declared: string
+  declaredCount: number
+  found: number
+}
+
+/**
+ * 한 섹션 본문에서 MECE 불일치 검출.
+ *
+ * 예: "다음 3가지 전략으로 추진합니다. - 첫째 ... - 둘째 ..." (선언 3, 실제 2)
+ *
+ * 패턴:
+ *   - 숫자 + 가지/대/개/단계/축/기둥/요소/원칙/단계로 + (전략/방법/축 등)
+ *   - 한글 수사 (한/두/세/네/다섯 + 가지/대/개)
+ *
+ * 항목 카운팅:
+ *   - "- " bullet, "1)" / "1." / "①" 등 번호, "첫째/둘째/셋째" 순서
+ */
+function detectMeceMismatch(text: string): MeceIssue[] {
+  const issues: MeceIssue[] = []
+
+  // 선언 패턴: 숫자(또는 한글 수사) + 가지/대/개/단계/축/기둥/요소/원칙
+  const declRegex =
+    /(\d+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열)\s*(가지|대|개의|단계|축|기둥|요소|원칙)/g
+  const matches = Array.from(text.matchAll(declRegex))
+  if (matches.length === 0) return issues
+
+  // 항목 카운팅 — 각 패턴별로 출현 횟수 측정 후 최대값을 실제 항목 수로 본다
+  const counts = [
+    (text.match(/^\s*[-*]\s+/gm) ?? []).length,  // - bullet
+    (text.match(/^\s*\d+\.\s+/gm) ?? []).length, // 1. 번호
+    (text.match(/^\s*\d+\)\s+/gm) ?? []).length, // 1) 번호
+    (text.match(/[①②③④⑤⑥⑦⑧⑨⑩]/g) ?? []).length, // 원숫자
+    (text.match(/(?:첫째|둘째|셋째|넷째|다섯째|여섯째|일곱째)/g) ?? []).length,
+  ]
+  const itemCount = Math.max(...counts)
+
+  for (const m of matches) {
+    const numStr = m[1]
+    const unit = m[2]
+    const declaredCount = /^\d+$/.test(numStr) ? parseInt(numStr, 10) : KO_NUM[numStr] ?? 0
+    // 1~2 같은 작은 수는 단순 명사구일 수 있으니 스킵 (오탐 방지)
+    if (declaredCount < 3 || declaredCount > 12) continue
+    if (itemCount === 0) continue // 항목 자체가 없으면 스킵 (선언만 있는 문장)
+    if (Math.abs(itemCount - declaredCount) >= 1) {
+      issues.push({
+        declared: `${numStr}${unit}`,
+        declaredCount,
+        found: itemCount,
+      })
+      // 한 섹션에 같은 종류 워닝 여러 개 안 띄움
+      break
+    }
+  }
+
+  return issues
 }
