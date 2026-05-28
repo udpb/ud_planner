@@ -8,7 +8,7 @@
  * Phase B~F — S1~S5 컴포넌트 단계별 wire up.
  */
 
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { TopBar, type StageId, type StageStatus } from '@/components/shell/TopBar'
 import { SubHeader } from '@/components/shell/SubHeader'
@@ -91,6 +91,15 @@ export function V2Shell({
   const router = useRouter()
   const [brainOpen, setBrainOpen] = useState(false)
   const [activeStage, setActiveStage] = useState<StageId>(initialStage)
+  // Phase M F5 — ?stage=Sn URL 파라미터로 stage override (테스트·딥링크용)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const sp = new URLSearchParams(window.location.search)
+    const s = sp.get('stage')
+    if (s && ['S1', 'S2', 'S3', 'S4', 'S5'].includes(s)) {
+      setActiveStage(s as StageId)
+    }
+  }, [])
   const [, startTransition] = useTransition()
 
   async function handleApprove() {
