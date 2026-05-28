@@ -75,3 +75,8 @@ guidebook-site/site/
 .secrets/
 
 .claude/scheduled_tasks.lock
+
+# Phase L 검증 — 임시 .md 출력 + tmp 스크립트
+.tmp-*.md
+.tmp-*.ts
+.tmp-*.json

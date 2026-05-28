@@ -664,10 +664,10 @@ export function buildQualityWarnings(draft: ExpressDraft): ConsistencyWarning[] 
     // 본문에서 숫자 + 단위 패턴 카운트 (간이 정량 포화 측정)
     const quantPattern = /\d+(?:[,.]\d+)?\s*(?:%|명|건|개|년|개월|주|회|억|만원|원|점|등급)/g
     const quantHits = (allText.match(quantPattern) ?? []).length
-    if (quantHits < 8 && allText.length > 500) {
+    if (quantHits < 6 && allText.length > 500) {
       warnings.push({
         title: '정량 근거 부족 (본문 전체)',
-        detail: `본문 정량 표현 ${quantHits}건 (권장 8건+)`,
+        detail: `본문 정량 표현 ${quantHits}건 (권장 6건+)`,
         suggestion: `숫자·년도·기관명 인용으로 신뢰도 강화. UD_TRACK_RECORD 핵심: 누적 ${UD_TRACK_RECORD.cumulativeRevenueBillions}억원 / 창업가 ${UD_TRACK_RECORD.totalGraduates.toLocaleString()}명 / 코치 ${UD_TRACK_RECORD.totalCoaches}명.`,
       })
     }
