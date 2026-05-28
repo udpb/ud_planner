@@ -43,6 +43,9 @@ import { generateTrackRecord } from './track-record'
 import { inferBudgetBreakdown } from './infer-budget'
 import { fetchExternalEvidence, formatResearchForPrompt } from './deep-research'
 import type { DeepResearchOutput } from './deep-research'
+// L4 — fact-check 2차 LLM 검증
+import { verifyExternalEvidence } from './verify-research'
+import type { VerifiedResearchOutput } from './verify-research'
 // Phase J2 — tonePatterns 활성화
 import { buildToneProfile, formatToneProfileForPrompt } from './tone-patterns'
 import type { ToneProfile } from './tone-patterns'
@@ -66,8 +69,10 @@ export interface UltimateDraftOutput {
   draft: ExpressDraft
   clientContext: ClientContext
   matchedAssets: AssetMatch[]
-  /** Phase I3 — 외부 딥리서치 결과 */
-  externalResearch: DeepResearchOutput | null
+  /** Phase I3 — 외부 딥리서치 결과 (L4 fact-check 적용 후) */
+  externalResearch: DeepResearchOutput | VerifiedResearchOutput | null
+  /** L4 — fact-check 검증 결과 (verified/uncertain/fabricated 분포) */
+  verificationSummary: VerifiedResearchOutput['verification'] | null
   /** Phase I1 — 자동 생성된 sections.7 (수행 실적) 의 인용 사업 */
   trackRecordSources: string[]
   /** Phase I2 — 자동 산출 예산 비목 */
@@ -145,9 +150,34 @@ export async function produceUltimateDraft(
   // ────────────────────────────────────
   progress('2.5/9', '외부 자료 딥리서치...')
   const t2_5 = Date.now()
-  const externalResearch = await fetchExternalEvidence({ rfp, channel })
+  const rawResearch = await fetchExternalEvidence({ rfp, channel })
   bump('deep-research')
-  progress('2.5/9', `완료 ${((Date.now() - t2_5) / 1000).toFixed(1)}s · ${externalResearch.evidence.length} 자료 · domainInsight ${externalResearch.domainInsight ? '있음' : '없음'}`)
+  progress('2.5/9', `완료 ${((Date.now() - t2_5) / 1000).toFixed(1)}s · ${rawResearch.evidence.length} 자료 · domainInsight ${rawResearch.domainInsight ? '있음' : '없음'}`)
+
+  // ────────────────────────────────────
+  // Step 2.6: 외부 자료 fact-check (L4, 2차 LLM — skeptical reviewer)
+  // ────────────────────────────────────
+  progress('2.6/9', '외부 자료 fact-check (skeptical reviewer)...')
+  const t2_6 = Date.now()
+  let externalResearch: VerifiedResearchOutput | DeepResearchOutput = rawResearch
+  let verificationSummary: VerifiedResearchOutput['verification'] | null = null
+  if (rawResearch.evidence.length > 0) {
+    try {
+      const verified = await verifyExternalEvidence(rawResearch)
+      externalResearch = verified
+      verificationSummary = verified.verification
+      bump('verify-research')
+      progress(
+        '2.6/9',
+        `완료 ${((Date.now() - t2_6) / 1000).toFixed(1)}s · verified ${verified.verification.verifiedCount} · uncertain ${verified.verification.uncertainCount} · fabricated ${verified.verification.fabricatedCount}`,
+      )
+    } catch (e) {
+      console.warn('[ultimate-draft] fact-check 실패 → raw research 사용:', e instanceof Error ? e.message : e)
+      progress('2.6/9', '실패 — raw research 그대로 사용 (검증 안 됨)')
+    }
+  } else {
+    progress('2.6/9', 'skip — evidence 없음')
+  }
 
   // ────────────────────────────────────
   // Step 3: 슬롯별 turn (N LLM)
@@ -337,6 +367,7 @@ export async function produceUltimateDraft(
     clientContext,
     matchedAssets,
     externalResearch,
+    verificationSummary,
     trackRecordSources,
     budgetBreakdown,
     toneProfile,
