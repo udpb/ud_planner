@@ -339,14 +339,18 @@ export function V2Shell({
 const MOCK_S3 = {
   overallScore: 78,
   lenses: [
-    { name: '시장 통계', score: 95, status: 'pass' as const, hint: '통계청 + 안산시 데이터 인용 정확' },
-    { name: '평가배점', score: 88, status: 'pass' as const, hint: '5개 배점 모두 본문 반영' },
+    { name: '시장 분석', score: 95, status: 'pass' as const, hint: '통계청 + 안산시 데이터 인용 정확' },
+    { name: '통계 인용', score: 88, status: 'pass' as const, hint: '5개 배점 모두 본문 반영' },
+    { name: '문제 정의', score: 90, status: 'pass' as const, hint: '정량 근거 풍부' },
+    { name: 'Before/After', score: 82, status: 'pass' as const, hint: 'SMART 5축 모두 통과' },
+    { name: '핵심 메시지', score: 80, status: 'pass' as const, hint: '키 메시지 3개 명확' },
     { name: '차별화', score: 62, status: 'weak' as const, hint: '자산 추가 권장 · Brain 5건' },
-    { name: 'Before / After', score: 82, status: 'pass' as const, hint: 'SMART 5축 모두 통과' },
-    { name: '실행 가능성', score: 80, status: 'pass' as const, hint: '예산 · 기간 · 인력 합리적' },
-    { name: 'Risk 대응', score: 68, status: 'weak' as const, hint: '2건 추가 권장' },
-    { name: '사회적 가치', score: 85, status: 'pass' as const, hint: 'SROI 2.3억 계산 명확' },
-    { name: '발주처 특수', score: null, status: 'unknown' as const, hint: '발주처 정보 부족' },
+    { name: '톤·문체', score: 75, status: 'pass' as const, hint: '경어체 일관' },
+    // Phase J — guidebook 5 관점 lens 추가
+    { name: '디테일 완결성', score: 70, status: 'weak' as const, hint: '강사 실명 매핑 권장' },
+    { name: '경쟁 맥락', score: 65, status: 'weak' as const, hint: '전년 수행사 피드백 보강' },
+    { name: '공식 밖 정보', score: null, status: 'unknown' as const, hint: '담당자 통화 흔적 없음' },
+    { name: '정량 포화', score: 78, status: 'pass' as const, hint: '섹션당 정량 5+ 확보' },
   ] satisfies LensScore[],
   assets: [
     {

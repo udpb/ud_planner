@@ -39,6 +39,39 @@ export const KeyMessagesSchema = z
   .length(3, '키 메시지는 정확히 3개')
 
 // ─────────────────────────────────────────
+// 3.5 Message Hierarchy — Phase J (Brain 고도화, 2026-05-28)
+// 청년마을 PDF + guidebook 학습 기반:
+//   key 메시지 (1 선언) + sub 메시지 3 (구체화) + quantitative proofs 3 (정량 근거)
+// 각 keyMessage 당 3-3 hierarchy → 평가위원 헤드라인 훑기 + 디테일 증명
+// ─────────────────────────────────────────
+
+export const MessageHierarchyItemSchema = z.object({
+  /** 한 줄 선언적 키 메시지 (헤드라인 — One Page One Thesis 용) */
+  key: z
+    .string()
+    .min(8, '키 메시지는 최소 8자')
+    .max(80, '키 메시지는 최대 80자 (헤드라인용)'),
+  /** 키 메시지를 구체화하는 sub 메시지 3개 (구조 · 단계 · 차별점 등) */
+  sub: z
+    .array(z.string().min(15, 'sub 메시지는 최소 15자').max(200, 'sub 메시지는 최대 200자'))
+    .min(0)
+    .max(5, 'sub 메시지는 최대 5개 (시각적 부하)'),
+  /** 정량 근거 (수치·년도·기관명·증빙) 0~5건 — 정량 포화 패턴 */
+  quantProofs: z
+    .array(z.string().min(5, '정량 근거는 최소 5자').max(150, '정량 근거는 최대 150자'))
+    .min(0)
+    .max(5),
+})
+
+export const MessageHierarchySchema = z
+  .array(MessageHierarchyItemSchema)
+  .min(0)
+  .max(5, '메시지 hierarchy 는 최대 5개')
+
+export type MessageHierarchyItem = z.infer<typeof MessageHierarchyItemSchema>
+export type MessageHierarchy = z.infer<typeof MessageHierarchySchema>
+
+// ─────────────────────────────────────────
 // 4. 차별화 자산 인용 — Asset Registry / Content Hub 의 자산 ID
 // ─────────────────────────────────────────
 
@@ -116,6 +149,18 @@ export const SectionDraftSchema = z
   .min(0)
   .max(2000, '섹션 초안은 최대 2000자')
 
+// Phase J — One Page One Thesis 패턴: 각 섹션에 별도 headline (선언적 한 줄)
+// 청년마을 PDF 의 ["기본계획 1)" → ": 정책 목표" → "큰따옴표 헤드라인"] 패턴 흡수
+export const SectionWithHeadlineSchema = z.object({
+  /** 카테고리 부제목 (예: ": 정책 수요자 분석") */
+  subtitle: z.string().max(80).optional(),
+  /** 큰따옴표 헤드라인 — One Page One Thesis 의 핵심 선언 */
+  headline: z.string().max(200).optional(),
+  /** 본문 (기존 SectionDraftSchema 와 동일) */
+  content: z.string().max(2000),
+})
+
+// 하위 호환: 기존 sections.N 는 string 으로 그대로 받되, 새 client 는 object 도 가능
 export const SectionsSchema = z.object({
   '1': SectionDraftSchema.optional(), // 제안 배경 및 목적
   '2': SectionDraftSchema.optional(), // 추진 전략 및 방법론
@@ -125,6 +170,20 @@ export const SectionsSchema = z.object({
   '6': SectionDraftSchema.optional(), // 기대 성과 및 임팩트
   '7': SectionDraftSchema.optional(), // 수행 역량 및 실적
 })
+
+// Phase J — sections.N 의 headline/subtitle 별도 저장 (sectionMeta)
+// hybrid: sections.N 는 body string 그대로 (호환), sectionMeta.N 는 헤드라인+부제목
+export const SectionMetaSchema = z.object({
+  '1': SectionWithHeadlineSchema.partial().optional(),
+  '2': SectionWithHeadlineSchema.partial().optional(),
+  '3': SectionWithHeadlineSchema.partial().optional(),
+  '4': SectionWithHeadlineSchema.partial().optional(),
+  '5': SectionWithHeadlineSchema.partial().optional(),
+  '6': SectionWithHeadlineSchema.partial().optional(),
+  '7': SectionWithHeadlineSchema.partial().optional(),
+})
+
+export type SectionMeta = z.infer<typeof SectionMetaSchema>
 
 export type SectionKey = keyof z.infer<typeof SectionsSchema>
 
@@ -266,9 +325,21 @@ export const ExpressDraftSchema = z.object({
   intent: IntentSchema.optional(),
   beforeAfter: BeforeAfterSchema.partial().optional(),
   keyMessages: z.array(z.string()).max(3).optional(),
+  /**
+   * Phase J — Message Hierarchy (key + sub + quantProofs)
+   * 청년마을 PDF + guidebook 학습 기반 — keyMessages 의 진화 버전.
+   * keyMessages 와 messageHierarchy 둘 다 optional, hierarchy 가 채워지면 우선 사용.
+   */
+  messageHierarchy: MessageHierarchySchema.optional(),
   differentiators: DifferentiatorsSchema.optional(),
   evidenceRefs: EvidenceRefsSchema.optional(),
   sections: SectionsSchema.optional(),
+  /**
+   * Phase J — sections.N 의 headline·subtitle 별도 저장.
+   * 본문 (sections.N) 은 호환 유지, hierarchy 메타는 sectionMeta 에 분리.
+   * .md 출력 시 sectionMeta.N.headline 있으면 큰 따옴표 헤드라인으로 표시.
+   */
+  sectionMeta: SectionMetaSchema.optional(),
   /** Wave U / U5 — Risk Mitigation (평가위원 의심 능동 답변, S3) */
   risks: RiskMitigationsSchema.optional(),
   meta: ExpressMetaSchema,
@@ -297,7 +368,9 @@ export type SlotKey =
   | 'sections.2'
   | 'sections.3'
   | 'sections.4'
+  | 'sections.5'
   | 'sections.6'
+  | 'sections.7'
 
 export const ALL_SLOTS: SlotKey[] = [
   'intent',
@@ -311,7 +384,9 @@ export const ALL_SLOTS: SlotKey[] = [
   'sections.2',
   'sections.3',
   'sections.4',
+  'sections.5',
   'sections.6',
+  'sections.7',
 ]
 
 export const SLOT_LABELS: Record<SlotKey, string> = {
@@ -326,7 +401,9 @@ export const SLOT_LABELS: Record<SlotKey, string> = {
   'sections.2': '② 추진 전략 및 방법론',
   'sections.3': '③ 교육 커리큘럼',
   'sections.4': '④ 운영 체계 및 코치진',
+  'sections.5': '⑤ 예산 및 경제성',
   'sections.6': '⑥ 기대 성과 및 임팩트',
+  'sections.7': '⑦ 수행 역량 및 실적',
 }
 
 // ─────────────────────────────────────────

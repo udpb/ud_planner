@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from 'react'
 
-/** Inspector lens slug → 한국어 라벨 */
+/** Inspector lens slug → 한국어 라벨 (Phase J: 7 → 10 lens 확장) */
 const LENS_LABELS: Record<string, string> = {
   market: '시장 분석',
   statistics: '통계 인용',
@@ -21,6 +21,11 @@ const LENS_LABELS: Record<string, string> = {
   'key-messages': '핵심 메시지',
   differentiators: '차별화',
   tone: '톤·문체',
+  // Phase J — guidebook Ch.2 다섯 관점 lens 추가
+  'detail-completeness': '디테일 완결성',
+  'competitive-context': '경쟁 맥락',
+  'off-record-insight': '공식 밖 정보',
+  'quantitative-saturation': '정량 포화',
 }
 
 export type LensStatus = 'pass' | 'weak' | 'unknown'
