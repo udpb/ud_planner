@@ -383,3 +383,41 @@ export function getPatternsByLens(lens: string): ProposalPattern[] {
 export function getPatternById(id: string): ProposalPattern | undefined {
   return PROPOSAL_PATTERNS.find((p) => p.id === id)
 }
+
+// ─────────────────────────────────────────
+// Prompt 주입용 compact formatter (Phase M-fix-3)
+// ─────────────────────────────────────────
+
+/**
+ * 한 패턴을 compact 1~3줄 prompt 인용 형태로 포맷.
+ * Inspector / S2 챗봇 / S3 검수 가이드 등에 inline 인용.
+ */
+export function formatPatternCompact(p: ProposalPattern): string {
+  return `▶ [${p.id}] ${p.name} (${p.source})\n  ${p.summary}`
+}
+
+/**
+ * Inspector lens 별 추천 패턴 cheat-sheet — 최대 N개.
+ * weak lens 가 잡힐 때 issue.suggestion 보강용.
+ */
+export function getPatternCheatSheetByLens(
+  lens: string,
+  limit: number = 2,
+): string {
+  const patterns = getPatternsByLens(lens).slice(0, limit)
+  if (patterns.length === 0) return ''
+  return patterns.map(formatPatternCompact).join('\n')
+}
+
+/**
+ * 섹션 별 추천 패턴 cheat-sheet.
+ * S2 sections.N 슬롯 가이드에 inline 주입용.
+ */
+export function getPatternCheatSheetBySection(
+  sectionKey: '1' | '2' | '3' | '4' | '5' | '6' | '7',
+  limit: number = 2,
+): string {
+  const patterns = getPatternsBySection(sectionKey).slice(0, limit)
+  if (patterns.length === 0) return ''
+  return patterns.map(formatPatternCompact).join('\n')
+}

@@ -281,6 +281,14 @@ generatedPrompt 에 PM 이 ChatGPT/Claude 에 그대로 붙여넣을 한국어 �
 ────────────────────────────────────────────
 [출력 JSON 스키마] — 반드시 이 형식
 
+⚠️ extractedSlots 의 허용 키 (이 외 키는 backend 가 필터링):
+- intent · beforeAfter · beforeAfter.before · beforeAfter.after
+- keyMessages · keyMessages.0/1/2
+- **messageHierarchy** ⭐ (Phase J 진화 — keyMessages.2 까지 채울 때 동시에 produce)
+- **sectionMeta** ⭐ (One Page One Thesis — sections.N 채울 때 동시에 produce)
+- differentiators · evidenceRefs
+- sections · sections.1/2/3/4/5/6/7
+
 {
   "extractedSlots": {
     "<slotKey>": <value>
