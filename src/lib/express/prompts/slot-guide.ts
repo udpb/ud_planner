@@ -51,15 +51,21 @@ export function currentSlotGuide(currentSlot: string | null, matchedAssets?: Ass
         '- quickReplies 로 후보 4~5개 다양한 톤' +
         (isLast
           ? '\n' +
-            '\n- ⭐ keyMessages 3개 모두 채워지면 동시에 **messageHierarchy** 도 제안 (Phase M-fix-1):\n' +
+            '\n- ⭐⭐ keyMessages 3개 모두 채워지면 **반드시** 동시에 **messageHierarchy** 도 produce (Phase M-fix-1):\n' +
             '  extractedSlots["messageHierarchy"] = [\n' +
-            '    { key: <메시지 1>, sub: [구체화 1~3], quantProofs: [정량 근거 1~3] },\n' +
-            '    { key: <메시지 2>, sub: [...], quantProofs: [...] },\n' +
-            '    { key: <메시지 3>, sub: [...], quantProofs: [...] }\n' +
+            '    { key: <keyMessages.0 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."] },\n' +
+            '    { key: <keyMessages.1 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."] },\n' +
+            '    { key: <keyMessages.2 와 똑같은 텍스트>, sub: ["...", "..."], quantProofs: ["...", "..."] }\n' +
             '  ]\n' +
-            '  sub 는 15~200자 (메시지 구체화 — 어떻게/왜/누구와)\n' +
-            '  quantProofs 는 5~150자 (수치·년도·기관명 — 매칭 자산·UD_TRACK_RECORD 활용)\n' +
-            '  비어 있어도 됨 (sub: [], quantProofs: []) — 가능한 만큼만'
+            '\n  ⚠️ **3가지 필수 규칙**:\n' +
+            '  1. **key 는 위 [이미 채워진 슬롯] 의 keyMessages.0/1/2 값과 100% 동일** — 재구성·재해석 금지!\n' +
+            '     (반드시 글자 그대로 복사. 다른 표현으로 바꾸면 안 됨.)\n' +
+            '  2. **sub 는 각 hierarchy 당 최소 2개** (15~200자) — 메시지 어떻게/왜/누구와\n' +
+            '     예: "ACTT 사전·사후 진단으로 5대 역량 × 15 지표의 정량 변화량 +1.10 입증"\n' +
+            '  3. **quantProofs 는 각 hierarchy 당 최소 2개** (5~150자) — 수치+단위+출처/년도 필수\n' +
+            '     UD_TRACK_RECORD 활용: 누적 500억원 / 창업가 20,211명 / 코치 800명 / 30개 거점 / BB+ 신용등급\n' +
+            '     또는 매칭된 자산의 narrativeSnippet 정량 부분 인용\n' +
+            '\n  이 hierarchy 가 발주처 제출 .md 의 핵심 — sub/quantProofs 가 빈 채로 가면 PM 가치 0.'
           : '')
       )
     }
@@ -135,8 +141,9 @@ function sectionMetaHint(
     `\n- ⭐ One Page One Thesis (청년마을 PDF 학습): 본문과 함께 **sectionMeta** 도 produce:\n` +
     `  extractedSlots["sectionMeta"] = { "${sectionKey}": {\n` +
     `    "subtitle": ": <부제 — 카테고리 라벨, 80자 이내, 콜론으로 시작>",\n` +
-    `    "headline": "<큰따옴표로 인용될 단일 주장 — 200자 이내, 정량 포함 권장>"\n` +
+    `    "headline": "<단일 주장 한 문장 — 200자 이내, 정량 포함 권장>"\n` +
     `  } }\n` +
+    `  ⚠️ headline 값 안에 큰따옴표(\\") 직접 포함 금지 — 렌더가 자동으로 큰따옴표로 감싸짐.\n` +
     `  예: subtitle ": ${subtitleExample}" / headline "${headlineExample}"` +
     (patterns ? `\n\n- 적용 가능 패턴 (Phase K Brain):\n${patterns}` : '')
   )
