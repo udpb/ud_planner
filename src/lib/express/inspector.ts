@@ -42,6 +42,11 @@ export const InspectorIssueSchema = z.object({
     'key-messages',
     'differentiators',
     'tone',
+    // Phase J — 4 추가 lens (guidebook Ch.2 5 관점 + Ch.6 정량 포화)
+    'detail-completeness',
+    'competitive-context',
+    'off-record-insight',
+    'quantitative-saturation',
   ]),
   severity: z.enum(['critical', 'major', 'minor']),
   sectionKey: z.string().optional(), // sections.<n> 또는 'overall'
@@ -80,7 +85,9 @@ export type InspectorReport = z.infer<typeof InspectorReportSchema>
  * B2B  — 발주 부서 문제정의 · Before/After · 차별화 자산 강조
  * renewal — 직전 성과·정량 변화·After 강조, 시장 분석은 덜 (이미 알고 있음)
  *
- * 가중치 합이 정확히 7.0 이 되도록 정규화. lens 7개 × 평균 1.0.
+ * Phase J — 11 lens 확장 (4 추가): detail-completeness · competitive-context
+ *           · off-record-insight · quantitative-saturation
+ * 가중치 합은 정확한 정규화보다 의미 있는 비중 표현에 집중 (lens 11개 × 평균 1.0 부근).
  */
 export const CHANNEL_LENS_WEIGHTS: Record<Channel, Record<InspectorIssue['lens'], number>> = {
   B2G: {
@@ -91,6 +98,11 @@ export const CHANNEL_LENS_WEIGHTS: Record<Channel, Record<InspectorIssue['lens']
     'key-messages': 0.8,
     differentiators: 0.8,
     tone: 0.8,
+    // B2G: 정량 포화 · 디테일 완결성 강조 (정부 평가는 객관성·체계 중심)
+    'detail-completeness': 1.2,
+    'competitive-context': 0.9,
+    'off-record-insight': 0.9,
+    'quantitative-saturation': 1.3,
   },
   B2B: {
     market: 0.9,
@@ -100,6 +112,11 @@ export const CHANNEL_LENS_WEIGHTS: Record<Channel, Record<InspectorIssue['lens']
     'key-messages': 1.0,
     differentiators: 1.3,
     tone: 0.8,
+    // B2B: 경쟁 맥락·off-record 강조 (기업 결정자는 차별점·내부지식 중시)
+    'detail-completeness': 1.0,
+    'competitive-context': 1.3,
+    'off-record-insight': 1.2,
+    'quantitative-saturation': 1.0,
   },
   renewal: {
     market: 0.7,
@@ -109,6 +126,11 @@ export const CHANNEL_LENS_WEIGHTS: Record<Channel, Record<InspectorIssue['lens']
     'key-messages': 0.9,
     differentiators: 1.0,
     tone: 0.9,
+    // renewal: 정량 포화 · off-record 강조 (전년 비교 + 내부 변화 증명)
+    'detail-completeness': 1.0,
+    'competitive-context': 0.9,
+    'off-record-insight': 1.2,
+    'quantitative-saturation': 1.3,
   },
 }
 
@@ -120,6 +142,10 @@ const ALL_LENSES: InspectorIssue['lens'][] = [
   'key-messages',
   'differentiators',
   'tone',
+  'detail-completeness',
+  'competitive-context',
+  'off-record-insight',
+  'quantitative-saturation',
 ]
 
 /**

@@ -115,6 +115,27 @@ const LENS_TO_ASSET_PROFILE: Record<
     categories: { product: 1.0, human: 1.0, content: 0.9, data: 0.5 },
     hint: '언더독스만의 자산 — 코치 풀·LMS·알럼나이·IMPACT 모듈',
   },
+  // Phase J — 4 추가 lens (guidebook Ch.2 5 관점 + Ch.6 정량 포화)
+  'detail-completeness': {
+    evidenceTypes: { methodology: 1.0, structural: 1.0, case: 0.6 },
+    categories: { methodology: 1.0, framework: 0.8, content: 0.6 },
+    hint: '회차별 시간표·강사 실명·예산 비목 디테일 보강 자산',
+  },
+  'competitive-context': {
+    evidenceTypes: { case: 1.0, structural: 0.8 },
+    categories: { product: 1.0, content: 0.7, methodology: 0.6 },
+    hint: '경쟁사 대비 차별점·전년 수행사 피드백 자산',
+  },
+  'off-record-insight': {
+    evidenceTypes: { case: 1.0, structural: 0.6 },
+    categories: { human: 1.0, content: 0.8, data: 0.5 },
+    hint: '담당자 통화·현장 방문·내부 지식 인용',
+  },
+  'quantitative-saturation': {
+    evidenceTypes: { quantitative: 1.0, case: 0.5 },
+    categories: { data: 1.0, framework: 0.6 },
+    hint: '모호 표현 대체용 정량 자산 — UD_TRACK_RECORD 수치',
+  },
 }
 
 // ─────────────────────────────────────────
@@ -150,6 +171,11 @@ const LENS_TO_DEFAULT_SECTION: Record<
   'before-after': '6', // 임팩트 — Before/After
   'key-messages': '2', // 추진 전략 — 메시지 구조
   differentiators: '4', // 커리큘럼/코치 — 자체 자산 차별화
+  // Phase J — 4 추가 lens
+  'detail-completeness': '3', // 커리큘럼 — 회차별 시간표·강사 실명
+  'competitive-context': '4', // 운영 체계 — 경쟁 차별점
+  'off-record-insight': '1', // 제안 배경 — 현장 통찰
+  'quantitative-saturation': '6', // 임팩트 — 정량 KPI 포화
 }
 
 /** asset-registry 의 applicableSections → SectionKey 매핑 */
