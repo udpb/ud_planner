@@ -38,6 +38,11 @@ import { matchAssetsToRfp } from '@/lib/asset-registry'
 import type { AssetMatch } from '@/lib/asset-registry'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
+// Phase I — 자동 채움 capabilities
+import { generateTrackRecord } from './track-record'
+import { inferBudgetBreakdown } from './infer-budget'
+import { fetchExternalEvidence, formatResearchForPrompt } from './deep-research'
+import type { DeepResearchOutput } from './deep-research'
 
 export interface UltimateDraftInput {
   rfp: RfpParsed
@@ -53,6 +58,12 @@ export interface UltimateDraftOutput {
   draft: ExpressDraft
   clientContext: ClientContext
   matchedAssets: AssetMatch[]
+  /** Phase I3 — 외부 딥리서치 결과 */
+  externalResearch: DeepResearchOutput | null
+  /** Phase I1 — 자동 생성된 sections.7 (수행 실적) 의 인용 사업 */
+  trackRecordSources: string[]
+  /** Phase I2 — 자동 산출 예산 비목 */
+  budgetBreakdown: Array<{ category: string; amount: number; percentage: number }>
   risks: RiskMitigation[]
   coherenceReasoning: string | null
   inspection: InspectorReport | null
@@ -108,20 +119,38 @@ export async function produceUltimateDraft(
   progress('2/6', `완료 ${((Date.now() - t2) / 1000).toFixed(1)}s · ${matchedAssets.length} 자산`)
 
   // ────────────────────────────────────
+  // Step 2.5: 외부 딥리서치 (Phase I3, 1 LLM)
+  // ────────────────────────────────────
+  progress('2.5/9', '외부 자료 딥리서치...')
+  const t2_5 = Date.now()
+  const externalResearch = await fetchExternalEvidence({ rfp, channel })
+  bump('deep-research')
+  progress('2.5/9', `완료 ${((Date.now() - t2_5) / 1000).toFixed(1)}s · ${externalResearch.evidence.length} 자료 · domainInsight ${externalResearch.domainInsight ? '있음' : '없음'}`)
+
+  // ────────────────────────────────────
   // Step 3: 슬롯별 turn (N LLM)
   // ────────────────────────────────────
-  progress('3/6', `슬롯 ${slotInputs.length}개 자동 채움...`)
+  progress('3/9', `슬롯 ${slotInputs.length}개 자동 채움...`)
   const t3 = Date.now()
   let draft = emptyDraft()
 
+  // 외부 딥리서치 결과를 evidenceRefs 에 미리 누적 (LLM 이 sections.1 에 inline 인용 가능)
+  if (externalResearch.evidenceRefs.length > 0) {
+    draft.evidenceRefs = [...(draft.evidenceRefs ?? []), ...externalResearch.evidenceRefs]
+  }
+
   for (const sin of slotInputs) {
+    // 외부 리서치 결과를 pmInput 에 부가 (LLM 이 활용)
+    const augmentedInput = externalResearch.evidence.length > 0 && sin.slot.startsWith('sections.1')
+      ? `${sin.pmInput}\n\n[외부 리서치 결과 — 본문에 inline citation 으로 박을 것]\n${formatResearchForPrompt(externalResearch)}`
+      : sin.pmInput
     const prompt = buildTurnPrompt({
       state: { turns: [], currentSlot: sin.slot, validationErrors: [] } as any,
       draft,
       rfp,
       profile: profile ?? undefined,
       matchedAssets: matchedAssets.slice(0, 5),
-      pmInput: sin.pmInput,
+      pmInput: augmentedInput,
       currentSlot: sin.slot,
       clientContext,
     })
@@ -142,12 +171,68 @@ export async function produceUltimateDraft(
       console.warn(`[ultimate-draft] ${sin.slot} 실패:`, e instanceof Error ? e.message : e)
     }
   }
-  progress('3/6', `완료 ${((Date.now() - t3) / 1000).toFixed(1)}s`)
+  progress('3/9', `완료 ${((Date.now() - t3) / 1000).toFixed(1)}s`)
+
+  // ────────────────────────────────────
+  // Step 3.5: sections.7 자동 (Phase I1, 1 LLM)
+  // ────────────────────────────────────
+  progress('3.5/9', '수행 실적 자동 매핑 (sections.7)...')
+  const t35 = Date.now()
+  let trackRecordSources: string[] = []
+  try {
+    const tr = await generateTrackRecord({ rfp, channel, limit: 5 })
+    bump('track-record')
+    if (tr.sectionText && tr.sectionText.length > 100) {
+      draft.sections = { ...(draft.sections ?? {}), '7': tr.sectionText }
+      // sectionMeta.7 도 보강
+      const meta = (draft.sectionMeta ?? {}) as Record<string, any>
+      meta['7'] = {
+        ...(meta['7'] ?? {}),
+        subtitle: ': 11년 누적 운영 + 유사 사업 검증 실적',
+        headline: tr.similarProjects[0]?.sourceProject
+          ? `누적 ${tr.similarProjects.length}건 유사 ${channel} 사업 검증 + 11년 운영 인프라`
+          : '11년 누적 검증 운영 인프라',
+      }
+      draft.sectionMeta = meta as ExpressDraft['sectionMeta']
+      trackRecordSources = tr.citedSources
+    }
+  } catch (e) {
+    console.warn('[ultimate-draft] track record 실패:', e instanceof Error ? e.message : e)
+  }
+  progress('3.5/9', `완료 ${((Date.now() - t35) / 1000).toFixed(1)}s · ${trackRecordSources.length} 사업 인용`)
+
+  // ────────────────────────────────────
+  // Step 3.6: sections.5 예산 자동 (Phase I2, 1 LLM)
+  // ────────────────────────────────────
+  progress('3.6/9', '예산 비목 자동 추론 (sections.5)...')
+  const t36 = Date.now()
+  let budgetBreakdown: Array<{ category: string; amount: number; percentage: number }> = []
+  try {
+    const bb = await inferBudgetBreakdown({ rfp, channel })
+    bump('infer-budget')
+    if (bb.sectionText && bb.sectionText.length > 50) {
+      draft.sections = { ...(draft.sections ?? {}), '5': bb.sectionText }
+      const meta = (draft.sectionMeta ?? {}) as Record<string, any>
+      meta['5'] = {
+        ...(meta['5'] ?? {}),
+        subtitle: ': 4비목 자동 산출 (유사 사업 평균)',
+        headline:
+          bb.breakdown.length > 0
+            ? `${bb.breakdown.map((b) => `${b.category} ${b.percentage}%`).join(' · ')} (유사 ${bb.citedSources.length}건 평균)`
+            : '예산 4비목 자동 산출',
+      }
+      draft.sectionMeta = meta as ExpressDraft['sectionMeta']
+      budgetBreakdown = bb.breakdown.map((b) => ({ category: b.category, amount: b.amount, percentage: b.percentage }))
+    }
+  } catch (e) {
+    console.warn('[ultimate-draft] budget infer 실패:', e instanceof Error ? e.message : e)
+  }
+  progress('3.6/9', `완료 ${((Date.now() - t36) / 1000).toFixed(1)}s · ${budgetBreakdown.length} 비목`)
 
   // ────────────────────────────────────
   // Step 4: Risks 자동 채움 (1 LLM)
   // ────────────────────────────────────
-  progress('4/6', '평가위원 risks 능동 답변...')
+  progress('4/9', '평가위원 risks 능동 답변...')
   const t4 = Date.now()
   const risks = await produceRisks({
     draft,
@@ -158,12 +243,12 @@ export async function produceUltimateDraft(
   })
   bump('produce-risks')
   draft.risks = risks
-  progress('4/6', `완료 ${((Date.now() - t4) / 1000).toFixed(1)}s · ${risks.length} risks`)
+  progress('4/9', `완료 ${((Date.now() - t4) / 1000).toFixed(1)}s · ${risks.length} risks`)
 
   // ────────────────────────────────────
   // Step 5: Coherence Pass (1 LLM)
   // ────────────────────────────────────
-  progress('5/6', 'Narrative arc 보강...')
+  progress('5/9', 'Narrative arc 보강...')
   const t5 = Date.now()
   const coherenceOut = await coherencePass({
     draft,
@@ -171,12 +256,12 @@ export async function produceUltimateDraft(
   })
   bump('coherence-pass')
   draft.sections = coherenceOut.updatedSections as ExpressDraft['sections']
-  progress('5/6', `완료 ${((Date.now() - t5) / 1000).toFixed(1)}s · ${coherenceOut.result.changes?.length ?? 0} 변경`)
+  progress('5/9', `완료 ${((Date.now() - t5) / 1000).toFixed(1)}s · ${coherenceOut.result.changes?.length ?? 0} 변경`)
 
   // ────────────────────────────────────
   // Step 6: Inspector (1 LLM)
   // ────────────────────────────────────
-  progress('6/6', 'Inspector 11-lens 검수...')
+  progress('6/9', 'Inspector 11-lens 검수...')
   const t6 = Date.now()
   let inspection: InspectorReport | null = null
   try {
@@ -198,7 +283,7 @@ export async function produceUltimateDraft(
   } catch (e) {
     console.warn('[ultimate-draft] inspect 실패:', e instanceof Error ? e.message : e)
   }
-  progress('6/6', `완료 ${((Date.now() - t6) / 1000).toFixed(1)}s · score=${inspection?.overallScore ?? '?'}`)
+  progress('6/9', `완료 ${((Date.now() - t6) / 1000).toFixed(1)}s · score=${inspection?.overallScore ?? '?'}`)
 
   // 최종 schema validate
   const validated = ExpressDraftSchema.safeParse(draft)
@@ -212,6 +297,9 @@ export async function produceUltimateDraft(
     draft,
     clientContext,
     matchedAssets,
+    externalResearch,
+    trackRecordSources,
+    budgetBreakdown,
     risks,
     coherenceReasoning: coherenceOut.result.reasoning ?? null,
     inspection,
