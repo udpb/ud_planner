@@ -10,10 +10,10 @@
  * AI 보완이 더 직관적 — PM 입장에서 "이 한 줄/한 문단이 자산이 됩니다" 던지면 끝.
  */
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Loader2, Sparkles, Settings2, CheckCircle2 } from 'lucide-react'
+import { Loader2, Sparkles, Settings2, CheckCircle2, Upload, FileText } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -64,6 +64,73 @@ export function SubmitAssetClient() {
   const [name, setName] = useState('')
   const [submitterNote, setSubmitterNote] = useState('')
   const [sourceUrl, setSourceUrl] = useState('')
+
+  // G1 — 파일 업로드 모드
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [uploadFile, setUploadFile] = useState<File | null>(null)
+  const [uploadExtracting, setUploadExtracting] = useState(false)
+  const [uploadDragOver, setUploadDragOver] = useState(false)
+  const [extractedMeta, setExtractedMeta] = useState<{
+    fileName: string
+    fileType: string
+    pageCount?: number
+    charCount: number
+    truncated?: boolean
+  } | null>(null)
+
+  async function handleFileUpload(file: File) {
+    setUploadExtracting(true)
+    setUploadFile(file)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/content-hub/extract-file', {
+        method: 'POST',
+        body: fd,
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) {
+        toast.error(data.error || '파일 추출 실패')
+        if (data.suggestion) toast.message(data.suggestion)
+        setUploadFile(null)
+        return
+      }
+      // 추출된 텍스트를 assist 모드 body 에 채움 + 이름 자동 추출
+      setBody(data.text)
+      if (!name && data.fileName) {
+        // 확장자 제거 + 이름 자동 채움
+        const baseName = data.fileName.replace(/\.[^.]+$/, '')
+        setName(baseName.slice(0, 120))
+      }
+      setExtractedMeta({
+        fileName: data.fileName,
+        fileType: data.fileType,
+        pageCount: data.pageCount,
+        charCount: data.charCount,
+        truncated: data.truncated,
+      })
+      toast.success(
+        `${data.fileName} 추출 완료 — ${data.charCount}자${data.pageCount ? ` · ${data.pageCount}p` : ''}${data.truncated ? ' (12000자 컷)' : ''}`,
+      )
+    } catch (err) {
+      toast.error(`파일 추출 실패: ${err instanceof Error ? err.message : String(err)}`)
+      setUploadFile(null)
+    } finally {
+      setUploadExtracting(false)
+    }
+  }
+
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) void handleFileUpload(file)
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault()
+    setUploadDragOver(false)
+    const file = e.dataTransfer.files[0]
+    if (file) void handleFileUpload(file)
+  }
 
   // 수동 모드
   const [manualName, setManualName] = useState('')
@@ -181,17 +248,163 @@ export function SubmitAssetClient() {
   }
 
   return (
-    <Tabs defaultValue="assist">
+    <Tabs defaultValue="file">
       <TabsList>
+        <TabsTrigger value="file" className="gap-1">
+          <Upload className="h-3.5 w-3.5" />
+          파일 업로드 (PDF / TXT)
+        </TabsTrigger>
         <TabsTrigger value="assist" className="gap-1">
           <Sparkles className="h-3.5 w-3.5" />
-          AI 보완 (권장)
+          텍스트 직접 입력
         </TabsTrigger>
         <TabsTrigger value="manual" className="gap-1">
           <Settings2 className="h-3.5 w-3.5" />
           수동 입력
         </TabsTrigger>
       </TabsList>
+
+      {/* G1 — 파일 업로드 모드 */}
+      <TabsContent value="file" className="space-y-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">파일 업로드 + AI 자동 정리</CardTitle>
+            <p className="text-[11px] text-muted-foreground">
+              PDF · TXT · MD 자산 파일을 드래그&드롭 → 자동 텍스트 추출 → AI 가 카테고리·태그·인용 문구 정리해 검수 큐에 등록.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {/* Drag & drop zone */}
+            <div
+              onDragOver={(e) => {
+                e.preventDefault()
+                setUploadDragOver(true)
+              }}
+              onDragLeave={() => setUploadDragOver(false)}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`cursor-pointer border-2 border-dashed p-6 text-center transition-colors ${
+                uploadDragOver
+                  ? 'border-primary bg-primary/5'
+                  : 'border-muted-foreground/30 hover:border-primary/50'
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+              {uploadExtracting ? (
+                <div className="flex items-center justify-center gap-2 py-2 text-xs">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  추출 중...
+                </div>
+              ) : extractedMeta ? (
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-2 text-xs font-semibold">
+                    <FileText className="h-4 w-4" />
+                    {extractedMeta.fileName}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    {extractedMeta.charCount}자
+                    {extractedMeta.pageCount ? ` · ${extractedMeta.pageCount} 페이지` : ''}
+                    {extractedMeta.truncated ? ' · 12,000자 컷' : ''}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    다른 파일을 드롭하거나 클릭해서 교체
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <Upload className="mx-auto h-6 w-6 text-muted-foreground" />
+                  <p className="text-xs font-semibold">
+                    파일을 여기에 드롭하거나 클릭해서 선택
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    PDF · TXT · MD · 최대 20MB
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* 추출 텍스트 미리보기 + 편집 */}
+            {body && extractedMeta && (
+              <>
+                <div>
+                  <Label htmlFor="body-extracted" className="text-xs">
+                    추출된 본문 (수정 가능)
+                  </Label>
+                  <Textarea
+                    id="body-extracted"
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    rows={8}
+                    className="mt-1 text-xs"
+                  />
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    {body.length} / 8000자 (AI 분석 한도 — 길면 핵심 부분만 남기세요)
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label htmlFor="upload-name" className="text-xs">
+                      자산 이름 (자동 추출 — 수정 가능)
+                    </Label>
+                    <Input
+                      id="upload-name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="예: AX 가이드북"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="upload-sourceUrl" className="text-xs">
+                      출처 URL (선택)
+                    </Label>
+                    <Input
+                      id="upload-sourceUrl"
+                      value={sourceUrl}
+                      onChange={(e) => setSourceUrl(e.target.value)}
+                      placeholder="https://..."
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="upload-note" className="text-xs">
+                    왜 자산화 가치가 있나요? (Admin 검수 참고)
+                  </Label>
+                  <Input
+                    id="upload-note"
+                    value={submitterNote}
+                    onChange={(e) => setSubmitterNote(e.target.value)}
+                    placeholder="예: 청년 창업 사업 제안서에 인용 가능한 정량 데이터 풍부"
+                    className="mt-1"
+                  />
+                </div>
+                <Button
+                  onClick={handleAssistSubmit}
+                  disabled={submitting || body.trim().length < 40}
+                  className="gap-1"
+                >
+                  {submitting ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-3.5 w-3.5" />
+                  )}
+                  {submitting ? 'AI 분석 + 등록 중...' : 'AI 자동 정리 + 등록'}
+                </Button>
+                <p className="text-[10px] text-muted-foreground">
+                  ※ 본문 추출 + AI 분석 후 status=&quot;developing&quot; 으로 검수 큐 등록. Admin 승인 후 추천 풀 합류.
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      </TabsContent>
 
       {/* AI 보완 모드 */}
       <TabsContent value="assist" className="space-y-3">
