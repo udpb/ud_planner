@@ -39,6 +39,7 @@ import { ChannelConfirmCard } from '@/components/projects/channel-confirm-card'
 import { EvalSimulatorCard } from '@/components/projects/eval-simulator-card'
 import { RenewalSeedCard } from '@/components/projects/renewal-seed-card'
 import { ClientDocUploadCard } from '@/components/projects/client-doc-upload-card'
+import { PmInputsEditor } from './PmInputsEditor'
 import { PersistentErrorBanner, type PersistentError } from '@/components/ui/persistent-error-banner'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import {
@@ -105,7 +106,8 @@ export function ExpressShell(props: Props) {
   const [paletteOpen, setPaletteOpen] = useState<boolean>(false)
 
   // Wave U / U7 — Stage-aware 사이드바 자동 활성. controlled tab value + 토스트.
-  type SidebarTab = 'diagnosis' | 'channel' | 'client'
+  // L1 / K7 — 'pm-inputs' 4번째 탭 추가 (외부 reality 입력)
+  type SidebarTab = 'diagnosis' | 'channel' | 'client' | 'pm-inputs'
   const [sidebarTab, setSidebarTab] = useState<SidebarTab>('diagnosis')
   // 자동 전환 1회만 — PM 수동 클릭 후엔 더이상 강제 전환 X (완화책)
   const autoTabRef = useRef<{ toChannel: boolean; toClient: boolean }>({
@@ -1095,12 +1097,13 @@ export function ExpressShell(props: Props) {
                 onValueChange={(v) => setSidebarTab(v as SidebarTab)}
                 className="w-full"
               >
-                {/* B4 (2026-05-19) — 탭 라벨에 효과 명시. PM 이 클릭 전에 뭐가 나오는지 안다. */}
-                <TabsList className="grid w-full grid-cols-3">
+                {/* B4 (2026-05-19) — 탭 라벨에 효과 명시. PM 이 클릭 전에 뭐가 나오는지 안다.
+                    L1 / K7 — 'PM 입력' 4번째 탭 (외부 reality — 통화·코치·평가위원) */}
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger
                     value="diagnosis"
                     data-tab-trigger="diagnosis"
-                    className="relative flex-col gap-0 py-1.5 text-xs"
+                    className="relative flex-col gap-0 py-1.5 text-[11px]"
                     title="채널(B2G/B2B/renewal) · 프레임(CSR/일반) · 논리 흐름 · 팩트체크 4종 자동 진단"
                   >
                     <span className="font-semibold">AI 진단</span>
@@ -1117,7 +1120,7 @@ export function ExpressShell(props: Props) {
                   <TabsTrigger
                     value="channel"
                     data-tab-trigger="channel"
-                    className="relative flex-col gap-0 py-1.5 text-xs"
+                    className="relative flex-col gap-0 py-1.5 text-[11px]"
                     title="채널 확정 + B2G 평가표 시뮬레이션 또는 renewal 작년 자료 추출"
                   >
                     <span className="font-semibold">채널·전략</span>
@@ -1135,12 +1138,12 @@ export function ExpressShell(props: Props) {
                   <TabsTrigger
                     value="client"
                     data-tab-trigger="client"
-                    className="flex-col gap-0 py-1.5 text-xs"
+                    className="flex-col gap-0 py-1.5 text-[11px]"
                     title="발주처 공식 문서 (계획안·예산서·내부 보고) 업로드 → 톤 추출"
                   >
                     <span className="font-semibold">발주처</span>
                     <span className="text-[9px] font-normal opacity-70">
-                      문서 → 톤·KPI 추출
+                      문서 → 톤·KPI
                     </span>
                     {props.initialClientDoc && (
                       <span
@@ -1148,6 +1151,27 @@ export function ExpressShell(props: Props) {
                         title="문서 추출됨"
                       />
                     )}
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="pm-inputs"
+                    data-tab-trigger="pm-inputs"
+                    className="relative flex-col gap-0 py-1.5 text-[11px]"
+                    title="PM 외부 reality 입력 — 발주처 통화·전담 코치·평가위원 (LLM 단독 X)"
+                  >
+                    <span className="font-semibold">PM 입력</span>
+                    <span className="text-[9px] font-normal opacity-70">
+                      통화·코치·평가위원
+                    </span>
+                    {(() => {
+                      const pi = draft.pmInputs
+                      const n =
+                        (pi?.callNotes?.length ?? 0) +
+                        (pi?.assignedCoaches?.length ?? 0) +
+                        (pi?.evaluators?.length ?? 0)
+                      return n > 0 ? (
+                        <span className="ml-1 h-1.5 w-1.5 rounded-full bg-[color:var(--green)]" title={`${n}건 입력됨`} />
+                      ) : null
+                    })()}
                   </TabsTrigger>
                 </TabsList>
 
@@ -1214,6 +1238,20 @@ export function ExpressShell(props: Props) {
                   <ClientDocUploadCard
                     projectId={props.projectId}
                     current={props.initialClientDoc}
+                  />
+                </TabsContent>
+
+                <TabsContent value="pm-inputs" className="mt-3">
+                  <PmInputsEditor
+                    projectId={props.projectId}
+                    initial={draft.pmInputs ?? null}
+                    onSaved={(pmInputs) =>
+                      setDraft((d) => ({
+                        ...d,
+                        pmInputs,
+                        meta: { ...d.meta, lastUpdatedAt: new Date().toISOString() },
+                      }))
+                    }
                   />
                 </TabsContent>
               </Tabs>
