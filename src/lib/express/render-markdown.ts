@@ -23,6 +23,7 @@
 import type { ExpressDraft, AutoDiagnosis, Department, Channel } from './schema'
 import { SECTION_LABELS } from './schema'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
+import { UD_TRACK_RECORD } from '@/lib/ud-brand'
 
 // ─────────────────────────────────────────
 // 입력 타입
@@ -39,6 +40,12 @@ export interface MarkdownInput {
     eduEndDate: Date | null
   }
   draft: ExpressDraft
+  /** PR1 — sections.5 (예산 및 경제성) 자동 fallback 데이터 */
+  budget?: {
+    totalKrw: number
+    marginRatePct?: number | null
+    items?: { category: string; amount: number }[]
+  } | null
   /** 발주처 공식 문서 추출 (M3-2 산출물) — 있으면 인용 섹션 추가 */
   clientOfficialDoc?: StrategicNotes['clientOfficialDoc']
   /** Wave M5 — 사전 임팩트 forecast 요약 (있으면 markdown 끝에 자동 섹션) */
@@ -89,7 +96,7 @@ const ASSET_SECTION_LABEL: Record<string, string> = {
 // ─────────────────────────────────────────
 
 export function renderExpressMarkdown(input: MarkdownInput): string {
-  const { project, draft, clientOfficialDoc } = input
+  const { project, draft, budget, clientOfficialDoc } = input
   const parts: string[] = []
 
   // 1. 헤더 ─────────────────────────────────────
@@ -151,11 +158,25 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
   parts.push('\n---\n')
 
   // 6. 7섹션 본문 ─────────────────────────────────
+  // PR1: sections.5 (예산 및 경제성) + sections.7 (수행 역량 및 실적)
+  //      비어있으면 fallback 자동 생성 — 발주처 제출 시 빈 섹션 없게
   const sectionKeys = ['1', '2', '3', '4', '5', '6', '7'] as const
   for (const k of sectionKeys) {
-    const text = draft.sections?.[k]?.trim()
+    let text = draft.sections?.[k]?.trim()
+
+    // sections.5 fallback — budget 데이터 있을 때
+    if (!text && k === '5') {
+      text = buildSection5Fallback(project.totalBudgetVat, budget)
+    }
+    // sections.7 fallback — UD_TRACK_RECORD 기반
+    if (!text && k === '7') {
+      text = buildSection7Fallback()
+    }
+
     if (!text) continue
-    parts.push(`## ${k}. ${SECTION_LABELS[k]}\n\n${text}\n`)
+    const isFallback = !draft.sections?.[k]?.trim()
+    const marker = isFallback ? ' _(자동 생성 · PM 보완 권장)_' : ''
+    parts.push(`## ${k}. ${SECTION_LABELS[k]}${marker}\n\n${text}\n`)
   }
 
   // 7. AI 자동 진단 (참고 — 발주처 제출 시 제거 가능) ──
@@ -286,6 +307,74 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
 // ─────────────────────────────────────────
 // 헬퍼
 // ─────────────────────────────────────────
+
+// ─────────────────────────────────────────
+// PR1 — sections.5/7 자동 fallback
+// ─────────────────────────────────────────
+
+function buildSection5Fallback(
+  totalBudgetVat: number | null,
+  budget: MarkdownInput['budget'],
+): string {
+  if (!budget && !totalBudgetVat) {
+    return 'PM 작성 권장 — Project.budget 입력 후 자동 생성 또는 수동 작성하세요.'
+  }
+  const lines: string[] = []
+  const total = budget?.totalKrw ?? totalBudgetVat ?? 0
+  lines.push(
+    `본 사업 총 예산은 ${formatKRW(total)}입니다 (VAT 포함). 인건비·강사료·운영비·간접비 4대 항목으로 구분하여 집행하며, 발주처 가이드라인을 준수합니다.`,
+  )
+  if (budget?.items && budget.items.length > 0) {
+    const byCat = budget.items.reduce<Record<string, number>>((acc, it) => {
+      acc[it.category] = (acc[it.category] ?? 0) + it.amount
+      return acc
+    }, {})
+    const rows = Object.entries(byCat)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, amt]) => `- ${cat}: ${formatKRW(amt)}`)
+    if (rows.length > 0) {
+      lines.push('\n**항목별 배분**:')
+      lines.push(...rows)
+    }
+  }
+  if (budget?.marginRatePct != null) {
+    lines.push(
+      `\n**예상 마진율**: ${budget.marginRatePct.toFixed(1)}% (목표 15% 초과 ✓)`,
+    )
+  }
+  lines.push(
+    '\n_세부 산정 내역은 별도 산출 내역서로 제공합니다. 사후 정산 시 발주처 가이드 준수._',
+  )
+  return lines.join('\n')
+}
+
+function buildSection7Fallback(): string {
+  const r = UD_TRACK_RECORD
+  const lines: string[] = []
+  lines.push(
+    `${r.yearsActive}년간 창업가만을 전담해 온 언더독스는 다음의 실적을 보유하고 있습니다.`,
+  )
+  lines.push('')
+  lines.push('**누적 실적**:')
+  lines.push(`- 누적 수주 ${r.cumulativeRevenueBillions}억원+ · 운영 프로그램 ${r.programsConducted}건`)
+  lines.push(
+    `- 청년 창업가 ${r.totalGraduates.toLocaleString()}명 육성 (배출 창업팀 ${r.startupTeamsFormed.toLocaleString()}건)`,
+  )
+  lines.push(`- 전속 코치 풀 ${r.totalCoaches}명 · 글로벌 파트너 ${r.globalPartners}+`)
+  lines.push(`- 전국 ${r.regionalHubs}개 거점 · ${r.regionsCovered}개 국내외 지역 운영`)
+  lines.push(
+    `- 동시 운영 가능 ${r.simultaneousCapacity.toLocaleString()}명 규모 · 신용등급 ${r.creditRating}`,
+  )
+  lines.push('')
+  lines.push(
+    `**프로그램 운영 역량**: ${r.esgMeasuredCompanies.toLocaleString()}개 기업 ESG 임팩트 측정 + 매년 ${r.startupDatabaseAnnualUpdate.toLocaleString()}명 신생 기업가 DB 갱신.`,
+  )
+  lines.push('')
+  lines.push(
+    '_본 사업 핵심 PM·코치 이력서 및 유사 수주 사례 첨부 (별첨). PM 보완 권장._',
+  )
+  return lines.join('\n')
+}
 
 function formatKRW(amount: number): string {
   if (amount >= 1e8) {

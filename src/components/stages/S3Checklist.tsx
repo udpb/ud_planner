@@ -149,6 +149,8 @@ export function S3Checklist({
   }, [draftReady, projectId])
 
   // real 데이터 우선, 없으면 fallback (mock)
+  // 단, loading 중일 땐 mock 가리고 loading 표시
+  const showLoadingState = loading && draftReady && realScore === null
   const overallScore = realScore ?? fallbackScore
   const lenses = realLenses ?? fallbackLenses
   const recommendedAssets = realAssets ?? fallbackAssets
@@ -175,15 +177,15 @@ export function S3Checklist({
       {/* Status banner — real / fallback / loading */}
       {loading && (
         <div
-          className="mb-3 flex items-center gap-2 px-3 py-2 text-[11px]"
+          className="mb-3 flex items-center gap-2 px-4 py-2.5 text-[12px] font-medium"
           style={{
-            background: 'rgba(232,84,26,.06)',
+            background: 'rgba(232,84,26,.08)',
             color: 'var(--primary-orange)',
-            border: '1px solid rgba(232,84,26,.25)',
+            border: '1px solid rgba(232,84,26,.3)',
           }}
         >
-          <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
-          AI 검수 진행 중 · 약 30~60초 소요
+          <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          AI 검수 진행 중 · 약 30~60초 소요 · 점수 갱신 대기 중
         </div>
       )}
       {error && !loading && (
@@ -247,16 +249,24 @@ export function S3Checklist({
             className="font-bold italic leading-none tracking-[-1.5px]"
             style={{ fontSize: '48px' }}
           >
-            {overallScore}
-            <span
-              className="ml-1 text-sm font-medium"
-              style={{ opacity: 0.85 }}
-            >
-              /100
-            </span>
+            {showLoadingState ? (
+              <span className="inline-block h-12 w-12 animate-pulse text-[40px]">···</span>
+            ) : (
+              <>
+                {overallScore}
+                <span
+                  className="ml-1 text-sm font-medium"
+                  style={{ opacity: 0.85 }}
+                >
+                  /100
+                </span>
+              </>
+            )}
           </div>
           <div className="mt-3 text-[11px] font-semibold uppercase tracking-[1px]">
-            {isPass ? '✓ 통과' : '✗ 미통과'} (임계 {passThreshold})
+            {showLoadingState
+              ? '계산 중'
+              : `${isPass ? '✓ 통과' : '✗ 미통과'} (임계 ${passThreshold})`}
           </div>
         </div>
 

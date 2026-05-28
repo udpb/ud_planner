@@ -45,6 +45,14 @@ export async function GET(
       expressDraft: true,
       strategicNotes: true,
       impactForecast: true,
+      // PR1 — sections.5 fallback 용
+      budget: {
+        select: {
+          acTotal: true,
+          marginRate: true,
+          items: { select: { category: true, amount: true } },
+        },
+      },
     },
   })
   if (!project) {
@@ -96,6 +104,20 @@ export async function GET(
     }
   }
 
+  // PR1 — budget fallback 데이터 (sections.5 자동 생성용)
+  const budgetBlock = project.budget
+    ? {
+        totalKrw: project.budget.acTotal,
+        marginRatePct: project.budget.marginRate
+          ? project.budget.marginRate * 100
+          : null,
+        items: project.budget.items.map((it) => ({
+          category: it.category,
+          amount: it.amount,
+        })),
+      }
+    : null
+
   const markdown = renderExpressMarkdown({
     project: {
       name: project.name,
@@ -106,6 +128,7 @@ export async function GET(
       eduEndDate: project.eduEndDate,
     },
     draft: parsed.data,
+    budget: budgetBlock,
     clientOfficialDoc: notes?.clientOfficialDoc,
     impactForecast: forecastBlock,
   })
