@@ -24,6 +24,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { MessageHierarchy, SectionMeta } from '@/lib/express/schema'
+import { ReasoningTooltip } from './ReasoningTooltip'
 
 const SECTION_LABELS: Record<string, string> = {
   '1': '제안 배경 및 목적',
@@ -241,11 +242,14 @@ export function DraftEnrichmentEditor({ projectId }: DraftEnrichmentEditorProps)
                     className="border p-3"
                     style={{ background: '#fff', borderColor: 'var(--hairline, #ece8df)' }}
                   >
-                    {/* key */}
+                    {/* key + Phase G2 reasoning tooltip */}
                     <label className="block">
-                      <span className="text-[9px] font-semibold uppercase tracking-[1px]" style={{ color: 'var(--subtitle-text)' }}>
-                        Key #{i + 1} (8~80자)
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[9px] font-semibold uppercase tracking-[1px]" style={{ color: 'var(--subtitle-text)' }}>
+                          Key #{i + 1} (8~80자)
+                        </span>
+                        <ReasoningTooltip trace={item.sourceTrace} size="sm" />
+                      </div>
                       <input
                         type="text"
                         value={item.key}
@@ -351,15 +355,16 @@ export function DraftEnrichmentEditor({ projectId }: DraftEnrichmentEditorProps)
               </div>
               <div className="space-y-3">
                 {Object.entries(sectionMeta).map(([k, meta]) => {
-                  const m = meta as { subtitle?: string; headline?: string }
+                  const m = meta as { subtitle?: string; headline?: string; sourceTrace?: import('@/lib/express/schema').SourceTrace }
                   return (
                     <div
                       key={k}
                       className="border p-3"
                       style={{ background: '#fff', borderColor: 'var(--hairline, #ece8df)' }}
                     >
-                      <div className="mb-2 text-xs font-semibold" style={{ color: 'var(--body-text, #333)' }}>
-                        {k}. {SECTION_LABELS[k] ?? k}
+                      <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold" style={{ color: 'var(--body-text, #333)' }}>
+                        <span>{k}. {SECTION_LABELS[k] ?? k}</span>
+                        <ReasoningTooltip trace={m.sourceTrace} size="sm" />
                       </div>
                       <label className="block">
                         <span className="text-[9px] font-semibold uppercase tracking-[1px]" style={{ color: 'var(--subtitle-text)' }}>
