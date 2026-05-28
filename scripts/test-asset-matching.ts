@@ -74,6 +74,7 @@ async function main() {
     where: { status: 'stable' },
     select: { id: true, name: true, keywords: true, programProfileFit: true, narrativeSnippet: true },
     take: 300,
+    orderBy: { createdAt: 'desc' }, // L2 마이그레이션이 가장 최근부터 처리 → 같은 순서로 sample
   })
 
   console.log(`▶ K3 Verification — ${assets.length}개 자산\n`)
@@ -81,7 +82,7 @@ async function main() {
   const profileFitCount = assets.filter(
     (a) => a.programProfileFit && Object.keys(a.programProfileFit as object).length > 0,
   ).length
-  console.log(`profileFit 채워진 자산: ${profileFitCount}/${assets.length} (현 DB 0)`)
+  console.log(`profileFit 채워진 자산: ${profileFitCount}/${assets.length}`)
 
   const scoresOld: number[] = []
   const scoresNew: number[] = []
