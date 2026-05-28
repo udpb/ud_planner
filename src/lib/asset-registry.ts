@@ -101,6 +101,12 @@ export interface MatchAssetsParams {
 
 /**
  * 점수 공식 가중치 (ADR-009).
+ *
+ * K3 fix (2026-05-29):
+ *   programProfileFit 가 비어 있는 자산이 많음 (DB 1,765 중 0건).
+ *   profile=0.5 가중치인데 항상 0.5 (neutral) 로 떨어지면 max 점수가 0.45 부근에 갇힘.
+ *   → keywordOverlap 자체를 saturating + narrativeSnippet semantic match 로 강화.
+ *   profileFit 마이그레이션은 별도 작업 (장기).
  */
 const SCORE_WEIGHTS = {
   profile: 0.5,
@@ -141,9 +147,20 @@ function partialProfileMatch(
 
 /**
  * 자산 keywords 와 RFP 텍스트 필드들의 교집합 비율.
+ *
+ * K3 fix (2026-05-29):
+ *   기존: score = matched/keywords.length (precision only) → 자산이 키워드 많으면 score 낮아짐.
+ *   변경: saturating score — 3+ 매칭 = 1.0, 2 매칭 = 0.7, 1 매칭 = 0.4, 0 = 0
+ *   이유: precision 만 쓰면 keywords 많은 자산이 불리. 절대 매칭 건수가 중요.
+ *   추가: RFP keyword 가 asset.narrativeSnippet 에도 출현하면 추가 점수 (semantic match).
+ *
  * @returns matched/total (0~1). keywords 없으면 0.
  */
-function keywordOverlap(rfp: RfpParsed, keywords: string[] | undefined): {
+function keywordOverlap(
+  rfp: RfpParsed,
+  keywords: string[] | undefined,
+  narrativeSnippet?: string | undefined,
+): {
   score: number
   matchedKeywords: string[]
 } {
@@ -162,7 +179,23 @@ function keywordOverlap(rfp: RfpParsed, keywords: string[] | undefined): {
   ]
   const haystack = haystackParts.join(' ').toLowerCase()
   const matched = keywords.filter((k) => haystack.includes(k.toLowerCase()))
-  return { score: matched.length / keywords.length, matchedKeywords: matched }
+
+  // K3: precision (matched/total) 과 saturating (3+ = full) 의 max 채택
+  const precision = matched.length / keywords.length
+  const saturating = Math.min(matched.length, 3) / 3
+  let score = Math.max(precision, saturating)
+
+  // K3: RFP keywords 가 asset.narrativeSnippet 에 출현하면 추가 점수 (semantic)
+  if (narrativeSnippet && rfp.keywords && rfp.keywords.length > 0) {
+    const snippetLower = narrativeSnippet.toLowerCase()
+    const rfpMatchedInSnippet = rfp.keywords.filter((k) => snippetLower.includes(k.toLowerCase()))
+    if (rfpMatchedInSnippet.length > 0) {
+      // 최대 0.3 bonus — saturating
+      score = Math.min(1, score + Math.min(rfpMatchedInSnippet.length, 3) * 0.1)
+    }
+  }
+
+  return { score, matchedKeywords: matched }
 }
 
 /**
@@ -197,7 +230,12 @@ function scoreAssetForSection(
   evalStrategy: EvalStrategy | undefined,
 ): AssetMatch {
   const profileScore = partialProfileMatch(profile, asset.programProfileFit)
-  const { score: keywordScore, matchedKeywords } = keywordOverlap(rfp, asset.keywords)
+  // K3 fix: narrativeSnippet 전달 → semantic match bonus
+  const { score: keywordScore, matchedKeywords } = keywordOverlap(
+    rfp,
+    asset.keywords,
+    asset.narrativeSnippet,
+  )
   // 섹션 점수는 "이 특정 섹션" 에 대해 계산
   const sectionScore = sectionApplicabilityScore(
     evalStrategy,

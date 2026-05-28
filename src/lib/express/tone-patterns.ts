@@ -88,14 +88,37 @@ export async function buildToneProfile(
     const allAvoided: string[] = []
     const allNumbers: string[] = []
 
+    // K5 fix (2026-05-29): signatureNumbers 는 DB 에 `{value, context}` object 로 저장됨
+    //   string filter 만 적용하면 모두 제외됨. value 추출 (+ context 있으면 "value (context)" 으로 합쳐 prompt 풍부화)
+    const extractNumber = (x: unknown): string | null => {
+      if (typeof x === 'string') return x
+      if (x && typeof x === 'object') {
+        const obj = x as { value?: unknown; context?: unknown }
+        if (typeof obj.value === 'string' && obj.value.length > 0) {
+          if (typeof obj.context === 'string' && obj.context.length > 0) {
+            return `${obj.value} (${obj.context})`
+          }
+          return obj.value
+        }
+      }
+      return null
+    }
+
     for (const p of scored) {
-      const tp = (p.tonePatterns ?? null) as Partial<ToneProfile> | null
+      const tp = (p.tonePatterns ?? null) as Partial<ToneProfile> & {
+        signatureNumbers?: unknown
+      } | null
       if (!tp) continue
       if (Array.isArray(tp.openings)) allOpenings.push(...tp.openings.filter((x) => typeof x === 'string'))
       if (Array.isArray(tp.transitions)) allTransitions.push(...tp.transitions.filter((x) => typeof x === 'string'))
       if (Array.isArray(tp.closingPhrases)) allClosings.push(...tp.closingPhrases.filter((x) => typeof x === 'string'))
       if (Array.isArray(tp.avoidedWords)) allAvoided.push(...tp.avoidedWords.filter((x) => typeof x === 'string'))
-      if (Array.isArray(tp.signatureNumbers)) allNumbers.push(...tp.signatureNumbers.filter((x) => typeof x === 'string'))
+      if (Array.isArray(tp.signatureNumbers)) {
+        for (const item of tp.signatureNumbers) {
+          const ext = extractNumber(item)
+          if (ext) allNumbers.push(ext)
+        }
+      }
     }
 
     // 빈도 카운트 → top-N
