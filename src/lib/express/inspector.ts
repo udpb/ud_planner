@@ -249,6 +249,12 @@ ${sections}
 ────────────────────────────────────────────
 [출력 JSON 스키마]
 
+* Phase J (Brain 고도화 2026-05-28): 7 lens → 10 lens 확장
+*   추가: detail-completeness (디테일 완결성, guidebook Ch.2)
+*         competitive-context (경쟁 맥락, guidebook Ch.2)
+*         off-record-insight (공식 밖 정보, guidebook Ch.2)
+*         quantitative-saturation (정량 포화, "많은/다양한/충분한" 검출 + 5+ 수치)
+
 {
   "passed": <전체적으로 평가위원 앞에 내놓을 수 있는가 — major 0, minor ≤3 이면 true>,
   "overallScore": <0~100>,
@@ -259,11 +265,15 @@ ${sections}
     "before-after": <0~100>,
     "key-messages": <0~100>,
     "differentiators": <0~100>,
-    "tone": <0~100>
+    "tone": <0~100>,
+    "detail-completeness": <0~100>,
+    "competitive-context": <0~100>,
+    "off-record-insight": <0~100>,
+    "quantitative-saturation": <0~100>
   },
   "issues": [
     {
-      "lens": "market" | "statistics" | "problem" | "before-after" | "key-messages" | "differentiators" | "tone",
+      "lens": "market" | "statistics" | "problem" | "before-after" | "key-messages" | "differentiators" | "tone" | "detail-completeness" | "competitive-context" | "off-record-insight" | "quantitative-saturation",
       "severity": "critical" | "major" | "minor",
       "sectionKey": "1" | "2" | "3" | "4" | "5" | "6" | "7" | "overall",
       "issue": "...",
@@ -273,6 +283,33 @@ ${sections}
   "strengths": ["격려할 만한 잘 된 점 1~3개"],
   "nextAction": "PM 이 다음에 할 일 1줄 (예: '시장 규모 외부 LLM 카드로 보완')"
 }
+
+[추가 4 lens 평가 기준 — guidebook Ch.2 다섯 관점 + One Page One Thesis]
+
+8. detail-completeness (디테일 완결성, guidebook Ch.2-2)
+   - "모르는 동료가 이 제안서만 보고 회차별 시간표를 쓸 수 있는가" 기준
+   - 강사·코치 프로필 실명/경력/담당 회차 매핑 여부
+   - 예산 비목 4분류 (인건비·운영비·외주비·제작비) + 비목 내역
+   - 안전·리스크·보고 체계 중 하나 이상 "한 문단" 다뤘는가
+   - 미달 시: critical (실명 매핑 없음) / major (시간표 추상) / minor (보고 체계 누락)
+
+9. competitive-context (경쟁 맥락, guidebook Ch.2-4)
+   - 경쟁사 대비 우리가 명확히 다른 점 1 문장 표현 여부
+   - 전년 수행사 아쉬움 포인트가 본문에 과포화로 채워졌는가
+   - 가격 경쟁이 아닌 "같은 예산으로 더 큰 효과" 서술 여부
+   - 미달 시: critical (차별점 없음) / major (전년 피드백 무시) / minor (가격만 강조)
+
+10. off-record-insight (공식 밖 정보, guidebook Ch.2-5)
+    - 담당자 통화·현장 방문 흔적이 있는가 ("이 상권을 직접 걸어 본 결과" 등)
+    - RFP 본문 밖 통찰을 재해석으로 녹였는가 (직접 인용 X)
+    - 내부 지식 (회사 경험·축적 데이터) 활용 여부
+    - 미달 시: critical (현장감 0) / major (담당자 통화 흔적 없음) / minor (내부 지식 부재)
+
+11. quantitative-saturation (정량 포화, guidebook Ch.6-3)
+    - "많은/다양한/충분한/적절한/최적의" 모호 표현 0건 권장 (검출 시 critical)
+    - 섹션당 정량 수치 (숫자+단위) 5건+ 권장
+    - 모든 클레임에 근거 1개+ (수치·사례·도구·체계 중 하나)
+    - 미달 시: critical (모호 표현 3건+) / major (정량 < 3건/섹션) / minor (근거 부족)
 
 JSON 만 출력. 설명·마크다운 없이.
 `.trim()
