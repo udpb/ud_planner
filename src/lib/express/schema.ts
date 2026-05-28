@@ -338,6 +338,55 @@ export const ExpressMetaSchema = z.object({
 })
 
 // ─────────────────────────────────────────
+// 7.5 PM Inputs — K7 (2026-05-29)
+// PM 이 발주처 통화·전담 코치·평가위원 정보 등 "외부 reality" 를 직접 입력.
+// LLM 은 이 정보가 있으면 본문에 반영하고, 없으면 "PM 보완 권장" 표시.
+// ─────────────────────────────────────────
+
+export const PmInputCallNoteSchema = z.object({
+  /** 통화/미팅 일자 (YYYY-MM-DD) */
+  date: z.string().max(20).optional(),
+  /** 발주처 연락 담당자 (이름/직책) */
+  contact: z.string().max(100).optional(),
+  /** 통화 핵심 내용 (1~3 문장 — 의사결정자 의중·숨은 요구) */
+  summary: z.string().min(20).max(800),
+})
+
+export const PmInputAssignedCoachSchema = z.object({
+  name: z.string().max(100),
+  /** 역할 — 'lead' | 'main' | 'support' */
+  role: z.string().max(50).optional(),
+  /** 핵심 이력 (1줄) */
+  background: z.string().max(300).optional(),
+  /** 코치 ID (coach-finder DB 연결 시) */
+  coachId: z.string().max(80).optional(),
+})
+
+export const PmInputEvaluatorSchema = z.object({
+  /** 평가위원 이름 또는 익명 (예: "평가위원 A") */
+  name: z.string().max(100),
+  /** 소속 기관/직책 */
+  affiliation: z.string().max(200).optional(),
+  /** 주요 관심사 (예: "재무 건전성", "성과 측정") */
+  focus: z.string().max(300).optional(),
+})
+
+export const PmInputsSchema = z.object({
+  /** 발주처 통화/미팅 노트 0~5건 */
+  callNotes: z.array(PmInputCallNoteSchema).max(5).optional(),
+  /** 본 사업 전담 코치 명단 0~10명 */
+  assignedCoaches: z.array(PmInputAssignedCoachSchema).max(10).optional(),
+  /** 추정/확정 평가위원 정보 0~10명 */
+  evaluators: z.array(PmInputEvaluatorSchema).max(10).optional(),
+  /** 추가 메모 (자유 형식 — PM 만 본문 X) */
+  freeNotes: z.string().max(2000).optional(),
+  /** 마지막 입력 시점 */
+  updatedAt: z.string().datetime().optional(),
+})
+
+export type PmInputs = z.infer<typeof PmInputsSchema>
+
+// ─────────────────────────────────────────
 // 8. 최상위 — Project.expressDraft Json 으로 저장
 // ─────────────────────────────────────────
 
@@ -362,6 +411,8 @@ export const ExpressDraftSchema = z.object({
   sectionMeta: SectionMetaSchema.optional(),
   /** Wave U / U5 — Risk Mitigation (평가위원 의심 능동 답변, S3) */
   risks: RiskMitigationsSchema.optional(),
+  /** K7 — PM 이 외부 reality 직접 입력 (통화 결과·전담 코치·평가위원) */
+  pmInputs: PmInputsSchema.optional(),
   meta: ExpressMetaSchema,
 })
 

@@ -46,6 +46,9 @@ import type { DeepResearchOutput } from './deep-research'
 // Phase J2 — tonePatterns 활성화
 import { buildToneProfile, formatToneProfileForPrompt } from './tone-patterns'
 import type { ToneProfile } from './tone-patterns'
+// K7 — PM inputs (통화·코치·평가위원)
+import { formatPmInputs } from './prompts/formatters'
+import type { PmInputs } from './schema'
 
 export interface UltimateDraftInput {
   rfp: RfpParsed
@@ -53,6 +56,8 @@ export interface UltimateDraftInput {
   channel: 'B2G' | 'B2B' | 'renewal'
   /** 슬롯별 PM 입력 (또는 generic placeholder — AI 자동 보완) */
   slotInputs: Array<{ slot: string; pmInput: string }>
+  /** K7 — PM 이 입력한 외부 reality (통화·코치·평가위원) */
+  pmInputs?: PmInputs | null
   /** 진행 상황 콜백 (CLI 출력용) */
   onProgress?: (step: string, detail: string) => void
 }
@@ -158,6 +163,8 @@ export async function produceUltimateDraft(
 
   // Phase J2 — toneProfile 을 모든 sections turn 의 pmInput 에 부가
   const toneSection = formatToneProfileForPrompt(toneProfile)
+  // K7 — pmInputs (통화·코치·평가위원) 을 한 번만 formatting
+  const pmInputsSection = formatPmInputs(input.pmInputs ?? null)
   for (const sin of slotInputs) {
     // 외부 리서치 결과를 pmInput 에 부가 (LLM 이 활용)
     let augmentedInput = sin.pmInput
@@ -167,6 +174,14 @@ export async function produceUltimateDraft(
     // Phase J2 — sections 슬롯에 ToneProfile 주입 (voice 일관성)
     if (toneSection && sin.slot.startsWith('sections.')) {
       augmentedInput = `${augmentedInput}\n\n[채널·도메인 ToneProfile (이전 수주 사업 어휘 패턴 — 본문에 자연스럽게 활용)]\n${toneSection}`
+    }
+    // K7 — PM 외부 reality 주입 (모든 sections 슬롯)
+    //   sections.1 = 발주처 통화 결과 (의사결정자 의중)
+    //   sections.4 = 전담 코치 명단 (실명)
+    //   sections.6/7 = 평가위원 관심사 (KPI · 실적 톤)
+    //   모든 sections.* 에 일괄 주입 — LLM 이 알아서 해당 영역에 반영
+    if (pmInputsSection && sin.slot.startsWith('sections.')) {
+      augmentedInput = `${augmentedInput}\n\n[PM 입력 외부 reality — LLM 단독으로 모르는 정보. 본문에 적극 반영]\n${pmInputsSection}`
     }
     const prompt = buildTurnPrompt({
       state: { turns: [], currentSlot: sin.slot, validationErrors: [] } as any,

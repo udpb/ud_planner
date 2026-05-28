@@ -114,3 +114,57 @@ export function formatRecentTurns(turns: Turn[], limit = 5): string {
     .map((t) => `${t.role.toUpperCase()}: ${t.text}`)
     .join('\n\n')
 }
+
+/**
+ * K7 — PM 이 입력한 통화/코치/평가위원 정보를 prompt 에 주입.
+ * 빈 입력 (모두 비어있음) 이면 빈 문자열 반환 → 호출자에서 ""PM 보완 권장"" 안내 가능.
+ */
+export function formatPmInputs(
+  pmInputs:
+    | {
+        callNotes?: { date?: string; contact?: string; summary: string }[]
+        assignedCoaches?: { name: string; role?: string; background?: string }[]
+        evaluators?: { name: string; affiliation?: string; focus?: string }[]
+        freeNotes?: string
+      }
+    | null
+    | undefined,
+): string {
+  if (!pmInputs) return ''
+  const parts: string[] = []
+
+  const calls = pmInputs.callNotes ?? []
+  if (calls.length > 0) {
+    parts.push(`▷ 발주처 통화/미팅 결과 (${calls.length}건):`)
+    for (const c of calls.slice(0, 5)) {
+      const head = [c.date, c.contact].filter(Boolean).join(' · ') || '통화'
+      parts.push(`  - [${head}] ${c.summary}`)
+    }
+  }
+
+  const coaches = pmInputs.assignedCoaches ?? []
+  if (coaches.length > 0) {
+    parts.push(`\n▷ 본 사업 전담 코치 (${coaches.length}명):`)
+    for (const c of coaches.slice(0, 10)) {
+      const role = c.role ? ` [${c.role}]` : ''
+      const bg = c.background ? ` — ${c.background}` : ''
+      parts.push(`  - ${c.name}${role}${bg}`)
+    }
+  }
+
+  const evals = pmInputs.evaluators ?? []
+  if (evals.length > 0) {
+    parts.push(`\n▷ 평가위원 정보 (${evals.length}명, 본문에 실명 노출 X — 관심사만 반영):`)
+    for (const e of evals.slice(0, 10)) {
+      const aff = e.affiliation ? ` (${e.affiliation})` : ''
+      const focus = e.focus ? ` — 관심: ${e.focus}` : ''
+      parts.push(`  - ${e.name}${aff}${focus}`)
+    }
+  }
+
+  if (pmInputs.freeNotes && pmInputs.freeNotes.trim().length > 0) {
+    parts.push(`\n▷ PM 추가 메모 (참고만, 본문에 그대로 X):\n  ${pmInputs.freeNotes.slice(0, 500)}`)
+  }
+
+  return parts.length > 0 ? parts.join('\n') : ''
+}

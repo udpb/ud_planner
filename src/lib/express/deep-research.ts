@@ -163,6 +163,10 @@ JSON 만. 설명·마크다운 펜스·trailing comma 없이.
 /**
  * domainInsight + evidence 를 sections.1 prompt 에 자연스럽게 주입할 형식.
  * buildTurnPrompt 또는 produceUltimateDraft 에서 호출.
+ *
+ * K4 fix (2026-05-29):
+ *   - lowConfidence 항목은 ⚠ 마크 + "본문 인용 비권장 — PM 검증 필요" 안내
+ *   - 고신뢰 자료만 본문 인용 권장
  */
 export function formatResearchForPrompt(output: DeepResearchOutput): string {
   if (output.evidence.length === 0 && !output.domainInsight) return ''
@@ -171,11 +175,24 @@ export function formatResearchForPrompt(output: DeepResearchOutput): string {
     parts.push(`도메인 핵심 통찰: ${output.domainInsight}`)
   }
   if (output.evidence.length > 0) {
-    parts.push(
-      `\n외부 자료 ${output.evidence.length}건 (sections 본문에 inline citation 으로 박기 권장):`,
-    )
-    for (const e of output.evidence) {
-      parts.push(`- ${e.topic} (${e.source}${e.publishedAt ? ` | ${e.publishedAt}` : ''}): ${e.summary}`)
+    const trustworthy = output.evidence.filter((e) => !e.lowConfidence)
+    const lowConf = output.evidence.filter((e) => e.lowConfidence)
+
+    if (trustworthy.length > 0) {
+      parts.push(
+        `\n외부 자료 ${trustworthy.length}건 (✓ 신뢰 — sections 본문에 inline citation 권장):`,
+      )
+      for (const e of trustworthy) {
+        parts.push(`- ${e.topic} (${e.source}${e.publishedAt ? ` | ${e.publishedAt}` : ''}): ${e.summary}`)
+      }
+    }
+    if (lowConf.length > 0) {
+      parts.push(
+        `\n⚠ 저신뢰 자료 ${lowConf.length}건 (출처 미확정 — 본문 인용 금지 · PM 검증 후 사용):`,
+      )
+      for (const e of lowConf) {
+        parts.push(`- ${e.topic} (${e.source ?? '미상'}): ${e.summary}`)
+      }
     }
   }
   return parts.join('\n')
