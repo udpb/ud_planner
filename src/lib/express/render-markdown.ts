@@ -158,12 +158,11 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
   parts.push('\n---\n')
 
   // 6. 7섹션 본문 ─────────────────────────────────
-  // PR1: sections.5 (예산 및 경제성) + sections.7 (수행 역량 및 실적)
-  //      비어있으면 fallback 자동 생성 — 발주처 제출 시 빈 섹션 없게
+  // PR1: sections.5/7 fallback · PR3: 경어체 자동 변환 + 길이 marker
   const sectionKeys = ['1', '2', '3', '4', '5', '6', '7'] as const
   for (const k of sectionKeys) {
     let text = draft.sections?.[k]?.trim()
-
+    const isFallback = !text
     // sections.5 fallback — budget 데이터 있을 때
     if (!text && k === '5') {
       text = buildSection5Fallback(project.totalBudgetVat, budget)
@@ -172,11 +171,21 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
     if (!text && k === '7') {
       text = buildSection7Fallback()
     }
-
     if (!text) continue
-    const isFallback = !draft.sections?.[k]?.trim()
-    const marker = isFallback ? ' _(자동 생성 · PM 보완 권장)_' : ''
-    parts.push(`## ${k}. ${SECTION_LABELS[k]}${marker}\n\n${text}\n`)
+
+    // PR3: 경어체 자동 변환 (PM 작성한 평어체 → 발주처 제출용 경어체)
+    const polishedText = polishProposalTone(text)
+
+    // PR3: 길이 marker (300자 미만이면 짧음 경고)
+    const charCount = polishedText.length
+    const lengthMarker = charCount < 300 && !isFallback
+      ? ` _(${charCount}자 · 300자+ 권장)_`
+      : ''
+    const fallbackMarker = isFallback ? ' _(자동 생성 · PM 보완 권장)_' : ''
+
+    parts.push(
+      `## ${k}. ${SECTION_LABELS[k]}${fallbackMarker}${lengthMarker}\n\n${polishedText}\n`,
+    )
   }
 
   // PR2: 자동 일관성 경고 (SROI 본문/forecast 모순 · 채널 톤 mismatch)
@@ -324,6 +333,40 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
 // ─────────────────────────────────────────
 // 헬퍼
 // ─────────────────────────────────────────
+
+// ─────────────────────────────────────────
+// PR3 — 경어체 자동 변환 (평어체 ~한다 → 경어체 ~합니다)
+// ─────────────────────────────────────────
+
+/**
+ * PM 평어체 본문 → 발주처 제출용 경어체 변환.
+ *
+ * 종결어미만 변환 (문장 중간 동사는 그대로 둠 — 어색해질 수 있음).
+ * 마침표/줄바꿈/공백 직전 패턴만 매칭.
+ *
+ * 예:
+ *   "본 사업은 ... 구축한다." → "본 사업은 ... 구축합니다."
+ *   "12주 후 검증된 MVP 보유율 80% 달성을 목표로 한다." → "... 목표로 합니다."
+ *   "활용된다." → "활용됩니다."
+ *
+ * 주의: '한다는' '한다고' 처럼 어미가 이어지는 경우는 변환 X.
+ */
+export function polishProposalTone(text: string): string {
+  let result = text
+
+  // 1. ~한다 → ~합니다 (문장 종결만)
+  result = result.replace(/한다(?=[.\s\n!?]|$)/g, '합니다')
+  // 2. ~된다 → ~됩니다
+  result = result.replace(/된다(?=[.\s\n!?]|$)/g, '됩니다')
+  // 3. ~이다 → ~입니다 (단, '아이디어' 같은 단어는 ~이다 가 아니므로 안전)
+  result = result.replace(/이다(?=[.\s\n!?]|$)/g, '입니다')
+  // 4. ~한 다 (드물게 띄어쓴 평어체) → ~합니다
+  result = result.replace(/한 다(?=[.\s\n!?]|$)/g, '합니다')
+  // 5. ~된 다 → ~됩니다
+  result = result.replace(/된 다(?=[.\s\n!?]|$)/g, '됩니다')
+
+  return result
+}
 
 // ─────────────────────────────────────────
 // PR2 — 자동 일관성 경고 (SROI 본문 vs forecast · 채널 톤 mismatch)

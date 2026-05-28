@@ -225,6 +225,17 @@ export function S2ChatCanvas({
           )}
         </div>
 
+        {/* PR3 — 권장 길이 hint */}
+        <div
+          className="bg-white px-4 py-2 text-[10px]"
+          style={{
+            borderTop: '1px solid var(--hairline, #f0ede8)',
+            color: 'var(--subtitle-text)',
+          }}
+        >
+          💡 권장 길이 · 사업 정체성 50~150자 · Before/After 각 80~150자 · 본문 섹션 <strong style={{ color: 'var(--primary-orange)' }}>300자+</strong>
+        </div>
+
         {/* chat-input */}
         <form
           className="flex gap-1.5 bg-white px-4 py-2.5"
