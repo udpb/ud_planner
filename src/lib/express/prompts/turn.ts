@@ -131,19 +131,26 @@ PM 의 답이나 본인 질문이 다음 4 렌즈를 충족하는지 확인:
 
 부족한 렌즈가 있으면 **외부 LLM 카드** 또는 **PM 직접 카드** 로 보완 권유.
 
-[UD 자산 적극 인용 — Phase H2 강화 ⭐⭐⭐ 매우 중요]
-**1차본 quality 의 핵심**: sections 본문이 generic 안 되려면 매칭된 자산의 narrativeSnippet 을 **글자 그대로 인용**해야 합니다.
+[UD 자산 적극 인용 — Phase J1/J4 강화 ⭐⭐⭐ 매우 중요 — voice 보존]
+**1차본 quality 의 핵심**: sections 본문이 "카탈로그 톤" 안 되려면 자산 활용이 다음 순서:
 
-- sections.* 본문 채울 때:
-  1. 매칭된 자산 중 해당 섹션 (▷ 적용 섹션) 에 fit 하는 자산 1~2개 선택
-  2. 그 자산의 narrativeSnippet (위 ▷ 표시) 을 **그대로 1~2 문장 본문에 인용**
-     - 인용 직전에 [자산 인용: {assetId}] 헤더 한 줄 (이미 표준 — 변경 X)
-     - narrativeSnippet 을 paraphrase 하지 말고 **원문 그대로** 활용
-  3. 자산의 keyNumbers 정량 수치도 본문에 자연스럽게 박기
-  4. sourceTrace.matchedAssetIds 에 사용한 자산 ID 기록
+1. **★ originalQuote 우선** (Phase J1 — voice 보존):
+   - 매칭 자산에 originalQuote 가 있으면 그것을 **글자 그대로** sections 본문에 인용
+   - 이건 원본 PDF/제안서의 가장 임팩트 있는 문장 — LLM 톤으로 평탄화 X
+   - 인용 형식: 큰따옴표 또는 「」 로 감싸기 + [자산 인용: {assetId}] 헤더
+   - 직인용 후 **다음 문장에서 이 사업 적용 시나리오 설명** (예: "9월 1주차 10개사 동시 진행")
+   - 그 다음에 **so-what** — 발주처가 얻는 것 1 문장
 
-- sections.2/3/4 (추진 전략·커리큘럼·운영) 는 **자산 narrativeSnippet 활용이 핵심**.
-  자산 인용 없이 일반 톤으로만 쓰면 평가위원 인상 X.
+2. originalParagraph (단락 통째 인용 가능 시):
+   - 위와 동일 — 단락 그대로 인용 + 적용 시나리오 + so-what
+
+3. originalQuote / originalParagraph 없으면 narrativeSnippet 사용:
+   - 다만 narrativeSnippet 은 LLM 요약 톤 → paraphrase 자유롭게
+   - 원본 voice 부족 → 그래서 originalQuote 가 있는 자산 우선 권장
+
+- sections.2/3/4 (추진 전략·커리큘럼·운영) 는 **originalQuote 직인용이 voice 의 핵심**.
+- 자산 인용 직후 paraphrase 만 하면 평가위원 즉시 "카탈로그 톤" 느낌 — **반드시 적용 시나리오 + so-what 동반**
+- sourceTrace.matchedAssetIds 에 사용한 자산 ID 기록
 
 - differentiators 슬롯: acceptedByPm=false 인 자산 중 가장 점수 높은 것을 PM 에게 한 줄 인용 + quickReplies
 

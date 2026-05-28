@@ -40,7 +40,9 @@ export interface ExtractedFile {
   charCount: number
 }
 
-const MAX_TEXT_LEN = 40_000
+// Phase J3 — Gemini 1M context 활용. 청년마을 77p PDF (200K+) 도 통째로 retrieve.
+// 이전 40K 절단 시 긴 제안서 뒷부분 자산 손실 → 200K 로 확장.
+const MAX_TEXT_LEN = 200_000
 
 export async function extractTextFromBuffer(
   buffer: Buffer,
@@ -204,7 +206,12 @@ function buildSinglePrompt(
 - evidenceType: quantitative · structural · case · methodology
 - applicableSections: proposal-background · curriculum · coaches · budget · impact · org-team
 - valueChainStage: impact · input · output · activity · outcome
-- narrativeSnippet: 제안서 본문 1~2 문장 한국어 요약 (원문 인용 X)
+- narrativeSnippet: 제안서 본문 1~2 문장 한국어 요약 (LLM 재구성, 매칭·표시용)
+- **originalQuote** ⭐ (Phase J1 — voice 보존): 원본에서 가장 임팩트 있는 1 문장 **글자 그대로 발췌** (10~400자)
+  · 발주처 제출 본문에 직인용 시 사용 — LLM 재작성 X
+  · 마케팅 카피·정량 주장·차별 메시지 우선 발췌
+  · 강력한 문장 없으면 생략 가능
+- **originalParagraph** ⭐: 원본 핵심 단락 글자 그대로 (50~800자) — 단락 통째로 인용 시
 - keyNumbers: 본문 핵심 숫자·연도
 - keywords: RFP 매칭용 5~10개
 
@@ -256,7 +263,9 @@ function buildMultiPrompt(
       "evidenceType": "quantitative|structural|case|methodology",
       "applicableSections": ["proposal-background"|"curriculum"|...],
       "valueChainStage": "impact|input|output|activity|outcome",
-      "narrativeSnippet": "제안서 본문 1~2 문장 한국어",
+      "narrativeSnippet": "제안서 본문 1~2 문장 한국어 (LLM 재구성)",
+      "originalQuote": "원본에서 가장 임팩트 있는 1 문장 글자 그대로 (선택 — 강력한 문장 없으면 생략)",
+      "originalParagraph": "원본 핵심 단락 글자 그대로 50~800자 (선택)",
       "keyNumbers": ["..."],
       "keywords": ["..."]
     },

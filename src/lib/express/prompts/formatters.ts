@@ -58,8 +58,8 @@ export function formatProfile(profile: ProgramProfile | undefined): string {
 
 export function formatAssetMatches(matches: AssetMatch[] | undefined): string {
   if (!matches || matches.length === 0) return '(매칭된 자산 없음)'
-  // Phase H2 — narrativeSnippet 전체 + 자산 ID + applicableSections + keyNumbers 풍부 노출
-  // LLM 이 sections 본문에 narrativeSnippet 을 글자 그대로 인용할 수 있게 충분한 정보 제공
+  // Phase H2 + J1/J4 — narrativeSnippet (요약) + originalQuote (직인용) + originalParagraph
+  // LLM 이 sections 본문에 voice 보존된 원본 직인용 가능하도록 풍부한 정보 제공
   return matches
     .slice(0, 5)
     .map((m, i) => {
@@ -79,12 +79,29 @@ export function formatAssetMatches(matches: AssetMatch[] | undefined): string {
             .join(' · ')
         : ''
 
+      // Phase J1 — sourceReferences 의 originalQuote / originalParagraph 추출
+      const srRaw = (asset as { sourceReferences?: unknown }).sourceReferences
+      let originalQuote: string | undefined
+      let originalParagraph: string | undefined
+      if (srRaw && typeof srRaw === 'object' && !Array.isArray(srRaw)) {
+        const sr = srRaw as Record<string, unknown>
+        if (typeof sr.originalQuote === 'string') originalQuote = sr.originalQuote
+        if (typeof sr.originalParagraph === 'string') originalParagraph = sr.originalParagraph
+      }
+
       const lines = [
         `[${i + 1}] ${name} (assetId="${id}" · 점수 ${score.toFixed(2)})`,
       ]
       if (sections.length > 0) lines.push(`   ▷ 적용 섹션: ${sections.join(', ')}`)
       if (keyNumsStr) lines.push(`   ▷ 핵심 수치: ${keyNumsStr}`)
-      if (snip) lines.push(`   ▷ narrativeSnippet (sections 본문에 글자 그대로 인용):\n   "${snip}"`)
+      // ⭐ originalQuote / originalParagraph 가 있으면 가장 먼저 표시 — voice 보존 직인용용
+      if (originalQuote) {
+        lines.push(`   ▷ **★ originalQuote (sections 본문에 글자 그대로 인용 — voice 보존)**:\n   「${originalQuote}」`)
+      }
+      if (originalParagraph) {
+        lines.push(`   ▷ **★ originalParagraph (단락 통째 인용 가능)**:\n   ${originalParagraph.slice(0, 400)}${originalParagraph.length > 400 ? '...' : ''}`)
+      }
+      if (snip) lines.push(`   ▷ narrativeSnippet (요약 — 매칭/표시용. 본문 인용 시 originalQuote 우선):\n   "${snip}"`)
       return lines.join('\n')
     })
     .join('\n\n')

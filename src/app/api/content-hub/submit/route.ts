@@ -95,6 +95,9 @@ export async function POST(req: NextRequest) {
       applicableSections: string[]
       valueChainStage: string
       narrativeSnippet: string
+      // Phase J1 — voice 보존
+      originalQuote?: string
+      originalParagraph?: string
       keyNumbers: string[]
       keywords: string[]
     }
@@ -109,13 +112,17 @@ ${parsed.data.body}
 
 ${parsed.data.name ? `[PM 이 짐작한 이름] ${parsed.data.name}\n` : ''}
 
-자산 후보 JSON 출력 (9 필드 모두 포함):
+자산 후보 JSON 출력 (11 필드):
   name (2~120자)
   category: methodology|content|product|human|data|framework
   evidenceType: quantitative|structural|case|methodology
   applicableSections: ["proposal-background"|"curriculum"|...] 1~3개
   valueChainStage: impact|input|output|activity|outcome
-  narrativeSnippet: 제안서 본문에 인용할 1~2 문장 한국어 (원본 그대로 X — 요약·재구성)
+  narrativeSnippet: 제안서 본문에 인용할 1~2 문장 한국어 (LLM 재구성 — 요약 톤)
+  **originalQuote** ⭐ (Phase J1): 원본에서 가장 임팩트 있는 1 문장 **글자 그대로** (10~400자, 선택)
+    · 발주처 제출 시 직인용 — LLM 재작성 X · voice 보존
+    · 강력한 문장 없으면 생략
+  **originalParagraph** ⭐: 원본 핵심 단락 글자 그대로 50~800자 (선택)
   keyNumbers: 본문에 명시된 숫자·연도 배열
   keywords: RFP 매칭용 5~10개
   rejected: false (또는 생략)
@@ -159,6 +166,8 @@ JSON 만 출력. 마크다운 펜스 X.`
         applicableSections: accepted.applicableSections,
         valueChainStage: accepted.valueChainStage,
         narrativeSnippet: accepted.narrativeSnippet,
+        originalQuote: accepted.originalQuote,
+        originalParagraph: accepted.originalParagraph,
         keyNumbers: accepted.keyNumbers ?? [],
         keywords: accepted.keywords ?? [],
       }
@@ -184,6 +193,13 @@ JSON 만 출력. 마크다운 펜스 X.`
     const sourceUrl =
       'sourceUrl' in parsed.data ? parsed.data.sourceUrl : undefined
 
+    // Phase J1 — sourceReferences 에 originalQuote/Paragraph + 외부 URL 통합 저장
+    // 구조: { urls?: string[], originalQuote?: string, originalParagraph?: string }
+    const sourceReferences: Record<string, unknown> = {}
+    if (sourceUrl) sourceReferences.urls = [sourceUrl]
+    if (assetData.originalQuote) sourceReferences.originalQuote = assetData.originalQuote
+    if (assetData.originalParagraph) sourceReferences.originalParagraph = assetData.originalParagraph
+
     const created = await prisma.contentAsset.create({
       data: {
         name: assetData.name,
@@ -196,7 +212,10 @@ JSON 만 출력. 마크다운 펜스 X.`
         keyNumbers: assetData.keyNumbers as unknown as object,
         status: 'developing', // 검수 대기
         version: 1,
-        sourceReferences: sourceUrl ? ([sourceUrl] as unknown as object) : undefined,
+        sourceReferences:
+          Object.keys(sourceReferences).length > 0
+            ? (sourceReferences as unknown as object)
+            : undefined,
         lastReviewedAt: new Date(),
         createdById: userId,
         updatedById: userId,

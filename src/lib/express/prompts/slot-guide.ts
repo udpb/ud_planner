@@ -86,18 +86,37 @@ export function currentSlotGuide(currentSlot: string | null, matchedAssets?: Ass
       )
     case 'sections.1':
       return (
-        '- ① 제안 배경 및 목적 — 시장 진단 + 정책 맥락 + 발주처 미션\n' +
-        '- 첫 단락: Before (현황·문제) → 둘째 단락: After (사업 목적)\n' +
-        '- 통계 1개 이상 + UD 자산 1개 이상 인용\n' +
+        '- ① 제안 배경 및 목적 — Phase J5 강화\n' +
+        '\n[필수 3 구조] — Pyramid Principle:\n' +
+        '  1) 첫 문장 = **결론** (이 사업의 한 줄 정체성 + 핵심 임팩트)\n' +
+        '  2) 둘째~넷째 문장 = 근거 (시장 통계 1개 + 정책 맥락 + 발주처 미션 연결)\n' +
+        '  3) 마지막 문장 = **so-what** (그래서 발주처가 본 사업으로 얻는 것 1 문장)\n' +
+        '\n[필수 3 질문 답변] — 평가위원이 첫 페이지에서 답을 찾아야 함:\n' +
+        '  A. **"왜 지금?"** (Urgency) — 2025년 *지금* 이 사업이 절박한 이유 (정책 변동·시장 기회)\n' +
+        '  B. **"왜 우리?"** (Uniqueness) — 자산 인용으로 *우리만 가능한 것* (회사명 X — Phase H3)\n' +
+        '  C. **"어떻게?"** (Specificity) — 추상 X · 구체적 진단·시기·정량\n' +
+        '\n[금지 — 카탈로그 톤]:\n' +
+        '  ❌ "우리는 X 도구·Y 모듈·Z 진단을 보유합니다" 식 능력 나열\n' +
+        '  ✅ "X 도구로 이 사업의 10개사를 9월 1주차에 진단하여 ..." 식 적용 시나리오\n' +
+        '\n- 통계 1개 이상 + originalQuote 1개 이상 직인용 (가능한 경우)\n' +
         '- 길이 400~600자\n' +
-        '- nextQuestion 에는 절대 본문을 쓰지 말고 extractedSlots["sections.1"] 에 넣기\n' +
+        '- nextQuestion 에는 절대 본문 X — extractedSlots["sections.1"] 안에만\n' +
         sectionMetaHint('1', '제안 배경 (정책 맥락)', '청년 N% 가 ~ 문제를 겪고 있습니다')
       )
     case 'sections.2':
       return (
-        '- ② 추진 전략 및 방법론 — 언더독스 차별화의 핵심 섹션\n' +
-        '- IMPACT 18 모듈 / ACT Canvas / 매칭형 실행지원 등 자산을 적극 인용\n' +
-        '- "왜 언더독스인가" 가 분명히 나와야 함\n' +
+        '- ② 추진 전략 및 방법론 — Phase J5 강화 — voice 보존 핵심 섹션\n' +
+        '\n[Pyramid 구조 — 결론→근거→so-what]:\n' +
+        '  1) 첫 문장 = 추진 전략의 핵심 1줄 (N단계 프레임 / N대 전략)\n' +
+        '  2) 본문 단락 2~3개 = 각 단계/전략별:\n' +
+        '     - originalQuote 직인용 「...」 (있을 때)\n' +
+        '     - **다음 문장 = 이 사업 적용 시나리오** (회차·시기·정량)\n' +
+        '     - **그 다음 = so-what** (발주처/참가자가 얻는 것)\n' +
+        '  3) 마지막 문장 = 종합 결론 (왜 우리만 가능한가 — 회사명 X)\n' +
+        '\n[금지]:\n' +
+        '  ❌ "ACT Canvas / IMPACT 18 보유" 능력 나열\n' +
+        '  ✅ "ACT Canvas 30문항으로 9월 1주차 10개사 사전 진단 → 평균 점수 60점 미만 N개사는 2주차 부트캠프 분리"\n' +
+        '\n- 자산 originalQuote 1~2개 직인용 필수\n' +
         '- 길이 500~700자\n' +
         '- extractedSlots["sections.2"] 안에만!\n' +
         sectionMetaHint('2', '4대 전략', '연대·협력·참여·혁신 4 가치로 추진')
@@ -122,11 +141,19 @@ export function currentSlotGuide(currentSlot: string | null, matchedAssets?: Ass
       )
     case 'sections.6':
       return (
-        '- ⑥ 기대 성과 및 임팩트 — KPI + SROI Forecast (1줄 추정)\n' +
-        '- After 와 연결된 정량 KPI 3개\n' +
-        '- "예상 SROI 1:N (벤치마크 기반)" 한 줄\n' +
-        '- 평가표 임팩트 가중치 높으면 비중 늘리기\n' +
-        '- 길이 400~600자\n' +
+        '- ⑥ 기대 성과 및 임팩트 — Phase J5 강화\n' +
+        '\n[Pyramid + KPI 측정 방법 명시]:\n' +
+        '  1) 첫 문장 = 종합 성과 한 줄 (정량 + 정성)\n' +
+        '  2) KPI 3~4개 — 각 KPI:\n' +
+        '     - 정량 목표 (예: MVP 검증율 80%)\n' +
+        '     - **측정 방법** (예: ACTT 사전·사후 페어 진단 + 코치 평가 + 외부 멘토 인터뷰)\n' +
+        '     - **측정 시점** (예: 12주차 + 6개월 후 사후 추적)\n' +
+        '     - **시장 평균 대비** (예: 산업 평균 40% 대비 2배)\n' +
+        '  3) SROI 1:N (벤치마크 기반) + so-what\n' +
+        '\n[금지]:\n' +
+        '  ❌ "KPI 80% 달성" 만 표기 — 측정 방법 X\n' +
+        '  ✅ "MVP 검증율 80% (ACTT 사후 진단 + 외부 멘토 검증 페어로 측정, 산업 평균 40% 대비 2배)"\n' +
+        '\n- 길이 400~600자\n' +
         '- extractedSlots["sections.6"] 안에만!\n' +
         sectionMetaHint('6', 'N개 정량 KPI', 'MVP 검증율 80% · SROI 1:N · 시드 연계 N건+')
       )

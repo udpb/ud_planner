@@ -43,6 +43,9 @@ import { generateTrackRecord } from './track-record'
 import { inferBudgetBreakdown } from './infer-budget'
 import { fetchExternalEvidence, formatResearchForPrompt } from './deep-research'
 import type { DeepResearchOutput } from './deep-research'
+// Phase J2 — tonePatterns 활성화
+import { buildToneProfile, formatToneProfileForPrompt } from './tone-patterns'
+import type { ToneProfile } from './tone-patterns'
 
 export interface UltimateDraftInput {
   rfp: RfpParsed
@@ -64,6 +67,8 @@ export interface UltimateDraftOutput {
   trackRecordSources: string[]
   /** Phase I2 — 자동 산출 예산 비목 */
   budgetBreakdown: Array<{ category: string; amount: number; percentage: number }>
+  /** Phase J2 — 채널·도메인 ToneProfile (voice 일관성) */
+  toneProfile: ToneProfile
   risks: RiskMitigation[]
   coherenceReasoning: string | null
   inspection: InspectorReport | null
@@ -119,6 +124,18 @@ export async function produceUltimateDraft(
   progress('2/6', `완료 ${((Date.now() - t2) / 1000).toFixed(1)}s · ${matchedAssets.length} 자산`)
 
   // ────────────────────────────────────
+  // Step 2.4: Tone Profile (Phase J2, DB only — no LLM)
+  // ────────────────────────────────────
+  progress('2.4/9', '채널·도메인 ToneProfile 추출...')
+  const t24 = Date.now()
+  const toneProfile = await buildToneProfile({
+    channel,
+    keywords: (rfp.keywords ?? []).slice(0, 8),
+    limit: 3,
+  })
+  progress('2.4/9', `완료 ${((Date.now() - t24) / 1000).toFixed(1)}s · openings ${toneProfile.openings?.length ?? 0} · avoidedWords ${toneProfile.avoidedWords?.length ?? 0}`)
+
+  // ────────────────────────────────────
   // Step 2.5: 외부 딥리서치 (Phase I3, 1 LLM)
   // ────────────────────────────────────
   progress('2.5/9', '외부 자료 딥리서치...')
@@ -139,11 +156,18 @@ export async function produceUltimateDraft(
     draft.evidenceRefs = [...(draft.evidenceRefs ?? []), ...externalResearch.evidenceRefs]
   }
 
+  // Phase J2 — toneProfile 을 모든 sections turn 의 pmInput 에 부가
+  const toneSection = formatToneProfileForPrompt(toneProfile)
   for (const sin of slotInputs) {
     // 외부 리서치 결과를 pmInput 에 부가 (LLM 이 활용)
-    const augmentedInput = externalResearch.evidence.length > 0 && sin.slot.startsWith('sections.1')
-      ? `${sin.pmInput}\n\n[외부 리서치 결과 — 본문에 inline citation 으로 박을 것]\n${formatResearchForPrompt(externalResearch)}`
-      : sin.pmInput
+    let augmentedInput = sin.pmInput
+    if (externalResearch.evidence.length > 0 && sin.slot.startsWith('sections.1')) {
+      augmentedInput = `${augmentedInput}\n\n[외부 리서치 결과 — 본문에 inline citation 으로 박을 것]\n${formatResearchForPrompt(externalResearch)}`
+    }
+    // Phase J2 — sections 슬롯에 ToneProfile 주입 (voice 일관성)
+    if (toneSection && sin.slot.startsWith('sections.')) {
+      augmentedInput = `${augmentedInput}\n\n[채널·도메인 ToneProfile (이전 수주 사업 어휘 패턴 — 본문에 자연스럽게 활용)]\n${toneSection}`
+    }
     const prompt = buildTurnPrompt({
       state: { turns: [], currentSlot: sin.slot, validationErrors: [] } as any,
       draft,
@@ -300,6 +324,7 @@ export async function produceUltimateDraft(
     externalResearch,
     trackRecordSources,
     budgetBreakdown,
+    toneProfile,
     risks,
     coherenceReasoning: coherenceOut.result.reasoning ?? null,
     inspection,

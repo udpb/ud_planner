@@ -173,6 +173,18 @@ const AcceptedAssetSchema = z.object({
     'outcome',
   ]),
   narrativeSnippet: z.string().min(20).max(800),
+  /**
+   * Phase J1 — 원본 voice 보존
+   * narrativeSnippet 은 LLM 재생성 (요약 톤) 이지만, originalQuote 는
+   * 원본 PDF/HTML 에서 가장 임팩트 있는 1 문장을 **글자 그대로 발췌**.
+   * 발주처 제출 sections 본문에 직인용 시 사용 — voice 평탄화 방지.
+   */
+  originalQuote: z.string().min(10).max(400).optional(),
+  /**
+   * Phase J1 — 원본의 핵심 단락 (200~600자) 글자 그대로.
+   * 청년마을 PDF 같이 강력한 1 단락 통째로 인용 가능.
+   */
+  originalParagraph: z.string().min(50).max(800).optional(),
   keyNumbers: z.array(z.string()).max(20),
   keywords: z.array(z.string()).max(25),
   rejected: z.literal(false).optional(),
@@ -229,16 +241,29 @@ function buildProposalPrompt(page: FetchedPage, opts: ProposeOptions): string {
 이것이 **언더독스 제안서 작성용 자산 (ContentAsset)** 으로 가치 있는지
 판단하고, 가치 있으면 등록 후보로 JSON 을 만들어주세요.
 
-**중요: 자산화 가치 있으면 다음 9개 필드 모두 반드시 포함**:
-  1. name (자산 이름, 2~120자) — 페이지 주제를 짧게 요약 (예: "언더독스 회사 소개", "AX Guidebook v2", "2024년 임팩트 리포트")
+**중요: 자산화 가치 있으면 다음 11개 필드 반드시 포함**:
+  1. name (자산 이름, 2~120자)
   2. category
   3. evidenceType
   4. applicableSections
   5. valueChainStage
-  6. narrativeSnippet
-  7. keyNumbers (배열, 비어있어도 OK)
-  8. keywords (배열)
-  9. rejected (false 또는 생략)
+  6. narrativeSnippet (LLM 재구성 요약 — 매칭·표시용, 20~800자)
+  7. **originalQuote** ⭐ (원본에서 가장 임팩트 있는 1 문장 글자 그대로, 10~400자)
+     - 발주처 제출 sections 본문에 직인용 시 사용
+     - LLM 재구성 X — 원본 voice 보존이 핵심
+     - 없으면 (해당 자산에 인용 가치 문장 없을 때) 생략 가능
+  8. **originalParagraph** ⭐ (원본 핵심 단락 글자 그대로, 50~800자)
+     - 단락 통째로 인용 시 사용
+     - 없으면 생략 가능
+  9. keyNumbers (배열, 비어있어도 OK)
+  10. keywords (배열)
+  11. rejected (false 또는 생략)
+
+**originalQuote · originalParagraph 추출 원칙**:
+  - 원본의 가장 강력한 표현 발췌 (마케팅 카피·정량 주장·차별 메시지)
+  - **글자 그대로** — 단어 변경 X · 어휘 정리 X
+  - narrativeSnippet 과 다른 정보 — narrativeSnippet 은 매칭용 요약, original* 은 voice 보존용 직인용
+  - 충분히 강력한 문장이 없으면 생략 — 가짜 originalQuote 만들지 말 것
 
 [자산 가치 판단 기준]
 다음 중 하나 이상에 해당하면 자산화 가치 있음:
