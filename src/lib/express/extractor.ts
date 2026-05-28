@@ -196,7 +196,17 @@ export function mergeExtractedSlots(
         const meta = sv as Record<string, unknown>
         const cleaned: { headline?: string; subtitle?: string } = {}
         if (typeof meta.headline === 'string') {
-          const h = meta.headline.trim().slice(0, 200)
+          // Phase M-fix-1: LLM 이 가끔 headline 값을 큰따옴표·낫표로 감싸 보냄 → 렌더가
+          // 다시 큰따옴표로 감싸면서 이중 따옴표 발생. 양 끝 따옴표 strip 후 저장.
+          let h = meta.headline.trim()
+          while (h.length >= 2 && (
+            (h.startsWith('"') && h.endsWith('"')) ||
+            (h.startsWith('“') && h.endsWith('”')) ||  // "..."
+            (h.startsWith("'") && h.endsWith("'"))
+          )) {
+            h = h.slice(1, -1).trim()
+          }
+          h = h.slice(0, 200)
           if (h.length > 0) cleaned.headline = h
         }
         if (typeof meta.subtitle === 'string') {

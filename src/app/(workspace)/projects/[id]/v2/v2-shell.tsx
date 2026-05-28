@@ -25,6 +25,7 @@ import {
   type ProposalSectionRef,
 } from '@/components/stages/S4Workspace'
 import { S5Summary } from '@/components/stages/S5Summary'
+import { DraftEnrichmentEditor } from '@/components/express/DraftEnrichmentEditor'
 
 export interface V2ShellProps {
   projectId: string
@@ -297,23 +298,27 @@ export function V2Shell({
           />
         )}
         {activeStage === 'S5' && (
-          <S5Summary
-            projectId={projectId}
-            proposalCompleteCount={
-              s4Proposal.sections.filter((s) => s.status === 'complete').length
-            }
-            proposalTotal={s4Proposal.sections.length || 7}
-            inspectorScore={s5InspectorScore}
-            marginPct={s4Budget.marginPct ?? null}
-            socialValueKrw={s5SocialValueKrw}
-            directBeneficiaries={s5BeneficiaryCount}
-            indirectBeneficiaries={null}
-            roiPct={null}
-            impactBreakdown={s5ImpactBreakdown}
-            isApproved={s5IsApproved}
-            onApprove={handleApprove}
-            onBackToS4={() => setActiveStage('S4')}
-          />
+          <>
+            {/* Phase M F4 — AI 가 자동 생성한 hierarchy/sectionMeta 검토·편집 카드 (안전망) */}
+            <DraftEnrichmentEditor projectId={projectId} />
+            <S5Summary
+              projectId={projectId}
+              proposalCompleteCount={
+                s4Proposal.sections.filter((s) => s.status === 'complete').length
+              }
+              proposalTotal={s4Proposal.sections.length || 7}
+              inspectorScore={s5InspectorScore}
+              marginPct={s4Budget.marginPct ?? null}
+              socialValueKrw={s5SocialValueKrw}
+              directBeneficiaries={s5BeneficiaryCount}
+              indirectBeneficiaries={null}
+              roiPct={null}
+              impactBreakdown={s5ImpactBreakdown}
+              isApproved={s5IsApproved}
+              onApprove={handleApprove}
+              onBackToS4={() => setActiveStage('S4')}
+            />
+          </>
         )}
       </main>
 
