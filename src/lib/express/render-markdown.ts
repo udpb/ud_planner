@@ -179,6 +179,23 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
     parts.push(`## ${k}. ${SECTION_LABELS[k]}${marker}\n\n${text}\n`)
   }
 
+  // PR2: 자동 일관성 경고 (SROI 본문/forecast 모순 · 채널 톤 mismatch)
+  const consistencyWarnings = buildConsistencyWarnings({
+    draft,
+    forecastTotalSocialValue: input.impactForecast?.totalSocialValue,
+  })
+  if (consistencyWarnings.length > 0) {
+    parts.push('\n---\n')
+    parts.push(
+      '<!-- ai-consistency: 발주처 제출 전 PM 확인 권장 -->\n',
+    )
+    parts.push('## ⚠ 자동 일관성 경고 (PM 확인)\n')
+    for (const w of consistencyWarnings) {
+      parts.push(`- **${w.title}**: ${w.detail}`)
+      if (w.suggestion) parts.push(`  - 💡 ${w.suggestion}`)
+    }
+  }
+
   // 7. AI 자동 진단 (참고 — 발주처 제출 시 제거 가능) ──
   const diag = draft.meta?.autoDiagnosis
   if (diag && hasAnyDiagnosis(diag)) {
@@ -307,6 +324,78 @@ export function renderExpressMarkdown(input: MarkdownInput): string {
 // ─────────────────────────────────────────
 // 헬퍼
 // ─────────────────────────────────────────
+
+// ─────────────────────────────────────────
+// PR2 — 자동 일관성 경고 (SROI 본문 vs forecast · 채널 톤 mismatch)
+// ─────────────────────────────────────────
+
+interface ConsistencyWarning {
+  title: string
+  detail: string
+  suggestion?: string
+}
+
+/** B2G 톤 키워드 — '지역', '청년 유출', '공공' 등 사회공헌·정부 사업 표현 */
+const B2G_TONE_KEYWORDS = [
+  '지역', '청년 유출', '사회공헌', '공공', '시민', '취약계층', '복지', '균형 발전', '지자체',
+]
+/** B2B 톤 키워드 — 'ROI', '솔루션', '비즈니스 임팩트' 등 영리·B2B 사업 표현 */
+const B2B_TONE_KEYWORDS = [
+  'ROI', '솔루션', '비즈니스 임팩트', '비용 효율', '수익성', '경쟁우위', '시장 점유', '브랜드 가치',
+]
+
+export function buildConsistencyWarnings(args: {
+  draft: ExpressDraft
+  forecastTotalSocialValue: number | undefined
+}): ConsistencyWarning[] {
+  const { draft, forecastTotalSocialValue } = args
+  const warnings: ConsistencyWarning[] = []
+
+  // 1. SROI 본문 vs forecast 모순 검출
+  if (forecastTotalSocialValue != null && forecastTotalSocialValue > 0) {
+    const allText = Object.values(draft.sections ?? {}).filter(Boolean).join('\n')
+    // 'SROI 2.3억' / 'SROI: 2.3억원' / '사회적 가치 2.3억' 등
+    const sroiMatch = allText.match(/(?:SROI|사회적\s*가치)\D{0,12}(\d+(?:[\.,]\d+)?)\s*억/)
+    if (sroiMatch) {
+      const bodyValueEokwon = parseFloat(sroiMatch[1].replace(',', '.'))
+      const bodyValueKrw = bodyValueEokwon * 1e8
+      const forecastEokwon = forecastTotalSocialValue / 1e8
+      const ratio = bodyValueKrw / forecastTotalSocialValue
+      // 1.5배 이상 차이 — 모순으로 판정
+      if (ratio >= 1.5 || ratio <= 0.66) {
+        warnings.push({
+          title: 'SROI 본문 vs 실제 forecast 모순',
+          detail: `본문에 명시한 SROI ${bodyValueEokwon.toFixed(1)}억 vs 실제 impact-measurement forecast ${formatKRW(forecastTotalSocialValue)} (${forecastEokwon.toFixed(2)}억)`,
+          suggestion: `본문의 SROI 숫자를 forecast 값 (${forecastEokwon.toFixed(2)}억) 으로 수정하거나, 본문에서 SROI 숫자를 제거하고 'forecast 리포트 참조' 로 표현 권장`,
+        })
+      }
+    }
+  }
+
+  // 2. 채널 톤 mismatch 검출
+  const detectedChannel = draft.meta?.autoDiagnosis?.channel?.detected
+  if (detectedChannel === 'B2B' || detectedChannel === 'B2G') {
+    const allText = Object.values(draft.sections ?? {}).filter(Boolean).join('\n')
+    const b2gHits = B2G_TONE_KEYWORDS.filter((kw) => allText.includes(kw)).length
+    const b2bHits = B2B_TONE_KEYWORDS.filter((kw) => allText.includes(kw)).length
+    if (detectedChannel === 'B2B' && b2gHits >= 3 && b2bHits === 0) {
+      warnings.push({
+        title: '채널 vs 본문 톤 불일치',
+        detail: `채널은 B2B (기업·재단) 로 감지 (${b2gHits}건 B2G 키워드 / B2B 키워드 0건). 본문은 사회공헌·지역사회 톤으로 작성됨.`,
+        suggestion: 'B2B 발주처라면 ROI · 비즈니스 임팩트 · 경쟁우위 등 영리 사업 톤 보강 권장. 또는 채널을 B2G 로 재확인.',
+      })
+    }
+    if (detectedChannel === 'B2G' && b2bHits >= 3 && b2gHits === 0) {
+      warnings.push({
+        title: '채널 vs 본문 톤 불일치',
+        detail: `채널은 B2G (정부·공공) 로 감지 (${b2bHits}건 B2B 키워드 / B2G 키워드 0건). 본문은 영리·비용 효율 톤으로 작성됨.`,
+        suggestion: 'B2G 발주처라면 지역 사회·공공성·균형 발전 등 공공 톤 보강 권장.',
+      })
+    }
+  }
+
+  return warnings
+}
 
 // ─────────────────────────────────────────
 // PR1 — sections.5/7 자동 fallback
