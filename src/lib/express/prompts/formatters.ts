@@ -58,16 +58,36 @@ export function formatProfile(profile: ProgramProfile | undefined): string {
 
 export function formatAssetMatches(matches: AssetMatch[] | undefined): string {
   if (!matches || matches.length === 0) return '(매칭된 자산 없음)'
+  // Phase H2 — narrativeSnippet 전체 + 자산 ID + applicableSections + keyNumbers 풍부 노출
+  // LLM 이 sections 본문에 narrativeSnippet 을 글자 그대로 인용할 수 있게 충분한 정보 제공
   return matches
     .slice(0, 5)
-    .map((m) => {
+    .map((m, i) => {
       const score = m.matchScore ?? 0
       const asset = m.asset
-      const name = asset?.name ?? '(이름 없음)'
-      const snip = asset?.narrativeSnippet?.slice(0, 100) ?? ''
-      return `- ${name} (점수 ${score.toFixed(2)}) ${snip}`
+      if (!asset) return `${i + 1}. (이름 없음, 점수 ${score.toFixed(2)})`
+
+      const name = asset.name ?? '(이름 없음)'
+      const id = asset.id ?? ''
+      const snip = asset.narrativeSnippet ?? ''
+      const sections = (asset as { applicableSections?: string[] }).applicableSections ?? []
+      const keyNums = (asset as { keyNumbers?: unknown[] }).keyNumbers ?? []
+      const keyNumsStr = keyNums.length > 0
+        ? keyNums
+            .map((k) => (typeof k === 'object' && k !== null && 'value' in k ? (k as { value: string }).value : String(k)))
+            .slice(0, 5)
+            .join(' · ')
+        : ''
+
+      const lines = [
+        `[${i + 1}] ${name} (assetId="${id}" · 점수 ${score.toFixed(2)})`,
+      ]
+      if (sections.length > 0) lines.push(`   ▷ 적용 섹션: ${sections.join(', ')}`)
+      if (keyNumsStr) lines.push(`   ▷ 핵심 수치: ${keyNumsStr}`)
+      if (snip) lines.push(`   ▷ narrativeSnippet (sections 본문에 글자 그대로 인용):\n   "${snip}"`)
+      return lines.join('\n')
     })
-    .join('\n')
+    .join('\n\n')
 }
 
 export function formatRecentTurns(turns: Turn[], limit = 5): string {

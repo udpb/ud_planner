@@ -24,6 +24,9 @@ import { currentSlotGuide } from './slot-guide'
 // F4 (Wave V, ADR-015 §7): pm-direct 카드 must/nice 분류 hint
 import type { QuestionHint } from '../question-classifier'
 import { formatHintsForPrompt } from '../question-classifier'
+// Phase H1 — 발주처 unique context 주입
+import type { ClientContext } from '../client-context'
+import { formatClientContextForPrompt } from '../client-context'
 
 export interface BuildTurnPromptInput {
   state: ConversationState
@@ -39,6 +42,11 @@ export interface BuildTurnPromptInput {
    * 결과를 주입.
    */
   questionHints?: QuestionHint[]
+  /**
+   * Phase H1 — 발주처 unique context (mission, pastInitiatives, signatureVocab,
+   * likelyQuestions, differentiationHints). fetchClientContext 결과 주입.
+   */
+  clientContext?: ClientContext | null
 }
 
 export function buildTurnPrompt(input: BuildTurnPromptInput): string {
@@ -73,7 +81,10 @@ ${formatRfpBrief(input.rfp)}
 [ProgramProfile (11축)]
 ${formatProfile(input.profile)}
 
-[매칭된 UD 자산 Top 5 — 적극 인용해 주세요]
+[발주처 unique context — Phase H1]
+${formatClientContextForPrompt(input.clientContext) || '(발주처 컨텍스트 미조사)'}
+
+[매칭된 UD 자산 Top 5 — Phase H2 narrativeSnippet 직접 인용 강제]
 ${formatAssetMatches(input.matchedAssets)}
 
 ────────────────────────────────────────────
@@ -120,11 +131,37 @@ PM 의 답이나 본인 질문이 다음 4 렌즈를 충족하는지 확인:
 
 부족한 렌즈가 있으면 **외부 LLM 카드** 또는 **PM 직접 카드** 로 보완 권유.
 
-[UD 자산 적극 인용 — 매우 중요]
-- 매칭된 자산 Top 5 중 점수 높은 것을 **다음 질문 또는 sections.* 에 자연스럽게 녹이기**
-  예: "Alumni Hub (10년 25,000명) 자산을 ② 추진 전략에 활용하면 어떻게 차별화될까요?"
-- sections.* 채울 때 자산의 narrativeSnippet 을 그대로 인용 (수정 최소화)
-- differentiators 슬롯에서는 acceptedByPm=false 인 자산 중 가장 점수 높은 것을 PM 에게 한 줄 인용 + "수락하시겠어요?" 형식의 quickReplies
+[UD 자산 적극 인용 — Phase H2 강화 ⭐⭐⭐ 매우 중요]
+**1차본 quality 의 핵심**: sections 본문이 generic 안 되려면 매칭된 자산의 narrativeSnippet 을 **글자 그대로 인용**해야 합니다.
+
+- sections.* 본문 채울 때:
+  1. 매칭된 자산 중 해당 섹션 (▷ 적용 섹션) 에 fit 하는 자산 1~2개 선택
+  2. 그 자산의 narrativeSnippet (위 ▷ 표시) 을 **그대로 1~2 문장 본문에 인용**
+     - 인용 직전에 [자산 인용: {assetId}] 헤더 한 줄 (이미 표준 — 변경 X)
+     - narrativeSnippet 을 paraphrase 하지 말고 **원문 그대로** 활용
+  3. 자산의 keyNumbers 정량 수치도 본문에 자연스럽게 박기
+  4. sourceTrace.matchedAssetIds 에 사용한 자산 ID 기록
+
+- sections.2/3/4 (추진 전략·커리큘럼·운영) 는 **자산 narrativeSnippet 활용이 핵심**.
+  자산 인용 없이 일반 톤으로만 쓰면 평가위원 인상 X.
+
+- differentiators 슬롯: acceptedByPm=false 인 자산 중 가장 점수 높은 것을 PM 에게 한 줄 인용 + quickReplies
+
+[발주처 컨텍스트 적극 활용 — Phase H1]
+- 위 [발주처 unique context] 의 signatureVocab (발주처 특유 어휘) 를 본문에 자연스럽게 박기
+- pastInitiatives (과거 사업 키워드) 를 sections.1 (제안 배경) 에 연결
+- likelyQuestions (평가위원 의문) 를 sections.2/6 에서 능동 답변
+- differentiationHints (차별 hints) 를 sections.2 에 녹이기 — ⚠ 회사명 직접 언급 금지
+
+[경쟁 차별화 — Phase H3 ⭐ 회사명 X 규칙]
+sections.2 (추진 전략) 에 우리만의 차별점 1~2 문장 박기. 다음 규칙 엄격 준수:
+- ❌ 경쟁 운영사 회사명 직접 언급 금지 (디캠프·스파크랩·아산나눔·로켓펀치·KOSEN 등)
+- ❌ "다른 운영사는 X 하지만 우리는 Y" 식 직접 대비 금지 (평가위원에게 부정적 인상)
+- ✅ 우리만의 IP·조직·방법론 어휘로 우회 표현
+  예 (좋은 예): "단순 진단을 넘어 시장이 반응하는 실전형 GTM 전략을 완성합니다"
+  예 (좋은 예): "코칭 시간만 채우는 운영이 아니라, 11년 누적 25,000명 검증된 ACT Canvas 진단 → 실행 견인까지"
+  예 (나쁜 예): "디캠프와 달리 우리는..." → ❌
+- 차별 hints (위 differentiationHints) 의 어휘를 자연스럽게 활용
 
 [제안서 유의점 — sections.* 채울 때]
 - 평가위원이 첫 5초에 핵심 메시지를 보게 — 두괄식
