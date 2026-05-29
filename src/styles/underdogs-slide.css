@@ -1,0 +1,410 @@
+/**
+ * Underdogs Slide Design System — Phase M2 (2026-05-29)
+ *
+ * 슬라이드 미리보기 전용 CSS — 디자인 시스템 적용.
+ * 원본: design-kit/underdogs-flex-template.md
+ *
+ * 사용:
+ *   import '@/styles/underdogs-slide.css'
+ *   <div class="ud-slide-canvas density-standard">...</div>
+ *
+ * 규칙 (Design Principles 13):
+ *   - 한 화면 = 한 메시지
+ *   - spacing scale 8개 값만
+ *   - 텍스트 위계 4단계 (kicker/heading/body/caption)
+ *   - 포인트 컬러 1개 (#F05519, 5% 면적 미만)
+ *   - 박스 표현 2종만 (stroke OR tint)
+ *   - 장식 금지 (border-radius, shadow, gradient X)
+ *   - 한글 keep-all
+ *   - 폰트 교차 금지 (Poppins / NanumHuman)
+ *   - 로고 최소 1개
+ */
+
+/* ── 폰트 로딩 (public/design-kit/fonts/) ── */
+@font-face {
+  font-family: 'NanumHuman';
+  font-weight: 400;
+  src: url('/design-kit/fonts/NanumHuman-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumHuman';
+  font-weight: 700;
+  src: url('/design-kit/fonts/NanumHuman-Bold.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumHuman';
+  font-weight: 800;
+  src: url('/design-kit/fonts/NanumHuman-ExtraBold.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PoppinsUD';
+  font-weight: 400;
+  src: url('/design-kit/fonts/Poppins-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PoppinsUD';
+  font-weight: 500;
+  src: url('/design-kit/fonts/Poppins-Medium.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PoppinsUD';
+  font-weight: 600;
+  src: url('/design-kit/fonts/Poppins-SemiBold.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* ── 토큰 ── */
+.ud-slide-canvas {
+  /* 브랜드 컬러 3색 + 흑백 */
+  --ud-accent:    #F05519;
+  --ud-dark:      #373938;
+  --ud-warm-gray: #D8D4D7;
+  --ud-white:     #FFFFFF;
+  --ud-black:     #000000;
+
+  /* 액센트 베리에이션 */
+  --ud-accent-88: #FDEBE3;
+  --ud-accent-76: #FBD6C8;
+  --ud-accent-52: #F8AD91;
+  --ud-accent-40: #F69975;
+
+  /* 다크 베리에이션 */
+  --ud-dark-70: #C3C4C3;
+  --ud-dark-55: #A5A6A5;
+  --ud-dark-40: #878888;
+  --ud-dark-25: #696A6A;
+  --ud-dark-10: #4B4D4C;
+
+  /* 뉴트럴 베리에이션 */
+  --ud-neutral-90: #FBFBFB;
+  --ud-neutral-60: #F0F0F0;
+  --ud-neutral-30: #E4E4E4;
+  --ud-neutral-0:  #D9D9D9;
+
+  /* 시맨틱 */
+  --ud-paper:    var(--ud-white);
+  --ud-ink:      var(--ud-dark);
+  --ud-soft-ink: var(--ud-dark-10);
+  --ud-muted:    var(--ud-dark-40);
+  --ud-muted-2:  var(--ud-dark-55);
+  --ud-line:     var(--ud-neutral-0);
+  --ud-line-soft:var(--ud-neutral-30);
+
+  /* spacing scale */
+  --ud-s-1: 4px; --ud-s-2: 8px; --ud-s-3: 12px; --ud-s-4: 16px;
+  --ud-s-5: 22px; --ud-s-6: 28px; --ud-s-7: 40px; --ud-s-8: 60px;
+
+  /* gap relationship (standard 티어 기본) */
+  --ud-gap-section: 28px;
+  --ud-gap-element: 16px;
+  --ud-gap-tight: 6px;
+
+  /* type scale (standard, 16:9 슬라이드용 — 16:9 cube 안에서 본문 가독) */
+  --ud-type-display: 56px;
+  --ud-type-section-title: calc(var(--ud-type-display) / 1.75);
+  --ud-type-kicker: calc(var(--ud-type-display) / 5.1);
+  --ud-type-body: calc(var(--ud-type-display) / 4.0);
+  --ud-type-caption: calc(var(--ud-type-display) / 5.1);
+  --ud-type-label: calc(var(--ud-type-section-title) / 3.2);
+
+  /* 16:9 canvas */
+  background: var(--ud-paper);
+  color: var(--ud-ink);
+  font-family: 'NanumHuman', system-ui, sans-serif;
+  word-break: keep-all;
+  position: relative;
+  overflow: hidden;
+  /* container query — 16:9 정확히 */
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+/* 밀도 티어 */
+.ud-slide-canvas.density-sparse {
+  --ud-gap-section: 40px;
+  --ud-gap-element: 22px;
+  --ud-gap-tight: 8px;
+  --ud-type-display: 64px;
+}
+.ud-slide-canvas.density-dense {
+  --ud-gap-section: 22px;
+  --ud-gap-element: 12px;
+  --ud-gap-tight: 4px;
+  --ud-type-display: 48px;
+}
+
+/* Slide preview 작아져도 cm 같은 비율 유지 — 작은 미리보기용 scale */
+.ud-slide-canvas.scale-preview {
+  --ud-type-display: 40px;
+  --ud-gap-section: 20px;
+  --ud-gap-element: 12px;
+  --ud-gap-tight: 4px;
+}
+
+/* 핵심 — radius 0 강제, shadow 금지 */
+.ud-slide-canvas *,
+.ud-slide-canvas *::before,
+.ud-slide-canvas *::after {
+  box-sizing: border-box;
+  border-radius: 0 !important;
+}
+
+/* ── 타입 클래스 ── */
+.ud-slide-canvas .en {
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+}
+
+.ud-slide-canvas .ud-kicker {
+  display: inline-block;
+  color: var(--ud-accent);
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+  font-size: var(--ud-type-kicker);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 var(--ud-s-4) 0;
+}
+
+.ud-slide-canvas .ud-label {
+  display: inline-block;
+  color: var(--ud-accent);
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+  font-size: var(--ud-type-label);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ud-slide-canvas h1,
+.ud-slide-canvas .ud-display {
+  font-size: var(--ud-type-display);
+  line-height: 1.1;
+  font-weight: 800;
+  margin: 0;
+  color: var(--ud-ink);
+}
+
+.ud-slide-canvas h2,
+.ud-slide-canvas .ud-section-title {
+  font-size: var(--ud-type-section-title);
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0;
+  color: var(--ud-ink);
+}
+
+.ud-slide-canvas p,
+.ud-slide-canvas .ud-body {
+  font-size: var(--ud-type-body);
+  line-height: 1.5;
+  color: var(--ud-soft-ink);
+  margin: 0;
+  font-weight: 400;
+}
+
+.ud-slide-canvas .ud-caption {
+  font-size: var(--ud-type-caption);
+  line-height: 1.4;
+  color: var(--ud-muted);
+  margin: 0;
+}
+
+/* ── 빅 넘버 (KPI · 정량 강조) ── */
+.ud-slide-canvas .ud-big-num {
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+  font-size: var(--ud-type-section-title);
+  font-weight: 600;
+  color: var(--ud-accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ── 박스 (2종) ── */
+.ud-slide-canvas .ud-box-stroke {
+  border: 1px solid var(--ud-line);
+  padding: var(--ud-gap-element);
+  background: var(--ud-paper);
+}
+
+.ud-slide-canvas .ud-box-tint {
+  background: var(--ud-neutral-60);
+  padding: var(--ud-gap-element);
+}
+
+.ud-slide-canvas .ud-box-accent-tint {
+  background: var(--ud-accent-88);
+  padding: var(--ud-gap-element);
+}
+
+/* ── 디바이더 (2종) ── */
+.ud-slide-canvas .ud-divider {
+  height: 1px;
+  background: var(--ud-line);
+  margin: var(--ud-gap-element) 0;
+  border: 0;
+}
+.ud-slide-canvas .ud-divider-strong {
+  height: 2px;
+  background: var(--ud-ink);
+  margin: var(--ud-gap-element) 0;
+  border: 0;
+}
+
+/* ── 페이지 head/foot 앵커 ── */
+.ud-slide-canvas .ud-slide-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--ud-s-7);
+  gap: var(--ud-gap-section);
+}
+
+.ud-slide-canvas .ud-page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ud-slide-canvas .ud-page-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--ud-gap-element);
+  border-top: 1px solid var(--ud-line);
+}
+
+.ud-slide-canvas .ud-page-num {
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+  color: var(--ud-muted);
+  font-size: var(--ud-type-caption);
+  font-weight: 500;
+}
+
+/* ── 로고 슬롯 ── */
+.ud-slide-canvas .ud-logo {
+  height: 24px;
+}
+.ud-slide-canvas .ud-logo--big {
+  height: 36px;
+}
+
+/* ── 그리드 (sections.N 본문 배치) ── */
+.ud-slide-canvas .ud-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ud-gap-element);
+}
+.ud-slide-canvas .ud-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ud-gap-element);
+}
+
+/* ── 키 메시지 카드 (messageHierarchy 시각화) ── */
+.ud-slide-canvas .ud-msg-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ud-gap-tight);
+}
+.ud-slide-canvas .ud-msg-card .ud-msg-key {
+  font-size: var(--ud-type-section-title);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--ud-ink);
+}
+.ud-slide-canvas .ud-msg-card .ud-msg-sub {
+  font-size: var(--ud-type-body);
+  color: var(--ud-soft-ink);
+  line-height: 1.5;
+}
+.ud-slide-canvas .ud-msg-card .ud-msg-proof {
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+  font-size: var(--ud-type-caption);
+  color: var(--ud-accent);
+  font-weight: 500;
+}
+
+/* ── 인용 ── */
+.ud-slide-canvas .ud-quote {
+  border-left: 2px solid var(--ud-ink);
+  padding-left: var(--ud-s-4);
+  margin: 0;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ud-ink);
+  line-height: 1.5;
+}
+.ud-slide-canvas .ud-quote-source {
+  display: block;
+  margin-top: var(--ud-s-2);
+  font-size: var(--ud-type-caption);
+  color: var(--ud-muted);
+}
+
+/* ── 표 ── */
+.ud-slide-canvas table.ud-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ud-type-body);
+}
+.ud-slide-canvas table.ud-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ud-ink);
+  padding: var(--ud-s-3);
+  border-bottom: 2px solid var(--ud-ink);
+  background: var(--ud-neutral-90);
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+}
+.ud-slide-canvas table.ud-table td {
+  padding: var(--ud-s-3);
+  border-bottom: 1px solid var(--ud-line);
+  color: var(--ud-soft-ink);
+}
+.ud-slide-canvas table.ud-table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ── 빈 슬라이드 placeholder ── */
+.ud-slide-canvas.ud-empty .ud-slide-inner {
+  align-items: center;
+  justify-content: center;
+}
+.ud-slide-canvas.ud-empty .ud-empty-msg {
+  font-size: var(--ud-type-body);
+  color: var(--ud-muted);
+}
+
+/* ── 표지 (kicker + 큰 display) ── */
+.ud-slide-canvas.ud-cover .ud-slide-inner {
+  justify-content: center;
+  padding: var(--ud-s-8);
+}
+.ud-slide-canvas.ud-cover .ud-display {
+  font-size: calc(var(--ud-type-display) * 1.1);
+}
+
+/* ── Section divider 슬라이드 (큰 번호 + 섹션명) ── */
+.ud-slide-canvas.ud-section-divider {
+  background: var(--ud-dark);
+  color: var(--ud-white);
+}
+.ud-slide-canvas.ud-section-divider .ud-kicker {
+  color: var(--ud-accent);
+}
+.ud-slide-canvas.ud-section-divider .ud-display {
+  color: var(--ud-white);
+  font-family: 'PoppinsUD', 'NanumHuman', sans-serif;
+}
+.ud-slide-canvas.ud-section-divider .ud-section-name {
+  font-size: var(--ud-type-section-title);
+  color: var(--ud-white);
+  font-weight: 800;
+  margin-top: var(--ud-s-4);
+}
