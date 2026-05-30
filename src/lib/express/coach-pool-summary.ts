@@ -110,11 +110,12 @@ export async function summarizeCoachPool(rfp: RfpParsed): Promise<CoachPoolSumma
 
     let promptLine = ''
     if (matchedCount > 0) {
-      const parts = [`전체 ${coaches.length}명 활성 코치 풀 중 본 사업 도메인 매칭 ${matchedCount}명`]
-      if (avgCareerYears > 0) parts.push(`평균 경력 ${avgCareerYears}년`)
+      // P15(패널): 매칭 N명을 '전원 투입'으로 쓰면 비현실적 → 자문/예비 풀로, 전담은 소수 정예.
+      const parts = [`도메인 매칭 가능 코치 ${matchedCount}명 보유(전체 ${coaches.length}명 풀) — 이 중 전담 소수 정예(예: 3~6인) 투입 + 나머지는 분야별 자문·매칭 예비군`]
+      if (avgCareerYears > 0) parts.push(`매칭군 평균 경력 ${avgCareerYears}년`)
       if (topExpertise.length > 0) parts.push(`주요 전문: ${topExpertise.slice(0, 4).join('·')}`)
       if (overseasCount > 0) parts.push(`해외 경험 ${overseasCount}명`)
-      promptLine = parts.join(' · ')
+      promptLine = parts.join(' · ') + '\n→ §4 작성 시 "N명 전원 투입"이 아니라 "전담 PM+핵심 코치 소수 + 도메인 자문단" 구조로 현실성 있게.'
     } else {
       // 매칭 0 이어도 전체 규모는 사실 — 보일러플레이트 대신 실측 총원 제공
       promptLine = `전체 ${coaches.length}명 활성 코치 풀 보유 (도메인 직접 매칭은 PM 보정 권장)`

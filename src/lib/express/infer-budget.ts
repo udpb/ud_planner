@@ -52,13 +52,19 @@ const CATEGORY_MAP: Record<string, string> = {
   '재료비': '운영비',
   '여비': '운영비',
   '회의비': '운영비',
-  '외주비': '간접비',
+  // P15(15H-Phase2 패널): 외주비(하도급)는 직접 사업비 → 독립 비목.
+  //   (이전: 외주비+기타 가 모두 간접비로 분류돼 간접비 28~38% 부풀려짐 — 공공 감점 요인)
+  '외주비': '외주비',
   '기타': '간접비',
 }
 
 function normalizeCategory(raw: string): string {
-  return CATEGORY_MAP[raw] ?? '간접비'
+  // 미분류 비목은 간접비가 아닌 운영비(직접비)로 — 간접비 쏠림 방지
+  return CATEGORY_MAP[raw] ?? '운영비'
 }
+
+// 간접비 채널별 상한 (%) — 초과분은 직접비로 재배분. B2G 공공이 가장 엄격.
+const INDIRECT_CAP_PCT: Record<string, number> = { B2G: 7, renewal: 8, B2B: 12 }
 
 export async function inferBudgetBreakdown(
   input: InferBudgetInput,
@@ -85,35 +91,30 @@ export async function inferBudgetBreakdown(
   const minBudget = totalBudget * 0.6
   const maxBudget = totalBudget * 1.4
 
-  // 각 sourceProject 의 총 예산 합계 → 범위 내 사업 추출
+  // P15: 모든 채널 사업 조회 (채널은 '선호 가중치'로만 — renewal 등 데이터 적은 채널도
+  //   교차 채널 fallback 으로 빈 예산 방지). 동일 채널이면 규모 거리 0.7배로 우대.
   const projectTotals = await prisma.proposalBudgetItem.groupBy({
     by: ['sourceProject', 'channelType'],
-    where: {
-      channelType: channel,
-    },
     _sum: { amount: true },
   })
+  const rank = (p: { total: number; channelType: string | null }) => {
+    const dist = Math.abs(p.total - totalBudget)
+    return p.channelType === channel ? dist * 0.7 : dist
+  }
+  const scored = projectTotals
+    .map((p) => ({ proj: p.sourceProject, total: p._sum.amount ?? 0, channelType: p.channelType }))
+    .filter((p) => p.total > 0)
 
-  // ±40% 내 — 본 사업 규모와 가까운 순으로 정렬
-  const inRange = projectTotals
-    .map((p) => ({ proj: p.sourceProject, total: p._sum.amount ?? 0 }))
+  // ±40% 내 — 규모 근접 + 동일 채널 선호 순
+  const inRange = scored
     .filter((p) => p.total >= minBudget && p.total <= maxBudget)
-    .sort((a, b) => Math.abs(a.total - totalBudget) - Math.abs(b.total - totalBudget))
+    .sort((a, b) => rank(a) - rank(b))
 
-  // K1 fix (2026-05-29): slice(0,10) → 25 로 확대 (sample size 부족 시 평균 왜곡)
-  // 그래도 부족하면 (±40% 범위 내 사업 적음) 채널 전체로 fallback
+  // K1: sample 25. 부족하면 전체에서 (채널 선호 유지) 상위 N
   const MAX_SAMPLE = 25
   let similarProjects = inRange.slice(0, MAX_SAMPLE).map((p) => p.proj)
-
   if (similarProjects.length < 5) {
-    // fallback: 채널 일치 전체에서 상위 N건 (sample 늘림)
-    const all = projectTotals
-      .map((p) => ({ proj: p.sourceProject, total: p._sum.amount ?? 0 }))
-      .filter((p) => p.total > 0)
-      .sort((a, b) => Math.abs(a.total - totalBudget) - Math.abs(b.total - totalBudget))
-      .slice(0, MAX_SAMPLE)
-      .map((p) => p.proj)
-    similarProjects = all
+    similarProjects = [...scored].sort((a, b) => rank(a) - rank(b)).slice(0, MAX_SAMPLE).map((p) => p.proj)
   }
 
   // 그 사업들의 비목별 합계
@@ -125,7 +126,8 @@ export async function inferBudgetBreakdown(
   // K1 fix (2026-05-29): 사업별 비목 합계 → 사업별 비율 → 전체 사업에 대한 평균
   //   - 카테고리가 없는 사업도 0 으로 포함 (분모: similarProjects.length)
   //   - 기존 버그: catMap 에 없는 cat 은 평균에서 제외돼 항상 100% 초과 → 가장 큰 비목 (인건비) 에 음수 잔액 부담
-  const STANDARD_CATEGORIES = ['인건비', '강사료', '운영비', '간접비']
+  // P15: 외주비를 독립 비목으로 (21.7% 비중의 직접비 — 운영비/간접비에 숨기지 않음)
+  const STANDARD_CATEGORIES = ['인건비', '강사료', '운영비', '외주비', '간접비']
   const projectCategorySum = new Map<string, Map<string, number>>()
   const projectTotalSum = new Map<string, number>()
   for (const proj of similarProjects) {
@@ -178,6 +180,27 @@ export async function inferBudgetBreakdown(
         percentage: Math.round(avgNormalized * 1000) / 10, // 1 decimal
         rationale: `유사 ${validProjectCount}건 사업 평균 ${(avgNormalized * 100).toFixed(1)}% (채널 ${channel})`,
       })
+    }
+  }
+
+  // P15(15H-Phase2 패널): 간접비 채널 상한 초과 시 → 직접비(인건비·강사료·운영비)로 재배분.
+  //   공공 평가위원이 '간접비 과다 = 감점·도덕성' 으로 보는 점 반영 (B2G 7%·renewal 8%·B2B 12%).
+  const cap = INDIRECT_CAP_PCT[channel] ?? 8
+  const indirect = breakdown.find((b) => b.category === '간접비')
+  if (indirect && indirect.percentage > cap) {
+    const excessPct = indirect.percentage - cap
+    indirect.percentage = cap
+    indirect.rationale = `유사 사업 평균 대비 간접비 상한(${cap}%) 적용 — 초과분 직접비 재편성 (채널 ${channel})`
+    const directs = breakdown.filter((b) => b.category !== '간접비')
+    const directPctSum = directs.reduce((s, b) => s + b.percentage, 0)
+    if (directPctSum > 0) {
+      for (const b of directs) {
+        b.percentage = Math.round((b.percentage + excessPct * (b.percentage / directPctSum)) * 10) / 10
+      }
+    }
+    // percentage 기준 amount 재계산
+    for (const b of breakdown) {
+      b.amount = Math.round((totalBudget * b.percentage) / 100 / 10000) * 10000
     }
   }
 
