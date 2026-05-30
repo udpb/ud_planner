@@ -196,13 +196,15 @@ export async function produceUltimateDraft(
   // K7 — pmInputs (통화·코치·평가위원) 을 한 번만 formatting
   const pmInputsSection = formatPmInputs(input.pmInputs ?? null)
   for (const sin of slotInputs) {
+    // slot 누락 방어 (E2E·외부 호출 malformed 입력 graceful)
+    const slotKey = sin?.slot ?? ''
     // 외부 리서치 결과를 pmInput 에 부가 (LLM 이 활용)
-    let augmentedInput = sin.pmInput
-    if (externalResearch.evidence.length > 0 && sin.slot.startsWith('sections.1')) {
+    let augmentedInput = sin?.pmInput ?? ''
+    if (externalResearch.evidence.length > 0 && slotKey.startsWith('sections.1')) {
       augmentedInput = `${augmentedInput}\n\n[외부 리서치 결과 — 본문에 inline citation 으로 박을 것]\n${formatResearchForPrompt(externalResearch)}`
     }
     // Phase J2 — sections 슬롯에 ToneProfile 주입 (voice 일관성)
-    if (toneSection && sin.slot.startsWith('sections.')) {
+    if (toneSection && slotKey.startsWith('sections.')) {
       augmentedInput = `${augmentedInput}\n\n[채널·도메인 ToneProfile (이전 수주 사업 어휘 패턴 — 본문에 자연스럽게 활용)]\n${toneSection}`
     }
     // K7 — PM 외부 reality 주입 (모든 sections 슬롯)
@@ -210,17 +212,17 @@ export async function produceUltimateDraft(
     //   sections.4 = 전담 코치 명단 (실명)
     //   sections.6/7 = 평가위원 관심사 (KPI · 실적 톤)
     //   모든 sections.* 에 일괄 주입 — LLM 이 알아서 해당 영역에 반영
-    if (pmInputsSection && sin.slot.startsWith('sections.')) {
+    if (pmInputsSection && slotKey.startsWith('sections.')) {
       augmentedInput = `${augmentedInput}\n\n[PM 입력 외부 reality — LLM 단독으로 모르는 정보. 본문에 적극 반영]\n${pmInputsSection}`
     }
     const prompt = buildTurnPrompt({
-      state: { turns: [], currentSlot: sin.slot, validationErrors: [] } as any,
+      state: { turns: [], currentSlot: slotKey, validationErrors: [] } as any,
       draft,
       rfp,
       profile: profile ?? undefined,
       matchedAssets: matchedAssets.slice(0, 5),
       pmInput: augmentedInput,
-      currentSlot: sin.slot,
+      currentSlot: slotKey,
       clientContext,
     })
     try {
@@ -228,16 +230,16 @@ export async function produceUltimateDraft(
         prompt,
         maxTokens: AI_TOKENS.STANDARD,
         temperature: 0.4,
-        label: `ultimate-${sin.slot}`,
+        label: `ultimate-${slotKey}`,
       })
       bump('slot-turn')
-      const payload = safeParseJson<any>(r.raw, sin.slot)
+      const payload = safeParseJson<any>(r.raw, slotKey)
       const filtered = filterKnownSlots(payload.extractedSlots ?? {})
       const merged = mergeExtractedSlots(draft, filtered)
       draft = merged.draft
-      progress('3/6', `${sin.slot} ✓ ${merged.acceptedSlots.length} 슬롯 채움`)
+      progress('3/6', `${slotKey} ✓ ${merged.acceptedSlots.length} 슬롯 채움`)
     } catch (e) {
-      console.warn(`[ultimate-draft] ${sin.slot} 실패:`, e instanceof Error ? e.message : e)
+      console.warn(`[ultimate-draft] ${slotKey} 실패:`, e instanceof Error ? e.message : e)
     }
   }
   progress('3/9', `완료 ${((Date.now() - t3) / 1000).toFixed(1)}s`)
