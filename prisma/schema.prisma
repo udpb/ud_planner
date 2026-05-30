@@ -1333,3 +1333,31 @@ model ChannelPreset {
   updatedAt DateTime @updatedAt
   source    String   @default("seed") // "seed" | "strategy_interview"
 }
+
+/// P8 / 사업풀니스 (2026-05-31) — 당선 제안서 full-text 영구 저장.
+/// "두번 학습 안 하기": Drive fileId 기준 1회 fetch+parse 후 저장, 이미 있으면 skip(재개 가능).
+/// WinningPattern(섹션 snippet)의 보완 — 전체 원문 보존 → 1:1 대조 + 생성 시 full 인용.
+model WinningProposalDoc {
+  id           String  @id @default(cuid())
+  sourceFileId String  @unique // Drive file ID — 재fetch 멱등키 (resumable)
+  projectId    String? // 시트 '프로젝트 ID'
+  projectName  String
+  client       String?
+  channel      String? // B2G | B2B | renewal (추정)
+  year         Int?
+  sourceTab    String? // 예: '2025년(운영)'
+  won          Boolean @default(true)
+  fileName     String?
+  mimeType     String?
+  fullText     String  @db.Text
+  charCount    Int     @default(0)
+  parseBy      String? // 'pdf-parse' | 'officeparser' | 'utf8' | 'unsupported'
+  lowText      Boolean @default(false) // 이미지 PDF 추정 (OCR 후보 — 짧은 텍스트)
+
+  fetchedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectName])
+  @@index([channel])
+  @@index([won])
+}
