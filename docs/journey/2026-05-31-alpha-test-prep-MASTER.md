@@ -192,18 +192,30 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 
 ---
 
-## 10. 남은 작업 (compact 후 우선순위)
+## 10. M3 · P2 · 내러티브 — 완료 (2026-05-31 후속 세션)
 
-### ★★ M3 — .pptx 파일 export (유일한 미완 핵심)
-- 현재: 화면 미리보기(React) + Print to PDF만. **진짜 .pptx 파일 다운로드는 미구현**
-- 방향: JSZip으로 ExpressDraft → PowerPoint OOXML 생성. underdogs 템플릿 master slide 매핑
-- 위치 제안: `src/lib/diagrams/pptx-builder.ts` + `/api/express/export-pptx`
-- 주의: pptx-extractor.ts(읽기)의 역방향. 도형 좌표를 EMU로 환산, 폰트/색상 OOXML 태그 생성
+### ✅ M3 — .pptx 파일 export (완료)
+- `src/lib/diagrams/pptx-builder.ts` — JSZip OOXML 직접 빌드. 16:9(12192000×6858000 EMU) · Underdogs 테마(Action Orange·NanumHuman·Poppins) · 최소 slideMaster/layout/theme 1세트.
+- 슬라이드 시퀀스: 표지 → INDEX → 섹션×(divider + specSlide) → 마무리.
+- `/api/express/export-pptx?projectId=` — requireProjectAccess → expressDraft → ExpressDraftSchema → buildPptx → .pptx(RFC 5987 한글 파일명).
+- CommandPalette 'PPT 다운로드 (.pptx — 편집 가능)' 항목 (NowBar More ▾ → 팔레트, 2클릭).
+- 검증: `test-pptx-build.ts`(실 draft 24슬라이드 53.5KB) + `test-pptx-route-flow.ts`(schema 흐름 1:1) + python-pptx 1.0.2 파싱(472도형·402단락·16:9). 자산ID 누출 0 (P1 회귀 없음). 커밋 `ed98fc2`·`cb06dc4`.
 
-### ★ 품질 추가 개선 (선택)
-- §간 내러티브 연결("앞서 언급한…") 자연스러움 — 이미 coherencePass가 일부 처리, 정독 점검 여지
+### ✅ P2 — 도식화 8/8 패턴 .pptx 네이티브 (완료)
+- 기존 4종(process-flow·kpi-grid·comparison-table·architecture-stack)만 네이티브, 나머지 4종 텍스트 폴백이던 것을 전부 OOXML 도형으로:
+  - before-after(좌 tint→화살표→우 accentTint) · timeline(간트 units헤더+bar) · matrix-2x2(사분면+축, highlight accent) · hierarchy-tree(루트 ink→자식 tint+연결선).
+- `summarizeDiagramData` 는 malformed/text-only 안전망으로 유지 (graceful degradation).
+- 검증: `test-pptx-all-patterns.ts`(4신규 rect≥3 네이티브: before5·matrix7·timeline16·hierarchy12) + python-pptx 11슬라이드·123도형 파싱. 커밋 `b313548`.
+
+### ✅ §간 내러티브 보강 (완료)
+- 점검 결과 7전환 중 6개 forward-reference로 자연. 유일 약점 §2→§3(커리큘럼 '❍ [STEP 1]' 급출발).
+- coherence-pass 임무#1에 '리스트 시작 섹션 산문 도입 1문장 강제' 규칙 추가. 결과: §3 → '앞서 제시한 전략적 메커니즘은…6개월 커리큘럼으로 구체화됩니다.' + STEP 리스트 보존.
+- 검증: `test-coherence-flow.ts`(2회 일관 PASS, STEP 3·source 3 보존). server-only 우회: `NODE_OPTIONS=--conditions=react-server`. 커밋 `71b7c66`.
+
+### ★ 남은 후보 (선택)
 - Inspector 점수 편차(44~72, LLM 비결정성) — 정량 포화 lens 강화로 안정적 70+ 목표
 - 실제 당선본 PDF 1:1 라인 대조 (원문 확보 시) — A/B의 "B"를 정성 관찰→실측으로
+- 풀 fresh E2E 캡스톤 — produceUltimateDraft(23 LLM) → .pptx 통합 (현재는 실 fixture·합성 데이터로 검증)
 
 ### 알파테스트 직전 권장 시나리오
 1. 신규 RFP 업로드 → S1 자동 분석
