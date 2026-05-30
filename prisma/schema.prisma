@@ -1357,7 +1357,29 @@ model WinningProposalDoc {
   fetchedAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  chunks WinningProposalChunk[]
+
   @@index([projectName])
   @@index([channel])
   @@index([won])
+}
+
+/// P11 (2026-05-31) — 당선 제안서 full-text 의미검색(RAG) 청크.
+/// fullText 를 섹션 단위로 청킹 + 임베딩 → 본 RFP 와 의미 유사한 당선 passage 검색 →
+/// 생성에 '당선 언어' 깊이 투입 (키워드 매칭 한계 극복). docId 기준 재청킹 시 교체.
+model WinningProposalChunk {
+  id          String             @id @default(cuid())
+  docId       String
+  doc         WinningProposalDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+  projectName String
+  channel     String?
+  sectionHint String? // 추출된 섹션 헤더 (예: '02. 사업 추진계획')
+  chunkIndex  Int
+  chunkText   String             @db.Text
+  embedding   Float[] // gemini-embedding (3072 dim)
+  embeddingModel String?
+  createdAt   DateTime           @default(now())
+
+  @@index([docId])
+  @@index([channel])
 }
