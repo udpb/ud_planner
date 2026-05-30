@@ -1,0 +1,158 @@
+[
+  {
+    "label": "B2G-청년창업-중예산",
+    "channel": "B2G",
+    "rfp": {
+      "projectName": "2026 청년 예비창업가 발굴·육성 프로그램",
+      "client": "충청남도 창조경제혁신센터",
+      "totalBudgetVat": 250000000, "supplyPrice": 227272727,
+      "projectStartDate": "2026-04-01", "projectEndDate": "2026-11-30",
+      "eduStartDate": "2026-05-01", "eduEndDate": "2026-10-31",
+      "targetAudience": "충남 거주 만 39세 이하 예비창업가 및 3년 이내 초기창업가",
+      "targetCount": 30, "targetStage": ["예비창업", "초기창업"],
+      "objectives": ["지역 청년의 창업 아이디어를 사업화 가능한 BM으로 고도화", "데모데이를 통한 투자·후속지원 연계", "지역 정착형 창업 생태계 활성화"],
+      "deliverables": ["참여기업별 사업계획서 및 IR Deck", "데모데이 운영", "성과 결과보고서"],
+      "evalCriteria": [{"item":"사업 이해도 및 추진전략","score":30,"notes":"지역 창업 생태계 이해"},{"item":"교육·멘토링 전문성","score":30,"notes":"코치진·커리큘럼"},{"item":"성과관리","score":25,"notes":"KPI·사후관리"},{"item":"예산 적정성","score":15,"notes":""}],
+      "constraints": [{"type":"인력","description":"전담 PM 1인 상주"},{"type":"기타","description":"충남 소재 공간 활용 대면 교육 월 2회 이상"}],
+      "requiredPersonnel": [{"role":"PM","qualification":"창업지원 PM 3년+","count":1},{"role":"코치","qualification":"창업 멘토링","count":5}],
+      "keywords": ["청년창업","예비창업","사업화","데모데이","지역창업","BM고도화"],
+      "projectType": "B2G", "region": "충남",
+      "summary": "충남 청년 예비·초기창업가 30명을 발굴해 BM 고도화·데모데이·투자연계로 지역 정착형 창업 생태계를 활성화하는 8개월 육성 프로그램."
+    },
+    "slotInputs": [
+      {"slot":"intent","pmInput":"지역 청년의 아이디어를 사업화로 잇는 실전 육성"},
+      {"slot":"beforeAfter.before","pmInput":"아이디어는 있으나 사업화 경로가 막연한 청년"},
+      {"slot":"beforeAfter.after","pmInput":"BM·IR을 갖추고 데모데이로 투자에 도전하는 창업가"}
+    ]
+  },
+  {
+    "label": "B2B-대기업CSR-소셜임팩트",
+    "channel": "B2B",
+    "rfp": {
+      "projectName": "2026 OO그룹 사회혁신 소셜벤처 액셀러레이팅",
+      "client": "OO그룹 사회공헌재단",
+      "totalBudgetVat": 400000000, "supplyPrice": 363636363,
+      "projectStartDate": "2026-03-01", "projectEndDate": "2026-12-31",
+      "eduStartDate": "2026-04-01", "eduEndDate": "2026-11-30",
+      "targetAudience": "사회문제 해결형 소셜벤처 (업력 2~5년) 15개사",
+      "targetCount": 15, "targetStage": ["도약기"],
+      "objectives": ["그룹 ESG 전략과 연계한 소셜벤처 임팩트 스케일업", "그룹 사업부와의 협업·판로 연계", "SROI 기반 사회적 가치 측정·증명"],
+      "deliverables": ["임팩트 스케일업 로드맵","그룹 연계 PoC","SROI 임팩트 리포트","성과공유회"],
+      "evalCriteria": [{"item":"그룹 ESG 연계 전략","score":35,"notes":"사업부 협업 설계"},{"item":"액셀러레이팅 전문성","score":30,"notes":""},{"item":"임팩트 측정","score":20,"notes":"SROI"},{"item":"예산","score":15,"notes":""}],
+      "constraints": [{"type":"기타","description":"그룹 사업부 멘토 연계 필수"}],
+      "requiredPersonnel": [{"role":"PM","qualification":"임팩트 액셀러레이팅 PM","count":1},{"role":"코치","qualification":"소셜벤처 스케일업","count":4},{"role":"임팩트 측정 전문가","qualification":"SROI","count":1}],
+      "keywords": ["소셜벤처","ESG","임팩트","액셀러레이팅","SROI","대기업협업","판로"],
+      "projectType": "B2B", "region": "서울",
+      "summary": "OO그룹 ESG 전략과 연계해 소셜벤처 15개사의 임팩트를 스케일업하고 그룹 사업부 협업·판로·SROI 증명으로 잇는 액셀러레이팅."
+    },
+    "slotInputs": [
+      {"slot":"intent","pmInput":"그룹 자산과 소셜벤처를 잇는 임팩트 스케일업"},
+      {"slot":"beforeAfter.before","pmInput":"좋은 임팩트 모델이나 판로·자본이 부족한 소셜벤처"},
+      {"slot":"beforeAfter.after","pmInput":"그룹 협업·판로로 매출과 임팩트를 동시 증명하는 소셜벤처"}
+    ]
+  },
+  {
+    "label": "renewal-연속사업-운영",
+    "channel": "renewal",
+    "rfp": {
+      "projectName": "2026 OO대학교 창업중심대학 GTM 프로그램 (3년차)",
+      "client": "OO대학교 창업지원단",
+      "totalBudgetVat": 300000000, "supplyPrice": 272727272,
+      "projectStartDate": "2026-04-01", "projectEndDate": "2026-12-15",
+      "eduStartDate": "2026-05-01", "eduEndDate": "2026-11-30",
+      "targetAudience": "대학(원)생·졸업생 기술창업팀 (딥테크) 10개사",
+      "targetCount": 10, "targetStage": ["초기창업"],
+      "objectives": ["전년 대비 글로벌 진출 성과 강화", "기술 사업화 및 후속투자 연계율 제고", "누적 데이터 기반 맞춤 GTM 고도화"],
+      "deliverables": ["글로벌 GTM 로드맵","LOI/MOU","IR Deck","성과 결과보고서"],
+      "evalCriteria": [{"item":"제안사 이해도·개선 지향","score":30,"notes":"전년 대비 업그레이드"},{"item":"GTM 운영 전문성","score":30,"notes":""},{"item":"성과·후속연계","score":25,"notes":""},{"item":"예산","score":15,"notes":""}],
+      "constraints": [{"type":"기타","description":"전년 운영 성과·개선점 반영 필수"}],
+      "requiredPersonnel": [{"role":"PM","qualification":"GTM·글로벌 진출 PM","count":1},{"role":"코치","qualification":"딥테크 사업화·글로벌","count":4}],
+      "keywords": ["GTM","딥테크","글로벌진출","기술사업화","후속투자","연속사업","LOI"],
+      "projectType": "B2G", "region": "경기",
+      "summary": "3년차 연속사업으로 누적 데이터를 활용해 딥테크 10개사의 글로벌 GTM·후속투자 연계를 전년 대비 강화하는 프로그램."
+    },
+    "slotInputs": [
+      {"slot":"intent","pmInput":"누적 데이터로 더 빠르고 정확한 글로벌 GTM"},
+      {"slot":"beforeAfter.before","pmInput":"기술은 우수하나 글로벌 시장 진입이 막연한 딥테크팀"},
+      {"slot":"beforeAfter.after","pmInput":"LOI·후속투자로 글로벌 시장 진입을 검증한 딥테크팀"}
+    ]
+  },
+  {
+    "label": "B2G-문화행사-소예산",
+    "channel": "B2G",
+    "rfp": {
+      "projectName": "2026 지역 로컬크리에이터 페스티벌 기획·운영 용역",
+      "client": "OO시 문화재단",
+      "totalBudgetVat": 90000000, "supplyPrice": 81818181,
+      "projectStartDate": "2026-06-01", "projectEndDate": "2026-11-15",
+      "eduStartDate": null, "eduEndDate": null,
+      "targetAudience": "지역 로컬크리에이터·소상공인 및 일반 시민 관람객",
+      "targetCount": 40, "targetStage": ["초기창업"],
+      "objectives": ["지역 로컬크리에이터 발굴·홍보 및 판로 연계", "지역 브랜드 가치 제고 페스티벌 개최", "시민 참여형 문화 콘텐츠 운영"],
+      "deliverables": ["페스티벌 기획·운영","참여 크리에이터 부스·판매","홍보마케팅","결과보고서"],
+      "evalCriteria": [{"item":"행사 기획력","score":35,"notes":"콘텐츠·동선·운영"},{"item":"지역 연계·홍보","score":30,"notes":""},{"item":"운영 안정성","score":20,"notes":"안전·리스크"},{"item":"예산","score":15,"notes":""}],
+      "constraints": [{"type":"기타","description":"옥외 행사 안전관리 계획 필수"}],
+      "requiredPersonnel": [{"role":"PM","qualification":"행사 운영 PM","count":1}],
+      "keywords": ["로컬크리에이터","페스티벌","행사운영","지역브랜드","판로","홍보마케팅"],
+      "projectType": "B2G", "region": "강원",
+      "summary": "지역 로컬크리에이터를 발굴·홍보하고 판로를 연계하는 시민 참여형 페스티벌 기획·운영 용역."
+    },
+    "slotInputs": [
+      {"slot":"intent","pmInput":"지역 로컬크리에이터를 무대에 세우는 페스티벌"},
+      {"slot":"beforeAfter.before","pmInput":"좋은 제품이나 알려질 무대가 없는 로컬크리에이터"},
+      {"slot":"beforeAfter.after","pmInput":"페스티벌로 시민·바이어를 만나 판로를 넓힌 크리에이터"}
+    ]
+  },
+  {
+    "label": "B2G-디지털전환-소상공인",
+    "channel": "B2G",
+    "rfp": {
+      "projectName": "2026 소상공인 디지털 전환(AX) 역량강화 사업",
+      "client": "소상공인시장진흥공단",
+      "totalBudgetVat": 180000000, "supplyPrice": 163636363,
+      "projectStartDate": "2026-04-01", "projectEndDate": "2026-10-31",
+      "eduStartDate": "2026-05-01", "eduEndDate": "2026-09-30",
+      "targetAudience": "디지털 전환이 필요한 소상공인·자영업자 50명",
+      "targetCount": 50, "targetStage": ["기존사업"],
+      "objectives": ["소상공인 AI·디지털 도구 활용 역량 강화", "온라인 판로·마케팅 전환 실행 지원", "매출 증대 실질 성과 창출"],
+      "deliverables": ["참여자별 디지털 전환 실행계획","온라인 채널 구축","만족도·성과 결과보고서"],
+      "evalCriteria": [{"item":"사업 이해·추진전략","score":30,"notes":""},{"item":"교육·실행지원 전문성","score":30,"notes":"AX 실무"},{"item":"성과관리","score":25,"notes":"매출 성과"},{"item":"예산","score":15,"notes":""}],
+      "constraints": [{"type":"기타","description":"1:1 현장 컨설팅 포함"}],
+      "requiredPersonnel": [{"role":"PM","qualification":"디지털 전환 사업 PM","count":1},{"role":"코치","qualification":"AX·온라인 마케팅","count":6}],
+      "keywords": ["소상공인","디지털전환","AX","온라인판로","AI활용","매출증대","역량강화"],
+      "projectType": "B2G", "region": "전국",
+      "summary": "소상공인 50명의 AI·디지털 도구 활용 역량을 강화하고 온라인 판로 전환·매출 증대를 1:1 컨설팅으로 지원하는 사업."
+    },
+    "slotInputs": [
+      {"slot":"intent","pmInput":"소상공인의 디지털 전환을 실행까지 책임"},
+      {"slot":"beforeAfter.before","pmInput":"디지털이 막막해 온라인 판로를 못 여는 소상공인"},
+      {"slot":"beforeAfter.after","pmInput":"AI 도구로 온라인 매출을 만드는 디지털 소상공인"}
+    ]
+  },
+  {
+    "label": "B2G-시니어-일자리",
+    "channel": "B2G",
+    "rfp": {
+      "projectName": "2026 신중년(5060) 앙코르 창업·일자리 프로그램",
+      "client": "서울시 50플러스재단",
+      "totalBudgetVat": 150000000, "supplyPrice": 136363636,
+      "projectStartDate": "2026-04-15", "projectEndDate": "2026-11-30",
+      "eduStartDate": "2026-05-15", "eduEndDate": "2026-10-31",
+      "targetAudience": "만 50~64세 신중년 예비창업·재취업 희망자 35명",
+      "targetCount": 35, "targetStage": ["예비창업"],
+      "objectives": ["신중년의 경력 자산을 활용한 창업·일자리 전환", "세대 맞춤형 실전 교육·코칭", "지역 커뮤니티 기반 지속 활동 연계"],
+      "deliverables": ["참여자별 창업/취업 실행계획","커뮤니티 네트워킹","성과 결과보고서"],
+      "evalCriteria": [{"item":"신중년 특화 이해·전략","score":30,"notes":"세대 맞춤"},{"item":"교육·코칭 전문성","score":30,"notes":""},{"item":"성과·사후연계","score":25,"notes":""},{"item":"예산","score":15,"notes":""}],
+      "constraints": [{"type":"기타","description":"세대 특성 고려한 오프라인 비중 확보"}],
+      "requiredPersonnel": [{"role":"PM","qualification":"신중년 사업 PM","count":1},{"role":"코치","qualification":"창업·경력전환 코칭","count":4}],
+      "keywords": ["신중년","5060","앙코르커리어","창업","일자리전환","커뮤니티"],
+      "projectType": "B2G", "region": "서울",
+      "summary": "신중년 35명의 경력 자산을 활용해 창업·일자리 전환을 세대 맞춤 교육·코칭·커뮤니티로 지원하는 프로그램."
+    },
+    "slotInputs": [
+      {"slot":"intent","pmInput":"신중년의 경력을 새로운 도전으로 잇는 앙코르 프로그램"},
+      {"slot":"beforeAfter.before","pmInput":"풍부한 경력이나 새 출발 방법이 막연한 신중년"},
+      {"slot":"beforeAfter.after","pmInput":"경력 자산으로 창업·일자리에 도전하는 신중년"}
+    ]
+  }
+]

@@ -84,3 +84,6 @@ design-kit/diagram-samples/
 
 # 당선 full-text 학습 런 로그 (산출물 — 커밋 X)
 learn-fulltext*.log
+
+# 평가위원 품질 스윕 결과 (런 산출물)
+scripts/eval-results/
