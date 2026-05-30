@@ -1,0 +1,37 @@
+{
+  "assetId": "cmpl7cbdi0018t0vcqxhh2xig",
+  "name": "Industry Trajectory 기반 AX 진단 및 핵심 질문 도출",
+  "fileName": "AX_Guide_Chapter22_v1.4.pdf",
+  "mimeType": "application/pdf",
+  "sizeMB": 0.1,
+  "kind": "pdf",
+  "totalPages": 5,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "text": "AX Transformation Model\nOfficial Guidebook\n기업의 핵심 인재가 직접 실행하는 AI 전환, 그 시작과 끝을 안내합니다\nPart 5. 산업별 적용\nChapter 22. Case Study: F&B\nunderdogs.\nVersion 1.4\n발행: Underdogs ud.Labs Cell",
+      "firstLine": "AX Transformation Model"
+    },
+    {
+      "pageNumber": 2,
+      "text": "Chapter 22. Case Study: F&B\n22.1 사례 기업: (주)푸드빌리지\n기업명 \t(주)푸드빌리지 (가명)\n산업 \t샐러드 전문점 프랜차이즈 (직영/가맹 50개점)\n매출/인원 \t약 200억 / 40명 (본사 기준)\n주요 문제 \t- 신규 매장의 초기 안착 실패율 증가\n- 점주들의 주관적 경험에 의존하는 메뉴 운영\n- 객단가 정체 및 추가 매출 확보의 어려움\nChapter 22. 학습 목표\n□ 실제 F&B 프랜차이즈 기업의 AX 전환 사례를 통해 모델의 적용 과정을 이해한다.\n□ ‘데이터 비자산화’와 ‘감(感) 의존 경영’이라는 구조적 문제를 어떻게 진단하고 정의했는지 학습한다.\n□ ‘상권 분석 기반 입지 추천 모델’과 ‘AI 기반 메뉴 교차 판매 추천’이라는 전환 과제가 어떻게 도출되\n었는지 파악한다.\n□ AX 전환을 통해 달성한 구체적인 성과(신규 매장 손익분기점 도달 기간 단축, 객단가 상승)를 확인한\n다.\nunderdogs\nAX Transformation Model v1.4 | 2",
+      "firstLine": "Chapter 22. Case Study: F&B"
+    },
+    {
+      "pageNumber": 3,
+      "text": "22.2 AX Transformation Process\nPart 1. 진단 코어: 문제의 실체 파악\n푸드빌리지의 문제를 진단하기 위해 Industry Trajectory Framework와 인터뷰를 복합적으로 활용했\n습니다. 그 결과, 문제의 핵심이 ‘성공 경험의 비자산화’와 ‘데이터 기반 의사결정 부재’에 있음을 발견했습\n니다.\n진단 활동 \t주요 발견점 (Key Findings)\nIndustry Trajectory \t- 궤적 유형: 점진적 변화 (Progressive)\n- 핵심 동인: 건강에 대한 관심 증대, 배달 플랫폼의 성장\n- 시사점: 기존 오프라인 상권 분석 방식의 한계, 배달 수요 데이터 활용의 중요성\n증대\n점주/본사 인터뷰 \t- “어디에 가게를 내야 할지는 그냥 ‘감’이죠. 유동인구 많고 월세 싼 곳.” (신규사업\n팀장)\n- “어떤 메뉴를 같이 추천해야 할지 기준이 없으니, 그냥 제일 비싼 음료를 추천하라\n고 교육해요.” (운영팀장)\nPart 2. 구조 분석: 핵심 질문 도출\n진단 결과를 바탕으로, 해결해야 할 가장 중요한 핵심 질문(Key Question)을 다음과 같이 정의했습니다.\n“우리는 어떻게 데이터에 기반하여 신규 매장의 성공 확률을 높이고, 각 매장의 매출을 극대화할 수 있는\n운영 전략을 제시할 수 있는가?”\nunderdogs\nAX Transformation Model v1.4 | 3",
+      "firstLine": "22.2 AX Transformation Process"
+    },
+    {
+      "pageNumber": 4,
+      "text": "Part 3. 전환 설계: 2대 전환 과제 정의\n핵심 질문에 답하기 위해, 아래 2가지 전환 과제를 설계했습니다.\n전환 과제 \t주요 내용\n1. 상권 분석 기반 입지 추천\n모델\n- 기존 매장의 매출 데이터와 유동인구, 경쟁사 위치, 배달 주문 데이터 등 외\n부 데이터를 결합하여 특정 지역의 예상 매출을 예측하는 AI 모델 개발\n- 신규 출점 후보지에 대한 예상 매출 등급(A/B/C) 제공\n2. AI 기반 메뉴 교차 판매 추\n천\n- 전체 매장의 POS 데이터를 분석하여, 특정 메뉴와 함께 가장 많이 팔리는\n메뉴(음료, 사이드)를 자동으로 찾아내는 연관 분석(Association Rule) 모델\n개발\n- 키오스크 및 POS 화면에 고객 맞춤형 추천 메뉴 자동 제시\nAction Tip: 연관 분석(장바구니 분석)이란?\n“기저귀를 사는 사람이 맥주를 함께 산다”는 유명한 사례처럼, 고객의 거래 데이터 속에서 함께 구매될 가능성\n이 높은 상품 조합을 찾아내는 데이터 마이닝 기법입니다. 지지도(Support), 신뢰도(Confidence), 향상도\n(Lift)라는 3가지 지표를 통해 규칙의 유효성을 평가합니다.\nPart 4. 실행 및 내재화: 6개월 로드맵\n2대 전환 과제를 6개월 로드맵에 따라 단계적으로 실행했습니다. 특히, 본사 신규사업팀이 직접 입지 추천\n모델을 활용하고, 각 매장 점주가 교차 판매 추천 시스템의 효과를 직접 체감하고 피드백을 줄 수 있는 체\n계를 구축하는 데 집중했습니다.\nunderdogs\nAX Transformation Model v1.4 | 4",
+      "firstLine": "Part 3. 전환 설계: 2대 전환 과제 정의"
+    },
+    {
+      "pageNumber": 5,
+      "text": "22.3 성과: 숫자로 증명된 변화\n성과 지표 \tBefore \tAfter (6개월 후) \t변화\n신규 매장 BEP 도달 기\n간\n평균 9개월 \t평균 6개월 \t-3개월\n평균 객단가 (AOV) \t12,000원 \t13,500원 \t+1,500원\n교차 판매 성공률 \t5% \t12% \t+7%p\n“이제는 ‘여기 목이 좋다’는 식의 막연한 감이 아니라, 데이터가 예측한 예상 매출을 보고 출점 여부를\n결정합니다. 가맹점주들에게 훨씬 더 과학적인 근거를 제시할 수 있게 되었죠. 매장에서는 추천 메뉴가\n자동으로 뜨니 아르바이트생도 쉽게 추가 매출을 올릴 수 있습니다.”\n- (주)푸드빌리지 대표이사\nNext: Chapter 23. Case Study: SaaS\nChapter 23에서는 B2B SaaS 기업의 AX 전환 사례를 통해, 고객 이탈을 방지하고 서비스 가치를 어떻게\n혁신했는지 학습합니다.\nAX Transformation Model | Chapter 22. Case Study: F&B\nunderdogs\nAX Transformation Model v1.4 | 5",
+      "firstLine": "22.3 성과: 숫자로 증명된 변화"
+    }
+  ],
+  "extractedAt": "2026-05-30T06:55:28.749Z"
+}

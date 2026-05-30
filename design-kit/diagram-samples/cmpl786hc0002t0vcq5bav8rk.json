@@ -1,0 +1,52 @@
+{
+  "assetId": "cmpl786hc0002t0vcq5bav8rk",
+  "name": "Whale Curve 시각화 및 Money Leak 5대 원인 진단",
+  "fileName": "AX_Guide_Chapter10_v1.4.pdf",
+  "mimeType": "application/pdf",
+  "sizeMB": 0.1,
+  "kind": "pdf",
+  "totalPages": 8,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "text": "AX Transformation Model\nOfficial Guidebook\n기업의 핵심 인재가 직접 실행하는 AI 전환, 그 시작과 끝을 안내합니다\nPart 2. 구조 분석\nChapter 10. Cost-to-Serve & Money Leak 분석\nunderdogs.\nVersion 1.4\n발행: Underdogs ud.Labs Cell",
+      "firstLine": "AX Transformation Model"
+    },
+    {
+      "pageNumber": 2,
+      "text": "Chapter 10. Cost-to-Serve & Money Leak\n분석\n10.1 목적: 당신의 진짜 수익은 얼마인가\n대부분의 기업은 재무제표상 이익이 나고 있으니 괜찮다고 생각합니다. 하지만 그 이익이 어떤 고객, 어떤\n제품에서 나는지 정확히 알고 있을까요? 전통적인 원가회계는 매출원가와 판매관리비 등 기능별로 비용을\n집계하기 때문에, 개별 고객이나 제품에 얼마의 비용이 투입되는지 보여주지 못하는 근본적인 한계가 있\n습니다.\n예를 들어, 똑같은 제품을 팔아도 A고객은 까다로운 요구가 많아 CS 비용이 많이 들고, B고객은 대량 구매\n로 물류비가 적게 들 수 있습니다. 하지만 전통적인 방식에서는 이 차이가 드러나지 않습니다. Cost-to-\nServe(CTS) 모델은 바로 이 문제를 해결하기 위해 등장했습니다.\nChapter 10. 학습 목표\n□ 전통적인 원가 계산의 한계를 이해하고, Cost-to-Serve 모델의 필요성을 설명할 수 있다.\n□ 고객/채널/제품별로 발생하는 모든 비용을 추적하여 서비스 총비용을 산정할 수 있다.\n□ 수익성 매트릭스(Whale Curve)를 통해 진짜 돈 버는 고객과 돈 새는 고객을 식별할 수 있다.\n□ Money Leak(비용 누수)이 발생하는 주요 원인을 파악하고 개선 과제를 도출할 수 있다.\n정의: Cost-to-Serve (CTS)\n고객에게 제품이나 서비스를 제공하는 데 발생하는 모든 비용을 활동(Activity) 단위로 추적하고 배부하\n여, 개별 고객/채널/제품의 실제 수익성을 정확하게 측정하는 분석 모델. 활동기준원가계산(ABC)을 고\n객 수익성 분석에 적용한 개념이다.\nunderdogs\nAX Transformation Model v1.4 | 2",
+      "firstLine": "Chapter 10. Cost-to-Serve & Money Leak"
+    },
+    {
+      "pageNumber": 3,
+      "text": "10.2 실행 절차: Cost-to-Serve 4단계 분석 프로토콜\nCTS 분석은 아래 4단계 프로토콜에 따라 진행됩니다. 처음에는 복잡해 보이지만, 단계별로 차근차근 진행\n하면 어떤 기업이든 적용할 수 있습니다.\n단계 \t핵심 과업\n1. 활동 정의\n(Activity Definition)\n고객에게 제품/서비스가 전달되기까지의 모든 활동을 정의합니다. (예: 주문 접수,\n생산, 포장, 배송, CS 응대, 반품 처리)\n2. 비용 배부\n(Cost Allocation)\n회사의 전체 비용(판매관리비 등)을 각 활동에 배부합니다. (예: CS팀 인건비 →\n‘CS 응대’ 활동)\n3. 수익성 계산\n(Profitability\nCalculation)\n개별 고객/제품이 각 활동을 얼마나 유발했는지(Cost Driver)를 기준으로 활동 비\n용을 다시 배부하여 최종 수익을 계산합니다. (매출 - 매출원가 - CTS = 실제 이익)\n4. 개선 과제 도출\n(Action Plan)\n분석 결과를 바탕으로 저수익 고객/제품에 대한 개선 과제를 도출합니다. (예: 가격\n인상, MOQ 설정, 서비스 수준 변경, 거래 중단)\nunderdogs\nAX Transformation Model v1.4 | 3",
+      "firstLine": "10.2 실행 절차: Cost-to-Serve 4단계 분석 프로토콜"
+    },
+    {
+      "pageNumber": 4,
+      "text": "AI 활용: 활동 및 비용 배부 기준 자동 분류 프롬프트\n회사의 판매관리비 내역과 업무 분장표를 제공하고, AI를 통해 활동 정의 및 비용 배부 기준 초안을 빠르게 도\n출할 수 있습니다.\n너는 경영 컨설턴트다. 우리 회사의 Cost-to-Serve 모델을 구축하려고 한다.\n아래는 우리 회사의 판매관리비 계정 내역과 주요 부서의 업무 분장표다.\n[판매관리비 내역 붙여넣기]\n[업무 분장표 붙여넣기]\n위 정보를 바탕으로, 아래 형식에 맞춰 Cost-to-Serve 분석을 위한 활동(Activity), 비용 동\n인(Cost Driver), 관련 비용 계정을 정의해줘.\n- 활동: (예: 고객 주문 처리)\n- 비용 동인: (예: 주문 건수)\n- 관련 비용 계정: (예: 영업팀 인건비, 전산 시스템 유지보수비)\nunderdogs\nAX Transformation Model v1.4 | 4",
+      "firstLine": "AI 활용: 활동 및 비용 배부 기준 자동 분류 프롬프트"
+    },
+    {
+      "pageNumber": 5,
+      "text": "10.3 바로 쓰는 템플릿: Whale Curve와 Money Leak\nCTS 분석의 결과는 고객 수익성 곡선(Whale Curve)으로 시각화했을 때 가장 강력한 인사이트를 줍니\n다. Whale Curve는 고객들을 누적 수익 기여도 순으로 나열한 그래프로, 마치 고래 등과 같은 모양을 하\n고 있어 붙여진 이름입니다.\nAI 활용: 데이터 분석 및 Whale Curve 시각화 프롬프트\n고객별 매출 및 CTS 데이터가 준비되었다면, Python(pandas, matplotlib) 코드 생성 프롬프트를 통해 손쉽\n게 Whale Curve를 그릴 수 있습니다.\n너는 데이터 분석가다. 아래와 같은 형식의 고객 수익성 데이터(CSV)가 있다.\n`customer_id, revenue, cost_to_serve`\n이 데이터를 사용하여 고객 수익성 곡선(Whale Curve)을 그리는 Python 코드를 작성해줘. 아래\n조건을 반드시 포함해줘.\n1. matplotlib, pandas 라이브러리 사용\n2. 고객을 개별 이익(revenue - cost_to_serve) 기준으로 내림차순 정렬\n3. X축은 누적 고객 비율(%), Y축은 누적 이익 비율(%)로 표시\n4. 상위 20% 고객이 전체 이익의 몇 %를 차지하는지 텍스트로 출력\n5. 하위 50% 고객이 오히려 이익을 얼마나 깎아먹는지 텍스트로 출력\n6. 그래프 제목과 축 레이블은 한글로 표시\nWhale Curve 분석 (산출물 예시)\n아래는 가상 기업의 Whale Curve 예시입니다. 이 그래프는 충격적인 사실을 보여줍니다.\n고객 수익성 곡선 (Whale Curve)\n[Whale Curve 이미지 대체: 상위 20% 고객이 전체 이익의 180%를 창출하고, 나머지 80% 고객이 이\n익의 80%를 깎아먹는 형태의 그래프]\nunderdogs\nAX Transformation Model v1.4 | 5",
+      "firstLine": "10.3 바로 쓰는 템플릿: Whale Curve와 Money Leak"
+    },
+    {
+      "pageNumber": 6,
+      "text": "상위 20%의 우량 고객이 전체 이익의 180%를 창출하고, 중간 30%의 고객이 이익의 20%를 깎아먹으며, 하위\n50%의 고객은 이익의 60%를 깎아먹고 있습니다. 즉, 전체 고객의 80%가 사실상 손해를 끼치고 있는 것입니다.\nunderdogs\nAX Transformation Model v1.4 | 6",
+      "firstLine": "상위 20%의 우량 고객이 전체 이익의 180%를 창출하고, 중간 30%의 고객이 이익의 20%를 깎아먹으며, 하위"
+    },
+    {
+      "pageNumber": 7,
+      "text": "Money Leak(비용 누수)의 5대 원인\nWhale Curve에서 이익을 깎아먹는 고객들은 왜 발생하는 것일까요? 우리는 그 원인을 Money Leak(비\n용 누수)라고 부릅니다. Money Leak은 크게 5가지 원인에 의해 발생합니다.\nMoney Leak 원인 \t설명 \t대표적인 예시\n1. 가격 정책 실패 \t제품/서비스의 가치보다 낮은 가격\n을 받거나, 과도한 할인을 제공하는\n경우\n- 경쟁사 따라하기식 가격 결정\n- 영업사원 재량에 맡겨진 할인\n- 객관적 기준 없는 볼륨 디스카운트\n2. 비효율적 주문 \t잦은 소량 주문, 잦은 주문 변경/취\n소 등 주문 처리 과정에서 비효율을\n유발하는 경우\n- 최소 주문 수량(MOQ) 없음\n- 주문 마감 시간 이후 긴급 주문\n- 비표준 제품/서비스 요구\n3. 과잉 서비스 \t고객 등급과 무관하게 모든 고객에\n게 동일한 수준의 높은 서비스를 제\n공하는 경우\n- 모든 고객에게 익일 배송 제공\n- 저수익 고객의 잦은 CS 문의 응대\n- 모든 고객에게 전담 영업사원 배정\n4. 비효율적 물류 \t재고 관리, 배송, 반품 등 물류 과정\n에서 발생하는 불필요한 비용\n- 높은 반품률\n- 과도한 안전 재고 보유\n- 비효율적인 배송 경로\n5. 느린 대금 회수 \t외상 매출금 회수가 지연되어 현금\n흐름에 악영향을 미치고 대손 비용\n을 유발하는 경우\n- 장기 연체 고객\n- 불명확한 신용 평가 기준\n- 대금 회수 관리 부재\nunderdogs\nAX Transformation Model v1.4 | 7",
+      "firstLine": "Money Leak(비용 누수)의 5대 원인"
+    },
+    {
+      "pageNumber": 8,
+      "text": "Next: Chapter 11. 전환 과제 우선순위 매트릭스\n수많은 과제들 속에서, 무엇을 먼저 해야 하는가?\n- 10 -\nChapter 10. 핵심 포인트\n1. 진짜 수익을 보라: 전통적인 원가 계산은 착시를 일으킨다. Cost-to-Serve 분석을 통해 개별 고객/제\n품의 실제 수익성을 파악해야 한다.\n2. Whale Curve의 충격: 대부분의 기업은 소수의 우량 고객이 전체 이익 이상을 벌고, 다수의 고객이\n그 이익을 깎아먹는 구조를 가지고 있다.\n3. 돈은 반드시 샌다: Money Leak은 가격, 주문, 서비스, 물류, 대금 회수 등 다양한 영역에서 발생한다.\n새는 돈을 막는 것이 이익 개선의 첫걸음이다.\n4. 차별화가 답이다: 모든 고객을 똑같이 대하는 것은 비효율의 근원이다. 수익 기여도에 따라 고객을 등\n급화하고, 차별화된 가격/서비스 정책을 적용해야 한다.\nunderdogs\nAX Transformation Model v1.4 | 8",
+      "firstLine": "Next: Chapter 11. 전환 과제 우선순위 매트릭스"
+    }
+  ],
+  "extractedAt": "2026-05-30T06:51:41.180Z"
+}

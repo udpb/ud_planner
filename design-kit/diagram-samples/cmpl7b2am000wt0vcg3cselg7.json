@@ -1,0 +1,32 @@
+{
+  "assetId": "cmpl7b2am000wt0vcg3cselg7",
+  "name": "산업별 맞춤형 AX 전환 전략 및 언어 번역",
+  "fileName": "AX_Guide_Chapter19_v1.4.pdf",
+  "mimeType": "application/pdf",
+  "sizeMB": 0.1,
+  "kind": "pdf",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "text": "AX Transformation Model\nOfficial Guidebook\n기업의 핵심 인재가 직접 실행하는 AI 전환, 그 시작과 끝을 안내합니다\nPart 5. 산업별 적용\nChapter 19. 산업별 적용 개요\nunderdogs.\nVersion 1.4\n발행: Underdogs ud.Labs Cell",
+      "firstLine": "AX Transformation Model"
+    },
+    {
+      "pageNumber": 2,
+      "text": "Chapter 19. 산업별 적용 개요\n19.1 목적: ‘범용 모델’을 ‘산업별 맞춤 해법’으로\n지금까지 우리는 산업군에 구애받지 않고 적용할 수 있는 AX Transformation Model의 ‘백본\n(Backbone)’을 학습했습니다. 진단, 구조 분석, 전환 설계, 실행 및 내재화로 이어지는 이 프레임워크는\n모든 산업에 공통적으로 적용 가능한 강력한 문제 해결 도구입니다.\n하지만 실제 컨설팅 현장에서는 이 범용 모델을 각 산업의 고유한 특성에 맞게 변형하고 심화시키는 과정\n이 반드시 필요합니다. Part 5의 목적은 AX Transformation Model이라는 범용 엔진을 제조, 커머스,\nF&B, SaaS 등 각 산업의 맥락에 맞춰 어떻게 ‘산업별 맞춤 해법’으로 전환하는지 구체적인 방법론과 사\n례를 학습하는 것입니다.\n“최고의 전략은 범용 이론과 특정 현실의 교차점에서 탄생한다.”\n- AX Transformation Model 기본 원칙\nChapter 19. 학습 목표\n□ AX Transformation Model이 특정 산업에 국한되지 않는 범용 프레임워크임을 이해한다.\n□ 각 산업의 고유한 특성과 비즈니스 모델이 AX 적용 방식에 어떤 영향을 미치는지 설명할 수 있다.\n□ 제조, 커머스, F&B, SaaS 산업의 핵심적인 차이점과 공통점을 비교 분석할 수 있다.\n□ 산업별 특화 진단 및 전환 과제 도출의 중요성을 인지한다.\nunderdogs\nAX Transformation Model v1.4 | 2",
+      "firstLine": "Chapter 19. 산업별 적용 개요"
+    },
+    {
+      "pageNumber": 3,
+      "text": "19.2 4대 핵심 산업 비교 분석\nAX 적용의 깊이를 더하기 위해, 우리가 집중할 4대 핵심 산업의 특징을 비교 분석합니다.\n구분 제조\n(Manufacturing)\n커머스\n(Commerce)\nF&B (Food &\nBeverage)\nSaaS (Software\nas a Service)\n핵심 가치 \t품질, 생산성, 원가 \t상품 소싱, 마케팅,\n물류\n메뉴 개발, 고객 경\n험, 매장 운영\n제품 기능, 고객 유\n지, 확장성\n주요 자산 \t설비, 재고, 인력 \t온라인 트래픽, 고\n객 데이터, 재고\n레시피, 브랜드, 매\n장 입지\n소프트웨어 코드,\n고객 구독\n비즈니스 모델 \tB2B, B2C (대량 생\n산)\nB2C, D2C (다품종\n소량)\nB2C (오프라인 경\n험 중심)\nB2B, B2C (구독\n기반)\n주요 데이터 \t생산 데이터(MES),\n재고 데이터(WMS)\n고객 행동 데이터,\n광고 데이터, 재고\n데이터\n판매 데이터\n(POS), 고객 피드\n백, 재고 데이터\n제품 사용 로그, 고\n객 지원 티켓, 결제\n데이터\nAX 핵심 과제 \t수율 예측, 예지 보\n전, 공정 최적화\n수요 예측, 개인화\n마케팅, 재고 최적\n화\n수요 예측, 교차 판\n매 추천, 매장 운영\n최적화\n고객 이탈 예측, 기\n능 추천, 가격 최적\n화\nChapter 19. 핵심 포인트\n1. 모델은 하나, 적용은 무한: AX Transformation Model은 모든 산업에 적용 가능한 범용 프레임워크\n다.\n2. 산업의 언어로 말하라: 성공적인 AX 컨설팅은 범용 모델을 각 산업의 고유한 문제와 언어로 번역하는\n능력에 달려있다.\n3. 공통점과 차이점을 모두 보라: 다른 산업의 성공 사례에서 공통 원리를 발견하고, 우리 산업의 특수성\n을 반영하여 창의적인 해결책을 찾아야 한다.\nunderdogs\nAX Transformation Model v1.4 | 3",
+      "firstLine": "19.2 4대 핵심 산업 비교 분석"
+    },
+    {
+      "pageNumber": 4,
+      "text": "Next: Chapter 20. Case Study: 제조\nChapter 20에서는 실제 중소 제조 기업의 AX 전환 사례를 통해, 모델이 현장에서 어떻게 적용되고 어떤\n성과를 만들어내는지 구체적으로 학습합니다.\nAX Transformation Model | Chapter 19. 산업별 적용 개요\n주의사항\n1. 섣부른 일반화를 경계하라: 같은 커머스 산업이라도 패션, 가구, 신선식품은 전혀 다른 비즈니스 모델\n을 가질 수 있다. 산업 내 세부 카테고리의 특수성을 반드시 고려해야 한다.\n2. 현장을 무시하지 마라: 데이터와 프레임워크 분석도 중요하지만, 결국 답은 고객과 현장에 있다. 항상\n현장의 목소리에 귀 기울여야 한다.\nunderdogs\nAX Transformation Model v1.4 | 4",
+      "firstLine": "Next: Chapter 20. Case Study: 제조"
+    }
+  ],
+  "extractedAt": "2026-05-30T06:56:16.939Z"
+}

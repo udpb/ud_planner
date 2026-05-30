@@ -1,0 +1,3286 @@
+{
+  "assetId": "cmpl8hrbb0000eovc9rr8gjlg",
+  "name": "Act-Preneur: 7단계 실전 창업 프로세스",
+  "fileName": "1. 팀빌딩.pptx",
+  "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "sizeMB": 24.4,
+  "kind": "pptx",
+  "totalSlides": 23,
+  "totalShapes": 263,
+  "slides": [
+    {
+      "slideNumber": 1,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Team Building",
+          "placeholderType": "title"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "1",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.7276472276902887,
+            "y": 0.8064189268008166,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 2,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.34634481627296587,
+            "y": 0.478497375328084,
+            "w": 0.16102337598425198,
+            "h": 0.06731773111694371
+          },
+          "text": "Execution &amp; Validation",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16129207677165355,
+            "y": 0.4826933508311461,
+            "w": 0.13024311023622048,
+            "h": 0.06731773111694371
+          },
+          "text": "Item Concretization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "2",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "Introduction to the 7 Steps of Act-Preneur",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.46381846019247597,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.6966685622630504,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.21648716827063283,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.044925688976377956,
+            "y": 0.6985466608340624,
+            "w": 0.07510129593175853,
+            "h": 0.044878536016331294
+          },
+          "text": "Scale up",
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "halfFrame",
+          "position": {
+            "x": 0.07247563976377953,
+            "y": 0.3883296879556722,
+            "w": 0.02,
+            "h": 0.0389867308253135
+          },
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "halfFrame",
+          "position": {
+            "x": 0.07247563976377953,
+            "y": 0.6317596967045785,
+            "w": 0.02,
+            "h": 0.0389867308253135
+          },
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.039402805118110236,
+            "y": 0.21873170020414115,
+            "w": 0.08614566929133859,
+            "h": 0.044878536016331294
+          },
+          "text": "Discovery",
+          "fillColor": "0A0A0A",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04919873687664042,
+            "y": 0.46556853310002916,
+            "w": 0.0665552001312336,
+            "h": 0.044878536016331294
+          },
+          "text": "Action!",
+          "fillColor": "0A0A0A",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16277969160104988,
+            "y": 0.23611096529600467,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16149376640419946,
+            "y": 0.24704024496937882,
+            "w": 0.1249949967191601,
+            "h": 0.04039063867016623
+          },
+          "text": "TeamBuilding",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3641379593175853,
+            "y": 0.23267979002624672,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3674924540682415,
+            "y": 0.22942111402741325,
+            "w": 0.11856405839895014,
+            "h": 0.06731773111694371
+          },
+          "text": "Defining the Problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14029847440944881,
+            "y": 0.2152198891805191,
+            "w": 0.046806430446194223,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP1",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3439331528871391,
+            "y": 0.21585156022163896,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP2",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5636225393700788,
+            "y": 0.23267979002624672,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5634209317585301,
+            "y": 0.242884660250802,
+            "w": 0.1258401410761155,
+            "h": 0.04039063867016623
+          },
+          "text": "Deriving Item",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3281613353018373,
+            "y": 0.7383909303003792,
+            "w": 0.27793052821522307,
+            "h": 0.06731773111694371
+          },
+          "text": "Generate sales within 6 months! Reach  at least 1 Million USD in 2 years!",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5428553969816273,
+            "y": 0.21585156022163896,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP3",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1625780839895013,
+            "y": 0.4852279090113736,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.363936187664042,
+            "y": 0.48179687955672207,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3437314632545932,
+            "y": 0.4651223388743074,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP5",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5634209317585301,
+            "y": 0.48179687955672207,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5458294783464567,
+            "y": 0.49326713327500726,
+            "w": 0.16102337598425198,
+            "h": 0.04039063867016623
+          },
+          "text": "Commercialization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5426537073490814,
+            "y": 0.4641054243219598,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP6",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14017536089238844,
+            "y": 0.46522382618839314,
+            "w": 0.04795562664041995,
+            "h": 0.03569714202391368
+          },
+          "text": "STEP4",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 9.91
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16782627952755905,
+            "y": 0.7207230971128609,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16654019028871392,
+            "y": 0.7316522309711286,
+            "w": 0.1249949967191601,
+            "h": 0.04039063867016623
+          },
+          "text": "Launch &amp; Pivot",
+          "fillColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14542363845144357,
+            "y": 0.7006173811606883,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP7",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1441353346456693,
+            "y": 0.30068153980752405,
+            "w": 0.1931131069553806,
+            "h": 0.10322047244094489
+          },
+          "text": "How to find team members who fit your visionHow to work well as a teamHow to set the team’s direction",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3374507874015748,
+            "y": 0.30068153980752405,
+            "w": 0.20650959645669292,
+            "h": 0.08078127734033246
+          },
+          "text": "How to explore the problemHow to find the root causeHow to analyze key stakeholders",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3354041994750656,
+            "y": 0.5576781860600758,
+            "w": 0.19913246391076114,
+            "h": 0.10322047244094489
+          },
+          "text": "Validating CustomersBuilding an MVP (Minimum Viable Product)Testing the MVP"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5363726213910761,
+            "y": 0.5460495771361913,
+            "w": 0.1891007217847769,
+            "h": 0.08078127734033246
+          },
+          "text": "How to systemize business operationsHR, Sales, Marketing"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14413541666666665,
+            "y": 0.7888527267424905,
+            "w": 0.18376673228346457,
+            "h": 0.08078127734033246
+          },
+          "text": "Generating revenueHow to secure funding and investment"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5561082677165354,
+            "y": 0.28946194225721783,
+            "w": 0.19511917650918637,
+            "h": 0.1256596675415573
+          },
+          "text": "How to develop your solution(Finding the right idea)How to learn from competitors (benchmark)How to prioritize features"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14211294291338583,
+            "y": 0.5530303295421406,
+            "w": 0.19348687664041994,
+            "h": 0.10322047244094489
+          },
+          "text": "How to define your target customers (Developing the Idea)How to create revenueHow to build a business model"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05642060367454068,
+            "y": 0.2762885680956547,
+            "w": 0.05211146653543307,
+            "h": 0.09264260717410323
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05314066601049869,
+            "y": 0.5204196558763488,
+            "w": 0.05867134186351706,
+            "h": 0.10430460775736367
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05540149278215223,
+            "y": 0.7542242636337124,
+            "w": 0.05414968832020997,
+            "h": 0.09626611256926218
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 3,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "3",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 4,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "4",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhy does ud. prioritize team-based entrepreneurship?",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480126312335958,
+            "y": 0.415070428696413,
+            "w": 0.6803978838582677,
+            "h": 0.3051676873724118
+          },
+          "text": "Why does ud. prefer team-based startups?Having teammates provides thepower to keep goingand it allows for us to solve multiple problems",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 20
+        }
+      ]
+    },
+    {
+      "slideNumber": 5,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "5",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312557414698163,
+            "y": 0.08518664333624963,
+            "w": 0.6153936187664042,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYHow does the team effectively test and improve multiple problems at the same time?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.33271916010498687,
+            "w": 0.6803978838582677,
+            "h": 0.4173639545056868
+          },
+          "text": "How does the team effectively test and improve multiple problems at the same time?Team members need to work as one, moving toward the same goal.For this to work, the team needs clear working rules (rules) &amp; a shared direction (mission and vision) to effectively test and improve multiple problems at once.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 20
+        }
+      ]
+    },
+    {
+      "slideNumber": 6,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "6",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat makes a good team?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312491797900262,
+            "y": 0.4907166812481773,
+            "w": 0.671272309711286,
+            "h": 0.2765355788859726
+          },
+          "text": "A good team has one strong leader who helps the team work together and take action efficiently.This allows the team to test and improve multiple problems efficiently, leading to better results.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1456473097112861,
+            "y": 0.29678667249927093,
+            "w": 0.4587053805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "What makes a good team?",
+          "fontSize": 20
+        }
+      ]
+    },
+    {
+      "slideNumber": 7,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "7",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhy was the team-building solution developed?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Even strong teams with good skill set can fall apart if their members' personalities don’t align, Building a team based on personality increases the chances of strong collaboration.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1456473097112861,
+            "y": 0.2967856517935258,
+            "w": 0.4587053805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "Why does a good team fall apart?",
+          "fontSize": 20
+        }
+      ]
+    },
+    {
+      "slideNumber": 8,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.37285269028871393,
+            "y": 0.3656357538641003,
+            "w": 0.31731586286089236,
+            "h": 0.5641170895304753
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518547681539808,
+            "w": 0.47758932086614175,
+            "h": 0.07460294546515019
+          },
+          "text": "STEP.01Team building",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.4093860728346457,
+            "y": 0.4305839895013123,
+            "w": 0.24424901574803148,
+            "h": 0.43422047244094486
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.44702559055118113,
+            "y": 0.497498687664042,
+            "w": 0.16897006233595802,
+            "h": 0.30039122193059203
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.48514337270341207,
+            "y": 0.5652636337124526,
+            "w": 0.09273449803149607,
+            "h": 0.16486132983377078
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.013979576771653544,
+            "y": 0.35793205016039664,
+            "w": 0.17002977362204724,
+            "h": 0.05385418489355497
+          },
+          "text": "My personalities"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.021408300524934382,
+            "y": 0.4703266258384369,
+            "w": 0.1604318405511811,
+            "h": 0.09424467774861475
+          },
+          "text": "Team Members personalities"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027788713910761154,
+            "y": 0.6762703412073491,
+            "w": 0.15306897965879265,
+            "h": 0.05385418489355497
+          },
+          "text": "Optimal Leader"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03462204724409449,
+            "y": 0.8378773694954798,
+            "w": 0.12125073818897637,
+            "h": 0.05385418489355497
+          },
+          "text": "Set MVC&amp;G"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4965392880577428,
+            "y": 0.6083221055701371,
+            "w": 0.07260318241469817,
+            "h": 0.0762933799941674
+          },
+          "text": "TeamBuilding",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.043946358267716534,
+            "y": 0.1836097987751531,
+            "w": 0.6578125820209973,
+            "h": 0.10227617381160688
+          },
+          "text": "Understand both your own and your team members’ tendencies, appoint a strong leader to guide execution, and build a sustainable team working toward shared goals.",
+          "fontSize": 14
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.17732135826771653,
+            "y": 0.33092373869932923,
+            "w": 0.06067716535433071,
+            "h": 0.10787051618547681
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18318577755905513,
+            "y": 0.45859375911344413,
+            "w": 0.06621210629921259,
+            "h": 0.11771041119860018
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18539115813648294,
+            "y": 0.6443423738699329,
+            "w": 0.06621210629921259,
+            "h": 0.11771041119860018
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18815862860892388,
+            "y": 0.8108690580344123,
+            "w": 0.06067716535433071,
+            "h": 0.10787051618547681
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 9,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "9",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat is the D.O.G.S Personality Test?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.030645587270341206,
+            "y": 0.3044628171478565,
+            "w": 0.21458070866141732,
+            "h": 0.06731175269757947
+          },
+          "text": "A reliable personality type assessment",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04940296916010499,
+            "y": 0.5804406532516768,
+            "w": 0.1688683562992126,
+            "h": 0.10321463983668708
+          },
+          "text": "Based on the DISC model developed by Dr. William Moulton Marston at Columbia University.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3281099901574803,
+            "y": 0.28666170895304754,
+            "w": 0.15151181102362205,
+            "h": 0.2809701079031788
+          },
+          "fillColor": "262626"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.27275762795275593,
+            "y": 0.3179273840769904,
+            "w": 0.21458070866141732,
+            "h": 0.04038480606590843
+          },
+          "text": "20,000 entrepreneur data points",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.46117052165354333,
+            "y": 0.44628025663458737,
+            "w": 0.034153543307086615,
+            "h": 0.10436964129483814
+          },
+          "text": "=",
+          "fontSize": 48
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4967007053805774,
+            "y": 0.22965456401283174,
+            "w": 0.21458070866141732,
+            "h": 0.09423884514435696
+          },
+          "text": "A diagnostic tool for team-building tailored for entrepreneurs",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.28456897965879263,
+            "y": 0.6819008457276173,
+            "w": 0.19095825131233596,
+            "h": 0.17502012248468943
+          },
+          "text": "Developed using data from 20,000 entrepreneurs in collaboration with psychology experts to create a systematic team-building solution.",
+          "fontSize": 12
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08837483595800524,
+            "y": 0.3978387284922718,
+            "w": 0.09912229330708662,
+            "h": 0.18693205016039663
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.24228813976377953,
+            "y": 0.45088028579760864,
+            "w": 0.04547875656167979,
+            "h": 0.08085112277631963
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.32587918307086616,
+            "y": 0.26181539807524057,
+            "w": 0.16468676181102362,
+            "h": 0.3105785943423739
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.49217970800524935,
+            "y": 0.3005398075240595,
+            "w": 0.22136515748031496,
+            "h": 0.39353805774278217
+          }
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "D(Dominant)Leadership-orientedI(Influential)Thought-orientedS(Steady)Stable and loyalC(Compliant)Analytical and detail-oriented",
+          "fontSize": 11
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "D(Director)Leadership-orientedO(Organizer)Thought-orientedG(Guider)Guidance-orientedS(Supporter)Support-oriented",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 11
+        }
+      ]
+    },
+    {
+      "slideNumber": 10,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 11,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "11",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHAT\r\nLearning Objectives",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5137404855643045,
+            "y": 0.9646917468649752,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05806520669291339,
+            "y": 0.39364843977836106,
+            "w": 0.6657367946194226,
+            "h": 0.17502012248468943
+          },
+          "text": "(1) D.O.G.S workshop  -&gt; Check Personality -&gt; Select Leader(2) Establishment of MVC&amp;G"
+        }
+      ]
+    },
+    {
+      "slideNumber": 12,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "12",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 13,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "13",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWD.O.G.S game workshop &amp; Leader Selection",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.030882053805774277,
+            "y": 0.4484738990959463,
+            "w": 0.3482759186351706,
+            "h": 0.16740172061825606
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.030882053805774277,
+            "y": 0.24704039078448528,
+            "w": 0.3482759186351706,
+            "h": 0.16740172061825606
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.030882053805774277,
+            "y": 0.6490612423447069,
+            "w": 0.3482759186351706,
+            "h": 0.16740172061825606
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.38480634842519684,
+            "y": 0.24704039078448528,
+            "w": 0.3482759186351706,
+            "h": 0.16740172061825606
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.38480634842519684,
+            "y": 0.4484738990959463,
+            "w": 0.3482759186351706,
+            "h": 0.16740172061825606
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.38480634842519684,
+            "y": 0.6490612423447069,
+            "w": 0.3482759186351706,
+            "h": 0.16740172061825606
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 14,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "14",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWD.O.G.S game workshop &amp; Leader Selection",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0.2440699912510936,
+            "w": 0.75,
+            "h": 0.1346294838145232
+          },
+          "text": "Get to know each other’s personality through the D.O.G.S workshop ,\r\nPlease choose a leader for our team."
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Teammates NameExpected Team Members PersonalityActual Team Members PersonalityLeader Name / Reason for ChoiceJason(D) Beagle(D) DobermanJason[Because of the fast momentum]Jethrow(D) Doberman(D) BeagleJulie(G) Saint Bernard(D) BeagleMatt(O) Border Collie(O) Border Collie",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 15
+        }
+      ]
+    },
+    {
+      "slideNumber": 15,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "15",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWEstablishment of MVC&amp;G",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "CategoryContentMissionVisionCore-valueGround rules",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 15
+        }
+      ]
+    },
+    {
+      "slideNumber": 16,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "16",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWEstablishment of MVC&amp;G",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "CategoryExplanationExampleMissionYour team's current goalsNurture entrepreneurs who can create impact in the world.VisionWhat the future looks like for your teamAs a pacemaker, work alongside entrepreneurs - a company that makes a difference in the world.Core-valueWhat values do your team care about?Timely delivery, communication, and attitude.Ground rulesRules team members should follow when collaboratingCustomer-centric thinking.\r\nCommunicate clearly.\r\nHave an action-oriented attitude.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 15
+        }
+      ]
+    },
+    {
+      "slideNumber": 17,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWEstablishment of MVC&amp;G (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 18,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "18",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWEstablishment of MVC&amp;G (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "CategoryContentMission\"We reimagine the way the world moves for the better.\"Vision\"Transportation as reliable as running water, everywhere for everyone.\"Core-valueGo Get It: Embrace a champion's mindset, overcoming adversity to achieve our mission. Trip Obsessed: Focus on creating exceptional experiences in our marketplace.Build with Heart: Care deeply about our impact and strive to make a positive difference. Stand for Safety: Embed safety into everything we do, continuously improving for our communitiesGround rulesRespect Everyone: Treat all individuals with courtesy and dignity.Prioritize Safety: Follow safety protocols to ensure the well-being of all.Adhere to Laws: Comply with all applicable legal regulations.Maintain Cleanliness: Keep vehicles clean for a pleasant experience.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 15
+        }
+      ]
+    },
+    {
+      "slideNumber": 19,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWEstablishment of MVC&amp;G (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 20,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "20",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWEstablishment of MVC&amp;G (Example2 : AIR BNB)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "CategoryContentMissionOYO is a global platform that empowers entrepreneurs and small businesses with hotels and homes by providing full-stack technology that increases earnings and eases operations, bringing affordable and trusted accommodation that guests can book instantly.Vision\"To become the world's largest and most preferred hotel chain.\"Core-valueCustomer-Centricity: Placing guests at the heart of all decisions to ensure exceptional experiences.Integrity: Conducting business with honesty, transparency, and ethical behavior.Innovation: Continuously seeking new ways to improve services and offerings.Ground rulesRespect for All: Treat all guests, partners, and team members with dignity and respect.Commitment to Quality: Ensure consistent quality and affordability in all OYO properties.Ethical Conduct: Uphold honesty and transparency in all business dealings.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 15
+        }
+      ]
+    },
+    {
+      "slideNumber": 21,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "21",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWSteps for workshop",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03203174212598425,
+            "y": 0.37973038786818314,
+            "w": 0.19508858267716536,
+            "h": 0.0942448235637212
+          },
+          "text": "D.O.G.S workshop(30min)"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.014509268372703412,
+            "y": 0.5387286380869059,
+            "w": 0.23013361220472442,
+            "h": 0.18998556430446195
+          },
+          "text": "1. check the topics and questions on the card and answer each one in turn for 30 seconds.2. Please fill in the expected type according to the team member number",
+          "fillColor": "333333",
+          "textColor": "333333",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2696040846456693,
+            "y": 0.37533377077865265,
+            "w": 0.22018938648293962,
+            "h": 0.0942448235637212
+          },
+          "text": "Teamleaderselection(10min)"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2646319717847769,
+            "y": 0.5387286380869059,
+            "w": 0.23013361220472442,
+            "h": 0.2318721201516477
+          },
+          "text": "1.Choose one leader and write why.(5min)2 -1 if your vote is tie discuss who is fit for leader (5min)2-2 if the leader is chosen tell team mates how you will lead the team (5min)",
+          "fillColor": "333333",
+          "textColor": "333333",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5122267060367454,
+            "y": 0.37533377077865265,
+            "w": 0.22018938648293962,
+            "h": 0.0942448235637212
+          },
+          "text": "MVC&amp;G(30min)"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5072545111548556,
+            "y": 0.5387286380869059,
+            "w": 0.23013369422572177,
+            "h": 0.16305847185768446
+          },
+          "text": "Talk about how you will set your teams mission,vision,corevalue(5min)Set your teams ground rules (25min)",
+          "fillColor": "333333",
+          "textColor": "333333",
+          "fontSize": 12
+        }
+      ]
+    },
+    {
+      "slideNumber": 22,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 23,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16129207677165355,
+            "y": 0.4826933508311461,
+            "w": 0.13024311023622048,
+            "h": 0.06731773111694371
+          },
+          "text": "Item Concretization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.34634481627296587,
+            "y": 0.478497375328084,
+            "w": 0.16102337598425198,
+            "h": 0.06731773111694371
+          },
+          "text": "Execution &amp; Validation",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5634209317585301,
+            "y": 0.48179687955672207,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "23",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "Introduction to the 7 Steps of Act-Preneur",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.46381846019247597,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.6966685622630504,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.21648716827063283,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.044925688976377956,
+            "y": 0.6985466608340624,
+            "w": 0.07510129593175853,
+            "h": 0.044878536016331294
+          },
+          "text": "Scale up",
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "halfFrame",
+          "position": {
+            "x": 0.07247563976377953,
+            "y": 0.3883296879556722,
+            "w": 0.02,
+            "h": 0.0389867308253135
+          },
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "halfFrame",
+          "position": {
+            "x": 0.07247563976377953,
+            "y": 0.6317596967045785,
+            "w": 0.02,
+            "h": 0.0389867308253135
+          },
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.039402805118110236,
+            "y": 0.21873170020414115,
+            "w": 0.08614566929133859,
+            "h": 0.044878536016331294
+          },
+          "text": "Discovery",
+          "fillColor": "0A0A0A",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04919873687664042,
+            "y": 0.46556853310002916,
+            "w": 0.0665552001312336,
+            "h": 0.044878536016331294
+          },
+          "text": "Action!",
+          "fillColor": "0A0A0A",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16277969160104988,
+            "y": 0.23611096529600467,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16149376640419946,
+            "y": 0.24704024496937882,
+            "w": 0.1249949967191601,
+            "h": 0.04039063867016623
+          },
+          "text": "TeamBuilding",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3641379593175853,
+            "y": 0.23267979002624672,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3674924540682415,
+            "y": 0.22942111402741325,
+            "w": 0.11856405839895014,
+            "h": 0.06731773111694371
+          },
+          "text": "Defining the Problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5636225393700788,
+            "y": 0.23267979002624672,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5634209317585301,
+            "y": 0.242884660250802,
+            "w": 0.1258401410761155,
+            "h": 0.04039063867016623
+          },
+          "text": "Deriving Item",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3281613353018373,
+            "y": 0.7383909303003792,
+            "w": 0.27793052821522307,
+            "h": 0.06731773111694371
+          },
+          "text": "Generate sales within 6 months! Reach  at least 1 Million USD in 2 years!",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1625780839895013,
+            "y": 0.4852279090113736,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.363936187664042,
+            "y": 0.48179687955672207,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3437314632545932,
+            "y": 0.4651223388743074,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP5",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5458294783464567,
+            "y": 0.49326713327500726,
+            "w": 0.16102337598425198,
+            "h": 0.04039063867016623
+          },
+          "text": "Commercialization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5426537073490814,
+            "y": 0.4641054243219598,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP6",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14017536089238844,
+            "y": 0.46522382618839314,
+            "w": 0.04795562664041995,
+            "h": 0.03569714202391368
+          },
+          "text": "STEP4",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 9.91
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16782627952755905,
+            "y": 0.7207230971128609,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16654019028871392,
+            "y": 0.7316522309711286,
+            "w": 0.1249949967191601,
+            "h": 0.04039063867016623
+          },
+          "text": "Launch &amp; Pivot",
+          "fillColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14542363845144357,
+            "y": 0.7006173811606883,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP7",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1441353346456693,
+            "y": 0.30068153980752405,
+            "w": 0.1931131069553806,
+            "h": 0.10322047244094489
+          },
+          "text": "How to find team members who fit your visionHow to work well as a teamHow to set the team’s direction",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3374507874015748,
+            "y": 0.30068153980752405,
+            "w": 0.20650959645669292,
+            "h": 0.08078127734033246
+          },
+          "text": "How to explore the problemHow to find the root causeHow to analyze key stakeholders",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3354041994750656,
+            "y": 0.5576781860600758,
+            "w": 0.19913246391076114,
+            "h": 0.10322047244094489
+          },
+          "text": "Validating CustomersBuilding an MVP (Minimum Viable Product)Testing the MVP"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5363726213910761,
+            "y": 0.5460495771361913,
+            "w": 0.1891007217847769,
+            "h": 0.08078127734033246
+          },
+          "text": "How to systemize business operationsHR, Sales, Marketing"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14413541666666665,
+            "y": 0.7888527267424905,
+            "w": 0.18376673228346457,
+            "h": 0.08078127734033246
+          },
+          "text": "Generating revenueHow to secure funding and investment"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5561082677165354,
+            "y": 0.28946194225721783,
+            "w": 0.19511917650918637,
+            "h": 0.1256596675415573
+          },
+          "text": "How to develop your solution(Finding the right idea)How to learn from competitors (benchmark)How to prioritize features"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14211294291338583,
+            "y": 0.5530303295421406,
+            "w": 0.19348687664041994,
+            "h": 0.10322047244094489
+          },
+          "text": "How to define your target customers (Developing the Idea)How to create revenueHow to build a business model"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14029847440944881,
+            "y": 0.2152198891805191,
+            "w": 0.046806430446194223,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP1",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3439331528871391,
+            "y": 0.21585156022163896,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP2",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5428553969816273,
+            "y": 0.21585156022163896,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP3",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05642060367454068,
+            "y": 0.2762885680956547,
+            "w": 0.05211146653543307,
+            "h": 0.09264260717410323
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05314066601049869,
+            "y": 0.5204196558763488,
+            "w": 0.05867134186351706,
+            "h": 0.10430460775736367
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05540149278215223,
+            "y": 0.7542242636337124,
+            "w": 0.05414968832020997,
+            "h": 0.09626611256926218
+          }
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-05-30T06:52:45.332Z"
+}

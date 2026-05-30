@@ -1,0 +1,32 @@
+{
+  "assetId": "cmpl7e8gl001st0vca2ls3pgl",
+  "name": "AI 기반 인터뷰 정형화 및 6대 구조 문제 진단 체계",
+  "fileName": "AX_Guide_Chapter28_v1.4.pdf",
+  "mimeType": "application/pdf",
+  "sizeMB": 0.1,
+  "kind": "pdf",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "text": "AX Transformation Model\n공식 교재\n기업의 핵심 인재가 직접 실행하는 AI 전환\nPart 6. AI Tooling & Automation Layer\nChapter 28. 컨설팅 자동화 워크플로우\nunderdogs.\nVersion 1.4\n발행: Underdogs ud.Labs Cell",
+      "firstLine": "AX Transformation Model"
+    },
+    {
+      "pageNumber": 2,
+      "text": "Chapter 28. 컨설팅 자동화 워크플로우\nAX 컨설팅의 가장 큰 장애물 중 하나는 컨설턴트의 경험과 역량에 따라 산출물의 깊이와 품질이 달라진다\n는 점입니다. 컨설팅 자동화 워크플로우는 이러한 문제를 해결하고, 누구든 표준화된 고품질의 산출물을\n빠르게 생성할 수 있도록 지원하는 핵심 엔진입니다.\nMATM에서는 Part 2~4의 핵심 산출물을 생성하는 아래 5가지 워크플로우를 표준으로 정의합니다. 이 워\n크플로우를 통해 컨설턴트는 별도의 강의 없이도 일관된 품질의 결과물을 도출할 수 있습니다.\nChapter 28. 학습 목표\n☐ 컨설팅 산출물 생성을 자동화하는 5가지 표준 워크플로우의 구조를 이해합니다.\n☐ 각 워크플로우의 Input, Output, Log가 어떻게 연결되어 있는지 파악합니다.\n☐ 자동화 워크플로우를 통해 컨설턴트의 생산성을 높이고, 산출물의 품질을 표준화하는 방법을 학습합\n니다.\n정의: 컨설팅 자동화 워크플로우 (Consulting Automation Workflow)\n정의된 입력(Input) 데이터를 받아, 정해진 로직과 AI 모델을 통해 표준화된 산출물(Output)을 생성하\n고, 그 과정을 투명하게 기록(Log)하는 자동화된 프로세스입니다. 이를 통해 컨설턴트는 반복적인 분석\n및 문서 작업에서 벗어나 고객과의 소통과 문제 해결의 본질에 더 집중할 수 있습니다.\nunderdogs\nAX Transformation Model v1.4 | 2",
+      "firstLine": "Chapter 28. 컨설팅 자동화 워크플로우"
+    },
+    {
+      "pageNumber": 3,
+      "text": "28.1. 5대 표준 워크플로우 개요\n워크플로우 \t핵심 목표\n1. 인터뷰 정형화 \t인터뷰 녹취록이나 메모에서 Fact, Pain, Cause, Workaround, Idea를 자동으로\n추출하고 구조 문제 태그를 부여합니다.\n2. 구조 문제 테이블 초\n안\n정형화된 인터뷰와 내부 자료를 바탕으로 6대 구조 문제 테이블(현상→원인→영향\n→증거)의 초안을 생성합니다.\n3. 핵심 질문(KQ) 생성 \t구조 문제 분석, CTS, Money Leak 분석 결과를 종합하여 해결해야 할 핵심 질문\n(Key Question) 후보군을 도출합니다.\n4. 과제 백로그 및 우선\n순위 초안\n핵심 질문으로부터 실행 가능한 과제 백로그(15~30개)를 생성하고, 5축 평가 모델\n을 기반으로 우선순위를 자동 계산합니다.\n5. 주간 리듬 리포트 생\n성\n업데이트된 KPI와 발생한 경보 이벤트를 바탕으로 주간 현황, 핵심 이슈, 다음 액션\n아이템을 담은 리포트를 자동 생성하여 푸시합니다.\n28.2. Workflow 1: 인터뷰 정형화 자동화 상세\nAI 활용: 인터뷰 녹취록 자동 분석 및 정형화 프롬프트\n아래 프롬프트를 활용하여 LLM이 인터뷰 내용을 분석하고, 구조화된 데이터로 변환하도록 할 수 있습니다. 이\n결과는 Google Sheets의 Ch9_Interview_Responses 탭에 자동으로 기록됩니다.\n프롬프트 예시:\n너는 AX 컨설턴트다. 다음 인터뷰 녹취록을 읽고, 각 발언을 Fact(사실), Pain Point(문제점), Cause(원인),\nWorkaround(임시방편), Idea(개선 아이디어)로 분류하고, 관련된 6대 구조 문제(데이터 파편화, 복잡도 비\n용, 느린 의사결정, 감 의존 경영, 데이터 비자산화, 낮은 변화 실행력) 태그를 달아서 JSON 형식으로 출력해\n줘. 각 항목에는 증거가 되는 원본 문장을 반드시 포함해야 해.\nunderdogs\nAX Transformation Model v1.4 | 3",
+      "firstLine": "28.1. 5대 표준 워크플로우 개요"
+    },
+    {
+      "pageNumber": 4,
+      "text": "Input \t인터뷰 녹취록 텍스트 파일 또는 Google Docs 링크\nOutput \tFact/Pain/Cause/Workaround/Idea, 6대 구조 문제 태그, 핵심 질문(KQ) 후보가 포함\n된 JSON 또는 테이블\nLog \tCh9_Interview_Responses 시트 탭에 자동 기입\n이 워크플로우 하나만으로도 컨설턴트는 인터뷰 후 몇 시간씩 걸리던 분석 및 정리 작업을 단 몇 분으로\n단축할 수 있으며, 모든 인터뷰 결과가 일관된 기준으로 분석되는 효과를 얻습니다.\nNext Chapter\nChapter 29. AI 에이전트 설계 표준\n다음 챕터에서는 자동화 워크플로우를 실행하는 주체인 AI 에이전트를 어떻게 표준화된 방식으로 설계하\n고 관리할 수 있는지, 에이전트 스펙 표준(Agent Spec Template)에 대해 학습합니다.\nunderdogs\nAX Transformation Model v1.4 | 4",
+      "firstLine": "Input \t인터뷰 녹취록 텍스트 파일 또는 Google Docs 링크"
+    }
+  ],
+  "extractedAt": "2026-05-30T06:55:51.579Z"
+}

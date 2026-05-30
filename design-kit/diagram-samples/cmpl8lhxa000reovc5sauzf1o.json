@@ -1,0 +1,6203 @@
+{
+  "assetId": "cmpl8lhxa000reovc5sauzf1o",
+  "name": "Act-preneur 문제 정의 4단계 프로세스",
+  "fileName": "step1.pptx",
+  "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "sizeMB": 25.9,
+  "kind": "pptx",
+  "totalSlides": 29,
+  "totalShapes": 491,
+  "slides": [
+    {
+      "slideNumber": 1,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Defining the Problem",
+          "placeholderType": "title"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3948886975065617,
+            "y": 0.605420384951881,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 2,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.26231865157480316,
+            "y": 0.09753368328958881,
+            "w": 0.4587053805774278,
+            "h": 0.10532764654418197
+          },
+          "text": "Exploring problems through social issues helps clarify the purpose behind our entrepreneurial activities",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "2",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.09336532152230971,
+            "y": 0.39678113152522604,
+            "w": 0.21061179461942256,
+            "h": 0.12117191601049869
+          },
+          "text": "\"I have a great idea; can't we just start building it right away?",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.445731217191601,
+            "y": 0.39654841061533974,
+            "w": 0.168001312335958,
+            "h": 0.12117191601049869
+          },
+          "text": "\"Why should we care about social issues?\"",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYThe Importance of Defining Problems",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.40950615157480313,
+            "y": 0.28249431321084867,
+            "w": 0.23261712598425197,
+            "h": 0.4135415573053368
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.0793617125984252,
+            "y": 0.27716068824730244,
+            "w": 0.2386177001312336,
+            "h": 0.4242092446777486
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3081220472440945,
+            "y": 0.6192645086030912,
+            "w": 0.11549663713910761,
+            "h": 0.20532735491396908
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 3,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "3",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.3917755905511811,
+            "w": 0.6803978838582677,
+            "h": 0.35175721784776903
+          },
+          "text": "Business opportunities arise from diverse societal problems!The severity of a problem (pain point) determines whether customers will invest time or money to solve it.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.26231865157480316,
+            "y": 0.09753397491980169,
+            "w": 0.4587053805774278,
+            "h": 0.05950495771361913
+          },
+          "text": "A structured process to identify problems and analyze their root causes",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYThe Importance of Defining Problems",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 4,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0.4945262467191601,
+            "y": 0.5087230971128609,
+            "w": 0.11159046916010498,
+            "h": 0.1581003207932342
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "4",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.20049270924467774,
+            "w": 0.6803978838582677,
+            "h": 0.08526319626713327
+          },
+          "text": "A structured approach to identifying problems, setting priorities, and determining the problems we genuinely want to solve",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.7064040354330708,
+            "y": 0.4688349372995042,
+            "w": 0.1279977034120735,
+            "h": 0.22972805482648
+          },
+          "text": "Problem Definition",
+          "fillColor": "FF4337",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.06291051509186352,
+            "y": 0.4843059200933217,
+            "w": 0.12160482283464567,
+            "h": 0.20377019539224264
+          },
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.076061843832021,
+            "y": 0.5073514144065325,
+            "w": 0.0950016404199475,
+            "h": 0.15919218431029455
+          },
+          "text": "StartUpTeam",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0.19339025590551182,
+            "y": 0.5656376494604841,
+            "w": 0.3108536745406824,
+            "h": 0.06516316710411199
+          },
+          "fillColor": "B2B2B2",
+          "strokeColor": "B2B2B2"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.19415501968503937,
+            "y": 0.367444298629338,
+            "w": 0.12010777559055118,
+            "h": 0.06937124526100905
+          },
+          "text": "Inside Out",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.19415501968503937,
+            "y": 0.7162592592592593,
+            "w": 0.12010777559055118,
+            "h": 0.06937124526100905
+          },
+          "text": "Outside In",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25203879593175854,
+            "y": 0.5511230679498396,
+            "w": 0.1748902559055118,
+            "h": 0.06937124526100905
+          },
+          "text": "I.O.I Problem Listing",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.35952895341207347,
+            "y": 0.7171663750364538,
+            "w": 0.1748902559055118,
+            "h": 0.06937124526100905
+          },
+          "text": "ST Matrix",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3698027395013123,
+            "y": 0.3803018372703412,
+            "w": 0.1748902559055118,
+            "h": 0.06937124526100905
+          },
+          "text": "Problem Selection Checklist",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.48361548556430445,
+            "y": 0.4870768445610965,
+            "w": 0.12160482283464567,
+            "h": 0.20377034120734908
+          },
+          "fillColor": "FF4337",
+          "strokeColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5206002296587926,
+            "y": 0.5500594925634296,
+            "w": 0.04733480971128609,
+            "h": 0.07931773111694372
+          },
+          "fillColor": "FF4337",
+          "strokeColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4853536745406824,
+            "y": 0.5597989209682123,
+            "w": 0.12010777559055118,
+            "h": 0.06937124526100905
+          },
+          "text": "Stakeholder Analysis",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYThe Process of Selecting and Defining Problems",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 5,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4152034120734908,
+            "y": 0.4024294254884806,
+            "w": 0.28570857939632543,
+            "h": 0.05315441819772528
+          },
+          "text": "Outside-In",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1193421095800525,
+            "y": 0.4024294254884806,
+            "w": 0.28570857939632543,
+            "h": 0.05315441819772528
+          },
+          "text": "Inside-Out",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04174688320209974,
+            "y": 0.46365296004666084,
+            "w": 0.06745767716535434,
+            "h": 0.07537459900845728
+          },
+          "text": "Definition",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04174688320209974,
+            "y": 0.547578302712161,
+            "w": 0.06745767716535434,
+            "h": 0.13886891221930592
+          },
+          "text": "Advantages",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04174688320209974,
+            "y": 0.6959792942548848,
+            "w": 0.06745767716535434,
+            "h": 0.13886891221930592
+          },
+          "text": "Disadvantages",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1204072342519685,
+            "y": 0.46327209098862643,
+            "w": 0.28464271653543305,
+            "h": 0.07535258092738407
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12354790026246719,
+            "y": 0.46363065033537476,
+            "w": 0.27503764763779526,
+            "h": 0.0760129775444736
+          },
+          "text": "Discovering social issues starting from personal problems.",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.41573564632545934,
+            "y": 0.4639861475648877,
+            "w": 0.28464271653543305,
+            "h": 0.07535258092738407
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.41838984580052496,
+            "y": 0.4651496062992126,
+            "w": 0.2857234251968504,
+            "h": 0.07297433654126567
+          },
+          "text": "Discovering social issues by empathizing with external problems",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1204072342519685,
+            "y": 0.5477547389909595,
+            "w": 0.28464271653543305,
+            "h": 0.13869218431029454
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1204072342519685,
+            "y": 0.6949186351706037,
+            "w": 0.28464271653543305,
+            "h": 0.13869218431029454
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12863787729658793,
+            "y": 0.5728611840186644,
+            "w": 0.2595842355643045,
+            "h": 0.08548425196850394
+          },
+          "text": "Strong motivation to solve the problem Deep understanding of the problem.",
+          "fillColor": "FF0000",
+          "strokeColor": "FF0000",
+          "textColor": "FF0000",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1329365157480315,
+            "y": 0.7277774861475649,
+            "w": 0.2595842355643045,
+            "h": 0.04155934674832313
+          },
+          "text": "Risk of focusing only on personal concerns.",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4153817257217848,
+            "y": 0.5477547389909595,
+            "w": 0.28464271653543305,
+            "h": 0.13869218431029454
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4153817257217848,
+            "y": 0.6949186351706037,
+            "w": 0.28464271653543305,
+            "h": 0.13869218431029454
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4201526410761155,
+            "y": 0.5620351414406533,
+            "w": 0.26304470144356956,
+            "h": 0.11348643919510061
+          },
+          "text": "Can include widely recognized issues. Likely to select issues many people empathize with.",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4261815124671916,
+            "y": 0.7277773403324584,
+            "w": 0.26304470144356956,
+            "h": 0.07297433654126567
+          },
+          "text": "Risk of low motivation or understanding for issues that feel personally irrelevant",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.39635433070866144,
+            "y": 0.8499235928842228,
+            "w": 0.29998400590551183,
+            "h": 0.04236351706036746
+          },
+          "text": "Discovered through social perspectives.",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 12.88
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08185785761154855,
+            "y": 0.8491224846894139,
+            "w": 0.31449598097112863,
+            "h": 0.04236351706036746
+          },
+          "text": "Discovered through  personal experience.",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 12.88
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.12357020997375329,
+            "y": 0.4945284339457568,
+            "w": 0.17352362204724409,
+            "h": 0.3084864391951006
+          },
+          "text": "Inside",
+          "fillColor": "131718",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "donut",
+          "position": {
+            "x": 0.05476615813648294,
+            "y": 0.3722101195683873,
+            "w": 0.3111220472440945,
+            "h": 0.553105861767279
+          },
+          "fillColor": "F6DFCD"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.15155216535433072,
+            "y": 0.3865825313502479,
+            "w": 0.11754437335958005,
+            "h": 0.08689982502187227
+          },
+          "text": "Out",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.39635359251968505,
+            "y": 0.3065828229804608,
+            "w": 0.05122662401574803,
+            "h": 0.09177734033245845
+          },
+          "text": "In",
+          "fillColor": "131718",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "donut",
+          "position": {
+            "x": 0.37604166666666666,
+            "y": 0.2701920384951881,
+            "w": 0.09184760498687664,
+            "h": 0.16455380577427822
+          },
+          "fillColor": "F6DFCD"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3897054625984252,
+            "y": 0.2744679206765821,
+            "w": 0.06451837270341207,
+            "h": 0.025646106736657917
+          },
+          "text": "Outside",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.031534284776902885,
+            "y": 0.2626071741032371,
+            "w": 0.6923845964566929,
+            "h": 0.6493588509769612
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYI.O.I",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30873293963254594,
+            "y": 0.07364785651793526,
+            "w": 0.44126706036745406,
+            "h": 0.04039063867016623
+          },
+          "text": "How to Select Problems: Personal Issues vs. Socially Significant Issues",
+          "fontSize": 12
+        }
+      ]
+    },
+    {
+      "slideNumber": 6,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "6",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026003608923884515,
+            "y": 0.5516141732283465,
+            "w": 0.16056225393700788,
+            "h": 0.06462642169728784
+          },
+          "text": "Timing",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2571226213910761,
+            "y": 0.7471870807815689,
+            "w": 0.04241100721784777,
+            "h": 0.24324278215223097
+          },
+          "text": "Seriousness",
+          "fillColor": "FFB600",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFB600",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08578617125984252,
+            "y": 0.8352410323709536,
+            "w": 0.05810318241469816,
+            "h": 0.05385535141440653
+          },
+          "text": "Low",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.40425541338582677,
+            "y": 0.836774569845436,
+            "w": 0.05810318241469816,
+            "h": 0.06462642169728784
+          },
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.07255150918635171,
+            "y": 0.3057526975794692,
+            "w": 0.05810318241469816,
+            "h": 0.05385535141440653
+          },
+          "text": "High",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1253630249343832,
+            "y": 0.3184941673957422,
+            "w": 0.3116795439632546,
+            "h": 0.5134906678331875
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3268273458005249,
+            "y": 0.3712952755905512,
+            "w": 0.06675910433070865,
+            "h": 0.12015850102070574
+          },
+          "text": "1",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 44
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1690289534120735,
+            "y": 0.37254330708661415,
+            "w": 0.06675910433070865,
+            "h": 0.12015850102070574
+          },
+          "text": "3",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 44
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3268273458005249,
+            "y": 0.6320984251968504,
+            "w": 0.06675910433070865,
+            "h": 0.12015850102070574
+          },
+          "text": "2",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 44
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1690289534120735,
+            "y": 0.6302821522309712,
+            "w": 0.06675910433070865,
+            "h": 0.12015850102070574
+          },
+          "text": "4",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 44
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23511048228346457,
+            "y": 0.4733734324876057,
+            "w": 0.08200705380577428,
+            "h": 0.04327500729075532
+          },
+          "text": "ST Matrix",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08714796587926509,
+            "y": 0.16927544473607467,
+            "w": 0.5757043143044619,
+            "h": 0.11497317002041411
+          },
+          "text": "Using Seriousness and Timing to determine which issues to focus on",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05418610564304462,
+            "y": 0.08701297754447361,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYST Matrix",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4890791502624672,
+            "y": 0.851023913677457,
+            "w": 0.048418307086614175,
+            "h": 0.044878536016331294
+          },
+          "text": "High",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12953863188976378,
+            "y": 0.1751655001458151,
+            "w": 0.01709637467191601,
+            "h": 0.028284631087780693
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5948182414698163,
+            "y": 0.175165791776028,
+            "w": 0.01709637467191601,
+            "h": 0.02828448527267425
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 7,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.235718093832021,
+            "y": 0.38167206182560515,
+            "w": 0.27285433070866144,
+            "h": 0.48507436570428697
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.26231865157480316,
+            "y": 0.09753397491980169,
+            "w": 0.4587053805774278,
+            "h": 0.05950495771361913
+          },
+          "text": "Analyzing Stakeholders &amp; Defining the Problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "7",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08714796587926509,
+            "y": 0.1637263050452027,
+            "w": 0.5757043143044619,
+            "h": 0.10227617381160688
+          },
+          "text": "Analyzing how different sectors approach to solvethis problem and identifying potential opportunities",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "cube",
+          "position": {
+            "x": 0.31004404527559054,
+            "y": 0.52072805482648,
+            "w": 0.12420242782152231,
+            "h": 0.1869808982210557
+          },
+          "text": "Problem",
+          "fillColor": "FF5534",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 22
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.07340067257217847,
+            "y": 0.3901097987751531,
+            "w": 0.19453092191601049,
+            "h": 0.044878536016331294
+          },
+          "text": "Government Perspective",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.43871989829396324,
+            "y": 0.3875382035578886,
+            "w": 0.23217060367454068,
+            "h": 0.044878536016331294
+          },
+          "text": "Corporate Perspective",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.49167208005249347,
+            "y": 0.7180223097112861,
+            "w": 0.2732764927821522,
+            "h": 0.044878536016331294
+          },
+          "text": "Startup Perspective",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03991281167979003,
+            "y": 0.7134654418197726,
+            "w": 0.21791445209973753,
+            "h": 0.044878536016331294
+          },
+          "text": "Non-profit/NGO Perspective",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYStakeholder Analysis",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12953863188976378,
+            "y": 0.1751655001458151,
+            "w": 0.01709637467191601,
+            "h": 0.028284631087780693
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5948182414698163,
+            "y": 0.175165791776028,
+            "w": 0.01709637467191601,
+            "h": 0.02828448527267425
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2010821030183727,
+            "y": 0.43544969378827647,
+            "w": 0.06132258858267717,
+            "h": 0.09205497229512978
+          },
+          "fillColor": "FFB600"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.47352739501312335,
+            "y": 0.4297354913969087,
+            "w": 0.05930208333333333,
+            "h": 0.0906612715077282
+          },
+          "fillColor": "FFB600"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4694169947506562,
+            "y": 0.762899387576553,
+            "w": 0.06341313976377953,
+            "h": 0.08957713619130941
+          },
+          "fillColor": "FFB600"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.21495193569553805,
+            "y": 0.7583442694663167,
+            "w": 0.06414706364829396,
+            "h": 0.09869014289880432
+          },
+          "fillColor": "FFB600"
+        }
+      ]
+    },
+    {
+      "slideNumber": 8,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "8",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18054215879265093,
+            "y": 0.6376615631379411,
+            "w": 0.27758784448818896,
+            "h": 0.10581131525226013
+          },
+          "fillColor": "FFB600",
+          "strokeColor": "FF0000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.22661794619422573,
+            "y": 0.7501437736949548,
+            "w": 0.27758784448818896,
+            "h": 0.10581131525226013
+          },
+          "fillColor": "FFB600",
+          "strokeColor": "FF0000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.22661794619422573,
+            "y": 0.9585024788568096,
+            "w": 0.27758784448818896,
+            "h": 0.10581131525226013
+          },
+          "fillColor": "FFB600",
+          "strokeColor": "FF0000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18270250984251968,
+            "y": 1.0740804899387577,
+            "w": 0.27758784448818896,
+            "h": 0.10581131525226013
+          },
+          "fillColor": "FFB600",
+          "strokeColor": "FF0000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "cube",
+          "position": {
+            "x": 0.05339542322834646,
+            "y": 0.8417287839020122,
+            "w": 0.07755331364829396,
+            "h": 0.10158573928258968
+          },
+          "text": "Social Issue",
+          "fillColor": "FF0000",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2400548720472441,
+            "y": 0.6238464566929134,
+            "w": 0.21259580052493438,
+            "h": 0.10399635462233887
+          },
+          "text": "Government PerspectiveGovernment policies, reports issued by government entities.",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2795387139107611,
+            "y": 0.7323375619714202,
+            "w": 0.23010088582677166,
+            "h": 0.10399635462233887
+          },
+          "text": "Corporate Perspective: companies' products/services, CSR/CSV initiatives.",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2795387139107611,
+            "y": 0.9392279090113735,
+            "w": 0.23010088582677166,
+            "h": 0.11521959755030621
+          },
+          "text": "Startup Perspective:Innovative products/services from startups.",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23794578412073492,
+            "y": 1.0726599591717703,
+            "w": 0.23010088582677166,
+            "h": 0.08160279965004374
+          },
+          "text": "NGO Perspective: Activities and reports by NGOs.",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.031534284776902885,
+            "y": 0.2626071741032371,
+            "w": 0.6923845964566929,
+            "h": 0.6493588509769612
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279627624671916,
+            "y": 0.3616046952464275,
+            "w": 0.21724352034120734,
+            "h": 0.04039063867016623
+          },
+          "text": "Who?  Who owns the problem?",
+          "fillColor": "FF4337",
+          "textColor": "FF4337",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279621062992126,
+            "y": 0.39880460775736365,
+            "w": 0.29252911745406823,
+            "h": 0.06731773111694371
+          },
+          "text": "How do current stakeholders define the problem?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279627624671916,
+            "y": 0.4965177894429863,
+            "w": 0.30296186023622046,
+            "h": 0.04039063867016623
+          },
+          "text": "Why? : Whatistheproblem?",
+          "fillColor": "FF4337",
+          "textColor": "FF4337",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279621062992126,
+            "y": 0.5337177019539224,
+            "w": 0.29252911745406823,
+            "h": 0.06731773111694371
+          },
+          "text": "What specific aspects do stakeholders recognize as the problem?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279627624671916,
+            "y": 0.6308929717118693,
+            "w": 0.4537290846456693,
+            "h": 0.04039063867016623
+          },
+          "text": "How?: Existing Players solution",
+          "fillColor": "FF4337",
+          "textColor": "FF4337",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279621062992126,
+            "y": 0.6680930300379119,
+            "w": 0.29252911745406823,
+            "h": 0.06731773111694371
+          },
+          "text": "What solutions are currently being implemented?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279627624671916,
+            "y": 0.7697124526100904,
+            "w": 0.4537290846456693,
+            "h": 0.04039063867016623
+          },
+          "text": "Limit?: limitation of existing solution",
+          "fillColor": "FF4337",
+          "textColor": "FF4337",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4279621062992126,
+            "y": 0.806912510936133,
+            "w": 0.29252911745406823,
+            "h": 0.06731773111694371
+          },
+          "text": "What are the shortcomings of existing approache?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04310465879265092,
+            "y": 0.287621901428988,
+            "w": 0.35317298228346455,
+            "h": 0.05404126567512394
+          },
+          "text": "Stakeholders",
+          "fontSize": 16.63
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.41250073818897637,
+            "y": 0.28883347914843976,
+            "w": 0.3026631397637795,
+            "h": 0.05404126567512394
+          },
+          "text": "Key Question",
+          "fontSize": 16.63
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2519415190288714,
+            "y": 0.10759886264216972,
+            "w": 0.4632223589238845,
+            "h": 0.09404257801108194
+          },
+          "text": "Different stakeholders—such as governments, NGOs, corporations, and startups—approach problems in different ways. We must analyze each perspective to understand the full picture."
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYStakeholder Analysis",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.19231028543307085,
+            "y": 0.6420062700495771,
+            "w": 0.051634022309711286,
+            "h": 0.0862755905511811
+          },
+          "fillColor": "FFB600"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23057324475065616,
+            "y": 0.7598824730242053,
+            "w": 0.049932742782152234,
+            "h": 0.0849692330125401
+          },
+          "fillColor": "FFB600"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2294495570866142,
+            "y": 0.9704755030621173,
+            "w": 0.05339435695538058,
+            "h": 0.08395333916593758
+          },
+          "fillColor": "FFB600"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18456397637795274,
+            "y": 1.0807389909594634,
+            "w": 0.0540123031496063,
+            "h": 0.0924941673957422
+          },
+          "fillColor": "FFB600"
+        }
+      ]
+    },
+    {
+      "slideNumber": 9,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "9",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.031534284776902885,
+            "y": 0.2626071741032371,
+            "w": 0.6923845964566929,
+            "h": 0.6493588509769612
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.06496489501312336,
+            "y": 0.3117384076990376,
+            "w": 0.5057732119422572,
+            "h": 0.12100014581510644
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06714107611548556,
+            "y": 0.31528536016331293,
+            "w": 0.4193188976377953,
+            "h": 0.11390376202974628
+          },
+          "text": "Identify stakeholdersWho are the key stakeholders?",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.10732398293963255,
+            "y": 0.45471580635753867,
+            "w": 0.5057732119422572,
+            "h": 0.12100014581510644
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.10950016404199475,
+            "y": 0.45825794692330124,
+            "w": 0.519203658136483,
+            "h": 0.11390376202974628
+          },
+          "text": "Analyze stakeholdersAssess the influence and concerns of stakeholders regarding your project.",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14905093503937009,
+            "y": 0.597693350831146,
+            "w": 0.5057732119422572,
+            "h": 0.12100014581510644
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.15122719816272967,
+            "y": 0.6012353455818022,
+            "w": 0.5035954724409449,
+            "h": 0.11390376202974628
+          },
+          "text": "Set prioritiesRank stakeholders based on their importance and potential impact.",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.19141010498687663,
+            "y": 0.7406707494896472,
+            "w": 0.5057732119422572,
+            "h": 0.12100014581510644
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.19358636811023622,
+            "y": 0.7442128900554097,
+            "w": 0.4107745242782152,
+            "h": 0.11390376202974628
+          },
+          "text": "Relationship with stakeholdersDevelop collaboration strategies for long-term engagement.",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.5224499671916011,
+            "y": 0.4043976377952756,
+            "w": 0.048287319553805774,
+            "h": 0.07862219305920093
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5333160269028872,
+            "y": 0.40439749198016917,
+            "w": 0.0265691437007874,
+            "h": 0.05917701953922427
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.5648090551181102,
+            "y": 0.5473750364537766,
+            "w": 0.048287319553805774,
+            "h": 0.07862219305920093
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5756751968503937,
+            "y": 0.5473748906386702,
+            "w": 0.0265691437007874,
+            "h": 0.05917701953922427
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.6065360072178477,
+            "y": 0.690352580927384,
+            "w": 0.048287319553805774,
+            "h": 0.07862219305920093
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.6174020669291339,
+            "y": 0.6903524351122776,
+            "w": 0.0265691437007874,
+            "h": 0.05917701953922427
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2796400098425197,
+            "y": 0.11147696121318168,
+            "w": 0.697836532152231,
+            "h": 0.04038480606590843
+          },
+          "text": "Using Stakeholder Analysis to Build Collaborations for Future Projects",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYStakeholder Analysis",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 10,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 11,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "11",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 8.202099737532809e-7,
+            "y": 0.015008603091280256,
+            "w": 0.0000053313648293963256,
+            "h": 0.03665193934091572
+          },
+          "fillColor": "303134"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "&lt;Learning Objectives&gt;1. Understand diverse problems through personal and societal perspectives.2. Evaluate problems based on seriousness and timing to determine priority issues.3. Identify and analyze diverse stakeholdersinvolved in the problem.4. Define the core problem we aim to solve in a single sentence.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 24
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHAT Learning Objectives",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 12,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "12",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.02656143372703412,
+            "y": 0.9410005832604258,
+            "w": 0.07086614173228346,
+            "h": 0.02075021872265967
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 13,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "13",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30873293963254594,
+            "y": 0.07364785651793526,
+            "w": 0.44126706036745406,
+            "h": 0.06731773111694371
+          },
+          "text": "Identify personal and social problems by reflecting on your own experiences through the Inside Out approach",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.13668069225721785,
+            "y": 0.18319407990667833,
+            "w": 0.08938353018372704,
+            "h": 0.044878536016331294
+          },
+          "text": "Inside Out",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.029794537401574804,
+            "y": 0.4957053076698746,
+            "w": 0.17106159776902888,
+            "h": 0.04039063867016623
+          },
+          "text": "Reasons for Social Issues",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.029794537401574804,
+            "y": 0.2474058034412365,
+            "w": 0.08938353018372704,
+            "h": 0.04039063867016623
+          },
+          "text": "My problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4833906660104987,
+            "y": 0.1831942257217848,
+            "w": 0.12020538057742783,
+            "h": 0.044878536016331294
+          },
+          "text": "ST analysis",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.7439494021580636,
+            "w": 0.375,
+            "h": 0.20195319335083114
+          },
+          "text": "Are others around me experiencing similar problems?Is solving this problem worth the investment?What challenges or inconveniences does this issue create?Does this problem require urgent attention?Have you identified the root cause of the problem?What changes will occur when the problem is solved?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.30242475940507435,
+            "w": 0.3085612696850394,
+            "h": 0.18054359871682707
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035213910761154855,
+            "y": 0.540317147856518,
+            "w": 0.3085612696850394,
+            "h": 0.18054359871682707
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYInside Out",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.375,
+            "y": 0.22876363371245262,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Seriousness",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.375,
+            "y": 0.4857540099154272,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Timing",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4476876640419947,
+            "y": 0.2287649460484106,
+            "w": 0.05450557742782152,
+            "h": 0.11431627296587926
+          },
+          "text": "Scale",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.44836852034120733,
+            "y": 0.3531745406824147,
+            "w": 0.05382537729658793,
+            "h": 0.11681991834354039
+          },
+          "text": "Depth",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4485209973753281,
+            "y": 0.4913359580052493,
+            "w": 0.053672818241469814,
+            "h": 0.1114925634295713
+          },
+          "text": "Issues",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.44895472440944884,
+            "y": 0.6154909594634004,
+            "w": 0.053239091207349085,
+            "h": 0.1114925634295713
+          },
+          "text": "Empathy",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5078262795275591,
+            "y": 0.6226351706036746,
+            "w": 0.20921062992125986,
+            "h": 0.10434864391951006
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5071460793963255,
+            "y": 0.49108296879556723,
+            "w": 0.20921062992125986,
+            "h": 0.10460294546515018
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5071468175853019,
+            "y": 0.36031743948673084,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5059932742782153,
+            "y": 0.2287649460484106,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "fillColor": "F4F4F4"
+        }
+      ]
+    },
+    {
+      "slideNumber": 14,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 15,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "15",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30873293963254594,
+            "y": 0.07364785651793526,
+            "w": 0.44126706036745406,
+            "h": 0.06731773111694371
+          },
+          "text": "Identify personal and social problems by reflecting on your own experiences through the Inside Out approach",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.13668069225721785,
+            "y": 0.18319407990667833,
+            "w": 0.08938353018372704,
+            "h": 0.044878536016331294
+          },
+          "text": "Inside Out",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.029794537401574804,
+            "y": 0.4957053076698746,
+            "w": 0.17106159776902888,
+            "h": 0.04039063867016623
+          },
+          "text": "Reasons for Social Issues",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.029794537401574804,
+            "y": 0.2474058034412365,
+            "w": 0.08938353018372704,
+            "h": 0.04039063867016623
+          },
+          "text": "My problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4833906660104987,
+            "y": 0.1831942257217848,
+            "w": 0.12020538057742783,
+            "h": 0.044878536016331294
+          },
+          "text": "ST analysis",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.30242475940507435,
+            "w": 0.3085612696850394,
+            "h": 0.18054359871682707
+          },
+          "text": "One night, I was struggling to find a taxi after a long day. I kept waiting, but none were available. When I finally got one, the fare was unexpectedly high, and the driver took a longer route. I felt frustrated by the lack of transparency, reliability, and convenience in taxi services.",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035213910761154855,
+            "y": 0.540317147856518,
+            "w": 0.3085612696850394,
+            "h": 0.18054359871682707
+          },
+          "text": "Limited access to transportation, especially in certain areas or late hoursLack of pricing transparency and inconsistent service qualityNo alternative to traditional taxis, restricting consumer choice",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.38928567913385825,
+            "y": 0.2882913385826772,
+            "w": 0.07037672244094488,
+            "h": 0.31152610090405364
+          },
+          "text": "Seriousness",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.38928567913385825,
+            "y": 0.6201711869349664,
+            "w": 0.07037672244094488,
+            "h": 0.31152610090405364
+          },
+          "text": "Timing",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.46197334317585304,
+            "y": 0.2882930883639545,
+            "w": 0.05450557742782152,
+            "h": 0.14762904636920385
+          },
+          "text": "Scale",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.46265419947506564,
+            "y": 0.4489566929133858,
+            "w": 0.05382537729658793,
+            "h": 0.15086235053951588
+          },
+          "text": "Depth",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.46280667650918633,
+            "y": 0.6273797025371829,
+            "w": 0.053672818241469814,
+            "h": 0.1439825021872266
+          },
+          "text": "Issues",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4632404035433071,
+            "y": 0.7877146398366871,
+            "w": 0.053239091207349085,
+            "h": 0.1439825021872266
+          },
+          "text": "Empathy",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5221119586614174,
+            "y": 0.7969407990667833,
+            "w": 0.20921062992125986,
+            "h": 0.1347567804024497
+          },
+          "text": "People were increasingly demanding better, more efficient, and fairer transportation solutions.The rise of the sharing economy trend  made ride-sharing an idea people were ready to adopt.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5214317585301838,
+            "y": 0.6270529308836396,
+            "w": 0.20921062992125986,
+            "h": 0.13508530183727033
+          },
+          "text": "Taxi regulations were outdated, failing to accommodate new mobility needs.Many cities faced pressure to modernize transport policies but had no clear alternatives.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5214324967191601,
+            "y": 0.4581811023622047,
+            "w": 0.20989083005249343,
+            "h": 0.1384031787693205
+          },
+          "text": "For many, transportation issues are not just minor inconveniences but serious daily struggles.A lack of reliable transportation affects job opportunities, personal safety and overall quality of life.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5202789534120735,
+            "y": 0.2882930883639545,
+            "w": 0.20989083005249343,
+            "h": 0.1384031787693205
+          },
+          "text": "Urban transportation inefficiencies impact millions of people daily.The problem isn’t limited to one country—globally, people struggle with unreliable, expensive, and inaccessible transportation options.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Inside Out – Ex. uber",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.7264886264216973,
+            "w": 0.375,
+            "h": 0.20195319335083114
+          },
+          "text": "Are others around me experiencing similar problems?Is solving this problem worth the investment?What challenges or inconveniences does this issue create?Does this problem require urgent attention?Have you identified the root cause of the problem?will large changes occur when the problem is solved?",
+          "fontSize": 12
+        }
+      ]
+    },
+    {
+      "slideNumber": 16,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW(Example 2 : OYO rooms)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 17,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "17",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30873293963254594,
+            "y": 0.07364785651793526,
+            "w": 0.44126706036745406,
+            "h": 0.06731773111694371
+          },
+          "text": "Identify personal and social problems by reflecting on your own experiences through the Inside Out approach",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.13668069225721785,
+            "y": 0.18319407990667833,
+            "w": 0.08938353018372704,
+            "h": 0.044878536016331294
+          },
+          "text": "Inside Out",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.029794537401574804,
+            "y": 0.4957053076698746,
+            "w": 0.17106159776902888,
+            "h": 0.04039063867016623
+          },
+          "text": "Reasons for Social Issues",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.029794537401574804,
+            "y": 0.2474058034412365,
+            "w": 0.08938353018372704,
+            "h": 0.04039063867016623
+          },
+          "text": "My problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4833906660104987,
+            "y": 0.1831942257217848,
+            "w": 0.12020538057742783,
+            "h": 0.044878536016331294
+          },
+          "text": "ST analysis",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.7264886264216973,
+            "w": 0.375,
+            "h": 0.20195319335083114
+          },
+          "text": "Are others around me experiencing similar problems?Is solving this problem worth the investment?What challenges or inconveniences does this issue create?Does this problem require urgent attention?Have you identified the root cause of the problem?will large changes occur when the problem is solved?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.30242475940507435,
+            "w": 0.3085612696850394,
+            "h": 0.18054359871682707
+          },
+          "text": "I struggled to find budget-friendly, clean, and reliable hotels. Many affordable options lacked basic amenities and standard quality. I wondered—why isn’t there a way to ensure affordable, standardized lodging?",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035213910761154855,
+            "y": 0.540317147856518,
+            "w": 0.3085612696850394,
+            "h": 0.18054359871682707
+          },
+          "text": "Budget travelers lack access to reliable and clean hotels.Unbranded hotels often have inconsistent service and poor maintenance.Travelers face difficulty booking affordable accommodations with guaranteed quality.",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.38928567913385825,
+            "y": 0.2882913385826772,
+            "w": 0.07037672244094488,
+            "h": 0.31152610090405364
+          },
+          "text": "Seriousness",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.38928567913385825,
+            "y": 0.6201711869349664,
+            "w": 0.07037672244094488,
+            "h": 0.31152610090405364
+          },
+          "text": "Timing",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.46197334317585304,
+            "y": 0.2882930883639545,
+            "w": 0.05450557742782152,
+            "h": 0.14762904636920385
+          },
+          "text": "Scale",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.46265419947506564,
+            "y": 0.4489566929133858,
+            "w": 0.05382537729658793,
+            "h": 0.15086235053951588
+          },
+          "text": "Depth",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.46280667650918633,
+            "y": 0.6273797025371829,
+            "w": 0.053672818241469814,
+            "h": 0.1439825021872266
+          },
+          "text": "Issues",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4632404035433071,
+            "y": 0.7877146398366871,
+            "w": 0.053239091207349085,
+            "h": 0.1439825021872266
+          },
+          "text": "Empathy",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5221119586614174,
+            "y": 0.7969407990667833,
+            "w": 0.20921062992125986,
+            "h": 0.1347567804024497
+          },
+          "text": "Budget travel is growing, increasing demand for standardized hotels.More travelers want cost-effective, quality-assured accommodations.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5214317585301838,
+            "y": 0.6270529308836396,
+            "w": 0.20921062992125986,
+            "h": 0.13508530183727033
+          },
+          "text": "Lack of quality assurance in budget hotels creates distrust.Fragmented hotel markets make it hard for customers to find reliable options.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5214324967191601,
+            "y": 0.4581811023622047,
+            "w": 0.20989083005249343,
+            "h": 0.1384031787693205
+          },
+          "text": "Travelers waste time searching for reliable and clean budget hotels.Poor lodging experiences affect customer satisfaction and tourism growth.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5202789534120735,
+            "y": 0.2882930883639545,
+            "w": 0.20989083005249343,
+            "h": 0.1384031787693205
+          },
+          "text": "500M+ budget travelers seek affordable accommodations annually.80% of independent hotels lack standardized service quality.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Inside Out – Ex. OYOrooms",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 18,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "18",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407652559055118,
+            "y": 0.500001312335958,
+            "w": 0.28814640748031495,
+            "h": 0.06282983377077865
+          },
+          "text": "반려동물 사료에 포함된 인공 첨가물과 보존제가 반려동물의 건강에 부정적인 영향을 미치고 있습니다",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1412673064304462,
+            "y": 0.1838957421988918,
+            "w": 0.11352747703412074,
+            "h": 0.044878536016331294
+          },
+          "text": "Outside in",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.02773982939632546,
+            "y": 0.24697142023913676,
+            "w": 0.11352747703412074,
+            "h": 0.0381466899970837
+          },
+          "text": "Category",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.025691108923884515,
+            "y": 0.40902712160979876,
+            "w": 0.11352747703412074,
+            "h": 0.0381466899970837
+          },
+          "text": "Our problem",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.49520562664041995,
+            "y": 0.17681423155438902,
+            "w": 0.10941765091863517,
+            "h": 0.044878536016331294
+          },
+          "text": "ST Analysis",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0396117125984252,
+            "y": 0.2851194225721785,
+            "w": 0.28814640748031495,
+            "h": 0.10166010498687664
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03176484580052493,
+            "y": 0.45295523476232136,
+            "w": 0.2992084153543307,
+            "h": 0.33173388743073784
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30826017060367455,
+            "y": 0.0754254884806066,
+            "w": 0.41502813320209975,
+            "h": 0.06731773111694371
+          },
+          "text": "Analyze external problems and explore their societal roots using the Outside-In perspective to uncover meaningful and impactful solutions.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.04589148622047244,
+            "y": 0.8056837270341207,
+            "w": 0.08956651902887139,
+            "h": 0.10342942548848061
+          },
+          "text": "Problem to Solve",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14355930118110236,
+            "y": 0.8056835812190143,
+            "w": 0.5745064796587926,
+            "h": 0.09645742198891805
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3642130905511811,
+            "y": 0.2864677748614756,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Seriousness",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3642130905511811,
+            "y": 0.5434581510644503,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Timing",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.43690075459317584,
+            "y": 0.28646908719743364,
+            "w": 0.05450557742782152,
+            "h": 0.11431627296587926
+          },
+          "text": "Scale",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.43758161089238845,
+            "y": 0.4108786818314377,
+            "w": 0.05382537729658793,
+            "h": 0.11681991834354039
+          },
+          "text": "Depth",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4377340879265092,
+            "y": 0.5490400991542724,
+            "w": 0.053672818241469814,
+            "h": 0.1114925634295713
+          },
+          "text": "Issues",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4381678149606299,
+            "y": 0.6731951006124235,
+            "w": 0.053239091207349085,
+            "h": 0.1114925634295713
+          },
+          "text": "Empathy",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49703937007874016,
+            "y": 0.6803393117526976,
+            "w": 0.20921062992125986,
+            "h": 0.10434864391951006
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49635916994750656,
+            "y": 0.5487871099445902,
+            "w": 0.20921062992125986,
+            "h": 0.10460294546515018
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49635990813648295,
+            "y": 0.41802158063575384,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49520636482939634,
+            "y": 0.28646908719743364,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Outside In",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 19,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 20,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "20",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407652559055118,
+            "y": 0.500001312335958,
+            "w": 0.28814640748031495,
+            "h": 0.06282983377077865
+          },
+          "text": "반려동물 사료에 포함된 인공 첨가물과 보존제가 반려동물의 건강에 부정적인 영향을 미치고 있습니다",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1412673064304462,
+            "y": 0.1838957421988918,
+            "w": 0.11352747703412074,
+            "h": 0.044878536016331294
+          },
+          "text": "Outside in",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.02773982939632546,
+            "y": 0.24697142023913676,
+            "w": 0.11352747703412074,
+            "h": 0.0381466899970837
+          },
+          "text": "Category",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.025691108923884515,
+            "y": 0.40902712160979876,
+            "w": 0.11352747703412074,
+            "h": 0.0381466899970837
+          },
+          "text": "Our problem",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.49520562664041995,
+            "y": 0.17681423155438902,
+            "w": 0.10941765091863517,
+            "h": 0.044878536016331294
+          },
+          "text": "ST Analysis",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0396117125984252,
+            "y": 0.2851194225721785,
+            "w": 0.28814640748031495,
+            "h": 0.10166010498687664
+          },
+          "text": "Urban Transportation &amp; Mobility",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03176484580052493,
+            "y": 0.45295523476232136,
+            "w": 0.2992084153543307,
+            "h": 0.33173388743073784
+          },
+          "text": "Our ProblemTraditional taxi services are inefficient, expensive, and difficult to access, leading to a demand for alternative transportation solutions.Root Causes:Cost &amp; Availability: Traditional taxis are expensive, and availability is often inconsistent.Technology Gap: Many traditional taxi services lack real-time tracking and efficient dispatching.Regulatory Restrictions: Taxi industry regulations limit competition and hinder service improvements.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30826017060367455,
+            "y": 0.0754254884806066,
+            "w": 0.41502813320209975,
+            "h": 0.06731773111694371
+          },
+          "text": "Analyze external problems and explore their societal roots using the Outside-In perspective to uncover meaningful and impactful solutions.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.04589148622047244,
+            "y": 0.8056837270341207,
+            "w": 0.08956651902887139,
+            "h": 0.10342942548848061
+          },
+          "text": "Problem to Solve",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14355930118110236,
+            "y": 0.8056835812190143,
+            "w": 0.5745064796587926,
+            "h": 0.09645742198891805
+          },
+          "text": "Create a tech-driven ride-sharing platform that enhances accessibility, affordability, and efficiency in urban transportation",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3642130905511811,
+            "y": 0.2864677748614756,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Seriousness",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3642130905511811,
+            "y": 0.5434581510644503,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Timing",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.43690075459317584,
+            "y": 0.28646908719743364,
+            "w": 0.05450557742782152,
+            "h": 0.11431627296587926
+          },
+          "text": "Scale",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.43758161089238845,
+            "y": 0.4108786818314377,
+            "w": 0.05382537729658793,
+            "h": 0.11681991834354039
+          },
+          "text": "Depth",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4377340879265092,
+            "y": 0.5490400991542724,
+            "w": 0.053672818241469814,
+            "h": 0.1114925634295713
+          },
+          "text": "Issues",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4381678149606299,
+            "y": 0.6731951006124235,
+            "w": 0.053239091207349085,
+            "h": 0.1114925634295713
+          },
+          "text": "Empathy",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49703937007874016,
+            "y": 0.6803393117526976,
+            "w": 0.20921062992125986,
+            "h": 0.10434864391951006
+          },
+          "text": "Long wait times and high fares create frustration among commuters.Consumers desire seamless, safe, and cost-effective transportation alternatives.Drivers seek flexible job opportunities with fair earning potential.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49635916994750656,
+            "y": 0.5487871099445902,
+            "w": 0.20921062992125986,
+            "h": 0.10460294546515018
+          },
+          "text": "Heavy regulation and opposition from traditional taxi operators.\\Safety concerns and trust issues in ride-sharing services.Environmental impact of increased vehicle usage.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49635990813648295,
+            "y": 0.41802158063575384,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "text": "Poor urban mobility can lead to economic inefficiency, missed opportunities, and increased environmental polution.Limited transport access reduces quality of life for lower-income populations.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49520636482939634,
+            "y": 0.28646908719743364,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "text": "Millions of people in cities worldwide rely on taxis and public transportation.Rapid urbanization increases the demand for flexible and affordable transit solutions.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Outside In – ex. uber",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 21,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW(Example 2 : OYO rooms)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 22,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "22",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407652559055118,
+            "y": 0.500001312335958,
+            "w": 0.28814640748031495,
+            "h": 0.06282983377077865
+          },
+          "text": "반려동물 사료에 포함된 인공 첨가물과 보존제가 반려동물의 건강에 부정적인 영향을 미치고 있습니다",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1412673064304462,
+            "y": 0.1838957421988918,
+            "w": 0.11352747703412074,
+            "h": 0.044878536016331294
+          },
+          "text": "Outside in",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.02773982939632546,
+            "y": 0.24697142023913676,
+            "w": 0.11352747703412074,
+            "h": 0.0381466899970837
+          },
+          "text": "Category",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.025691108923884515,
+            "y": 0.40902712160979876,
+            "w": 0.11352747703412074,
+            "h": 0.0381466899970837
+          },
+          "text": "Our problem",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.49520562664041995,
+            "y": 0.17681423155438902,
+            "w": 0.10941765091863517,
+            "h": 0.044878536016331294
+          },
+          "text": "ST Analysis",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0396117125984252,
+            "y": 0.2851194225721785,
+            "w": 0.28814640748031495,
+            "h": 0.10166010498687664
+          },
+          "text": "Affordable Accommodation &amp; Hospitality Accessibility",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03176484580052493,
+            "y": 0.45295523476232136,
+            "w": 0.2992084153543307,
+            "h": 0.33173388743073784
+          },
+          "text": "Our ProblemBudget-conscious travelers and business professionals struggle to find affordable, standardized, and quality accommodations, especially in emerging markets and smaller cities.Root Causes:Lack of Standardization: Inconsistent service quality in budget hotels.High Cost of Quality Stays: Affordable options often lack cleanliness and security.Limited Availability: Major hotel chains focus on metropolitan areas.Fragmented Hospitality Industry: Independent hotels lack branding and visibility.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.30826017060367455,
+            "y": 0.0754254884806066,
+            "w": 0.41502813320209975,
+            "h": 0.06731773111694371
+          },
+          "text": "Analyze external problems and explore their societal roots using the Outside-In perspective to uncover meaningful and impactful solutions.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.04589148622047244,
+            "y": 0.8056837270341207,
+            "w": 0.08956651902887139,
+            "h": 0.10342942548848061
+          },
+          "text": "Problem to Solve",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14355930118110236,
+            "y": 0.8056835812190143,
+            "w": 0.5745064796587926,
+            "h": 0.09645742198891805
+          },
+          "text": "Create a technology-driven hospitality platform that standardizes budget accommodations, enhances hotel visibility, and ensures quality, affordability, and accessibility for travelers worldwide.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3642130905511811,
+            "y": 0.2864677748614756,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Seriousness",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3642130905511811,
+            "y": 0.5434581510644503,
+            "w": 0.07037672244094488,
+            "h": 0.24122951297754447
+          },
+          "text": "Timing",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.43690075459317584,
+            "y": 0.28646908719743364,
+            "w": 0.05450557742782152,
+            "h": 0.11431627296587926
+          },
+          "text": "Scale",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.43758161089238845,
+            "y": 0.4108786818314377,
+            "w": 0.05382537729658793,
+            "h": 0.11681991834354039
+          },
+          "text": "Depth",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4377340879265092,
+            "y": 0.5490400991542724,
+            "w": 0.053672818241469814,
+            "h": 0.1114925634295713
+          },
+          "text": "Issues",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4381678149606299,
+            "y": 0.6731951006124235,
+            "w": 0.053239091207349085,
+            "h": 0.1114925634295713
+          },
+          "text": "Empathy",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49703937007874016,
+            "y": 0.6803393117526976,
+            "w": 0.20921062992125986,
+            "h": 0.10434864391951006
+          },
+          "text": "Homeowners struggle with mortgage payments and seek additional income sources.Tourists desire affordable, authentic stays that allow them to experience local culture.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49635916994750656,
+            "y": 0.5487871099445902,
+            "w": 0.20921062992125986,
+            "h": 0.10460294546515018
+          },
+          "text": "Government regulations and zoning laws limit the adoption of home-sharing solutions.Trust and safety concerns between hosts and guests require mitigation strategies.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49635990813648295,
+            "y": 0.41802158063575384,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "text": "Housing shortages can lead to homelessness and social displacement. The inefficiency of space usage in cities contributes to urban sprawl and environmental concerns.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.49520636482939634,
+            "y": 0.28646908719743364,
+            "w": 0.20989083005249343,
+            "h": 0.10717220764071157
+          },
+          "text": "Millions of people globally face housing affordability issues in urban areas.Tourism-dependent economies require scalable lodging solutions to accommodate visitors.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Outside In – ex. OYO rooms",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 23,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "23",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.13508038057742783,
+            "y": 0.9422525517643627,
+            "w": 0.04629289698162729,
+            "h": 0.022439195100612423
+          },
+          "text": "23"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.19201099081364828,
+            "y": 0.9444981044036163,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06714107611548556,
+            "y": 0.31528069407990666,
+            "w": 0.4193188976377953,
+            "h": 0.11390376202974628
+          },
+          "text": "이해관계자 식별누가 이해관계자인가?",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5756751968503937,
+            "y": 0.5108452901720618,
+            "w": 0.0265691437007874,
+            "h": 0.05917701953922427
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.6174020669291339,
+            "y": 0.6538228346456693,
+            "w": 0.0265691437007874,
+            "h": 0.05917701953922427
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03822982283464567,
+            "y": 0.22505643044619422,
+            "w": 0.45335925196850396,
+            "h": 0.5518802857976086
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.17696989829396326,
+            "y": 0.3306084864391951,
+            "w": 0.1758803313648294,
+            "h": 0.3126761446485856
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.22740936679790028,
+            "y": 0.41804549431321086,
+            "w": 0.075,
+            "h": 0.13333333333333333
+          },
+          "text": "Stakeholder",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1740652066929134,
+            "y": 0.38825955088947217,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Corporations",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25024926181102364,
+            "y": 0.38825955088947217,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Government",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1740652066929134,
+            "y": 0.5623226888305628,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Start-up",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25024926181102364,
+            "y": 0.5623226888305628,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "NGO",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5175519192913386,
+            "y": 0.2674154272382619,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Unresolved Problems",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5175519192913386,
+            "y": 0.4230301837270341,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Root cause of the problem",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5175519192913386,
+            "y": 0.5786449402158064,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Opportunities",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5175519192913386,
+            "y": 0.31578944298629336,
+            "w": 0.18922481955380577,
+            "h": 0.09816841644794401
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5175519192913386,
+            "y": 0.47140434529017206,
+            "w": 0.18922481955380577,
+            "h": 0.09816841644794401
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5175519192913386,
+            "y": 0.6270193934091572,
+            "w": 0.18922481955380577,
+            "h": 0.09816841644794401
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.04589148622047244,
+            "y": 0.8056837270341207,
+            "w": 0.08956651902887139,
+            "h": 0.10342942548848061
+          },
+          "text": "Problem to Solve",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14355930118110236,
+            "y": 0.8056835812190143,
+            "w": 0.5745064796587926,
+            "h": 0.09645742198891805
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Stakeholder Map",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25568733595800525,
+            "y": 0.05593861184018664,
+            "w": 0.49431340223097114,
+            "h": 0.12117191601049869
+          },
+          "text": "Understanding the stakeholders involved in the problem, analyzing their current approaches, and identifying unresolved root causes.This process provides actionable insights and uncovers the root causes of unresolved issues.",
+          "fontSize": 12
+        }
+      ]
+    },
+    {
+      "slideNumber": 24,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 25,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "25",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06714107611548556,
+            "y": 0.31528069407990666,
+            "w": 0.4193188976377953,
+            "h": 0.11390376202974628
+          },
+          "text": "이해관계자 식별누가 이해관계자인가?",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03822982283464567,
+            "y": 0.22505643044619422,
+            "w": 0.45335925196850396,
+            "h": 0.5518802857976086
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.17696989829396326,
+            "y": 0.3306084864391951,
+            "w": 0.1758803313648294,
+            "h": 0.3126761446485856
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.22740936679790028,
+            "y": 0.41804549431321086,
+            "w": 0.075,
+            "h": 0.13333333333333333
+          },
+          "text": "Stakeholder",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1740652066929134,
+            "y": 0.38825955088947217,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Corporations",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25024926181102364,
+            "y": 0.38825955088947217,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Government",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1740652066929134,
+            "y": 0.5623226888305628,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Start-up",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25024926181102364,
+            "y": 0.5623226888305628,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "NGO",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170068077427822,
+            "y": 0.17852580927384076,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Unresolved Problems",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170068077427822,
+            "y": 0.3754109069699621,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Root cause of the problem",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170068077427822,
+            "y": 0.5786449402158064,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Opportunities",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.04589148622047244,
+            "y": 0.8720975503062117,
+            "w": 0.08956651902887139,
+            "h": 0.06241236512102654
+          },
+          "text": "Problem to Solve",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Stakeholder Map – ex. uber",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25568733595800525,
+            "y": 0.05593861184018664,
+            "w": 0.49431340223097114,
+            "h": 0.12117191601049869
+          },
+          "text": "Understanding the stakeholders involved in the problem, analyzing their current approaches, and identifying unresolved root causes.This process provides actionable insights and uncovers the root causes of unresolved issues.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170067257217847,
+            "y": 0.2213331875182269,
+            "w": 0.18922498359580053,
+            "h": 0.1506217556138816
+          },
+          "text": "Limited taxi availability in suburban and peak-hour congestion areas.High fixed fares and inefficient pricing models in traditional taxi services.Unreliable and inconsistent service quality in urban transport.Difficulty in securing safe and convenient rides in real-time.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14355930118110236,
+            "y": 0.8671609798775153,
+            "w": 0.5745064796587926,
+            "h": 0.06241236512102654
+          },
+          "text": "Create a tech-driven ride-sharing platform that enhances accessibility, affordability, and efficiency in urban transportation.",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.0504318405511811,
+            "y": 0.2794145523476232,
+            "w": 0.17552583661417323,
+            "h": 0.1256596675415573
+          },
+          "text": "Traditional taxi companies (e.g., Yellow Cab, Black Cabs) - Operate conventional ride-hailing services with fixed pricing and limited flexibility",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.33958333333333335,
+            "y": 0.26486803732866726,
+            "w": 0.15682070209973753,
+            "h": 0.1705382035578886
+          },
+          "text": "City transportation authorities, regulatory agencies (e.g., Department of Transportation, DMV) - Regulate taxi services, ensure road safety, and control urban congestion.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05133259514435696,
+            "y": 0.598882035578886,
+            "w": 0.17078051181102363,
+            "h": 0.1256596675415573
+          },
+          "text": "Lyft, Bolt - Disrupt the market with app-based ride-sharing models that utilize dynamic pricing and real-time demand tracking.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3477492618110236,
+            "y": 0.5378264800233304,
+            "w": 0.13073720472440944,
+            "h": 0.19297739865850103
+          },
+          "text": "Urban mobility &amp; sustainability groups - Advocate for better public transportation systems, reduced carbon emissions, and fair labor practices in the gig economy.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170067257217847,
+            "y": 0.41804549431321086,
+            "w": 0.18922498359580053,
+            "h": 0.1506217556138816
+          },
+          "text": "Taxi licensing restrictions limit the number of vehicles on the road.Traditional dispatch systems lack real-time demand tracking.Inconsistent pricing models fail to adapt to peak-hour fluctuations.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170067257217847,
+            "y": 0.6295593467483231,
+            "w": 0.18922498359580053,
+            "h": 0.1506217556138816
+          },
+          "text": "Dynamic Pricing &amp; AI-based Demand Matching: Implement surge pricing to ensure ride availability during peak hours.Seamless App-based Experience: Enable real-time ride-hailing, cashless payments, and route optimization.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        }
+      ]
+    },
+    {
+      "slideNumber": 26,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW(Example 2 : OYO rooms)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 27,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "27",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.13508038057742783,
+            "y": 0.9422525517643627,
+            "w": 0.04629289698162729,
+            "h": 0.022439195100612423
+          },
+          "text": "27"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.19201099081364828,
+            "y": 0.9444981044036163,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06714107611548556,
+            "y": 0.31528069407990666,
+            "w": 0.4193188976377953,
+            "h": 0.11390376202974628
+          },
+          "text": "이해관계자 식별누가 이해관계자인가?",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03822982283464567,
+            "y": 0.22505643044619422,
+            "w": 0.45335925196850396,
+            "h": 0.5518802857976086
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.17696989829396326,
+            "y": 0.3306084864391951,
+            "w": 0.1758803313648294,
+            "h": 0.3126761446485856
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.22740936679790028,
+            "y": 0.41804549431321086,
+            "w": 0.075,
+            "h": 0.13333333333333333
+          },
+          "text": "Stakeholder",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1740652066929134,
+            "y": 0.38825955088947217,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Corporations",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25024926181102364,
+            "y": 0.38825955088947217,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Government",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1740652066929134,
+            "y": 0.5623226888305628,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "Start-up",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25024926181102364,
+            "y": 0.5623226888305628,
+            "w": 0.09819939304461943,
+            "h": 0.03141498979294255
+          },
+          "text": "NGO",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25568733595800525,
+            "y": 0.05593861184018664,
+            "w": 0.49431340223097114,
+            "h": 0.12117191601049869
+          },
+          "text": "Understanding the stakeholders involved in the problem, analyzing their current approaches, and identifying unresolved root causes.This process provides actionable insights and uncovers the root causes of unresolved issues.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW Stakeholder Map- ex. OYO Rooms",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04322383530183727,
+            "y": 0.2759985418489356,
+            "w": 0.17746259842519685,
+            "h": 0.14809900845727617
+          },
+          "text": "Traditional budget hotel chains Red Roof Inn, Super 8, Treebo - Provide low-cost accommodations but struggle with standardization and scalability.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.34059522637795275,
+            "y": 0.25466010498687663,
+            "w": 0.13539919619422572,
+            "h": 0.14809900845727617
+          },
+          "text": "Tourism boards, hospitality regulators - Enforce licensing, safety standards, and taxation policies on hotels and budget accommodations.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2921074475065617,
+            "y": 0.6527696121318168,
+            "w": 0.194589812992126,
+            "h": 0.10322047244094489
+          },
+          "text": "Consumer rights organizations - Advocate for fair pricing, safety standards, and transparency in budget hotel services.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04833021653543307,
+            "y": 0.642111402741324,
+            "w": 0.22227148950131234,
+            "h": 0.10322047244094489
+          },
+          "text": "FabHotels, Zostel- Offer standardized and tech-driven budget accommodations by partnering with small hotels and property owners.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170068077427822,
+            "y": 0.17852580927384076,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Unresolved Problems",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170068077427822,
+            "y": 0.38120326625838435,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Root cause of the problem",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170068077427822,
+            "y": 0.583880723242928,
+            "w": 0.18922481955380577,
+            "h": 0.03930125400991543
+          },
+          "text": "Opportunities",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.04589148622047244,
+            "y": 0.8720975503062117,
+            "w": 0.08956651902887139,
+            "h": 0.06241236512102654
+          },
+          "text": "Problem to Solve",
+          "fillColor": "EA5538",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170067257217847,
+            "y": 0.22420428696412947,
+            "w": 0.18922498359580053,
+            "h": 0.1506217556138816
+          },
+          "text": "Lack of standardization in budget hotels, leading to inconsistent service quality.Small hotel owners struggle with low occupancy rates and poor digital presence.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.14355930118110236,
+            "y": 0.8671609798775153,
+            "w": 0.5745064796587926,
+            "h": 0.06241236512102654
+          },
+          "text": "Create a tech-driven budget hotel network that standardizes and enhances the affordability, accessibility, and quality of accommodations for travelers.",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170067257217847,
+            "y": 0.42688174394867306,
+            "w": 0.18922498359580053,
+            "h": 0.1506217556138816
+          },
+          "text": "Fragmented budget hotel market with no common quality standards.High operating costs prevent small hotel owners from upgrading services.Limited digitalization of budget accommodations leads to inefficient bookings.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5170067257217847,
+            "y": 0.6295593467483231,
+            "w": 0.18922498359580053,
+            "h": 0.1506217556138816
+          },
+          "text": "Standardization of Budget Hotels: Implement strict quality control measures, including hygiene, service, and room amenities.Technology-Driven Booking Platform: Provide a seamless mobile app and website for easy hotel discovery, booking, and customer feedback.",
+          "fillColor": "F4F4F4",
+          "fontSize": 8
+        }
+      ]
+    },
+    {
+      "slideNumber": 28,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 0.75,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "28",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6353724573490813,
+            "y": 0.825635316418781,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06888853346456693,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.10558202099737533,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26736384514435696,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.42914566929133857,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23067035761154855,
+            "y": 0.4908533100029163,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3924521817585302,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5909274934383202,
+            "y": 0.409454797317002,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5542340059055119,
+            "y": 0.485830271216098,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.026561515748031495,
+            "y": 0.5713604549431321,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20492166994750657,
+            "y": 0.5713604549431321,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3743380905511811,
+            "y": 0.5713604549431321,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5425857939632546,
+            "y": 0.5713604549431321,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.02656143372703412,
+            "y": 0.9410005832604258,
+            "w": 0.07086614173228346,
+            "h": 0.02075021872265967
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 29,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.36869168307086614,
+            "y": 0.4822061825605133,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5703317749343833,
+            "y": 0.48220807815689704,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.17490666010498687,
+            "y": 0.725160542432196,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1646353346456693,
+            "y": 0.4810511811023622,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "29",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "Introduction to the 7 Steps of Act-Preneur",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.46381846019247597,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.6966685622630504,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.044925688976377956,
+            "y": 0.6985466608340624,
+            "w": 0.07510129593175853,
+            "h": 0.044878536016331294
+          },
+          "text": "Scale up",
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "halfFrame",
+          "position": {
+            "x": 0.07247563976377953,
+            "y": 0.6317596967045785,
+            "w": 0.02,
+            "h": 0.0389867308253135
+          },
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3437314632545932,
+            "y": 0.4651223388743074,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP5",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5426537073490814,
+            "y": 0.4641054243219598,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP6",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14542363845144357,
+            "y": 0.7006173811606883,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP7",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04919873687664042,
+            "y": 0.46556853310002916,
+            "w": 0.0665552001312336,
+            "h": 0.044878536016331294
+          },
+          "text": "Action!",
+          "fillColor": "0A0A0A",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03704675196850394,
+            "y": 0.21648716827063283,
+            "w": 0.09085916994750656,
+            "h": 0.04908909303003791
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "halfFrame",
+          "position": {
+            "x": 0.07247563976377953,
+            "y": 0.3883296879556722,
+            "w": 0.02,
+            "h": 0.0389867308253135
+          },
+          "fillColor": "0A0A0A"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.039402805118110236,
+            "y": 0.21873170020414115,
+            "w": 0.08614566929133859,
+            "h": 0.044878536016331294
+          },
+          "text": "Discovery",
+          "fillColor": "0A0A0A",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16277969160104988,
+            "y": 0.23611096529600467,
+            "w": 0.12429092847769029,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16149376640419946,
+            "y": 0.2447960046660834,
+            "w": 0.1249949967191601,
+            "h": 0.044878536016331294
+          },
+          "text": "TeamBuilding",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3641379593175853,
+            "y": 0.23267979002624672,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3674924540682415,
+            "y": 0.22942111402741325,
+            "w": 0.11856405839895014,
+            "h": 0.06731773111694371
+          },
+          "text": "Defining the Problem",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14029847440944881,
+            "y": 0.2152198891805191,
+            "w": 0.046806430446194223,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP1",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3439331528871391,
+            "y": 0.21585156022163896,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP2",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5636225393700788,
+            "y": 0.23267979002624672,
+            "w": 0.1258401410761155,
+            "h": 0.06070749489647127
+          },
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5634209317585301,
+            "y": 0.242884660250802,
+            "w": 0.1258401410761155,
+            "h": 0.04039063867016623
+          },
+          "text": "Deriving Item",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5428553969816273,
+            "y": 0.21585156022163896,
+            "w": 0.04795562664041995,
+            "h": 0.03590274132400117
+          },
+          "text": "STEP3",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1441353346456693,
+            "y": 0.30068153980752405,
+            "w": 0.1931131069553806,
+            "h": 0.10322047244094489
+          },
+          "text": "How to find team members who fit your visionHow to work well as a teamHow to set the team’s direction",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3374507874015748,
+            "y": 0.30068153980752405,
+            "w": 0.20650959645669292,
+            "h": 0.08078127734033246
+          },
+          "text": "How to explore the problemHow to find the root causeHow to analyze key stakeholders",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5561082677165354,
+            "y": 0.28946194225721783,
+            "w": 0.19511917650918637,
+            "h": 0.1256596675415573
+          },
+          "text": "How to develop your solution(Finding the right idea)How to learn from competitors (benchmark)How to prioritize features"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3281613353018373,
+            "y": 0.7383909303003792,
+            "w": 0.27793052821522307,
+            "h": 0.06731773111694371
+          },
+          "text": "Generate sales within 6 months! Reach  at least 1 Million USD in 2 years!",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16522285104986878,
+            "y": 0.47904389034704,
+            "w": 0.13024311023622048,
+            "h": 0.06731773111694371
+          },
+          "text": "Item Concretization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.36968405511811026,
+            "y": 0.478497375328084,
+            "w": 0.1258401410761155,
+            "h": 0.06731773111694371
+          },
+          "text": "Execution &amp; Validation",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5666313976377952,
+            "y": 0.4932668416447944,
+            "w": 0.13163410433070866,
+            "h": 0.04039063867016623
+          },
+          "text": "Commercialization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1749065780839895,
+            "y": 0.7294082822980461,
+            "w": 0.1258401410761155,
+            "h": 0.044878536016331294
+          },
+          "text": "Launch &amp; Pivot",
+          "fillColor": "000000",
+          "textColor": "000000",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3354041994750656,
+            "y": 0.5576781860600758,
+            "w": 0.19913246391076114,
+            "h": 0.10322047244094489
+          },
+          "text": "Validating CustomersBuilding an MVP (Minimum Viable Product)Testing the MVP"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5363726213910761,
+            "y": 0.5460495771361913,
+            "w": 0.1891007217847769,
+            "h": 0.08078127734033246
+          },
+          "text": "How to systemize business operationsHR, Sales, Marketing"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14413541666666665,
+            "y": 0.7888527267424905,
+            "w": 0.18376673228346457,
+            "h": 0.08078127734033246
+          },
+          "text": "Generating revenueHow to secure funding and investment"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14211294291338583,
+            "y": 0.5530303295421406,
+            "w": 0.19348687664041994,
+            "h": 0.10322047244094489
+          },
+          "text": "How to define your target customers (Developing the Idea)How to create revenueHow to build a business model"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14017536089238844,
+            "y": 0.46522382618839314,
+            "w": 0.04795562664041995,
+            "h": 0.03569714202391368
+          },
+          "text": "STEP4",
+          "fillColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 9.91
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05314066601049869,
+            "y": 0.5204196558763488,
+            "w": 0.05867134186351706,
+            "h": 0.10430460775736367
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05540149278215223,
+            "y": 0.7542242636337124,
+            "w": 0.05414968832020997,
+            "h": 0.09626611256926218
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05642060367454068,
+            "y": 0.2762885680956547,
+            "w": 0.05211146653543307,
+            "h": 0.09264260717410323
+          }
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-05-30T06:56:35.044Z"
+}

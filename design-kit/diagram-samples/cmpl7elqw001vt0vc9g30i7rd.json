@@ -1,0 +1,37 @@
+{
+  "assetId": "cmpl7elqw001vt0vc9g30i7rd",
+  "name": "실무 적용 사례: VOC 자동 분류 및 요약 에이전트 설계",
+  "fileName": "AX_Guide_Chapter29_v1.4.pdf",
+  "mimeType": "application/pdf",
+  "sizeMB": 0.1,
+  "kind": "pdf",
+  "totalPages": 5,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "text": "AX Transformation Model\n공식 교재\n기업의 핵심 인재가 직접 실행하는 AI 전환\nPart 6. AI Tooling & Automation Layer\nChapter 29. AI 에이전트 설계 표준\nunderdogs.\nVersion 1.4\n발행: Underdogs ud.Labs Cell",
+      "firstLine": "AX Transformation Model"
+    },
+    {
+      "pageNumber": 2,
+      "text": "Chapter 29. AI 에이전트 설계 표준\nAI 에이전트는 자동화 워크플로우를 실행하는 구체적인 행위자입니다. 그러나 명확한 설계도 없이 에이전\n트를 만들면, 각기 다른 방식으로 작동하여 유지보수가 불가능한 '디지털 부채'가 될 수 있습니다. 이를 방\n지하기 위해 MATM은 모든 에이전트를 표준화된 명세(Specification)에 따라 설계하고 관리합니다.\n29.1. 에이전트 스펙 카드의 11가지 필수 항목\n모든 AI 에이전트는 아래 11가지 항목이 정의된 '스펙 카드'를 가져야 합니다. 이 카드는 프로젝트의 기술\n적 산출물이자, 고객사 담당자가 에이전트를 이해하고 운영하는 핵심 매뉴얼이 됩니다.\nChapter 29. 학습 목표\n☐ AI 에이전트의 역할을 정의하고, 표준화된 설계의 중요성을 이해합니다.\n☐ '에이전트 스펙 카드'의 11가지 항목을 학습하고, 이를 직접 작성할 수 있습니다.\n☐ 에이전트 설계가 파트너 확장성과 프로젝트 품질 유지에 어떻게 기여하는지 파악합니다.\n정의: AI 에이전트 스펙 카드 (AI Agent Spec Card)\nAI 에이전트의 목적, 입출력, 의사결정 규칙, 담당자, 로그 기록 방식 등 11가지 핵심 항목을 명확히 정의\n한 표준 설계 문서입니다. 이 카드를 통해 누가 에이전트를 만들더라도 일관된 품질과 동작 방식을 보장\n하며, 문제 발생 시 원인을 빠르게 파악하고 개선할 수 있습니다.\nunderdogs\nAX Transformation Model v1.4 | 2",
+      "firstLine": "Chapter 29. AI 에이전트 설계 표준"
+    },
+    {
+      "pageNumber": 3,
+      "text": "항목 \t설명 및 작성 가이드\nAgent Name \t에이전트의 역할을 명확히 알 수 있는 이름 (예: 일일 생산실적 취합 에이전트)\nPurpose \t이 에이전트가 존재하는 이유, 해결하고자 하는 문제 (1~2 문장)\nInputs (정형) \t작동에 필요한 데이터. Google Sheets 범위, 웹폼 필드, 특정 형식의 파일 등 명확\n히 정의\nOutputs (정형) \t에이전트가 생성하는 결과물. 표, JSON, 요약 텍스트, 특정 시스템에 대한 액션 등\n명확히 정의\nDecision Rules \t입력값을 바탕으로 어떤 판단을 내리는지에 대한 비즈니스 로직 (If-Then 형식으로\n기술)\nTrigger \t언제 에이전트가 작동하는지 정의 (수동 실행, 매일 오전 9시 스케줄, 특정 데이터\n입력 시 등)\nHuman-in-the-loop \t자동화 과정 중 사람의 검수나 승인이 필요한 지점 명시. (없으면 '없음')\nOwner \t이 에이전트의 운영 및 결과에 책임을 지는 담당자\nLogging \t에이전트의 모든 실행 기록(시간, 입력, 출력, 성공/실패 여부)이 저장되는 위치 (예:\nGoogle Sheets의 특정 탭)\nFailure Handling \t에러 발생 시 어떻게 대응할지 정의 (담당자에게 알림, 3회 재시도 후 중단 등)\nData Access \t에이전트가 접근하는 데이터의 범위와 권한. '최소 권한 원칙' 준수 여부 명시\nunderdogs\nAX Transformation Model v1.4 | 3",
+      "firstLine": "항목 \t설명 및 작성 가이드"
+    },
+    {
+      "pageNumber": 4,
+      "text": "29.2. 스펙 카드 작성 실습 예시\nAgent Spec Card 예시: VOC 자동 분류 및 요약 에이전트\n온라인 쇼핑몰의 고객 문의(VOC)를 자동으로 분석하는 에이전트를 설계하는 예시입니다.\nAgent Name \tVOC 자동 분류 및 일일 요약 에이전트\nPurpose \t매일 접수되는 고객 문의를 유형(배송/환불/제품문의/기타)별로 자동 분류하\n고, 주요 내용을 요약하여 담당자가 빠르게 대응하도록 지원\nInputs \tVOC 관리 Google Sheets의 '신규 문의' 탭 (A:C열)\nOutputs \t'신규 문의' 탭의 D열(유형), E열(핵심 키워드) 자동 채우기\n매일 오전 9시, '일일 VOC 요약' 탭에 전날 문의 요약 보고서 생성\nDecision Rules \t- 문의 내용에 '배송', '언제 와요' 포함 시 '배송'으로 분류\n- '환불', '반품' 포함 시 '환불'로 분류\n- LLM이 내용 분석 후 가장 적합한 유형으로 분류\nTrigger \t매 10분 간격 스케줄 실행 (분류)\n매일 오전 9시 스케줄 실행 (요약)\nHuman-in-the-\nloop\nLLM이 '기타'로 분류한 문의는 담당자가 직접 확인 후 재분류\nOwner \tCS팀 김민준 매니저\nLogging \t'로그' 탭에 실행 시간, 처리 건수, 오류 내역 기록\nFailure Handling \tLLM API 오류 시, 5분 후 2회 재시도. 실패 시 CS팀장에게 이메일 알림\nData Access \tVOC 관리 Google Sheets 읽기/쓰기 권한\nunderdogs\nAX Transformation Model v1.4 | 4",
+      "firstLine": "29.2. 스펙 카드 작성 실습 예시"
+    },
+    {
+      "pageNumber": 5,
+      "text": "Next Chapter\nChapter 30. 프롬프트 라이브러리\n다음 챕터에서는 AI 에이전트의 두뇌 역할을 하는 LLM 프롬프트를 어떻게 표준화하고 재사용성을 높일 수\n있는지, 프롬프트 라이브러리 구축 및 운영 원칙에 대해 학습합니다.\nunderdogs\nAX Transformation Model v1.4 | 5",
+      "firstLine": "Next Chapter"
+    }
+  ],
+  "extractedAt": "2026-05-30T06:54:05.240Z"
+}

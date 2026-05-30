@@ -1,0 +1,6357 @@
+{
+  "assetId": "cmpl8iwux0007eovcgs79gm9o",
+  "name": "언더독스 실전형 아이템 고도화 방법론: 실행 중심의 아이템 구체화",
+  "fileName": "4. 아이템 고도화.pptx",
+  "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "sizeMB": 47,
+  "kind": "pptx",
+  "totalSlides": 43,
+  "totalShapes": 491,
+  "slides": [
+    {
+      "slideNumber": 1,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Item Concretization",
+          "placeholderType": "title"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved",
+          "placeholderType": "dt"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "1",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3948886975065617,
+            "y": 0.605420384951881,
+            "w": 0.0531496062992126,
+            "h": 0.09448818897637795
+          },
+          "fillColor": "FF5534"
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027664452099737533,
+            "y": 0.04081583552055993,
+            "w": 0.04262795275590551,
+            "h": 0.06404199475065617
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 2,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08437245734908136,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.12106578083989501,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.28284760498687667,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.4446294291338583,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.246154281496063,
+            "y": 0.537305045202683,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4079361056430446,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6064112532808399,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5697179297900262,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.09694852726742491,
+            "w": 0.22311581364829397,
+            "h": 0.06865820939049286
+          },
+          "text": "INDEX",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053866879921259846,
+            "y": 0.6127426363371246,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23222711614173228,
+            "y": 0.6127426363371246,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.40164345472440943,
+            "y": 0.6127426363371246,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5698910761154856,
+            "y": 0.6127426363371246,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 3,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "3",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.09336532152230971,
+            "y": 0.37882852143482065,
+            "w": 0.21061179461942256,
+            "h": 0.15707465733449985
+          },
+          "text": "\"Who is my target customer, and what is the best way to sell to them?\"",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.445731217191601,
+            "y": 0.37859580052493436,
+            "w": 0.168001312335958,
+            "h": 0.15707465733449985
+          },
+          "text": "\"How can I transform my idea into a marketable product?\"",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhy Should an Item Be Specified?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.42526074475065617,
+            "y": 0.31050247885680954,
+            "w": 0.20110818569553807,
+            "h": 0.3575256634587343
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.09811729002624672,
+            "y": 0.3105036453776611,
+            "w": 0.20110818569553807,
+            "h": 0.3575256634587343
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3081220472440945,
+            "y": 0.6192645086030912,
+            "w": 0.11549663713910761,
+            "h": 0.20532735491396908
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 4,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "4",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.3552704870224555,
+            "w": 0.6803978838582677,
+            "h": 0.2894601924759405
+          },
+          "text": "To develop a successful product, we must clearly define:Who our customers areHow much they are willing to payHow we will market and sell the productWhere we will distribute it",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhy Should an Item Be Specified?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 5,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "5",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.3552700495771362,
+            "w": 0.6803978838582677,
+            "h": 0.2894601924759405
+          },
+          "text": "We have identified the problem and developed a potential product.Now, how can we refine it into something customers will actually buy?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhy Should an Item Be Specified?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 6,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "6",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.4104706911636046,
+            "w": 0.6803978838582677,
+            "h": 0.17905920093321667
+          },
+          "text": "Problem – Solution FitSolution-Product FitProduct-Market Fit",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhy Should an Item Be Specified?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 7,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518547681539808,
+            "w": 0.47758932086614175,
+            "h": 0.07460294546515019
+          },
+          "text": "WHY \\Key Point",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03480167322834646,
+            "y": 0.1649582968795567,
+            "w": 0.6803978838582677,
+            "h": 0.18175196850393702
+          },
+          "text": "\"Develop a comprehensive Act-Canvas by following these steps:“Persona Analysis → Identify target customers and their needs. Business Model Design → Define value propositions, revenue streams, and core activities.Product Pricing → Establish competitive pricing strategies.",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04432340879265092,
+            "y": 0.35187766112569263,
+            "w": 0.172527969160105,
+            "h": 0.05385418489355497
+          },
+          "text": "Persona Analysis"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2246751968503937,
+            "y": 0.35121711869349664,
+            "w": 0.15845956364829397,
+            "h": 0.05385418489355497
+          },
+          "text": "Business Model"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3917895341207349,
+            "y": 0.3480479731700204,
+            "w": 0.07917724737532808,
+            "h": 0.05385418489355497
+          },
+          "text": "Pricing"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.48286482939632547,
+            "y": 0.3480479731700204,
+            "w": 0.015151820866141733,
+            "h": 0.05385418489355497
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5149484908136482,
+            "y": 0.3480479731700204,
+            "w": 0.12111925853018372,
+            "h": 0.05385418489355497
+          },
+          "text": "Act-canvas"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12278518700787401,
+            "y": 0.429348935549723,
+            "w": 0.14998884514435695,
+            "h": 0.14038553514144064
+          },
+          "text": "Basic informationProblems (pain points)Existing solutions (alternatives)Accuracy and rationality analysis",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2829782644356955,
+            "y": 0.4293501020705745,
+            "w": 0.13173810695538057,
+            "h": 0.19358048993875765
+          },
+          "text": "Revenue, valueStakeholders (partners)Core activitiesDevelopment, production, supply, sales, purchase, etc.",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4297406496062992,
+            "y": 0.429348935549723,
+            "w": 0.13173810695538057,
+            "h": 0.19029454651501895
+          },
+          "text": "Cost-based approachCompetitor-based approachValue-based approachMinimum and maximum price range",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5781734744094488,
+            "y": 0.42934995625546807,
+            "w": 0.14331619094488188,
+            "h": 0.2422716535433071
+          },
+          "text": "Problem definitionPersona definitionDeriving core valueDefining solutionsBusiness modelPricingCompletion of Act-Canvas",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 8
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.6360678313648294,
+            "y": 0.34775430154564013,
+            "w": 0.025077345800524935,
+            "h": 0.044581948089822104
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.10098031496062992,
+            "y": 0.586786380869058,
+            "w": 0.043609580052493435,
+            "h": 0.07752814231554389
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2530515091863517,
+            "y": 0.6886640419947506,
+            "w": 0.05512032480314961,
+            "h": 0.09799168853893263
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3978288221784777,
+            "y": 0.7699288422280548,
+            "w": 0.06049893372703412,
+            "h": 0.10755365995917177
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5472627132545932,
+            "y": 0.8696254009915427,
+            "w": 0.05568339895013123,
+            "h": 0.09899270924467775
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 8,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.22262590223097112,
+            "y": 0.09753397491980169,
+            "w": 0.23425385498687665,
+            "h": 0.05950495771361913
+          },
+          "text": "Who exactly are we selling to?",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "8",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08406578083989501,
+            "y": 0.22608748906386703,
+            "w": 0.5757043143044619,
+            "h": 0.14034820647419072
+          },
+          "text": "Defining a clear customer persona allows us to tailor our business model for maximum effectiveness.",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26711523950131233,
+            "y": 0.3767633420822397,
+            "w": 0.21576935695538058,
+            "h": 0.38358996792067657
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.32860326443569554,
+            "y": 0.23795421405657627,
+            "w": 0.10209055118110236,
+            "h": 0.07166885389326334
+          },
+          "text": "Brand",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.514602280183727,
+            "y": 0.4544008457276174,
+            "w": 0.09026812664041994,
+            "h": 0.07166885389326334
+          },
+          "text": "Item",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20595964566929134,
+            "y": 0.7251162146398367,
+            "w": 0.14118298884514435,
+            "h": 0.07166885389326334
+          },
+          "text": "Marketing",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.44243339895013123,
+            "y": 0.7217742782152231,
+            "w": 0.12103961614173228,
+            "h": 0.07166885389326334
+          },
+          "text": "Channel",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16091076115485564,
+            "y": 0.46342373869932924,
+            "w": 0.10620447834645669,
+            "h": 0.07166885389326334
+          },
+          "text": "Design",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.23681832349081364,
+            "y": 0.32290230387868185,
+            "w": 0.2763633530183727,
+            "h": 0.4913123359580053
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.19988746719160105,
+            "y": 0.25798264800233306,
+            "w": 0.3438275098425197,
+            "h": 0.6112487605715952
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.252813156167979,
+            "y": 0.789708078156897,
+            "w": 0.2383690124671916,
+            "h": 0.09423884514435696
+          },
+          "text": "Persona",
+          "fontSize": 36
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYPersona Analysis",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12953863188976378,
+            "y": 0.24560382035578887,
+            "w": 0.01709637467191601,
+            "h": 0.028284631087780693
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5948182414698163,
+            "y": 0.2456039661708953,
+            "w": 0.01709637467191601,
+            "h": 0.02828448527267425
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2838255413385827,
+            "y": 0.40655701370662,
+            "w": 0.18801771653543306,
+            "h": 0.279307669874599
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 9,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3948917322834646,
+            "y": 0.3233953047535725,
+            "w": 0.31077665682414696,
+            "h": 0.5377277631962671
+          },
+          "fillColor": "404040",
+          "strokeColor": "404040"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3958428477690289,
+            "y": 0.3230994459025955,
+            "w": 0.30825615157480313,
+            "h": 0.05404126567512394
+          },
+          "text": "Solution Specification Through Customer Analysis",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05208431758530184,
+            "y": 0.32736089238845145,
+            "w": 0.31077665682414696,
+            "h": 0.5377277631962671
+          },
+          "fillColor": "404040",
+          "strokeColor": "404040"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.32384457020997376,
+            "y": 0.10433697871099445,
+            "w": 0.40047047244094486,
+            "h": 0.09404257801108194
+          },
+          "text": "By analyzing customer behavior, we can identify preferred sales channels, optimal launch timing, and effective marketing strategies for MVP testing.",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08475951443569554,
+            "y": 0.5955145815106445,
+            "w": 0.06221628937007874,
+            "h": 0.044878536016331294
+          },
+          "text": "Target",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2422350721784777,
+            "y": 0.6008330417031205,
+            "w": 0.07312918307086615,
+            "h": 0.044878536016331294
+          },
+          "text": "Persona",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05186507545931759,
+            "y": 0.6751389617964421,
+            "w": 0.138869094488189,
+            "h": 0.060623359580052494
+          },
+          "text": "The main demographic within the total market",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18027452427821522,
+            "y": 0.6757282006415865,
+            "w": 0.1888314468503937,
+            "h": 0.060623359580052494
+          },
+          "text": "A single representative character of the target audience.",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.054452837926509186,
+            "y": 0.7808107319918344,
+            "w": 0.13834317585301836,
+            "h": 0.05834208223972003
+          },
+          "text": "Example: \"20-30s office workers.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1963387467191601,
+            "y": 0.7790952172645086,
+            "w": 0.1546466535433071,
+            "h": 0.08078127734033246
+          },
+          "text": "\"The youngest employee in the office, good at building rapport.\"",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03149048556430446,
+            "y": 0.27713823272090987,
+            "w": 0.6870192749343832,
+            "h": 0.6202990667833187
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0.36823515419947506,
+            "y": 0.3212696121318169,
+            "w": 0.0268500656167979,
+            "h": 0.5351665208515602
+          },
+          "fillColor": "808080",
+          "strokeColor": "808080"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.26711523950131233,
+            "y": 0.3767633420822397,
+            "w": 0.21576935695538058,
+            "h": 0.38358996792067657
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.32085556102362206,
+            "y": 0.21384922717993585,
+            "w": 0.11382997047244095,
+            "h": 0.1142946923301254
+          },
+          "text": "Brandconcept",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4828845964566929,
+            "y": 0.45440099154272384,
+            "w": 0.12198581036745407,
+            "h": 0.1142946923301254
+          },
+          "text": "Specific Item",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16610145997375328,
+            "y": 0.7294714202391368,
+            "w": 0.1322399934383202,
+            "h": 0.10999372995042286
+          },
+          "text": "Marketing Strategy",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.45211819225721783,
+            "y": 0.7294714202391368,
+            "w": 0.13506733923884515,
+            "h": 0.1142946923301254
+          },
+          "text": "Marketing Channels",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.1481382874015748,
+            "y": 0.46342330125400993,
+            "w": 0.105154281496063,
+            "h": 0.15229892096821232
+          },
+          "text": "Design Direction",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.23681832349081364,
+            "y": 0.32290230387868185,
+            "w": 0.2763633530183727,
+            "h": 0.4913123359580053
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.19988746719160105,
+            "y": 0.25798264800233306,
+            "w": 0.3438274278215223,
+            "h": 0.6112487605715952
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05303543307086614,
+            "y": 0.32706503353747446,
+            "w": 0.30825615157480313,
+            "h": 0.05404126567512394
+          },
+          "text": "Defining a Specific Customer Persona",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4217412237532808,
+            "y": 0.7752433654126567,
+            "w": 0.2576722440944882,
+            "h": 0.08420326625838437
+          },
+          "text": "When the persona is clearly defined, many aspects such as sales methods, marketing timing, and key colors are naturally resolved!",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYPersona Analysis",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.07417601706036746,
+            "y": 0.42064071157771943,
+            "w": 0.07092117782152231,
+            "h": 0.12966389617964422
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2123234908136483,
+            "y": 0.377140565762613,
+            "w": 0.1329525098425197,
+            "h": 0.1975064158646836
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2838255413385827,
+            "y": 0.40655701370662,
+            "w": 0.18801771653543306,
+            "h": 0.279307669874599
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 10,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.034114665354330706,
+            "y": 0.21669612131816857,
+            "w": 0.7365625820209973,
+            "h": 0.08925925925925926
+          },
+          "text": ".",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "000000",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04475360892388452,
+            "y": 0.5938712452610091,
+            "w": 0.1973217683727034,
+            "h": 0.061268737241178185
+          },
+          "text": "Expected Benefits:"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04475426509186352,
+            "y": 0.6495300379119276,
+            "w": 0.6449400426509186,
+            "h": 0.11969101778944298
+          },
+          "text": "Understanding: Gain insights into users' lifestyles and their relevant target groups.Strategy: Identify the best time, place, and channels for MVP testing.Efficiency: Entire team shares a common understanding of the target customer, leading to faster execution.",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "homePlate",
+          "position": {
+            "x": 0.04175344488188976,
+            "y": 0.36827602799650044,
+            "w": 0.2055435531496063,
+            "h": 0.09266214639836687
+          },
+          "text": "Persona Selection",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "chevron",
+          "position": {
+            "x": 0.23607373687664043,
+            "y": 0.36827602799650044,
+            "w": 0.24656496062992125,
+            "h": 0.09266214639836687
+          },
+          "text": "Identifying Problems &amp; Needs",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "chevron",
+          "position": {
+            "x": 0.47280405183727037,
+            "y": 0.3682763196267133,
+            "w": 0.22372801837270342,
+            "h": 0.09266214639836687
+          },
+          "text": "Deriving Solutions",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.47569422572178477,
+            "y": 0.475277194517352,
+            "w": 0.22471875,
+            "h": 0.07545188101487314
+          },
+          "text": "Develop tailored solutions based on the persona's problems and needs.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.24995915354330708,
+            "y": 0.46475400991542726,
+            "w": 0.20742347440944883,
+            "h": 0.10776436278798483
+          },
+          "text": "Understand user pain points, needs, and existing solutions when using a product/service.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04475426509186352,
+            "y": 0.4637688830562846,
+            "w": 0.1973217683727034,
+            "h": 0.10776436278798483
+          },
+          "text": "Define a target group that aligns with the product/service and document basic details.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04236146653543307,
+            "y": 0.26038582677165356,
+            "w": 0.2729165846456693,
+            "h": 0.057977398658501024
+          },
+          "text": "Persona Selection"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03149048556430446,
+            "y": 0.2414578594342374,
+            "w": 0.6870192749343832,
+            "h": 0.6733582677165354
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.27940018044619425,
+            "y": 0.10433799941673957,
+            "w": 0.5719165846456693,
+            "h": 0.06718095654709828
+          },
+          "text": "The Persona Selection Process involves understanding customer problems and needs to derive solutions that are essential for them.",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.034722687007874016,
+            "y": 0.3039623797025372,
+            "w": 0.6569487368766405,
+            "h": 0.06731773111694371
+          },
+          "text": "The Persona Selection Process involves understanding customer problems and needs to derive solutions that are essential for them.",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "A persona is a fictional representation of a target audience, create a single customer profile."
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYPersona Exploration Process",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 11,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "11",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.25673548228346454,
+            "y": 0.42668810148731406,
+            "w": 0.4213467847769029,
+            "h": 0.239168416447944
+          },
+          "text": "\"How can we deliver value to customers, earn revenue, and build a sustainable business?\"",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 23.95
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.07281225393700787,
+            "y": 0.7633387284922718,
+            "w": 0.6016014599737532,
+            "h": 0.08143015456401283
+          },
+          "text": "A business model is a structured approach to monetization.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "fontSize": 17.11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat is a Business Model?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.26135941601049867,
+            "y": 0.2813708078156897,
+            "w": 0.05341215551181103,
+            "h": 0.08836585010207057
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.028443733595800526,
+            "y": 0.3083543307086614,
+            "w": 0.2329156003937008,
+            "h": 0.4140721784776903
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 12,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "12",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat is a Business Model?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "table",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Business Solving customer problems and creating value, leading to sustainable revenue.Model A structured framework outlining how value is created, delivered, and monetized.",
+          "fillColor": "767677",
+          "strokeColor": "767677",
+          "textColor": "767677",
+          "fontSize": 21
+        }
+      ]
+    },
+    {
+      "slideNumber": 13,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "13",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.07203133202099737,
+            "y": 0.3697366579177603,
+            "w": 0.14720628280839895,
+            "h": 0.2617000583260426
+          },
+          "text": "Revenue",
+          "fillColor": "242221",
+          "fontSize": 15.39
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.050587844488188975,
+            "y": 0.6652986293379994,
+            "w": 0.18924794947506562,
+            "h": 0.06718095654709828
+          },
+          "text": "How will we generate revenue in a sustainable way?",
+          "fillColor": "252525",
+          "strokeColor": "252525",
+          "textColor": "252525",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5300687335958005,
+            "y": 0.3697366579177603,
+            "w": 0.14720628280839895,
+            "h": 0.2617000583260426
+          },
+          "text": "Stakeholder",
+          "fillColor": "242221",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 15.39
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5018375984251968,
+            "y": 0.6652974628171479,
+            "w": 0.2036672408136483,
+            "h": 0.09404257801108194
+          },
+          "text": "Who (partners, collaborators, customers) must we work with to sustain value?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.30231463254593177,
+            "y": 0.3697366579177603,
+            "w": 0.14720628280839895,
+            "h": 0.2617000583260426
+          },
+          "text": "Value",
+          "fillColor": "242221",
+          "fontSize": 15.39
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.27408423556430445,
+            "y": 0.6652986293379994,
+            "w": 0.2036672408136483,
+            "h": 0.06718095654709828
+          },
+          "text": "How will we provide sustainable value to our customers?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat is a Business Model?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 14,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.16041674868766403,
+            "y": 0.5209876057159522,
+            "w": 0.5488480150918635,
+            "h": 0.3296296296296296
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04073564632545932,
+            "y": 0.3147631962671333,
+            "w": 0.6685291174540683,
+            "h": 0.19297156605424323
+          },
+          "text": "Core ActivitiesEssential tasks that keep the business model operational and efficientKey PartnersSuppliers and partner networks that provide necessary support",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.16223154527559056,
+            "y": 0.4896655001458151,
+            "w": 0.20639854002624672,
+            "h": 0.36693073782443864
+          },
+          "text": "Activities required for \"Development, Production, Supply, Sales,  Purchasing\".",
+          "fillColor": "0B0A08",
+          "strokeColor": "0B0A08",
+          "textColor": "FF5534",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5268227526246719,
+            "y": 0.49084703995333917,
+            "w": 0.20639854002624672,
+            "h": 0.36693073782443864
+          },
+          "text": "Key Partners",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.22521792979002625,
+            "y": 0.30275590551181103,
+            "w": 0.13180733267716535,
+            "h": 0.047511519393409155
+          },
+          "text": "Core activities",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.031491305774278215,
+            "y": 0.29428200641586466,
+            "w": 0.6870192749343832,
+            "h": 0.5725836978710994
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.0379441437007874,
+            "y": 0.15803062117235345,
+            "w": 0.4520045111548556,
+            "h": 0.057463254593175854
+          },
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5737064468503937,
+            "y": 0.44972863808690583,
+            "w": 0.14221792979002626,
+            "h": 0.2528318751822689
+          },
+          "text": "Customers",
+          "fillColor": "242221",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14378042979002625,
+            "y": 0.4363547681539808,
+            "w": 0.10213451443569554,
+            "h": 0.06422601341498979
+          },
+          "text": "Raw Materials",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.14378034776902887,
+            "y": 0.6749577136191309,
+            "w": 0.10213451443569554,
+            "h": 0.06342709244677748
+          },
+          "text": "Costs",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.500650344488189,
+            "y": 0.4451167979002625,
+            "w": 0.11447826443569553,
+            "h": 0.06980387868183144
+          },
+          "text": "solution",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.500650344488189,
+            "y": 0.6749578594342374,
+            "w": 0.11447826443569553,
+            "h": 0.055730971128608926
+          },
+          "text": "Pricing",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.21161991469816274,
+            "y": 0.4518406240886556,
+            "w": 0.14221792979002626,
+            "h": 0.2528318751822689
+          },
+          "text": "Our Company",
+          "fillColor": "F6DFCD",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.24452509842519685,
+            "y": 0.3444090113735783,
+            "w": 0.07640748031496063,
+            "h": 0.0577037037037037
+          },
+          "text": "product",
+          "fillColor": "242221",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.034075787401574804,
+            "y": 0.45000087489063867,
+            "w": 0.14221792979002626,
+            "h": 0.2528318751822689
+          },
+          "text": "Supplier",
+          "fillColor": "F6DFCD",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.06698088910761155,
+            "y": 0.3444090113735783,
+            "w": 0.07640748031496063,
+            "h": 0.0577037037037037
+          },
+          "text": "Production &amp; Supply",
+          "fillColor": "242221",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.39629101049868765,
+            "y": 0.4518406240886556,
+            "w": 0.14221792979002626,
+            "h": 0.2528318751822689
+          },
+          "text": "Retailers",
+          "fillColor": "F6DFCD",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4291961942257218,
+            "y": 0.3444090113735783,
+            "w": 0.07640748031496063,
+            "h": 0.0577037037037037
+          },
+          "text": "Sales/ Channels",
+          "fillColor": "242221",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3239972112860892,
+            "y": 0.4252658209390493,
+            "w": 0.10213451443569554,
+            "h": 0.08640390784485273
+          },
+          "text": "Commission Fees",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3239970472440945,
+            "y": 0.6749577136191309,
+            "w": 0.10213451443569554,
+            "h": 0.06342709244677748
+          },
+          "text": "Sales Revenue",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.6005036909448819,
+            "y": 0.34397885680956547,
+            "w": 0.07640748031496063,
+            "h": 0.0577037037037037
+          },
+          "text": "Consumption",
+          "fillColor": "242221",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04087114501312336,
+            "y": 0.5208684747739866,
+            "w": 0.11653108595800525,
+            "h": 0.3296296296296296
+          },
+          "text": "BM"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.29102903543307085,
+            "y": 0.10734558180227471,
+            "w": 0.44458751640419947,
+            "h": 0.14776596675415574
+          },
+          "text": "Structuring a business model involves defining core activities and identifying key partners who facilitate these operations.A well-structured business model encompasses solution development, production, supply, sales, and purchasing to ensure seamless execution."
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat is Business Model Structuring?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 15,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.31423359580052496,
+            "y": 0.11739195100612423,
+            "w": 0.6381131069553806,
+            "h": 0.06718095654709828
+          },
+          "text": "Among the selected key partners, structuring the business modelaround the most critical partner for the business."
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3260431430446194,
+            "y": 0.4594507144940216,
+            "w": 0.09780241141732283,
+            "h": 0.17387095363079616
+          },
+          "text": "ud.",
+          "fillColor": "F6DFCD",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 15.39
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.0865571686351706,
+            "y": 0.4723449985418489,
+            "w": 0.08329634186351706,
+            "h": 0.14808238553514144
+          },
+          "text": "Companies &amp; Institution",
+          "fillColor": "D8D8D8",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5801467355643045,
+            "y": 0.47853645377661125,
+            "w": 0.08329617782152231,
+            "h": 0.14808209390492855
+          },
+          "text": "Entrepreneurs",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5134113353018372,
+            "y": 0.6226736657917761,
+            "w": 0.14062508202099738,
+            "h": 0.07547448235637212
+          },
+          "text": "education, coaching",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.488721374671916,
+            "y": 0.6226736657917761,
+            "w": 0.165315124671916,
+            "h": 0.07547448235637212
+          },
+          "text": "Education fee",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5126557578740157,
+            "y": 0.7344006999125109,
+            "w": 0.14062508202099738,
+            "h": 0.11766958296879557
+          },
+          "text": "create success stories.",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5126557578740157,
+            "y": 0.7344008457276174,
+            "w": 0.14062508202099738,
+            "h": 0.07547448235637212
+          },
+          "text": "entrepreneurship support.",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.333332595144357,
+            "y": 0.21433945756780404,
+            "w": 0.0833348097112861,
+            "h": 0.14815077282006417
+          },
+          "text": "Marketing Agencies",
+          "fillColor": "D8D8D8",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3921965223097113,
+            "y": 0.36575430154564015,
+            "w": 0.107251312335958,
+            "h": 0.08608398950131234
+          },
+          "text": "recruit participants.",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.31570062335958005,
+            "y": 0.38932720909886265,
+            "w": 0.043263123359580054,
+            "h": 0.06454841061533975
+          },
+          "text": "cost",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.39442150590551184,
+            "y": 0.6780258092738408,
+            "w": 0.05884801509186352,
+            "h": 0.0645482648002333
+          },
+          "text": "Job",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.28074598097112863,
+            "y": 0.6793404782735492,
+            "w": 0.08333489173228346,
+            "h": 0.0645482648002333
+          },
+          "text": "Know how",
+          "fontSize": 11.97
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.333332595144357,
+            "y": 0.7165997375328084,
+            "w": 0.0833348097112861,
+            "h": 0.14815077282006417
+          },
+          "text": "Actioncoach",
+          "fillColor": "D8D8D8",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 15.39
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYWhat is Business Model Structuring?",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 16,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0.36823515419947506,
+            "y": 0.3212696121318169,
+            "w": 0.0268500656167979,
+            "h": 0.5351665208515602
+          },
+          "fillColor": "808080",
+          "strokeColor": "808080"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05303543307086614,
+            "y": 0.32706503353747446,
+            "w": 0.30825615157480313,
+            "h": 0.05404126567512394
+          },
+          "text": "Product/Service Pricing Methods:",
+          "fillColor": "FFFFFF",
+          "strokeColor": "FFFFFF",
+          "textColor": "FFFFFF",
+          "fontSize": 16.63
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.39508595800524937,
+            "y": 0.3195479731700204,
+            "w": 0.31077665682414696,
+            "h": 0.5368893263342083
+          },
+          "fillColor": "404040",
+          "strokeColor": "404040"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.031491305774278215,
+            "y": 0.29428083989501314,
+            "w": 0.6870192749343832,
+            "h": 0.6087704870224555
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.06162590223097113,
+            "y": 0.38822149314669,
+            "w": 0.07197695209973753,
+            "h": 0.1357392825896763
+          },
+          "text": "Cost-Based Pricing",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.06162590223097113,
+            "y": 0.7258012540099155,
+            "w": 0.07197695209973753,
+            "h": 0.1357392825896763
+          },
+          "text": "Value-Based Pricin",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.06162590223097113,
+            "y": 0.554084864391951,
+            "w": 0.07197695209973753,
+            "h": 0.1357392825896763
+          },
+          "text": "Competitor-Based Pricing",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3149753937007874,
+            "y": 0.7506080489938758,
+            "w": 0.030017634514435697,
+            "h": 0.030476961213181684
+          },
+          "text": "$$",
+          "fillColor": "212121",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3149753937007874,
+            "y": 0.608580927384077,
+            "w": 0.030017634514435697,
+            "h": 0.030476961213181684
+          },
+          "text": "$$$",
+          "fillColor": "212121",
+          "fontSize": 6
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3149753937007874,
+            "y": 0.47164158646835813,
+            "w": 0.030017634514435697,
+            "h": 0.030476961213181684
+          },
+          "text": "$$$$",
+          "fillColor": "212121",
+          "fontSize": 6
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5016841371391076,
+            "y": 0.704667104111986,
+            "w": 0.13151090879265093,
+            "h": 0.2644772528433946
+          },
+          "text": "Low-Cost Pricing",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5016841371391076,
+            "y": 0.4840055409740449,
+            "w": 0.13151090879265093,
+            "h": 0.2206612715077282
+          },
+          "text": "Optimal Pricing",
+          "fillColor": "212121",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20910687335958006,
+            "y": 0.4150310586176728,
+            "w": 0.07197695209973753,
+            "h": 0.14592534266550014
+          },
+          "text": "Premium Pricing",
+          "fillColor": "F8DFCD",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.39813787729658795,
+            "y": 0.532730679498396,
+            "w": 0.303968093832021,
+            "h": 0.2553015456401283
+          },
+          "text": "Cost-Based PricingSetting the minimum price based on production costs.Competitor-Based PricingPositioning the price based on competitor products.Value-Based PricingMaximizing customer value perception through research and interviews.",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.397304625984252,
+            "y": 0.3433000874890639,
+            "w": 0.31128305446194227,
+            "h": 0.1437525517643628
+          },
+          "text": "1. Set the minimum price using the cost-based approach.  2. Determine price positioning through competitor price analysis  3. Refine features and final pricing using the value-based approach.",
+          "fillColor": "262626",
+          "strokeColor": "262626",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.316317749343832,
+            "y": 0.10627952755905512,
+            "w": 0.40427632874015745,
+            "h": 0.04031933508311461
+          },
+          "text": "How should we set prices for a sustainable business?"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.09270849737532809,
+            "y": 0.530555701370662,
+            "w": 0.010937582020997375,
+            "h": 0.014814814814814815
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.09214558727034121,
+            "y": 0.6985383493729951,
+            "w": 0.010937582020997375,
+            "h": 0.014814814814814815
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rightArrow",
+          "position": {
+            "x": 0.17210367454068243,
+            "y": 0.5986672499270924,
+            "w": 0.010149524278215223,
+            "h": 0.02022820064158647
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYPricing Strategy",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 17,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "17",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.26455159120734906,
+            "y": 0.33927734033245843,
+            "w": 0.44906496062992124,
+            "h": 0.5166666666666667
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.9208333333333333,
+            "y": 0.23889282589676292,
+            "w": 0.10729166666666666,
+            "h": 0.08703703703703704
+          },
+          "text": "Material Costs",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.9208333333333333,
+            "y": 0.32592986293379994,
+            "w": 0.10729166666666666,
+            "h": 0.08703703703703704
+          },
+          "text": "Labor Costs",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.9208333333333333,
+            "y": 0.41296689997083696,
+            "w": 0.10729166666666666,
+            "h": 0.08703703703703704
+          },
+          "text": "Manufacturing Costs",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 1.028125,
+            "y": 0.23889268008165646,
+            "w": 0.10729166666666666,
+            "h": 0.26111125692621756
+          },
+          "text": "Direct Manufacturing Cost",
+          "fillColor": "F2F2F2",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 1.028125,
+            "y": 0.15617891513560805,
+            "w": 0.10729166666666666,
+            "h": 0.08271376494604842
+          },
+          "text": "Indirect Manufacturing Costs",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 6
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 1.1354166666666667,
+            "y": 0.15192315543890347,
+            "w": 0.10729166666666666,
+            "h": 0.3501354622338874
+          },
+          "text": "Total Manufacturing Cost",
+          "fillColor": "BFBFBF",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 1.1354166666666667,
+            "y": 0.06708719743365413,
+            "w": 0.10729166666666666,
+            "h": 0.08703703703703704
+          },
+          "text": "Selling Expenses",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 1.2427083333333333,
+            "y": 0.06708734324876058,
+            "w": 0.10729166666666666,
+            "h": 0.43497142023913676
+          },
+          "text": "Total Cost",
+          "fillColor": "7F7F7F",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Operating Profit",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "Final Selling Price",
+          "fillColor": "FF5534",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0.34689968832020995,
+            "y": 0.46472717993584134,
+            "w": 0.032170029527559055,
+            "h": 0.5333275007290755
+          },
+          "fillColor": "000000",
+          "strokeColor": "000000"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03417683727034121,
+            "y": 0.8506821230679499,
+            "w": 0.6986384514435695,
+            "h": 0.058893700787401575
+          },
+          "text": "Through Pricing Strategy, We Determine the Scope of Our Core Features",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHYPricing Strategy",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.04247711614173228,
+            "y": 0.21982502187226596,
+            "w": 0.07197687007874015,
+            "h": 0.1357392825896763
+          },
+          "text": "Cost-Based Pricing",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.04247711614173228,
+            "y": 0.557404636920385,
+            "w": 0.07197687007874015,
+            "h": 0.1357392825896763
+          },
+          "text": "Value-Based Pricin",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.04247711614173228,
+            "y": 0.3856882473024205,
+            "w": 0.07197687007874015,
+            "h": 0.1357392825896763
+          },
+          "text": "Competitor-Based Pricing",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.29582668963254594,
+            "y": 0.5822102653834937,
+            "w": 0.03001755249343832,
+            "h": 0.030476961213181684
+          },
+          "text": "$$",
+          "fillColor": "212121",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.29582668963254594,
+            "y": 0.44018314377369494,
+            "w": 0.03001755249343832,
+            "h": 0.030476961213181684
+          },
+          "text": "$$$",
+          "fillColor": "212121",
+          "fontSize": 6
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.29582668963254594,
+            "y": 0.3032439486730825,
+            "w": 0.03001755249343832,
+            "h": 0.030476961213181684
+          },
+          "text": "$$$$",
+          "fillColor": "212121",
+          "fontSize": 6
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5016841371391076,
+            "y": 0.704667104111986,
+            "w": 0.13151090879265093,
+            "h": 0.2644772528433946
+          },
+          "text": "Low-Cost Pricing",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5016841371391076,
+            "y": 0.4840055409740449,
+            "w": 0.13151090879265093,
+            "h": 0.2206612715077282
+          },
+          "text": "Optimal Pricing",
+          "fillColor": "212121",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.18995816929133857,
+            "y": 0.24663458734324875,
+            "w": 0.07197687007874015,
+            "h": 0.14592534266550014
+          },
+          "text": "Premium Pricing",
+          "fillColor": "F8DFCD",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.07355971128608924,
+            "y": 0.3621590842811315,
+            "w": 0.0109375,
+            "h": 0.014814814814814815
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "downArrow",
+          "position": {
+            "x": 0.07299680118110236,
+            "y": 0.530141878098571,
+            "w": 0.0109375,
+            "h": 0.014814814814814815
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rightArrow",
+          "position": {
+            "x": 0.15295497047244094,
+            "y": 0.4302694663167104,
+            "w": 0.010149442257217848,
+            "h": 0.02022820064158647
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 18,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08437245734908136,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.12106578083989501,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.28284760498687667,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.4446294291338583,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.246154281496063,
+            "y": 0.537305045202683,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4079361056430446,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6064112532808399,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5697179297900262,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.09694852726742491,
+            "w": 0.22311581364829397,
+            "h": 0.06865820939049286
+          },
+          "text": "INDEX",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053866879921259846,
+            "y": 0.6127426363371246,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23222711614173228,
+            "y": 0.6127426363371246,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.40164345472440943,
+            "y": 0.6127426363371246,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5698910761154856,
+            "y": 0.6127426363371246,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 19,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "19",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125738188976375,
+            "y": 0.08518664333624963,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "WHAT Learning Objectives",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695820939049286,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underD.O.G.S All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0.32327573636628754,
+            "w": 0.75,
+            "h": 0.5519992709244678
+          },
+          "text": "&lt;Learning Objectives&gt;Understand customer needs by developing detailed personas.Identify core activities and key partners through customer analysis.Structure a business model (BM) and define the unique value proposition.Develop a revenue model and accurately determine product/service pricing.",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 20
+        }
+      ]
+    },
+    {
+      "slideNumber": 20,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.15059957349081365,
+            "y": 0.938959025955089,
+            "w": 0.13352025918635171,
+            "h": 0.040347331583552054
+          },
+          "text": "ⓒ 2023 underD.O.G.SAll RightsReserved",
+          "fontSize": 5.99
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.08437245734908136,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHY",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.12106578083989501,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "1",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.28284760498687667,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "2",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.4446294291338583,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "3",
+          "fillColor": "FF5534",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.246154281496063,
+            "y": 0.537305045202683,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "WHAT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4079361056430446,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "HOW",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.6064112532808399,
+            "y": 0.4559063867016623,
+            "w": 0.03858882874015748,
+            "h": 0.0686023622047244
+          },
+          "text": "4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5697179297900262,
+            "y": 0.5322820064158647,
+            "w": 0.11197678805774278,
+            "h": 0.09019991251093613
+          },
+          "text": "NEXT",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.03407586942257218,
+            "y": 0.09694852726742491,
+            "w": 0.22311581364829397,
+            "h": 0.06865820939049286
+          },
+          "text": "INDEX",
+          "fillColor": "000000",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 20
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053866879921259846,
+            "y": 0.6127426363371246,
+            "w": 0.20235916994750655,
+            "h": 0.08324963546223389
+          },
+          "text": "Why do you need to do this?\r\nWhat is the purpose",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.23222711614173228,
+            "y": 0.6127426363371246,
+            "w": 0.1596429625984252,
+            "h": 0.08324963546223389
+          },
+          "text": "What should I do,\r\nWhat can I gain from this?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.40164345472440943,
+            "y": 0.6127426363371246,
+            "w": 0.1482041502624672,
+            "h": 0.08324963546223389
+          },
+          "text": "[Guide] to get the result\r\nWhat should I do?",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5698910761154856,
+            "y": 0.6127426363371246,
+            "w": 0.13900057414698164,
+            "h": 0.08324963546223389
+          },
+          "text": "After this chapter,\r\nWhat should be done?",
+          "fontSize": 11
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.034075787401574804,
+            "y": 0.944782443861184,
+            "w": 0.052273622047244096,
+            "h": 0.015264071157771945
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 21,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "21",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.19817483231262759,
+            "w": 0.10014821194225722,
+            "h": 0.07671230679498396
+          },
+          "text": "Problem Definition",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.1449370898950131,
+            "y": 0.19817483231262759,
+            "w": 0.5588300524934383,
+            "h": 0.07671230679498396
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.3226800816564596,
+            "w": 0.10014821194225722,
+            "h": 0.04079133858267717
+          },
+          "text": "Portrait",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.1449371719160105,
+            "y": 0.3226797900262467,
+            "w": 0.20746021981627297,
+            "h": 0.04079133858267717
+          },
+          "text": "Basic information",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.35623925524934386,
+            "y": 0.3226797900262467,
+            "w": 0.347528625328084,
+            "h": 0.04079133858267717
+          },
+          "text": "Key Consumption Patterns",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3562391732283465,
+            "y": 0.5319651501895596,
+            "w": 0.347528625328084,
+            "h": 0.04079133858267717
+          },
+          "text": "Values and Activities",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03493225065616798,
+            "y": 0.7340962379702537,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Problem of persona",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.26061720800524935,
+            "y": 0.7309002624671916,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Root Causes of the Problem",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4844184711286089,
+            "y": 0.7309001166520852,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Solution",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.6423161271507728,
+            "w": 0.10014821194225722,
+            "h": 0.07671230679498396
+          },
+          "text": "Nameage",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.13989739173228347,
+            "y": 0.37853907844852724,
+            "w": 0.20746021981627297,
+            "h": 0.33379104695246425
+          },
+          "text": "Residence:Occupation:Income Level:Family Structure:Living Type:Hobbies/Interests:",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.35217585301837273,
+            "y": 0.3708124817731117,
+            "w": 0.358270095144357,
+            "h": 0.13752070574511518
+          },
+          "text": "Favorite Brands:Preferred Purchase Channels:",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3562391732283465,
+            "y": 0.5769378827646544,
+            "w": 0.358270095144357,
+            "h": 0.13752070574511518
+          },
+          "text": "Values:Primary Activities:",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03493225065616798,
+            "y": 0.786339749198017,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.2591500984251969,
+            "y": 0.7801143190434529,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4844184711286089,
+            "y": 0.7830621172353456,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.3703559346748323,
+            "w": 0.10014821194225722,
+            "h": 0.25689253426655
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2671240157480315,
+            "y": 0.04779410906969962,
+            "w": 0.462842437664042,
+            "h": 0.13687941090696995
+          },
+          "text": "A persona represents a specific individual who symbolizes the target audience.It involves defining demographic, economic, and lifestyle characteristics to create a realistic and illustrative persona for your business.To effectively engage your target audience, it is essential to clearly understand and emphasize their unique traits.",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Persona"
+        }
+      ]
+    },
+    {
+      "slideNumber": 22,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "22",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWTips for Conducting a Persona Analysis Workshop",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.015286745406824146,
+            "y": 0.193055701370662,
+            "w": 0.7194265091863518,
+            "h": 0.6206226305045203
+          },
+          "text": "✅ 1. Define the Persona→ Create a detailed, realistic customer profile as if describing an actual person.→ Clearly outline age, occupation, income level, and family structure to ensure the persona represents a real market segment.✅ 2. Document Basic Information→ Analyze customer lifestyle patterns and perspectives.→ Understand how they form opinions and make decisions to gain deeper insight into their pain points. ✅ 3. Examine Key Consumption Behaviors→ Identify the brands they use, purchase journey, and information-seeking methods.→ This helps in designing a strategy for natural and effective customer engagement. ✅ 4. Extract Core Values and Activities→ Determine what customers prioritize and how they apply these values in daily life.→ A well-defined persona allows your product or service to seamlessly integrate into their lifestyle.",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.008891732283464567,
+            "y": 0.8132058909303004,
+            "w": 0.7322165354330709,
+            "h": 0.1021920384951881
+          },
+          "text": "📌 \"A strong persona analysis enables businesses to deeply understand their target customers and develop tailored solutions! 🚀",
+          "fontSize": 14
+        }
+      ]
+    },
+    {
+      "slideNumber": 23,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 24,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "24",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.19817483231262759,
+            "w": 0.10014821194225722,
+            "h": 0.07671230679498396
+          },
+          "text": "Problem Definition",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.1449370898950131,
+            "y": 0.19817483231262759,
+            "w": 0.5588300524934383,
+            "h": 0.07671230679498396
+          },
+          "text": "\"Create a tech-driven ride-sharing platform that enhances accessibility, affordability, and efficiency in urban transportation.\"",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.3226800816564596,
+            "w": 0.10014821194225722,
+            "h": 0.04079133858267717
+          },
+          "text": "Portrait",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.1449371719160105,
+            "y": 0.3226797900262467,
+            "w": 0.20746021981627297,
+            "h": 0.04079133858267717
+          },
+          "text": "Basic information",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.35623925524934386,
+            "y": 0.3226797900262467,
+            "w": 0.347528625328084,
+            "h": 0.04079133858267717
+          },
+          "text": "Key Consumption Patterns",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3562391732283465,
+            "y": 0.5319651501895596,
+            "w": 0.347528625328084,
+            "h": 0.04079133858267717
+          },
+          "text": "Values and Activities",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03493225065616798,
+            "y": 0.7340962379702537,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Problem of persona",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.26061720800524935,
+            "y": 0.7309002624671916,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Root Causes of the Problem",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4844184711286089,
+            "y": 0.7309001166520852,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Solution",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.6423161271507728,
+            "w": 0.10014821194225722,
+            "h": 0.07671230679498396
+          },
+          "text": "Name : Ethan MillerAge : 29",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.13989739173228347,
+            "y": 0.37853907844852724,
+            "w": 0.20746021981627297,
+            "h": 0.33379104695246425
+          },
+          "text": "Residence: Brooklyn, New YorkOccupation: Software Engineer at a FinTech StartupIncome Level: $95,000annuallyFamily Composition: Single, lives with a roommateLiving Arrangement: Apartment rental near subway stationsHobbies/Interests: Exploring new coffee shops, working remotely from co-working spaces, attending tech meetups",
+          "fillColor": "F4F4F4",
+          "fontSize": 10.5
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.35217585301837273,
+            "y": 0.3708124817731117,
+            "w": 0.358270095144357,
+            "h": 0.13752070574511518
+          },
+          "text": "Preferred Brands: Lyft, CitiBike, AmtrakFrequently Used Purchase Channels: Mobile ride-hailing apps, monthly subscriptions for transportationTransportation &amp; Safety Information Sources: Reddit, Twitter, Google Reviews, local news apps",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3562391732283465,
+            "y": 0.5769378827646544,
+            "w": 0.358270095144357,
+            "h": 0.13752070574511518
+          },
+          "text": "Values: Cost-effectiveness, efficiency, and sustainability in daily transportationPrimary Activities:Commutes daily to Manhattan for workTravels frequently for networking and business meetings",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03493225065616798,
+            "y": 0.786339749198017,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "text": "Public transportation delays make commuting unreliableSurge pricing during peak hours increases costs significantlyLimited ride-sharing options late at night make safety a concern",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.2591500984251969,
+            "y": 0.7801143190434529,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "text": "High demand for ride-hailing services during peak hoursInsufficient public transit infrastructure in some areasDriver shortages at night and in high-demand areas",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4844184711286089,
+            "y": 0.7830621172353456,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "text": "Uber PoolAI-driven ride-sharing optimization to balance cost and efficiencySmart Surge Control Adaptive pricing to maintain affordability during peak",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.3703559346748323,
+            "w": 0.10014821194225722,
+            "h": 0.25689253426655
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2671240157480315,
+            "y": 0.04779410906969962,
+            "w": 0.462842437664042,
+            "h": 0.13687941090696995
+          },
+          "text": "A persona represents a specific individual who symbolizes the target audience.It involves defining demographic, economic, and lifestyle characteristics to create a realistic and illustrative persona for your business.To effectively engage your target audience, it is essential to clearly understand and emphasize their unique traits.",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Persona"
+        }
+      ]
+    },
+    {
+      "slideNumber": 25,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW(Example 2 : OYO rooms)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 26,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "26",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.19817483231262759,
+            "w": 0.10014821194225722,
+            "h": 0.07671230679498396
+          },
+          "text": "Problem Definition",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.1449370898950131,
+            "y": 0.19817483231262759,
+            "w": 0.5588300524934383,
+            "h": 0.07671230679498396
+          },
+          "text": "Create a tech-driven budget hotel network that standardizes and enhances the affordability, accessibility, and quality of accommodations for travelers.",
+          "fillColor": "F4F4F4",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.3226800816564596,
+            "w": 0.10014821194225722,
+            "h": 0.04079133858267717
+          },
+          "text": "Portrait",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.1449371719160105,
+            "y": 0.3226797900262467,
+            "w": 0.20746021981627297,
+            "h": 0.04079133858267717
+          },
+          "text": "Basic information",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.35623925524934386,
+            "y": 0.3226797900262467,
+            "w": 0.347528625328084,
+            "h": 0.04079133858267717
+          },
+          "text": "Key Consumption Patterns",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3562391732283465,
+            "y": 0.5319651501895596,
+            "w": 0.347528625328084,
+            "h": 0.04079133858267717
+          },
+          "text": "Values and Activities",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03493225065616798,
+            "y": 0.7340962379702537,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Problem of persona",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.26061720800524935,
+            "y": 0.7309002624671916,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Root Causes of the Problem",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4844184711286089,
+            "y": 0.7309001166520852,
+            "w": 0.2193493274278215,
+            "h": 0.04079133858267717
+          },
+          "text": "Solution",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.6423161271507728,
+            "w": 0.10014821194225722,
+            "h": 0.07671230679498396
+          },
+          "text": "Name:  Emma CarterAge: 31",
+          "fillColor": "F4F4F4",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.13989739173228347,
+            "y": 0.37853907844852724,
+            "w": 0.20746021981627297,
+            "h": 0.33379104695246425
+          },
+          "text": "Residence: London, UKOccupation: Freelance Travel Photographer &amp; BloggerIncome Level: £40,000 annuallyFamily Composition: SoloLiving Arrangement: Travels frequently, no permanent residenceHobbies/Interests: Exploring local cultures, photography, backpacking,",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.35217585301837273,
+            "y": 0.3708124817731117,
+            "w": 0.358270095144357,
+            "h": 0.13752070574511518
+          },
+          "text": "Preferred Brands:  Airbnb, Agoda, Hostel worldFrequently Used Purchase Channels: Mobile travel apps, online booking platformsTravel &amp; Hospitality Information Sources: TripAdvisor, Instagram travel influencers, Lonely Planet forums, YouTube travel vlogs",
+          "fillColor": "F4F4F4",
+          "fontSize": 10.51
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3562391732283465,
+            "y": 0.5769378827646544,
+            "w": 0.358270095144357,
+            "h": 0.13752070574511518
+          },
+          "text": "Values: Affordability, consistency, and cultural immersion in accommodationsPrimary Activities:Prefers budget-friendly hotels but expects good cleanliness and serviceNeeds flexible check-in/check-out options for changing itineraries",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03493225065616798,
+            "y": 0.786339749198017,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "text": "Inconsistent accommodation quality across different budget hotelsLack of reliable online reviews for smaller hotelsDifficulty in finding affordable accommodations during peak seasons",
+          "fillColor": "F4F4F4",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.2591500984251969,
+            "y": 0.7801143190434529,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "text": "Fragmented budget hotel industry with varying service standardsLack of verified guest reviews on many platformsHigh demand during travel seasons leading to price hikes",
+          "fillColor": "F4F4F4",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4844184711286089,
+            "y": 0.7830621172353456,
+            "w": 0.2193493274278215,
+            "h": 0.1559129483814523
+          },
+          "text": "OYO Smart Booking – AI-powered recommendations for budget hotels with guaranteed qualityOYO Verified Standards – Hygiene and service certifications for all listed properties",
+          "fillColor": "F4F4F4",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.034931676509186355,
+            "y": 0.3703559346748323,
+            "w": 0.10014821194225722,
+            "h": 0.25689253426655
+          }
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Persona"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04445095144356955,
+            "y": 0.12931073199183435,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Honest Meal"
+        }
+      ]
+    },
+    {
+      "slideNumber": 27,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11570652887139107,
+            "y": 0.20761738116068826,
+            "w": 0.5178873851706036,
+            "h": 0.21860936132983377
+          },
+          "text": "\"Value-Based Approach“",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "27",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.028976213910761155,
+            "y": 0.6737649460484106,
+            "w": 0.07197695209973753,
+            "h": 0.23104461942257218
+          },
+          "text": "Minimum Price(Low-Cost Strategy)",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.028976213910761155,
+            "y": 0.4455507436570429,
+            "w": 0.07197695209973753,
+            "h": 0.20889005540974045
+          },
+          "text": "Adjusted Price(Moderate Strategy)",
+          "fillColor": "212121",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.028976049868766403,
+            "y": 0.20761738116068826,
+            "w": 0.07197695209973753,
+            "h": 0.21860936132983377
+          },
+          "text": "Maximum Price(Premium Strategy)",
+          "fillColor": "F8DFCD",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6414063320209974,
+            "y": 0.2067034120734908,
+            "w": 0.07961778215223098,
+            "h": 0.21860936132983377
+          },
+          "fillColor": "595959",
+          "strokeColor": "595959"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2893137303149606,
+            "y": 0.048677894429862936,
+            "w": 0.4519534120734908,
+            "h": 0.09423884514435696
+          },
+          "text": "Using the three approaches as a basis, estimate the minimum price, maximum price, and adjusted price for your product or service. Generate as many ideas as possible and write down your three pricing points on the right.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6414063320209974,
+            "y": 0.4479887722368037,
+            "w": 0.07961778215223098,
+            "h": 0.20889005540974045
+          },
+          "fillColor": "595959",
+          "strokeColor": "595959"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6414063320209974,
+            "y": 0.6740310586176728,
+            "w": 0.07961778215223098,
+            "h": 0.23019612131816855
+          },
+          "fillColor": "595959",
+          "strokeColor": "595959"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11570669291338583,
+            "y": 0.4479887722368037,
+            "w": 0.5178873851706036,
+            "h": 0.20889005540974045
+          },
+          "text": "\"Competitor-Based Approach\"",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11115698818897637,
+            "y": 0.6731821230679499,
+            "w": 0.5224370898950131,
+            "h": 0.23104461942257218
+          },
+          "text": "\"Cost-Based Approach\"",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.0481865157480315,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Pricing Strategy"
+        }
+      ]
+    },
+    {
+      "slideNumber": 28,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "28",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWTips for Conducting a Pricing Strategy Workshop",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.015286745406824146,
+            "y": 0.193055701370662,
+            "w": 0.7194265091863518,
+            "h": 0.5540807815689706
+          },
+          "text": "✅ 1. Setting the Maximum Price (Premium Pricing Strategy)→ Determine the highest possible price your product/service can command.→ Consider a premium brand positioning and set a price that customers perceive as valuable while ensuring their willingness to pay.→ It's crucial to assess whether customers will still purchase despite a higher price..✅ 2. Identifying the Optimal Price (Market-Based Pricing Strategy)→ Establish a reasonable market price based on competition and customer demand.→ Use surveys, online research, and price testing to find a price point that feels neither too expensive nor too cheap.→ Pay close attention to customer trust and perceived value. ✅ 3. Calculating the Minimum Price (Cost-Based Pricing Strategy)→ Determine the lowest price at which your product/service can be offered while remaining profitable.Conduct a cost analysis and ensure this price sustains the business in the long term.",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.008891732283464567,
+            "y": 0.7660829687955673,
+            "w": 0.7322165354330709,
+            "h": 0.1493143773694955
+          },
+          "text": "📌 \" Pricing is not just about intuition - it’s a strategic decision based on data and customer response.\"→ Use cost-based, competitive, and value-based approaches to set a price that is both feasible and aligns with customer expectations! 🚀",
+          "fontSize": 14
+        }
+      ]
+    },
+    {
+      "slideNumber": 29,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 30,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11430921916010499,
+            "y": 0.20761840186643335,
+            "w": 0.5178873851706036,
+            "h": 0.3669848352289297
+          },
+          "text": "Value Differentiators:Luxury &amp; Professional Service: Access to high-end vehicles &amp; professional drivers (Uber Black, Uber Lux).Convenience &amp; Time-Saving: Faster pick-ups, priority drivers, seamless payment, and premium app features.Dynamic Pricing &amp; Surge Efficiency: Pricing scales efficiently with demand.Exclusive Features: VIP customer support, premium seating, and personalized ride preferences.Premium Price CalculationUsing premium competitors and customer willingness to pay for added value:Uber Black: $2.50 – $3.50 per mileUber Lux: $3.50 – $5.00 per mileTraditional Executive Car Service: $4.00 – $6.00 per mileFinal Premium Price:$3.50 per mile",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "30",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0322632874015748,
+            "y": 0.5873015456401283,
+            "w": 0.07197695209973753,
+            "h": 0.2956204432779236
+          },
+          "text": "Adjusted Price(Moderate Strategy)",
+          "fillColor": "212121",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0322632874015748,
+            "y": 0.20761840186643335,
+            "w": 0.07197695209973753,
+            "h": 0.3669848352289297
+          },
+          "text": "Maximum Price(Premium Strategy)",
+          "fillColor": "F8DFCD",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6414063320209974,
+            "y": 0.20670443277923592,
+            "w": 0.07961778215223098,
+            "h": 0.3669848352289297
+          },
+          "text": "$3.50 per mile",
+          "fillColor": "595959",
+          "strokeColor": "595959",
+          "textColor": "595959",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2893137303149606,
+            "y": 0.048677894429862936,
+            "w": 0.4519534120734908,
+            "h": 0.09423884514435696
+          },
+          "text": "Using the three approaches as a basis, estimate the minimum price, maximum price, and adjusted price for your product or service. Generate as many ideas as possible and write down your three pricing points on the right.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6433576935695539,
+            "y": 0.5873015456401283,
+            "w": 0.07961778215223098,
+            "h": 0.2956204432779236
+          },
+          "text": "$2.00 per mile",
+          "fillColor": "595959",
+          "strokeColor": "595959",
+          "textColor": "595959",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11430921916010499,
+            "y": 0.5873015456401283,
+            "w": 0.5178873851706036,
+            "h": 0.2956204432779236
+          },
+          "text": "To remain competitive, we analyze pricing from Lyft, Bolt, and traditional taxis.Competitor Pricing Analysis (Per Mile)Lyft: $1.50 – $2.50Bolt: $1.40 – $2.30Traditional Taxis: $2.50 – $3.50Adjusted Price RecommendationSince Uber's model already leads in affordability while maintaining profitability, we set the Adjusted Price at $2.00 per mile, aligning with customer expectations.",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Pricing Strategy"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04445095144356955,
+            "y": 0.12931073199183435,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Uber"
+        }
+      ]
+    },
+    {
+      "slideNumber": 31,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2893137303149606,
+            "y": 0.048677894429862936,
+            "w": 0.4519534120734908,
+            "h": 0.09423884514435696
+          },
+          "text": "Using the three approaches as a basis, estimate the minimum price, maximum price, and adjusted price for your product or service. Generate as many ideas as possible and write down your three pricing points on the right.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Pricing Strategy"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04445095144356955,
+            "y": 0.12931058617672792,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Uber"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.02737729658792651,
+            "y": 0.22938524351122777,
+            "w": 0.07197695209973753,
+            "h": 0.6531541265675124
+          },
+          "text": "Minimum Price(Low-Cost Strategy)",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6497529527559055,
+            "y": 0.22938524351122777,
+            "w": 0.07961778215223098,
+            "h": 0.6531541265675124
+          },
+          "text": "$1.45 per mile",
+          "fillColor": "595959",
+          "strokeColor": "595959",
+          "textColor": "595959",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11378141404199475,
+            "y": 0.2293853893263342,
+            "w": 0.5224370898950131,
+            "h": 0.6531542723826188
+          },
+          "text": "Cost Breakdown:Fixed Costs (Annual)App Development &amp; Maintenance: $50,000Cloud Hosting &amp; Data Storage: $20,000Customer Support (Salaries): $30,000Legal &amp; Licensing Fees: $10,000Marketing &amp; Advertising: $40,000Total Fixed Costs: $150,000 per yearVariable Costs (Per Mile)Driver Payout: $0.80Fuel &amp; Maintenance: $0.20Insurance: $0.10Platform Fee (if applicable): 25% of fareCustomer Support Per Ride: $0.05Total Variable Cost per Mile: $1.15Total Minimum Price per Mile = 0.30 + 1.15 = $1.45 per mile",
+          "fillColor": "F4F4F4",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 32,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW(Example 2 : OYO rooms)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 33,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11430921916010499,
+            "y": 0.20761840186643335,
+            "w": 0.5178873851706036,
+            "h": 0.3669848352289297
+          },
+          "text": "Value Differentiators:Seamless App-Based Booking: Faster check-ins and mobile-based management.Standardized Experience: Clean, safe, and well-maintained rooms across all locations.Loyalty &amp; Membership Benefits: Discounts for frequent users.Premium OYO Categories: OYO Townhouse, OYO Flagship, and OYO Premium for higher-end stays.Flexible Pricing with AI: Dynamic pricing model similar to airlines and Uber.Premium Price CalculationComparing OYO’s premium segment with boutique hotels and Airbnb Plus:Boutique Hotels: $80 – $150Luxury Airbnb Stays: $70 – $120OYO Premium Offerings (Flagship &amp; Townhouse):$60 – $100",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "33",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0322632874015748,
+            "y": 0.5873015456401283,
+            "w": 0.07197695209973753,
+            "h": 0.2956204432779236
+          },
+          "text": "Adjusted Price(Moderate Strategy)",
+          "fillColor": "212121",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.0322632874015748,
+            "y": 0.20761840186643335,
+            "w": 0.07197695209973753,
+            "h": 0.3669848352289297
+          },
+          "text": "Maximum Price(Premium Strategy)",
+          "fillColor": "F8DFCD",
+          "strokeColor": "000000",
+          "textColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6414063320209974,
+            "y": 0.20670443277923592,
+            "w": 0.07961778215223098,
+            "h": 0.3669848352289297
+          },
+          "text": "$80 per night",
+          "fillColor": "595959",
+          "strokeColor": "595959",
+          "textColor": "595959",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2893137303149606,
+            "y": 0.048677894429862936,
+            "w": 0.4519534120734908,
+            "h": 0.09423884514435696
+          },
+          "text": "Using the three approaches as a basis, estimate the minimum price, maximum price, and adjusted price for your product or service. Generate as many ideas as possible and write down your three pricing points on the right.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6433576935695539,
+            "y": 0.5873015456401283,
+            "w": 0.07961778215223098,
+            "h": 0.2956204432779236
+          },
+          "text": "$45 per night",
+          "fillColor": "595959",
+          "strokeColor": "595959",
+          "textColor": "595959",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11430921916010499,
+            "y": 0.5873015456401283,
+            "w": 0.5178873851706036,
+            "h": 0.2956204432779236
+          },
+          "text": "Competitor Pricing Analysis (Per Night)Budget Hotels (IBIS, Travelodge, Red Roof Inn, etc.): $40 – $70Airbnb Budget Rentals: $35 – $60Adjusted Price RecommendationTo maintain market competitiveness, OYO should price rooms at an average of $45 per night, ensuring affordability while sustaining profits.",
+          "fillColor": "F4F4F4",
+          "fontSize": 11
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Pricing Strategy"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04445095144356955,
+            "y": 0.12931073199183435,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Oyo rooms"
+        }
+      ]
+    },
+    {
+      "slideNumber": 34,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2893137303149606,
+            "y": 0.048677894429862936,
+            "w": 0.4519534120734908,
+            "h": 0.09423884514435696
+          },
+          "text": "Using the three approaches as a basis, estimate the minimum price, maximum price, and adjusted price for your product or service. Generate as many ideas as possible and write down your three pricing points on the right.",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Pricing Strategy"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04445095144356955,
+            "y": 0.12931058617672792,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Uber"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.02737729658792651,
+            "y": 0.22938524351122777,
+            "w": 0.07197695209973753,
+            "h": 0.6531541265675124
+          },
+          "text": "Minimum Price(Low-Cost Strategy)",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6497529527559055,
+            "y": 0.22938524351122777,
+            "w": 0.07961778215223098,
+            "h": 0.6531541265675124
+          },
+          "text": "$31.15 per night",
+          "fillColor": "595959",
+          "strokeColor": "595959",
+          "textColor": "595959",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11378141404199475,
+            "y": 0.2293853893263342,
+            "w": 0.5224370898950131,
+            "h": 0.6531542723826188
+          },
+          "text": "Cost Breakdown:Fixed Costs (Annual)App &amp; Website Maintenance: $200,000Cloud Hosting &amp; Data Storage: $100,000Customer Support &amp; Call Centers: $300,000Licensing &amp; Compliance Fees: $50,000Marketing &amp; Advertising: $500,000Total Fixed Costs: $1,150,000 per yearVariable Costs (Per Room Per Night)Property Lease / Franchise Fee: $10.00Housekeeping &amp; Maintenance: $5.00Utilities (Electricity, Water, WiFi, etc.): $3.00Hotel Staff Salaries (Allocated Per Room): $8.00Customer Service Per Booking: $2.00Total Variable Cost per Room Night: $28.00Total Minimum Price per Room Night= 3.15 + 28.00 = $31.15 per night",
+          "fillColor": "F4F4F4",
+          "fontSize": 16
+        }
+      ]
+    },
+    {
+      "slideNumber": 35,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "35",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.19840536599591718,
+            "w": 0.3316902066929134,
+            "h": 0.03755890930300379
+          },
+          "text": "Core Activities for the Business",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.37500016404199477,
+            "y": 0.19840536599591718,
+            "w": 0.3316902066929134,
+            "h": 0.03755890930300379
+          },
+          "text": "Responsible Parties (Key Partners)",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.24832691746864974,
+            "w": 0.3316902066929134,
+            "h": 0.13195494313210848
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.37500016404199477,
+            "y": 0.24832691746864974,
+            "w": 0.3316902066929134,
+            "h": 0.13195494313210848
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.3882330125400992,
+            "w": 0.6837762467191602,
+            "h": 0.03755890930300379
+          },
+          "text": "Business Model Visualization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03591551837270341,
+            "y": 0.45147258675998836,
+            "w": 0.07288738517060367,
+            "h": 0.06026582093904929
+          },
+          "text": "BM",
+          "fillColor": "EA5538",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11338041338582677,
+            "y": 0.45147258675998836,
+            "w": 0.31549302821522307,
+            "h": 0.06026582093904929
+          },
+          "fillColor": "FBD9BF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4408451443569554,
+            "y": 0.45147258675998836,
+            "w": 0.07288738517060367,
+            "h": 0.06026582093904929
+          },
+          "text": "Revenuemodel",
+          "fillColor": "EA5538",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5137331036745407,
+            "y": 0.45147258675998836,
+            "w": 0.21006897965879265,
+            "h": 0.06026582093904929
+          },
+          "fillColor": "FBD9BF"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.5153709536307961,
+            "w": 0.6878858267716536,
+            "h": 0.440794546515019
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3224040354330709,
+            "y": 0.8511742490522018,
+            "w": 0.051232365485564306,
+            "h": 0.09107976086322543
+          },
+          "text": "Customer",
+          "fillColor": "777878",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3776416502624672,
+            "y": 0.8500831146106737,
+            "w": 0.051232365485564306,
+            "h": 0.09107976086322543
+          },
+          "text": "Supplier",
+          "fillColor": "EA5538",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.4368846784776903,
+            "y": 0.8500831146106737,
+            "w": 0.051232365485564306,
+            "h": 0.09107976086322543
+          },
+          "text": "Stakeholder",
+          "fillColor": "EA5538",
+          "fontSize": 7
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5005496227034121,
+            "y": 0.8409494021580636,
+            "w": 0.09431405839895013,
+            "h": 0.04553980752405949
+          },
+          "text": "Value",
+          "fillColor": "777878",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.6072965059055118,
+            "y": 0.8409494021580636,
+            "w": 0.09431405839895013,
+            "h": 0.04553980752405949
+          },
+          "text": "Solution, Revenue Model",
+          "fillColor": "777878",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.32260974409448817,
+            "y": 0.04699795858850977,
+            "w": 0.4183099573490814,
+            "h": 0.1256596675415573
+          },
+          "text": "Organize the essential activities needed to conduct the business and identify the responsible parties for each activity. This process clarifies the business model by mapping the relationships between activities and responsible parties. The responsible parties consist of customers, suppliers, and various stakeholders, and the details may differ depending on the type of business model.",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Business model"
+        }
+      ]
+    },
+    {
+      "slideNumber": 36,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "36",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWTips for Structuring a Business Model Workshop",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.015286745406824146,
+            "y": 0.19305555555555556,
+            "w": 0.7194265091863518,
+            "h": 0.6206226305045203
+          },
+          "text": "✅ 1. Define Key Activities Required for the Business→ Identify the core activities essential for business operations.→ Outline critical functions such as technology development, operations, marketing, and customer support to ensure the business model is effectively implemented.✅ 2. Identify Key Partners→ Define essential external partners who play a crucial role in the business model.→ Analyze supply chain management, logistics, and distribution networks to establish efficient collaboration.✅ 3. Visualize the Business Model (BM)→ Determine how your product or service generates revenue (e.g., direct sales, subscriptions, or commission-based models).→ Consider which structural model best aligns with your business goals and how customers will perceive the value.",
+          "fontSize": 14
+        }
+      ]
+    },
+    {
+      "slideNumber": 37,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "37",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWTips for Structuring a Business Model Workshop (Cont’)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.008891732283464567,
+            "y": 0.6647618839311753,
+            "w": 0.7322165354330709,
+            "h": 0.23009565470982793
+          },
+          "text": "📌 \"A business model is not just about generating revenue - it’s a system designed to create sustainable value.“→ Consider both profitability and long-term sustainability to build an effective business model that delivers core value! 🚀",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.015286745406824146,
+            "y": 0.19305584718576846,
+            "w": 0.7194265091863518,
+            "h": 0.3850106445027705
+          },
+          "text": "✅ 4. Develop a Revenue Model→ Choose the most suitable revenue structure (e.g., B2C, B2B, B2G, or B2B2C).→ Optimize the pricing strategy and revenue streams to maximize profitability while ensuring customer satisfaction.✅ 5. Map the Value Flow Between Customers, Suppliers, and Stakeholders→ Clearly define how value is created and exchanged among customers, suppliers, and key stakeholders.→ Instead of viewing transactions as simple exchanges, focus on how your solution delivers value to each party involved.",
+          "fontSize": 14
+        }
+      ]
+    },
+    {
+      "slideNumber": 38,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "uber",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "enhancing urban transportation through innovative solutions.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "Traditional taxi services often suffer from inefficiencies and limited accessibility, leading to long wait times and unpredictable pricing for passengers. Our goal is to address these challenges by providing a reliable and user-friendly ride-sharing platform that seamlessly connects passengers with drivers.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW (Example 1 : uber)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.027075869422572178,
+            "y": 0.4648207932341791,
+            "w": 0.2223268536745407,
+            "h": 0.14744590259550888
+          },
+          "fillColor": "FFFFFF"
+        }
+      ]
+    },
+    {
+      "slideNumber": 39,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "39",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.1627888597258676,
+            "w": 0.3316902066929134,
+            "h": 0.03755890930300379
+          },
+          "text": "Core Activities for the Business",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3758752460629921,
+            "y": 0.1619536307961505,
+            "w": 0.3316902066929134,
+            "h": 0.03755890930300379
+          },
+          "text": "Responsible Parties (Key Partners)",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.2061243802857976,
+            "w": 0.3316902066929134,
+            "h": 0.19837897346165062
+          },
+          "text": "Matching System Connecting riders with drivers in real-time through the Uber app.Marketing &amp; User Acquisition Promoting Uber’s services, acquiring new riders and drivers.Insurance &amp; Safety Management Providing accident coverage, liability protectionDriver Operations &amp; Fleet Management Managing, verifying, and supporting",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03575287073490813,
+            "y": 0.40813589967920677,
+            "w": 0.6837762467191602,
+            "h": 0.03755890930300379
+          },
+          "text": "Business Model Visualization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03591551837270341,
+            "y": 0.45147258675998836,
+            "w": 0.07288738517060367,
+            "h": 0.06026582093904929
+          },
+          "text": "BM",
+          "fillColor": "EA5538",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11338041338582677,
+            "y": 0.45147258675998836,
+            "w": 0.31549302821522307,
+            "h": 0.06026582093904929
+          },
+          "text": "on-demand ride-hailing platform",
+          "fillColor": "FBD9BF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4408451443569554,
+            "y": 0.45147258675998836,
+            "w": 0.07288738517060367,
+            "h": 0.06026582093904929
+          },
+          "text": "Revenuemodel",
+          "fillColor": "EA5538",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5137331036745407,
+            "y": 0.45147258675998836,
+            "w": 0.21006897965879265,
+            "h": 0.06026582093904929
+          },
+          "text": "B2C",
+          "fillColor": "FBD9BF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.5153709536307961,
+            "w": 0.6878858267716536,
+            "h": 0.440794546515019
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Business model"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3301034284776903,
+            "y": 0.7205885097696121,
+            "w": 0.10156258202099737,
+            "h": 0.18055570137066201
+          },
+          "text": "Uber",
+          "fillColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.1135255905511811,
+            "y": 0.7290928842228055,
+            "w": 0.08318036417322834,
+            "h": 0.14787620297462817
+          },
+          "text": "Driver",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5650635662729658,
+            "y": 0.7370984251968504,
+            "w": 0.08318036417322834,
+            "h": 0.14787620297462817
+          },
+          "text": "Customer",
+          "fillColor": "777878",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3758752460629921,
+            "y": 0.20446835812190142,
+            "w": 0.3316902066929134,
+            "h": 0.19837897346165062
+          },
+          "text": "Technology ProvidersProvide real-time mapping, cloud infrastructure, and ride-matching algorithms.Marketing AgenciesExecute marketing strategies and digital campaigns.Insurance CompaniesOffer ride insurance and accident protection.DriversProvide ride services and maintain high customer satisfaction.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.200966125328084,
+            "y": 0.08339967920676582,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Uber"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.2455574967191601,
+            "y": 0.5301522309711286,
+            "w": 0.08318036417322834,
+            "h": 0.14787620297462817
+          },
+          "text": "Insurancecompany",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.44009055118110235,
+            "y": 0.7368082531350247,
+            "w": 0.11654831036745407,
+            "h": 0.05385418489355497
+          },
+          "text": "Request a ride through / transportation fee",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4451957841207349,
+            "y": 0.8334114902303879,
+            "w": 0.11654831036745407,
+            "h": 0.03365879265091864
+          },
+          "text": "assigns a nearby driver.",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.12309858923884515,
+            "y": 0.6279170312044328,
+            "w": 0.11654831036745407,
+            "h": 0.03365879265091864
+          },
+          "text": "Insurance",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.32261048228346456,
+            "y": 0.9123143773694955,
+            "w": 0.11654831036745407,
+            "h": 0.03365879265091864
+          },
+          "text": "Provides transportation",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.31672580380577425,
+            "y": 0.6263324584426947,
+            "w": 0.11654831036745407,
+            "h": 0.03365879265091864
+          },
+          "text": "Insurance fee",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20164476706036746,
+            "y": 0.7597190142898804,
+            "w": 0.11654831036745407,
+            "h": 0.03365879265091864
+          },
+          "text": "Customer location",
+          "fontSize": 9
+        }
+      ]
+    },
+    {
+      "slideNumber": 40,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.3069788568095655,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team name",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.3072629046369204,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "OYO Rooms",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.40544750656167977,
+            "w": 0.11358571194225722,
+            "h": 0.09455307669874599
+          },
+          "text": "Team Introduction",
+          "fillColor": "242221",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.2613589238845144,
+            "y": 0.5036318168562263,
+            "w": 0.11358571194225722,
+            "h": 0.37805643044619425
+          },
+          "text": "Problem Statement",
+          "fillColor": "242221",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.40544750656167977,
+            "w": 0.33826074475065615,
+            "h": 0.09455307669874599
+          },
+          "text": "tech-driven hospitality chain that partners with hotels to provide standardized, affordable, and quality",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "textColor": "000000",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.378813812335958,
+            "y": 0.5036318168562263,
+            "w": 0.33826074475065615,
+            "h": 0.37805643044619425
+          },
+          "text": "The budget hotel industry faces challenges in maintaining consistent quality, cleanliness, and affordability. Travelers often struggle with unpredictable service standards, while small hotel owners lack the resources and technology to optimize their occupancy.",
+          "fillColor": "F4F4F4",
+          "strokeColor": "252525",
+          "fontSize": 13.68
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.053125,
+            "y": 0.08518664333624963,
+            "w": 0.583861466535433,
+            "h": 0.10787037037037037
+          },
+          "text": "HOW(Example 2 : OYO rooms)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "pic",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04482849409448819,
+            "y": 0.45272397200349956,
+            "w": 0.19892142388451445,
+            "h": 0.26498906386701665
+          }
+        }
+      ]
+    },
+    {
+      "slideNumber": 41,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "41",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.1627888597258676,
+            "w": 0.3316902066929134,
+            "h": 0.03755890930300379
+          },
+          "text": "Core Activities for the Business",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3758752460629921,
+            "y": 0.1619536307961505,
+            "w": 0.3316902066929134,
+            "h": 0.03755890930300379
+          },
+          "text": "Responsible Parties (Key Partners)",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.2061243802857976,
+            "w": 0.3316902066929134,
+            "h": 0.19837897346165062
+          },
+          "text": "Booking &amp; Matching SystemConnecting travelers with budget hotels through the OYO app and website.Marketing &amp; User AcquisitionPromoting OYO’s services, running ad campaigns, and acquiring new customers and partner hotels.Hotel Operations &amp; Partner ManagementPartnering with independent hotels, ensuring standardization, and optimizing room availability.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03575287073490813,
+            "y": 0.40813589967920677,
+            "w": 0.6837762467191602,
+            "h": 0.03755890930300379
+          },
+          "text": "Business Model Visualization",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.03591551837270341,
+            "y": 0.45147258675998836,
+            "w": 0.07288738517060367,
+            "h": 0.06026582093904929
+          },
+          "text": "BM",
+          "fillColor": "EA5538",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.11338041338582677,
+            "y": 0.45147258675998836,
+            "w": 0.31549302821522307,
+            "h": 0.06026582093904929
+          },
+          "text": "hotel aggregator and franchise model",
+          "fillColor": "FBD9BF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.4408451443569554,
+            "y": 0.45147258675998836,
+            "w": 0.07288738517060367,
+            "h": 0.06026582093904929
+          },
+          "text": "Revenuemodel",
+          "fillColor": "EA5538",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.5137331036745407,
+            "y": 0.45147258675998836,
+            "w": 0.21006897965879265,
+            "h": 0.06026582093904929
+          },
+          "text": "B2C",
+          "fillColor": "FBD9BF",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.035915600393700786,
+            "y": 0.5153709536307961,
+            "w": 0.6878858267716536,
+            "h": 0.440794546515019
+          },
+          "fillColor": "F4F4F4"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.04818708989501312,
+            "y": 0.08308996792067658,
+            "w": 0.3529110072178478,
+            "h": 0.05385418489355497
+          },
+          "text": "Business model"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3301034284776903,
+            "y": 0.7205885097696121,
+            "w": 0.10156258202099737,
+            "h": 0.18055570137066201
+          },
+          "text": "Oyorooms",
+          "fillColor": "000000",
+          "fontSize": 12
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.1135255905511811,
+            "y": 0.7290928842228055,
+            "w": 0.08318036417322834,
+            "h": 0.14787620297462817
+          },
+          "text": "Hotel",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.5650635662729658,
+            "y": 0.7370984251968504,
+            "w": 0.08318036417322834,
+            "h": 0.14787620297462817
+          },
+          "text": "Guest",
+          "fillColor": "777878",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "roundRect",
+          "position": {
+            "x": 0.3758752460629921,
+            "y": 0.20446835812190142,
+            "w": 0.3316902066929134,
+            "h": 0.19837897346165062
+          },
+          "text": "Technology ProvidersProvide real-time booking, cloud infrastructure, and payment processing.Marketing AgenciesExecute digital campaigns and branding efforts.Hotel Owners &amp; OperatorsManage properties, maintain quality standards, and offer rooms under the OYO brand.",
+          "fillColor": "F4F4F4",
+          "fontSize": 10
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.200966125328084,
+            "y": 0.08339967920676582,
+            "w": 0.1369218339895013,
+            "h": 0.05385418489355497
+          },
+          "text": "Oyo rooms"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "ellipse",
+          "position": {
+            "x": 0.3392948654855643,
+            "y": 0.5157475940507437,
+            "w": 0.08318036417322834,
+            "h": 0.14787620297462817
+          },
+          "text": "Insurancecompany",
+          "fontSize": 8
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.44009055118110235,
+            "y": 0.7368082531350247,
+            "w": 0.11654831036745407,
+            "h": 0.05385418489355497
+          },
+          "text": "Reservationfee",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4451957841207349,
+            "y": 0.8334114902303879,
+            "w": 0.11654831036745407,
+            "h": 0.05385418489355497
+          },
+          "text": "Sends reservation details",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.31672580380577425,
+            "y": 0.9059438611840187,
+            "w": 0.1354251968503937,
+            "h": 0.05385418489355497
+          },
+          "text": "Provides accommodation and services",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.20164476706036746,
+            "y": 0.7597190142898804,
+            "w": 0.11654831036745407,
+            "h": 0.03365879265091864
+          },
+          "text": "Matches guests",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.3007965059055118,
+            "y": 0.650049139690872,
+            "w": 0.06282939632545932,
+            "h": 0.07404943132108487
+          },
+          "text": "hotelCustomerrecruit",
+          "fontSize": 9
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.4004776902887139,
+            "y": 0.6673095654709827,
+            "w": 0.06674606299212599,
+            "h": 0.05385418489355497
+          },
+          "text": "Advertisingfee",
+          "fontSize": 9
+        }
+      ]
+    },
+    {
+      "slideNumber": 42,
+      "shapes": [
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "42",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWTips for Conducting an Act-Canvas Workshop",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.015286745406824146,
+            "y": 0.19305584718576846,
+            "w": 0.7194265091863518,
+            "h": 0.6415939049285506
+          },
+          "text": "✅ 1. Problem Definition Check→ Is this a problem that truly needs to be solved?→ Ensure the problem is specific enough and urgent enough by reassessing its social, economic, and personal impact. ✅ 2. Customer (Persona) Check→ Do REAL customers actually experience this problem?→ Your defined persona should realistically exist, recognize the problem, and be willing to seek a solution.To validate your assumptions, interact directly with potential users. ✅ 3. Business Model (BM) Check→ Does your model have a clear revenue structure?→ Ensure key partners' roles are well-defined and that your solution is practically feasible for solving customer problems.→ If the model is overly complex, consider simplifying it.✅ 4. Impact Check→ Does this solution create a positive social and economic impact?→ Evaluate how your solution influences both individuals and society while balancing business and social impact.",
+          "fontSize": 14
+        }
+      ]
+    },
+    {
+      "slideNumber": 43,
+      "shapes": [
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.015286745406824146,
+            "y": 0.19305555555555556,
+            "w": 0.7194265091863518,
+            "h": 0.4329090113735783
+          },
+          "text": "✅ 5. Feasibility Check→ Can your team realistically execute this idea?→ Assess internal capabilities (technology, human resources, capital) and external factors (partners, market conditions) to determine execution feasibility.✅ 6. Core Functionality Check→ What is the minimum viable function that delivers value to customers?→ Focus on the essential features for an MVP, leaving additional features for future development.✅ 7. Pricing Check→ Is the price point acceptable to customers?→ Consider minimum cost, competitive pricing, and perceived value to ensure an optimal pricing strategy.",
+          "fontSize": 14
+        },
+        {
+          "type": "shape",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          },
+          "text": "43",
+          "placeholderType": "sldNum"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.05312516404199475,
+            "y": 0.08518562263050453,
+            "w": 0.47758932086614175,
+            "h": 0.10787037037037037
+          },
+          "text": "HOWTips for Conducting an Act-Canvas Workshop (Cont’)",
+          "fillColor": "FF5534",
+          "strokeColor": "FF5534",
+          "textColor": "FF5534",
+          "fontSize": 16
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.5651123687664042,
+            "y": 0.9695810731991834,
+            "w": 0.20235916994750655,
+            "h": 0.017951443569553804
+          },
+          "text": "Copyrights © underdogs All Rights Reserved"
+        },
+        {
+          "type": "shape",
+          "geomPreset": "rect",
+          "position": {
+            "x": 0.008891732283464567,
+            "y": 0.6902136191309419,
+            "w": 0.7322165354330709,
+            "h": 0.23009565470982793
+          },
+          "text": "📌 \" Act-Canvas is not just a simple summaryIt is the final validation step for an executable business model.“→ Verify that all elements are connected and confirm that the model is truly feasible in the real market! 🚀",
+          "fontSize": 14
+        }
+      ]
+    }
+  ],
+  "extractedAt": "2026-05-30T06:54:47.535Z"
+}

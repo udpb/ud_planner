@@ -1,0 +1,37 @@
+{
+  "assetId": "cmpl7cq8x001bt0vc6o2o5sug",
+  "name": "ERRC-X 기반 SaaS AX 진단 프레임워크",
+  "fileName": "AX_Guide_Chapter23_v1.4.pdf",
+  "mimeType": "application/pdf",
+  "sizeMB": 0.1,
+  "kind": "pdf",
+  "totalPages": 5,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "text": "AX Transformation Model\nOfficial Guidebook\n기업의 핵심 인재가 직접 실행하는 AI 전환, 그 시작과 끝을 안내합니다\nPart 5. 산업별 적용\nChapter 23. Case Study: SaaS\nunderdogs.\nVersion 1.4\n발행: Underdogs ud.Labs Cell",
+      "firstLine": "AX Transformation Model"
+    },
+    {
+      "pageNumber": 2,
+      "text": "Chapter 23. Case Study: SaaS\n23.1 사례 기업: (주)워크플로우\n기업명 \t(주)워크플로우 (가명)\n산업 \t협업툴 B2B SaaS\n매출/인원 \t약 50억 / 30명\n주요 문제 \t- 높은 고객 이탈률(Churn Rate)\n- 고객의 핵심 기능 활용도 저조\n- 경쟁사 대비 기능 업데이트 속도 지연\nChapter 23. 학습 목표\n□ 실제 B2B SaaS 기업의 AX 전환 사례를 통해 모델의 적용 과정을 이해한다.\n□ ‘느린 의사결정’과 ‘낮은 변화 실행력’이라는 구조적 문제를 어떻게 진단하고 정의했는지 학습한다.\n□ ‘고객 이탈 예측 모델’과 ‘AI 기반 기능 추천 시스템’이라는 전환 과제가 어떻게 도출되었는지 파악한\n다.\n□ AX 전환을 통해 달성한 구체적인 성과(고객 이탈률 감소, 상위 플랜 전환율 증가)를 확인한다.\nunderdogs\nAX Transformation Model v1.4 | 2",
+      "firstLine": "Chapter 23. Case Study: SaaS"
+    },
+    {
+      "pageNumber": 3,
+      "text": "23.2 AX Transformation Process\nPart 1. 진단 코어: 문제의 실체 파악\n(주)워크플로우의 문제를 진단하기 위해 ERRC-X 프레임워크와 데이터 분석을 복합적으로 활용했습니다.\n그 결과, 문제의 핵심이 ‘고객의 성공에 대한 무관심’과 ‘제품 개발의 방향성 부재’에 있음을 발견했습니다.\n진단 활동 \t주요 발견점 (Key Findings)\nERRC-X 분석 \t- Eliminate: 사용되지 않는 복잡한 기능 개발\n- Reduce: 고객 문의에 대한 수동적 응대\n- Raise: 핵심 기능 활용도(Activation) 및 고객 만족도\n- Create: 데이터 기반의 선제적 고객 성공 관리 체계\n고객 행동 데이터 분석 \t- 이탈 고객의 80%는 가입 후 1개월 내에 핵심 기능(프로젝트 생성, 팀원 초대)을\n사용하지 않음\n- 특정 기능을 사용하는 고객 그룹의 리텐션이 3배 이상 높음\nPart 2. 구조 분석: 핵심 질문 도출\n진단 결과를 바탕으로, 해결해야 할 가장 중요한 핵심 질문(Key Question)을 다음과 같이 정의했습니다.\n“우리는 어떻게 고객의 이탈 징후를 미리 감지하고, 고객이 우리 제품의 핵심 가치를 제대로 경험하도록\n선제적으로 도울 수 있는가?”\nunderdogs\nAX Transformation Model v1.4 | 3",
+      "firstLine": "23.2 AX Transformation Process"
+    },
+    {
+      "pageNumber": 4,
+      "text": "Part 3. 전환 설계: 2대 전환 과제 정의\n핵심 질문에 답하기 위해, 아래 2가지 전환 과제를 설계했습니다.\n전환 과제 \t주요 내용\n1. 고객 이탈 예측 모델 개발 \t- 고객의 서비스 사용 로그 데이터(로그인 빈도, 기능 사용률 등)를 학습하여,\n1개월 내 이탈 가능성이 높은 고객을 예측하는 AI 모델 개발\n- 이탈 위험 고객군에게는 CSM(고객 성공 매니저)이 선제적으로 연락하여 문\n제 해결 지원\n2. AI 기반 기능 추천 시스템 \t- 고객의 직군, 사용 패턴을 분석하여 해당 고객에게 가장 필요할 것으로 예상\n되는 기능을 추천하는 시스템 개발\n- 온보딩 과정 및 서비스 내 튜토리얼에 개인화된 기능 안내 제공\nAction Tip: 고객 건강 점수(Customer Health Score)\n고객이 서비스를 얼마나 잘 사용하고 있으며, 이탈할 가능성은 얼마나 되는지를 나타내는 지표입니다. 로그인\n빈도, 특정 기능 사용 횟수, 고객 지원 티켓 수, 체류 시간 등 여러 변수를 조합하여 점수를 매깁니다. 이 점수를\n통해 이탈 위험 고객을 조기에 발견하고 관리할 수 있습니다.\nPart 4. 실행 및 내재화: 6개월 로드맵\n2대 전환 과제를 6개월 로드맵에 따라 단계적으로 실행했습니다. CSM팀이 이탈 예측 모델을 활용하여 고\n객 관리 업무를 고도화하고, 제품팀은 기능 추천 시스템의 데이터를 기반으로 제품 개발 우선순위를 결정\n하는 체계를 구축했습니다.\nunderdogs\nAX Transformation Model v1.4 | 4",
+      "firstLine": "Part 3. 전환 설계: 2대 전환 과제 정의"
+    },
+    {
+      "pageNumber": 5,
+      "text": "23.3 성과: 숫자로 증명된 변화\n성과 지표 \tBefore \tAfter (6개월 후) \t변화\n월 평균 고객 이탈률 \t5% \t2% \t-3%p\n핵심 기능 활성화 비율 \t30% \t65% \t+35%p\n상위 플랜 전환율 \t8% \t15% \t+7%p\n“예전에는 고객이 떠나고 나서야 이유를 추측했습니다. 이제는 고객이 떠나기 전에 우리가 먼저 다가가\n서 문제를 해결해줍니다. 고객의 성공이 곧 우리의 성공이라는 것을 데이터로 증명하고 있습니다.”\n- (주)워크플로우 대표이사\nNext: Chapter 24. AX 컨설턴트의 역량 모델\nChapter 24에서는 성공적인 AX 컨설턴트가 되기 위해 필요한 3가지 핵심 역량(비즈니스, 데이터, AI)에\n대해 학습합니다.\nAX Transformation Model | Chapter 23. Case Study: SaaS\nunderdogs\nAX Transformation Model v1.4 | 5",
+      "firstLine": "23.3 성과: 숫자로 증명된 변화"
+    }
+  ],
+  "extractedAt": "2026-05-30T06:56:19.018Z"
+}
