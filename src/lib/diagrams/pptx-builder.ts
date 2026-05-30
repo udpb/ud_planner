@@ -471,8 +471,115 @@ function renderDiagramToShapes(
         xml += textBox({ id: id++, x: px(x + 6), y: px(y + 8), w: px(itemW - 12), h: px(rowH - 12), runs: [{ text: it, size: 9, color: COLOR.ink }], anchor: 'ctr', align: 'ctr' })
       })
     })
+  } else if (pattern === 'before-after' && (data.before || data.after)) {
+    // 좌 Before(tint) → 화살표(accent) → 우 After(accentTint)
+    const boxH = 200
+    const drawBA = (bx: number, fill: string, header: string, hColor: string, node: any) => {
+      let s = rect(id++, px(bx), px(startY), px(480), px(boxH), fill)
+      s += textBox({ id: id++, x: px(bx + 16), y: px(startY + 14), w: px(448), h: px(28), runs: [{ text: header, size: 11, color: hColor, font: FONT_EN, bold: true }] })
+      const metrics: string[] = Array.isArray(node?.metrics) ? node.metrics.slice(0, 4) : []
+      s += textBox({
+        id: id++, x: px(bx + 16), y: px(startY + 46), w: px(448), h: px(boxH - 60),
+        runs: [
+          { runs: [{ text: node?.label ?? '', size: 15, color: COLOR.ink, bold: true }] },
+          ...metrics.map((m) => ({ runs: [{ text: `• ${m}`, size: 11, color: hColor === COLOR.accent ? COLOR.accent : COLOR.softInk }] })),
+        ],
+      })
+      return s
+    }
+    xml += drawBA(80, COLOR.tint, 'BEFORE', COLOR.muted, data.before)
+    xml += textBox({ id: id++, x: px(560), y: px(startY + 70), w: px(80), h: px(60), runs: [{ text: '→', size: 40, color: COLOR.accent, font: FONT_EN, bold: true }], align: 'ctr', anchor: 'ctr' })
+    xml += drawBA(640, COLOR.accentTint, 'AFTER', COLOR.accent, data.after)
+  } else if (pattern === 'timeline' && Array.isArray(data.tracks)) {
+    // 간트 — units 헤더 + 트랙별 bar(startIdx~endIdx)
+    const units: any[] = Array.isArray(data.units) && data.units.length ? data.units.slice(0, 12) : []
+    const tracks = data.tracks.slice(0, 4)
+    const labelW = 150
+    const unitsX = 80 + labelW
+    const nUnits = Math.max(units.length, 1)
+    const unitW = (1120 - labelW) / nUnits
+    const headerH = 32
+    units.forEach((u, i) => {
+      const x = unitsX + i * unitW
+      xml += rect(id++, px(x), px(startY), px(unitW - 3), px(headerH), COLOR.tint)
+      xml += textBox({ id: id++, x: px(x), y: px(startY + 6), w: px(unitW - 3), h: px(headerH - 8), runs: [{ text: String(u), size: 9, color: COLOR.softInk, bold: true }], align: 'ctr', anchor: 'ctr' })
+    })
+    const rowH = 46, gap = 8
+    const rowsY = startY + headerH + 8
+    tracks.forEach((t: any, ti: number) => {
+      const y = rowsY + ti * (rowH + gap)
+      xml += rect(id++, px(80), px(y), px(labelW - 6), px(rowH), COLOR.ink)
+      xml += textBox({ id: id++, x: px(86), y: px(y + 6), w: px(labelW - 18), h: px(rowH - 12), runs: [{ text: t.name ?? '', size: 11, color: COLOR.white, bold: true }], anchor: 'ctr' })
+      const bars: any[] = Array.isArray(t.bars) ? t.bars : []
+      bars.forEach((b, bi) => {
+        const s = Math.max(0, Number(b.startIdx ?? 0))
+        const e = Math.max(s, Number(b.endIdx ?? s))
+        const bx = unitsX + s * unitW
+        const bw = Math.max((e - s + 1) * unitW - 6, 20)
+        xml += rect(id++, px(bx), px(y + 6), px(bw), px(rowH - 12), bi % 2 === 0 ? COLOR.accentTint : COLOR.tint)
+        if (b.label) xml += textBox({ id: id++, x: px(bx + 4), y: px(y + 8), w: px(bw - 8), h: px(rowH - 16), runs: [{ text: String(b.label), size: 9, color: COLOR.ink }], anchor: 'ctr' })
+      })
+    })
+  } else if (pattern === 'matrix-2x2' && Array.isArray(data.quadrants)) {
+    // 2x2 — 사분면 + 축 라벨, highlight 사분면은 accent
+    const gridX = 150, gridW = 980
+    const cellW = gridW / 2, cellH = 110
+    const pos: Record<string, [number, number]> = {
+      TL: [gridX, startY], TR: [gridX + cellW, startY],
+      BL: [gridX, startY + cellH + 4], BR: [gridX + cellW, startY + cellH + 4],
+    }
+    if (data.axisY?.label) xml += textBox({ id: id++, x: px(80), y: px(startY + cellH - 10), w: px(64), h: px(40), runs: [{ text: data.axisY.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
+    data.quadrants.slice(0, 4).forEach((q: any) => {
+      const p = pos[(q.q as string) ?? 'TL'] ?? pos.TL
+      xml += rect(id++, px(p[0]), px(p[1]), px(cellW - 4), px(cellH), q.highlight ? COLOR.accentTint : COLOR.tint)
+      xml += textBox({
+        id: id++, x: px(p[0] + 14), y: px(p[1] + 12), w: px(cellW - 32), h: px(cellH - 20),
+        runs: [
+          { runs: [{ text: (q.highlight ? '★ ' : '') + (q.label ?? ''), size: 13, color: q.highlight ? COLOR.accent : COLOR.ink, bold: true }] },
+          ...(q.description ? [{ runs: [{ text: q.description, size: 10, color: COLOR.softInk }] }] : []),
+        ],
+      })
+    })
+    if (data.axisX?.label) xml += textBox({ id: id++, x: px(gridX), y: px(startY + 2 * cellH + 12), w: px(gridW), h: px(24), runs: [{ text: data.axisX.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
+  } else if (pattern === 'hierarchy-tree' && data.root) {
+    // 루트 박스(ink) → 자식 박스(tint) 1단, 연결선은 가는 rect
+    const rootW = 320, rootX = 80 + (1120 - rootW) / 2, rootH = 54
+    xml += rect(id++, px(rootX), px(startY), px(rootW), px(rootH), COLOR.ink)
+    xml += textBox({
+      id: id++, x: px(rootX + 10), y: px(startY + 8), w: px(rootW - 20), h: px(rootH - 12),
+      runs: [
+        { runs: [{ text: data.root.label ?? '', size: 13, color: COLOR.white, bold: true }] },
+        ...(data.root.sublabel ? [{ runs: [{ text: data.root.sublabel, size: 9, color: COLOR.line }] }] : []),
+      ], align: 'ctr', anchor: 'ctr',
+    })
+    const children: any[] = Array.isArray(data.children) ? data.children.slice(0, 4) : []
+    if (children.length) {
+      const gap = 20
+      const childW = (1120 - gap * (children.length - 1)) / children.length
+      const childY = startY + rootH + 50, childH = 64
+      const rootCx = rootX + rootW / 2
+      xml += rect(id++, px(rootCx - 1), px(startY + rootH), px(2), px(28), COLOR.muted)
+      const firstCx = 80 + childW / 2
+      const lastCx = 80 + (children.length - 1) * (childW + gap) + childW / 2
+      xml += rect(id++, px(firstCx), px(startY + rootH + 26), px(Math.max(lastCx - firstCx, 2)), px(2), COLOR.muted)
+      children.forEach((c, i) => {
+        const cx = 80 + i * (childW + gap)
+        const ccx = cx + childW / 2
+        xml += rect(id++, px(ccx - 1), px(startY + rootH + 26), px(2), px(24), COLOR.muted)
+        xml += rect(id++, px(cx), px(childY), px(childW), px(childH), COLOR.tint)
+        const gkids: string[] = Array.isArray(c.children) ? c.children.map((g: any) => g.label).filter(Boolean).slice(0, 2) : []
+        xml += textBox({
+          id: id++, x: px(cx + 8), y: px(childY + 8), w: px(childW - 16), h: px(childH - 12),
+          runs: [
+            { runs: [{ text: c.label ?? '', size: 11, color: COLOR.ink, bold: true }] },
+            ...(c.sublabel ? [{ runs: [{ text: c.sublabel, size: 9, color: COLOR.muted }] }] : []),
+            ...(gkids.length ? [{ runs: [{ text: gkids.join(' · '), size: 8, color: COLOR.softInk }] }] : []),
+          ], align: 'ctr', anchor: 'ctr',
+        })
+      })
+    }
   } else {
-    // 기타 패턴(matrix-2x2·timeline·hierarchy·before-after) → 데이터 요약 텍스트
+    // 알 수 없는/malformed 패턴 (text-only 등) → 데이터 요약 텍스트 (안전망)
     const summary = summarizeDiagramData(pattern, data)
     if (summary) {
       xml += textBox({
