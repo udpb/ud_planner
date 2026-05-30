@@ -192,6 +192,26 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 
 ---
 
+## 13. P9~P10 — 당선 full-text 영구 학습 + 페이지당 텍스트량 (2026-05-31 피드백 2라운드)
+
+> 사용자: *"두 번 학습 안 하게 1건당 방대하게 학습해라"* + *"도식 PPT 전환 시 페이지당 텍스트량까지 고려됐나?"*
+
+### ✅ P9 — 당선 제안서 full-text 영구 학습 (커밋 `8e14064`·`edcf6d8`·`51371d6`)
+- 진단: WinningPattern 은 섹션 snippet 만, 원문 full-text 는 **어디에도 없음**(0 ingestionJobId·0 proposal IngestionJob). full 비교·인용 때마다 재fetch = '두번 학습'.
+- **WinningProposalDoc** 모델 신설 — `sourceFileId`(Drive) unique 멱등키. 1회 fetch+parse 후 영구 저장, 이미 있으면 skip → 재개 가능(재학습 X). 마이그레이션 `20260531000000`.
+- **learn-winning-fulltext.ts** — 마스터 시트 운영(당선) 5개 탭 '사업제안서(PDF)' 링크 → Drive download → extractTextFromBuffer(full text, MAX 200K). LLM 무호출.
+- **NUL fix**: 일부 PDF 추출물의 0x00 으로 14건 저장 실패 → file-ingester clean() 에서 NUL·C0 제어문자 strip → 재학습으로 14건 복구.
+- 결과: **WinningProposalDoc 148건** (B2G 113·B2B 12·renewal 1·null 22, rich 132·lowText 15). 재실행 시 전량 skip.
+- **소비(winning-reference.ts)**: findWinningReference(rfp) — 도메인 매칭 당선본 1건의 목차+발췌 → produce-ultimate-draft Step 2.8 → §-backfill 구조 레퍼런스 투입. 검증: 소셜벤처 RFP → '하나 소셜벤처 유니버시티' 매칭, 22항 목차 추출.
+- 잔여: lowText 15건(이미지/HWP) OCR 후보 · full-text RAG(임베딩 검색) 심화 후속.
+
+### ✅ P10 — 페이지당 텍스트량/세로 맞춤 (커밋 `0d2d9fd`)
+- 진단(사용자 지적 정확): 도식 PPT 전환 시 evidence 박스가 **고정 y560** 인데 comparison-table(6행 568px)·architecture-stack(5층 572px)이 **충돌**. 짧은 도식은 100px floating.
+- pptx-builder: renderDiagramToShapes 가 실제 `bottomY` 반환 → evidence 를 도식 하단 바로 아래 동적 배치(clamp 300~560, footer 648 위). dense cap 강화(comparison rowH 40·arch 52/gap6·kpi 2행). produce-slide-specs '슬라이드 1장 용량 가드'(패턴별 항목 상한·초과 시 분할).
+- 검증(test-pptx-fit, MAX 밀도+evidence): spec 슬라이드 전부 콘텐츠 ≤640px(footer 648 아래) — 충돌 0.
+
+---
+
 ## 12. P5~P8 — 사업 풀니스 + 적응성 + Inspector (2026-05-31 피드백 라운드)
 
 > 사용자 피드백: *"우리는 사업을 잘 만드는거지 커리큘럼이 아니다. 커리큘럼은 프로그램 유형·RFP·대상·금액에 따라 다르다. 장소·행사 구체성·연사 풀(coach-finder)·결과보고서·안정적 운영관리까지 반영돼야. Coach만 있는게 아니야. ActionWeek 강제 아님."*
