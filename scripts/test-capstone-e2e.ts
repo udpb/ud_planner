@@ -41,6 +41,11 @@ async function main() {
   console.log(`  messageHierarchy: ${mh.length}개`)
   console.log(`  slideSpec: ${specs.length} · 패턴: ${JSON.stringify(patCounts)}`)
   console.log(`  Inspector: ${inspection ? `${inspection.overallScore} (passed=${inspection.passed})` : '(없음)'}`)
+  // P6 검증 — §4(코치/연사 풀·운영) + §7(결과보고서 실측) 본문 발췌
+  const s4 = (sections as Record<string, string>)['4'] || ''
+  const s7 = (sections as Record<string, string>)['7'] || ''
+  console.log(`\n[P6 §4 운영] ${s4.slice(0, 200)}`)
+  console.log(`[P6 §7 실적] ${s7.slice(0, 200)}`)
 
   // 자산ID/cuid 누출 (P1 회귀)
   const joined = JSON.stringify({ sections, specs })
