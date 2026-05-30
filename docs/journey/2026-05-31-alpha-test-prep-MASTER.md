@@ -297,3 +297,15 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 3. **git add -A 위험**: diagram-samples(20MB·335파일)가 실수 커밋됨 → gitignore는 working tree뿐 아니라 **HEAD에 커밋**돼야 함. `git rm --cached`로 복구.
 4. **Edit "성공" ≠ persist**: 취소된 배치에 섞인 Edit은 적용 안 될 수 있음 → grep으로 재확인 필수.
 5. **프롬프트만으로 hallucination 못 막음**: P1처럼 **코드 레벨 sanitize**(stripAssetIdMarkers) 방어선 필요.
+
+---
+
+## 14. 15시간 무인 작업 (2026-05-31~06-01, 사용자 부재)
+
+계획: Phase1 통합마무리 → Phase2 평가위원 품질 폐루프 → Phase3 당선본 대조·견고성 → Phase4 종합리포트.
+가드레일: master 직접커밋·force-push·머지 금지(feat 브랜치만), 모호한 제품판단은 추측 X·리포트 기록, 풀 파이프 실행 상한 ~15건.
+
+### ✅ Phase 1 — 통합 마무리 (완료)
+- P12 OCR: lowText 13건 복구(0→7K~16K자) → RAG 재임베딩. WinningProposalChunk **2048 청크**(142 doc).
+- `npm run build` 프로덕션 빌드 통과 (세션 전체 변경 컴파일 OK).
+- 통합 캡스톤(P5~P11 전부 활성, RAG passages 포함): thin-input(3슬롯) **Inspector 65** (진행: 45→56→65), §4 코치풀 787→221 실측·평균경력 8년, 당선구조 ref(하나 소셜벤처) 활성, §7 실제 사업 인용, 자산ID 0. PASS.
