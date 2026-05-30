@@ -242,6 +242,51 @@ export function stripAssetIdMarkers(text: string | undefined | null): string {
     .trim()
 }
 
+/** 문자열 길이 clamp 헬퍼 — 비문자열·undefined 는 그대로. */
+const cut = (s: unknown, n: number): unknown => (typeof s === 'string' && s.length > n ? s.slice(0, n).trimEnd() : s)
+const cutArr = (a: unknown, n: number): unknown => (Array.isArray(a) ? a.map((x) => cut(x, n)) : a)
+
+/**
+ * diagram.data 의 string 필드를 패턴별 schema max 로 truncate (drop 대신 clamp).
+ * 길이 초과만으로 슬라이드 전체가 reject 되어 내용이 사라지는 것 방지 (visually-complete).
+ * 구조(타입/필수 필드) 오류는 clamp 후에도 남아 정상적으로 reject.
+ */
+function clampDiagramData(pattern: DiagramPattern, raw: unknown): unknown {
+  if (!raw || typeof raw !== 'object') return raw
+  const d: any = JSON.parse(JSON.stringify(raw))
+  switch (pattern) {
+    case 'process-flow':
+      if (Array.isArray(d.steps)) d.steps.forEach((s: any) => { s.num = cut(s?.num, 8); s.label = cut(s?.label, 40); s.description = cut(s?.description, 120) })
+      break
+    case 'matrix-2x2':
+      ;[d.axisX, d.axisY].forEach((ax: any) => { if (ax) { ax.label = cut(ax.label, 30); ax.low = cut(ax.low, 20); ax.high = cut(ax.high, 20) } })
+      if (Array.isArray(d.quadrants)) d.quadrants.forEach((q: any) => { q.label = cut(q?.label, 60); q.description = cut(q?.description, 140) })
+      break
+    case 'kpi-grid':
+      if (Array.isArray(d.kpis)) d.kpis.forEach((k: any) => { k.value = cut(k?.value, 20); k.label = cut(k?.label, 20); k.sublabel = cut(k?.sublabel, 60) })
+      break
+    case 'hierarchy-tree':
+      if (d.root) { d.root.label = cut(d.root.label, 60); d.root.sublabel = cut(d.root.sublabel, 80) }
+      if (Array.isArray(d.children)) d.children.forEach((c: any) => { c.label = cut(c?.label, 40); c.sublabel = cut(c?.sublabel, 60); if (Array.isArray(c.children)) c.children.forEach((g: any) => { g.label = cut(g?.label, 60) }) })
+      break
+    case 'timeline':
+      d.units = cutArr(d.units, 10)
+      if (Array.isArray(d.tracks)) d.tracks.forEach((t: any) => { t.name = cut(t?.name, 40); if (Array.isArray(t.bars)) t.bars.forEach((b: any) => { b.label = cut(b?.label, 40) }) })
+      break
+    case 'comparison-table':
+      d.leftLabel = cut(d.leftLabel, 40); d.rightLabel = cut(d.rightLabel, 40)
+      if (Array.isArray(d.rows)) d.rows.forEach((r: any) => { r.dim = cut(r?.dim, 40); r.left = cut(r?.left, 80); r.right = cut(r?.right, 80) })
+      break
+    case 'architecture-stack':
+      if (Array.isArray(d.layers)) d.layers.forEach((l: any) => { l.name = cut(l?.name, 40); l.items = cutArr(l?.items, 40) })
+      break
+    case 'before-after':
+      ;[d.before, d.after].forEach((b: any) => { if (b) { b.label = cut(b.label, 80); b.description = cut(b.description, 200); b.metrics = cutArr(b.metrics, 60) } })
+      break
+  }
+  return d
+}
+
 export function validateSlideSpec(spec: unknown): { ok: true; spec: SlideSpec } | { ok: false; error: string } {
   const base = SlideSpecSchema.safeParse(spec)
   if (!base.success) {
@@ -250,6 +295,8 @@ export function validateSlideSpec(spec: unknown): { ok: true; spec: SlideSpec } 
   const data = base.data
   const dataSchema = DIAGRAM_DATA_SCHEMA[data.diagram.pattern]
   if (dataSchema) {
+    // 길이 초과로 인한 drop 방지 — clamp 후 검증 (구조 오류는 그대로 reject)
+    data.diagram.data = clampDiagramData(data.diagram.pattern, data.diagram.data)
     const dataValidation = dataSchema.safeParse(data.diagram.data)
     if (!dataValidation.success) {
       return {
