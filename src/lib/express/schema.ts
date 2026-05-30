@@ -390,6 +390,13 @@ export type PmInputs = z.infer<typeof PmInputsSchema>
 // 8. 최상위 — Project.expressDraft Json 으로 저장
 // ─────────────────────────────────────────
 
+/**
+ * O4 — 슬라이드 spec (1 슬라이드 = 1 시각 메시지 단위).
+ * 자세한 schema 는 src/lib/diagrams/slide-pattern.ts.
+ * 여기선 unknown 으로 두고 별도 validate.
+ */
+export const SlideSpecsSchema = z.array(z.unknown()).max(30).optional()
+
 export const ExpressDraftSchema = z.object({
   intent: IntentSchema.optional(),
   beforeAfter: BeforeAfterSchema.partial().optional(),
@@ -413,6 +420,8 @@ export const ExpressDraftSchema = z.object({
   risks: RiskMitigationsSchema.optional(),
   /** K7 — PM 이 외부 reality 직접 입력 (통화 결과·전담 코치·평가위원) */
   pmInputs: PmInputsSchema.optional(),
+  /** O4 — 슬라이드 spec 시퀀스 (1~30 슬라이드). PpProposalSlides 가 렌더. */
+  slideSpecs: SlideSpecsSchema,
   meta: ExpressMetaSchema,
 })
 

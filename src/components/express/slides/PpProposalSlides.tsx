@@ -22,6 +22,16 @@
 
 import type { ExpressDraft } from '@/lib/express/schema'
 import { SlideShell } from './SlideShell'
+import {
+  ProcessFlow,
+  Matrix2x2,
+  KpiGrid,
+  HierarchyTree,
+  Timeline,
+  ComparisonTable,
+  ArchitectureStack,
+  BeforeAfter,
+} from './diagrams'
 
 const SECTION_TITLES: Record<string, { num: string; ko: string; en: string }> = {
   '1': { num: '01', ko: '제안 배경 및 목적', en: 'BACKGROUND & PURPOSE' },
@@ -72,8 +82,19 @@ function buildSlideSequence(
   opts: { clientName?: string | null; projectName?: string | null; scalePreview: boolean },
 ): React.ReactElement[] {
   const slides: React.ReactElement[] = []
-  const total = countTotalSlides(draft)
   let pageNum = 0
+
+  // slideSpecs 기반 빌드 vs legacy 텍스트 빌드 결정
+  const useSlideSpecs = Array.isArray(draft.slideSpecs) && draft.slideSpecs.length > 0
+
+  // 슬라이드 총 수 미리 계산
+  const totalSpecs = useSlideSpecs ? (draft.slideSpecs?.length ?? 0) : 0
+  const sectionsPresent = ['1', '2', '3', '4', '5', '6', '7'].filter(
+    (n) => !!draft.sections?.[n as keyof typeof draft.sections],
+  ).length
+  const total = useSlideSpecs
+    ? 2 + sectionsPresent + totalSpecs + 1 // cover + index + divider×N + specs + closing
+    : countTotalSlides(draft)
 
   // 1. 표지
   slides.push(<PpCoverSlide key="cover" draft={draft} clientName={opts.clientName} projectName={opts.projectName} scalePreview={opts.scalePreview} />)
@@ -82,57 +103,160 @@ function buildSlideSequence(
   // 2. INDEX
   slides.push(<PpIndexSlide key="index" draft={draft} pageNumber={++pageNum} totalPages={total} scalePreview={opts.scalePreview} />)
 
-  // 3-N. 각 section
-  for (const sectionNum of ['1', '2', '3', '4', '5', '6', '7']) {
-    const sectionContent = draft.sections?.[sectionNum as keyof typeof draft.sections]
-    if (!sectionContent) continue
-    const info = SECTION_TITLES[sectionNum]
-    if (!info) continue
-    // Section divider
-    slides.push(
-      <PpSectionDividerSlide
-        key={`div-${sectionNum}`}
-        kickerNum={info.num}
-        sectionEn={info.en}
-        sectionKo={info.ko}
-        pageNumber={++pageNum}
-        totalPages={total}
-        scalePreview={opts.scalePreview}
-      />,
-    )
-    // Section content — messageHierarchy 가 있으면 message slide, 없으면 단순 텍스트
-    const hierarchy = draft.messageHierarchy?.find((h: any) => h && (h.sectionRef === sectionNum || h.section === sectionNum))
-    if (hierarchy && (hierarchy.key || (hierarchy.sub && hierarchy.sub.length > 0))) {
+  if (useSlideSpecs) {
+    // O4 path — section 별 slideSpecs 렌더
+    const specsBySection = new Map<string, any[]>()
+    for (const spec of draft.slideSpecs as any[]) {
+      if (!spec || !spec.sectionNum) continue
+      if (!specsBySection.has(spec.sectionNum)) specsBySection.set(spec.sectionNum, [])
+      specsBySection.get(spec.sectionNum)!.push(spec)
+    }
+    for (const sectionNum of ['1', '2', '3', '4', '5', '6', '7']) {
+      if (!draft.sections?.[sectionNum as keyof typeof draft.sections]) continue
+      const info = SECTION_TITLES[sectionNum]
+      if (!info) continue
       slides.push(
-        <PpMessageHierarchySlide
-          key={`msg-${sectionNum}`}
+        <PpSectionDividerSlide
+          key={`div-${sectionNum}`}
+          kickerNum={info.num}
+          sectionEn={info.en}
+          sectionKo={info.ko}
+          pageNumber={++pageNum}
+          totalPages={total}
+          scalePreview={opts.scalePreview}
+        />,
+      )
+      const specs = (specsBySection.get(sectionNum) ?? []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      for (const spec of specs) {
+        slides.push(
+          <PpSpecSlide
+            key={`spec-${sectionNum}-${spec.order}`}
+            spec={spec}
+            pageNumber={++pageNum}
+            totalPages={total}
+            scalePreview={opts.scalePreview}
+          />,
+        )
+      }
+    }
+  } else {
+    // Legacy text-only path
+    for (const sectionNum of ['1', '2', '3', '4', '5', '6', '7']) {
+      const sectionContent = draft.sections?.[sectionNum as keyof typeof draft.sections]
+      if (!sectionContent) continue
+      const info = SECTION_TITLES[sectionNum]
+      if (!info) continue
+      slides.push(
+        <PpSectionDividerSlide
+          key={`div-${sectionNum}`}
+          kickerNum={info.num}
+          sectionEn={info.en}
+          sectionKo={info.ko}
+          pageNumber={++pageNum}
+          totalPages={total}
+          scalePreview={opts.scalePreview}
+        />,
+      )
+      const hierarchy = draft.messageHierarchy?.find((h: any) => h && (h.sectionRef === sectionNum || h.section === sectionNum))
+      if (hierarchy && (hierarchy.key || (hierarchy.sub && hierarchy.sub.length > 0))) {
+        slides.push(
+          <PpMessageHierarchySlide
+            key={`msg-${sectionNum}`}
+            kicker={`${info.num} ${info.ko}`}
+            hierarchy={hierarchy}
+            pageNumber={++pageNum}
+            totalPages={total}
+            scalePreview={opts.scalePreview}
+          />,
+        )
+      }
+      slides.push(
+        <PpSectionBodySlide
+          key={`body-${sectionNum}`}
           kicker={`${info.num} ${info.ko}`}
-          hierarchy={hierarchy}
+          sectionTitle={info.ko}
+          body={sectionContent}
+          sectionMeta={draft.sectionMeta?.[sectionNum as keyof typeof draft.sectionMeta]}
           pageNumber={++pageNum}
           totalPages={total}
           scalePreview={opts.scalePreview}
         />,
       )
     }
-    // 본문 슬라이드 (sections.N 텍스트 기반)
-    slides.push(
-      <PpSectionBodySlide
-        key={`body-${sectionNum}`}
-        kicker={`${info.num} ${info.ko}`}
-        sectionTitle={info.ko}
-        body={sectionContent}
-        sectionMeta={draft.sectionMeta?.[sectionNum as keyof typeof draft.sectionMeta]}
-        pageNumber={++pageNum}
-        totalPages={total}
-        scalePreview={opts.scalePreview}
-      />,
-    )
   }
 
   // 마지막. 마무리
   slides.push(<PpClosingSlide key="closing" pageNumber={++pageNum} totalPages={total} scalePreview={opts.scalePreview} />)
 
   return slides
+}
+
+// ─────────────────────────────────────────
+// SlideSpec 렌더링 — diagram 컴포넌트 + headline + evidence
+// ─────────────────────────────────────────
+function PpSpecSlide({
+  spec,
+  pageNumber,
+  totalPages,
+  scalePreview,
+}: BaseSlideProps & { spec: any }) {
+  const diagram = renderDiagram(spec)
+  return (
+    <SlideShell kicker={spec.kicker} pageNumber={pageNumber} totalPages={totalPages} scalePreview={scalePreview}>
+      {/* headline — One Page One Thesis */}
+      <h2 className="ud-section-title" style={{ maxWidth: '85%' }}>
+        {spec.headline}
+      </h2>
+      {spec.caption && <p className="ud-caption">{spec.caption}</p>}
+      <hr className="ud-divider" />
+      {/* diagram */}
+      {diagram && <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>{diagram}</div>}
+      {/* evidence */}
+      {Array.isArray(spec.evidence) && spec.evidence.length > 0 && (
+        <div className="ud-box-tint" style={{ marginTop: 'var(--ud-gap-element)' }}>
+          <span className="ud-label">근거</span>
+          <ul style={{ margin: 'var(--ud-s-2) 0 0', paddingLeft: 'var(--ud-s-4)' }}>
+            {spec.evidence.slice(0, 3).map((e: any, i: number) => (
+              <li key={i} className="ud-caption" style={{ marginBottom: 'var(--ud-s-1)' }}>
+                {e.text}
+                {e.source && <span style={{ marginLeft: 'var(--ud-s-2)', color: 'var(--ud-muted-2)' }}>· {e.source}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </SlideShell>
+  )
+}
+
+function renderDiagram(spec: any): React.ReactNode {
+  const pattern = spec?.diagram?.pattern
+  const data = spec?.diagram?.data
+  if (!pattern) return null
+  // diagram 컴포넌트가 headline 도 받는데, slide level 에서 이미 표시 → 빈 headline 전달
+  const noHeadline = ''
+  switch (pattern) {
+    case 'process-flow':
+      return data?.steps ? <ProcessFlow headline={noHeadline} steps={data.steps} /> : null
+    case 'matrix-2x2':
+      return data?.quadrants ? <Matrix2x2 headline={noHeadline} axisX={data.axisX} axisY={data.axisY} quadrants={data.quadrants} /> : null
+    case 'kpi-grid':
+      return data?.kpis ? <KpiGrid headline={noHeadline} columns={data.columns ?? 3} kpis={data.kpis} /> : null
+    case 'hierarchy-tree':
+      return data?.root && data?.children ? <HierarchyTree headline={noHeadline} root={data.root} children={data.children} /> : null
+    case 'timeline':
+      return data?.units && data?.tracks ? <Timeline headline={noHeadline} units={data.units} tracks={data.tracks} /> : null
+    case 'comparison-table':
+      return data?.rows ? <ComparisonTable headline={noHeadline} leftLabel={data.leftLabel} rightLabel={data.rightLabel} rows={data.rows} /> : null
+    case 'architecture-stack':
+      return data?.layers ? <ArchitectureStack headline={noHeadline} layers={data.layers} /> : null
+    case 'before-after':
+      return data?.before && data?.after ? <BeforeAfter headline={noHeadline} before={data.before} after={data.after} /> : null
+    case 'text-only':
+      return null
+    default:
+      return null
+  }
 }
 
 function countTotalSlides(draft: ExpressDraft): number {

@@ -354,6 +354,34 @@ export async function produceUltimateDraft(
   }
   progress('6/9', `완료 ${((Date.now() - t6) / 1000).toFixed(1)}s · score=${inspection?.overallScore ?? '?'}`)
 
+  // ────────────────────────────────────
+  // Step 7: 슬라이드 spec 생성 (O4 — sections.N → 다이어그램 슬라이드)
+  // ────────────────────────────────────
+  progress('7/9', '슬라이드 spec 생성 (도식화 + headline + evidence)...')
+  const t7 = Date.now()
+  try {
+    const { produceSlideSpecs } = await import('./produce-slide-specs')
+    const { UD_TRACK_RECORD } = await import('@/lib/ud-brand')
+    const slideSpecs = await produceSlideSpecs({
+      sections: draft.sections ?? {},
+      keyMessages: draft.keyMessages,
+      trackRecord: UD_TRACK_RECORD,
+      budgetBreakdown,
+      clientName: rfp.client,
+      projectName: rfp.projectName,
+    })
+    bump('slide-specs')
+    // 섹션별 LLM 호출이라 callsBySource 에는 단일 카운터로 집계
+    for (let i = 1; i < 7; i++) bump('slide-specs')
+    if (slideSpecs.length > 0) {
+      draft.slideSpecs = slideSpecs as ExpressDraft['slideSpecs']
+    }
+    progress('7/9', `완료 ${((Date.now() - t7) / 1000).toFixed(1)}s · ${slideSpecs.length} 슬라이드`)
+  } catch (e) {
+    console.warn('[ultimate-draft] slide-specs 실패:', e instanceof Error ? e.message : e)
+    progress('7/9', '실패 — slideSpecs 비움')
+  }
+
   // 최종 schema validate
   const validated = ExpressDraftSchema.safeParse(draft)
   if (!validated.success) {
