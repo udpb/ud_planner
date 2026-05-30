@@ -27,10 +27,24 @@ export function formatRfpBrief(rfp: RfpParsed | undefined): string {
   const lines: string[] = []
   if (rfp.projectName) lines.push(`제목: ${rfp.projectName}`)
   if (rfp.client) lines.push(`발주: ${rfp.client}`)
+  // P5 — 사업 유형·지역: 커리큘럼·전략이 사업 성격에 맞게 적응하도록
+  const typeRegion = [rfp.projectType, rfp.region].filter(Boolean).join(' · ')
+  if (typeRegion) lines.push(`유형/지역: ${typeRegion}`)
   if (rfp.totalBudgetVat) lines.push(`예산(VAT 포함): ${rfp.totalBudgetVat.toLocaleString()}원`)
+  // ⭐ P5 — 대상·인원·창업단계: 커리큘럼/운영이 "누구를·몇 명·어느 단계" 인지하고 설계하도록.
+  //   (이전: formatRfpBrief 가 이 3개를 누락 → 커리큘럼이 대상 모른 채 생성되던 갭)
+  if (rfp.targetAudience) lines.push(`대상: ${rfp.targetAudience}`)
+  const stageCount = [
+    rfp.targetStage && rfp.targetStage.length > 0 ? `단계 ${rfp.targetStage.join('·')}` : '',
+    rfp.targetCount ? `정원 ${rfp.targetCount}명` : '',
+  ].filter(Boolean).join(' / ')
+  if (stageCount) lines.push(`참여: ${stageCount}`)
   if (rfp.objectives && rfp.objectives.length > 0) {
     lines.push('목적:')
     for (const o of rfp.objectives.slice(0, 5)) lines.push(`  - ${o}`)
+  }
+  if (rfp.deliverables && rfp.deliverables.length > 0) {
+    lines.push(`산출물: ${rfp.deliverables.slice(0, 5).join(' / ')}`)
   }
   if (rfp.keywords && rfp.keywords.length > 0) {
     lines.push(`키워드: ${rfp.keywords.slice(0, 8).join(', ')}`)
@@ -46,13 +60,45 @@ export function formatRfpBrief(rfp: RfpParsed | undefined): string {
 
 export function formatProfile(profile: ProgramProfile | undefined): string {
   if (!profile) return '(ProgramProfile 미설정)'
+  // P5 — 11축 중 4축만 노출하던 것을 확장. 생성이 사업 성격에 맞게 적응하도록.
+  //   특히 formats(데모데이·IR·네트워킹 = 행사)·tasks(행사_운영 등)·externalSpeakers(연사 풀)
+  //   는 '사업 풀니스'(장소·행사·연사) 생성을 위한 핵심 신호 (P6).
   const m = profile.methodology
   const parts: string[] = []
   const domains = profile.targetSegment?.businessDomain ?? []
   if (domains.length > 0) parts.push(`사업영역: ${domains.join(', ')}`)
+  const geo = profile.targetSegment?.geography
+  if (geo) parts.push(`지역: ${geo}`)
   if (profile.targetStage) parts.push(`대상 단계: ${profile.targetStage}`)
+  // 규모 — 예산티어·참여규모·기간 (커리큘럼 회차·코호트 크기 적응)
+  const sc = profile.scale
+  if (sc) {
+    const scaleStr = [
+      sc.budgetTier ? `예산 ${sc.budgetTier}` : '',
+      sc.participants ? `규모 ${sc.participants}` : '',
+      sc.durationMonths ? `${sc.durationMonths}개월` : '',
+    ].filter(Boolean).join(' · ')
+    if (scaleStr) parts.push(`규모: ${scaleStr}`)
+  }
+  // 과업 유형 (모객·심사·교류·멘토링·컨설팅·행사_운영) — 사업 구성요소
+  const tasks = profile.supportStructure?.tasks ?? []
+  if (tasks.length > 0) parts.push(`과업: ${tasks.join('·')}`)
+  // 포맷 (데모데이·IR·네트워킹 등) — 행사 구체성 신호
+  const formats = profile.formats ?? []
+  if (formats.length > 0) parts.push(`행사/포맷: ${formats.join('·')}`)
+  // 연사 풀 (외부 연사 활용 — '코치만이 아님')
+  const ss = profile.supportStructure
+  if (ss?.externalSpeakers) {
+    parts.push(`외부 연사 활용${ss.externalSpeakerCount ? ` (~${ss.externalSpeakerCount}명)` : ''}`)
+  }
+  if (ss?.fourLayerSupport) parts.push('4중 지원체계(멘토+컨설턴트+전담코치+동료)')
   if (m?.primary) parts.push(`방법론: ${m.primary}`)
   if (profile.delivery?.mode) parts.push(`전달방식: ${profile.delivery.mode}`)
+  if (profile.channel?.type) {
+    parts.push(`채널: ${profile.channel.type}${profile.channel.isRenewal ? '(연속사업)' : ''}`)
+  }
+  const impacts = profile.primaryImpact ?? []
+  if (impacts.length > 0) parts.push(`주임팩트: ${impacts.join('·')}`)
   return parts.join(' | ') || '(데이터 부족)'
 }
 
