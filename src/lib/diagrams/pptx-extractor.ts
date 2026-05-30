@@ -188,6 +188,76 @@ function parseShapeBlock(
 }
 
 /**
+ * 슬라이드 도형들을 공간 순서 (위→아래, 좌→우) 로 정렬해 읽기 가능한 텍스트로 재구성.
+ * LLM 이 "이 슬라이드가 무슨 메시지를 어떤 구조로 전달하는지" 분석할 수 있게 함. (N2)
+ */
+export interface ReconstructedSlide {
+  slideNumber: number
+  title: string | null
+  blocks: { zone: string; text: string; isNumeric: boolean }[]
+  shapeStats: {
+    total: number
+    withText: number
+    geomCounts: Record<string, number>
+    accentColored: number
+  }
+}
+
+export function reconstructSlide(slide: ExtractedSlide): ReconstructedSlide {
+  const textShapes = slide.shapes.filter((s) => s.text && s.text.trim().length > 0)
+
+  // 공간 순서 정렬 — y 우선, 같은 행이면 x
+  const sorted = [...textShapes].sort((a, b) => {
+    const dy = a.position.y - b.position.y
+    if (Math.abs(dy) > 0.05) return dy
+    return a.position.x - b.position.x
+  })
+
+  // title 후보 — 상단 (y < 0.35) + 큰 폰트 OR placeholder=title
+  let title: string | null = null
+  let bestTitleScore = -1
+  for (const s of textShapes) {
+    if (!s.text) continue
+    const isTitlePh = s.placeholderType === 'title'
+    const topness = 1 - s.position.y
+    const fontBonus = (s.fontSize ?? 18) / 40
+    const score = (isTitlePh ? 2 : 0) + topness + fontBonus
+    if (s.position.y < 0.35 && s.text.length >= 4 && s.text.length <= 80 && score > bestTitleScore) {
+      bestTitleScore = score
+      title = s.text
+    }
+  }
+
+  const zoneOf = (y: number, x: number): string => {
+    const v = y < 0.33 ? '상' : y < 0.66 ? '중' : '하'
+    const h = x < 0.4 ? '좌' : x < 0.7 ? '중' : '우'
+    return `${v}${h}`
+  }
+
+  const blocks = sorted
+    .filter((s) => s.text !== title)
+    .map((s) => ({
+      zone: zoneOf(s.position.y, s.position.x),
+      text: s.text!.slice(0, 300),
+      isNumeric: /\d{2,}|\d+%|\d+억|\d+만|\d+명|\d+건|\d+년/.test(s.text!),
+    }))
+
+  const geomCounts: Record<string, number> = {}
+  let accentColored = 0
+  for (const s of slide.shapes) {
+    if (s.geomPreset) geomCounts[s.geomPreset] = (geomCounts[s.geomPreset] ?? 0) + 1
+    if (s.fillColor && /^F[0-9A-F]5[0-9A-F]/i.test(s.fillColor)) accentColored++
+  }
+
+  return {
+    slideNumber: slide.slideNumber,
+    title,
+    blocks,
+    shapeStats: { total: slide.shapes.length, withText: textShapes.length, geomCounts, accentColored },
+  }
+}
+
+/**
  * 추출 결과 요약 — 디버깅용.
  */
 export function summarizeSlide(slide: ExtractedSlide): string {

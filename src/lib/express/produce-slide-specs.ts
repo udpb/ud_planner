@@ -27,6 +27,11 @@ import {
   validateSlideSpec,
   type SlideSpec,
 } from '@/lib/diagrams/slide-pattern'
+import {
+  getLearnedSectionPatterns,
+  LEARNED_DENSITY,
+  LEARNED_HEADLINE_EXAMPLES,
+} from '@/lib/diagrams/learned-patterns'
 
 const SECTION_TITLES: Record<string, { num: string; ko: string }> = {
   '1': { num: '01', ko: '제안 배경 및 목적' },
@@ -88,16 +93,29 @@ async function produceSectionSpecs(input: {
   trackRecord?: ProduceSlideSpecsInput['trackRecord']
   budgetBreakdown?: ProduceSlideSpecsInput['budgetBreakdown']
 }): Promise<SlideSpec[]> {
+  // N2 — 실제 당선 PPT 에서 학습한 섹션별 패턴 + 밀도 역주입
+  const learnedPatterns = getLearnedSectionPatterns(input.sectionNum)
+  const targetBlocks = Math.round(LEARNED_DENSITY.avgBlocks)
+  const targetEvidence = Math.max(2, Math.round(LEARNED_DENSITY.avgEvidence))
+  const headlineExamples = LEARNED_HEADLINE_EXAMPLES.slice(0, 5)
+
   const prompt = `
 당신은 한국 사업 제안서 슬라이드 디자이너입니다.
 다음 sections.${input.sectionNum} 본문을 보고 **1-2 슬라이드** 의 spec 을 생성합니다.
 
+⭐ 핵심 목표: 실제 당선 제안서 수준의 **콘텐츠 밀도** — 한 슬라이드가 헤드라인 하나에
+그치지 않고, 도식화 안에 충분한 정보(단계·항목·수치)와 근거가 담겨 "내용이 많고 설득력 있게"
+보여야 합니다. (실제 당선 슬라이드 평균: 도식 요소 ~${targetBlocks}개 · 정량 근거 ~${targetEvidence}건)
+
 한 슬라이드 = 한 메시지. 각 슬라이드는 반드시:
   - kicker: "${input.sectionLabel}"
   - headline: 한 문장 핵심 (Pyramid Principle — 결론 먼저, 30-100자)
-  - diagram: 도식화 패턴 + 데이터 (8 패턴 中 1)
-  - evidence: 근거 0-3건 (정량 우선)
+  - diagram: 도식화 패턴 + 데이터 (8 패턴 中 1) — 데이터 항목을 충분히 채울 것 (빈약 금지)
+  - evidence: 근거 ${targetEvidence}건 내외 (정량·연도·기관 우선)
   - caption: 선택 (60자 이내 보조)
+${headlineExamples.length > 0
+    ? `\n[실제 당선 슬라이드 헤드라인 스타일 — 이 톤·구체성 모방]\n${headlineExamples.map((h, i) => `  ${i + 1}. ${h}`).join('\n')}`
+    : ''}
 
 [현재 섹션 본문]
 ${input.sectionBody.slice(0, 2000)}
@@ -112,7 +130,9 @@ ${input.trackRecord ? JSON.stringify(input.trackRecord) : '없음'}
 ${input.budgetBreakdown ? JSON.stringify(input.budgetBreakdown) : '없음'}
 
 [도식화 패턴 — 이 섹션에 잘 맞는 것 우선]
-권장: ${input.defaultPatterns.join(' / ')}
+${learnedPatterns.length > 0
+    ? `실제 당선 제안서에서 sections.${input.sectionNum} 에 가장 자주 쓴 패턴 (빈도순): ${learnedPatterns.join(' / ')}`
+    : `권장: ${input.defaultPatterns.join(' / ')}`}
 전체 8종:
   - process-flow: 횡 N단계 (예: M1 → M2 → ... 커리큘럼)
   - matrix-2x2: 4분면 비교 (전략 포지셔닝)
