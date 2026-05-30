@@ -97,6 +97,7 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
         const msg = await anthropic.messages.create({
           model: CLAUDE_MODEL,
           max_tokens: maxTokens,
+          temperature, // P7 — Gemini 와 동일 temperature 전달 (provider 간 변동 방지)
           messages: [{ role: 'user', content: params.prompt }],
         })
         const block = msg.content[0]
@@ -134,6 +135,7 @@ export async function invokeAi(params: InvokeAiParams): Promise<InvokeAiResult> 
   const msg = await anthropic.messages.create({
     model: CLAUDE_MODEL,
     max_tokens: maxTokens,
+    temperature, // P7 — temperature 전달 (이전: 누락되어 Anthropic 기본값 ~1.0 사용)
     messages: [{ role: 'user', content: params.prompt }],
   })
   const block = msg.content[0]

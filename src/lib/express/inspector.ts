@@ -367,7 +367,7 @@ export async function inspectDraft(
   const r = await invokeAi({
     prompt,
     maxTokens: AI_TOKENS.STANDARD,
-    temperature: 0.3, // 검수는 보수적
+    temperature: 0.1, // P7 — 검수 결정성 ↑ (0.3→0.1, 런간 점수 변동 축소)
     label: 'express-inspect',
   })
 
@@ -382,11 +382,48 @@ export async function inspectDraft(
     report = coerceReport(raw)
   }
 
+  // P7 — 셀 수 있는 lens(statistics·quantitative-saturation)는 코드 집계와 블렌드.
+  //   LLM 단독 채점의 런간 변동을 줄이고, '실제 수치 밀도'라는 ground-truth 로 정확도 ↑.
+  //   (채널 가중 전에 적용 → 가중 overallScore 에 반영)
+  report = anchorCountableLenses(report, draft)
+
   // 채널 가중치 적용 (M2)
   if (options.channel) {
     report = applyChannelWeights(report, options.channel)
   }
   return report
+}
+
+/** 정량 수치 토큰 카운트 (% · 억 · 명 · 건 · 배 · 점 · 원 · 년 등) */
+function countQuant(text: string): number {
+  return (text.match(/\d[\d,.]*\s*(%|억|만|명|건|개사|배|점|원|개월|개|년|위|회|시간|배출)/g) || []).length
+}
+/** 모호 표현 카운트 (많은·다양한·충분한…) — 정량 포화의 역신호 */
+function countVague(text: string): number {
+  return (text.match(/(많은|다양한|충분한|적절한|최적의|효과적|효율적|우수한|뛰어난|풍부한|여러|폭넓은)/g) || []).length
+}
+
+/**
+ * P7 — 셀 수 있는 2개 lens 를 코드 집계값과 50:50 블렌드.
+ * statistics(정량 인용)·quantitative-saturation(정량 포화)은 본질적으로 카운트 가능 →
+ * LLM 추정보다 코드 카운트가 더 정확하고 결정적. 변동 축소 + 정확도 동시 개선.
+ */
+function anchorCountableLenses(report: InspectorReport, draft: ExpressDraft): InspectorReport {
+  const secs = Object.values(draft.sections ?? {}).filter((v): v is string => typeof v === 'string' && v.length > 0)
+  if (secs.length === 0) return report
+  const totalNums = secs.reduce((a, s) => a + countQuant(s), 0)
+  const totalVague = secs.reduce((a, s) => a + countVague(s), 0)
+  const perSec = totalNums / secs.length
+  // 섹션당 평균 수치 0→35점, 2개→71점, 3.6개+→100점
+  const statComputed = Math.max(0, Math.min(100, Math.round(35 + perSec * 18)))
+  // 수치 많고 모호어 적을수록 ↑
+  const quantComputed = Math.max(0, Math.min(100, Math.round(45 + perSec * 14 - totalVague * 5)))
+  const blend = (llm: number | undefined, computed: number): number =>
+    typeof llm === 'number' ? Math.round(llm * 0.5 + computed * 0.5) : computed
+  const ls: Record<string, number> = { ...report.lensScores }
+  ls.statistics = blend(ls.statistics, statComputed)
+  ls['quantitative-saturation'] = blend(ls['quantitative-saturation'], quantComputed)
+  return { ...report, lensScores: ls }
 }
 
 function coerceReport(raw: unknown): InspectorReport {
