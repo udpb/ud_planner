@@ -2,25 +2,35 @@
  * /api/dev/ultimate-draft — produceUltimateDraft E2E 실행 (M4 A/B 검증용).
  *
  * dev 모드 + E2E_SECRET 헤더에서만. production 404.
- * RFP 를 body 로 받아 전체 1차본 + slideSpecs 생성 → ExpressDraft 반환.
+ * self-contained 가드 (외부 모듈 의존 X — '../route' 가 없어 module-not-found 500 나던 것 fix).
  *
  * 사용:
  *   curl -X POST localhost:3002/api/dev/ultimate-draft \
- *     -H "x-e2e-secret: dev-e2e-secret-key" -H "Content-Type: application/json" \
- *     -d @rfp.json
+ *     -H "x-e2e-secret: $E2E_SECRET" -H "Content-Type: application/json" -d @rfp.json
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { assertDevAccess } from '../route'
 import { produceUltimateDraft } from '@/lib/express/produce-ultimate-draft'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
+function devGuard(req: NextRequest): NextResponse | null {
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+  const secret = process.env.E2E_SECRET
+  const provided = req.headers.get('x-e2e-secret')
+  if (!secret || provided !== secret) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+  return null
+}
+
 export async function POST(req: NextRequest) {
-  const guard = assertDevAccess(req)
-  if (guard) return guard
+  const blocked = devGuard(req)
+  if (blocked) return blocked
 
   try {
     const body = await req.json()
