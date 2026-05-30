@@ -245,6 +245,69 @@ export async function produceUltimateDraft(
   progress('3/9', `완료 ${((Date.now() - t3) / 1000).toFixed(1)}s`)
 
   // ────────────────────────────────────
+  // Step 3.2: 빈 섹션 backfill (견고성 — 슬롯 LLM JSON 실패 시에도 7섹션 보장)
+  //   §5(예산)·§7(실적) 은 아래 전용 단계가 채우므로 제외. §1·2·3·4·6 만 대상.
+  //   슬롯 turn 에서 누락된 섹션을 RFP objectives + 자산 기반으로 1 LLM 으로 backfill.
+  // ────────────────────────────────────
+  const BACKFILL_SECTIONS: Array<{ n: '1' | '2' | '3' | '4' | '6'; label: string }> = [
+    { n: '1', label: '제안 배경 및 목적' },
+    { n: '2', label: '추진 전략 및 방법론' },
+    { n: '3', label: '교육 커리큘럼' },
+    { n: '4', label: '운영 체계 및 코치진' },
+    { n: '6', label: '기대 성과 및 임팩트' },
+  ]
+  const emptySections = BACKFILL_SECTIONS.filter((s) => {
+    const cur = draft.sections?.[s.n]
+    return !cur || cur.trim().length < 80
+  })
+  if (emptySections.length > 0) {
+    progress('3.2/9', `빈 섹션 ${emptySections.length}개 backfill (${emptySections.map((s) => s.n).join(',')})...`)
+    const t32 = Date.now()
+    for (const sec of emptySections) {
+      try {
+        const backfillPrompt = `
+당신은 한국 사업 제안서 작성 전문가입니다. 아래 RFP 와 맥락으로 sections.${sec.n} (${sec.label}) 본문을
+작성하세요. PM 직접 입력이 없으므로 RFP 목표·자산·당선 패턴으로 1차 초안을 자동 생성합니다.
+
+[본 사업]
+사업명: ${rfp.projectName ?? '(미상)'}
+발주처: ${rfp.client ?? '(미상)'} · 채널: ${channel}
+목표: ${(rfp.objectives ?? []).slice(0, 5).join(' / ') || '(미상)'}
+키워드: ${(rfp.keywords ?? []).slice(0, 8).join(', ') || '(미상)'}
+대상: ${rfp.targetAudience ?? '(미상)'}
+${draft.intent ? `사업 정체성: ${draft.intent}` : ''}
+${draft.sections?.['1'] && sec.n !== '1' ? `\n[참고 — 이미 작성된 §1 제안배경]\n${draft.sections['1'].slice(0, 500)}` : ''}
+
+[작성 규칙]
+1. 본문 500~900자, 경어체(~합니다)
+2. Pyramid — 결론(핵심 메시지) 먼저, 근거 뒤
+3. 발주처 키워드 자연스럽게 흡수
+4. 추상적 나열 X — 단계·항목·정량 구체화
+5. 회사명 비교 금지
+
+[출력 JSON]
+{ "sectionText": "<sections.${sec.n} 본문 — 500~900자>" }
+JSON 만.
+`.trim()
+        const r = await invokeAi({
+          prompt: backfillPrompt,
+          maxTokens: AI_TOKENS.STANDARD,
+          temperature: 0.4,
+          label: `backfill-${sec.n}`,
+        })
+        bump('backfill')
+        const raw = safeParseJson<{ sectionText?: string }>(r.raw, `backfill-${sec.n}`)
+        if (raw?.sectionText && raw.sectionText.length > 80) {
+          draft.sections = { ...(draft.sections ?? {}), [sec.n]: raw.sectionText }
+        }
+      } catch (e) {
+        console.warn(`[ultimate-draft] backfill §${sec.n} 실패:`, e instanceof Error ? e.message : e)
+      }
+    }
+    progress('3.2/9', `backfill 완료 ${((Date.now() - t32) / 1000).toFixed(1)}s`)
+  }
+
+  // ────────────────────────────────────
   // Step 3.5: sections.7 자동 (Phase I1, 1 LLM)
   // ────────────────────────────────────
   progress('3.5/9', '수행 실적 자동 매핑 (sections.7)...')
