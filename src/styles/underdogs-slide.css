@@ -381,6 +381,50 @@
   color: var(--ud-muted);
 }
 
+/* ── Print stylesheet — 슬라이드를 PDF 로 (browser Print → Save as PDF) ── */
+@media print {
+  @page {
+    size: 13.33in 7.5in landscape; /* 16:9 ratio at standard PPT size */
+    margin: 0;
+  }
+  body {
+    margin: 0 !important;
+    background: white !important;
+  }
+  /* 슬라이드 외 모든 요소 숨김 */
+  body > *:not(.ud-print-only),
+  .ud-slide-canvas ~ *,
+  [class*="sidebar"],
+  [class*="topbar"],
+  [class*="header"],
+  nav,
+  aside {
+    display: none !important;
+  }
+  /* 슬라이드만 보이게 */
+  .ud-slide-canvas {
+    page-break-after: always;
+    width: 13.33in !important;
+    height: 7.5in !important;
+    aspect-ratio: unset !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    /* 인쇄 시 폰트 크기 강제 (PPT 표준) */
+    --ud-type-display: 56pt;
+    --ud-gap-section: 28pt;
+    --ud-gap-element: 16pt;
+  }
+  .ud-slide-canvas .ud-slide-inner {
+    padding: 40pt !important;
+  }
+  /* 인쇄 라벨 제거 */
+  .rounded.border.border-border {
+    border: none !important;
+    background: transparent !important;
+  }
+}
+
 /* ── 표지 (kicker + 큰 display) ── */
 .ud-slide-canvas.ud-cover .ud-slide-inner {
   justify-content: center;
