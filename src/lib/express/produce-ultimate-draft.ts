@@ -364,6 +364,66 @@ JSON 만.
   progress('3.6/9', `완료 ${((Date.now() - t36) / 1000).toFixed(1)}s · ${budgetBreakdown.length} 비목`)
 
   // ────────────────────────────────────
+  // Step 3.7: keyMessages backfill (견고성 — PM 이 keyMessages 슬롯을 건너뛰어도
+  //   '핵심 메시지' 3종 보장. keyMessages 도 messageHierarchy 도 비었을 때만.)
+  //   keyMessages 는 coherence-pass cross-reference(§1·2·6) + Inspector + 슬라이드 spine 에 쓰임.
+  //   → 비면 draft 가 핵심 메시지 없이 나가 평가위원 신뢰도·Inspector 점수 급락 (캡스톤 발견).
+  //   differentiators 는 asset 기반(assetId 필수)이라 합성 backfill 제외 (P1 자산ID 노출 방지).
+  // ────────────────────────────────────
+  const hasKeyMessages = Array.isArray(draft.keyMessages) && draft.keyMessages.filter(Boolean).length >= 1
+  const hasHierarchy = Array.isArray(draft.messageHierarchy) && draft.messageHierarchy.length >= 1
+  if (!hasKeyMessages && !hasHierarchy) {
+    progress('3.7/9', '핵심 메시지 3종 backfill...')
+    const t37 = Date.now()
+    try {
+      const secSnips = ['1', '2', '6']
+        .map((n) => {
+          const v = draft.sections?.[n as keyof typeof draft.sections] as string | undefined
+          return v ? `[§${n}] ${v.slice(0, 260)}` : ''
+        })
+        .filter(Boolean)
+        .join('\n')
+      const kmPrompt = `
+당신은 한국 사업 제안서의 '핵심 메시지'를 뽑는 전문가입니다. 아래 1차본에서 평가위원이 기억할
+**선언적 핵심 메시지 3개**를 추출/작성하세요. PM 이 직접 입력하지 않아 자동 생성합니다.
+
+[본 사업]
+사업명: ${rfp.projectName ?? '(미상)'} · 발주처: ${rfp.client ?? '(미상)'} · 채널: ${channel}
+${draft.intent ? `사업 정체성: ${draft.intent}` : ''}
+목표: ${(rfp.objectives ?? []).slice(0, 4).join(' / ') || '(미상)'}
+
+[작성된 본문 발췌]
+${secSnips || '(본문 부족 — intent·목표 기반 추론)'}
+
+[규칙]
+1. 정확히 3개. 각 12~45자 한 문장. 선언형(체언 종결 또는 '~합니다').
+2. #1 = 사업의 본질/Before→After, #2 = 우리의 방법론/차별 메커니즘, #3 = 정량 성과/임팩트.
+3. 추상적 슬로건 금지 — 구체 숫자·단계·대상이 드러나게. 회사명 비교 금지.
+4. 본문에 이미 있는 정량 수치(있으면) 1개 이상 #3 에 반영.
+
+[출력 JSON]
+{ "keyMessages": ["<핵심 메시지1>", "<핵심 메시지2>", "<핵심 메시지3>"] }
+JSON 만.
+`.trim()
+      const r = await invokeAi({
+        prompt: kmPrompt,
+        maxTokens: AI_TOKENS.STANDARD,
+        temperature: 0.5,
+        label: 'backfill-keymessages',
+      })
+      bump('backfill-keymessages')
+      const raw = safeParseJson<{ keyMessages?: string[] }>(r.raw, 'backfill-keymessages')
+      const km = Array.isArray(raw?.keyMessages)
+        ? raw.keyMessages.filter((m) => typeof m === 'string' && m.trim().length >= 5).slice(0, 3)
+        : []
+      if (km.length >= 1) draft.keyMessages = km
+    } catch (e) {
+      console.warn('[ultimate-draft] keyMessages backfill 실패:', e instanceof Error ? e.message : e)
+    }
+    progress('3.7/9', `완료 ${((Date.now() - t37) / 1000).toFixed(1)}s · ${(draft.keyMessages ?? []).length} 메시지`)
+  }
+
+  // ────────────────────────────────────
   // Step 4: Risks 자동 채움 (1 LLM)
   // ────────────────────────────────────
   progress('4/9', '평가위원 risks 능동 답변...')
