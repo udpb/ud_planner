@@ -212,10 +212,25 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 - coherence-pass 임무#1에 '리스트 시작 섹션 산문 도입 1문장 강제' 규칙 추가. 결과: §3 → '앞서 제시한 전략적 메커니즘은…6개월 커리큘럼으로 구체화됩니다.' + STEP 리스트 보존.
 - 검증: `test-coherence-flow.ts`(2회 일관 PASS, STEP 3·source 3 보존). server-only 우회: `NODE_OPTIONS=--conditions=react-server`. 커밋 `71b7c66`.
 
+### ✅ 캡스톤 E2E — fresh RFP → 풀 파이프 → .pptx (완료)
+- `scripts/test-capstone-e2e.ts` + `scripts/fixtures/capstone-rfp.json` (경기도 청년 소셜벤처 — GTM 과 다른 도메인).
+- in-process(HTTP 300s 한계 우회) produceUltimateDraft 23 LLM → 7/7 섹션 → 13~14 slideSpec → 23~24 슬라이드 .pptx.
+- **before-after 패턴이 fresh 생성에 실제 등장** → P2 네이티브 렌더가 production 경로에서 작동 확인.
+- 자산ID 누출 0 (P1 fresh data 에서도 유지).
+
+### ✅ P3 — keyMessages backfill (완료, Inspector 45→59)
+- 캡스톤 발견: PM 입력 얇으면(슬롯 일부) keyMessages·messageHierarchy 둘 다 비어 '핵심 메시지' 없이 1차본 생성 → Inspector 45.
+- produce-ultimate-draft Step 3.7 — 둘 다 비었을 때만 intent+§1·2·6+RFP 로 핵심 메시지 3종 1 LLM backfill (coherence-pass 앞이라 cross-ref 즉시 반영).
+- 동일 RFP·입력에서 **Inspector 45→59(+14)**, coherence 변경 3→6, 자산ID 0. differentiators 는 asset(assetId) 기반이라 제외(P1). 커밋 `056a3aa`.
+
+### ✅ P4 — slideSpec 길이 초과 시 clamp (완료)
+- 캡스톤 로그 발견: architecture-stack item >40자 → validateSlideSpec 가 슬라이드 전체 reject(14→13 무손실 드롭).
+- `clampDiagramData(pattern,data)` — 8 패턴 string 필드를 schema max 로 truncate 후 검증. 구조 오류는 그대로 reject.
+- `scripts/test-slidespec-clamp.ts` 5/5 (44자 item→clamp 40, timeline bar label→clamp, 정상 통과, 구조오류 reject 유지). 커밋 `8189f8c`.
+
 ### ★ 남은 후보 (선택)
-- Inspector 점수 편차(44~72, LLM 비결정성) — 정량 포화 lens 강화로 안정적 70+ 목표
+- Inspector 점수 추가 안정화 70+ — keyMessages backfill 로 thin-input 바닥 45→59 끌어올림. 정량 포화 lens 추가 강화 여지.
 - 실제 당선본 PDF 1:1 라인 대조 (원문 확보 시) — A/B의 "B"를 정성 관찰→실측으로
-- 풀 fresh E2E 캡스톤 — produceUltimateDraft(23 LLM) → .pptx 통합 (현재는 실 fixture·합성 데이터로 검증)
 
 ### 알파테스트 직전 권장 시나리오
 1. 신규 RFP 업로드 → S1 자동 분석
