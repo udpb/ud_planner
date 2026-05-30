@@ -113,6 +113,14 @@ async function produceSectionSpecs(input: {
   - diagram: 도식화 패턴 + 데이터 (8 패턴 中 1) — 데이터 항목을 충분히 채울 것 (빈약 금지)
   - evidence: 근거 ${targetEvidence}건 내외 (정량·연도·기관 우선)
   - caption: 선택 (60자 이내 보조)
+
+[⚠️ 슬라이드 1장 용량 — 페이지당 텍스트량 가드 (PPT 1장에 넘치지 않게)]
+풍부하되 "한 장에 들어가는" 양을 지킬 것. 초과 위험이면 2개 슬라이드로 분할(order +1).
+  - headline ≤ 100자 · caption ≤ 60자 · evidence 최대 3건(각 ≤ 80자)
+  - 도식 항목 상한 (이 이상은 잘리거나 다음 슬라이드로):
+    · process-flow 단계 ≤ 6 · kpi-grid ≤ 6셀(2행) · comparison-table 행 ≤ 6
+    · architecture-stack 레이어 ≤ 5(레이어당 항목 ≤ 4) · timeline 트랙 ≤ 4 · matrix 4분면 · hierarchy 자식 ≤ 4
+  - 각 항목 라벨은 짧게(≤ 40자) — 긴 설명은 caption/evidence 로. 한 도식에 글 덩어리 X.
 ${headlineExamples.length > 0
     ? `\n[실제 당선 슬라이드 헤드라인 스타일 — 이 톤·구체성 모방]\n${headlineExamples.map((h, i) => `  ${i + 1}. ${h}`).join('\n')}`
     : ''}

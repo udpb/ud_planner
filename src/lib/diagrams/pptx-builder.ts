@@ -344,9 +344,10 @@ function specSlide(spec: PptxSlideSpec, pageNum: number): string {
   inner += diag.xml
   id = diag.nextId
 
-  // evidence (하단 tint 박스)
+  // evidence (하단 tint 박스) — 도식 실제 하단 바로 아래에 배치 (페이지당 텍스트 밀도 적응:
+  //   짧은 도식이면 근거가 바로 붙고, 긴 도식이어도 footer(648) 위에서 충돌 없이 안착)
   if (Array.isArray(spec.evidence) && spec.evidence.length > 0) {
-    const evY = 560
+    const evY = Math.min(Math.max(diag.bottomY + 16, 300), 560)
     inner += rect(id++, px(80), px(evY), px(1120), px(80), COLOR.tint)
     inner += textBox({
       id: id++,
@@ -383,10 +384,11 @@ function renderDiagramToShapes(
   diagram: { pattern: string; data: any } | undefined,
   startId: number,
   startY: number,
-): { xml: string; nextId: number } {
+): { xml: string; nextId: number; bottomY: number } {
   let id = startId
   let xml = ''
-  if (!diagram || !diagram.data) return { xml, nextId: id }
+  let bottomY = startY // 도식 실제 하단 — evidence/footer 충돌 방지 + 밀도 적응용
+  if (!diagram || !diagram.data) return { xml, nextId: id, bottomY }
   const { pattern, data } = diagram
 
   if (pattern === 'process-flow' && Array.isArray(data.steps)) {
@@ -410,12 +412,14 @@ function renderDiagramToShapes(
         ],
       })
     })
+    bottomY = startY + 120
   } else if (pattern === 'kpi-grid' && Array.isArray(data.kpis)) {
-    const kpis = data.kpis.slice(0, 8)
     const cols = data.columns ?? 4
     const gap = 16
+    // 페이지당 텍스트량 — 최대 2행(cols*2)만 노출해 evidence/footer 와 충돌 방지
+    const kpis = data.kpis.slice(0, cols * 2)
     const cellW = (1120 - gap * (cols - 1)) / cols
-    const cellH = 110
+    const cellH = 104
     kpis.forEach((k: any, i: number) => {
       const col = i % cols
       const row = Math.floor(i / cols)
@@ -435,10 +439,11 @@ function renderDiagramToShapes(
         ],
       })
     })
+    bottomY = startY + Math.ceil(kpis.length / cols) * (cellH + gap)
   } else if (pattern === 'comparison-table' && Array.isArray(data.rows)) {
     const rows = data.rows.slice(0, 6)
     const colDim = 280, colL = 420, colR = 420
-    const rowH = 44
+    const rowH = 40
     // header
     xml += rect(id++, px(80), px(startY), px(colDim), px(rowH), COLOR.ink)
     xml += rect(id++, px(80 + colDim), px(startY), px(colL), px(rowH), COLOR.ink)
@@ -456,9 +461,10 @@ function renderDiagramToShapes(
       xml += textBox({ id: id++, x: px(90 + colDim), y: px(y + 8), w: px(colL - 20), h: px(rowH - 12), runs: [{ text: r.left ?? '', size: 10, color: COLOR.softInk }] })
       xml += textBox({ id: id++, x: px(90 + colDim + colL), y: px(y + 8), w: px(colR - 20), h: px(rowH - 12), runs: [{ text: r.right ?? '', size: 10, color: COLOR.ink, bold: !!r.advantageOnRight }] })
     })
+    bottomY = startY + rowH * (1 + rows.length)
   } else if (pattern === 'architecture-stack' && Array.isArray(data.layers)) {
     const layers = data.layers.slice(0, 5)
-    const rowH = 56, gap = 8
+    const rowH = 52, gap = 6
     layers.forEach((l: any, i: number) => {
       const y = startY + i * (rowH + gap)
       xml += rect(id++, px(80), px(y), px(180), px(rowH), COLOR.ink)
@@ -471,6 +477,7 @@ function renderDiagramToShapes(
         xml += textBox({ id: id++, x: px(x + 6), y: px(y + 8), w: px(itemW - 12), h: px(rowH - 12), runs: [{ text: it, size: 9, color: COLOR.ink }], anchor: 'ctr', align: 'ctr' })
       })
     })
+    bottomY = startY + (layers.length - 1) * (rowH + gap) + rowH
   } else if (pattern === 'before-after' && (data.before || data.after)) {
     // 좌 Before(tint) → 화살표(accent) → 우 After(accentTint)
     const boxH = 200
@@ -490,6 +497,7 @@ function renderDiagramToShapes(
     xml += drawBA(80, COLOR.tint, 'BEFORE', COLOR.muted, data.before)
     xml += textBox({ id: id++, x: px(560), y: px(startY + 70), w: px(80), h: px(60), runs: [{ text: '→', size: 40, color: COLOR.accent, font: FONT_EN, bold: true }], align: 'ctr', anchor: 'ctr' })
     xml += drawBA(640, COLOR.accentTint, 'AFTER', COLOR.accent, data.after)
+    bottomY = startY + boxH
   } else if (pattern === 'timeline' && Array.isArray(data.tracks)) {
     // 간트 — units 헤더 + 트랙별 bar(startIdx~endIdx)
     const units: any[] = Array.isArray(data.units) && data.units.length ? data.units.slice(0, 12) : []
@@ -520,6 +528,7 @@ function renderDiagramToShapes(
         if (b.label) xml += textBox({ id: id++, x: px(bx + 4), y: px(y + 8), w: px(bw - 8), h: px(rowH - 16), runs: [{ text: String(b.label), size: 9, color: COLOR.ink }], anchor: 'ctr' })
       })
     })
+    bottomY = rowsY + Math.max(tracks.length - 1, 0) * (rowH + gap) + rowH
   } else if (pattern === 'matrix-2x2' && Array.isArray(data.quadrants)) {
     // 2x2 — 사분면 + 축 라벨, highlight 사분면은 accent
     const gridX = 150, gridW = 980
@@ -541,6 +550,7 @@ function renderDiagramToShapes(
       })
     })
     if (data.axisX?.label) xml += textBox({ id: id++, x: px(gridX), y: px(startY + 2 * cellH + 12), w: px(gridW), h: px(24), runs: [{ text: data.axisX.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
+    bottomY = startY + 2 * cellH + 40
   } else if (pattern === 'hierarchy-tree' && data.root) {
     // 루트 박스(ink) → 자식 박스(tint) 1단, 연결선은 가는 rect
     const rootW = 320, rootX = 80 + (1120 - rootW) / 2, rootH = 54
@@ -578,10 +588,11 @@ function renderDiagramToShapes(
         })
       })
     }
+    bottomY = startY + (children.length ? rootH + 50 + 64 : rootH)
   } else {
     // 알 수 없는/malformed 패턴 (text-only 등) → 데이터 요약 텍스트 (안전망)
     const summary = summarizeDiagramData(pattern, data)
-    if (summary) {
+    if (summary.length > 0) {
       xml += textBox({
         id: id++,
         x: px(80),
@@ -590,9 +601,10 @@ function renderDiagramToShapes(
         h: px(260),
         runs: summary.map((line) => ({ runs: [{ text: line, size: 12, color: COLOR.softInk }] })),
       })
+      bottomY = startY + Math.min(260, summary.length * 24 + 16)
     }
   }
-  return { xml, nextId: id }
+  return { xml, nextId: id, bottomY }
 }
 
 function summarizeDiagramData(pattern: string, data: any): string[] {
