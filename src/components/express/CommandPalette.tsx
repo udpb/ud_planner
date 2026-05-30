@@ -39,6 +39,7 @@ import {
   CheckCircle2,
   Upload,
   Building2,
+  Presentation,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -159,6 +160,12 @@ export function CommandPalette(p: Props) {
           >
             <BarChart3 className="mr-2 h-4 w-4 text-[color:var(--cyan)]" />
             임팩트 리포트 (SROI forecast)
+          </CommandItem>
+          <CommandItem
+            onSelect={downloadFile(`/api/express/export-pptx?projectId=${p.projectId}`)}
+          >
+            <Presentation className="mr-2 h-4 w-4 text-[color:var(--primary-orange)]" />
+            PPT 다운로드 (.pptx — 편집 가능)
           </CommandItem>
           <CommandItem
             onSelect={downloadFile(`/api/projects/${p.projectId}/export-markdown`)}
