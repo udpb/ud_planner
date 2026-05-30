@@ -123,10 +123,25 @@ ${input.sectionBody.slice(0, 2000)}
 [키 메시지 후보]
 ${input.keyMessages.slice(0, 3).map((m, i) => `${i + 1}. ${m}`).join('\n') || '없음'}
 
-[참고 — UD 정량 실적]
-${input.trackRecord ? JSON.stringify(input.trackRecord) : '없음'}
+[⭐ UD 정량 실적 — 아래 숫자만 사용. 절대 부풀리거나 창작 금지 (특히 누적 매출/창업가 수)]
+${
+  input.trackRecord
+    ? [
+        input.trackRecord.cumulativeRevenueBillions != null
+          ? `· 누적 수주: ${input.trackRecord.cumulativeRevenueBillions}억원 (★ "5,000억" 같은 과장 금지 — 정확히 ${input.trackRecord.cumulativeRevenueBillions}억)`
+          : '',
+        input.trackRecord.totalGraduates != null ? `· 누적 육성 창업가: ${input.trackRecord.totalGraduates.toLocaleString()}명` : '',
+        input.trackRecord.totalCoaches != null ? `· 코치 풀: ${input.trackRecord.totalCoaches}명` : '',
+        input.trackRecord.yearsActive != null ? `· 운영 연수: ${input.trackRecord.yearsActive}년` : '',
+        input.trackRecord.regionalHubs != null ? `· 거점: ${input.trackRecord.regionalHubs}개` : '',
+        input.trackRecord.creditRating ? `· 신용등급: ${input.trackRecord.creditRating}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n')
+    : '없음 — UD 누적 실적 수치를 창작하지 말 것 (모르면 생략)'
+}
 
-[참고 — 자동 산출 예산]
+[참고 — 자동 산출 예산 (이 수치만 사용)]
 ${input.budgetBreakdown ? JSON.stringify(input.budgetBreakdown) : '없음'}
 
 [도식화 패턴 — 이 섹션에 잘 맞는 것 우선]
@@ -206,7 +221,10 @@ text-only:
   ]
 }
 
-⚠ 데이터는 본문에서 추출. 모르면 빈 값. 가공·hallucination 금지.
+⚠ 데이터는 본문 + 위 [UD 정량 실적] 에서만 추출. 모르면 빈 값. 수치 가공·부풀림·hallucination 절대 금지.
+   - 특히 누적 매출은 정확히 ${input.trackRecord?.cumulativeRevenueBillions ?? '(제공된 값)'}억 — "5,000억" 처럼 자릿수 바꾸지 말 것.
+   - 본문/근거에 자산 ID 코드(cmpl... 같은 영숫자 코드)·"[자산 인용: ...]" 마커 **절대 포함 금지** (평가위원이 그대로 봄).
+   - evidence.source 는 실제 기관·연도 (예: "통계청 2023.12", "언더독스 누적 실적") — 자산 ID 코드 금지.
 ⚠ 1-2 슬라이드만 (5 미만). 한 슬라이드에 너무 많은 내용 X.
 JSON 만. 마크다운 펜스 X.
 `.trim()

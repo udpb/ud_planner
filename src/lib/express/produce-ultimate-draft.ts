@@ -390,6 +390,16 @@ JSON 만.
   })
   bump('coherence-pass')
   draft.sections = coherenceOut.updatedSections as ExpressDraft['sections']
+
+  // P1 — sections 본문에서 자산 ID 코드·인용 마커 sanitize (평가위원 노출 방지)
+  if (draft.sections) {
+    const { stripAssetIdMarkers } = await import('@/lib/diagrams/slide-pattern')
+    const cleaned: Record<string, string> = {}
+    for (const [k, v] of Object.entries(draft.sections)) {
+      cleaned[k] = typeof v === 'string' ? stripAssetIdMarkers(v) : (v as string)
+    }
+    draft.sections = cleaned as ExpressDraft['sections']
+  }
   progress('5/9', `완료 ${((Date.now() - t5) / 1000).toFixed(1)}s · ${coherenceOut.result.changes?.length ?? 0} 변경`)
 
   // ────────────────────────────────────

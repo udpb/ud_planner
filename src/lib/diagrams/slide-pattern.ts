@@ -218,6 +218,30 @@ export const DIAGRAM_DATA_SCHEMA: Record<DiagramPattern, z.ZodSchema | null> = {
 /**
  * SlideSpec 의 diagram.data 가 pattern 과 일치하는지 검증.
  */
+/**
+ * 자산 ID 코드·인용 마커를 본문/근거에서 제거 (P1 — 평가위원 노출 방지).
+ * - "[자산 인용: cmpl...]" / "[자산 인용: ...]" 헤더 제거
+ * - 괄호 안 cuid 코드 "(cmpl1a2b3c...)" 제거
+ * - 단독 cuid 토큰 (cmpl + 20+ 영숫자) 제거
+ * 일반 텍스트·정상 출처(통계청 2023.12 등)는 보존.
+ */
+const ASSET_CITE_MARKER = /\[\s*자산\s*인용\s*:[^\]]*\]/g
+const PAREN_CUID = /\(\s*c[a-z0-9]{24,}\s*\)/gi
+const BARE_CUID = /\bc[a-z0-9]{24,}\b/gi
+
+export function stripAssetIdMarkers(text: string | undefined | null): string {
+  if (!text) return ''
+  return text
+    .replace(ASSET_CITE_MARKER, '')
+    .replace(PAREN_CUID, '')
+    .replace(BARE_CUID, '')
+    .replace(/\[\s*\]/g, '') // 빈 대괄호 잔여
+    .replace(/\(\s*\)/g, '') // 빈 괄호 잔여
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\s+([.,·])/g, '$1')
+    .trim()
+}
+
 export function validateSlideSpec(spec: unknown): { ok: true; spec: SlideSpec } | { ok: false; error: string } {
   const base = SlideSpecSchema.safeParse(spec)
   if (!base.success) {
@@ -233,6 +257,16 @@ export function validateSlideSpec(spec: unknown): { ok: true; spec: SlideSpec } 
         error: `${data.diagram.pattern} data invalid: ${dataValidation.error.issues[0]?.message ?? 'unknown'}`,
       }
     }
+  }
+  // P1 — 자산 ID 코드 sanitize (headline / caption / evidence)
+  data.headline = stripAssetIdMarkers(data.headline)
+  if (data.caption) data.caption = stripAssetIdMarkers(data.caption)
+  if (Array.isArray(data.evidence)) {
+    data.evidence = data.evidence.map((e) => ({
+      ...e,
+      text: stripAssetIdMarkers(e.text),
+      source: e.source ? stripAssetIdMarkers(e.source) : e.source,
+    }))
   }
   return { ok: true, spec: data }
 }
