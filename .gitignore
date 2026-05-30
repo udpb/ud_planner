@@ -80,3 +80,4 @@ guidebook-site/site/
 .tmp-*.md
 .tmp-*.ts
 .tmp-*.json
+design-kit/diagram-samples/
