@@ -192,6 +192,35 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 
 ---
 
+## 12. P5~P8 — 사업 풀니스 + 적응성 + Inspector (2026-05-31 피드백 라운드)
+
+> 사용자 피드백: *"우리는 사업을 잘 만드는거지 커리큘럼이 아니다. 커리큘럼은 프로그램 유형·RFP·대상·금액에 따라 다르다. 장소·행사 구체성·연사 풀(coach-finder)·결과보고서·안정적 운영관리까지 반영돼야. Coach만 있는게 아니야. ActionWeek 강제 아님."*
+
+**3갈래 병렬 조사 결과(Explore agent):**
+- 커리큘럼: `formatRfpBrief` 가 대상·정원·단계 누락, `formatProfile` 4/11축만, 가이드 'IMPACT 6단계·4유형' 하드코딩. ActionWeek 은 Express 에서 원래 강제 아님(Deep curriculum-rules R-002 전용).
+- 사업 풀니스: 장소·행사 **부재**, 연사 풀 **부재**(Express 가 715명 coaches_directory 미조회), 결과보고서 **버그**(track-record 가 WinningPattern 만 조회), 운영 **힌트뿐**.
+- Inspector: 100% LLM(temp 0.3, 결정성 0) + ai-fallback Claude temperature 누락(provider 변동).
+
+### ✅ P5 — 커리큘럼·섹션 적응성 (커밋 `ea22d17`)
+- `formatRfpBrief`: 유형/지역·대상·참여(단계·정원)·산출물 추가. `formatProfile`: 4→11축(규모·과업·행사포맷·외부연사·채널·임팩트).
+- `slot-guide` §3: '예시 베끼지 말고 RFP 대상·단계·목표·산출물·방법론에 재설계'. ActionWeek 은 실습형일 때만(강제 X). §4: 코치+외부연사+PMO·보고·리스크·장소·결과보고.
+
+### ✅ P6 — 사업 풀니스 (커밋 `5dab558`)
+- **결과보고서 §7 버그fix**: `track-record.ts` 가 docstring 약속과 달리 WinningPattern 만 조회하던 것 → `assetType='case'` ContentAsset(153건) 실측 KPI·교훈 추가 인용.
+- **코치/연사 풀 §4 연결**: `coach-pool-summary.ts`(NEW) — `summarizeCoachPool(rfp)` 가 도메인 매칭 풀 깊이 집계(PII-safe 집합). produce-ultimate-draft Step 2.7 → §4 backfill 투입.
+- **검증(캡스톤)**: §4 = "검증된 221명 도메인 전문가 / 전체 787명 활성 풀" — `coaches_directory` 실측. 'Coach만 아님' 구현.
+
+### ✅ P7 — Inspector 안정화 (커밋 `a4d09f3`)
+- temp 0.3→0.1. `anchorCountableLenses` — statistics·quantitative-saturation 2 lens 를 코드 집계(정량 토큰·모호어)와 50:50 블렌드(변동↓ 정확도↑). ai-fallback Claude 분기 temperature 전달(provider 변동 fix).
+- thin-input(3슬롯) 캡스톤 Inspector 56(정직). 풀 12슬롯 시 상승. P3(keyMessages 45→59)로 바닥 이미 상승.
+
+### ◑ P8 — 당선본 대조 (섹션 레벨 완료 · full-PDF 보류)
+- 원본 PDF 는 Drive 에만(로컬 X) → line-by-line 보류. WinningPattern 102건은 섹션별 snippet 보유.
+- **섹션 레벨 당선 언어 대조**: NH 애그테크/GS리테일(당선) snippet 분석 → 당선본은 "800명 코치풀+520 글로벌파트너+농식품부·농진청 멘토 4중 지원" 식 **full business**(코치만 X) + 높은 정량 밀도. → P6/P7 방향과 일치 확인.
+- **잔여 갭**: 도메인 파트너 기관 **실명화**(농식품부·농진청 류). deep-research 가 surface 하나 본문 박힘 약함 — 후속 후보.
+
+---
+
 ## 10. M3 · P2 · 내러티브 — 완료 (2026-05-31 후속 세션)
 
 ### ✅ M3 — .pptx 파일 export (완료)
