@@ -31,7 +31,7 @@
   - 2026-04-15 Step 순서 재설계 / 2026-04-23 Impact Value Chain 5단계 (ADR-008, ⑤ Outcome = SROI 수렴점) / Step 4·5 재구성
 
 - **Tech**: Next.js 16 (App Router) + TypeScript + Prisma 7 + PostgreSQL
-- **DB**: **33개 모델** (ADR-012 완결, 2026-05-03 — 44 → 33), `prisma/schema.prisma` 참조
+- **DB**: **42개 모델** (`prisma/schema.prisma` 참조. ADR-012(33) 이후 Brain wave + P9·P11 WinningProposalDoc·WinningProposalChunk 등 추가 → 2026-06-01 기준 42)
 - **AI Primary**: Google Gemini 3.1 Pro Preview (`gemini-3.1-pro-preview`) — Phase L1 완료
 - **AI Fallback**: Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`)
 - **AI 단일 진입점**: `src/lib/ai-fallback.ts` `invokeAi(params)` (provider/model 중립)
@@ -63,7 +63,7 @@
 - `docs/archive/PRD-v5.0.md` — ⚠️ 아카이브. 비즈니스 룰·IMPACT·SROI만 참고
 
 ## 아키텍처 (꼭 읽어야 할 파일)
-- `prisma/schema.prisma` — 전체 데이터 모델 (44개)
+- `prisma/schema.prisma` — 전체 데이터 모델 (42개, 2026-06-01)
 - `src/lib/ai-fallback.ts` ⭐ — **invokeAi 단일 진입점 (Gemini Primary / Claude Fallback) — Phase L1**
 - `src/lib/ai/*` ⭐ — 8 모듈 (parser / parse-rfp / impact-goal / logic-model / curriculum-types / research / strategic-notes / proposal-section). 2026-05-03 claude.ts 단일 파일 1014줄에서 분할 후 shim 제거 완료.
 - `src/lib/express/` ⭐ — Express Track 코어 (schema·conversation·prompts·handoff·inspector — L2~L6)

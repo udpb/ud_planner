@@ -1,7 +1,7 @@
 # Alpha-Test Prep — 종합 정리 (K · L · M · N · O · P 전체)
 
 **작성**: 2026-05-31 (compact 직전 손실 방지용 마스터 문서)
-**브랜치**: `feat/alpha-test-prep` (HEAD `db9d569`, master 대비 26 커밋, 전부 push 완료)
+**브랜치**: `feat/alpha-test-prep` (master 대비 50+ 커밋, 전부 push 완료. K~P + P9~P12 + 15H-Phase1~2 누적)
 **PR**: [#52](https://github.com/udpb/ud_planner/pull/52)
 **누적 작업**: K1~K7 · L1~L5 · M0~M4 · N1~N5 · O0~O6 · P1 (모두 완료)
 
@@ -309,3 +309,43 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 - P12 OCR: lowText 13건 복구(0→7K~16K자) → RAG 재임베딩. WinningProposalChunk **2048 청크**(142 doc).
 - `npm run build` 프로덕션 빌드 통과 (세션 전체 변경 컴파일 OK).
 - 통합 캡스톤(P5~P11 전부 활성, RAG passages 포함): thin-input(3슬롯) **Inspector 65** (진행: 45→56→65), §4 코치풀 787→221 실측·평균경력 8년, 당선구조 ref(하나 소셜벤처) 활성, §7 실제 사업 인용, 자산ID 0. PASS.
+
+---
+
+## 15. 15H-Phase2 진행 중 + compact 전 정리 (2026-06-01)
+
+### ✅ Phase 2 — 평가위원 패널 품질 스윕 + 갭 fix (커밋 `8d58a06`)
+**하니스**: `scripts/eval-quality-sweep.ts` + `scripts/fixtures/eval-rfps.json`(6 RFP: B2G청년창업·B2B대기업CSR·renewal연속·문화행사·디지털전환·신중년). 각 RFP → produceUltimateDraft → **독립 LLM 평가위원 패널** 7차원 채점(logic·quant·concreteness·operations·winningLanguage·differentiation·fit). 결과 `scripts/eval-results/`(gitignore).
+
+**베이스라인 결과 (수정 前)**:
+- B2G-청년창업: 패널 **74** [보완필요] · 우리 Inspector 56
+- B2B-대기업CSR: 패널 **83** [당선권] · 우리 Inspector 59
+- ⭐ **외부 패널 > 우리 Inspector** (74/83 vs 56/59) → 우리 자가검증이 과도하게 엄격. 알파 결과물은 생각보다 양호.
+- 공통 최약점: **concreteness(62-65)** + **budget(간접비 28~38% 과다, '공공 감점·도덕성')**
+
+**적용한 갭 fix (infer-budget·coach-pool·produce-ultimate-draft)**:
+1. **간접비 과다 근본 fix**: 외주비(21.7%)+기타(12.1%)+미분류가 전부 '간접비'로 오분류였음 → 외주비=독립 직접비목(5번째), 기타→간접비(캡), 미분류→운영비. **채널별 간접비 상한(B2G 7·renewal 8·B2B 12%)+초과분 직접비 재배분**. 실측: 간접비 37.8→7%.
+2. **renewal 빈 예산 fix**: 채널 하드필터 제거 → 채널 선호(0.7x)+교차채널 fallback.
+3. **코치 비현실 fix**: '매칭 N명 전원 투입' → '전담 소수 정예(3~6인)+자문/예비 풀'.
+4. **구체성**: backfill 규칙에 월/주차 일정·거점/장소·협력기관 구체화 추가.
+
+### ⏳ 미완 (compact 후 15H-auto 재개 지점)
+- **재스윕 before/after 비교 미완**: 베이스라인 스윕 6/6 중 마지막 생성 중이었음. 재개 시:
+  1. `scripts/eval-results/` → `eval-results-baseline/` 로 mv (보관)
+  2. `NODE_OPTIONS=--conditions=react-server npx tsx scripts/eval-quality-sweep.ts --limit 3` (고친 파이프라인으로 핵심 3건 재생성)
+  3. baseline vs after 패널 점수 비교 — budget·concreteness lens 상승 확인
+- **Phase 3**: 당선본 실측 대조(RAG leak 제외 — winning-reference 에 excludeProjectName 옵션 추가 필요) + 회귀 테스트 + Inspector 안정화 재측정
+- **Phase 4**: 최종 종합 리포트
+
+### 🔧 발견한 stale (정리 완료/예정)
+- journey 헤더 HEAD 표기 갱신 ✅
+- CLAUDE.md 모델 수: "33개/44개" 표기 → **실제 42개**(P9·P11로 +2: WinningProposalDoc·Chunk). CLAUDE.md 갱신 ✅
+- (지속 점검 필요): 세션마다 tsc + 회귀 테스트(test-pptx-all-patterns·test-slidespec-clamp 등 no-LLM) + stale 문서 확인 습관화 — 사용자 지시(2026-06-01).
+
+### 📊 자산 현황 (이 세션 누적)
+- WinningProposalDoc **148건**(당선 full-text, B2G 113·B2B 12·renewal 1·null 22) · WinningProposalChunk **2048 청크**(RAG)
+- 코치 풀 787명 활성 · 평가위원 패널 하니스 가동
+- 검증 스크립트: test-pptx-build/route-flow/all-patterns/fit · test-coherence-flow · test-capstone-e2e · test-slidespec-clamp · eval-quality-sweep
+
+### ▶ compact 후 재개 한 줄
+> "15시간 auto 재개 — docs/journey/2026-05-31-alpha-test-prep-MASTER.md §15 의 미완 지점(재스윕 비교 → Phase3 → Phase4)부터. 가드레일 동일(feat 브랜치·작은 commit·모호한 판단은 리포트)."
