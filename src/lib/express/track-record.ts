@@ -8,9 +8,10 @@
  *   - 매칭 한도 (default: top-5 유사 사업)
  *
  * 흐름:
- *   1. DB 의 WinningPattern (102+건) 에서 channelType 일치 + keywords 부분 매칭
- *   2. ContentAsset (assetType='case', 153건) 에서 narrativeSnippet 도메인 매칭
- *   3. 합쳐서 score 정렬 → top-5 (또는 입력 limit)
+ *   1. DB 의 WinningPattern (102+건) 에서 channelType 일치 + keywords 부분 매칭 → top-N 유사 당선 사업
+ *   2. ContentAsset (assetType='case' — W12 결과보고서) 에서 keyword 매칭 → 실측 지표·교훈 (P6 fix:
+ *      기존엔 docstring 만 약속하고 코드는 WinningPattern 만 조회하던 버그 해소)
+ *   3. Gemini 1 호출로 §7 본문 — 유사 당선 사업 + 결과보고서 실측 KPI + 누적 실적
  *   4. Gemini 1 호출로 sections.7 본문 생성:
  *      - 누적 실적 통계 (UD_TRACK_RECORD)
  *      - 유사 사업 5건 (정량 KPI + sourceProject)
@@ -127,6 +128,47 @@ export async function generateTrackRecord(
     .sort((a, b) => b.similarityScore - a.similarityScore)
     .slice(0, limit)
 
+  // 1.5 결과보고서(case ContentAsset) — 유사 사업의 실측 지표·레슨런 (W12 적재).
+  //   기존: docstring 은 약속했으나 코드는 WinningPattern 만 조회 → 결과보고서 데이터 누락 버그.
+  //   이제 §7 에 "실제로 이런 성과를 냈다" 정량 KPI + 교훈을 함께 인용.
+  let resultReportLines = ''
+  const resultCitations: string[] = []
+  try {
+    const caseAssets = await prisma.contentAsset.findMany({
+      where: {
+        assetType: 'case',
+        status: { not: 'archived' },
+        ...(keywordPattern
+          ? {
+              OR: keywords.flatMap((kw) => [
+                { name: { contains: kw, mode: 'insensitive' as const } },
+                { narrativeSnippet: { contains: kw, mode: 'insensitive' as const } },
+              ]),
+            }
+          : {}),
+      },
+      select: { id: true, name: true, narrativeSnippet: true, keyNumbers: true, evidenceType: true },
+      // 정량 지표(quantitative) 우선 — 실측 KPI 가 가장 설득력
+      orderBy: { evidenceType: 'asc' },
+      take: limit * 2,
+    })
+    const formatted = caseAssets.slice(0, limit).map((a, i) => {
+      const nums = Array.isArray(a.keyNumbers)
+        ? (a.keyNumbers as unknown[])
+            .map((k) => (typeof k === 'object' && k !== null && 'value' in k
+              ? `${(k as { value: string }).value}${'unit' in k ? (k as { unit?: string }).unit ?? '' : ''}`
+              : String(k)))
+            .slice(0, 6)
+            .join(' · ')
+        : ''
+      resultCitations.push(a.name)
+      return `${i + 1}. ${a.name}${nums ? ` — 실측: ${nums}` : ''}\n   ${(a.narrativeSnippet ?? '').slice(0, 220)}`
+    })
+    if (formatted.length > 0) resultReportLines = formatted.join('\n')
+  } catch (e) {
+    console.warn('[track-record] 결과보고서(case) 조회 실패 — WinningPattern 만 사용:', e instanceof Error ? e.message : e)
+  }
+
   // 2. Gemini 호출로 sections.7 본문 생성
   const r = UD_TRACK_RECORD
   const similarList = similarProjects
@@ -148,7 +190,7 @@ ${rfp.projectName ?? '(미상)'}
 
 [유사 사업 ${similarProjects.length}건 — 모두 당선 (won)]
 ${similarList || '(매칭 없음)'}
-
+${resultReportLines ? `\n[유사 사업 결과보고서 — 실제 달성 지표·교훈 (직접 인용 권장)]\n${resultReportLines}\n` : ''}
 [언더독스 누적 실적 (UD_TRACK_RECORD)]
 - ${r.yearsActive}년 운영 · 누적 수주 ${r.cumulativeRevenueBillions}억원+
 - 운영 프로그램 ${r.programsConducted}건 · 청년 창업가 ${r.totalGraduates.toLocaleString()}명
@@ -183,6 +225,9 @@ ${similarList || '(매칭 없음)'}
    - 위 ${similarProjects.length}건 사업명을 본문에 1~2개 실명 인용 (예: "A.25.0046 창업아이디어 빌드UP 캠프 실적 ...")
    - 정량 결과 (snippet 의 핵심 수치) 자연스럽게 박기
    - 동일 채널 (${channel}) 사업 인용으로 발주처 신뢰도 ↑
+${resultReportLines ? `
+5. **결과보고서 실측 지표 활용** ⭐ — 위 [결과보고서] 블록의 실제 달성 수치(참여자·만족도·수료율·매출 등)
+   를 1~2개 본문에 직접 인용. "유사 사업에서 실제로 N% 달성" 식으로 — 약속이 아닌 검증된 성과로.` : ''}
 
 [출력 JSON]
 {
@@ -204,16 +249,16 @@ JSON 만. 설명·마크다운 펜스 없이.
     const validated = TrackRecordResultSchema.safeParse(raw)
     if (!validated.success || !validated.data.sectionText) {
       console.warn('[track-record] zod 검증 실패 → fallback')
-      return { sectionText: buildFallback(similarProjects), citedSources: similarProjects.map((p) => p.sourceProject), similarProjects }
+      return { sectionText: buildFallback(similarProjects), citedSources: [...similarProjects.map((p) => p.sourceProject), ...resultCitations], similarProjects }
     }
     return {
       sectionText: validated.data.sectionText,
-      citedSources: similarProjects.map((p) => p.sourceProject),
+      citedSources: [...similarProjects.map((p) => p.sourceProject), ...resultCitations],
       similarProjects,
     }
   } catch (err) {
     console.warn('[track-record] LLM 실패 → fallback:', err)
-    return { sectionText: buildFallback(similarProjects), citedSources: similarProjects.map((p) => p.sourceProject), similarProjects }
+    return { sectionText: buildFallback(similarProjects), citedSources: [...similarProjects.map((p) => p.sourceProject), ...resultCitations], similarProjects }
   }
 }
 

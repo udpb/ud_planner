@@ -39,6 +39,7 @@ import type { AssetMatch } from '@/lib/asset-registry'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 // Phase I — 자동 채움 capabilities
+import { summarizeCoachPool } from './coach-pool-summary'
 import { generateTrackRecord } from './track-record'
 import { inferBudgetBreakdown } from './infer-budget'
 import { fetchExternalEvidence, formatResearchForPrompt } from './deep-research'
@@ -144,6 +145,15 @@ export async function produceUltimateDraft(
     limit: 3,
   })
   progress('2.4/9', `완료 ${((Date.now() - t24) / 1000).toFixed(1)}s · openings ${toneProfile.openings?.length ?? 0} · avoidedWords ${toneProfile.avoidedWords?.length ?? 0}`)
+
+  // ────────────────────────────────────
+  // Step 2.7: 코치/연사 풀 깊이 집계 (P6, no LLM — Supabase coaches_directory)
+  //   "Coach만 있는게 아니야" — 사업 도메인 매칭 코치 풀 깊이를 §4·운영에 실데이터로 투입.
+  //   Supabase 미가용 시 graceful(promptLine='') — 호출부는 일반 문구로 degrade.
+  // ────────────────────────────────────
+  const t27 = Date.now()
+  const coachPool = await summarizeCoachPool(rfp)
+  progress('2.7/9', `코치 풀: 활성 ${coachPool.totalActive}명 · 도메인 매칭 ${coachPool.matchedCount}명 (${((Date.now() - t27) / 1000).toFixed(1)}s)`)
 
   // ────────────────────────────────────
   // Step 2.5: 외부 딥리서치 (Phase I3, 1 LLM)
@@ -274,16 +284,17 @@ export async function produceUltimateDraft(
 발주처: ${rfp.client ?? '(미상)'} · 채널: ${channel}
 목표: ${(rfp.objectives ?? []).slice(0, 5).join(' / ') || '(미상)'}
 키워드: ${(rfp.keywords ?? []).slice(0, 8).join(', ') || '(미상)'}
-대상: ${rfp.targetAudience ?? '(미상)'}
+대상: ${rfp.targetAudience ?? '(미상)'}${rfp.targetCount ? ` (정원 ${rfp.targetCount}명)` : ''}${rfp.targetStage && rfp.targetStage.length ? ` · 단계 ${rfp.targetStage.join('·')}` : ''}
 ${draft.intent ? `사업 정체성: ${draft.intent}` : ''}
 ${draft.sections?.['1'] && sec.n !== '1' ? `\n[참고 — 이미 작성된 §1 제안배경]\n${draft.sections['1'].slice(0, 500)}` : ''}
+${sec.n === '4' && coachPool.promptLine ? `\n[운영 인력 — 실측 코치/연사 풀 (집합 통계, 실명 X)]\n${coachPool.promptLine}\n→ '코치만'이 아니라 도메인 코치·외부 연사 풀 깊이 + PMO·보고·리스크 관리로 안정적 운영을 보여줄 것.` : ''}
 
 [작성 규칙]
 1. 본문 500~900자, 경어체(~합니다)
 2. Pyramid — 결론(핵심 메시지) 먼저, 근거 뒤
 3. 발주처 키워드 자연스럽게 흡수
 4. 추상적 나열 X — 단계·항목·정량 구체화
-5. 회사명 비교 금지
+5. 회사명 비교 금지${sec.n === '4' ? '\n6. 운영 섹션: 사람(도메인 코치·외부 연사 풀) + 운영(PMO·보고·리스크·장소) + 결과보고 체계까지 — 사업을 안정적으로 굴리는 힘을 보여줄 것' : ''}
 
 [출력 JSON]
 { "sectionText": "<sections.${sec.n} 본문 — 500~900자>" }
