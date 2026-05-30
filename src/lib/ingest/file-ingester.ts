@@ -119,6 +119,10 @@ function inferExt(s: string): string {
 
 function clean(s: string): string {
   return s
+    // NUL·제어문자 제거 — Postgres TEXT 는 0x00 거부(일부 PDF 추출물에 섞임).
+    // 이 한 줄이 없어 당선 제안서 14건이 'invalid byte sequence 0x00' 으로 저장 실패했음.
+    // \t\n\r 은 보존, 나머지 C0 제어문자 + DEL + NUL 제거.
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
     .replace(/\r\n/g, '\n')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')

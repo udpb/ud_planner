@@ -81,3 +81,6 @@ guidebook-site/site/
 .tmp-*.ts
 .tmp-*.json
 design-kit/diagram-samples/
+
+# 당선 full-text 학습 런 로그 (산출물 — 커밋 X)
+learn-fulltext*.log
