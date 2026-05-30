@@ -40,6 +40,7 @@ import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 // Phase I — 자동 채움 capabilities
 import { summarizeCoachPool } from './coach-pool-summary'
+import { findWinningReference } from './winning-reference'
 import { generateTrackRecord } from './track-record'
 import { inferBudgetBreakdown } from './infer-budget'
 import { fetchExternalEvidence, formatResearchForPrompt } from './deep-research'
@@ -154,6 +155,16 @@ export async function produceUltimateDraft(
   const t27 = Date.now()
   const coachPool = await summarizeCoachPool(rfp)
   progress('2.7/9', `코치 풀: 활성 ${coachPool.totalActive}명 · 도메인 매칭 ${coachPool.matchedCount}명 (${((Date.now() - t27) / 1000).toFixed(1)}s)`)
+
+  // ────────────────────────────────────
+  // Step 2.8: 유사 당선 제안서 구조 레퍼런스 (P9, no LLM — WinningProposalDoc full-text)
+  //   학습한 당선 제안서에서 본 RFP 와 유사한 1건의 목차·발췌 → 생성에 구조 레퍼런스로 투입.
+  //   (베끼기 X — 흐름·구성·운영관리·행사 구성 골격만 학습)
+  // ────────────────────────────────────
+  const winningRef = await findWinningReference(rfp, { channel })
+  if (winningRef.projectName) {
+    progress('2.8/9', `당선 구조 참고: "${winningRef.projectName.slice(0, 30)}" (목차 ${winningRef.outline.length}항)`)
+  }
 
   // ────────────────────────────────────
   // Step 2.5: 외부 딥리서치 (Phase I3, 1 LLM)
@@ -287,6 +298,7 @@ export async function produceUltimateDraft(
 대상: ${rfp.targetAudience ?? '(미상)'}${rfp.targetCount ? ` (정원 ${rfp.targetCount}명)` : ''}${rfp.targetStage && rfp.targetStage.length ? ` · 단계 ${rfp.targetStage.join('·')}` : ''}
 ${draft.intent ? `사업 정체성: ${draft.intent}` : ''}
 ${draft.sections?.['1'] && sec.n !== '1' ? `\n[참고 — 이미 작성된 §1 제안배경]\n${draft.sections['1'].slice(0, 500)}` : ''}
+${winningRef.promptBlock ? `\n${winningRef.promptBlock}` : ''}
 ${sec.n === '4' && coachPool.promptLine ? `\n[운영 인력 — 실측 코치/연사 풀 (집합 통계, 실명 X)]\n${coachPool.promptLine}\n→ '코치만'이 아니라 도메인 코치·외부 연사 풀 깊이 + PMO·보고·리스크 관리로 안정적 운영을 보여줄 것.` : ''}
 
 [작성 규칙]
