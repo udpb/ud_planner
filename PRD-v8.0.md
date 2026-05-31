@@ -39,7 +39,7 @@ v7.1 (2026-04-29) 발행 직후 4일 (2026-04-30 ~ 2026-05-03) 동안:
 | **외부 LLM 카드** | 5건 | **2~3건만 (정부 통계·발주처 공식 문서·시장 데이터)** | ADR-013 |
 | **사이드바 UI** | 5+ 카드 분산 | **행동 흐름 4 패널 (다음 액션·자동 진단·외부 LLM·진행률)** | ADR-013 |
 | **의사결정 컨펌** | slot filling 흐름 | **+ 4 마일스톤 컨펌 (채널·솔루션·조립·검수)** | ADR-013 |
-| **Prisma 모델** | 36개 | **33개** (ADR-012 완결: 11개 정리) | ADR-012 |
+| **Prisma 모델** | 36개 | **42개** (ADR-012 33 → 이후 Brain wave·P9 WinningProposalDoc·P11 WinningProposalChunk 등 +9, 2026-06-01) | ADR-012+ |
 | **Coach DB source** | GitHub coaches-db | **Supabase coaches_directory (coach-finder 동기)** | Phase 4-coach-integration |
 | **/admin/metrics** | 4 카드 | **6 카드** (Validation + evalCriteria + isBidWon 피드백) | Phase 3 |
 | **Sentry / Analytics** | 미통합 | **통합** (Vercel Analytics + Speed Insights + Sentry hook) | Phase 3 |
@@ -168,7 +168,7 @@ src/components/express/sidebar/channel/
 - `src/lib/proposal-ai.ts` (PipelineContext 기반)
 - `src/lib/coaches/supabase-source.ts` (715명 동기)
 - `src/lib/asset-registry.ts` (Phase G/H)
-- `prisma/schema.prisma` (33 모델, ADR-012 완결)
+- `prisma/schema.prisma` (42 모델, 2026-06-01 — ADR-012 33 + Brain wave·P9·P11 등)
 
 ---
 
@@ -280,7 +280,7 @@ src/components/express/sidebar/channel/
 | AI Primary | Google Gemini 3.1 Pro Preview |
 | AI Fallback | Claude Sonnet 4.6 |
 | 단일 진입점 | `invokeAi()` (src/lib/ai-fallback.ts) |
-| DB | Neon PostgreSQL (ap-southeast-1) — 33 모델 |
+| DB | Neon PostgreSQL (ap-southeast-1) — 42 모델 (2026-06-01) |
 | Coach Source | Supabase coaches_directory (coach-finder 동기, 715명) |
 | 인증 | NextAuth v5 JWT (Google OAuth + @udimpact.ai Credentials) |
 | Hosting | Vercel (icn1 region) |

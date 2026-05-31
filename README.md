@@ -42,9 +42,9 @@ npm run dev
 | 문서 | 역할 | 언제 |
 |---|---|---|
 | **[HANDOVER.md](HANDOVER.md)** ⭐⭐⭐ | 인수인계서 — 시스템 정체성·데이터 모델·user flow·API·점검 결과 | **새 개발자 첫 진입** |
-| **[PRD-v7.0.md](PRD-v7.0.md)** | 단일 진실 원본 (v7.1 운영 마일스톤) | 결정 근거 찾을 때 |
+| **[PRD-v8.0.md](PRD-v8.0.md)** | 단일 진실 원본 (v8.0 Express 2.0 — AI 자동 진단·채널 분기, ADR-013) | 결정 근거 찾을 때 |
 | **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** ⭐ | User flow ASCII 다이어그램 | 흐름 이해할 때 |
-| **[STATE.md](STATE.md)** | 현재 진행 한 눈에 | 매 세션 시작 |
+| **[ROADMAP.md](ROADMAP.md)** + **[docs/journey/2026-05-31-alpha-test-prep-MASTER.md](docs/journey/2026-05-31-alpha-test-prep-MASTER.md)** | 현재 진행 한 눈에 (라이브) | 매 세션 시작 |
 | **[ROADMAP.md](ROADMAP.md)** | Phase A~J 체크리스트 | 다음 작업 결정 |
 | **[CLAUDE.md](CLAUDE.md)** | 개발 규칙·디자인 시스템 | AI 협업 시 |
 | **[LESSONS.md](LESSONS.md)** | 시행착오 케이스 | 이상한 일 발생 시 먼저 |
@@ -85,7 +85,10 @@ npm run dev
 
 ---
 
-## 📊 진행 상태 (2026-04-29 최종)
+## 📊 진행 상태
+
+> ⚠️ 아래 표는 2026-04-29 스냅샷(Phase A~L). 이후 Phase M·Wave N·M-Impact·C·P·Q·U + Brain(Sphere2) + alpha-test-prep(Express 1차본 품질 루프·당선 RAG·도식화 PPT) 완료.
+> **현재 상태는 [ROADMAP.md](ROADMAP.md) + [journey MASTER](docs/journey/2026-05-31-alpha-test-prep-MASTER.md) 참조.**
 
 | Phase | 이름 | 상태 |
 |---|---|---|

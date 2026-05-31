@@ -349,3 +349,39 @@ curl -X POST http://localhost:3002/api/dev/ultimate-draft \
 
 ### ▶ compact 후 재개 한 줄
 > "15시간 auto 재개 — docs/journey/2026-05-31-alpha-test-prep-MASTER.md §15 의 미완 지점(재스윕 비교 → Phase3 → Phase4)부터. 가드레일 동일(feat 브랜치·작은 commit·모호한 판단은 리포트)."
+
+---
+
+## 16. 15H-Phase2 품질 루프 완결 (2026-06-01, compact 후) ⭐
+
+§15 의 "미완(재스윕 before/after)" **해소 완료**. 품질 루프 1.5바퀴 돌렸고, iteration-2 가 역효과여서 되돌림 — 루프가 제대로 작동한 사례.
+
+### ✅ iteration-1 검증 (`8d58a06`) — 재스윕 6/6 before/after
+| lens | baseline(수정前) | after(8d58a06) | Δ |
+|---|---|---|---|
+| **패널 평균** | 77 | **83** | +6 |
+| concreteness | 61 | 73 | **+12** |
+| operations | 74 | 83 | **+9** |
+| differentiation | 76 | 83 | **+7** |
+| 간접비(B2G 실측) | 28~38% | **7%** | 캡 작동 |
+- 2건 당선권 진입: B2B-CSR 83→**91**, 청년창업 74→**86**. 간접비 캡 전 채널 검증(B2B 12·B2G 7·renewal 6.7%, 전부 상한 내).
+- 비교 유틸 신설: `scripts/eval-compare.mjs` (before/after lens·RFP·간접비% delta 표, 순수 JSON read).
+
+### ⚠️ iteration-2 (`4760920`) — 역효과 → revert (`503d0f9`)
+- 시도: ① concreteness 섹션별 구조화 스캐폴드(§3 "주차—활동—산출물 4~6행" 등) ② 예산 본문 내부 추정용어('정규화'·zero-imputation) 누출 차단.
+- **재스윕 결과: 패널 83→79(↓4), concreteness 73→65(↓8)** — 노린 lens 가 오히려 하락, 5/6 RFP 하락.
+- **원인 (청년창업 §3 직접 대조, 86→76)**: 8d58a06 의 *한 줄* 규칙이 이미 "천안·아산 거점·4~8월 월단위·VC10인 IR 3회"식 **자연스러운 산문 구체성**을 만들고 있었는데, "4~6행 표" 강제가 이를 **경직된 대괄호 리스트로 퇴화**시켜 거점 실명·월 디테일을 잃음.
+- **결정**: produce-ultimate-draft 를 8d58a06(검증본)으로 정확 revert. **jargon 차단은 유지**(infer-budget — iter2 재스윕서 누출 0 확인, 채점에 무해).
+- ⭐ **교훈**: *과도한 프롬프트 규정 < 자연스러운 산문 유도*. LLM 이 이미 잘 하는 영역을 구조 강제로 누르면 역효과. 측정 없이 직관으로 밀어붙였으면 모르고 배포할 뻔. → [[feedback_first_principle]] 의 "구체성" 은 산문 안에 녹여야지 표로 강제 X.
+
+### 🔧 현재 코드 상태 (fresh start 기준선)
+- **검증된 최적 = 8d58a06(패널 83) + infer-budget jargon 차단(`4760920` 중 유지분)**. HEAD `503d0f9`.
+- tsc clean · 회귀 green(P2 8패턴·P4 clamp) · npm build 통과(Phase1).
+
+### 📌 iteration-3 후보 (미착수 — 기록만)
+- **섹션 제목 프로그램 유형 적응형**: §3 "교육 커리큘럼"·§4 "운영 체계 및 코치진" 이 `schema.ts:210 SECTION_LABELS` 에 교육 중심 하드코딩 → 축제·행사 RFP 에 "교육 커리큘럼" 헤딩이 박혀 주객전도(문화행사 fit 68). **사용자 핵심 피드백("커리큘럼이 아니라 사업을 잘 만드는 것")과 직결.**
+  - ⚠️ **하니스 충실도 갭**: `eval-quality-sweep` 의 PANEL_PROMPT 은 본문만 보고 섹션 *제목*은 안 보냄 → 이 개선은 **실제 PM 산출물엔 중요하나 현 eval 로는 측정 안 됨**. 제목 적응형 적용 시 하니스도 제목 포함하도록 보강해야 측정 가능.
+- 강사료 floor(교육형 사업에서 8% 미만이면 상향) · 남은 lowText 3건(HWP 1+소형 2).
+
+### ▶ fresh 세션 재개 한 줄
+> "Express 1차본 품질 = 평가위원 패널 평균 83(검증). 코드 기준선 HEAD `503d0f9`(8d58a06+jargon). 다음은 iteration-3(섹션 제목 유형 적응형 — 단 하니스 제목 미반영 갭 먼저 해결) 또는 Phase3(당선본 실측 대조). 품질 루프: `eval-quality-sweep` 생성 → 패널 채점 → `eval-compare.mjs` before/after. 교훈: 구체성은 산문으로, 표 강제 X."

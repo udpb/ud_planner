@@ -385,9 +385,8 @@ npm run build        # prisma generate + next build
 
 ```bash
 npx tsx scripts/smoke-test-phase-e.ts    # Phase E Control vs Treatment 비교
-npx tsx scripts/simulate-pm-guide.ts     # PM 가이드 시뮬레이터
-npx tsx scripts/verify-db.ts             # DB 시드 무결성
 npx tsx scripts/sync-coaches.ts          # 코치풀 동기화
+npx tsx scripts/eval-quality-sweep.ts    # 평가위원 패널 품질 스윕 (alpha-test-prep)
 ```
 
 스모크는 실제 Claude API 호출 → 비용 발생. 의도한 시점에만.
@@ -458,7 +457,11 @@ npm run db:studio
 
 ---
 
-## 12. Express Mode 진입 흐름 (v7 신규)
+## 12. Express Mode 진입 흐름 (v7 신규 · v8.0 Express 2.0 로 진화)
+
+> ⚠️ 이 절은 Express v1(L0~L6) 기준. 이후 **Express 2.0(ADR-013, 2026-05-03)** 로 진화 —
+> AI 자동 진단 4종(ChannelDetector·FramingInspector·FactCheckLight·LogicChainChecker)·채널 분기·외부 LLM 최소화·사이드바 4 패널.
+> 현재 진입 흐름은 [docs/architecture/express-mode.md](docs/architecture/express-mode.md) v2.0 + [PRD-v8.0.md](PRD-v8.0.md) 참조.
 
 > Phase L 진행 중 또는 Express 관련 작업 시 §2~§9 와 *병행* 적용. Express 는 Deep Track 6 스텝과 다른 정체.
 
@@ -572,5 +575,4 @@ L3·L4·L5 는 L2 만 끝나면 병렬. L6 는 마지막.
 
 - `scripts/print-worktree.cjs` — predev 훅
 - `scripts/smoke-test-phase-e.ts` — Phase E Control/Treatment 비교
-- `scripts/simulate-pm-guide.ts` — PM 가이드 시뮬레이터
-- `scripts/verify-db.ts` — 시드 무결성 검사
+- `scripts/eval-quality-sweep.ts` · `scripts/eval-compare.mjs` — 평가위원 패널 품질 스윕 + before/after 비교
