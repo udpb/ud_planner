@@ -87,5 +87,5 @@ learn-fulltext*.log
 
 # 평가위원 품질 스윕 결과 (런 산출물)
 scripts/eval-results/
-eval-results-baseline/
+eval-results-*/
 eval-sweep.log
