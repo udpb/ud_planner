@@ -178,7 +178,7 @@ export async function inferBudgetBreakdown(
         category: cat,
         amount,
         percentage: Math.round(avgNormalized * 1000) / 10, // 1 decimal
-        rationale: `유사 ${validProjectCount}건 사업 평균 ${(avgNormalized * 100).toFixed(1)}% (채널 ${channel})`,
+        rationale: `${validProjectCount > 0 ? `유사 ${validProjectCount}건 사업 평균` : '표준 비목'} ${(avgNormalized * 100).toFixed(1)}% (채널 ${channel})`,
       })
     }
   }
@@ -229,7 +229,7 @@ export async function inferBudgetBreakdown(
 대상: ${rfp.targetAudience ?? '(미상)'}
 채널: ${channel}
 
-[자동 산출 비목 (유사 ${validProjectCount}건 사업 평균 기반 · zero-imputation 후 정규화)]
+[자동 산출 비목 (${validProjectCount > 0 ? `유사 ${validProjectCount}건 사업 평균 비율 기반` : '표준 비목 구조 기반'})]
 ${breakdownLines || '(데이터 없음)'}
 
 ──────────────────────────────
@@ -245,12 +245,14 @@ ${breakdownLines || '(데이터 없음)'}
    - 각 bullet: "- 비목: 금액 (비율%) — 산출 근거 한 줄"
 
 3. **정당화 톤**:
-   - "유사 ${validProjectCount}건 평균" 강조 (객관성)
+   - ${validProjectCount > 0 ? `"유사 ${validProjectCount}건 평균" 강조 (객관성)` : '"유사 사업 평균 비율" 강조 (객관성)'}
    - 정부 가이드라인 준수 명시
    - "PM 보완 권장 — 세부 산출 내역서로 정확 산정" 마지막에
 
 4. **inline source citation**:
    - 1~2건만 — "[근거: 언더독스 N건 유사 사업 평균 비목 분석 | 2025]" 형식
+
+5. **금지 — 내부 추정 용어 노출**: '정규화·임퓨테이션·zero-imputation·표준편차·데이터 N건' 등 통계/방법론 용어를 본문에 절대 쓰지 말 것. 발주처가 읽는 문서다. 예산 근거는 "유사 사업 평균", "정부 예산 편성 지침 준수" 같은 발주처 친화 표현만.
 
 [출력 JSON]
 {
