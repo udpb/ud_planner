@@ -1,6 +1,9 @@
 # UD-Ops 파이프라인 재설계 로드맵
 
-> 상세 설계: [REDESIGN.md](REDESIGN.md) · **[PRD-v8.0.md](PRD-v8.0.md)** ⭐⭐ (단일 진실 원본, v8.0 2026-05-03 — Express 2.0)
+> ⚠️ **STALE (2026-05-19 시점).** Phase A~L + Wave U 까지만 반영. 이후 Brain Sphere-2·alpha-test·과업 레이어(ADR-019)·운영 인프라(ADR-020) 미반영.
+> **현재 상태 정본 = [HANDOFF.md](HANDOFF.md) + [docs/HISTORY.md](docs/HISTORY.md).** 본 문서는 Phase/Wave **이력 참조용**.
+>
+> 상세 설계: [docs/archive/REDESIGN.md](docs/archive/REDESIGN.md) (아카이브) · **[PRD-v8.0.md](PRD-v8.0.md)** (Express 2.0 PRD)
 > 아키텍처 골격: [docs/architecture/](docs/architecture/) (modules · data-contract · ingestion · quality-gates · **value-chain** · program-profile · asset-registry · content-hub · **express-mode v2.0** ⭐)
 > 의사결정 기록: [docs/decisions/](docs/decisions/) (ADR-001~**013** + Wave 명명 사전 §아래)
 > 마지막 업데이트: **2026-05-19** (Wave N·M-Impact·C·P·Q·**U**+후속 완료 + **Wave V 결정 (ADR-015 — Express+Deep 완전 통합 + AI 자동 채움)** 단계별 진행 대기)

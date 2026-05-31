@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { processTurn } from '@/lib/express/process-turn'
 import { ExpressDraftSchema, emptyDraft } from '@/lib/express/schema'
 import { ConversationStateSchema, emptyConversation } from '@/lib/express/conversation'
@@ -59,6 +60,10 @@ export async function POST(req: NextRequest) {
       )
     }
     const { projectId, pmInput, forceSlot, firstTurn } = parsed.data
+
+    // 권한 — 본인 또는 미배정 프로젝트 (save/route.ts 패턴 미러)
+    const access = await requireProjectAccess(projectId)
+    if (!access.ok) return access.response!
 
     // 프로젝트 조회 (RFP·ProgramProfile·기존 draft)
     const project = await prisma.project.findUnique({

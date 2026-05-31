@@ -2,7 +2,7 @@
 
 > **Status**: Draft v1 (2026-05-26)
 > **Scope**: Sphere 2 (AI 두뇌) 의 deep architecture — 단순 자산 매칭을 넘어 **온톨로지·자가 강화·자기 인식** 까지 갖춘 완성된 brain 의 명세.
-> **Companion**: PRD-v11.0.md §4 (Sphere 2) — 본 문서는 그 §4 의 5-Layer deep-dive.
+> **Companion**: PRD-v8.0.md §4 (Sphere 2) — 본 문서는 그 §4 의 5-Layer deep-dive.
 
 ---
 
@@ -698,6 +698,6 @@ W18 안에 Express UI 의 최소 endpoint 포함 — 데이터 source 와 묶음
 ---
 
 > **Companion Documents**:
-> - [PRD-v11.0.md](PRD-v11.0.md) — 전체 제품 (Express + Deep + Sphere 2)
+> - [PRD-v8.0.md](PRD-v8.0.md) — 전체 제품 (Express + Deep + Sphere 2)
 > - [docs/architecture/](docs/architecture/) — 아키텍처 9문서
 > - [ROADMAP.md](ROADMAP.md) — Phase + Wave 체크리스트

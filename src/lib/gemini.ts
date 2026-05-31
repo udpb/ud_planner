@@ -1,18 +1,25 @@
 /**
- * Gemini 통합 모듈 (L1, 2026-04-27)
+ * Gemini 통합 모듈 (L1, 2026-04-27 · @google/genai 마이그레이션 ADR-023, 2026-06-01)
  *
  * 역할:
- *   - Google Generative AI SDK 래핑
- *   - 기본 모델: gemini-3.1-pro (사용자 지정, ENV `GEMINI_MODEL` 로 override)
- *   - Claude 와 동일 인터페이스 — 호출자가 wrapper(ai-fallback)에서 자동 전환 가능
+ *   - Google Gen AI SDK(`@google/genai`, GA) 래핑 — 구 `@google/generative-ai`(EOL) 대체
+ *   - 기본 모델: gemini-3.1-pro-preview (사용자 지정, ENV `GEMINI_MODEL` 로 override)
+ *   - `invokeAi`(ai-fallback) 가 이 모듈을 단일 진입점으로 사용. 2-tier 라우팅은
+ *     `params.model` override 로 Flash 호출(ADR-022).
  *
  * ENV:
  *   GEMINI_API_KEY  필수 — 미설정 시 모듈 사용 시 throw
- *   GEMINI_MODEL    선택 — 기본 'gemini-3.1-pro'
+ *   GEMINI_MODEL    선택 — 기본 'gemini-3.1-pro-preview'
+ *
+ * thinking 모델 주의:
+ *   Gemini 3.x 는 thinking 모델 — 출력 예산을 thinking 과 나눈다. maxOutputTokens 를
+ *   충분히 주지 않으면 빈 응답이 나온다(thinking 만 하고 답을 못 냄). usageMetadata 의
+ *   thoughtsTokenCount 를 로깅해 모니터링.
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 import { AI_TOKENS } from './ai/config'
+import { log } from './logger'
 
 /**
  * 기본 모델 (2026-04-27).
@@ -25,35 +32,34 @@ import { AI_TOKENS } from './ai/config'
  */
 export const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-3.1-pro-preview'
 
-let _client: GoogleGenerativeAI | null = null
+let _client: GoogleGenAI | null = null
 
-function getClient(): GoogleGenerativeAI {
+function getClient(): GoogleGenAI {
   if (_client) return _client
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) {
     throw new Error('[gemini] GEMINI_API_KEY 환경변수 미설정. .env 에 추가하세요.')
   }
-  _client = new GoogleGenerativeAI(apiKey)
+  _client = new GoogleGenAI({ apiKey })
   return _client
 }
 
 /**
  * Gemini 단일 호출 — 텍스트 입력 → 텍스트 출력.
- * Claude wrapper 와 동일 시그니처.
  */
 export interface GeminiInvokeParams {
   prompt: string
-  /** 최대 출력 토큰 (기본 16384 — Claude 와 동일 정책) */
+  /** 최대 출력 토큰 (기본 AI_TOKENS.LARGE) */
   maxTokens?: number
   /** 온도 (기본 0.4) */
   temperature?: number
-  /** 모델명 override */
+  /** 모델명 override (2-tier·Flash 라우팅) */
   model?: string
 }
 
 export interface GeminiInvokeResult {
   raw: string
-  /** 사용 토큰 추정 (정확치 X) */
+  /** 사용 토큰 (정확치 X, usageMetadata 기반) */
   inputTokens?: number
   outputTokens?: number
   model: string
@@ -61,30 +67,40 @@ export interface GeminiInvokeResult {
 
 export async function invokeGemini(params: GeminiInvokeParams): Promise<GeminiInvokeResult> {
   const modelName = params.model ?? GEMINI_MODEL
-  const client = getClient()
-  const model = client.getGenerativeModel({
+  const ai = getClient()
+
+  const res = await ai.models.generateContent({
     model: modelName,
-    generationConfig: {
+    contents: params.prompt,
+    config: {
+      // thinking 모델 — 충분한 출력 예산으로 빈 응답 방지
       maxOutputTokens: params.maxTokens ?? AI_TOKENS.LARGE,
       temperature: params.temperature ?? 0.4,
     },
   })
 
-  const result = await model.generateContent(params.prompt)
-  const response = result.response
-  const text = response.text()
+  const text = res.text ?? ''
+  const usage = res.usageMetadata
+
+  // thinking 모델 모니터링 — thoughtsTokenCount 가 출력 예산을 잠식하면 빈 응답 위험
+  if (usage?.thoughtsTokenCount) {
+    log.debug('ai', 'Gemini thinking 토큰', {
+      model: modelName,
+      thoughts: usage.thoughtsTokenCount,
+      output: usage.candidatesTokenCount,
+    })
+  }
 
   return {
     raw: text,
-    inputTokens: response.usageMetadata?.promptTokenCount,
-    outputTokens: response.usageMetadata?.candidatesTokenCount,
+    inputTokens: usage?.promptTokenCount,
+    outputTokens: usage?.candidatesTokenCount,
     model: modelName,
   }
 }
 
 /**
  * Gemini 가 사용 가능한지 (ENV 체크).
- * Claude fallback 결정 시 호출.
  */
 export function isGeminiAvailable(): boolean {
   return Boolean(process.env.GEMINI_API_KEY)

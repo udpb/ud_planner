@@ -9,27 +9,32 @@
 | `journey/` | 시행착오 일지 — 고민·실패·깨달음의 날것 기록 | 추후 교육자료 원천 |
 | `playbook/` | 정제된 교육자료 — journey + decisions에서 패턴만 추린 학습 콘텐츠 | 신입 PM, 신입 개발자 |
 
+> 일하는 방식 = 위임+검증+투명보고 (ADR-020). `playbook/` 가 그 상세, `decisions/README.md` 가 ADR 인덱스.
+
 ## 읽는 순서
 
-**개발 참여자가 처음 들어올 때:**
-1. [../README.md](../README.md)
-2. [../CLAUDE.md](../CLAUDE.md)
-3. [architecture/modules.md](architecture/modules.md) — 내가 맡을 모듈이 뭔지
-4. [architecture/data-contract.md](architecture/data-contract.md) — 내 모듈이 읽고 쓰는 데이터
-5. `decisions/` 중 내 모듈 관련 ADR만 골라 읽기
+**새 세션(메인/서브) 진입 시:**
+1. [../HANDOFF.md](../HANDOFF.md) — 현재 라이브 상태·다음 진입점
+2. [HISTORY.md](HISTORY.md) — 문서 진실/버전 · [glossary.md](glossary.md) — 용어 SSoT
+3. [../CLAUDE.md](../CLAUDE.md) + [playbook/working-method.md](playbook/working-method.md) — 운영 규칙·일하는 방식
+4. [decisions/README.md](decisions/README.md) — ADR 인덱스 (관련 ADR 골라 읽기)
 
-**전체 설계 맥락이 궁금할 때:**
-1. [../ROADMAP.md](../ROADMAP.md) / [../REDESIGN.md](../REDESIGN.md)
-2. [architecture/](architecture/) 전체
-3. [decisions/](decisions/) 전체 (시간순)
-4. [journey/](journey/) 최신 3개
+**개발 참여자가 모듈 맡을 때:**
+1. [architecture/modules.md](architecture/modules.md) — 내가 맡을 모듈
+2. [architecture/data-contract.md](architecture/data-contract.md) — 읽고 쓰는 데이터
+3. `decisions/` 중 내 모듈 관련 ADR
+
+**전체 설계 맥락:**
+1. [architecture/](architecture/) 전체 · [decisions/](decisions/) (시간순) · [journey/](journey/) 최신 3개
+> ⚠️ `../ROADMAP.md`·`archive/REDESIGN.md` 는 stale (이력 참조용). 현재 상태는 HANDOFF/HISTORY.
 
 ## 쓰는 규칙
 
 **ADR (`decisions/NNN-short-title.md`)**
 - 중요 결정 직후 작성 (미루면 유실됨)
-- 번호는 증가만, 수정은 허용. 번복 시 "Superseded by NNN" 표기
-- 템플릿: [decisions/TEMPLATE.md](decisions/TEMPLATE.md)
+- **Accepted 후 수정 금지** — 변경 필요 시 새 ADR (`Supersedes: NNN`). 번호는 영구.
+- 서브 에이전트는 ADR 작성 금지 (후보만 보고)
+- 템플릿: [decisions/TEMPLATE.md](decisions/TEMPLATE.md) · 인덱스: [decisions/README.md](decisions/README.md)
 
 **Journey (`journey/YYYY-MM-DD-topic.md`)**
 - 세션 끝날 때 1~2분 투자해서 그날의 고민·시행착오·결정을 날것으로 기록

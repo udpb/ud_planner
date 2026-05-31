@@ -325,6 +325,14 @@ model Project {
   assetUsages           AssetUsage[]
   impactForecast        ImpactForecast?
   // 2026-05-03 ADR-012: tasks Task[] / expenses Expense[] 제거 (해당 모델 함께 제거)
+
+  // [WORKSTREAM] (ADR-019) — 과업 레이어 역관계 (additive, DATA-1)
+  workstreams     Workstream[]
+  winThemes       WinTheme[]
+  complianceItems ComplianceItem[]
+  rubricScores    RubricScore[]
+  outcome         ProposalOutcome?
+  editDiffs       EditDiff[]
 }
 
 // ─────────────────────────────────────────
@@ -555,11 +563,11 @@ model ContentAsset {
   programProfileFit Json? // Partial<ProgramProfile>
 
   // Wave N4 (2026-05-15): 의미 매칭용 임베딩 벡터
-  // - Gemini text-embedding-004 (768 dim) 권장. 다른 모델 쓰면 dim 일치만 유지.
+  // - Gemini gemini-embedding-001 (3072 dim) 권장. 다른 모델 쓰면 dim 일치만 유지.
   // - null = 아직 임베딩 생성 안 됨 (배치 스크립트 대상)
   // - embeddingModel 로 검증 가능 (다른 모델이면 재생성 필요)
   embedding      Float[]
-  embeddingModel String? // 예: 'gemini-text-embedding-004'
+  embeddingModel String? // 예: 'gemini-embedding-001'
   embeddedAt     DateTime?
 
   // 제안서 반영
@@ -579,6 +587,13 @@ model ContentAsset {
   sourceRef   String? // Drive file ID 또는 Slack message permalink 또는 product API URL
   publishedAt DateTime? // 외부 자료의 원본 발행일 (freshness)
   winRate     Float? // AssetUsage 기반 cron 매주 재계산 (Laplace + half-life 1yr)
+
+  // [WORKSTREAM] (ADR-019, Tech Spec §3.2) — Contextual RAG·신선도·과업 태깅 (additive, DATA-1)
+  // ⚠️ embedding(Float[])·sourceRef 미변경 — pgvector 이관·sourceRef @unique 는 DATA-2 별건
+  contextBlurb   String?   @db.Text // Contextual Retrieval prepend (Tech Spec §4.1)
+  lastVerifiedAt DateTime? // 사실 재검증 시각 (신선도)
+  decayRate      String? // weeks | months | stable (신선도 감쇠율)
+  workstreamType String? // 과업유형 태깅 (생성 검색 필터) — src/lib/workstream/types.ts
 
   // 감사
   createdAt   DateTime @default(now())
@@ -1128,12 +1143,12 @@ model WinningPattern {
 
   // ─ Tuple 1: Message (slogan + keyMessages + beforeAfter + tonePatterns)
   message       Json? // { slogan, keyMessages[3], beforeAfter:{before,after} }
-  messageVector Float[] // 768 dim · Gemini text-embedding-004
+  messageVector Float[] // 3072 dim · Gemini gemini-embedding-001
   tonePatterns  Json? // { openings[], transitions[], closingPhrases[], avoidedWords[], signatureNumbers[] }
 
   // ─ Tuple 2: LogicStructure (nodes + edges + sectionOrder)
   logicGraph       Json? // { nodes:[{id,type,label}], edges:[{from,to,relation}], sectionOrder[] }
-  logicGraphVector Float[] // 768 dim · graph 직렬화 후 text-embedding-004 적용
+  logicGraphVector Float[] // 3072 dim · graph 직렬화 후 gemini-embedding-001 적용
 
   // ─ Tuple 3: Content (인용한 ContentAsset id 들)
   contentRefs String[] // ContentAsset.id[] — 이 제안서가 인용한 자산
@@ -1380,6 +1395,132 @@ model WinningProposalChunk {
   embeddingModel String?
   createdAt   DateTime           @default(now())
 
+  // [WORKSTREAM] (ADR-019) — 과업 레이어 확장 (additive, DATA-1)
+  contextBlurb   String? @db.Text // Contextual Retrieval prepend (Tech Spec §4.1)
+  workstreamType String? // 과업유형 태깅 (생성 검색 필터) — src/lib/workstream/types.ts
+
   @@index([docId])
   @@index([channel])
+}
+
+// ─────────────────────────────────────────
+// [WORKSTREAM] 과업 레이어 (ADR-019)
+// 제안서를 "교육 1종"에서 "N과업 합성"으로 재구성하는 토대.
+// 프로젝트는 N개의 타입된 과업(Workstream)으로 분해되고, 7섹션·키메시지는
+// 과업 집합 위의 투영/합성이 된다. 각 과업유형은 RFP 배점 카테고리에 1:1 연결
+// (ADR-006 제1원칙 계승). Tech Spec §3.1 그대로. 전부 additive — 기존 모델 불변.
+// ─────────────────────────────────────────
+
+model Workstream {
+  id              String  @id @default(cuid())
+  projectId       String
+  project         Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type            String // WorkstreamType (레지스트리 키): education|event_ops|venue|speaker|recruiting|screening|networking|mentoring|deliverable
+  scoringCategory String // 연결 RFP 배점 카테고리 (ADR-006 제1원칙)
+  order           Int // 제안서 내 과업 블록 순서
+  detail          Json // 타입별 구조화 필드 (레지스트리 스키마로 검증 — 앱 레벨)
+  budgetSliceKrw  Int? // 과업별 예산 → ⑤ = Σ
+  autoFillRatio   Float    @default(0) // 자동채움 비율 (S2 표시)
+  evidence        Json? // 당선 근거·수치 (FactCheck 대상)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  assets    WorkstreamAsset[]
+  keyPoints KeyPoint[] // 이 과업이 떠받치는 뒷받침 포인트
+
+  @@index([projectId])
+}
+
+model WorkstreamAsset {
+  // 과업 ↔ 자산 (피드 소스)
+  id             String     @id @default(cuid())
+  workstreamId   String
+  workstream     Workstream @relation(fields: [workstreamId], references: [id], onDelete: Cascade)
+  contentAssetId String? // ContentAsset.id (느슨한 참조 — FK 미설정, 자산 삭제 무관 보존)
+  winningChunkId String? // WinningProposalChunk.id (느슨한 참조)
+  relevance      Float
+
+  @@index([workstreamId])
+}
+
+model WinTheme {
+  // win-theme + 키메시지 (typed, proof chain — A3)
+  id            String  @id @default(cuid())
+  projectId     String
+  project       Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  discriminator String // 차별점
+  benefit       String // 고객 편익
+  quantified    String? // 정량 가치
+  proof         Json // ProofRef[] {kind:'quant'|'past_perf'|'testimonial'|'institutional', assetId?, winningChunkId?, sroi?, text} — 비면 앱 레벨 hard error (A3)
+  hotButton     String? // 발주처 hot button 연결
+  rank          Int
+
+  @@index([projectId])
+}
+
+model KeyPoint {
+  // 키메시지 뒷받침 디테일 (과업에서 인용)
+  id           String     @id @default(cuid())
+  workstreamId String
+  workstream   Workstream @relation(fields: [workstreamId], references: [id], onDelete: Cascade)
+  winThemeId   String? // WinTheme.id (느슨한 참조)
+  text         String
+  proof        Json // ProofRef[] (위 WinTheme.proof 동일 형태)
+
+  @@index([workstreamId])
+}
+
+model ComplianceItem {
+  // compliance matrix (1급 산출물)
+  id            String  @id @default(cuid())
+  projectId     String
+  project       Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  requirement   String // RFP 파싱 요구사항
+  scoringWeight Int? // 배점
+  mappedSection String? // '1'~'7' (미매핑이면 RS-3 경고)
+  coverage      String // covered | partial | missing
+
+  @@index([projectId])
+}
+
+model RubricScore {
+  // Rubric self-score (S5)
+  id           String   @id @default(cuid())
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  draftVersion Int
+  lines        Json // RubricLine[] {key, weight, score, passed, evidence}
+  overall      Float
+  weakest      Json // top-3 약점
+  panelScores  Json? // 다중 심사 raw (calibration용)
+  model        String // 채점 모델·n샘플 기록
+  createdAt    DateTime @default(now())
+
+  @@index([projectId, draftVersion])
+}
+
+model ProposalOutcome {
+  // 플라이휠: 당락 결과 (Project 1:1)
+  id          String    @id @default(cuid())
+  projectId   String    @unique
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  result      String // won | lost | pending
+  reason      String? // 사유 메모 (정성)
+  awardScore  Float? // 받은 점수(알면)
+  submittedAt DateTime?
+  decidedAt   DateTime?
+}
+
+model EditDiff {
+  // 플라이휠: 사람 수정 diff (SALT)
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sectionKey  String
+  aiText      String   @db.Text // AI 초안
+  shippedText String   @db.Text // PM 최종본
+  diffKind    String? // tone|fact|structure|trim
+  createdAt   DateTime @default(now())
+
+  @@index([projectId])
 }

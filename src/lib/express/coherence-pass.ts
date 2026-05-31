@@ -28,7 +28,7 @@
 import 'server-only'
 
 import { invokeAi } from '@/lib/ai-fallback'
-import { AI_TOKENS } from '@/lib/ai/config'
+import { AI_TOKENS, modelFor } from '@/lib/ai/config'
 import { safeParseJson } from '@/lib/ai/parser'
 import { z } from 'zod'
 import type { ExpressDraft } from './schema'
@@ -160,6 +160,7 @@ ${sectionsText}
   try {
     const r = await invokeAi({
       prompt,
+      model: modelFor('engine.coherence'),
       maxTokens: AI_TOKENS.LARGE,
       temperature: 0.4,
       label: 'coherence-pass',

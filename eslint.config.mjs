@@ -66,19 +66,23 @@ const eslintConfig = defineConfig([
 
   // ──────────────────────────────────────────────────────────
   // Phase 3.1 (2026-05-03) — AI SDK 단일 진입점 강제
+  // ADR-023 (2026-06-01) — Gemini 단일화 + @google/genai 마이그레이션
   //
-  // anthropic / google-genai SDK 직접 import 는 단일 진입점 (ai-fallback.ts) 에서만.
-  // 신규 코드가 다시 anthropic.messages.create / GenerativeModel 등을 직접 부르면
-  // Phase L1 의 Gemini Primary + Claude Fallback 전환이 무의미.
+  // @google/genai SDK 직접 import 는 단일 진입점 (ai-fallback.ts) 에서만.
+  // 신규 코드가 다시 ai.models.generateContent 등을 직접 부르면 invokeAi 의
+  // 라우팅(2-tier)·로깅·intra-Gemini 폴백·구조화출력·thinking 설정이 무의미.
   //
-  // 2026-05-03 update: claude.ts shim 제거됨 (ai/* 8 모듈 직접 import).
   // 예외: src/lib/ai-fallback.ts (구현체) · src/lib/gemini.ts (Gemini 직접 호출 — invokeAi 가 사용)
+  //       · src/lib/ai/embedding.ts (임베딩 전용 API — invokeAi(텍스트 생성)로 대체 불가, ADR-022)
+  //  (web-search.ts 는 Gemini search grounding 사용 — 파일 내 inline eslint-disable 로 처리)
+  // (Anthropic/@anthropic-ai/sdk 는 ADR-023 으로 의존성 제거 — 제한 룰 불필요.)
   // ──────────────────────────────────────────────────────────
   {
     files: ["src/**/*.{ts,tsx}"],
     ignores: [
       "src/lib/ai-fallback.ts",
       "src/lib/gemini.ts",
+      "src/lib/ai/embedding.ts",
     ],
     rules: {
       "no-restricted-imports": [
@@ -86,16 +90,10 @@ const eslintConfig = defineConfig([
         {
           paths: [
             {
-              name: "@anthropic-ai/sdk",
+              name: "@google/genai",
               message:
                 "AI 호출은 src/lib/ai-fallback.ts 의 invokeAi() 를 사용하세요. " +
-                "Anthropic SDK 직접 import 는 ai-fallback / claude / gemini 에서만 허용 (Phase L1).",
-            },
-            {
-              name: "@google/generative-ai",
-              message:
-                "AI 호출은 src/lib/ai-fallback.ts 의 invokeAi() 를 사용하세요. " +
-                "Google Generative AI SDK 직접 import 는 ai-fallback / gemini 에서만 허용 (Phase L1).",
+                "@google/genai SDK 직접 import 는 ai-fallback / gemini / embedding 에서만 허용 (ADR-023).",
             },
           ],
         },

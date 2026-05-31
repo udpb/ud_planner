@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
+import { requireProjectAccess } from '@/lib/auth-helpers'
 import { matchAssetsToRfp } from '@/lib/asset-registry'
 import {
   ExpressDraftSchema,
@@ -50,6 +51,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid body', issues: parsed.error.issues }, { status: 400 })
     }
     const { projectId, autoFirstTurn } = parsed.data
+
+    // 권한 — 본인 또는 미배정 프로젝트 (save/route.ts 패턴 미러)
+    const access = await requireProjectAccess(projectId)
+    if (!access.ok) return access.response!
 
     const project = await prisma.project.findUnique({
       where: { id: projectId },

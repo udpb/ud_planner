@@ -24,7 +24,7 @@ import { log } from '@/lib/logger'
  *
  * 입력 벡터가 비어있거나 다른 차원이면 0 반환 (안전).
  *
- * 성능: O(dim). 768 dim 기준 ~3μs/호출. 1000건 자산 매칭 시 3ms.
+ * 성능: O(dim). 3072 dim 기준 ~12μs/호출. 1000건 자산 매칭 시 ~12ms.
  */
 export function cosineSimilarity(a: readonly number[], b: readonly number[]): number {
   if (!a.length || !b.length || a.length !== b.length) return 0
@@ -63,7 +63,7 @@ export function cosineSimilarityNormalized(
 // ─────────────────────────────────────────
 
 /**
- * 텍스트 → 768 dim vector (Gemini gemini-embedding-001).
+ * 텍스트 → 3072 dim vector (Gemini gemini-embedding-001).
  *
  * 정책:
  * - 단일 텍스트 입력 (배치는 embedBatch 사용)
@@ -215,7 +215,7 @@ export interface MmrResult<T> extends MmrCandidate<T> {
  *   - lambda: 0.7 (relevance 70% · diversity 30%) — PRD §4.4 기본
  *   - threshold: 0.45 — 이하면 cutoff
  *
- * 성능: O(N × limit × dim) — N=50, limit=10, dim=768 → ~400K 연산 (~50ms)
+ * 성능: O(N × limit × dim) — N=50, limit=10, dim=3072 → ~1.5M 연산 (~50ms)
  */
 export function mmr<T>(
   candidates: readonly MmrCandidate<T>[],
@@ -268,7 +268,7 @@ export function mmr<T>(
 // ─────────────────────────────────────────
 
 /**
- * LogicGraph → 768 dim vector.
+ * LogicGraph → 3072 dim vector.
  *
  * 정식 graph2vec (node2vec + edge encoding) 은 별도 라이브러리 필요.
  * 본 함수는 단순 우회: graph 를 텍스트로 직렬화 → text embedding.
@@ -311,7 +311,7 @@ export function serializeLogicGraph(graph: {
 }
 
 /**
- * LogicGraph → 768 dim vector (embedding 호출).
+ * LogicGraph → 3072 dim vector (embedding 호출).
  */
 export async function embedLogicGraph(graph: {
   nodes: Array<{ id: string; type: string; label: string }>

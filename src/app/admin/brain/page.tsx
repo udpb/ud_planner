@@ -123,21 +123,12 @@ async function getBrainStats() {
   })
 
   // 6. 채널 편중 — PatternConcept × WinningPattern
-  const patternConcepts = await prisma.patternConcept.findMany({
-    select: {
-      conceptId: true,
-      concept: { select: { name: true, type: true } },
-    },
-  })
   const patterns = await prisma.winningPattern.findMany({
     select: { id: true, channelType: true },
   })
   const patternById = new Map(patterns.map((p) => [p.id, p.channelType ?? 'B2G']))
 
   const conceptChannelMap = new Map<string, Map<string, number>>()
-  for (const pc of patternConcepts) {
-    // patternConcepts 안에 patternId 필요 — 다시 가져옴
-  }
   const pcWithPatternId = await prisma.patternConcept.findMany({
     select: {
       patternId: true,

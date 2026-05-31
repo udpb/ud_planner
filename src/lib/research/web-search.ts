@@ -10,7 +10,8 @@
  */
 
 import 'server-only'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+// eslint-disable-next-line no-restricted-imports -- Gemini search grounding (googleSearch tool + groundingMetadata) 사용. provider-neutral invokeAi 는 tools/grounding 미지원이라 대체 불가. 정당한 예외 (FIX-2, ADR-023 @google/genai).
+import { GoogleGenAI } from '@google/genai'
 import { GEMINI_MODEL, isGeminiAvailable } from '@/lib/gemini'
 import { safeParseJson } from '@/lib/ai/parser'
 import { log } from '@/lib/logger'
@@ -46,7 +47,7 @@ export interface WebSearchResult {
 /**
  * Gemini grounding 으로 외부 검색.
  *
- * 1. Gemini 호출 — tools: [{ googleSearchRetrieval: {} }]
+ * 1. Gemini 호출 — tools: [{ googleSearch: {} }] (@google/genai, ADR-023)
  * 2. 응답에서 hits 3건 추출 (zod 검증)
  * 3. groundingMetadata 에서 source URL 보강
  * 4. excludeSources 와 dedupe
@@ -62,38 +63,27 @@ export async function searchWeb(input: WebSearchInput): Promise<WebSearchResult>
   }
 
   const apiKey = process.env.GEMINI_API_KEY!
-  const client = new GoogleGenerativeAI(apiKey)
-
-  // Gemini grounding 활성 모델
-  // SDK v0.21+ 의 googleSearchRetrieval tool 사용.
-  // 타입은 SDK 의 unknown 형태라 any cast — runtime 에서 정상 작동.
-  type GroundingTool = { googleSearchRetrieval: Record<string, never> }
-  const tools = [{ googleSearchRetrieval: {} as Record<string, never> }] as GroundingTool[]
-
-  const model = client.getGenerativeModel({
-    model: GEMINI_MODEL,
-    generationConfig: {
-      maxOutputTokens: 4096,
-      temperature: 0.5, // 다양성 (정형화 회피)
-    },
-    // tools 옵션 — SDK 타입이 strict 라 cast
-    tools: tools as unknown as Parameters<typeof client.getGenerativeModel>[0]['tools'],
-  })
+  const ai = new GoogleGenAI({ apiKey })
 
   const prompt = buildSearchPrompt(input)
 
   try {
-    const result = await model.generateContent(prompt)
-    const response = result.response
-    const raw = response.text()
+    // @google/genai: 검색 grounding 은 config.tools 에 { googleSearch: {} } 로 전달.
+    const response = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: prompt,
+      config: {
+        maxOutputTokens: 4096,
+        temperature: 0.5, // 다양성 (정형화 회피)
+        tools: [{ googleSearch: {} }],
+      },
+    })
+    const raw = response.text ?? ''
 
     // groundingMetadata 에서 source URL 추출
-    // SDK 의 candidates[0].groundingMetadata.groundingChunks[].web.uri
+    // candidates[0].groundingMetadata.groundingChunks[].web.uri
     const candidates = response.candidates ?? []
-    type GroundingChunk = { web?: { uri?: string; title?: string } }
-    const groundingChunks: GroundingChunk[] =
-      (candidates[0] as unknown as { groundingMetadata?: { groundingChunks?: GroundingChunk[] } })
-        ?.groundingMetadata?.groundingChunks ?? []
+    const groundingChunks = candidates[0]?.groundingMetadata?.groundingChunks ?? []
     const sourceUrls = groundingChunks
       .map((c) => c.web?.uri)
       .filter((u): u is string => typeof u === 'string')

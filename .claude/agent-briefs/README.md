@@ -1,108 +1,52 @@
-# Agent Briefs Index
+# Agent Briefs — 서브 에이전트 위임 브리프
 
-서브 에이전트에게 위임할 작업의 자급자족 브리프 모음. 메인 세션이 `Agent` 도구로 서브 에이전트를 생성할 때 브리프 내용을 `prompt`로 전달합니다.
+서브 에이전트에게 위임할 작업의 **자급자족 브리프** 모음. 메인 세션이 `Agent` 도구로 서브 에이전트를 생성할 때 브리프 내용을 `prompt` 로 전달한다.
 
-> **📌 이 브리프들은 Planning Agent 트랙 (코치 풍부화 / 추천 / UI 임베드) 전용입니다.**
-> 파이프라인 재설계 트랙(Step 순서 변경, PipelineContext, PM 가이드)은 별도입니다 —
-> [../../ROADMAP.md](../../ROADMAP.md) / [../../REDESIGN.md](../../REDESIGN.md) 의 Phase A~F를 따르세요.
->
-> 두 트랙의 상호 관계: [../../PLANNING_AGENT_ROADMAP.md](../../PLANNING_AGENT_ROADMAP.md) 상단 참조.
+> 일하는 방식: [../../docs/playbook/working-method.md](../../docs/playbook/working-method.md)
+> 브리프 12항목: [../../docs/playbook/brief-checklist.md](../../docs/playbook/brief-checklist.md)
+> 템플릿: [`_template.md`](./_template.md)
 
----
+## 자급자족 원칙
+서브 에이전트는 `브리프 + ../../CLAUDE.md + ../../AGENTS.md + ../../docs/glossary.md` 만으로 작업 가능해야 한다. 메인 세션 대화 컨텍스트 없음 가정. 막히면 추측 금지 → STOP 후 메인 보고.
 
-## 📋 브리프 목록
+## ID 트랙 prefix
+| prefix | 트랙 |
+|---|---|
+| `EX{N}` | Express (생성 엔진·inspector·슬롯) |
+| `BR{N}` | Brain (ingest·RAG·당선패턴·concept) |
+| `DP{N}` | Deep (커리큘럼·코치·예산·임팩트) |
+| `WS{N}` | Workstream 레이어 (ADR-019) |
+| `UI{N}` | 프론트엔드 |
+| `DATA{N}` | Prisma·migration·시드 |
+| `EVAL{N}` | 평가·테스트·eval 하니스 |
+| `FIX-*` / `DOCS-*` | 핫픽스 / 문서 정합성 |
 
-| 브리프 | Phase | 독립성 | 격리 방식 | 예상 시간 | 의존성 |
-|--------|-------|--------|---------|---------|-------|
-| [phase-5-coach-ui.md](./phase-5-coach-ui.md) | 5. Coach Finder UI 임베드 | ⭐⭐⭐ 완전 독립 | Worktree + 백그라운드 | 1.5일 | 없음 (즉시 시작 가능) |
-| [phase-3-enrich.md](./phase-3-enrich.md) | 3. Coach 데이터 풍부화 | ⭐⭐ 스키마만 필요 | 일반 (메인 브랜치) | 1일 | Phase 2 스키마 완료 |
-| [phase-4-recommend.md](./phase-4-recommend.md) | 4. 추천 엔진 | ⭐ 여러 의존성 | Worktree | 2일 | Phase 1 (types) + Phase 3 (풍부화) |
-
----
-
-## 🎯 실행 타임라인 (메인 세션 관점)
-
+## 호출 패턴
 ```
-Day 1 아침:
-├─ 메인: Phase 1 시작 (Agent 로직)
-└─ Agent B (Phase 5): Worktree 백그라운드 시작 ← 이 브리프 사용
-
-Day 4 (Phase 2 스키마 완료 후):
-├─ 메인: Phase 4 인터페이스 설계
-└─ Agent C (Phase 3): 일반 서브 에이전트 시작 ← 이 브리프 사용
-
-Day 5-6 (Phase 3 완료 후):
-├─ 메인: Phase 4 직접 구현
-OR
-└─ Agent D (Phase 4): Worktree 시작 ← 이 브리프 사용 (대안)
-
-Day 7 이후:
-└─ 메인이 직접 Phase 6 통합
+// Foreground (결과 즉시 필요)
+Agent({ description, subagent_type: "general-purpose", prompt: <브리프 내용> })
+// Background + worktree (병렬 독립 트랙, 파일 충돌 위험 시)
+Agent({ ..., isolation: "worktree", run_in_background: true, prompt: <브리프> })
+// 탐색 only (read-only)
+Agent({ subagent_type: "Explore", prompt: "..." })
 ```
 
----
+## 생명주기
+🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
-## 📖 메인 세션에서 브리프 사용법
+## 활성 브리프
+(현재 없음 — 2026-06-01 기준. 첫 기능 브리프는 WS1/EX1 예정.)
 
-### Option 1: 백그라운드 (Phase 5 권장)
-```typescript
-Agent({
-  description: "Phase 5 Coach Finder UI port",
-  subagent_type: "general-purpose",
-  isolation: "worktree",
-  run_in_background: true,
-  prompt: fs.readFileSync('.claude/agent-briefs/phase-5-coach-ui.md', 'utf-8'),
-})
-```
-완료 시 자동 알림. 메인 세션은 다른 작업 계속.
+## 활성 브리프
+(없음 — 다음: EX-2 faithfulness·typed win-theme·compliance / async 라우트)
 
-### Option 2: 포그라운드 (결과 즉시 필요할 때)
-```typescript
-Agent({
-  description: "Phase 3 Coach data enrichment",
-  subagent_type: "general-purpose",
-  prompt: fs.readFileSync('.claude/agent-briefs/phase-3-enrich.md', 'utf-8'),
-})
-```
-메인 세션 블록. 결과 받을 때까지 대기.
-
----
-
-## ✅ 브리프 품질 체크리스트 (모든 브리프에 적용)
-
-각 브리프는 다음 요소를 반드시 포함:
-
-- [x] **🎯 Mission** — 한 문장으로 무엇을 하는지
-- [x] **📋 Context** — 프로젝트 배경 + 왜 이 작업이 필요한지
-- [x] **✅ Prerequisites** — 시작 전 확인 사항 (실패 시 STOP)
-- [x] **📖 Read These Files First** — 읽어야 할 파일 경로 목록
-- [x] **🎯 Scope** — CAN touch / MUST NOT touch 명시
-- [x] **🛠 Tasks** — 번호 붙은 상세 단계
-- [x] **🔒 Tech Constraints** — Next.js 버전, Claude 모델, 브랜드 가이드
-- [x] **✔️ Definition of Done** — 체크리스트
-- [x] **📤 Return Format** — 결과 보고 형식 (토큰 효율용)
-- [x] **🚫 Do NOT** — 금지 사항
-- [x] **💡 Hints & Edge Cases** — 예상 엣지 케이스
-- [x] **🏁 Final Note** — 맥락 재강조
-
----
-
-## 🔄 브리프 업데이트 규칙
-
-1. **브리프는 살아있는 문서** — Phase 1, 2가 완료되면서 전제 조건이 구체화되면 브리프를 업데이트
-2. **버전 관리 불필요** — 항상 최신 상태만 유지. Git 히스토리로 추적.
-3. **실행 전 재확인** — 메인 세션은 Agent 호출 전 브리프의 Prerequisites 섹션 재확인
-4. **실행 후 교훈 반영** — Phase 완료 후 이슈가 있었으면 브리프에 hint 추가 (다음 비슷한 작업에 재사용)
-
----
-
-## 🆘 브리프 실행 중 문제 생기면
-
-서브 에이전트가 브리프를 읽고도 막히면 다음 중 하나:
-
-1. **Prerequisites 미충족** → 메인 세션이 선행 작업 완료 후 재실행
-2. **파일 경로 변경** → 브리프 업데이트
-3. **타입/API 계약 변경** → 의존 Phase의 결과 확인 후 브리프 수정
-4. **에이전트가 예상치 못한 판단 필요** → 브리프에 결정 가이드 추가 + 재실행
-
-에이전트는 막히면 STOP하고 메인에게 보고 — 절대 추측으로 진행 금지.
+## 아카이브 (`_archive/`)
+- `EVAL-AB-flash-vs-hybrid.md` — ✅ 완료 (2026-06-01). Flash vs 하이브리드 패널 A/B → hybrid 66 vs flash 61(+5, win-deciding 렌즈 우위) → **하이브리드 유지**(ADR-022 §4-A). 실행은 메인 직접.
+- `AI-3-flash-dominant-routing.md` — ✅ 완료 (2026-06-01). Flash-우세 라우팅(Pro=2키)·폴백 `3.1→2.5pro→3.5flash`·.env.local 핀 제거. 메인 검증(routing-probe).
+- `EX-1-generation-engine.md` — ✅ 완료 (2026-06-01). 단일 생성 엔진 골격(gather→assemble 과업투영→self-score→정제) + assemble 라우트. **E2E로 7섹션 1차본 실제 생성**(self-score 71, 구형 flash). 메인 검증.
+- `AI-1-genai-sdk-migration.md` — ✅ 완료 (2026-06-01). `@google/genai 2.7.0` 마이그레이션 + Gemini 단일화(Claude 제거)+intra-Gemini 폴백. 메인 검증(typecheck 0·구SDK 0). 🔴 런타임 positive는 spend cap 429로 보류.
+- `RET-1-retrieval-contract.md` — ✅ 완료 (2026-06-01). 단일 검색 계약(RRF·Flash rerank/blurb·recall eval, 기존 모듈 wrap). 메인 검증(단위 14·typecheck·manifest).
+- `DATA-1-workstream-schema.md` — ✅ 완료 (2026-06-01). 과업 레이어 8모델(42→50)·관계·nullable·types/ensure-default. 메인 검증. **migration 적용 완료**(resolve brain_models→migrate dev, 2026-06-01).
+- `FIX-2-p0-truthing.md` — ✅ 완료 (2026-06-01). turn/init auth · embedding 768→3072+assert · web-search 판단(grounding). 메인 검증·eslint 예외 추가.
+- `FIX-1-dead-code-removal.md` — ✅ 완료 (2026-06-01). 확정 죽은 코드 6건 삭제 + proxy/admin-brain 정리. 메인 검증 통과.
+- `phase-3-enrich.md` · `phase-4-recommend.md` · `phase-5-coach-ui.md` · `guidebook/` · `redesign/` — 옛 Planning Agent / 가이드북 / 재설계 트랙 브리프 (2026-04 시대, 완료/superseded). 참조·결정 추적용 보존.

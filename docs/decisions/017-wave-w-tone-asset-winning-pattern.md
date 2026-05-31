@@ -1,6 +1,8 @@
 # ADR-017: Wave W — 톤 자산화 + WinningPattern 활성화 + 데이터 아카이브 시드
 
-**Status:** Draft (사용자 검토 대기, 2026-05-22)
+> ⚠️ **상태 정정 (2026-06-01):** 의도 상당 부분이 **Brain Sphere-2 로 흡수**됨 (WinningPattern→WinningProposalDoc 풀텍스트 RAG, tone-patterns.ts). 원안 W1~W5 대로 vs 재구현 정합 확인 필요. ⚠️ 명명: "Wave W" ≠ Brain "W14~W32 Waves" (glossary §9).
+
+**Status:** Draft → Brain Sphere-2 로 일부 흡수 (정합 확인 필요)
 **Date:** 2026-05-22
 **Deciders:** udpb@udimpact.ai + AI Architect
 **Scope:** AI prompt layer · 자산 매칭 layer · 학습 루프 layer · 데이터 시드 layer (4개 레이어 동시 활성화)

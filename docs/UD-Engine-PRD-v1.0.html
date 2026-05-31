@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UD 기획 엔진 PRD v1.0 — 사내 기획 씽크탱크·엔진</title>
+<style>
+/* ── Webfonts (local woff2, design kit) ── */
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+
+:root{
+  --accent:#F05519; --dark:#373938; --warm-gray:#D8D4D7; --white:#FFFFFF; --black:#000000;
+  --accent-88:#FDEBE3; --accent-76:#FBD6C8; --accent-52:#F8AD91; --accent-40:#F69975;
+  --dark-70:#C3C4C3; --dark-55:#A5A6A5; --dark-40:#878888; --dark-25:#696A6A; --dark-10:#4B4D4C;
+  --neutral-90:#FBFBFB; --neutral-60:#F0F0F0; --neutral-30:#E4E4E4; --neutral-0:#D9D9D9;
+  --paper:var(--white); --ink:var(--dark); --soft-ink:var(--dark-10); --muted:var(--dark-40);
+  --muted-2:var(--dark-55); --line:var(--neutral-0); --line-soft:var(--neutral-30); --bg:var(--neutral-0);
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:22px; --s-6:28px; --s-7:40px; --s-8:60px;
+  --gap-section:28px; --gap-element:16px; --gap-tight:6px;
+  --type-display:56px;
+}
+*,*::before,*::after{box-sizing:border-box;border-radius:0 !important}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"NanumHuman",system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.en{font-family:"Poppins","NanumHuman",sans-serif}
+img,svg{display:block;max-width:100%;height:auto}
+
+/* ── Type ── */
+.kicker{margin:0 0 14px;display:inline-block;color:var(--accent);
+  font-family:"Poppins","NanumHuman",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase}
+.section-title{margin:0;font-family:"NanumHuman",sans-serif;font-size:32px;font-weight:800;
+  line-height:1.18;letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
+.display{margin:0;font-family:"Poppins","NanumHuman",sans-serif;font-size:var(--type-display);font-weight:600;
+  line-height:1.12;letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
+.display .ko{display:block;margin-top:16px;font-family:"NanumHuman",sans-serif;font-size:28px;font-weight:800;
+  line-height:1.22;letter-spacing:-.01em;word-break:keep-all}
+.big-num{font-family:"Poppins",sans-serif;font-size:44px;font-weight:600;line-height:1;color:var(--accent)}
+.lead{margin:0;color:var(--soft-ink);font-size:15px;line-height:1.74;word-break:keep-all}
+.body{margin:10px 0 0;color:var(--soft-ink);font-size:14px;line-height:1.78;word-break:keep-all}
+.small{margin:0;color:var(--muted);font-size:11px;line-height:1.62;word-break:keep-all}
+strong{font-weight:800;color:var(--ink)}
+em{font-style:normal;color:var(--ink);font-weight:800;border-bottom:2px solid var(--accent-76)}
+
+/* ── Shell (web-scroll-report, max 900) ── */
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+  background:var(--paper);border-bottom:1px solid var(--line);padding:var(--s-3) var(--s-5);}
+.topbar .doc{font-family:"Poppins","NanumHuman",sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.report{max-width:900px;margin:0 auto;background:var(--paper);min-height:100vh;
+  display:flex;flex-direction:column}
+section{padding:var(--s-7) var(--s-6)}
+
+/* ── Cover (the single dark section) ── */
+.cover{background:var(--ink);color:#fff;padding:var(--s-8) var(--s-6)}
+.cover .head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-5);margin-bottom:64px}
+.cover .issue{font-family:"Poppins",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dark-70)}
+.cover .display{color:#fff}
+.cover .display .ko{color:#fff}
+.cover .lead{color:var(--dark-70);max-width:62ch;margin-top:var(--s-5)}
+.meta{display:grid;grid-template-columns:130px 1fr;gap:8px var(--s-5);margin-top:var(--s-7);
+  border-top:1px solid var(--dark-25);padding-top:var(--s-5);max-width:760px}
+.meta dt{color:var(--accent);font-family:"Poppins","NanumHuman",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase}
+.meta dd{margin:0;color:#eaeaea;font-size:13px;line-height:1.55;word-break:keep-all}
+
+/* ── Page head (P1) ── */
+.page-head{padding-bottom:var(--s-5);margin-bottom:var(--s-6);border-bottom:2px solid var(--ink)}
+.page-head .section-title{margin-top:2px}
+.page-head .small{margin-top:10px;color:var(--muted)}
+
+/* ── Tint boxes (web report = tint language) ── */
+.tint{padding:var(--s-5);background:var(--neutral-90);margin:var(--gap-element) 0}
+.tint.is-strong{background:var(--neutral-60)}
+.tint .kicker{margin-bottom:10px}
+.tint .body:first-of-type{margin-top:0}
+.lead-box{padding:var(--s-5) var(--s-6);background:var(--neutral-60);margin:var(--gap-element) 0}
+.lead-box .lead{font-weight:700;color:var(--ink);font-size:16px;line-height:1.6}
+
+/* ── Pillars grid ── */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:768px){.grid-3,.grid-2{grid-template-columns:1fr}}
+.cell{padding:var(--s-5);background:var(--neutral-90)}
+.cell .kicker{margin-bottom:8px}
+.cell .body{margin-top:0}
+
+/* ── Tables (tint/line palette only) ── */
+table{width:100%;border-collapse:collapse;margin:var(--gap-element) 0;font-size:13px}
+th,td{text-align:left;padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--line);
+  vertical-align:top;line-height:1.6;word-break:keep-all}
+th{background:var(--neutral-60);color:var(--ink);font-weight:800;border-bottom:2px solid var(--ink);
+  font-size:12px}
+td{color:var(--soft-ink)}
+tbody tr:nth-child(even) td{background:var(--neutral-90)}
+caption{caption-side:top;text-align:left;color:var(--muted);font-size:11px;margin-bottom:6px}
+
+/* ── Lists ── */
+ul,ol{margin:10px 0 0;padding-left:20px}
+li{margin:6px 0;color:var(--soft-ink);font-size:14px;line-height:1.7;word-break:keep-all}
+
+/* ── Pills (stroke ok as inline tag) ── */
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--s-3)}
+.pill{display:inline-flex;padding:5px 10px;border:1px solid var(--line);color:var(--soft-ink);
+  font-family:"Poppins","NanumHuman",sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em}
+
+/* ── Diagram (mono, palette) ── */
+.flow{background:var(--neutral-90);padding:var(--s-5);margin:var(--gap-element) 0;
+  font-family:"Poppins","NanumHuman",sans-serif;font-size:12.5px;line-height:1.9;color:var(--soft-ink);
+  white-space:pre-wrap;word-break:keep-all;border-left:0}
+
+/* ── Source list (P8) ── */
+.source-list{display:grid;gap:0;margin-top:var(--gap-element)}
+.source-item{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:var(--s-3) 0;border-bottom:1px solid var(--line)}
+.source-item:first-child{border-top:1px solid var(--line)}
+.source-item .num{font-family:"Poppins",sans-serif;font-size:10px;font-weight:600;color:var(--accent);letter-spacing:.1em;padding-top:2px}
+.source-item .grp{font-family:"NanumHuman",sans-serif;font-weight:700;color:var(--ink);font-size:13px;margin-bottom:4px}
+.source-item a{color:var(--soft-ink);font-family:"Poppins","NanumHuman",sans-serif;font-size:12px;font-weight:500;
+  text-decoration:underline;text-decoration-color:rgba(240,85,25,.4);text-decoration-style:dotted;
+  text-underline-offset:3px;word-break:break-all;border:0}
+.source-item a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+
+/* ── TOC ── */
+.toc{padding:var(--s-5) var(--s-6);background:var(--neutral-90)}
+.toc ol{columns:2;column-gap:var(--s-7);padding-left:18px}
+.toc li{font-size:13px}
+.toc a{color:var(--soft-ink);border:0}
+.toc a:hover{color:var(--accent)}
+
+/* ── Footer ── */
+.footer-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
+  padding:var(--s-5) var(--s-6);border-top:1px solid var(--line);margin-top:auto;
+  color:var(--muted);font-family:"Poppins","NanumHuman",sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em}
+
+a{color:inherit}
+</style>
+</head>
+<body>
+<div class="report">
+
+  <!-- sticky header (web-scroll-report logo recipe) -->
+  <div class="topbar">
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="Underdogs" style="height:22px">
+    <span class="doc">UD Planning Engine · PRD v1.0</span>
+  </div>
+
+  <!-- ===== COVER (single dark section) ===== -->
+  <section class="cover">
+    <div class="head">
+      <div class="issue">PRD v1.0 · 2026-06</div>
+      <img src="assets/logo/underdogs-wordmark-white.svg" alt="Underdogs" style="height:30px">
+    </div>
+    <p class="kicker">Internal Planning Think-Tank &amp; Engine</p>
+    <h1 class="display en">UD Planning Engine
+      <span class="ko">사내 기획 씽크탱크 &amp; 엔진 — RFP에서 당선 기획안까지</span>
+    </h1>
+    <p class="lead">RFP 한 부 → 30~45분 → 당선 가능성이 측정된, 여러 과업이 통합된 기획 1차본. 우리가 만든 모든 자산·당선 제안서를 끊임없이 학습해, 다음 제안서는 직전보다 반드시 더 좋아진다.</p>
+    <dl class="meta">
+      <dt>Owner</dt><dd>udpb@udimpact.ai · 언더독스 / UD IMPACT</dd>
+      <dt>Audience</dt><dd>기획·운영·경영진 + 개발/AI (섹션별 청중 표기)</dd>
+      <dt>Version</dt><dd>v1.0 — PRD-v8.0(Express 2.0) + PRD-Brain 통합·승계</dd>
+      <dt>Pair</dt><dd>PRD + 기존 자산 분석(수정·고도화·폐기·추가) + 벤치마크 (3-in-1)</dd>
+      <dt>Method</dt><dd>ADR-020 위임+검증+투명보고 위에서 구축</dd>
+      <dt>Status</dt><dd>Proposed — 검토 대기. ADR-019(과업)·ADR-021(단일 엔진)과 짝.</dd>
+    </dl>
+  </section>
+
+  <!-- TOC -->
+  <section class="toc">
+    <p class="kicker">Contents</p>
+    <ol>
+      <li><a href="#s0">한 페이지 요약</a></li>
+      <li><a href="#s1">본질 — 생성기가 아니라 씽크탱크</a></li>
+      <li><a href="#s2">시장·벤치마크 — 우리의 wedge</a></li>
+      <li><a href="#s3">제품 구조 — 4 레이어</a></li>
+      <li><a href="#s4">당선 과학 → 측정 Rubric</a></li>
+      <li><a href="#s5">기술 SOTA 채택</a></li>
+      <li><a href="#s6">기존 자산 분석 (4분류)</a></li>
+      <li><a href="#s7">로드맵</a></li>
+      <li><a href="#s8">성공 지표</a></li>
+      <li><a href="#s9">출처 — 벤치마크·리서치</a></li>
+    </ol>
+  </section>
+
+  <!-- ===== 0 ===== -->
+  <section id="s0">
+    <header class="page-head"><p class="kicker">00 · Summary</p>
+      <h2 class="section-title">한 페이지 요약</h2>
+      <p class="small">무엇을 만드는가 / 왜 지금 이 방향인가 / 어떻게 압도적으로 좋아지는가.</p></header>
+
+    <div class="lead-box"><p class="lead">북극성 — RFP 한 부를 넣으면 30~45분 안에 <strong>발주처에 제출 가능한, 당선 가능성이 측정된, 여러 과업이 통합된 기획 1차본</strong>이 나온다. 그리고 우리가 만든 모든 제안서·자산이 엔진에 영구 축적되어, <strong>다음 제안서는 직전보다 반드시 더 좋다.</strong></p></div>
+
+    <p class="body" style="margin-top:var(--s-5)"><strong>핵심 통찰 — 3기둥</strong></p>
+    <div class="grid-3">
+      <div class="cell"><p class="kicker">① 압도적 품질</p><p class="body">단일 생성 엔진이 <strong>평가표(rubric)에 정렬</strong>된 당선 언어를 조립. "good enough"는 시장 평균 — 우리는 <em>증명된 win-theme + 평가위원 채점 정렬</em>로 간다.</p></div>
+      <div class="cell"><p class="kicker">② 지속 학습·주입</p><p class="body">자산·당선 제안서를 <strong>그래프로 축적</strong>, 드롭 한 번으로 자동 분류·임베딩·검수. 사람 수정·당락 결과가 <em>학습 신호</em>로 되먹임.</p></div>
+      <div class="cell"><p class="kicker">③ 멀티 과업 구조</p><p class="body">제안서는 교육+행사운영+장소+특강연사… <strong>여러 과업의 통합체</strong>. 과업(Workstream)을 1급 레이어로 — 시장 누구도 안 하는 wedge.</p></div>
+    </div>
+
+    <div class="tint is-strong"><p class="kicker">인사이트 — 벤치마크 결론</p><p class="body">시장 선두 Responsive(관리 $600B)조차 <strong>(a) 닫힌 win/loss 학습 루프</strong>와 <strong>(b) 멀티 과업·임팩트 grounding</strong>은 못 한다. 둘 다 우리가 이미 아키텍처적으로 앞선 지점(PipelineContext·Impact Value Chain·Content Hub·Express 자동 진단). <em>이 두 개가 결정적 차별화다.</em></p></div>
+
+    <div class="tint"><p class="kicker">가장 시급한 진실</p><p class="body">현재 production Express는 약한 turn(슬롯필링) 경로 + 모델은 실측 flash로 동작 — <strong>품질 작업·평가(패널 83점)가 사용자에게 닿지 않는다.</strong> "압도적 품질"의 1번 과제는 단일 엔진을 production에 배선하고 본문 생성을 frontier 모델로 올리는 것.</p></div>
+  </section>
+
+  <!-- ===== 1 ===== -->
+  <section id="s1">
+    <header class="page-head"><p class="kicker">01 · Essence</p>
+      <h2 class="section-title">본질 — 생성기가 아니라 씽크탱크</h2>
+      <p class="small">청중: 경영진·기획. "왜 단순 AI 글쓰기 도구가 아닌가."</p></header>
+
+    <p class="body">대부분의 제안서 AI는 <strong>생성기</strong>다 — 요청을 받아 그럴듯한 초안을 뱉는다. 우리가 만드는 건 <strong>씽크탱크(엔진)</strong>다 — 회사의 모든 기획 지능을 축적하고, 그 위에서 추론하며, 결과(당락)로 스스로 강화된다. 차이는 <em>복리(compounding)</em>다. 생성기는 매번 0에서 시작하지만, 엔진은 직전 제안서까지의 모든 학습을 딛고 시작한다.</p>
+
+    <table>
+      <tr><th>축</th><th>단순 생성기 (시장 평균)</th><th>UD 기획 엔진 (목표)</th></tr>
+      <tr><td>지식</td><td>flat 벡터 더미에서 검색</td><td><strong>그래프 제약</strong> 코퍼스 — Value Chain 백본, 전역 추론</td></tr>
+      <tr><td>출력</td><td>섹션별 그럴듯한 산문</td><td><strong>평가표 정렬</strong> — compliance matrix + 증명된 win-theme + SROI</td></tr>
+      <tr><td>학습</td><td>없음 (매번 0)</td><td>수정 diff + 당락 + 평가자 튜닝 <strong>3 플라이휠</strong></td></tr>
+      <tr><td>구조</td><td>단일 스레드 Q&amp;A</td><td><strong>멀티 과업</strong> 통합 — 과업별 증거가 키메시지를 떠받침</td></tr>
+    </table>
+
+    <div class="tint"><p class="kicker">인사이트</p><p class="body">Anthropic 멀티에이전트 연구·Glean·Microsoft GraphRAG의 공통 교훈 — "더미를 그래프로 바꾸는 것"이 생성기를 씽크탱크로 만든다. 우리는 이미 <strong>Impact Value Chain</strong>(Impact→Input→Output→Activity→Outcome)이라는 의미 그래프를 갖고 있다. 검색 백본으로 승격하면 "이 발주처/사업유형에서 무엇이 당선되는가" 같은 <em>전역 질문</em>에 답할 수 있다(vector RAG로는 불가).</p></div>
+  </section>
+
+  <!-- ===== 2 ===== -->
+  <section id="s2">
+    <header class="page-head"><p class="kicker">02 · Market</p>
+      <h2 class="section-title">시장·벤치마크 — 우리의 wedge</h2>
+      <p class="small">청중: 경영진·기획. 외부 리서치 기반(출처 §9).</p></header>
+
+    <p class="body"><strong>시장은 한 패턴으로 수렴했다.</strong> 선두 도구(Responsive/RFPIO, Loopio, AutogenAI, GovDash, Tribble, Arphie, Grantable)는 모두 동일 파이프라인 — 요구사항 분해(shredding) → compliance matrix → RAG 1차 초안 → 신뢰도·인용 → 사람 검수. <strong>속도("5분 내 초안")는 이미 상품화</strong>되어 차별화 지점이 아니다.</p>
+
+    <table>
+      <tr><th>도구</th><th>핵심</th><th>당선 차별화</th><th>win/loss 루프</th></tr>
+      <tr><td>Responsive</td><td>8.7M Q&amp;A · $600B 관리</td><td>속도 80%↑</td><td><strong>없음</strong></td></tr>
+      <tr><td>AutogenAI</td><td>고객별 language engine · win-theme</td><td>win-rate 30%↑(자체)</td><td>불투명</td></tr>
+      <tr><td>GovDash/GovSignals</td><td>US 연방 · solicitation shredding</td><td>FedRAMP · 50~60% 빠름</td><td>부분</td></tr>
+      <tr><td>Tribble/Arphie</td><td>AI-native RAG · 신뢰도+인용 라우팅</td><td>검증 가능성</td><td>부분</td></tr>
+      <tr><td>Grantable</td><td>그랜트(임팩트 인접) · 자동 제안</td><td>$25/mo 접근성</td><td>없음</td></tr>
+    </table>
+
+    <p class="body" style="margin-top:var(--s-5)"><strong>"good enough" vs "압도적" — 무엇이 가르나.</strong> 리서치(Arphie 평가 가이드 + Shipley/APMP) 결론: 당선 출력은 더 나은 산문이 아니라 <strong>평가위원이 채점하는 방식에의 구조적 정렬</strong>이다.</p>
+    <ul>
+      <li>산문이 아니라 <strong>평가표를 채점</strong>하라 — 가중 배점에 노력 집중.</li>
+      <li><strong>Compliance는 가장 예방 가능한 패배</strong> — 누락 요구사항 하나로 채점 전 실격.</li>
+      <li><strong>구체성이 역량 주장을 이긴다</strong> — "효율 개선" ✕ → "14일 검토를 4일로" ○. (우리의 SROI·Before/After·코치 풀이 구체성 금광.)</li>
+      <li><strong>Win-theme = 차별점 + 고객 편익 + 정량 가치 + 증거.</strong> "증명 못 하면 말하지 마라."</li>
+    </ul>
+
+    <div class="tint is-strong"><p class="kicker">우리의 wedge — 시장 공백 4가지</p>
+      <ol>
+        <li><strong>멀티 과업 제안서.</strong> 모든 벤치마크 도구는 단일 스레드 Q&amp;A 조립용 — 교육+행사+장소+연사를 하나로 모델링하는 도구는 없다. <em>가장 명확한 차별화.</em></li>
+        <li><strong>한국 B2G 사회공헌 framing.</strong> GovDash 등은 US 연방·영문 Shipley 전용. B2G/B2B 자동 진단 + "일반 전략 → 사회공헌사업" 재framing은 무경쟁.</li>
+        <li><strong>임팩트·SROI grounding</strong>을 구체성 레이어로. 임팩트 인접 Grantable조차 SROI value-chain 모델링 없음.</li>
+        <li><strong>닫힌 win/loss 학습 루프.</strong> 선두 Responsive조차 안 하는 것 — 제출 1차본 → 당락 → win-theme·자산 재가중.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== 3 ===== -->
+  <section id="s3">
+    <header class="page-head"><p class="kicker">03 · Architecture</p>
+      <h2 class="section-title">제품 구조 — 4 레이어</h2>
+      <p class="small">청중: 개발/AI + 기획. "엔진이 실제로 어떻게 도는가."</p></header>
+
+    <div class="flow">[주입]   RFP·당선제안서·자산 ──drop/url/paste──▶ 멱등 ingest + 자동분류·태깅·임베딩 + 검수큐
+[지식]   그래프 제약 코퍼스(Value Chain 백본) · 과업유형 태깅 · 신선도/출처 · Contextual RAG + GraphRAG
+[입력]   RFP 파싱 → 과업 N개 자동 분해 → PM은 결정 지점만
+[생성]   gather-병렬(리서치·코치·자산) → assemble-단일(7섹션·plan-then-write) → verify-분리(faithfulness·인용)
+[출력]   compliance matrix + typed win-theme + 과업별 디테일 + SROI + .pptx/.md  (= 측정 Rubric self-score)
+[플라이휠] ① 사람 수정 diff  ② 당락 결과  ③ 평가자 튜닝  → 다음 제안서 더 좋아짐</div>
+
+    <p class="body"><strong>지식 — 더미가 아니라 그래프.</strong> 모든 자산·코치·당선 청크·통계를 (Value Chain 단계 × RFP 섹션 × 과업유형 × 증거유형) 노드로 태깅하고 태그를 <strong>엣지</strong>로. 검색은 그래프 이웃으로 제약(Glean), 전역 질문은 GraphRAG 커뮤니티 요약(Microsoft, 전역 포괄성 +50~70%). 모든 노드에 <strong>신선도·출처</strong> 필드 — 통계·당선 주장이 가장 빨리 부패하고 평가위원이 팩트체크하는 지점.</p>
+
+    <p class="body"><strong>생성 — 병렬 수집 / 단일 조립 / 분리 검증.</strong> 제안서는 강하게 상호의존적(섹션 정렬 필수)이라 전면 멀티에이전트 작성은 Anthropic이 명시한 안티패턴. 병렬 수집(리서치·코치·자산)은 독립 스레드로, 본문 7섹션은 공유 컨텍스트 단일 조립(plan-then-write, STORM +25%), 검증은 자동 진단 4종 + 인용 grounding pass로 분리.</p>
+
+    <p class="body"><strong>출력 — 과업(Workstream) 구조 (ADR-019).</strong> 프로젝트 = N개 타입된 과업. 7섹션·키메시지는 과업 집합 위의 투영/합성. 각 과업은 type · 연결 RFP 배점 · 디테일 · 자산 · 증거 · 예산 슬라이스 · 뒷받침 포인트를 가진다. ProgramProfile 6 과업유형(각 RFP 배점 1:1)을 골격으로 승격.</p>
+
+    <p class="body"><strong>플라이휠 — 복리의 원천.</strong></p>
+    <table>
+      <tr><th>루프</th><th>신호</th><th>되먹임</th><th>비용</th></tr>
+      <tr><td>① 수정 diff (SALT)</td><td>AI 초안 vs PM 최종본 차이</td><td>few-shot 예시뱅크 + 검색 재랭킹</td><td>낮음</td></tr>
+      <tr><td>② 당락 결과</td><td>제출 → 당선/탈락 + 사유</td><td>당선 상관 자산·framing 재가중</td><td>낮음</td></tr>
+      <tr><td>③ 평가자 튜닝 (CLHF)</td><td>~5건 사람 라벨</td><td>judge 게이트 ~30%/회 정확도↑</td><td>최저</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== 4 ===== -->
+  <section id="s4">
+    <header class="page-head"><p class="kicker">04 · Win Science</p>
+      <h2 class="section-title">당선 과학 → 측정 가능한 Rubric</h2>
+      <p class="small">청중: 기획 + AI. "당선"을 막연한 목표가 아니라 기계가 채점하는 점수로.</p></header>
+
+    <p class="body">한국 공공은 <strong>협상에 의한 계약</strong> — 기술 70 : 가격 30(60:40~80:40 조정). 가격은 정량 공식이라 깎아도 거의 못 얻는다(추진전략 70에서 승부). 정성 배점에서 <strong>추진전략(~30)이 최대 레버</strong>, <strong>사업이해도·차별성이 가장 싼 점수</strong> — 정확히 보일러플레이트 AI가 실패하는 곳.</p>
+
+    <table>
+      <caption>엔진 self-score Rubric — 제출 전 시뮬레이션. 평가위원 시트를 그대로 최적화 대상으로.</caption>
+      <tr><th>엔진 rubric 라인</th><th>평가위원 차원</th><th>가중</th><th>기계 검증 기준</th></tr>
+      <tr><td>RFP compliance 커버리지</td><td>(실격 게이트)</td><td>gate</td><td>파싱 요구사항 100% 매핑, 미매핑 0</td></tr>
+      <tr><td>사업이해도·tailoring</td><td>사업이해도</td><td>15</td><td>발주처 vision·target·hot button 인용 ≥N, 보일러플레이트 낮음</td></tr>
+      <tr><td>추진전략·logic chain</td><td>사업전략·추진전략</td><td>30</td><td>LogicChainChecker 채널 chain 통과, Action Week·방법론</td></tr>
+      <tr><td>차별성·discriminators</td><td>논리성·차별성</td><td>15</td><td>차별점 ≥3 각각 편익+증거, ghosting 존재</td></tr>
+      <tr><td>증거 밀도</td><td>타당성·실적</td><td>15</td><td>증거 있는 주장÷전체 ≥ 임계, 금지어 0, 조작 수치 0</td></tr>
+      <tr><td>기대효과·SROI</td><td>기대효과</td><td>10</td><td>outcome map 완성 → SROI forecast, 3방향 정렬</td></tr>
+      <tr><td>위험·품질관리</td><td>사업관리·품질</td><td>10</td><td>리스크 레지스터 + 미언급 우려 대응, QA 방안</td></tr>
+      <tr><td>평가위원 ergonomics</td><td>(가독성)</td><td>5</td><td>문단 ≤6줄·문장 ≤15~20단어, 섹션마다 시각자료, 10초 규칙</td></tr>
+    </table>
+
+    <div class="tint is-strong"><p class="kicker">당선 레버 — win-theme을 typed object로</p><p class="body">산문이 아니라 객체로: <strong>{차별점, 고객편익, 정량가치, 증거[]}</strong>. <em>증거[]가 비면 hard validation error</em> ("증명 못 하면 말하지 마라"). 금지어("최고 수준"·"world-class"·"풍부한 경험")는 자동 차단 → 숫자·이름·날짜로 치환. <strong>절대 수치 조작 금지</strong>(정직한 데이터가 가짜 통계를 이긴다).</p></div>
+  </section>
+
+  <!-- ===== 5 ===== -->
+  <section id="s5">
+    <header class="page-head"><p class="kicker">05 · SOTA</p>
+      <h2 class="section-title">기술 SOTA 채택 (티어별)</h2>
+      <p class="small">청중: AI/개발. good → 압도적으로 옮기는 구체 기법, 도입 순서(출처 §9).</p></header>
+
+    <table>
+      <tr><th>티어</th><th>기법</th><th>효과(보고치)</th><th>우리 적용 지점</th></tr>
+      <tr><td>T1</td><td>Contextual Retrieval — 청크에 맥락 prepend 후 임베딩+BM25</td><td>top-k 실패 −49%</td><td>WinningProposalChunk 재임베딩(Batch)</td></tr>
+      <tr><td>T1</td><td>Hybrid(BM25+dense, RRF) + cross-encoder rerank</td><td>−67%</td><td>narrativeSnippet 검색 경로</td></tr>
+      <tr><td>T2</td><td>VeriFact-CoT / CEG — 주장 추출 → 인용 entailment → 재생성, 최종 판정 결정론</td><td>환각 25→12% · 인용 F1 .45→.75</td><td>FactCheckLight 승격</td></tr>
+      <tr><td>T2</td><td>Plan-then-write + 적응형 outline + 섹션 memory</td><td>STORM 조직성 +25%</td><td>단일 엔진 조립</td></tr>
+      <tr><td>T3</td><td>평가자 calibration — binary MET/UNMET, position bias 무작위화, 생성 모델군 단독 judge 금지, gold set κ</td><td>self-gaming 방지</td><td>평가위원 패널 → 정식 Rubric</td></tr>
+      <tr><td>T3</td><td>GraphRAG(선택) — 전역 "무엇이 당선되나"</td><td>포괄성 +50~70%</td><td>전략·framing 섹션 한정</td></tr>
+      <tr><td>T4</td><td>2-tier 라우팅 — cheap(추출·분류) / frontier(작성·조립), 캐스케이드</td><td>~95% 품질 @ ~25~55% 비용</td><td>invokeAi 라우터 확장</td></tr>
+    </table>
+
+    <div class="tint"><p class="kicker">주의</p><p class="body">병렬화는 naive 동시 호출 금지 — Gemini rate-limit(429). 동시성 캡(예: 3) + 재시도. 모델 품질 &gt; 토큰 brute-force (Anthropic: 서브에이전트 모델 업그레이드가 토큰 2배보다 낫다).</p></div>
+  </section>
+
+  <!-- ===== 6 ===== -->
+  <section id="s6">
+    <header class="page-head"><p class="kicker">06 · Asset Analysis</p>
+      <h2 class="section-title">기존 자산 분석 — 수정·고도화·폐기·추가</h2>
+      <p class="small">2026-06-01 종합 점검 + 리서치를 기존 코드/문서에 매핑.</p></header>
+
+    <p class="kicker" style="font-size:13px">수정 — 깨졌거나 stale (즉시·저위험)</p>
+    <table>
+      <tr><th>대상</th><th>문제</th><th>조치</th></tr>
+      <tr><td>Gemini 모델</td><td>명목 "3.1 Pro"인데 eval 147콜 전부 <strong>실측 flash</strong> — 품질 천장이 눌림</td><td>로그 확인 → 본문 pro 정책 ADR-022</td></tr>
+      <tr><td>production 경로</td><td>약한 turn 경로만 씀, flagship produceUltimateDraft는 dev-only(404)</td><td>단일 엔진 배선(ADR-021)</td></tr>
+      <tr><td>express turn·init</td><td>requireProjectAccess 없음(나머지 10개는 有) — 보안 갭</td><td>auth 추가</td></tr>
+      <tr><td>embedding 차원</td><td>주석 768 vs 실제 3072 → 무성 zero-recall</td><td>주석 정정 + 시작 assert</td></tr>
+      <tr><td>JSON 파서 3중 · web-search.ts</td><td>약한 파서 재구현 · invokeAi 단일진입점 위반</td><td>safeParseJson·ai-fallback 통합</td></tr>
+      <tr><td>명명 충돌·문서 stale</td><td>Phase/Wave/Brain-W 충돌, 모델수 44, PRD-v11 깨진 링크</td><td><strong>완료</strong> (glossary·HISTORY·2026-06-01)</td></tr>
+    </table>
+
+    <p class="kicker" style="font-size:13px;margin-top:var(--s-6)">고도화 — 동작하나 레벨업 (압도적 품질의 핵심)</p>
+    <table>
+      <tr><th>대상 (현재)</th><th>고도화 방향</th><th>근거</th></tr>
+      <tr><td>winning-reference RAG</td><td>Contextual Retrieval + hybrid + rerank</td><td>§5 T1 (−67%)</td></tr>
+      <tr><td>FactCheckLight</td><td>VeriFact-CoT/CEG 결정론 faithfulness gate</td><td>§5 T2</td></tr>
+      <tr><td>평가위원 패널</td><td>정식 Rubric(한국 70/30) + calibration(gold set κ)</td><td>§4·§5 T3</td></tr>
+      <tr><td>Express 슬롯필링 생성</td><td>plan-then-write + 적응형 outline + 섹션 memory</td><td>§5 T2</td></tr>
+      <tr><td>Content Hub 자산(flat 태그)</td><td>그래프 엣지(Value Chain) + 신선도/출처 + GraphRAG</td><td>§3</td></tr>
+      <tr><td>keyMessages(string[] 캡3)</td><td>과업별 typed win-theme</td><td>§4</td></tr>
+      <tr><td>ingest(Wave N/Q)</td><td>멱등 + 자동분류 + double-threshold 검수큐</td><td>§3</td></tr>
+      <tr><td>invokeAi</td><td>2-tier 라우팅 + 동시성 캡 + 429 재시도</td><td>§5 T4</td></tr>
+    </table>
+
+    <p class="kicker" style="font-size:13px;margin-top:var(--s-6)">폐기 — 제거·통합 (검증 후, 과신 삭제 금지)</p>
+    <table>
+      <tr><th>대상</th><th>처리</th><th>주의</th></tr>
+      <tr><td>제안서 생성 엔진 3개 표류</td><td><strong>단일 엔진 통합</strong>, 레거시 2개 폐기(ADR-021)</td><td>3개가 다른 7섹션 스키마</td></tr>
+      <tr><td>planning-agent 트랙</td><td>의존성 해체 후 폐기</td><td><strong>통째 삭제 금지</strong> — 라이브 import</td></tr>
+      <tr><td>7섹션 고정 스키마</td><td>폐기보다 <strong>재구성</strong> — 과업 위 투영</td><td>하위호환 어댑터</td></tr>
+      <tr><td>in-memory 벡터 검색</td><td>pgvector + 인덱스(확장 시)</td><td>현 2048청크는 동작 — 중기</td></tr>
+      <tr><td>죽은 코드·stale 문서·회귀 스크립트</td><td>죽은 코드 6건·문서 8건 <strong>완료</strong>, 회귀 스크립트는 vitest 후</td><td>worktree·브랜치는 사용자 확인</td></tr>
+    </table>
+
+    <p class="kicker" style="font-size:13px;margin-top:var(--s-6)">추가 — 신규 (wedge·플라이휠)</p>
+    <table>
+      <tr><th>신규</th><th>왜</th></tr>
+      <tr><td>과업(Workstream) 레이어</td><td>멀티 과업 wedge — ADR-019 / §2 / §3</td></tr>
+      <tr><td>Compliance / requirement matrix (1급 산출물)</td><td>모든 벤치마크 도구 table-stakes · 실격 방지</td></tr>
+      <tr><td>Win-theme generator (typed, proof chain 강제)</td><td>AutogenAI 헤드라인 차별화 · 당선 북극성</td></tr>
+      <tr><td>측정 Rubric self-score (제출 전 시뮬레이션)</td><td>winner vs "약점 반복" 가르는 규율</td></tr>
+      <tr><td>3 플라이휠 (수정 diff·당락·평가자 CLHF)</td><td>선두도 안 닫는 루프 = 복리</td></tr>
+      <tr><td>RAG recall@k 평가 · vitest 코어 · 단일 drop-zone 주입 UX</td><td>검색 사각 보완 · 회귀 안전망 · 주입 용이</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== 7 ===== -->
+  <section id="s7">
+    <header class="page-head"><p class="kicker">07 · Roadmap</p>
+      <h2 class="section-title">로드맵 — Phase &amp; ADR 시퀀스</h2>
+      <p class="small">위험 통제(검증된 함정) 반영. 일하는 방식 = 위임+검증+투명보고(ADR-020).</p></header>
+
+    <table>
+      <tr><th>Phase</th><th>내용</th><th>산출/ADR</th><th>기둥</th></tr>
+      <tr><td>P0 진실화 (즉시·저위험)</td><td>Gemini 로그 확인 · 보안 갭 · embedding assert · 죽은코드/문서 완료</td><td>FIX 브리프 · ADR-022</td><td>기반</td></tr>
+      <tr><td>P1 설계 게이트</td><td>과업 레이어 ADR-019 검토 · 단일 엔진 ADR-021 · 과거 제안서로 taxonomy 검증</td><td>ADR-019·021</td><td>③</td></tr>
+      <tr><td>P2 엔진 수렴+배선</td><td>단일 엔진 통합 + production 배선 + pro 모델 + 과업-aware + Contextual RAG</td><td>WS·EX 브리프</td><td>①③</td></tr>
+      <tr><td>P3 faithfulness+출력</td><td>결정론 faithfulness gate · compliance matrix · typed win-theme · Rubric</td><td>EX·EVAL 브리프</td><td>①</td></tr>
+      <tr><td>P4 학습 루프</td><td>멱등 ingest + 워커 + drop-zone UX + RAG recall + 그래프 엣지/신선도</td><td>BR·DATA 브리프</td><td>②</td></tr>
+      <tr><td>P5 플라이휠·calibration</td><td>3 플라이휠 + 평가자 calibration(gold set) + vitest 코어</td><td>EVAL 브리프</td><td>①②</td></tr>
+    </table>
+
+    <div class="tint"><p class="kicker">실행 원칙</p><p class="body">각 Phase는 메인이 직접(문서·ADR) + 서브 에이전트 위임(기능 코드) + 메인 검증으로 진행. 큰 작업 전 ADR, 코드 변경은 자급자족 브리프 + typecheck·lint·manifest 게이트. (ADR-020 · docs/playbook/)</p></div>
+  </section>
+
+  <!-- ===== 8 ===== -->
+  <section id="s8">
+    <header class="page-head"><p class="kicker">08 · Metrics</p>
+      <h2 class="section-title">성공 지표 (Polaris)</h2>
+      <p class="small">막연한 "좋다"가 아니라 측정 가능한 목표.</p></header>
+
+    <table>
+      <tr><th>지표</th><th>목표</th><th>측정</th></tr>
+      <tr><td>1차본 제출 가능성</td><td>Rubric self-score ≥ 당선권 임계</td><td>§4 엔진 self-score</td></tr>
+      <tr><td>RAG 검색 품질</td><td>recall@k / MRR 추적, 회귀 0</td><td>라벨셋(RFP→기대 당선문서)</td></tr>
+      <tr><td>faithfulness</td><td>환각률↓ · 인용 F1↑ · 조작 수치 0</td><td>결정론 gate(entailment)</td></tr>
+      <tr><td>평가자 신뢰도</td><td>judge↔human κ 목표치</td><td>gold set(당선/탈락 라벨)</td></tr>
+      <tr><td>주입 용이성</td><td>드롭→검수 시간↓ · 자동분류 정확도</td><td>review 큐 통계</td></tr>
+      <tr><td>당선율 루프</td><td>제출→당락 추적, 당선 상관 자산 식별</td><td>win/loss 플라이휠</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== 9 ===== -->
+  <section id="s9">
+    <header class="page-head"><p class="kicker">09 · Sources</p>
+      <h2 class="section-title">출처 — 벤치마크·리서치</h2>
+      <p class="small">2026-06-01 4축 병렬 리서치.</p></header>
+
+    <div class="source-list">
+      <div class="source-item"><span class="num">REF 01</span><div><div class="grp">제안서 자동화 도구</div>
+        <a href="https://www.responsive.io/" target="_blank">responsive.io</a> · <a href="https://autogenai.com/" target="_blank">autogenai.com</a> · <a href="https://www.govdash.com/features/proposal-cloud/compliance-matrix" target="_blank">govdash compliance-matrix</a> · <a href="https://grantable.co/" target="_blank">grantable.co</a> · <a href="https://www.arphie.ai/glossary/ai-for-rfp-evaluation" target="_blank">arphie evaluation</a></div></div>
+      <div class="source-item"><span class="num">REF 02</span><div><div class="grp">RAG · 생성 SOTA</div>
+        <a href="https://www.anthropic.com/news/contextual-retrieval" target="_blank">Anthropic Contextual Retrieval</a> · <a href="https://arxiv.org/pdf/2404.16130" target="_blank">Microsoft GraphRAG (2404.16130)</a> · <a href="https://arxiv.org/abs/2402.14207" target="_blank">STORM (2402.14207)</a> · <a href="https://arxiv.org/html/2509.05741v1" target="_blank">VeriFact-CoT</a> · <a href="https://arxiv.org/html/2411.15594v6" target="_blank">LLM-as-judge survey</a></div></div>
+      <div class="source-item"><span class="num">REF 03</span><div><div class="grp">지식엔진 · 주입 · 플라이휠</div>
+        <a href="https://www.glean.com/blog/knowledge-graph-vs-vector-database" target="_blank">Glean KG vs vector</a> · <a href="https://temporal.io/blog/how-dust-builds-agentic-ai-temporal" target="_blank">Dust/Temporal 멱등 ingest</a> · <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank">Anthropic 멀티에이전트</a> · <a href="https://galileo.ai/blog/introducing-continuous-learning-with-human-feedback" target="_blank">CLHF</a></div></div>
+      <div class="source-item"><span class="num">REF 04</span><div><div class="grp">당선 과학 (한국 + Shipley/APMP + 임팩트)</div>
+        <a href="https://law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000088849" target="_blank">조달청 협상계약 세부기준</a> · <a href="https://www.shipleywins.com/blogs/effective-theme-statements" target="_blank">Shipley win-theme</a> · <a href="https://bok.apmp.org/bok/compliance-matrix/" target="_blank">APMP compliance matrix</a> · <a href="https://www.siaassociation.org/topics/theory-of-change-3/" target="_blank">Theory of Change</a></div></div>
+    </div>
+  </section>
+
+  <!-- footer (wordmark again, web-scroll recipe) -->
+  <div class="footer-bar">
+    <span>UD PLANNING ENGINE · PRD v1.0 · 2026-06-01 · PROPOSED</span>
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="Underdogs" style="height:18px">
+  </div>
+
+</div>
+</body>
+</html>

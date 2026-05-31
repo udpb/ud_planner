@@ -1,7 +1,7 @@
 /**
- * Embedding — Gemini text-embedding-004 래퍼 (Wave N4, 2026-05-15)
+ * Embedding — Gemini gemini-embedding-001 래퍼 (Wave N4, 2026-05-15)
  *
- * 768 dim. ContentAsset.embedding 에 저장.
+ * 3072 dim. ContentAsset.embedding 에 저장.
  *
  * 사용:
  *   const vec = await generateEmbedding('AI 솔로프리너 과정 — 1주차 발견 모듈')
@@ -12,7 +12,8 @@
 // 직접 import 함. 어차피 GEMINI_API_KEY 가 노드 환경에서만 노출되므로 브라우저
 // 번들에 들어가도 동작 안 함. import 가 client 에서 일어나지 않도록 호출 측에서
 // 관리 (현재는 API route 와 CLI 만 사용).
-import { GoogleGenerativeAI } from '@google/generative-ai'
+// @google/genai (GA) — 구 @google/generative-ai(EOL) 대체 (ADR-023, 2026-06-01).
+import { GoogleGenAI } from '@google/genai'
 
 // 2026-05-15 N4: gemini-embedding-001 (dim 3072). 다른 키 tier 에서 text-embedding-004
 //  는 안 보이는 경우가 있어 안정 모델로 픽스.
@@ -20,20 +21,20 @@ const EMBEDDING_MODEL = 'gemini-embedding-001'
 export const EMBEDDING_MODEL_LABEL = EMBEDDING_MODEL
 export const EMBEDDING_DIM = 3072
 
-let _client: GoogleGenerativeAI | null = null
+let _client: GoogleGenAI | null = null
 
-function getClient(): GoogleGenerativeAI {
+function getClient(): GoogleGenAI {
   if (_client) return _client
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) {
     throw new Error('[embedding] GEMINI_API_KEY 환경변수 미설정')
   }
-  _client = new GoogleGenerativeAI(apiKey)
+  _client = new GoogleGenAI({ apiKey })
   return _client
 }
 
 /**
- * 단일 텍스트 → embedding vector (768 dim).
+ * 단일 텍스트 → embedding vector (EMBEDDING_DIM=3072).
  * 입력 길이 30K 자 초과 시 절단.
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
@@ -41,27 +42,49 @@ export async function generateEmbedding(text: string): Promise<number[]> {
     throw new Error('[embedding] 빈 텍스트')
   }
   const input = text.length > 30_000 ? text.slice(0, 30_000) : text
-  const model = getClient().getGenerativeModel({ model: EMBEDDING_MODEL })
-  const r = await model.embedContent(input)
-  const values = r.embedding.values
+  const r = await getClient().models.embedContent({
+    model: EMBEDDING_MODEL,
+    contents: input,
+  })
+  const values = r.embeddings?.[0]?.values
   if (!values || values.length === 0) {
     throw new Error('[embedding] empty embedding from Gemini')
+  }
+  // 차원 assert — 모델/tier 변경으로 차원이 어긋나면 무성 zero-recall 방지 (즉시 throw)
+  if (values.length !== EMBEDDING_DIM) {
+    throw new Error(
+      `[embedding] 차원 불일치 — expected ${EMBEDDING_DIM}, got ${values.length} (model=${EMBEDDING_MODEL})`,
+    )
   }
   return values
 }
 
 /**
- * 다건 텍스트 임베딩 — Gemini batchEmbedContents 호출.
+ * 다건 텍스트 임베딩 — @google/genai embedContent 는 contents 배열을 받아
+ * 입력 순서대로 embeddings[] 를 반환한다 (구 batchEmbedContents 대체, ADR-023).
  */
 export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
   if (texts.length === 0) return []
-  const model = getClient().getGenerativeModel({ model: EMBEDDING_MODEL })
-  const r = await model.batchEmbedContents({
-    requests: texts.map((t) => ({
-      content: { role: 'user', parts: [{ text: t.slice(0, 30_000) }] },
-    })),
+  const r = await getClient().models.embedContent({
+    model: EMBEDDING_MODEL,
+    contents: texts.map((t) => t.slice(0, 30_000)),
   })
-  return r.embeddings.map((e) => e.values)
+  const embeddings = r.embeddings ?? []
+  if (embeddings.length !== texts.length) {
+    throw new Error(
+      `[embedding] 배치 개수 불일치 — expected ${texts.length}, got ${embeddings.length}`,
+    )
+  }
+  return embeddings.map((e) => {
+    const values = e.values
+    // 차원 assert — 무성 zero-recall 방지 (단건과 동일 정책)
+    if (!values || values.length !== EMBEDDING_DIM) {
+      throw new Error(
+        `[embedding] 차원 불일치 — expected ${EMBEDDING_DIM}, got ${values?.length ?? 0} (model=${EMBEDDING_MODEL})`,
+      )
+    }
+    return values
+  })
 }
 
 // ─────────────────────────────────────────

@@ -1,0 +1,41 @@
+{
+  "_note": "RET-1 검색 평가 라벨 스캐폴드. query 는 scripts/fixtures/eval-rfps.json 6건의 RFP summary 에서 파생. expectedIds 는 PLACEHOLDER — 실 당선문서/자산 id 매핑은 데이터 확보(DATA-2) 후 채운다. expectedIds 가 비어 있는 동안 runRetrievalEval 은 unlabeled=true 로 지표 무신뢰를 표시한다. 채울 때: winning 후보 id 형식 'winning:<projectName>:<n>' / asset 후보 id 형식 'asset:<assetId>:<section>' 또는 citation 의 docId/assetId 사용.",
+  "labels": [
+    {
+      "label": "B2G-청년창업-중예산",
+      "query": "충남 청년 예비·초기창업가 30명을 발굴해 BM 고도화·데모데이·투자연계로 지역 정착형 창업 생태계를 활성화하는 8개월 육성 프로그램",
+      "channel": "B2G",
+      "expectedIds": []
+    },
+    {
+      "label": "B2B-대기업CSR-소셜임팩트",
+      "query": "OO그룹 ESG 전략과 연계해 소셜벤처 15개사의 임팩트를 스케일업하고 그룹 사업부 협업·판로·SROI 증명으로 잇는 액셀러레이팅",
+      "channel": "B2B",
+      "expectedIds": []
+    },
+    {
+      "label": "renewal-연속사업-운영",
+      "query": "3년차 연속사업으로 누적 데이터를 활용해 딥테크 10개사의 글로벌 GTM·후속투자 연계를 전년 대비 강화하는 프로그램",
+      "channel": "renewal",
+      "expectedIds": []
+    },
+    {
+      "label": "B2G-문화행사-소예산",
+      "query": "지역 로컬크리에이터를 발굴·홍보하고 판로를 연계하는 시민 참여형 페스티벌 기획·운영 용역",
+      "channel": "B2G",
+      "expectedIds": []
+    },
+    {
+      "label": "B2G-디지털전환-소상공인",
+      "query": "소상공인 50명의 AI·디지털 도구 활용 역량을 강화하고 온라인 판로 전환·매출 증대를 1:1 컨설팅으로 지원하는 사업",
+      "channel": "B2G",
+      "expectedIds": []
+    },
+    {
+      "label": "B2G-시니어-일자리",
+      "query": "신중년 35명의 경력 자산을 활용해 창업·일자리 전환을 세대 맞춤 교육·코칭·커뮤니티로 지원하는 프로그램",
+      "channel": "B2G",
+      "expectedIds": []
+    }
+  ]
+}

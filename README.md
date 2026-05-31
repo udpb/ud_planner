@@ -5,7 +5,7 @@
 
 🚀 **프로덕션**: https://ud-planner.vercel.app
 
-📦 **인수인계**: [HANDOVER.md](HANDOVER.md) (다음 개발자가 받아 곧바로 운영·고도화 가능)
+📦 **인수인계**: [HANDOFF.md](HANDOFF.md) (라이브 상태·다음 진입점 — 매 세션 갱신)
 
 ---
 
@@ -39,18 +39,21 @@ npm run dev
 
 ## 🗂 핵심 문서 (읽는 순서)
 
+> 일하는 방식 = 위임+검증+투명보고 (ADR-020). 새 세션은 1→4 순서로 진입.
+
 | 문서 | 역할 | 언제 |
 |---|---|---|
-| **[HANDOVER.md](HANDOVER.md)** ⭐⭐⭐ | 인수인계서 — 시스템 정체성·데이터 모델·user flow·API·점검 결과 | **새 개발자 첫 진입** |
-| **[PRD-v8.0.md](PRD-v8.0.md)** | 단일 진실 원본 (v8.0 Express 2.0 — AI 자동 진단·채널 분기, ADR-013) | 결정 근거 찾을 때 |
-| **[docs/architecture/user-flow.md](docs/architecture/user-flow.md)** ⭐ | User flow ASCII 다이어그램 | 흐름 이해할 때 |
-| **[ROADMAP.md](ROADMAP.md)** + **[docs/journey/2026-05-31-alpha-test-prep-MASTER.md](docs/journey/2026-05-31-alpha-test-prep-MASTER.md)** | 현재 진행 한 눈에 (라이브) | 매 세션 시작 |
-| **[ROADMAP.md](ROADMAP.md)** | Phase A~J 체크리스트 | 다음 작업 결정 |
-| **[CLAUDE.md](CLAUDE.md)** | 개발 규칙·디자인 시스템 | AI 협업 시 |
-| **[LESSONS.md](LESSONS.md)** | 시행착오 케이스 | 이상한 일 발생 시 먼저 |
-| **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** | Vercel 배포 가이드 | 배포할 때 |
+| **[HANDOFF.md](HANDOFF.md)** ⭐⭐⭐ | 라이브 상태·다음 진입점·함정 (매 세션 갱신) | **새 진입 1순위** |
+| **[docs/HISTORY.md](docs/HISTORY.md)** ⭐ | 문서 진실/버전 ledger (모델 42 · 코드 frontier · stale 식별) | 현재 상태 정확히 |
+| **[docs/glossary.md](docs/glossary.md)** ⭐ | 용어 SSoT (명명 충돌 정리·과업유형) | 용어 헷갈릴 때 |
+| **[CLAUDE.md](CLAUDE.md)** + **[docs/playbook/](docs/playbook/)** | 운영 규칙 + 일하는 방식 상세 | 작업 시작 전 |
+| **[PRD-v8.0.md](PRD-v8.0.md)** + **[PRD-Brain.md](PRD-Brain.md)** | 제품 정의 (⚠️ 과업 레이어·Brain 반영 재작성 후보 — HISTORY 참조) | 결정 근거 |
+| **[docs/decisions/](docs/decisions/)** | ADR 001~020 ([README](docs/decisions/README.md) 인덱스) — 왜 이렇게 결정했나 | 결정 추적 |
+| **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** · **[RUNBOOK-Brain.md](RUNBOOK-Brain.md)** | 배포·Brain 운영 | 배포/운영 |
+| **[LESSONS.md](LESSONS.md)** | 시행착오 케이스 | 이상한 일 발생 시 |
 
-상세: [docs/architecture/](docs/architecture/) (12 문서) · [docs/decisions/](docs/decisions/) (12 ADR) · [docs/journey/](docs/journey/) (시행착오 일지)
+상세: [docs/architecture/](docs/architecture/) · [docs/decisions/](docs/decisions/) (20 ADR) · [docs/journey/](docs/journey/) (세션 로그)
+> ⚠️ `ROADMAP.md` 는 2026-05-19 시점 stale — 현재 상태는 HANDOFF/HISTORY 가 정본. 이력 참조용으로만.
 
 ---
 
@@ -75,7 +78,7 @@ npm run dev
 | 영역 | 선택 |
 |---|---|
 | Framework | Next.js 16 (App Router) + TypeScript strict |
-| DB | Prisma 7 + PostgreSQL (PrismaPg adapter) — 44 models |
+| DB | Prisma 7 + PostgreSQL (PrismaPg adapter) — 42 models |
 | Auth | NextAuth v5 (JWT) |
 | AI | **Gemini 3.1 Pro Preview** (Primary) + **Claude Sonnet 4.6** (Fallback) — `invokeAi()` 단일 진입점 |
 | UI | shadcn/ui + base-ui + Tailwind v4 + lucide-react + sonner |
@@ -88,7 +91,7 @@ npm run dev
 ## 📊 진행 상태
 
 > ⚠️ 아래 표는 2026-04-29 스냅샷(Phase A~L). 이후 Phase M·Wave N·M-Impact·C·P·Q·U + Brain(Sphere2) + alpha-test-prep(Express 1차본 품질 루프·당선 RAG·도식화 PPT) 완료.
-> **현재 상태는 [ROADMAP.md](ROADMAP.md) + [journey MASTER](docs/journey/2026-05-31-alpha-test-prep-MASTER.md) 참조.**
+> **현재 상태 정본 = [HANDOFF.md](HANDOFF.md) + [docs/HISTORY.md](docs/HISTORY.md)** (ROADMAP 은 stale, 이력 참조용).
 
 | Phase | 이름 | 상태 |
 |---|---|---|
@@ -154,7 +157,7 @@ git push origin master            # → Vercel 자동 redeploy (build:prod)
 
 ## 🛡 인수인계 / 보안
 
-- **인수인계 첫 시작**: [HANDOVER.md §14 체크리스트](HANDOVER.md#14-인수인계-체크리스트)
+- **인수인계 첫 시작**: [HANDOFF.md](HANDOFF.md) "다음 세션 진입점"
 - **🔴 즉시 rotate 필요**: ANTHROPIC_API_KEY · Neon DB password (작업 중 채팅에 노출됨)
 - **다음 개발 권장**: Vercel Pro 업그레이드 (60s → 300s, AI timeout 빈번 시) · Phase J3 (시트 #16) · E2E 자동 테스트
 
