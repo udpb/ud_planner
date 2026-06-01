@@ -60,7 +60,8 @@
 - **Phase 0** (2026-04~05) — Phase A~L 파이프라인 + Express + Wave N/M-Impact/C/P/Q/U + ADR-001~014. (ROADMAP 가 여기까지만 추적)
 - **Phase 1** (2026-05-20~) — Brain Sphere-2 (concept 그래프·당선패턴·RAG) + ADR-015~018 + ux-v2 branches.
 - **Phase 2** (2026-05-29~31) — alpha-test prep (K~P, P9~P12 풀텍스트 RAG·OCR·pptx·평가위원 패널). frontier.
-- **Phase 3** (2026-06-01~) — 종합 점검 → 3기둥 재기획 (ADR-019 과업 레이어) + 운영 인프라 부트스트랩 (ADR-020). **현재.**
+- **Phase 3** (2026-06-01) — 종합 점검 → 3기둥 재기획(ADR-019) + 운영 인프라(ADR-020) + **엔진 재구축**: 과업 레이어·검색 계약·단일 생성 엔진(EX-1, ADR-021)·검증 레이어(EX-2)·정직한 측정(EVAL-1)·Gemini 단일화(ADR-023)·2-tier 하이브리드(ADR-022)·품질 sharpening(QUAL-1·2, 도식 PPTX). 산출물 샘플 `docs/samples/`.
+- **Phase 4 (다음)** — **DATA-2(실 자산 grounding)** + 실 RFP 검증이 진짜 품질 ceiling. 합성 튜닝은 plateau(패널 ~64). **현재 진입점 = HANDOFF.**
 
 ## 5. 다음 버전 작업 룰
 - **새 버전**: `*_vN+1` 파일 + 본 ledger §2/§4 갱신 + 옛 버전 §3 으로 + 삭제. external-sources/ADR/Journey 는 삭제 금지.

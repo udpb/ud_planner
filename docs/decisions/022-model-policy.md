@@ -68,7 +68,10 @@ eval 하니스가 `GEMINI_MODEL=gemini-3-flash-preview`로 돌던 것을 **`gemi
 | renewal | 55 | 68 | +13 |
 | 평균 | 61 | **66** | **+5** |
 렌즈 Δ: logic +12·winningLanguage +8·differentiation +6 (당선 결정 축에서 hybrid 우위) · quant +0. 속도 거의 동일(569 vs 545s), hybrid Pro-call 4/건.
-**결정: Flash-only 채택 안 함. Flash-우세 하이브리드(Pro 2키) 유지** — Pro가 win-deciding 렌즈에서 값을 함, 비용·속도 차 미미. ⚠️ 단 n=3·단일샘플(노이즈 큼)·둘 다 <78(당선권 미달) → **모델은 작은 레버, 진짜 품질은 EX-2(faithfulness·win-theme·compliance)**. Pro 0키 하향은 EX-2 후 재측정 시 재검토.
+**결정: Flash-only 채택 안 함. Flash-우세 하이브리드(Pro 2키) 유지** — Pro가 win-deciding 렌즈에서 값을 함, 비용·속도 차 미미. ⚠️ 단 n=3·단일샘플(노이즈 큼)·둘 다 <78(당선권 미달) → **모델은 작은 레버, 진짜 품질은 EX-2(faithfulness·win-theme·compliance)**.
+
+### 4-B. win-theme → Pro 승격 (EVAL-1 측정 후, 2026-06-01)
+EVAL-1(정직한 judge): 최약 렌즈 = **differentiation 48 · evidence 45**. differentiation은 win-theme의 discriminator·proof chain 품질에 직결 → **`engine.wintheme`를 3번째 Pro 키로 승격**(QUAL-1). Pro 키 = `engine.section.core`·`engine.self-score`·**`engine.wintheme`** (3키). 추가 비용 win-theme 1콜/draft(RPD 무리 없음). evidence는 코퍼스·grounding(DATA-2) 의존이라 별도.
 
 ### 5. 모델명은 설정/상수 (가변)
 `GEMINI_MODEL` env + `gemini.ts` 상수. 코드 분기 금지(A4).

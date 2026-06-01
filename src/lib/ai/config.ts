@@ -46,10 +46,11 @@ export type ModelTier = 'pro' | 'flash'
 /**
  * 작업 → 모델 tier 라우팅 표 — **Flash-우세** (ADR-022 §1·§4, 사용자 결정 ① 2026-06-01).
  *
- * 기본 전부 **Flash**. Pro는 "꼭 필요한 곳" **2개 키에서만** (스펙상 Pro 우위 = 깊은
- * 롱컨텍스트·추상 추론뿐 — MRCR 84.9 vs 77.3):
+ * 기본 전부 **Flash**. Pro는 "꼭 필요한 곳" **3개 키에서만** (스펙상 Pro 우위 = 깊은
+ * 롱컨텍스트·추상 추론뿐 — MRCR 84.9 vs 77.3, Pro 키 상한 3):
  *   - `engine.section.core` : ③ 사업내용 핵심 합성 (롱컨텍스트 위 결정적 본문)
  *   - `engine.self-score`   : Rubric self-score judge (판단 품질 직결)
+ *   - `engine.wintheme`     : win-theme discriminator/proof 품질 (differentiation 직결, ADR-022 §4-B)
  * 그 외 엔진 task(outline·일반 섹션·keyMessages·coherence·retrieval plumbing 등)는 전부 Flash.
  *
  * 'pro' = `GEMINI_MODEL`(기본 Pro), 'flash' = `FLASH_MODEL`.
@@ -59,9 +60,10 @@ export type ModelTier = 'pro' | 'flash'
  *    실측 예정 — flash로 충분하면 Pro 0키까지 내릴 수 있음.
  */
 export const MODEL_ROUTING: Record<string, ModelTier> = {
-  // ── Pro (꼭 필요한 2키만) ──────────────────────────────
+  // ── Pro (3키 — Pro 키 상한, ADR-022 §4·§4-B) ──────────────
   'engine.section.core': 'pro', // ③ 사업내용 핵심 합성
   'engine.self-score': 'pro', // Rubric judge
+  'engine.wintheme': 'pro', // win-theme discriminator/proof 품질 = differentiation 직결 (ADR-022 §4-B, EVAL-1 후 승격)
 
   // ── Flash (기본·명시 참조용) ──────────────────────────
   'engine.outline': 'flash',

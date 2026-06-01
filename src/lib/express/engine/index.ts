@@ -209,6 +209,31 @@ export async function generateDraft(input: EngineInput): Promise<EngineResult> {
   draft = best.draft
   const score = best.score
 
+  // slideSpecs (QUAL-2) — 최종 draft 의 sections → 도식 슬라이드 spec.
+  //   produce-slide-specs 본문 무수정(호출만). 실패해도 graceful(빈 배열) — 본문 품질에 영향 없음.
+  //   timeline(커리큘럼·사업 일정)·process-flow(추진 사이클)·kpi-grid(성과) 패턴이 나오도록 입력 충실히.
+  ctx.onProgress?.('slide-specs', '슬라이드 도식 spec 생성...')
+  try {
+    const { produceSlideSpecs } = await import('@/lib/express/produce-slide-specs')
+    const { UD_TRACK_RECORD } = await import('@/lib/ud-brand')
+    const specs = await produceSlideSpecs({
+      sections: (draft.sections ?? {}) as Record<'1' | '2' | '3' | '4' | '5' | '6' | '7', string>,
+      keyMessages: draft.keyMessages,
+      trackRecord: UD_TRACK_RECORD,
+      clientName: ctx.rfp.client ?? null,
+      projectName: ctx.rfp.projectName ?? null,
+    })
+    if (specs.length > 0) {
+      draft.slideSpecs = specs as ExpressDraft['slideSpecs']
+      const patterns = [...new Set(specs.map((s) => s.diagram.pattern))]
+      log.info('engine', 'slideSpecs 생성', { count: specs.length, patterns })
+    }
+  } catch (e) {
+    log.warn('engine', 'slideSpecs 생성 실패 → 빈 배열', {
+      err: e instanceof Error ? e.message : String(e),
+    })
+  }
+
   const elapsedSec = (Date.now() - startedAt) / 1000
   log.info('engine', 'generateDraft 완료', {
     projectId: ctx.projectId,

@@ -35,12 +35,12 @@ Agent({ subagent_type: "Explore", prompt: "..." })
 🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
 ## 활성 브리프
-(현재 없음 — 2026-06-01 기준. 첫 기능 브리프는 WS1/EX1 예정.)
-
-## 활성 브리프
-(없음 — 다음: EX-2 faithfulness·typed win-theme·compliance / async 라우트)
+(없음 — compact 직전 클린업 완료. 다음 진짜 레버 = **DATA-2**(실 자산 grounding). HANDOFF 참조.)
 
 ## 아카이브 (`_archive/`)
+- `QUAL-2-sharpen-and-diagrams.md` — ✅ 완료 (2026-06-01). §3 주차 커리큘럼표·전체 타임라인·실행계획 + §2 named 컨셉 + slideSpecs→도식 PPTX(22슬라이드). 산출물 `docs/samples/sample-draft-B2G-v2.*`.
+- `QUAL-1-evidence-differentiation.md` — ✅ 완료 (2026-06-01). win-theme→Pro 승격(3키)·evidence grounding·ghosting. 측정은 메인 직접.
+- `EVAL-1-judge-refine-quality.md` — ✅ 완료 (2026-06-01). judge가 EX-2 산출물 봄·다중샘플 n=3·단조 refine(역행 0)·risk/ergonomics 보강. 점수 plateau 원인=코퍼스 grounding 확정.
 - `EVAL-AB-flash-vs-hybrid.md` — ✅ 완료 (2026-06-01). Flash vs 하이브리드 패널 A/B → hybrid 66 vs flash 61(+5, win-deciding 렌즈 우위) → **하이브리드 유지**(ADR-022 §4-A). 실행은 메인 직접.
 - `AI-3-flash-dominant-routing.md` — ✅ 완료 (2026-06-01). Flash-우세 라우팅(Pro=2키)·폴백 `3.1→2.5pro→3.5flash`·.env.local 핀 제거. 메인 검증(routing-probe).
 - `EX-1-generation-engine.md` — ✅ 완료 (2026-06-01). 단일 생성 엔진 골격(gather→assemble 과업투영→self-score→정제) + assemble 라우트. **E2E로 7섹션 1차본 실제 생성**(self-score 71, 구형 flash). 메인 검증.

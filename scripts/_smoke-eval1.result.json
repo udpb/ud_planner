@@ -1,0 +1,86 @@
+[
+  {
+    "label": "B2G-청년창업-중예산",
+    "channel": "B2G",
+    "elapsedS": 1045,
+    "iterations": 1,
+    "genSeq": 1,
+    "self": {
+      "overall": 80,
+      "lines": {
+        "compliance": 60,
+        "understanding": 85,
+        "strategy": 85,
+        "differentiation": 90,
+        "evidence": 75,
+        "impact": 80,
+        "risk": 82,
+        "ergonomics": 85
+      },
+      "weakest": [
+        "compliance",
+        "evidence",
+        "impact"
+      ]
+    },
+    "panel": {
+      "overall": 70,
+      "scores": {
+        "logic": 75,
+        "quant": 65,
+        "concreteness": 60,
+        "operations": 65,
+        "winningLanguage": 75,
+        "differentiation": 75,
+        "fit": 75
+      },
+      "verdict": "보완필요"
+    },
+    "refineLog": [
+      "정제 #1 (best overall=77 < 78)",
+      "sections.4 재작성...",
+      "sections.1 재작성...",
+      "sections.2 재작성...",
+      "정제 #1 채택 (overall=80 ↑)"
+    ]
+  },
+  {
+    "label": "B2B-대기업CSR-소셜임팩트",
+    "channel": "B2B",
+    "elapsedS": 650,
+    "iterations": 0,
+    "genSeq": 2,
+    "self": {
+      "overall": 78,
+      "lines": {
+        "compliance": 40,
+        "understanding": 85,
+        "strategy": 90,
+        "differentiation": 90,
+        "evidence": 70,
+        "impact": 95,
+        "risk": 70,
+        "ergonomics": 75
+      },
+      "weakest": [
+        "compliance",
+        "risk",
+        "evidence"
+      ]
+    },
+    "panel": {
+      "overall": 56,
+      "scores": {
+        "logic": 55,
+        "quant": 60,
+        "concreteness": 50,
+        "operations": 55,
+        "winningLanguage": 50,
+        "differentiation": 65,
+        "fit": 60
+      },
+      "verdict": "보완필요"
+    },
+    "refineLog": []
+  }
+]

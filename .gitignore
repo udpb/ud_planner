@@ -89,3 +89,6 @@ learn-fulltext*.log
 scripts/eval-results/
 eval-results-*/
 eval-sweep.log
+
+# 모든 로그 (eval-ab·smoke·gen-sample 등 transient)
+*.log

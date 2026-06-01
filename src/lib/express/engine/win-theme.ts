@@ -5,9 +5,9 @@
  * 가 강제된다. proof 가 비면 그 win-theme 를 **드롭**(hard rule). 전부 드롭되면 경고 로깅.
  * 금지어("최고 수준"·"world-class"·"풍부한 경험" 등) 포함 시 제거(재생성 1회 요청).
  *
- * 모델: `modelFor('engine.wintheme')` — Flash 기본(A/B 재측정 때 Pro 승격 검토).
- *   win-theme 는 차별점·편익 추론이라 품질 민감하나, EX-2 단계는 Flash-우세 유지
- *   (Pro 2키 불변, ADR-022). proof 강제·금지어 차단이 결정론 품질 게이트 역할.
+ * 모델: `modelFor('engine.wintheme')` — **Pro 승격**(ADR-022 §4-B, EVAL-1 후 3번째 Pro 키).
+ *   win-theme 의 discriminator/proof 품질이 differentiation 렌즈에 직결되므로 Pro 로 올렸다.
+ *   proof 강제·금지어 차단은 그대로 결정론 품질 게이트 역할(불변).
  *
  * 직접 SDK 금지 — invokeAi. JSON = safeParseJson. retrieve() 로 근거 확보.
  */
@@ -197,10 +197,11 @@ ${draftSnippet(draft) || '(본문 부족)'}
 ${evidenceSnippet(evidence) || '(근거 부족 — RFP·과업 기반 추론)'}
 
 [규칙]
-1. 정확히 5개. 각 discriminator 는 구체적·검증가능한 차별점(추상 슬로건 금지).
-2. **금지 표현**: "최고 수준"·"world-class"·"풍부한 경험"·"독보적" 등 근거 없는 과장 절대 금지.
-3. quantified 는 근거가 있을 때만(없으면 생략). 회사명 직접 비교 금지.
-4. hotButton 은 발주처가 가장 신경 쓸 평가배점·정책 목표에 연결.
+1. 정확히 5개. 각 discriminator 는 **이름 붙은 구체적·검증가능한 차별점**(추상 슬로건 금지). 가능하면 본 사업 과업·자산에서 도출되는 named 장치로 명명하세요(예: "4중 지원 체계", "Action Week(실행 주간)", "코치 N명 1:1 매칭", "실습-피드백 루프"). 막연한 "전문성·체계성" 은 차별점이 아닙니다.
+2. **ghosting**: benefit 을 쓸 때 통상적인 약한 접근(예: "이론 강의 중심·실행 전환 장치 없는 프로그램")과 **이름 없이 대비**해 왜 본 차별점이 더 나은 결과를 내는지 드러내세요. 단, 회사명·경쟁사 직접 비교는 절대 금지.
+3. **금지 표현**: "최고 수준"·"world-class"·"풍부한 경험"·"독보적" 등 근거 없는 과장 절대 금지.
+4. quantified 는 [검색된 당선 근거]에 실제 수치가 있을 때만(없으면 생략 — 지어내지 말 것).
+5. hotButton 은 발주처가 가장 신경 쓸 평가배점·정책 목표에 연결.
 
 [출력 JSON]
 { "winThemes": [ { "discriminator": "...", "benefit": "...", "quantified": "...(선택)", "hotButton": "...(선택)" }, ... 5개 ] }
