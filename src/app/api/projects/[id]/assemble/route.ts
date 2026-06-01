@@ -125,11 +125,52 @@ export async function POST(req: NextRequest, { params }: Params) {
       },
     })
 
+    // EX-2 — typed WinTheme[] · ComplianceItem[] persist (re-run idempotent: 기존 교체).
+    const winThemes = result.winThemes ?? []
+    const complianceItems = result.compliance?.items ?? []
+    await prisma.$transaction([
+      prisma.winTheme.deleteMany({ where: { projectId: id } }),
+      prisma.complianceItem.deleteMany({ where: { projectId: id } }),
+      ...winThemes.map((w) =>
+        prisma.winTheme.create({
+          data: {
+            projectId: id,
+            discriminator: w.discriminator,
+            benefit: w.benefit,
+            quantified: w.quantified ?? null,
+            proof: w.proof as unknown as object,
+            hotButton: w.hotButton ?? null,
+            rank: w.rank,
+          },
+        }),
+      ),
+      ...complianceItems.map((c) =>
+        prisma.complianceItem.create({
+          data: {
+            projectId: id,
+            requirement: c.requirement,
+            scoringWeight: c.scoringWeight ?? null,
+            mappedSection: c.mappedSection ?? null,
+            coverage: c.coverage,
+          },
+        }),
+      ),
+    ])
+
     return NextResponse.json({
       ok: true,
       draft: validation.data,
       score: result.score,
       iterations: result.iterations,
+      winThemes: winThemes.length,
+      compliance: result.compliance
+        ? {
+            covered: result.compliance.coveredCount,
+            partial: result.compliance.partialCount,
+            missing: result.compliance.missingCount,
+          }
+        : undefined,
+      verifyReport: result.verifyReport,
     })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)

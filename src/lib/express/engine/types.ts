@@ -13,6 +13,9 @@ import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import type { Channel, ExpressDraft, PmInputs, SectionKey } from '../schema'
 import type { RetrievedChunk } from '@/lib/retrieval/types'
+import type { WinThemeDraft } from './win-theme'
+import type { ComplianceMatrix } from './compliance'
+import type { VerifyReport } from './verify'
 
 // ─────────────────────────────────────────
 // 입력
@@ -73,11 +76,13 @@ export interface ScoreLine {
 }
 
 export interface SelfScore {
-  /** 0~100 가중 평균 */
+  /** 0~100 가중 평균 (다중 샘플 라인별 median 가중합) */
   overall: number
   lines: ScoreLine[]
   /** 약점 top-3 섹션 키('1'~'7') 또는 라인 키 — 정제 루프 대상 */
   weakest: string[]
+  /** 라인 key → "왜 낮은지" judge 진단 한 문장 (EVAL-1 — refine 타깃 주입). */
+  lineFeedback?: Record<string, string>
 }
 
 // ─────────────────────────────────────────
@@ -89,4 +94,10 @@ export interface EngineResult {
   score: SelfScore
   /** 정제 루프 반복 횟수 (assemble 후 self-score → refine 사이클) */
   iterations: number
+  /** EX-2 — typed WinTheme[] (proof chain 강제). 라우트가 DB persist. */
+  winThemes?: WinThemeDraft[]
+  /** EX-2 — compliance matrix (RFP 요구 → 섹션 매핑). 라우트가 DB persist. */
+  compliance?: ComplianceMatrix
+  /** EX-2 — faithfulness gate report (검증·제거 통계). */
+  verifyReport?: VerifyReport
 }

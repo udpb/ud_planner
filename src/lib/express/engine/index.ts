@@ -25,9 +25,13 @@ import { log } from '@/lib/logger'
 import type { Workstream } from '@prisma/client'
 import type { ExpressDraft, SectionKey } from '../schema'
 import type { EngineInput, EngineResult, EvidencePool, SelfScore } from './types'
+import { retrieve } from '@/lib/retrieval'
 import { gather } from './gather'
 import { assemble, writeSection, planOutline } from './assemble'
 import { selfScore, SCORE_THRESHOLD, MAX_REFINE } from './self-score'
+import { generateWinThemes } from './win-theme'
+import { buildComplianceMatrix } from './compliance'
+import { verifyDraft } from './verify'
 
 /**
  * Rubric 라인 키 → 영향 섹션. weakest 가 라인 키('strategy' 등)면 섹션으로 매핑.
@@ -63,13 +67,33 @@ function resolveWeakSections(weakest: string[]): SectionKey[] {
 }
 
 /**
+ * weakest(라인·섹션 키 혼재)에 해당하는 judge 피드백을 모아 refine 지침으로 포맷.
+ * 약점 라인의 "왜 낮은지" 진단을 writeSection memory 에 주입 → 타깃 개선.
+ */
+function weakLensGuide(weakest: string[], lineFeedback?: Record<string, string>): string[] {
+  if (!lineFeedback) return []
+  const out: string[] = []
+  const seen = new Set<string>()
+  for (const w of weakest) {
+    const fb = lineFeedback[w]
+    if (fb && !seen.has(w)) {
+      out.push(`[약점 진단 — ${w}] ${fb}`)
+      seen.add(w)
+    }
+  }
+  return out
+}
+
+/**
  * 약점 섹션만 재작성. 다른 섹션을 memory 로 넘겨 모순·중복 방지하며 순차 재생성.
+ * judge 의 약점 렌즈 피드백(왜 낮은지)을 memory 에 주입해 타깃 개선한다.
  */
 async function refineWeakest(
   draft: ExpressDraft,
   weakest: string[],
   input: EngineInput,
   evidence: EvidencePool,
+  lineFeedback?: Record<string, string>,
 ): Promise<ExpressDraft> {
   const targets = resolveWeakSections(weakest)
   if (targets.length === 0) return draft
@@ -85,6 +109,10 @@ async function refineWeakest(
       memory.push(`[§${k}] ${v.slice(0, 140)}`)
     }
   }
+
+  // judge 약점 피드백 주입 — writeSection 이 무엇을 고쳐야 하는지 안다 (타깃 개선)
+  const guide = weakLensGuide(weakest, lineFeedback)
+  memory.push(...guide)
 
   for (const key of targets) {
     input.onProgress?.('refine', `sections.${key} 재작성...`)
@@ -128,16 +156,58 @@ export async function generateDraft(input: EngineInput): Promise<EngineResult> {
   ctx.onProgress?.('assemble', '본문 조립 시작...')
   let draft = await assemble(ctx, evidence)
 
-  // 정제 루프
-  let score: SelfScore = await selfScore(draft)
+  // ── EX-2 품질·검증 3 레이어 (assemble → win-theme → compliance → verify → self-score) ──
+
+  // win-theme (Flash) — typed, proof chain 강제. 본문 변경 없음(결과는 EngineResult/persist).
+  ctx.onProgress?.('win-theme', 'win-theme 생성 (proof chain 강제)...')
+  const winThemes = await generateWinThemes(ctx, evidence, draft)
+
+  // compliance matrix (Flash) — RFP 요구 → 섹션 매핑. missing 이면 RS-3 경고.
+  ctx.onProgress?.('compliance', 'compliance matrix 구축...')
+  const compliance = await buildComplianceMatrix(ctx.rfp, draft)
+
+  // verify (Flash) — faithfulness gate. 수치 미지지 제거·인용 부착(검증된 draft 를 채점).
+  ctx.onProgress?.('verify', 'faithfulness gate (주장 검증)...')
+  const verified = await verifyDraft(draft, retrieve, ctx.channel)
+  draft = verified.draft
+  const verifyReport = verified.report
+
+  // 정제 루프 — 검증된 draft 를 채점. EX-2 산출물(win-theme·compliance·verify)을 judge 입력으로.
+  const scoreExtras = { winThemes, compliance, verifyReport }
+
+  // ── 단조 refine (EVAL-1) ──
+  //   best{draft,score} 추적. refine 후 재채점해 **best 보다 높을 때만 채택**, 아니면 best 유지.
+  //   최종 return = best. (이전: 무조건 새 draft 채택 → refine 가 점수를 떨어뜨려도 역행.)
+  let best: { draft: ExpressDraft; score: SelfScore } = {
+    draft,
+    score: await selfScore(draft, scoreExtras),
+  }
   let iterations = 0
   for (let i = 1; i <= MAX_REFINE; i++) {
-    if (score.overall >= SCORE_THRESHOLD) break
-    ctx.onProgress?.('refine', `정제 #${i} (overall=${score.overall} < ${SCORE_THRESHOLD})`)
-    draft = await refineWeakest(draft, score.weakest, ctx, evidence)
+    if (best.score.overall >= SCORE_THRESHOLD) break
+    ctx.onProgress?.('refine', `정제 #${i} (best overall=${best.score.overall} < ${SCORE_THRESHOLD})`)
+    const candidate = await refineWeakest(
+      best.draft,
+      best.score.weakest,
+      ctx,
+      evidence,
+      best.score.lineFeedback,
+    )
     iterations = i
-    score = await selfScore(draft)
+    const candidateScore = await selfScore(candidate, scoreExtras)
+    if (candidateScore.overall > best.score.overall) {
+      best = { draft: candidate, score: candidateScore }
+      ctx.onProgress?.('refine', `정제 #${i} 채택 (overall=${candidateScore.overall} ↑)`)
+    } else {
+      // 역행·동률 → 폐기하고 best 유지 (단조 보장). 다음 iteration 은 best 약점 재시도.
+      ctx.onProgress?.(
+        'refine',
+        `정제 #${i} 폐기 (overall=${candidateScore.overall} ≤ best ${best.score.overall}) — best 유지`,
+      )
+    }
   }
+  draft = best.draft
+  const score = best.score
 
   const elapsedSec = (Date.now() - startedAt) / 1000
   log.info('engine', 'generateDraft 완료', {
@@ -148,9 +218,12 @@ export async function generateDraft(input: EngineInput): Promise<EngineResult> {
     sections: Object.values(draft.sections ?? {}).filter((v) => typeof v === 'string' && v.length > 0)
       .length,
     keyMessages: (draft.keyMessages ?? []).length,
+    winThemes: winThemes.length,
+    complianceMissing: compliance.missingCount,
+    verifyRemoved: verifyReport.removed,
   })
 
-  return { draft, score, iterations }
+  return { draft, score, iterations, winThemes, compliance, verifyReport }
 }
 
 export type { EngineInput, EngineResult, SelfScore } from './types'
