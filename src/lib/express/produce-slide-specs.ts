@@ -103,24 +103,34 @@ async function produceSectionSpecs(input: {
 당신은 한국 사업 제안서 슬라이드 디자이너입니다.
 다음 sections.${input.sectionNum} 본문을 보고 **1-2 슬라이드** 의 spec 을 생성합니다.
 
-⭐ 핵심 목표: 실제 당선 제안서 수준의 **콘텐츠 밀도** — 한 슬라이드가 헤드라인 하나에
-그치지 않고, 도식화 안에 충분한 정보(단계·항목·수치)와 근거가 담겨 "내용이 많고 설득력 있게"
-보여야 합니다. (실제 당선 슬라이드 평균: 도식 요소 ~${targetBlocks}개 · 정량 근거 ~${targetEvidence}건)
+⭐ 핵심 목표 (ADR-024): 실제 당선 제안서 수준의 **콘텐츠 밀도** — 한 슬라이드가
+"한 주장 + 그것을 받치는 충분한 세부(메커니즘·how·근거)" 로 가득 차야 합니다.
+하단 공백 금지. (실제 당선 슬라이드 평균: 블록 ~${targetBlocks}개 · 정량 근거 ~${targetEvidence}건)
 
-한 슬라이드 = 한 메시지. 각 슬라이드는 반드시:
+각 슬라이드는 반드시:
   - kicker: "${input.sectionLabel}"
+  - layout: 아래 6 아키타입 中 1 (목적에 맞게 선택)
   - headline: 한 문장 핵심 (Pyramid Principle — 결론 먼저, 30-100자)
-  - diagram: 도식화 패턴 + 데이터 (8 패턴 中 1) — 데이터 항목을 충분히 채울 것 (빈약 금지)
-  - evidence: 근거 ${targetEvidence}건 내외 (정량·연도·기관 우선)
+  - diagram: 도식화 패턴 + 데이터 (9 패턴 中 1) — 데이터 항목을 충분히 채울 것 (빈약 금지)
+  - body: 키메시지를 받치는 세부 1~4 블록 ({ "heading": "소제목", "text": "메커니즘·절차·how 200~400자" })
+          — 출처 나열이 아니라 "왜/어떻게 작동하는지" 의 설명. split-visual/narrative 에서 특히 중요.
+  - evidence: 근거 ${targetEvidence}건 내외 — **정량 수치 + 그 수치가 무엇을 증명하는지(메커니즘)**
   - caption: 선택 (60자 이내 보조)
 
-[⚠️ 슬라이드 1장 용량 — 페이지당 텍스트량 가드 (PPT 1장에 넘치지 않게)]
-풍부하되 "한 장에 들어가는" 양을 지킬 것. 초과 위험이면 2개 슬라이드로 분할(order +1).
-  - headline ≤ 100자 · caption ≤ 60자 · evidence 최대 3건(각 ≤ 80자)
-  - 도식 항목 상한 (이 이상은 잘리거나 다음 슬라이드로):
-    · process-flow 단계 ≤ 6 · kpi-grid ≤ 6셀(2행) · comparison-table 행 ≤ 6
-    · architecture-stack 레이어 ≤ 5(레이어당 항목 ≤ 4) · timeline 트랙 ≤ 4 · matrix 4분면 · hierarchy 자식 ≤ 4
-  - 각 항목 라벨은 짧게(≤ 40자) — 긴 설명은 caption/evidence 로. 한 도식에 글 덩어리 X.
+[레이아웃 아키타입 6종 — 슬라이드 목적에 맞게 layout 선택]
+  - hero-stat: 지배적 빅넘버/핵심 실적 강조 (임팩트·실적 — kpi-grid 와 함께)
+  - split-visual: 좌 서술(body 프로즈) / 우 도식 (본문 설명형 — body 필수)
+  - full-diagram: 도식이 화면 지배 (process-flow·timeline·matrix·architecture)
+  - detail-grid: 다셀 고밀도 그리드 (주차 커리큘럼·모듈 — hierarchy/kpi + body 셀)
+  - comparison: 전후/대비 지배 (before-after·comparison-table)
+  - narrative: 텍스트 고밀도 + 우측 콜아웃 (배경·논거 — body 필수)
+  실제 당선 sections.${input.sectionNum} 패턴 빈도: ${learnedPatterns.length ? learnedPatterns.join(' / ') : input.defaultPatterns.join(' / ')}
+
+[밀도 — 충분히 채우되, 정말 넘칠 때만 2개로 분할(order +1)]
+  - headline ≤ 100자 · caption ≤ 60자 · body 블록 text ≤ 400자 · evidence 최대 3건(각 ≤ 150자)
+  - 도식은 항목을 넉넉히: process-flow 단계 5~7 · kpi-grid 6~8셀 · comparison-table 행 5~8
+    · architecture-stack 레이어 4~6(레이어당 항목 4~6) · timeline 트랙 4~6 · hierarchy 자식 3~5
+  - 핵심: 한 슬라이드 안의 블록(도식 셀 + body 블록 + 근거)이 ~${targetBlocks}개에 가깝게.
 ${headlineExamples.length > 0
     ? `\n[실제 당선 슬라이드 헤드라인 스타일 — 이 톤·구체성 모방]\n${headlineExamples.map((h, i) => `  ${i + 1}. ${h}`).join('\n')}`
     : ''}
@@ -219,21 +229,29 @@ text-only:
   "slides": [
     {
       "kicker": "${input.sectionLabel}",
+      "layout": "split-visual",
       "headline": "한 문장 핵심 — 결론 먼저",
       "caption": "선택 보조",
+      "body": [
+        {"heading": "작동 원리", "text": "이 방식이 왜/어떻게 성과로 이어지는지 구체 절차·메커니즘 200~400자"},
+        {"heading": "차별점", "text": "기존 대비 무엇이 다른지 구체적으로"}
+      ],
       "diagram": { "pattern": "...", "data": { ... } },
-      "evidence": [{"text":"...","source":"..."}, ...],
+      "evidence": [{"text":"누적 20,211명 육성, 사업화 성공률 약 N% (수치 + 무엇을 증명)","source":"언더독스 2015–2025"}, ...],
       "sectionNum": "${input.sectionNum}",
       "order": 1
     }
   ]
 }
 
+⚠ 근거(evidence) 규칙 (ADR-024):
+   - **출처만 단 빈 근거 금지.** "(언더독스 내부 실적)" 단독 X → 반드시 "수치/사실 + 그것이 증명하는 것" + 출처.
+   - 단, 수치 창작·부풀림 금지. 모르는 숫자는 만들지 말고 정성적 사실로 (출처는 실제 기관·연도).
 ⚠ 데이터는 본문 + 위 [UD 정량 실적] 에서만 추출. 모르면 빈 값. 수치 가공·부풀림·hallucination 절대 금지.
    - 특히 누적 매출은 정확히 ${input.trackRecord?.cumulativeRevenueBillions ?? '(제공된 값)'}억 — "5,000억" 처럼 자릿수 바꾸지 말 것.
-   - 본문/근거에 자산 ID 코드(cmpl... 같은 영숫자 코드)·"[자산 인용: ...]" 마커 **절대 포함 금지** (평가위원이 그대로 봄).
+   - 본문/근거/body 에 자산 ID 코드(cmpl... 같은 영숫자 코드)·"[자산 인용: ...]" 마커 **절대 포함 금지** (평가위원이 그대로 봄).
    - evidence.source 는 실제 기관·연도 (예: "통계청 2023.12", "언더독스 누적 실적") — 자산 ID 코드 금지.
-⚠ 1-2 슬라이드만 (5 미만). 한 슬라이드에 너무 많은 내용 X.
+⚠ 1-2 슬라이드만 (5 미만). 단, 각 슬라이드는 위 밀도 목표를 충분히 채울 것 (하단 공백 금지).
 JSON 만. 마크다운 펜스 X.
 `.trim()
 

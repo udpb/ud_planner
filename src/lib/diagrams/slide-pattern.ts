@@ -31,6 +31,21 @@ export const DIAGRAM_PATTERNS = [
 
 export type DiagramPattern = (typeof DIAGRAM_PATTERNS)[number]
 
+/**
+ * 레이아웃 아키타입 6종 (ADR-024 Decision 1) — 슬라이드 목적별 배치.
+ * 미지정 시 렌더러가 pattern + sectionNum 으로 추론 (하위호환).
+ */
+export const SLIDE_LAYOUTS = [
+  'hero-stat', // 지배적 빅넘버 + 보조 밴드 (임팩트·실적 헤드라인)
+  'split-visual', // 좌 서술(body 프로즈) / 우 도식 (본문 다수)
+  'full-diagram', // 도식 풀폭 지배 (process-flow·timeline·matrix)
+  'detail-grid', // 다셀 고밀도 그리드 (주차 커리큘럼·모듈)
+  'comparison', // 전후/대비 지배 (before-after·comparison-table)
+  'narrative', // 콜아웃이 있는 텍스트 고밀도 (배경·논거)
+] as const
+
+export type SlideLayout = (typeof SLIDE_LAYOUTS)[number]
+
 // ─────────────────────────────────────────
 // 각 패턴별 데이터 스키마
 // ─────────────────────────────────────────
@@ -178,6 +193,24 @@ export const SlideSpecSchema = z.object({
   headline: z.string().min(8).max(120),
   /** 보조 캡션 (60자 이내) */
   caption: z.string().max(100).optional(),
+  /**
+   * 레이아웃 아키타입 (ADR-024) — 없으면 렌더러가 pattern+sectionNum 으로 추론.
+   * 신 필드 optional → 기존 slideSpecs 하위호환.
+   */
+  layout: z.enum(SLIDE_LAYOUTS).optional(),
+  /**
+   * 키메시지를 받치는 세부(메커니즘·how·구체 절차) — split-visual/narrative 좌측 프로즈,
+   * 그 외 layout 에서는 도식 보조 디테일. optional, 하위호환.
+   */
+  body: z
+    .array(
+      z.object({
+        heading: z.string().max(40).optional(),
+        text: z.string().min(2).max(400),
+      }),
+    )
+    .max(4)
+    .optional(),
   /** 도식화 패턴 + 데이터 */
   diagram: z.object({
     pattern: z.enum(DIAGRAM_PATTERNS),
@@ -305,9 +338,18 @@ export function validateSlideSpec(spec: unknown): { ok: true; spec: SlideSpec } 
       }
     }
   }
-  // P1 — 자산 ID 코드 sanitize (headline / caption / evidence)
+  // P1 — 자산 ID 코드 sanitize (headline / caption / body / evidence)
   data.headline = stripAssetIdMarkers(data.headline)
   if (data.caption) data.caption = stripAssetIdMarkers(data.caption)
+  if (Array.isArray(data.body)) {
+    data.body = data.body
+      .map((b) => ({
+        ...b,
+        heading: b.heading ? stripAssetIdMarkers(b.heading) : b.heading,
+        text: stripAssetIdMarkers(b.text),
+      }))
+      .filter((b) => b.text.length >= 2)
+  }
   if (Array.isArray(data.evidence)) {
     data.evidence = data.evidence.map((e) => ({
       ...e,

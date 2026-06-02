@@ -31,6 +31,8 @@ interface Props {
   dark?: boolean
   /** 로고 종류 */
   logoColor?: 'black' | 'white'
+  /** 배경 이미지 (절대경로 또는 data URI) — 표지/배경 사진 슬롯 (DECK-1, ADR-025) */
+  backgroundImage?: string
   className?: string
   children: React.ReactNode
 }
@@ -44,10 +46,11 @@ export function SlideShell({
   variant = 'normal',
   dark = false,
   logoColor,
+  backgroundImage,
   className,
   children,
 }: Props) {
-  const resolvedLogoColor = logoColor ?? (dark || variant === 'section-divider' ? 'white' : 'black')
+  const resolvedLogoColor = logoColor ?? (dark || variant === 'section-divider' || backgroundImage ? 'white' : 'black')
   return (
     <div
       className={cn(
@@ -57,9 +60,11 @@ export function SlideShell({
         scalePreview && 'scale-preview',
         variant === 'cover' && 'ud-cover',
         variant === 'section-divider' && 'ud-section-divider',
+        backgroundImage && 'ud-cover-photo',
         className,
       )}
     >
+      {backgroundImage ? <img src={backgroundImage} alt="" className="ud-cover-photo-bg" /> : null}
       <div className="ud-slide-inner">
         {kicker || pageNumber !== undefined ? (
           <header className="ud-page-head">

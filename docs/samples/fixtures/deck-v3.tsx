@@ -1,0 +1,365 @@
+/**
+ * 리치 fixture 덱 — DECK-1(기질) → DECK-2(당선 밀도·디테일) (ADR-025)
+ *
+ * 손작성 "충남 청년창업 사관학교" B2G proof 덱.
+ * DECK-1: OOXML 8패턴으로 불가능했던 시각 어휘(아이콘·사진·로고/배지·빅넘버·맞춤 레이아웃)를 증명.
+ * DECK-2: 본문 슬라이드를 "실제 당선 덱 밀도(블록 ~12)"로 채운다 —
+ *   - 슬라이드 = 한 주장 + 디테일 레이어 + 근거 밴드(수치+무엇을 증명+출처)
+ *   - 코치: 약력 2~3줄 + 정량 실적 배지
+ *   - 커리큘럼: 24주 6단계, 셀마다 핵심활동+산출물, Action Week 강조
+ *   - 임팩트: KPI 빅넘버 + 산출 논리 + SROI
+ *   - 전략: 캔버스 + 각 존 근거 한 줄
+ * 페이지 공백을 없애(dead-space < 12% 목표) "당선 덱 근접" 시연. 내용은 현실적 예시(grounding 아님 — DATA-2).
+ *
+ * 액션 타이틀 톤: design-kit/learned-slide-patterns.json headlineExamples 스타일.
+ * 'use client' 없음 — renderToStaticMarkup 안전.
+ */
+import React from 'react'
+import { SlideShell } from '@/components/express/slides/SlideShell'
+import { BeforeAfter } from '@/components/express/slides/diagrams'
+import {
+  PartnerLogoGrid,
+  BadgeRow,
+  BigNumberHero,
+  EvidenceBand,
+  CoachDetailGrid,
+  CurriculumMatrix,
+  KpiWithLogic,
+  StrategyCanvas,
+  type CoachDetail,
+} from '@/components/express/slides/rich'
+
+const COVER_BG = '/design-kit/sample/cover-bg.svg'
+
+const COACHES: CoachDetail[] = [
+  {
+    photo: '/design-kit/sample/coach-1.svg',
+    name: '김도윤',
+    role: '리드 코치 · 스케일업',
+    affiliation: '前 카카오벤처스 심사역 / 액셀러레이터 파트너',
+    bio: [
+      '초기·성장기 스타트업 투자·보육 11년',
+      'B2G 사업화·정부 R&D 연계 다수 수행',
+      '시리즈 A 라운드 12건 IR 멘토링',
+    ],
+    stats: [
+      { value: '120팀', label: '누적 멘토링' },
+      { value: '₩340억', label: '후속 투자 유치' },
+    ],
+    tracks: ['스케일업', 'B2G'],
+  },
+  {
+    photo: '/design-kit/sample/coach-2.svg',
+    name: '이서연',
+    role: '비즈니스 코치 · BM/IR',
+    affiliation: '前 토스 PO / 핀테크 2회 창업·1회 엑싯',
+    bio: [
+      '비즈니스 모델 설계·수익구조 검증 전문',
+      'IR 덱·투자 협상 실전 코칭 90팀',
+      '데모데이 우승팀 7개 배출',
+    ],
+    stats: [
+      { value: '90팀', label: 'IR 코칭' },
+      { value: '68%', label: '투자 연계율' },
+    ],
+    tracks: ['BM 설계', 'IR'],
+  },
+  {
+    photo: '/design-kit/sample/coach-3.svg',
+    name: '박지훈',
+    role: '전문 멘토 · 제조/판로',
+    affiliation: '前 LG전자 신사업 / 제조 스타트업 COO',
+    bio: [
+      '하드웨어 양산·공급망·유통 채널 구축',
+      '지역 제조 창업가 판로 개척 코칭',
+      '대형 유통사 입점 15건 성사',
+    ],
+    stats: [
+      { value: '15건', label: '유통 입점' },
+      { value: '8년', label: '제조 현장' },
+    ],
+    tracks: ['제조', '판로'],
+  },
+  {
+    photo: '/design-kit/sample/coach-4.svg',
+    name: '최유진',
+    role: '액션 퍼실리테이터',
+    affiliation: '前 언더독스 교육총괄 / 액트프레너십 마스터 트레이너',
+    bio: [
+      'Action Week 실행 미션 설계·운영',
+      '창업팀 팀빌딩·갈등관리 워크숍',
+      '누적 교육 만족도 4.7/5.0 유지',
+    ],
+    stats: [
+      { value: '210회', label: '워크숍 운영' },
+      { value: '4.7/5', label: '교육 만족도' },
+    ],
+    tracks: ['팀빌딩', '실행'],
+  },
+]
+
+export function buildDeckV3(): React.ReactElement[] {
+  const total = 8
+  let p = 0
+
+  return [
+    // 1. 표지 — 사진 배경 + 흰 타이포 (OOXML 불가)
+    <SlideShell key="cover" variant="cover" density="sparse" backgroundImage={COVER_BG}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 'var(--ud-gap-section)' }}>
+        <span className="ud-kicker en">CHUNGNAM · 2026 YOUTH STARTUP ACADEMY</span>
+        <h1 className="ud-display">실행이 더해질 때,{'\n'}청년의 아이디어는 지역의 비즈니스가 됩니다</h1>
+        <p className="ud-body" style={{ maxWidth: '64%' }}>
+          충청남도 청년창업 사관학교 운영 제안 — 발굴부터 스케일업까지 검증된 7단계 액트프레너십
+        </p>
+      </div>
+      <div className="ud-page-foot" style={{ borderTop: '1px solid rgba(255,255,255,0.4)' }}>
+        <img src="/design-kit/logo/underdogs-wordmark-white.svg" alt="Underdogs" className="ud-logo ud-logo--big" />
+        <span className="ud-caption en" style={{ color: 'var(--ud-white)' }}>언더독스 · UNDERDOGS</span>
+      </div>
+    </SlideShell>,
+
+    // 2. 배경/목적 — 빅넘버 hero + 근거 밴드
+    <SlideShell key="bg" kicker="01 제안 배경 및 목적" pageNumber={++p} totalPages={total} density="dense">
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 'var(--ud-gap-element)' }}>
+        <div style={{ flex: 1 }}>
+          <BigNumberHero
+            kicker="WHY NOW"
+            headline="청년 창업의 3년 생존율 39%, 실행 역량의 공백을 메웁니다"
+            bigNumber="39%"
+            bigCaption="충남 청년창업기업 3년 생존율 — 전국 평균(45%)을 밑도는 실행·판로 단절이 핵심 원인입니다."
+            supportingPoints={[
+              { value: '1만+', label: '누적 창업가 코칭 데이터(DOGS)' },
+              { value: '7단계', label: '발굴→스케일업 실전 프로세스' },
+              { value: '24주', label: '집중 액션 러닝 기간' },
+              { value: '60팀', label: '연 2기 발굴·육성 목표' },
+            ]}
+          />
+        </div>
+        <EvidenceBand
+          items={[
+            { figure: '39%', proves: '실행·판로 단절이 생존율 하락의 핵심 원인', source: '중소벤처기업부 창업기업 실태조사 2025' },
+            { figure: '-6%p', proves: '전국 평균 대비 충남 청년창업 생존 격차', source: '창업진흥원 지역 창업동향 2025' },
+            { figure: '1만+', proves: '코칭 데이터 기반 진단의 신뢰 기반', source: '언더독스 DOGS 누적 코칭 DB' },
+          ]}
+        />
+      </div>
+    </SlideShell>,
+
+    // 3. 전략 — 전략 캔버스 (각 존 근거 한 줄) + 근거 밴드
+    <SlideShell key="strategy" kicker="02 추진 전략 및 방법론" pageNumber={++p} totalPages={total} density="dense">
+      <StrategyCanvas
+        kicker="METHODOLOGY"
+        headline="발굴부터 스케일업까지, 근거가 받치는 4단계 실행 중심 방법론을 제안합니다"
+        columns={4}
+        zones={[
+          {
+            icon: 'target',
+            num: 'STEP 1',
+            title: '문제 정의',
+            body: 'Inside-Out 방식으로 지역·개인 경험에서 시장 기회를 도출하고 ST Matrix로 검증합니다.',
+            rationale: '문제 적합도 검증 시 피벗 비용 42% 절감',
+          },
+          {
+            icon: 'lightbulb',
+            num: 'STEP 2',
+            title: '솔루션 설계',
+            body: '비즈니스 모델 캔버스로 수익구조를 구체화하고 가설을 정량 지표로 분해합니다.',
+            rationale: 'BM 사전 설계팀 IR 통과율 1.7배',
+          },
+          {
+            icon: 'rocket',
+            num: 'STEP 3',
+            title: '실행·검증',
+            body: 'Action Week 기반 MVP를 실제 고객에게 노출해 시장 반응으로 의사결정합니다.',
+            rationale: 'MVP 실전 검증팀 3년 생존율 +31%p',
+            highlight: true,
+          },
+          {
+            icon: 'trending-up',
+            num: 'STEP 4',
+            title: '스케일업',
+            body: 'IR·판로·정부지원 연계로 지역 정착형 매출과 후속 투자를 확보합니다.',
+            rationale: '판로 연계팀 평균 매출 ₩1.8억 발생',
+          },
+        ]}
+        evidence={[
+          { figure: '42%', proves: '문제 적합도 검증이 불필요한 피벗 비용을 줄임', source: '언더독스 프로그램 성과분석 2025' },
+          { figure: '+31%p', proves: 'MVP 실전 검증이 생존율을 끌어올리는 핵심 레버', source: '코칭 코호트 추적조사 2024–2025' },
+          { figure: '1.7배', proves: 'BM 사전 설계가 투자 유치 가능성을 높임', source: '데모데이 IR 통과율 내부 집계' },
+        ]}
+      />
+    </SlideShell>,
+
+    // 4. 커리큘럼 — 주차×단계 매트릭스 (셀마다 활동+산출물, Action Week 강조) + 근거 밴드
+    <SlideShell key="curriculum" kicker="03 교육 커리큘럼" pageNumber={++p} totalPages={total} density="dense">
+      <CurriculumMatrix
+        kicker="CURRICULUM"
+        headline="24주 6단계, 이론 3회 연속을 막는 Action Week를 의무 편성합니다"
+        phases={[
+          {
+            weeks: 'W1–4',
+            phase: '창업가 진단',
+            activities: ['DOGS 성향·리더십 진단', '팀 빌딩 워크숍', '지역 자원 매핑'],
+            deliverable: '개인 성향 리포트 · 팀 협업 규약',
+          },
+          {
+            weeks: 'W5–8',
+            phase: '문제 정의',
+            activities: ['지역 페인포인트 필드리서치', '고객 인터뷰 30건', 'ST Matrix 검증'],
+            deliverable: '검증된 문제 정의서 1종',
+          },
+          {
+            weeks: 'W9–12',
+            phase: 'BM 설계',
+            activities: ['비즈니스 모델 캔버스', '수익구조 시뮬레이션', '가설 지표 분해'],
+            deliverable: 'BM 캔버스 · 단위경제 모델',
+          },
+          {
+            weeks: 'W13–16',
+            phase: 'MVP 실행',
+            activities: ['프로토타입 제작', '실고객 노출 테스트', '주간 스프린트 회고'],
+            deliverable: '작동하는 MVP · 검증 로그',
+            actionWeek: true,
+          },
+          {
+            weeks: 'W17–20',
+            phase: '고객 검증',
+            activities: ['시장 반응 정량 측정', '피벗/지속 의사결정', '초기 매출 실험'],
+            deliverable: '트랙션 대시보드 · 피벗 결정서',
+          },
+          {
+            weeks: 'W21–24',
+            phase: 'IR·스케일업',
+            activities: ['IR 덱·피칭 코칭', '데모데이 발표', '투자·판로 매칭'],
+            deliverable: 'IR 덱 · 데모데이 피칭',
+          },
+        ]}
+        evidence={[
+          { figure: '60%', proves: 'Action Week로 실행 비중을 끌어올려 이론 편중을 차단', source: '커리큘럼 룰 R-002(Action Week 강제)' },
+          { figure: '30건', proves: '고객 인터뷰 의무량으로 문제 정의의 현장성 확보', source: '언더독스 액트프레너십 표준 과정' },
+          { figure: '6단계', proves: '발굴→스케일업 전 과정을 끊김 없이 연결', source: '검증된 7단계 프로세스(축약 운영)' },
+        ]}
+      />
+    </SlideShell>,
+
+    // 5. 코치진 — 코치 상세 카드(약력+실적 배지) + 근거 밴드 (OOXML 불가)
+    <SlideShell key="coaches" kicker="04 운영 체계 및 코치진" pageNumber={++p} totalPages={total} density="dense">
+      <CoachDetailGrid
+        kicker="COACHES"
+        headline="현장 검증된 715명 코치풀에서 트랙별 전담 코치를 1:5로 밀착 배치합니다"
+        columns={4}
+        coaches={COACHES}
+        evidence={[
+          { figure: '715명', proves: '트랙·산업별 최적 코치를 매칭할 수 있는 풀 규모', source: 'Supabase coaches_directory(활성)' },
+          { figure: '1:5', proves: '코치 1인당 팀 수를 제한해 밀착 코칭 보장', source: '운영 표준 코치 배치 기준' },
+          { figure: '4.7/5', proves: '코치진 역량이 만족도로 실제 검증됨', source: '2024–2025 교육 만족도 집계' },
+        ]}
+      />
+    </SlideShell>,
+
+    // 6. 실적/파트너 — 배지 + 로고 그리드 + 근거 밴드 (OOXML 불가)
+    <SlideShell key="track" kicker="05 수행 역량 및 실적" pageNumber={++p} totalPages={total} density="dense">
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 'var(--ud-gap-element)' }}>
+        <BadgeRow
+          badges={[
+            { icon: 'award', value: '120+', label: '정부·지자체 수행 사업' },
+            { icon: 'users', value: '12,000+', label: '누적 교육 창업가' },
+            { icon: 'briefcase', value: '715', label: '활성 코치풀' },
+            { icon: 'check-circle', value: '94%', label: '평균 만족도' },
+          ]}
+        />
+        <div style={{ flex: 1, display: 'flex' }}>
+          <PartnerLogoGrid
+            headline="중앙부처·지자체·대학·민간과 함께한 창업 생태계 실적"
+            columns={5}
+            fill
+            partners={[
+              { name: '중소벤처기업부', note: '창업사관학교 운영' },
+              { name: '창업진흥원', note: '예비창업패키지' },
+              { name: '충청남도', note: '청년창업 지원' },
+              { name: '천안시', note: '지역 창업 거점' },
+              { name: '아산시', note: '제조 창업 연계' },
+              { name: '한국사회적기업진흥원', note: '소셜벤처 육성' },
+              { name: '소셜벤처스퀘어', note: '임팩트 보육' },
+              { name: '지역대학 LINC', note: '산학 연계' },
+              { name: 'TIPS 운영사', note: '딥테크 투자' },
+              { name: '임팩트 투자사', note: '후속 투자 연계' },
+            ]}
+          />
+        </div>
+        <EvidenceBand
+          items={[
+            { figure: '120+', proves: '정부·지자체 사업 운영 경험의 규모', source: '언더독스 사업 수행 이력 2014–2025' },
+            { figure: '12,000+', proves: '대규모 창업가 교육 운영 역량', source: '누적 교육 수료 집계' },
+            { figure: '94%', proves: '반복 수주를 만든 운영 품질', source: '발주처 만족도 평균 2023–2025' },
+          ]}
+        />
+      </div>
+    </SlideShell>,
+
+    // 7. 임팩트 — KPI 빅넘버 + 산출 논리 + SROI + 근거 밴드 (밀도 높은 맞춤)
+    <SlideShell key="impact" kicker="06 기대 성과 및 임팩트" pageNumber={++p} totalPages={total} density="dense">
+      <KpiWithLogic
+        kicker="IMPACT"
+        headline="24주 후, 충남 청년창업의 실행 격차를 정량으로 좁힙니다"
+        kpis={[
+          {
+            value: '60팀',
+            label: '창업팀 발굴·육성',
+            logic: '연 2기 × 1기 30팀 = 60팀. 모집 경쟁률 4:1 가정.',
+          },
+          {
+            value: '×1.8',
+            label: '3년 생존율 개선',
+            logic: '실전 검증 코호트 생존율 70% ÷ 기존 39% ≈ 1.8배.',
+          },
+          {
+            value: '₩48억',
+            label: '후속 투자·매출 유발',
+            logic: '졸업 60팀 × 평균 후속자금 ₩0.8억 = ₩48억.',
+          },
+          {
+            value: '2.4',
+            label: 'SROI',
+            logic: '사회·경제 편익 ₩48억 ÷ 투입 예산 ₩20억 = 2.4.',
+          },
+        ]}
+        evidence={[
+          { figure: '70%', proves: '실전 검증 코호트의 목표 생존율(개선 근거)', source: '코칭 코호트 추적조사 2024–2025' },
+          { figure: '₩0.8억', proves: '졸업팀 1팀당 평균 후속 자금 유발', source: '데모데이 후속 투자·매출 집계' },
+          { figure: '2.4', proves: '투입 대비 사회·경제 편익 비율(SROI)', source: 'SROI 산출 모델 v2(보수적 가정)' },
+        ]}
+      />
+    </SlideShell>,
+
+    // 8. 변화(Before/After) — 패러다임 전환 + 근거 밴드
+    <SlideShell key="ba" kicker="06 기대 성과 및 임팩트" pageNumber={++p} totalPages={total} density="dense">
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 'var(--ud-gap-element)' }}>
+        <div style={{ flex: 1, display: 'flex' }}>
+          <BeforeAfter
+            fill
+            kicker="CHANGE"
+            headline="이론 중심 교육에서 실행 중심 액트프레너십으로의 전환"
+            before={{
+              label: '강의실 중심 창업 교육',
+              description: '지식 전달 위주, 실전 검증 부재로 수료 후 실행 단절',
+              metrics: ['이론 비중 70%', '현장 실행 30%', '3년 생존율 39%', '코치 1:20 강의형'],
+            }}
+            after={{
+              label: 'Action Week 실행 중심 사관학교',
+              description: '주차별 실전 미션·코치 밀착으로 시장에서 작동하는 솔루션 구축',
+              metrics: ['실행 비중 60%', '코치 1:5 밀착', '3년 생존율 70% 목표', 'MVP 실고객 검증 의무'],
+            }}
+          />
+        </div>
+        <EvidenceBand
+          items={[
+            { figure: '70→60%', proves: '이론 편중에서 실행 중심으로 무게추 이동', source: '커리큘럼 시수 재설계' },
+            { figure: '1:20→1:5', proves: '코칭 밀착도를 4배로 강화', source: '코치 배치 기준 변경' },
+            { figure: '+31%p', proves: '전환이 생존율 개선으로 이어지는 근거', source: '실전 검증 코호트 추적' },
+          ]}
+        />
+      </div>
+    </SlideShell>,
+  ]
+}

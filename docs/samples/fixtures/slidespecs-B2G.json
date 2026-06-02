@@ -1,0 +1,219 @@
+{
+  "_meta": {
+    "purpose": "EX-3 (ADR-024) 결정론적 렌더 fixture — 손으로 작성한 대표 B2G 슬라이드. 6 layout 아키타입 전부 1회 이상 커버. body·evidence 풍부.",
+    "scenario": "2026 충남 청년 예비창업가 발굴·육성 (B2G, 만39세이하 30명, 8개월 듀얼트랙)",
+    "layoutsCovered": ["narrative", "hero-stat", "full-diagram", "detail-grid", "comparison", "split-visual"],
+    "note": "DB·LLM 없이 scripts/_render-fixture.ts 가 buildPptx 로 직접 렌더. 수치는 fixture 예시(실 grounding 은 DATA-2 별건)."
+  },
+  "projectName": "2026 충남 청년 예비창업가 발굴·육성 프로그램",
+  "clientName": "충청남도창조경제혁신센터",
+  "intent": "만 39세 이하 청년 예비·초기창업가 30명의 아이디어를 투자 유치 가능한 BM으로 고도화",
+  "sections": {
+    "1": "충남 지역 청년 인구 유출 방지와 지역 정착형 창업 생태계 활성화.",
+    "2": "진단 기반 듀얼트랙 + 현업 밀착 멘토링 + 성과 중심 사후관리 3대 전략.",
+    "3": "8개월 전주기 커리큘럼 — 아이디어 구체화부터 IR Deck 완성까지.",
+    "4": "전담 PM + Lead 코치 + 분야별 멘토 3중 운영 체계.",
+    "5": "총 사업비 배분 — 교육·멘토링 중심 직접비 우선.",
+    "6": "참여 30개사 100% 사업계획서·IR Deck 도출 및 투자 연계.",
+    "7": "10년 누적 2만여 명 육성 실적과 715명 코치 풀."
+  },
+  "slideSpecs": [
+    {
+      "kicker": "01 제안 배경 및 목적",
+      "layout": "narrative",
+      "headline": "충남 청년 30명의 아이디어를 투자 유치와 지역 정착이 가능한 BM으로 고도화합니다",
+      "caption": "단순 창업 교육을 넘어 시장 검증된 사업계획서·IR Deck 도출",
+      "sectionNum": "1",
+      "order": 1,
+      "body": [
+        {
+          "heading": "지역 청년 인구 유출이라는 구조적 과제",
+          "text": "충청남도는 청년 인구의 수도권 유출이 지속되며 지역 경제 활력 저하에 직면해 있습니다. 청년의 창의적 아이디어가 구상에 머물지 않고 실제 매출·고용으로 이어지려면 진단부터 사업화까지 체계적으로 받치는 보육 시스템이 필요합니다. 본 사업은 만 39세 이하 예비·초기창업가를 발굴해 지역 내 지속 가능한 비즈니스로 정착시키는 생태계 조성에 배경을 둡니다."
+        },
+        {
+          "heading": "시장성 검증부터 투자 연계까지 전주기 액셀러레이팅",
+          "text": "8개월 밀착 보육으로 BM을 고도화하고, 시장에서 통하는 사업계획서와 IR Deck을 도출합니다. 최종 데모데이에서 실제 투자 유치 및 후속 지원으로 연결해, 충남 창조경제혁신센터 인프라와의 협력 속에서 지역 핵심 기업으로 성장하는 발판을 마련합니다."
+        }
+      ],
+      "diagram": {
+        "pattern": "before-after",
+        "data": {
+          "before": {
+            "label": "아이디어 단계 — 시장 검증 부재",
+            "description": "구상은 있으나 BM·재무·고객 검증 미비",
+            "metrics": ["사업계획서 미완", "투자 연계 0건", "지역 이탈 우려"]
+          },
+          "after": {
+            "label": "투자 유치 가능한 BM 확보",
+            "description": "시장 검증 기반 사업계획서·IR Deck 완성",
+            "metrics": ["사업계획서 100%", "데모데이 IR", "지역 정착 기반"]
+          }
+        }
+      },
+      "evidence": [
+        { "text": "충남 청년(15~39세) 순유출이 지속되어 지역 정착형 창업 보육 수요가 명확함", "source": "통계청 국내인구이동통계 2023" },
+        { "text": "예비창업 단계 기업의 사업화 성공률은 체계적 보육 시 유의미하게 상승", "source": "중기부 창업기업 실태조사" }
+      ]
+    },
+    {
+      "kicker": "07 수행 역량 및 실적",
+      "layout": "hero-stat",
+      "headline": "10년간 누적 2만여 명을 육성한 실행 중심 보육 역량으로 성과를 담보합니다",
+      "sectionNum": "7",
+      "order": 1,
+      "body": [
+        {
+          "heading": "실적이 곧 리스크 관리",
+          "text": "대규모 보육 운영 경험은 30개사 동시 관리, 멘토 매칭, 산출물 품질관리의 표준 프로세스로 축적되어 본 사업의 납기·품질 리스크를 구조적으로 낮춥니다."
+        }
+      ],
+      "diagram": {
+        "pattern": "kpi-grid",
+        "data": {
+          "columns": 4,
+          "kpis": [
+            { "value": "20,211", "label": "명", "sublabel": "누적 육성 창업가" },
+            { "value": "715", "label": "명", "sublabel": "활성 코치·멘토 풀" },
+            { "value": "10", "label": "년", "sublabel": "보육 운영 연수" },
+            { "value": "8", "label": "개", "sublabel": "전국 거점" },
+            { "value": "100%", "label": "산출물", "sublabel": "사업계획서 도출 목표" },
+            { "value": "30", "label": "개사", "sublabel": "본 사업 동시 보육" }
+          ]
+        }
+      },
+      "evidence": [
+        { "text": "누적 20,211명 육성·715명 코치 풀로 30개사 동시 보육의 멘토 매칭 여력 충분", "source": "언더독스 2015–2025 누적 실적" },
+        { "text": "전국 8개 거점 운영 경험으로 지역(충남) 밀착 현장 운영 가능", "source": "언더독스 운영 현황" }
+      ]
+    },
+    {
+      "kicker": "03 교육 커리큘럼",
+      "layout": "full-diagram",
+      "headline": "8개월 전주기 커리큘럼으로 아이디어 구체화부터 IR Deck 완성까지 단계별로 끌어올립니다",
+      "caption": "진단 → BM 설계 → 시장 검증 → 사업계획 → IR → 데모데이",
+      "sectionNum": "3",
+      "order": 1,
+      "diagram": {
+        "pattern": "timeline",
+        "data": {
+          "units": ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+          "tracks": [
+            { "name": "진단·BM", "bars": [{ "startIdx": 0, "endIdx": 1, "label": "역량 진단·BM 설계", "accent": true }] },
+            { "name": "시장 검증", "bars": [{ "startIdx": 1, "endIdx": 3, "label": "고객 인터뷰·MVP 검증" }] },
+            { "name": "사업화", "bars": [{ "startIdx": 3, "endIdx": 5, "label": "사업계획서·재무모델" }] },
+            { "name": "투자 준비", "bars": [{ "startIdx": 5, "endIdx": 6, "label": "IR Deck·피칭" }] },
+            { "name": "데모데이", "bars": [{ "startIdx": 6, "endIdx": 7, "label": "투자 연계·후속지원", "accent": true }] }
+          ]
+        }
+      },
+      "evidence": [
+        { "text": "8개월 동안 단계별 게이트(진단·검증·사업화·IR)로 30개사 전원 IR Deck 완성 보장", "source": "본 사업 운영 설계" }
+      ]
+    },
+    {
+      "kicker": "03 교육 커리큘럼",
+      "layout": "detail-grid",
+      "headline": "분기별 핵심 모듈을 명확한 산출물 단위로 설계하여 성과를 가시화합니다",
+      "sectionNum": "3",
+      "order": 2,
+      "diagram": {
+        "pattern": "hierarchy-tree",
+        "data": {
+          "root": { "label": "전주기 액셀러레이팅", "sublabel": "8개월 · 산출물 중심" },
+          "children": [
+            { "label": "1분기 진단·발굴", "sublabel": "역량 진단", "children": [{ "label": "DOGS 진단" }, { "label": "BM 캔버스" }] },
+            { "label": "2분기 시장 검증", "sublabel": "고객 검증", "children": [{ "label": "인터뷰" }, { "label": "MVP" }] },
+            { "label": "3분기 사업화", "sublabel": "사업계획", "children": [{ "label": "재무모델" }, { "label": "사업계획서" }] },
+            { "label": "4분기 투자 연계", "sublabel": "IR", "children": [{ "label": "IR Deck" }, { "label": "데모데이" }] }
+          ]
+        }
+      },
+      "body": [
+        { "heading": "1분기 — 발굴·진단", "text": "DOGS 성향 진단과 BM 캔버스로 30명 창업가의 출발점을 정렬하고 트랙을 차등 배정합니다." },
+        { "heading": "2분기 — 시장 검증", "text": "고객 인터뷰와 MVP 실험으로 가설을 검증하고 핵심 문제·가치 제안을 확정합니다." },
+        { "heading": "3분기 — 사업화", "text": "재무모델과 사업계획서를 완성해 사업의 실현 가능성을 정량적으로 증명합니다." },
+        { "heading": "4분기 — 투자 연계", "text": "IR Deck을 다듬고 데모데이에서 실제 투자자·후속지원과 연결합니다." }
+      ],
+      "evidence": [
+        { "text": "분기별 산출물(진단·MVP·사업계획서·IR Deck)이 명확해 30개사 100% 완성률 관리 가능", "source": "본 사업 산출물 설계" }
+      ]
+    },
+    {
+      "kicker": "02 추진 전략 및 방법론",
+      "layout": "comparison",
+      "headline": "일반 창업 교육 대비 실행·산출물 중심 보육으로 차별화된 성과를 만듭니다",
+      "sectionNum": "2",
+      "order": 1,
+      "diagram": {
+        "pattern": "comparison-table",
+        "data": {
+          "leftLabel": "일반 창업 교육",
+          "rightLabel": "언더독스 액셀러레이팅",
+          "rows": [
+            { "dim": "실습 비중", "left": "이론 70%", "right": "실행·실습 80%", "advantageOnRight": true },
+            { "dim": "멘토링", "left": "집체 강의", "right": "1:1 밀착 매칭", "advantageOnRight": true },
+            { "dim": "산출물", "left": "수료증", "right": "사업계획서·IR Deck", "advantageOnRight": true },
+            { "dim": "투자 연계", "left": "없음", "right": "데모데이 연계", "advantageOnRight": true },
+            { "dim": "사후 관리", "left": "종료 후 단절", "right": "지역 인프라 후속 지원", "advantageOnRight": true }
+          ]
+        }
+      },
+      "body": [
+        { "heading": "왜 산출물 중심인가", "text": "평가위원이 신뢰하는 것은 수료 인원이 아니라 사업계획서·IR Deck 같은 검증 가능한 산출물입니다. 본 사업은 매 단계 산출물을 게이트로 두어 성과를 가시화합니다." }
+      ],
+      "evidence": [
+        { "text": "실행 중심 보육 시 참여기업의 사업계획서 완성률이 집체 교육 대비 현저히 높음", "source": "언더독스 프로그램 운영 데이터" },
+        { "text": "데모데이 연계로 종료 후 단절을 막고 지역 정착·후속 투자로 이어짐", "source": "본 사업 운영 설계" }
+      ]
+    },
+    {
+      "kicker": "02 추진 전략 및 방법론",
+      "layout": "split-visual",
+      "headline": "진단 기반 듀얼트랙으로 예비·초기창업가의 역량 격차를 해소합니다",
+      "sectionNum": "2",
+      "order": 2,
+      "body": [
+        { "heading": "역량 격차라는 현실", "text": "예비창업가와 3년 이내 초기창업가는 보유 자원과 검증 단계가 크게 다릅니다. 동일 커리큘럼을 일괄 적용하면 한쪽은 따라가지 못하고 다른 쪽은 지루해집니다. 진단으로 출발점을 측정하고 트랙을 나누는 것이 성과의 전제입니다." },
+        { "heading": "듀얼트랙 운영 방식", "text": "예비 트랙은 아이디어 구체화·BM 설계에 무게를 두고, 초기 트랙은 시장 확장·투자 유치에 집중합니다. 공통 멘토링 세션으로 트랙 간 학습을 교차시켜 시너지를 만듭니다." },
+        { "heading": "성과 중심 사후관리", "text": "데모데이로 끝내지 않고 충남 창업 인프라와 연결해 후속 투자·정착을 지원합니다." }
+      ],
+      "diagram": {
+        "pattern": "process-flow",
+        "data": {
+          "steps": [
+            { "num": "1", "label": "역량 진단", "description": "DOGS·BM 성숙도 측정" },
+            { "num": "2", "label": "트랙 배정", "description": "예비/초기 분기" },
+            { "num": "3", "label": "맞춤 보육", "description": "트랙별 차등 커리큘럼" },
+            { "num": "4", "label": "교차 멘토링", "description": "공통 세션 시너지" },
+            { "num": "5", "label": "사후 연계", "description": "지역 인프라·투자" }
+          ]
+        }
+      },
+      "evidence": [
+        { "text": "진단 기반 차등 트랙 운영으로 참여자 만족도·완주율 동시 제고", "source": "언더독스 운영 사례" }
+      ]
+    },
+    {
+      "kicker": "04 운영 체계 및 코치진",
+      "layout": "full-diagram",
+      "headline": "전담 PM·Lead 코치·분야별 멘토 3중 체계로 30개사 품질을 관리합니다",
+      "sectionNum": "4",
+      "order": 1,
+      "diagram": {
+        "pattern": "architecture-stack",
+        "data": {
+          "layers": [
+            { "name": "총괄", "items": ["전담 PM", "품질관리(QA)"], "accent": true },
+            { "name": "코칭", "items": ["Lead 코치", "트랙 코치", "데모데이 디렉터"] },
+            { "name": "멘토", "items": ["BM·재무", "마케팅", "법무·IP", "투자(IR)"] },
+            { "name": "인프라", "items": ["충남 창조경제혁신센터", "지역 네트워크"] }
+          ]
+        }
+      },
+      "evidence": [
+        { "text": "전담 PM이 30개사 진척을 주 단위로 관리하고 QA가 산출물 품질을 검수", "source": "본 사업 운영 설계" },
+        { "text": "715명 코치 풀에서 사업 분야별 최적 멘토를 매칭", "source": "언더독스 코치 디렉터리" }
+      ]
+    }
+  ]
+}

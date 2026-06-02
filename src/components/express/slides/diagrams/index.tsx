@@ -192,6 +192,7 @@ export function KpiGrid({ kicker, headline, kpis, columns = 3 }: KpiGridProps) {
         {kpis.map((kpi, i) => (
           <div
             key={i}
+            data-block="kpi"
             style={{
               padding: 'var(--ud-s-5) var(--ud-s-4)',
               borderRight: i % columns < columns - 1 ? '1px solid var(--ud-line)' : 'none',
@@ -473,11 +474,13 @@ export interface BeforeAfterProps {
   headline: string
   before: { label: string; description?: string; metrics?: string[] }
   after: { label: string; description?: string; metrics?: string[] }
+  /** 가용 높이를 채워 박스를 신장 (DECK-2 페이지 채움) */
+  fill?: boolean
 }
 
-export function BeforeAfter({ kicker, headline, before, after }: BeforeAfterProps) {
+export function BeforeAfter({ kicker, headline, before, after, fill = false }: BeforeAfterProps) {
   return (
-    <div>
+    <div style={fill ? { display: 'flex', flexDirection: 'column', height: '100%', width: '100%' } : undefined}>
       <SectionHeader kicker={kicker} headline={headline} />
       <div
         style={{
@@ -486,10 +489,11 @@ export function BeforeAfter({ kicker, headline, before, after }: BeforeAfterProp
           gap: 'var(--ud-s-4)',
           alignItems: 'stretch',
           marginTop: 'var(--ud-s-5)',
+          flex: fill ? 1 : undefined,
         }}
       >
         {/* Before */}
-        <div className="ud-box-stroke" style={{ padding: 'var(--ud-s-5)' }}>
+        <div className="ud-box-stroke" data-block="before-after-side" style={{ padding: 'var(--ud-s-5)' }}>
           <span className="ud-label en" style={{ color: 'var(--ud-muted)' }}>BEFORE</span>
           <p style={{ margin: 'var(--ud-s-3) 0 0', fontWeight: 700, fontSize: 'var(--ud-type-body)', color: 'var(--ud-soft-ink)' }}>
             {before.label}
@@ -500,7 +504,7 @@ export function BeforeAfter({ kicker, headline, before, after }: BeforeAfterProp
           {before.metrics && before.metrics.length > 0 && (
             <ul style={{ margin: 'var(--ud-s-3) 0 0', paddingLeft: 'var(--ud-s-4)' }}>
               {before.metrics.map((m, i) => (
-                <li key={i} className="ud-caption">{m}</li>
+                <li key={i} data-block="ba-metric" className="ud-caption">{m}</li>
               ))}
             </ul>
           )}
@@ -518,7 +522,7 @@ export function BeforeAfter({ kicker, headline, before, after }: BeforeAfterProp
           />
         </div>
         {/* After */}
-        <div style={{ padding: 'var(--ud-s-5)', background: 'var(--ud-accent-88)', border: '2px solid var(--ud-accent)' }}>
+        <div data-block="before-after-side" style={{ padding: 'var(--ud-s-5)', background: 'var(--ud-accent-88)', border: '2px solid var(--ud-accent)' }}>
           <span className="ud-label en">AFTER</span>
           <p style={{ margin: 'var(--ud-s-3) 0 0', fontWeight: 700, fontSize: 'var(--ud-type-body)', color: 'var(--ud-ink)' }}>
             {after.label}
@@ -531,7 +535,7 @@ export function BeforeAfter({ kicker, headline, before, after }: BeforeAfterProp
           {after.metrics && after.metrics.length > 0 && (
             <ul style={{ margin: 'var(--ud-s-3) 0 0', paddingLeft: 'var(--ud-s-4)' }}>
               {after.metrics.map((m, i) => (
-                <li key={i} className="ud-caption" style={{ color: 'var(--ud-ink)', fontWeight: 500 }}>
+                <li key={i} data-block="ba-metric" className="ud-caption" style={{ color: 'var(--ud-ink)', fontWeight: 500 }}>
                   {m}
                 </li>
               ))}

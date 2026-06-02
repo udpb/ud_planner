@@ -47,10 +47,22 @@ const FONT_EN = 'Poppins'
 // ─────────────────────────────────────────
 // 입력 타입
 // ─────────────────────────────────────────
+export type SlideLayoutName =
+  | 'hero-stat'
+  | 'split-visual'
+  | 'full-diagram'
+  | 'detail-grid'
+  | 'comparison'
+  | 'narrative'
+
 export interface PptxSlideSpec {
   kicker?: string
   headline: string
   caption?: string
+  /** 레이아웃 아키타입 (ADR-024) — 없으면 pattern+sectionNum 으로 추론 */
+  layout?: SlideLayoutName
+  /** 키메시지를 받치는 세부(메커니즘·how) — split-visual/narrative 프로즈 */
+  body?: { heading?: string; text: string }[]
   diagram?: { pattern: string; data: any }
   evidence?: { text: string; source?: string }[]
   sectionNum?: string
@@ -301,223 +313,436 @@ function dividerSlide(num: string, pageNum: number): string {
   return wrapSlide(inner, true)
 }
 
-// ── slideSpec 슬라이드 (headline + 도식화(표 단순화) + 근거) ──
-function specSlide(spec: PptxSlideSpec, pageNum: number): string {
-  let id = 40
-  let inner = ''
-  // kicker
+// ─────────────────────────────────────────
+// 레이아웃 아키타입 (ADR-024) — 본문 슬라이드 배치
+// ─────────────────────────────────────────
+
+// 컨텐츠 가용 영역 (헤드라인 하단 ~ footer 위). 밀도·dead-space 분배 기준.
+const MARGIN_X = 80
+const CONTENT_W = 1120 // SLIDE_W(1280px 환산) - 2*margin
+const CONTENT_TOP = 250 // 헤드라인/캡션/구분선 아래
+const CONTENT_BOTTOM = 636 // footer(648) 위
+const CONTENT_H = CONTENT_BOTTOM - CONTENT_TOP
+
+interface Zone {
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
+/**
+ * layout 미지정 시 추론 (ADR-024 §4-2 규칙).
+ * pattern + sectionNum + body 유무로 가장 어울리는 아키타입 선택.
+ */
+function inferLayout(spec: PptxSlideSpec): SlideLayoutName {
+  if (spec.layout) return spec.layout
+  const pattern = spec.diagram?.pattern
+  const section = spec.sectionNum
+  const hasBody = Array.isArray(spec.body) && spec.body.length > 0
+
+  if (pattern === 'kpi-grid' && (section === '6' || section === '7')) return 'hero-stat'
+  if (pattern === 'before-after' || pattern === 'comparison-table') return 'comparison'
+  if (pattern === 'timeline' || pattern === 'process-flow') return 'full-diagram'
+  if (pattern === 'matrix-2x2' || pattern === 'architecture-stack') return 'full-diagram'
+  if ((pattern === 'hierarchy-tree' || pattern === 'kpi-grid') && (section === '3' || section === '4')) return 'detail-grid'
+  if (hasBody) return 'split-visual'
+  if (pattern === 'text-only' || !pattern) return 'narrative'
+  return 'split-visual'
+}
+
+// 키커 + 헤드라인 + 캡션 + 구분선 (모든 본문 레이아웃 공통 헤더) → { xml, nextId }
+function slideHeader(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
   if (spec.kicker) {
-    inner += textBox({
-      id: id++,
-      x: px(80),
-      y: px(50),
-      w: px(1000),
-      h: px(34),
+    xml += textBox({
+      id: id++, x: px(MARGIN_X), y: px(50), w: px(1000), h: px(34),
       runs: [{ text: spec.kicker, size: 11, color: COLOR.accent, font: FONT_EN, bold: true }],
     })
   }
-  // headline
-  inner += textBox({
-    id: id++,
-    x: px(80),
-    y: px(86),
-    w: px(1120),
-    h: px(110),
+  xml += textBox({
+    id: id++, x: px(MARGIN_X), y: px(86), w: px(CONTENT_W), h: px(96),
     runs: [{ text: spec.headline, size: 20, color: COLOR.ink, bold: true }],
   })
-  // caption
   if (spec.caption) {
-    inner += textBox({
-      id: id++,
-      x: px(80),
-      y: px(196),
-      w: px(1120),
-      h: px(40),
+    xml += textBox({
+      id: id++, x: px(MARGIN_X), y: px(190), w: px(CONTENT_W), h: px(40),
       runs: [{ text: spec.caption, size: 12, color: COLOR.muted }],
     })
   }
-  inner += rect(id++, px(80), px(240), px(1120), px(2), COLOR.line)
+  xml += rect(id++, px(MARGIN_X), px(236), px(CONTENT_W), px(2), COLOR.line)
+  return { xml, nextId: id }
+}
 
-  // diagram → 표/텍스트로 단순화
-  const diagramY = 260
-  const diag = renderDiagramToShapes(spec.diagram, id, diagramY)
-  inner += diag.xml
-  id = diag.nextId
-
-  // evidence (하단 tint 박스) — 도식 실제 하단 바로 아래에 배치 (페이지당 텍스트 밀도 적응:
-  //   짧은 도식이면 근거가 바로 붙고, 긴 도식이어도 footer(648) 위에서 충돌 없이 안착)
-  if (Array.isArray(spec.evidence) && spec.evidence.length > 0) {
-    const evY = Math.min(Math.max(diag.bottomY + 16, 300), 560)
-    inner += rect(id++, px(80), px(evY), px(1120), px(80), COLOR.tint)
-    inner += textBox({
-      id: id++,
-      x: px(95),
-      y: px(evY + 6),
-      w: px(200),
-      h: px(24),
-      runs: [{ text: '근거', size: 10, color: COLOR.accent, bold: true }],
+// body 프로즈 블록을 zone 안에 채움 (heading + text) → { xml, nextId }
+function bodyProse(body: { heading?: string; text: string }[], zone: Zone, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const blocks = body.slice(0, 4)
+  if (blocks.length === 0) return { xml, nextId: id }
+  const gap = 14
+  const blockH = (zone.h - gap * (blocks.length - 1)) / blocks.length
+  blocks.forEach((b, i) => {
+    const y = zone.y + i * (blockH + gap)
+    // accent 좌측 스트로크 (반복 정렬 — border-brand-left 정신)
+    xml += rect(id++, px(zone.x), px(y + 2), px(4), px(blockH - 4), COLOR.accent)
+    const runs: { runs: TextRun[] }[] = []
+    if (b.heading) runs.push({ runs: [{ text: b.heading, size: 13, color: COLOR.ink, bold: true }] })
+    runs.push({ runs: [{ text: b.text, size: 11, color: COLOR.softInk }] })
+    xml += textBox({
+      id: id++, x: px(zone.x + 16), y: px(y), w: px(zone.w - 16), h: px(blockH),
+      runs, anchor: 't',
     })
-    const evRuns = spec.evidence.slice(0, 3).map((e) => ({
-      runs: [
-        { text: `• ${e.text}`, size: 10, color: COLOR.softInk },
-        ...(e.source ? [{ text: ` (${e.source})`, size: 9, color: COLOR.muted }] : []),
-      ],
-    }))
-    inner += textBox({
-      id: id++,
-      x: px(95),
-      y: px(evY + 28),
-      w: px(1090),
-      h: px(48),
-      runs: evRuns,
+  })
+  return { xml, nextId: id }
+}
+
+// evidence 밴드 — 주어진 y 위치에 tint 박스 (정량+메커니즘 근거) → { xml, nextId }
+function evidenceBand(evidence: { text: string; source?: string }[], y: number, startId: number, w = CONTENT_W): { xml: string; nextId: number } {
+  let id = startId
+  const ev = evidence.slice(0, 3)
+  if (ev.length === 0) return { xml: '', nextId: id }
+  const bandH = 22 + ev.length * 20
+  let xml = rect(id++, px(MARGIN_X), px(y), px(w), px(bandH), COLOR.tint)
+  xml += textBox({
+    id: id++, x: px(MARGIN_X + 15), y: px(y + 6), w: px(200), h: px(20),
+    runs: [{ text: '근거', size: 10, color: COLOR.accent, bold: true }],
+  })
+  const evRuns = ev.map((e) => ({
+    runs: [
+      { text: `• ${e.text}`, size: 10, color: COLOR.softInk },
+      ...(e.source ? [{ text: ` (${e.source})`, size: 9, color: COLOR.muted }] : []),
+    ],
+  }))
+  xml += textBox({
+    id: id++, x: px(MARGIN_X + 15), y: px(y + 26), w: px(w - 30), h: px(bandH - 30),
+    runs: evRuns,
+  })
+  return { xml, nextId: id }
+}
+
+// 본문 슬라이드 디스패처 — layout 별 분기
+function specSlide(spec: PptxSlideSpec, pageNum: number): string {
+  const layout = inferLayout(spec)
+  const h = slideHeader(spec, 40)
+  let id = h.nextId
+  let body = h.xml
+
+  switch (layout) {
+    case 'hero-stat': { const r = layoutHeroStat(spec, id); body += r.xml; id = r.nextId; break }
+    case 'split-visual': { const r = layoutSplitVisual(spec, id); body += r.xml; id = r.nextId; break }
+    case 'full-diagram': { const r = layoutFullDiagram(spec, id); body += r.xml; id = r.nextId; break }
+    case 'detail-grid': { const r = layoutDetailGrid(spec, id); body += r.xml; id = r.nextId; break }
+    case 'comparison': { const r = layoutComparison(spec, id); body += r.xml; id = r.nextId; break }
+    case 'narrative': { const r = layoutNarrative(spec, id); body += r.xml; id = r.nextId; break }
+  }
+  body += footer(id, pageNum)
+  return wrapSlide(body)
+}
+
+// hero-stat: 좌 빅넘버 도식(kpi) 지배 + 우/하 body·evidence
+function layoutHeroStat(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const hasBody = Array.isArray(spec.body) && spec.body.length > 0
+  const evH = spec.evidence?.length ? 22 + Math.min(spec.evidence.length, 3) * 20 : 0
+  const diagH = CONTENT_H - (evH ? evH + 16 : 0)
+  // kpi-grid 를 풀폭 대형으로 (빅넘버 강조)
+  const zone: Zone = { x: MARGIN_X, y: CONTENT_TOP, w: hasBody ? 740 : CONTENT_W, h: diagH }
+  const diag = renderDiagramToShapes(spec.diagram, id, zone, { hero: true })
+  xml += diag.xml
+  id = diag.nextId
+  if (hasBody) {
+    const r = bodyProse(spec.body!, { x: MARGIN_X + 760, y: CONTENT_TOP, w: CONTENT_W - 760, h: diagH }, id)
+    xml += r.xml; id = r.nextId
+  }
+  if (evH) {
+    const r = evidenceBand(spec.evidence!, CONTENT_BOTTOM - evH, id)
+    xml += r.xml; id = r.nextId
+  }
+  return { xml, nextId: id }
+}
+
+// split-visual: 좌 40% body 프로즈 / 우 60% 도식
+function layoutSplitVisual(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const evH = spec.evidence?.length ? 22 + Math.min(spec.evidence.length, 3) * 20 : 0
+  const upperH = CONTENT_H - (evH ? evH + 16 : 0)
+  const leftW = 420
+  const rightX = MARGIN_X + leftW + 30
+  const rightW = CONTENT_W - leftW - 30
+  // 좌 프로즈 (body 없으면 caption/headline 보조 텍스트로라도 채움)
+  const proseBody = (spec.body && spec.body.length > 0)
+    ? spec.body
+    : [{ text: spec.caption ?? spec.headline }]
+  const lp = bodyProse(proseBody, { x: MARGIN_X, y: CONTENT_TOP, w: leftW, h: upperH }, id)
+  xml += lp.xml; id = lp.nextId
+  // 우 도식
+  const diag = renderDiagramToShapes(spec.diagram, id, { x: rightX, y: CONTENT_TOP, w: rightW, h: upperH })
+  xml += diag.xml; id = diag.nextId
+  if (evH) {
+    const r = evidenceBand(spec.evidence!, CONTENT_BOTTOM - evH, id)
+    xml += r.xml; id = r.nextId
+  }
+  return { xml, nextId: id }
+}
+
+// full-diagram: 도식이 풀폭·풀높이 지배
+function layoutFullDiagram(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const evH = spec.evidence?.length ? 22 + Math.min(spec.evidence.length, 3) * 20 : 0
+  const diagH = CONTENT_H - (evH ? evH + 16 : 0)
+  const diag = renderDiagramToShapes(spec.diagram, id, { x: MARGIN_X, y: CONTENT_TOP, w: CONTENT_W, h: diagH }, { fill: true })
+  xml += diag.xml; id = diag.nextId
+  // body 가 있으면 도식 아래 한 줄 요약 (full-diagram 은 도식 우선이므로 evidence 위에만)
+  if (evH) {
+    const r = evidenceBand(spec.evidence!, CONTENT_BOTTOM - evH, id)
+    xml += r.xml; id = r.nextId
+  }
+  return { xml, nextId: id }
+}
+
+// detail-grid: 도식(주로 hierarchy/kpi) 풀 + body 셀 보조 (고밀도)
+function layoutDetailGrid(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const hasBody = Array.isArray(spec.body) && spec.body.length > 0
+  const evH = spec.evidence?.length ? 22 + Math.min(spec.evidence.length, 3) * 20 : 0
+  // 상단: 도식 (가용 높이의 ~60%), 하단: body 그리드 (있으면)
+  const diagH = hasBody ? Math.round(CONTENT_H * 0.55) : CONTENT_H - (evH ? evH + 16 : 0)
+  const diag = renderDiagramToShapes(spec.diagram, id, { x: MARGIN_X, y: CONTENT_TOP, w: CONTENT_W, h: diagH }, { fill: true })
+  xml += diag.xml; id = diag.nextId
+  if (hasBody) {
+    // body 를 가로 그리드 셀로 (3~4 셀)
+    const blocks = spec.body!.slice(0, 4)
+    const gridY = CONTENT_TOP + diagH + 16
+    const gridH = CONTENT_BOTTOM - gridY - (evH ? evH + 12 : 0)
+    const gap = 16
+    const cellW = (CONTENT_W - gap * (blocks.length - 1)) / blocks.length
+    blocks.forEach((b, i) => {
+      const x = MARGIN_X + i * (cellW + gap)
+      xml += rect(id++, px(x), px(gridY), px(cellW), px(gridH), COLOR.tint)
+      const runs: { runs: TextRun[] }[] = []
+      if (b.heading) runs.push({ runs: [{ text: b.heading, size: 12, color: COLOR.accent, bold: true }] })
+      runs.push({ runs: [{ text: b.text, size: 10, color: COLOR.softInk }] })
+      xml += textBox({ id: id++, x: px(x + 12), y: px(gridY + 10), w: px(cellW - 24), h: px(gridH - 20), runs })
     })
   }
-  inner += footer(id, pageNum)
-  return wrapSlide(inner)
+  if (evH) {
+    const r = evidenceBand(spec.evidence!, CONTENT_BOTTOM - evH, id)
+    xml += r.xml; id = r.nextId
+  }
+  return { xml, nextId: id }
+}
+
+// comparison: 대비 도식(before-after/comparison-table) 풀 + 행별 근거
+function layoutComparison(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const evH = spec.evidence?.length ? 22 + Math.min(spec.evidence.length, 3) * 20 : 0
+  const diagH = CONTENT_H - (evH ? evH + 16 : 0)
+  const diag = renderDiagramToShapes(spec.diagram, id, { x: MARGIN_X, y: CONTENT_TOP, w: CONTENT_W, h: diagH }, { fill: true })
+  xml += diag.xml; id = diag.nextId
+  if (evH) {
+    const r = evidenceBand(spec.evidence!, CONTENT_BOTTOM - evH, id)
+    xml += r.xml; id = r.nextId
+  }
+  return { xml, nextId: id }
+}
+
+// narrative: 좌 본문 다단 + 우 콜아웃(accent stroke) 박스
+function layoutNarrative(spec: PptxSlideSpec, startId: number): { xml: string; nextId: number } {
+  let id = startId
+  let xml = ''
+  const evH = spec.evidence?.length ? 22 + Math.min(spec.evidence.length, 3) * 20 : 0
+  const upperH = CONTENT_H - (evH ? evH + 16 : 0)
+  const hasDiagram = spec.diagram && spec.diagram.pattern !== 'text-only' && spec.diagram.data
+  const leftW = hasDiagram ? 640 : CONTENT_W
+  const proseBody = (spec.body && spec.body.length > 0)
+    ? spec.body
+    : [{ text: spec.caption ?? spec.headline }]
+  const lp = bodyProse(proseBody, { x: MARGIN_X, y: CONTENT_TOP, w: leftW, h: upperH }, id)
+  xml += lp.xml; id = lp.nextId
+  if (hasDiagram) {
+    const calloutX = MARGIN_X + leftW + 30
+    const calloutW = CONTENT_W - leftW - 30
+    // accent stroke 콜아웃 박스 안에 도식
+    xml += textBox({
+      id: id++, x: px(calloutX), y: px(CONTENT_TOP), w: px(calloutW), h: px(upperH),
+      runs: [{ runs: [{ text: '', size: 1, color: COLOR.ink }] }], lineColor: COLOR.accent,
+    })
+    const diag = renderDiagramToShapes(spec.diagram, id, { x: calloutX + 14, y: CONTENT_TOP + 14, w: calloutW - 28, h: upperH - 28 }, { fill: true })
+    xml += diag.xml; id = diag.nextId
+  }
+  if (evH) {
+    const r = evidenceBand(spec.evidence!, CONTENT_BOTTOM - evH, id)
+    xml += r.xml; id = r.nextId
+  }
+  return { xml, nextId: id }
 }
 
 /**
  * 도식화 패턴 → 단순 도형(표 형태) 변환.
  * PPTX 네이티브 표는 복잡하므로 "행별 텍스트 박스" 로 표현 (편집 가능).
  */
+interface DiagramOpts {
+  /** 빅넘버 강조 (hero-stat) — kpi value 폰트 대형 */
+  hero?: boolean
+  /** zone 높이를 채우도록 항목 높이 신축 (full-diagram/comparison/detail-grid) */
+  fill?: boolean
+}
+
 function renderDiagramToShapes(
   diagram: { pattern: string; data: any } | undefined,
   startId: number,
-  startY: number,
+  zone: Zone,
+  opts: DiagramOpts = {},
 ): { xml: string; nextId: number; bottomY: number } {
   let id = startId
   let xml = ''
-  let bottomY = startY // 도식 실제 하단 — evidence/footer 충돌 방지 + 밀도 적응용
+  let bottomY = zone.y
   if (!diagram || !diagram.data) return { xml, nextId: id, bottomY }
   const { pattern, data } = diagram
+  const X = zone.x
+  const W = zone.w
+  const Y0 = zone.y
+  const H = zone.h
+  // zone 높이를 채울지 — fill 이면 H, 아니면 컨텐츠 자연 높이
+  const fillH = opts.fill ? H : undefined
 
   if (pattern === 'process-flow' && Array.isArray(data.steps)) {
-    const steps = data.steps.slice(0, 6)
-    const gap = 20
-    const totalW = 1120
-    const stepW = (totalW - gap * (steps.length - 1)) / steps.length
+    const steps = data.steps.slice(0, 7) // 상한 6→7
+    const gap = 16
+    const stepW = (W - gap * (steps.length - 1)) / steps.length
+    const stepH = Math.max(Math.min(fillH ?? 200, H), 120)
     steps.forEach((s: any, i: number) => {
-      const x = 80 + i * (stepW + gap)
-      xml += rect(id++, px(x), px(startY), px(stepW), px(120), i === 0 ? COLOR.accentTint : COLOR.tint)
+      const x = X + i * (stepW + gap)
+      xml += rect(id++, px(x), px(Y0), px(stepW), px(stepH), i === 0 ? COLOR.accentTint : COLOR.tint)
       xml += textBox({
-        id: id++,
-        x: px(x + 8),
-        y: px(startY + 8),
-        w: px(stepW - 16),
-        h: px(104),
+        id: id++, x: px(x + 8), y: px(Y0 + 10), w: px(stepW - 16), h: px(stepH - 20),
         runs: [
-          { runs: [{ text: s.num ?? `${i + 1}`, size: 12, color: COLOR.accent, font: FONT_EN, bold: true }] },
+          { runs: [{ text: s.num ?? `${i + 1}`, size: 13, color: COLOR.accent, font: FONT_EN, bold: true }] },
           { runs: [{ text: s.label ?? '', size: 13, color: COLOR.ink, bold: true }] },
-          ...(s.description ? [{ runs: [{ text: s.description, size: 9, color: COLOR.softInk }] }] : []),
+          ...(s.description ? [{ runs: [{ text: s.description, size: 10, color: COLOR.softInk }] }] : []),
         ],
       })
     })
-    bottomY = startY + 120
+    bottomY = Y0 + stepH
   } else if (pattern === 'kpi-grid' && Array.isArray(data.kpis)) {
     const cols = data.columns ?? 4
     const gap = 16
-    // 페이지당 텍스트량 — 최대 2행(cols*2)만 노출해 evidence/footer 와 충돌 방지
-    const kpis = data.kpis.slice(0, cols * 2)
-    const cellW = (1120 - gap * (cols - 1)) / cols
-    const cellH = 104
+    const kpis = data.kpis.slice(0, cols * 2) // 최대 2행
+    const cellW = (W - gap * (cols - 1)) / cols
+    const nRows = Math.max(Math.ceil(kpis.length / cols), 1)
+    // fill 이면 zone 높이에 맞춰 셀 높이 신축 (dead-space 최소화)
+    const cellH = fillH
+      ? Math.max((fillH - gap * (nRows - 1)) / nRows, 100)
+      : opts.hero ? 150 : 110
+    const valSize = opts.hero ? 40 : 26
     kpis.forEach((k: any, i: number) => {
       const col = i % cols
       const row = Math.floor(i / cols)
-      const x = 80 + col * (cellW + gap)
-      const y = startY + row * (cellH + gap)
+      const x = X + col * (cellW + gap)
+      const y = Y0 + row * (cellH + gap)
       xml += rect(id++, px(x), px(y), px(cellW), px(cellH), COLOR.tint)
       xml += textBox({
-        id: id++,
-        x: px(x + 10),
-        y: px(y + 8),
-        w: px(cellW - 20),
-        h: px(cellH - 16),
+        id: id++, x: px(x + 10), y: px(y + 10), w: px(cellW - 20), h: px(cellH - 20),
+        anchor: opts.hero ? 'ctr' : 't',
         runs: [
-          { runs: [{ text: k.value ?? '', size: 26, color: COLOR.accent, font: FONT_EN, bold: true }] },
+          { runs: [{ text: k.value ?? '', size: valSize, color: COLOR.accent, font: FONT_EN, bold: true }] },
           { runs: [{ text: k.label ?? '', size: 12, color: COLOR.ink, bold: true }] },
           ...(k.sublabel ? [{ runs: [{ text: k.sublabel, size: 9, color: COLOR.muted }] }] : []),
         ],
       })
     })
-    bottomY = startY + Math.ceil(kpis.length / cols) * (cellH + gap)
+    bottomY = Y0 + nRows * (cellH + gap) - gap
   } else if (pattern === 'comparison-table' && Array.isArray(data.rows)) {
-    const rows = data.rows.slice(0, 6)
-    const colDim = 280, colL = 420, colR = 420
-    const rowH = 40
-    // header
-    xml += rect(id++, px(80), px(startY), px(colDim), px(rowH), COLOR.ink)
-    xml += rect(id++, px(80 + colDim), px(startY), px(colL), px(rowH), COLOR.ink)
-    xml += rect(id++, px(80 + colDim + colL), px(startY), px(colR), px(rowH), COLOR.accent)
-    xml += textBox({ id: id++, x: px(90), y: px(startY + 8), w: px(colDim - 20), h: px(rowH - 12), runs: [{ text: '구분', size: 11, color: COLOR.white, bold: true }] })
-    xml += textBox({ id: id++, x: px(90 + colDim), y: px(startY + 8), w: px(colL - 20), h: px(rowH - 12), runs: [{ text: data.leftLabel ?? '기존', size: 11, color: COLOR.white, bold: true }] })
-    xml += textBox({ id: id++, x: px(90 + colDim + colL), y: px(startY + 8), w: px(colR - 20), h: px(rowH - 12), runs: [{ text: data.rightLabel ?? '언더독스', size: 11, color: COLOR.white, bold: true }] })
+    const rows = data.rows.slice(0, 8) // 상한 6→8
+    const colDim = Math.round(W * 0.25), colL = Math.round(W * 0.375), colR = W - colDim - colL
+    // fill 이면 행 높이를 zone 에 맞춰 신축
+    const rowH = fillH ? Math.max(Math.min((fillH) / (rows.length + 1), 56), 32) : 40
+    xml += rect(id++, px(X), px(Y0), px(colDim), px(rowH), COLOR.ink)
+    xml += rect(id++, px(X + colDim), px(Y0), px(colL), px(rowH), COLOR.ink)
+    xml += rect(id++, px(X + colDim + colL), px(Y0), px(colR), px(rowH), COLOR.accent)
+    xml += textBox({ id: id++, x: px(X + 10), y: px(Y0 + 8), w: px(colDim - 20), h: px(rowH - 12), runs: [{ text: '구분', size: 11, color: COLOR.white, bold: true }], anchor: 'ctr' })
+    xml += textBox({ id: id++, x: px(X + 10 + colDim), y: px(Y0 + 8), w: px(colL - 20), h: px(rowH - 12), runs: [{ text: data.leftLabel ?? '기존', size: 11, color: COLOR.white, bold: true }], anchor: 'ctr' })
+    xml += textBox({ id: id++, x: px(X + 10 + colDim + colL), y: px(Y0 + 8), w: px(colR - 20), h: px(rowH - 12), runs: [{ text: data.rightLabel ?? '언더독스', size: 11, color: COLOR.white, bold: true }], anchor: 'ctr' })
     rows.forEach((r: any, i: number) => {
-      const y = startY + rowH + i * rowH
+      const y = Y0 + rowH + i * rowH
       const rightFill = r.advantageOnRight ? COLOR.accentTint : COLOR.paper
-      xml += rect(id++, px(80), px(y), px(colDim), px(rowH), COLOR.tint)
-      xml += rect(id++, px(80 + colDim), px(y), px(colL), px(rowH), COLOR.paper)
-      xml += rect(id++, px(80 + colDim + colL), px(y), px(colR), px(rowH), rightFill)
-      xml += textBox({ id: id++, x: px(90), y: px(y + 8), w: px(colDim - 20), h: px(rowH - 12), runs: [{ text: r.dim ?? '', size: 10, color: COLOR.ink, bold: true }] })
-      xml += textBox({ id: id++, x: px(90 + colDim), y: px(y + 8), w: px(colL - 20), h: px(rowH - 12), runs: [{ text: r.left ?? '', size: 10, color: COLOR.softInk }] })
-      xml += textBox({ id: id++, x: px(90 + colDim + colL), y: px(y + 8), w: px(colR - 20), h: px(rowH - 12), runs: [{ text: r.right ?? '', size: 10, color: COLOR.ink, bold: !!r.advantageOnRight }] })
+      xml += rect(id++, px(X), px(y), px(colDim), px(rowH), COLOR.tint)
+      xml += rect(id++, px(X + colDim), px(y), px(colL), px(rowH), COLOR.paper)
+      xml += rect(id++, px(X + colDim + colL), px(y), px(colR), px(rowH), rightFill)
+      xml += textBox({ id: id++, x: px(X + 10), y: px(y + 8), w: px(colDim - 20), h: px(rowH - 12), runs: [{ text: r.dim ?? '', size: 10, color: COLOR.ink, bold: true }], anchor: 'ctr' })
+      xml += textBox({ id: id++, x: px(X + 10 + colDim), y: px(y + 8), w: px(colL - 20), h: px(rowH - 12), runs: [{ text: r.left ?? '', size: 10, color: COLOR.softInk }], anchor: 'ctr' })
+      xml += textBox({ id: id++, x: px(X + 10 + colDim + colL), y: px(y + 8), w: px(colR - 20), h: px(rowH - 12), runs: [{ text: r.right ?? '', size: 10, color: COLOR.ink, bold: !!r.advantageOnRight }], anchor: 'ctr' })
     })
-    bottomY = startY + rowH * (1 + rows.length)
+    bottomY = Y0 + rowH * (1 + rows.length)
   } else if (pattern === 'architecture-stack' && Array.isArray(data.layers)) {
-    const layers = data.layers.slice(0, 5)
-    const rowH = 52, gap = 6
+    const layers = data.layers.slice(0, 6) // 상한 5→6
+    const gap = 8
+    const rowH = fillH ? Math.max(Math.min((fillH - gap * (layers.length - 1)) / layers.length, 80), 44) : 52
+    const nameW = Math.round(W * 0.16)
     layers.forEach((l: any, i: number) => {
-      const y = startY + i * (rowH + gap)
-      xml += rect(id++, px(80), px(y), px(180), px(rowH), COLOR.ink)
-      xml += textBox({ id: id++, x: px(90), y: px(y + 8), w: px(160), h: px(rowH - 12), runs: [{ text: l.name ?? '', size: 12, color: COLOR.white, bold: true }], anchor: 'ctr' })
-      const items = (l.items ?? []).slice(0, 4)
-      const itemW = (940 - gap * (items.length - 1)) / Math.max(items.length, 1)
+      const y = Y0 + i * (rowH + gap)
+      xml += rect(id++, px(X), px(y), px(nameW), px(rowH), COLOR.ink)
+      xml += textBox({ id: id++, x: px(X + 10), y: px(y + 8), w: px(nameW - 20), h: px(rowH - 12), runs: [{ text: l.name ?? '', size: 12, color: COLOR.white, bold: true }], anchor: 'ctr' })
+      const items = (l.items ?? []).slice(0, 6) // 상한 4→6
+      const itemsX = X + nameW + gap
+      const itemsW = W - nameW - gap
+      const itemW = (itemsW - gap * (items.length - 1)) / Math.max(items.length, 1)
       items.forEach((it: string, j: number) => {
-        const x = 268 + j * (itemW + gap)
+        const x = itemsX + j * (itemW + gap)
         xml += rect(id++, px(x), px(y), px(itemW), px(rowH), l.accent ? COLOR.accentTint : COLOR.tint)
-        xml += textBox({ id: id++, x: px(x + 6), y: px(y + 8), w: px(itemW - 12), h: px(rowH - 12), runs: [{ text: it, size: 9, color: COLOR.ink }], anchor: 'ctr', align: 'ctr' })
+        xml += textBox({ id: id++, x: px(x + 6), y: px(y + 8), w: px(itemW - 12), h: px(rowH - 12), runs: [{ text: it, size: 10, color: COLOR.ink }], anchor: 'ctr', align: 'ctr' })
       })
     })
-    bottomY = startY + (layers.length - 1) * (rowH + gap) + rowH
+    bottomY = Y0 + (layers.length - 1) * (rowH + gap) + rowH
   } else if (pattern === 'before-after' && (data.before || data.after)) {
-    // 좌 Before(tint) → 화살표(accent) → 우 After(accentTint)
-    const boxH = 200
+    const boxH = fillH ? Math.max(Math.min(fillH, 280), 160) : 200
+    const arrowW = 80
+    const boxW = (W - arrowW) / 2
     const drawBA = (bx: number, fill: string, header: string, hColor: string, node: any) => {
-      let s = rect(id++, px(bx), px(startY), px(480), px(boxH), fill)
-      s += textBox({ id: id++, x: px(bx + 16), y: px(startY + 14), w: px(448), h: px(28), runs: [{ text: header, size: 11, color: hColor, font: FONT_EN, bold: true }] })
+      let s = rect(id++, px(bx), px(Y0), px(boxW), px(boxH), fill)
+      s += textBox({ id: id++, x: px(bx + 16), y: px(Y0 + 14), w: px(boxW - 32), h: px(28), runs: [{ text: header, size: 11, color: hColor, font: FONT_EN, bold: true }] })
       const metrics: string[] = Array.isArray(node?.metrics) ? node.metrics.slice(0, 4) : []
       s += textBox({
-        id: id++, x: px(bx + 16), y: px(startY + 46), w: px(448), h: px(boxH - 60),
+        id: id++, x: px(bx + 16), y: px(Y0 + 46), w: px(boxW - 32), h: px(boxH - 60),
         runs: [
           { runs: [{ text: node?.label ?? '', size: 15, color: COLOR.ink, bold: true }] },
+          ...(node?.description ? [{ runs: [{ text: node.description, size: 11, color: COLOR.softInk }] }] : []),
           ...metrics.map((m) => ({ runs: [{ text: `• ${m}`, size: 11, color: hColor === COLOR.accent ? COLOR.accent : COLOR.softInk }] })),
         ],
       })
       return s
     }
-    xml += drawBA(80, COLOR.tint, 'BEFORE', COLOR.muted, data.before)
-    xml += textBox({ id: id++, x: px(560), y: px(startY + 70), w: px(80), h: px(60), runs: [{ text: '→', size: 40, color: COLOR.accent, font: FONT_EN, bold: true }], align: 'ctr', anchor: 'ctr' })
-    xml += drawBA(640, COLOR.accentTint, 'AFTER', COLOR.accent, data.after)
-    bottomY = startY + boxH
+    xml += drawBA(X, COLOR.tint, 'BEFORE', COLOR.muted, data.before)
+    xml += textBox({ id: id++, x: px(X + boxW), y: px(Y0 + boxH / 2 - 30), w: px(arrowW), h: px(60), runs: [{ text: '→', size: 40, color: COLOR.accent, font: FONT_EN, bold: true }], align: 'ctr', anchor: 'ctr' })
+    xml += drawBA(X + boxW + arrowW, COLOR.accentTint, 'AFTER', COLOR.accent, data.after)
+    bottomY = Y0 + boxH
   } else if (pattern === 'timeline' && Array.isArray(data.tracks)) {
-    // 간트 — units 헤더 + 트랙별 bar(startIdx~endIdx)
     const units: any[] = Array.isArray(data.units) && data.units.length ? data.units.slice(0, 12) : []
-    const tracks = data.tracks.slice(0, 4)
-    const labelW = 150
-    const unitsX = 80 + labelW
+    const tracks = data.tracks.slice(0, 6) // 상한 4→6
+    const labelW = Math.round(W * 0.13)
+    const unitsX = X + labelW
     const nUnits = Math.max(units.length, 1)
-    const unitW = (1120 - labelW) / nUnits
-    const headerH = 32
+    const unitW = (W - labelW) / nUnits
+    const headerH = 30
+    const gap = 8
+    const rowH = fillH ? Math.max(Math.min((fillH - headerH - 8 - gap * (tracks.length - 1)) / Math.max(tracks.length, 1), 60), 36) : 46
     units.forEach((u, i) => {
       const x = unitsX + i * unitW
-      xml += rect(id++, px(x), px(startY), px(unitW - 3), px(headerH), COLOR.tint)
-      xml += textBox({ id: id++, x: px(x), y: px(startY + 6), w: px(unitW - 3), h: px(headerH - 8), runs: [{ text: String(u), size: 9, color: COLOR.softInk, bold: true }], align: 'ctr', anchor: 'ctr' })
+      xml += rect(id++, px(x), px(Y0), px(unitW - 3), px(headerH), COLOR.tint)
+      xml += textBox({ id: id++, x: px(x), y: px(Y0 + 6), w: px(unitW - 3), h: px(headerH - 8), runs: [{ text: String(u), size: 9, color: COLOR.softInk, bold: true }], align: 'ctr', anchor: 'ctr' })
     })
-    const rowH = 46, gap = 8
-    const rowsY = startY + headerH + 8
+    const rowsY = Y0 + headerH + 8
     tracks.forEach((t: any, ti: number) => {
       const y = rowsY + ti * (rowH + gap)
-      xml += rect(id++, px(80), px(y), px(labelW - 6), px(rowH), COLOR.ink)
-      xml += textBox({ id: id++, x: px(86), y: px(y + 6), w: px(labelW - 18), h: px(rowH - 12), runs: [{ text: t.name ?? '', size: 11, color: COLOR.white, bold: true }], anchor: 'ctr' })
+      xml += rect(id++, px(X), px(y), px(labelW - 6), px(rowH), COLOR.ink)
+      xml += textBox({ id: id++, x: px(X + 6), y: px(y + 6), w: px(labelW - 18), h: px(rowH - 12), runs: [{ text: t.name ?? '', size: 11, color: COLOR.white, bold: true }], anchor: 'ctr' })
       const bars: any[] = Array.isArray(t.bars) ? t.bars : []
       bars.forEach((b, bi) => {
         const s = Math.max(0, Number(b.startIdx ?? 0))
@@ -530,78 +755,79 @@ function renderDiagramToShapes(
     })
     bottomY = rowsY + Math.max(tracks.length - 1, 0) * (rowH + gap) + rowH
   } else if (pattern === 'matrix-2x2' && Array.isArray(data.quadrants)) {
-    // 2x2 — 사분면 + 축 라벨, highlight 사분면은 accent
-    const gridX = 150, gridW = 980
-    const cellW = gridW / 2, cellH = 110
+    const axisW = 64
+    const gridX = X + axisW
+    const gridW = W - axisW
+    const cellGap = 4
+    const cellW = (gridW - cellGap) / 2
+    const cellH = fillH ? Math.max(Math.min((fillH - 30 - cellGap) / 2, 150), 90) : 110
     const pos: Record<string, [number, number]> = {
-      TL: [gridX, startY], TR: [gridX + cellW, startY],
-      BL: [gridX, startY + cellH + 4], BR: [gridX + cellW, startY + cellH + 4],
+      TL: [gridX, Y0], TR: [gridX + cellW + cellGap, Y0],
+      BL: [gridX, Y0 + cellH + cellGap], BR: [gridX + cellW + cellGap, Y0 + cellH + cellGap],
     }
-    if (data.axisY?.label) xml += textBox({ id: id++, x: px(80), y: px(startY + cellH - 10), w: px(64), h: px(40), runs: [{ text: data.axisY.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
+    if (data.axisY?.label) xml += textBox({ id: id++, x: px(X), y: px(Y0 + cellH - 10), w: px(axisW - 4), h: px(40), runs: [{ text: data.axisY.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
     data.quadrants.slice(0, 4).forEach((q: any) => {
       const p = pos[(q.q as string) ?? 'TL'] ?? pos.TL
-      xml += rect(id++, px(p[0]), px(p[1]), px(cellW - 4), px(cellH), q.highlight ? COLOR.accentTint : COLOR.tint)
+      xml += rect(id++, px(p[0]), px(p[1]), px(cellW), px(cellH), q.highlight ? COLOR.accentTint : COLOR.tint)
       xml += textBox({
-        id: id++, x: px(p[0] + 14), y: px(p[1] + 12), w: px(cellW - 32), h: px(cellH - 20),
+        id: id++, x: px(p[0] + 14), y: px(p[1] + 12), w: px(cellW - 28), h: px(cellH - 20),
         runs: [
           { runs: [{ text: (q.highlight ? '★ ' : '') + (q.label ?? ''), size: 13, color: q.highlight ? COLOR.accent : COLOR.ink, bold: true }] },
           ...(q.description ? [{ runs: [{ text: q.description, size: 10, color: COLOR.softInk }] }] : []),
         ],
       })
     })
-    if (data.axisX?.label) xml += textBox({ id: id++, x: px(gridX), y: px(startY + 2 * cellH + 12), w: px(gridW), h: px(24), runs: [{ text: data.axisX.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
-    bottomY = startY + 2 * cellH + 40
+    if (data.axisX?.label) xml += textBox({ id: id++, x: px(gridX), y: px(Y0 + 2 * cellH + cellGap + 6), w: px(gridW), h: px(24), runs: [{ text: data.axisX.label, size: 10, color: COLOR.muted, bold: true }], align: 'ctr' })
+    bottomY = Y0 + 2 * cellH + cellGap + 30
   } else if (pattern === 'hierarchy-tree' && data.root) {
-    // 루트 박스(ink) → 자식 박스(tint) 1단, 연결선은 가는 rect
-    const rootW = 320, rootX = 80 + (1120 - rootW) / 2, rootH = 54
-    xml += rect(id++, px(rootX), px(startY), px(rootW), px(rootH), COLOR.ink)
+    const rootW = 320, rootX = X + (W - rootW) / 2, rootH = 54
+    const childH = fillH ? Math.max(Math.min(fillH - rootH - 50, 110), 64) : 64
+    xml += rect(id++, px(rootX), px(Y0), px(rootW), px(rootH), COLOR.ink)
     xml += textBox({
-      id: id++, x: px(rootX + 10), y: px(startY + 8), w: px(rootW - 20), h: px(rootH - 12),
+      id: id++, x: px(rootX + 10), y: px(Y0 + 8), w: px(rootW - 20), h: px(rootH - 12),
       runs: [
         { runs: [{ text: data.root.label ?? '', size: 13, color: COLOR.white, bold: true }] },
         ...(data.root.sublabel ? [{ runs: [{ text: data.root.sublabel, size: 9, color: COLOR.line }] }] : []),
       ], align: 'ctr', anchor: 'ctr',
     })
-    const children: any[] = Array.isArray(data.children) ? data.children.slice(0, 4) : []
+    const children: any[] = Array.isArray(data.children) ? data.children.slice(0, 5) : [] // 상한 4→5
     if (children.length) {
-      const gap = 20
-      const childW = (1120 - gap * (children.length - 1)) / children.length
-      const childY = startY + rootH + 50, childH = 64
+      const gap = 18
+      const childW = (W - gap * (children.length - 1)) / children.length
+      const childY = Y0 + rootH + 50
       const rootCx = rootX + rootW / 2
-      xml += rect(id++, px(rootCx - 1), px(startY + rootH), px(2), px(28), COLOR.muted)
-      const firstCx = 80 + childW / 2
-      const lastCx = 80 + (children.length - 1) * (childW + gap) + childW / 2
-      xml += rect(id++, px(firstCx), px(startY + rootH + 26), px(Math.max(lastCx - firstCx, 2)), px(2), COLOR.muted)
+      xml += rect(id++, px(rootCx - 1), px(Y0 + rootH), px(2), px(28), COLOR.muted)
+      const firstCx = X + childW / 2
+      const lastCx = X + (children.length - 1) * (childW + gap) + childW / 2
+      xml += rect(id++, px(firstCx), px(Y0 + rootH + 26), px(Math.max(lastCx - firstCx, 2)), px(2), COLOR.muted)
       children.forEach((c, i) => {
-        const cx = 80 + i * (childW + gap)
+        const cx = X + i * (childW + gap)
         const ccx = cx + childW / 2
-        xml += rect(id++, px(ccx - 1), px(startY + rootH + 26), px(2), px(24), COLOR.muted)
+        xml += rect(id++, px(ccx - 1), px(Y0 + rootH + 26), px(2), px(24), COLOR.muted)
         xml += rect(id++, px(cx), px(childY), px(childW), px(childH), COLOR.tint)
-        const gkids: string[] = Array.isArray(c.children) ? c.children.map((g: any) => g.label).filter(Boolean).slice(0, 2) : []
+        const gkids: string[] = Array.isArray(c.children) ? c.children.map((g: any) => g.label).filter(Boolean).slice(0, 3) : []
         xml += textBox({
           id: id++, x: px(cx + 8), y: px(childY + 8), w: px(childW - 16), h: px(childH - 12),
           runs: [
             { runs: [{ text: c.label ?? '', size: 11, color: COLOR.ink, bold: true }] },
             ...(c.sublabel ? [{ runs: [{ text: c.sublabel, size: 9, color: COLOR.muted }] }] : []),
-            ...(gkids.length ? [{ runs: [{ text: gkids.join(' · '), size: 8, color: COLOR.softInk }] }] : []),
+            ...(gkids.length ? [{ runs: [{ text: gkids.join(' · '), size: 9, color: COLOR.softInk }] }] : []),
           ], align: 'ctr', anchor: 'ctr',
         })
       })
+      bottomY = childY + childH
+    } else {
+      bottomY = Y0 + rootH
     }
-    bottomY = startY + (children.length ? rootH + 50 + 64 : rootH)
   } else {
     // 알 수 없는/malformed 패턴 (text-only 등) → 데이터 요약 텍스트 (안전망)
     const summary = summarizeDiagramData(pattern, data)
     if (summary.length > 0) {
       xml += textBox({
-        id: id++,
-        x: px(80),
-        y: px(startY),
-        w: px(1120),
-        h: px(260),
+        id: id++, x: px(X), y: px(Y0), w: px(W), h: px(Math.min(H, 260)),
         runs: summary.map((line) => ({ runs: [{ text: line, size: 12, color: COLOR.softInk }] })),
       })
-      bottomY = startY + Math.min(260, summary.length * 24 + 16)
+      bottomY = Y0 + Math.min(260, summary.length * 24 + 16)
     }
   }
   return { xml, nextId: id, bottomY }

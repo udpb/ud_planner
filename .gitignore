@@ -97,3 +97,6 @@ eval-sweep.log
 scripts/_smoke*
 scripts/_probe*
 *.result.json
+
+# DECK 렌더 전페이지 스냅샷 (재생성 가능 — PDF만 커밋)
+docs/samples/snaps/
