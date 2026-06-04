@@ -1,0 +1,17 @@
+{
+  "name": "ud-render-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Generic HTML -> high-fidelity 16:9 PDF render worker (Playwright/Chromium). Zero dependency on the main Next app.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.59.1"
+  }
+}
