@@ -461,3 +461,336 @@ export function safeParseDeckSpec(
   if (r.success) return { ok: true, deck: r.data }
   return { ok: false, error: r.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ') }
 }
+
+// ═════════════════════════════════════════════════════════════════
+// per-kind 필드 계약 카탈로그 (DECK-3a — author 슬롯 충실도)
+// ─────────────────────────────────────────────────────────────────
+//   LLM-facing few-shot — 각 SlideKind 의 **정확한 필드 형태**를 보여 주는 최소 유효
+//   DeckSlide 예시 1개씩. authorSlide 가 선택된 kind 의 예시만 프롬프트에 삽입해
+//   LLM 이 올바른 필드명(display·sectionName·coaches[]·steps[]·kpis[].value/logic·
+//   parts[]·evidence[].proves 등)을 쓰게 강제한다.
+//
+//   ⚠️ 이 객체들은 **반드시 spec 과 1:1 일치**(불일치 시 의미 없음) — `KIND_EXAMPLE`
+//   전체가 `safeParseDeckSpec` 를 통과함을 결정론 유닛(scripts/_check-kind-catalog.ts)이
+//   단언한다. 필드명을 바꾸면 그 유닛이 실패해 드리프트를 잡는다.
+// ═════════════════════════════════════════════════════════════════
+
+/** 근거 밴드 예시 items (figure/proves/source 3요소 — "출처 태그"만 금지). */
+const _EVIDENCE_EXAMPLE: EvidenceItemSpec[] = [
+  { figure: '39%', proves: '실행·판로 단절이 생존율 하락의 핵심 원인', source: '중기부 창업기업 실태조사 2025' },
+  { figure: '1만+', proves: '코칭 데이터 기반 진단의 신뢰 기반', source: '언더독스 DOGS 누적 코칭 DB' },
+]
+
+/**
+ * SlideKind → 최소 유효 DeckSlide 예시 (few-shot 계약).
+ * 모든 kind 를 빠짐없이 커버(Record 타입이 강제) · 각 예시는 safeParseDeckSpec 통과.
+ */
+export const KIND_EXAMPLE: Record<SlideKind, DeckSlide> = {
+  // ── 표지/디바이더/마무리 (비본문 — meta 생략 가능) ──
+  cover: {
+    body: {
+      kind: 'cover',
+      eyebrow: 'CHUNGNAM · 2026 YOUTH STARTUP ACADEMY',
+      title: '실행이 더해질 때,\n청년의 아이디어는 지역의 비즈니스가 됩니다',
+      subtitle: '충청남도 청년창업 사관학교 운영 제안',
+      backgroundImage: '/design-kit/sample/cover-bg.svg',
+      footnote: '언더독스 · UNDERDOGS',
+    },
+  },
+  sectionDivider: {
+    body: {
+      kind: 'sectionDivider',
+      eyebrow: 'SECTION 03',
+      display: '03',
+      sectionName: '교육 커리큘럼',
+    },
+  },
+  closing: {
+    body: {
+      kind: 'closing',
+      eyebrow: 'CLOSING',
+      title: '검증된 실행으로,\n충남 청년창업의 다음을 함께 만들겠습니다',
+      subtitle: '언더독스 액트프레너십 — 발굴부터 스케일업까지',
+      footnote: '언더독스 · UNDERDOGS',
+    },
+  },
+  // ── DECK-1 리치 8종 (본문 — meta.kicker 권장) ──
+  iconProcess: {
+    meta: { kicker: '02 추진 전략 및 방법론', density: 'dense' },
+    body: {
+      kind: 'iconProcess',
+      kicker: 'PROCESS',
+      headline: '발굴부터 스케일업까지 4단계로 실행을 설계합니다',
+      steps: [
+        { icon: 'target', num: '01', label: '문제 정의', description: 'Inside-Out 방식으로 시장 기회 도출' },
+        { icon: 'lightbulb', num: '02', label: '솔루션 설계', description: 'BM 캔버스로 수익구조 구체화' },
+        { icon: 'rocket', num: '03', label: '실행·검증', description: 'Action Week 기반 MVP 실고객 검증' },
+        { icon: 'trending-up', num: '04', label: '스케일업', description: 'IR·판로·정부지원 연계' },
+      ],
+    },
+  },
+  iconCardGrid: {
+    meta: { kicker: '02 추진 전략 및 방법론', density: 'dense' },
+    body: {
+      kind: 'iconCardGrid',
+      kicker: 'STRATEGY',
+      headline: '4개 축으로 실행 역량을 끌어올립니다',
+      columns: 4,
+      cards: [
+        { icon: 'target', tag: 'AXIS 1', title: '진단', description: 'DOGS 성향 진단으로 출발점 정렬', highlight: true },
+        { icon: 'flask', tag: 'AXIS 2', title: '실험', description: '주차별 MVP 가설 검증' },
+        { icon: 'handshake', tag: 'AXIS 3', title: '연결', description: '코치·판로·투자 네트워크 연계' },
+        { icon: 'trending-up', tag: 'AXIS 4', title: '확장', description: '데모데이·후속 투자로 스케일업' },
+      ],
+    },
+  },
+  photoOrgGrid: {
+    meta: { kicker: '04 운영 체계 및 코치진', density: 'dense' },
+    body: {
+      kind: 'photoOrgGrid',
+      kicker: 'TEAM',
+      headline: '전담 운영 조직이 사업 전 과정을 책임집니다',
+      columns: 4,
+      people: [
+        { photo: '/design-kit/sample/coach-1.svg', name: '김도윤', role: 'PM · 총괄', tags: ['운영'] },
+        { photo: '/design-kit/sample/coach-2.svg', name: '이서연', role: '리드 코치', tags: ['코칭'] },
+        { photo: '/design-kit/sample/coach-3.svg', name: '박지훈', role: '퍼실리테이터', tags: ['실행'] },
+      ],
+    },
+  },
+  partnerLogoGrid: {
+    meta: { kicker: '05 수행 역량 및 실적', density: 'dense' },
+    body: {
+      kind: 'partnerLogoGrid',
+      kicker: 'TRACK RECORD',
+      headline: '중앙부처·지자체·대학과 함께한 창업 생태계 실적',
+      columns: 5,
+      fill: true,
+      partners: [
+        { name: '중소벤처기업부', note: '창업사관학교 운영' },
+        { name: '창업진흥원', note: '예비창업패키지' },
+        { name: '충청남도', note: '청년창업 지원' },
+        { name: '천안시', note: '지역 창업 거점' },
+        { name: '지역대학 LINC', note: '산학 연계' },
+      ],
+    },
+  },
+  badgeRow: {
+    meta: { kicker: '05 수행 역량 및 실적', density: 'dense' },
+    body: {
+      kind: 'badgeRow',
+      badges: [
+        { icon: 'award', value: '120+', label: '정부·지자체 수행 사업' },
+        { icon: 'users', value: '12,000+', label: '누적 교육 창업가' },
+        { icon: 'briefcase', value: '715', label: '활성 코치풀' },
+        { icon: 'check-circle', value: '94%', label: '평균 만족도' },
+      ],
+    },
+  },
+  bigNumberHero: {
+    meta: { kicker: '01 제안 배경 및 목적', density: 'dense' },
+    body: {
+      kind: 'bigNumberHero',
+      kicker: 'WHY NOW',
+      headline: '청년 창업의 3년 생존율 39%, 실행 역량의 공백을 메웁니다',
+      bigNumber: '39%',
+      bigCaption: '충남 청년창업기업 3년 생존율 — 전국 평균(45%)을 밑도는 실행 단절이 핵심 원인입니다.',
+      supportingPoints: [
+        { value: '1만+', label: '누적 창업가 코칭 데이터' },
+        { value: '7단계', label: '발굴→스케일업 프로세스' },
+        { value: '24주', label: '집중 액션 러닝 기간' },
+      ],
+    },
+  },
+  annotatedImage: {
+    meta: { kicker: '04 운영 체계 및 코치진', density: 'dense' },
+    body: {
+      kind: 'annotatedImage',
+      kicker: 'SPACE',
+      headline: '실전 몰입을 돕는 거점 공간을 운영합니다',
+      image: '/design-kit/sample/space.svg',
+      annotations: [
+        { title: '코워킹 존', description: '팀별 상시 작업·코칭 공간' },
+        { title: '실험실', description: 'MVP 프로토타이핑 장비' },
+        { title: '피칭룸', description: 'IR·데모데이 리허설' },
+      ],
+    },
+  },
+  milestoneTimeline: {
+    meta: { kicker: '03 교육 커리큘럼', density: 'dense' },
+    body: {
+      kind: 'milestoneTimeline',
+      kicker: 'TIMELINE',
+      headline: '24주 핵심 마일스톤을 일정으로 약속합니다',
+      milestones: [
+        { icon: 'flask', period: 'W1–8', title: '진단·문제정의', description: 'DOGS 진단·필드리서치' },
+        { icon: 'rocket', period: 'W9–16', title: 'BM·MVP', description: 'BM 설계·MVP 실행' },
+        { icon: 'trending-up', period: 'W17–24', title: '검증·IR', description: '시장 검증·데모데이' },
+      ],
+    },
+  },
+  // ── DECK-2 밀도 5종 + beforeAfter (본문 — evidence 권장) ──
+  evidenceBand: {
+    meta: { kicker: '01 제안 배경 및 목적', density: 'dense' },
+    body: {
+      kind: 'evidenceBand',
+      label: '핵심 근거',
+      items: _EVIDENCE_EXAMPLE,
+    },
+  },
+  coachDetailGrid: {
+    meta: { kicker: '04 운영 체계 및 코치진', density: 'dense' },
+    body: {
+      kind: 'coachDetailGrid',
+      kicker: 'COACHES',
+      headline: '현장 검증된 715명 코치풀에서 트랙별 전담 코치를 1:5로 배치합니다',
+      columns: 2,
+      coaches: [
+        {
+          photo: '/design-kit/sample/coach-1.svg',
+          name: '김도윤',
+          role: '리드 코치 · 스케일업',
+          affiliation: '前 카카오벤처스 심사역 / 액셀러레이터 파트너',
+          bio: ['초기·성장기 투자·보육 11년', 'B2G 사업화 연계 다수', '시리즈 A IR 멘토링 12건'],
+          stats: [
+            { value: '120팀', label: '누적 멘토링' },
+            { value: '₩340억', label: '후속 투자 유치' },
+          ],
+          tracks: ['스케일업', 'B2G'],
+        },
+        {
+          photo: '/design-kit/sample/coach-2.svg',
+          name: '이서연',
+          role: '비즈니스 코치 · BM/IR',
+          affiliation: '前 토스 PO / 핀테크 2회 창업·1회 엑싯',
+          bio: ['BM 설계·수익구조 검증', 'IR 코칭 90팀', '데모데이 우승팀 7개 배출'],
+          stats: [
+            { value: '90팀', label: 'IR 코칭' },
+            { value: '68%', label: '투자 연계율' },
+          ],
+          tracks: ['BM 설계', 'IR'],
+        },
+      ],
+      evidence: [
+        { figure: '715명', proves: '트랙·산업별 최적 코치를 매칭할 수 있는 풀 규모', source: 'Supabase coaches_directory(활성)' },
+        { figure: '1:5', proves: '코치 1인당 팀 수를 제한해 밀착 코칭 보장', source: '운영 표준 코치 배치 기준' },
+      ],
+    },
+  },
+  curriculumMatrix: {
+    meta: { kicker: '03 교육 커리큘럼', density: 'dense' },
+    body: {
+      kind: 'curriculumMatrix',
+      kicker: 'CURRICULUM',
+      headline: '24주 6단계, 이론 3회 연속을 막는 Action Week를 의무 편성합니다',
+      phases: [
+        {
+          weeks: 'W1–4',
+          phase: '창업가 진단',
+          activities: ['DOGS 성향·리더십 진단', '팀 빌딩 워크숍', '지역 자원 매핑'],
+          deliverable: '개인 성향 리포트 · 팀 협업 규약',
+        },
+        {
+          weeks: 'W13–16',
+          phase: 'MVP 실행',
+          activities: ['프로토타입 제작', '실고객 노출 테스트', '주간 스프린트 회고'],
+          deliverable: '작동하는 MVP · 검증 로그',
+          actionWeek: true,
+        },
+      ],
+      evidence: [
+        { figure: '60%', proves: 'Action Week로 실행 비중을 끌어올려 이론 편중을 차단', source: '커리큘럼 룰 R-002' },
+        { figure: '30건', proves: '고객 인터뷰 의무량으로 문제 정의의 현장성 확보', source: '액트프레너십 표준 과정' },
+      ],
+    },
+  },
+  kpiWithLogic: {
+    meta: { kicker: '06 기대 성과 및 임팩트', density: 'dense' },
+    body: {
+      kind: 'kpiWithLogic',
+      kicker: 'IMPACT',
+      headline: '24주 후, 충남 청년창업의 실행 격차를 정량으로 좁힙니다',
+      kpis: [
+        { value: '60팀', label: '창업팀 발굴·육성', logic: '연 2기 × 1기 30팀 = 60팀. 경쟁률 4:1 가정.' },
+        { value: '×1.8', label: '3년 생존율 개선', logic: '실전 검증 코호트 70% ÷ 기존 39% ≈ 1.8배.' },
+        { value: '2.4', label: 'SROI', logic: '편익 ₩48억 ÷ 투입 예산 ₩20억 = 2.4.' },
+      ],
+      evidence: [
+        { figure: '70%', proves: '실전 검증 코호트의 목표 생존율(개선 근거)', source: '코칭 코호트 추적조사 2024–2025' },
+        { figure: '2.4', proves: '투입 대비 사회·경제 편익 비율(SROI)', source: 'SROI 산출 모델 v2(보수적 가정)' },
+      ],
+    },
+  },
+  strategyCanvas: {
+    meta: { kicker: '02 추진 전략 및 방법론', density: 'dense' },
+    body: {
+      kind: 'strategyCanvas',
+      kicker: 'METHODOLOGY',
+      headline: '근거가 받치는 4단계 실행 중심 방법론을 제안합니다',
+      columns: 4,
+      zones: [
+        { icon: 'target', num: 'STEP 1', title: '문제 정의', body: 'Inside-Out으로 시장 기회 도출·ST Matrix 검증', rationale: '피벗 비용 42% 절감' },
+        { icon: 'lightbulb', num: 'STEP 2', title: '솔루션 설계', body: 'BM 캔버스로 수익구조 구체화', rationale: 'IR 통과율 1.7배' },
+        { icon: 'rocket', num: 'STEP 3', title: '실행·검증', body: 'Action Week MVP 실고객 검증', rationale: '3년 생존율 +31%p', highlight: true },
+        { icon: 'trending-up', num: 'STEP 4', title: '스케일업', body: 'IR·판로·정부지원 연계', rationale: '평균 매출 ₩1.8억' },
+      ],
+      evidence: [
+        { figure: '42%', proves: '문제 적합도 검증이 불필요한 피벗 비용을 줄임', source: '언더독스 프로그램 성과분석 2025' },
+        { figure: '+31%p', proves: 'MVP 실전 검증이 생존율을 끌어올리는 핵심 레버', source: '코칭 코호트 추적조사 2024–2025' },
+      ],
+    },
+  },
+  beforeAfter: {
+    meta: { kicker: '06 기대 성과 및 임팩트', density: 'dense' },
+    body: {
+      kind: 'beforeAfter',
+      kicker: 'CHANGE',
+      headline: '이론 중심 교육에서 실행 중심 액트프레너십으로의 전환',
+      fill: true,
+      before: {
+        label: '강의실 중심 창업 교육',
+        description: '지식 전달 위주, 실전 검증 부재로 수료 후 실행 단절',
+        metrics: ['이론 비중 70%', '3년 생존율 39%', '코치 1:20 강의형'],
+      },
+      after: {
+        label: 'Action Week 실행 중심 사관학교',
+        description: '주차별 실전 미션·코치 밀착으로 시장에서 작동하는 솔루션 구축',
+        metrics: ['실행 비중 60%', '코치 1:5 밀착', '3년 생존율 70% 목표'],
+      },
+    },
+  },
+  // ── composite — 주 컴포넌트 + 근거 밴드 적층 (parts ≥ 2) ──
+  composite: {
+    meta: { kicker: '01 제안 배경 및 목적', density: 'dense' },
+    body: {
+      kind: 'composite',
+      growIndex: 0,
+      parts: [
+        {
+          kind: 'bigNumberHero',
+          kicker: 'WHY NOW',
+          headline: '청년 창업의 3년 생존율 39%, 실행 역량의 공백을 메웁니다',
+          bigNumber: '39%',
+          bigCaption: '전국 평균(45%)을 밑도는 실행·판로 단절이 핵심 원인입니다.',
+          supportingPoints: [
+            { value: '1만+', label: '누적 코칭 데이터' },
+            { value: '7단계', label: '발굴→스케일업 프로세스' },
+          ],
+        },
+        {
+          kind: 'evidenceBand',
+          items: _EVIDENCE_EXAMPLE,
+        },
+      ],
+    },
+  },
+}
+
+/**
+ * SlideKind → LLM-facing 필드 계약 문자열(예시 JSON pretty-print).
+ * authorSlide 가 선택된 kind 의 것만 프롬프트에 삽입해 정확한 필드명을 강제한다.
+ * (KIND_EXAMPLE 에서 파생 — 단일 진실, 드리프트 없음.)
+ */
+export const KIND_FIELD_SPEC: Record<SlideKind, string> = Object.fromEntries(
+  (Object.keys(KIND_EXAMPLE) as SlideKind[]).map((k) => [k, JSON.stringify(KIND_EXAMPLE[k], null, 2)]),
+) as Record<SlideKind, string>

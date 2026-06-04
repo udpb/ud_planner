@@ -101,3 +101,5 @@ scripts/_probe*
 # DECK 렌더 전페이지 스냅샷 (재생성 가능 — PDF만 커밋)
 docs/samples/snaps/
 docs/samples/snaps-spec/
+docs/samples/snaps-authored/
+docs/samples/sample-deck-authored*

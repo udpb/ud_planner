@@ -35,7 +35,9 @@ Agent({ subagent_type: "Explore", prompt: "..." })
 🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
 ## 활성 브리프
-- `DECK-3-storyline-authoring.md` — 🟡 in-progress (2026-06-01). **ADR-025 Phase 3.** 스펙↔렌더 계약(`DeckSpec` JSON → DECK-2 컴포넌트 → PDF) + 덱-우선 자동 저작(스토리라인 아키텍트 + 슬라이드별 저작, invokeAi + 유사 당선 덱 골격). 검증=fixture DeckSpec(JSON)→당선 밀도 PDF(결정론적). LLM 실행·앱 UI 배선은 DECK-3b(환경 가용 후).
+- (다음) **DECK-3b** — author 실 LLM 작동 확인됨 → API 라우트(`/api/projects/[id]/deck`) + 미리보기/PDF 다운로드 UI + Vercel 렌더 인프라(@sparticuz/chromium). 브리프 미작성.
+- `DECK-3a-author-slot-fidelity.md` — ✅ 완료 (2026-06-04). authorSlide per-kind 필드 예시 주입 + zod-error 1회 재시도 → **실 Gemini 스모크에서 1장→8장 완전 덱**(grounding 인용 정확). 메인 실측 검증.
+- `DECK-3-storyline-authoring.md` — ✅ 완료 (2026-06-01). **ADR-025 Phase 3.** 스펙↔렌더 계약(`DeckSpec` JSON → DECK-2 컴포넌트 → PDF) + 덱-우선 자동 저작(스토리라인 아키텍트 + 슬라이드별 저작, invokeAi + 유사 당선 덱 골격). 검증=fixture DeckSpec(JSON)→당선 밀도 PDF(결정론적). LLM 실행·앱 UI 배선은 DECK-3b(환경 가용 후).
 - `DECK-2-density-detail-proof.md` — ✅ 완료 (2026-06-01). **ADR-025 Phase 2.** 본문 슬라이드를 당선 덱 밀도(블록~12)·요소별 디테일(코치 약력+실적·주차별 커리큘럼·정량 근거)로 손작성 proof + 리치 컴포넌트 라이브러리 확정. DECK-3(자동저작)이 목표 삼을 밀도 규격. 검증=결정론적 PDF+전페이지 PNG.
 - `DECK-1-html-render-substrate.md` — ✅ 완료 (2026-06-01). **ADR-025 Phase 1.** HTML 슬라이드 → headless 브라우저 고해상 PDF 렌더 기질 + 리치 어휘(아이콘·이미지·로고) proof 덱. 출력 "20-30% 천장" 구조 전환의 인프라 de-risk. 검증=결정론적 PDF 렌더(LLM·DB 없이). 후속: DECK-2(컴포넌트 라이브러리)·DECK-3(스토리라인)·DECK-4(비평 루프)·DATA-2(grounding).
 - `EX-3-slide-composition-v2.md` — ✅ 완료 (2026-06-01, ADR-024). OOXML 레이아웃 아키타입 6종+고밀도. **ADR-025에서 OOXML은 "보조 편집 export"로 강등** — 산출물 유지(`docs/samples/sample-layout-v2-DEMO.pptx`), 플래그십은 HTML→PDF로 이동.

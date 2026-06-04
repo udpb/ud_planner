@@ -29,6 +29,7 @@ import type { WinThemeDraft } from '@/lib/express/engine/win-theme'
 import type { WinningReference } from '@/lib/express/winning-reference'
 import {
   safeParseDeckSpec,
+  KIND_FIELD_SPEC,
   type DeckSpec,
   type DeckSlide,
   type SlideKind,
@@ -168,6 +169,9 @@ ${catalog}
 - 본문 슬라이드는 제안서 7섹션('1'~'7') 중 하나에 연결(section). 액션 타이틀은 주장형(예: "...로 ...을 좁힙니다").
 - 각 슬라이드의 recommendedKind 를 카탈로그에서 고르고, evidenceNeeds(인용할 수치 유형)를 명시.
 - 수치는 만들지 말 것 — evidenceNeeds 는 "무엇을 입증해야 하는지"만.
+- **본문 위주로 설계** — body 슬라이드를 최소 6개 이상 확보하라(섹션마다 1~2장). 본문이 핵심이다.
+- sectionDivider 는 **장 전환에만** 절제해서 사용(과다 금지 — 전체 0~3개). 본문 슬라이드를 디바이더로 대체하지 말 것.
+- 본문에는 리치 kind(strategyCanvas·curriculumMatrix·coachDetailGrid·kpiWithLogic·beforeAfter·composite 등)를 우선 선택해 밀도를 확보하라.
 
 JSON 만 출력:
 {"title":"...","channel":"B2G|B2B|renewal","slides":[
@@ -195,13 +199,21 @@ const SLOT_TASK = 'engine.section' // Flash
  * 선택된 component 의 content 슬롯을 grounding 에서 채운다. 근거는 수치+무엇을증명+출처 3요소.
  * LLM 출력은 safeParseDeckSpec 으로 단일 슬라이드 단위 검증(부분 degrade 가능).
  */
-export async function authorSlide(
-  outline: SlideOutline,
-  input: DeckAuthorInput,
-): Promise<DeckSlide | null> {
-  input.onProgress?.('slide', `슬라이드 저작: ${outline.actionTitle.slice(0, 30)}...`)
+/**
+ * authorSlide 프롬프트 빌더 — 선택된 kind 의 **정확한 필드 계약(few-shot 예시 JSON)** 을 주입.
+ * `fixHint` 가 있으면(=1차 zod 실패 후) 그 에러를 덧붙여 교정 재시도 프롬프트를 만든다.
+ */
+function buildSlidePrompt(outline: SlideOutline, input: DeckAuthorInput, fixHint?: string): string {
+  // 선택된 kind 의 정확한 필드 형태(필드명·중첩·근거 3요소)를 1:1 유효 예시로 제시 → 키 누락 방지.
+  const kindExample = KIND_FIELD_SPEC[outline.recommendedKind]
 
-  const prompt = `다음 슬라이드 아웃라인을 DeckSpec 슬라이드(JSON)로 채워라. component kind 는 "${outline.recommendedKind}".
+  const fixBlock = fixHint
+    ? `\n[⚠️ 직전 출력이 zod 검증에 실패했다 — 아래 오류를 정확히 고쳐 다시 출력하라]
+${fixHint}
+- 누락/오타 필드명을 위 [필드 계약 예시] 의 키와 1:1 로 맞춰라. 임의 키 추가 금지.\n`
+    : ''
+
+  return `다음 슬라이드 아웃라인을 DeckSpec 슬라이드(JSON)로 채워라. component kind 는 "${outline.recommendedKind}".
 
 [아웃라인]
 액션 타이틀(headline): ${outline.actionTitle}
@@ -212,43 +224,62 @@ so-what: ${outline.soWhat}
 [grounding — 인용 가능한 사실/수치 (창작 금지)]
 ${evidenceBlock(input, outline.section)}
 
+[필드 계약 예시 — kind="${outline.recommendedKind}" 는 정확히 이 필드 형태(필드명·중첩·필수 키)를 따라야 한다]
+${kindExample}
+
 [지침]
-- kind="${outline.recommendedKind}" 의 슬롯을 채운다. 본문 컴포넌트면 evidence(수치+무엇을 증명+출처) 3요소 배열 포함.
-- 근거 밴드의 source 는 실제 출처(기관·연도·문서). 수치(figure)는 grounding 에 있는 값만. 없으면 보수적으로 비워라.
-- 이미지/사진/로고 경로는 placeholder('/design-kit/sample/...') 허용(자산은 DATA-2/배선 단계).
+- 위 [필드 계약 예시] 의 **필드명·구조를 그대로** 쓰고 내용만 본 RFP·grounding 으로 교체하라. 필드명을 바꾸거나 누락하면 검증 실패한다.
+- 근거(evidence) 항목은 반드시 {"figure","proves","source"} 3요소 모두 포함(특히 proves 누락 금지). figure 는 grounding 에 있는 값만, 없으면 evidence 배열을 비워라(수치 창작 금지).
+- 근거 밴드의 source 는 실제 출처(기관·연도·문서). 이미지/사진/로고 경로는 placeholder('/design-kit/sample/...') 허용.
+- 표지/디바이더/마무리(cover·sectionDivider·closing)는 meta 없이 body 만, 본문 컴포넌트는 meta.kicker(섹션번호 라벨)+density:"dense" 권장.${fixBlock}
 
-JSON 만 출력 (DeckSlide 형태):
-{"meta":{"kicker":"<섹션번호 라벨>","density":"dense"},"body":{"kind":"${outline.recommendedKind}", ...슬롯}}`
+JSON 만 출력 (위 예시와 동일한 DeckSlide 형태, 내용만 교체):`
+}
 
-  const r = await invokeAi({
-    prompt,
-    model: modelFor(SLOT_TASK),
-    maxTokens: AI_TOKENS.LARGE,
-    label: 'deck.author-slide',
-  })
+export async function authorSlide(
+  outline: SlideOutline,
+  input: DeckAuthorInput,
+): Promise<DeckSlide | null> {
+  input.onProgress?.('slide', `슬라이드 저작: ${outline.actionTitle.slice(0, 30)}...`)
 
-  // 슬라이드 단위 검증 — 잘못된 슬롯이면 null(부분 degrade, authorDeck 가 skip).
-  let candidate: unknown
-  try {
-    candidate = safeParseJson<unknown>(r.raw, 'deck.author-slide')
-  } catch (e) {
-    log.warn('deck', 'authorSlide JSON 파싱 실패 → skip', {
-      kind: outline.recommendedKind,
-      err: e instanceof Error ? e.message : String(e),
+  // 1회 교정 재시도: 1차 zod 실패 시 그 에러를 프롬프트에 덧붙여 정확히 한 번 더 호출 → 그래도 실패면 skip.
+  // (무한 루프 금지 — attempt 0(최초) · 1(교정) 단 2회.)
+  let fixHint: string | undefined
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const prompt = buildSlidePrompt(outline, input, fixHint)
+    const r = await invokeAi({
+      prompt,
+      model: modelFor(SLOT_TASK),
+      maxTokens: AI_TOKENS.LARGE,
+      label: attempt === 0 ? 'deck.author-slide' : 'deck.author-slide-retry',
     })
-    return null
-  }
 
-  // 단일 슬라이드를 임시 덱으로 감싸 zod 검증 (재사용).
-  const probe = safeParseDeckSpec({ version: 'deck-v3', slides: [candidate] })
-  if (!probe.ok) {
-    log.warn('deck', 'authorSlide zod 검증 실패 → skip', {
+    // 슬라이드 단위 검증 — 잘못된 슬롯이면 다음 attempt(없으면 null, authorDeck 가 skip).
+    let candidate: unknown
+    try {
+      candidate = safeParseJson<unknown>(r.raw, 'deck.author-slide')
+    } catch (e) {
+      fixHint = `JSON 파싱 실패: ${e instanceof Error ? e.message : String(e)}`
+      log.warn('deck', `authorSlide JSON 파싱 실패 (attempt ${attempt})`, {
+        kind: outline.recommendedKind,
+        err: fixHint,
+      })
+      continue
+    }
+
+    // 단일 슬라이드를 임시 덱으로 감싸 zod 검증 (재사용).
+    const probe = safeParseDeckSpec({ version: 'deck-v3', slides: [candidate] })
+    if (probe.ok) return probe.deck.slides[0]
+
+    fixHint = probe.error
+    log.warn('deck', `authorSlide zod 검증 실패 (attempt ${attempt})`, {
       kind: outline.recommendedKind,
       error: probe.error,
     })
-    return null
   }
-  return probe.deck.slides[0]
+
+  log.warn('deck', 'authorSlide 1회 교정 후에도 실패 → skip', { kind: outline.recommendedKind })
+  return null
 }
 
 // ─────────────────────────────────────────
