@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UD 기획 엔진 PRD v2.0 — RFP에서 당선 덱까지</title>
+<style>
+/* ── Webfonts (local woff2, design kit) ── */
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+
+:root{
+  --accent:#F05519; --dark:#373938; --warm-gray:#D8D4D7; --white:#FFFFFF; --black:#000000;
+  --accent-88:#FDEBE3; --accent-76:#FBD6C8; --accent-52:#F8AD91; --accent-40:#F69975;
+  --dark-70:#C3C4C3; --dark-55:#A5A6A5; --dark-40:#878888; --dark-25:#696A6A; --dark-10:#4B4D4C;
+  --neutral-90:#FBFBFB; --neutral-60:#F0F0F0; --neutral-30:#E4E4E4; --neutral-0:#D9D9D9;
+  --paper:var(--white); --ink:var(--dark); --soft-ink:var(--dark-10); --muted:var(--dark-40);
+  --muted-2:var(--dark-55); --line:var(--neutral-0); --line-soft:var(--neutral-30); --bg:var(--neutral-0);
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:22px; --s-6:28px; --s-7:40px; --s-8:60px;
+  --gap-section:28px; --gap-element:16px; --gap-tight:6px;
+  --type-display:56px;
+}
+*,*::before,*::after{box-sizing:border-box;border-radius:0 !important}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"NanumHuman",system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.en{font-family:"Poppins","NanumHuman",sans-serif}
+img,svg{display:block;max-width:100%;height:auto}
+
+/* ── Type ── */
+.kicker{margin:0 0 14px;display:inline-block;color:var(--accent);
+  font-family:"Poppins","NanumHuman",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase}
+.section-title{margin:0;font-family:"NanumHuman",sans-serif;font-size:32px;font-weight:800;
+  line-height:1.18;letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
+.display{margin:0;font-family:"Poppins","NanumHuman",sans-serif;font-size:var(--type-display);font-weight:600;
+  line-height:1.12;letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
+.display .ko{display:block;margin-top:16px;font-family:"NanumHuman",sans-serif;font-size:28px;font-weight:800;
+  line-height:1.22;letter-spacing:-.01em;word-break:keep-all}
+.big-num{font-family:"Poppins",sans-serif;font-size:44px;font-weight:600;line-height:1;color:var(--accent)}
+.lead{margin:0;color:var(--soft-ink);font-size:15px;line-height:1.74;word-break:keep-all}
+.body{margin:10px 0 0;color:var(--soft-ink);font-size:14px;line-height:1.78;word-break:keep-all}
+.small{margin:0;color:var(--muted);font-size:11px;line-height:1.62;word-break:keep-all}
+strong{font-weight:800;color:var(--ink)}
+em{font-style:normal;color:var(--ink);font-weight:800;border-bottom:2px solid var(--accent-76)}
+
+/* ── Shell (web-scroll-report, max 900) ── */
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+  background:var(--paper);border-bottom:1px solid var(--line);padding:var(--s-3) var(--s-5);}
+.topbar .doc{font-family:"Poppins","NanumHuman",sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.report{max-width:900px;margin:0 auto;background:var(--paper);min-height:100vh;
+  display:flex;flex-direction:column}
+section{padding:var(--s-7) var(--s-6)}
+
+/* ── Cover (the single dark section) ── */
+.cover{background:var(--ink);color:#fff;padding:var(--s-8) var(--s-6)}
+.cover .head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-5);margin-bottom:64px}
+.cover .issue{font-family:"Poppins",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dark-70)}
+.cover .display{color:#fff}
+.cover .display .ko{color:#fff}
+.cover .lead{color:var(--dark-70);max-width:62ch;margin-top:var(--s-5)}
+.meta{display:grid;grid-template-columns:130px 1fr;gap:8px var(--s-5);margin-top:var(--s-7);
+  border-top:1px solid var(--dark-25);padding-top:var(--s-5);max-width:760px}
+.meta dt{color:var(--accent);font-family:"Poppins","NanumHuman",sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase}
+.meta dd{margin:0;color:#eaeaea;font-size:13px;line-height:1.55;word-break:keep-all}
+
+/* ── Page head ── */
+.page-head{padding-bottom:var(--s-5);margin-bottom:var(--s-6);border-bottom:2px solid var(--ink)}
+.page-head .section-title{margin-top:2px}
+.page-head .small{margin-top:10px;color:var(--muted)}
+
+/* ── Tint boxes (web report = tint language) ── */
+.tint{padding:var(--s-5);background:var(--neutral-90);margin:var(--gap-element) 0}
+.tint.is-strong{background:var(--neutral-60)}
+.tint .kicker{margin-bottom:10px}
+.tint .body:first-of-type{margin-top:0}
+.lead-box{padding:var(--s-5) var(--s-6);background:var(--neutral-60);margin:var(--gap-element) 0}
+.lead-box .lead{font-weight:700;color:var(--ink);font-size:16px;line-height:1.6}
+
+/* ── grids ── */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:768px){.grid-3,.grid-2{grid-template-columns:1fr}}
+.cell{padding:var(--s-5);background:var(--neutral-90)}
+.cell .kicker{margin-bottom:8px}
+.cell .body{margin-top:0}
+
+/* ── Tables ── */
+table{width:100%;border-collapse:collapse;margin:var(--gap-element) 0;font-size:13px}
+th,td{text-align:left;padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--line);
+  vertical-align:top;line-height:1.6;word-break:keep-all}
+th{background:var(--neutral-60);color:var(--ink);font-weight:800;border-bottom:2px solid var(--ink);font-size:12px}
+td{color:var(--soft-ink)}
+tbody tr:nth-child(even) td{background:var(--neutral-90)}
+caption{caption-side:top;text-align:left;color:var(--muted);font-size:11px;margin-bottom:6px}
+
+/* ── Lists ── */
+ul,ol{margin:10px 0 0;padding-left:20px}
+li{margin:6px 0;color:var(--soft-ink);font-size:14px;line-height:1.7;word-break:keep-all}
+
+/* ── Pills ── */
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--s-3)}
+.pill{display:inline-flex;padding:5px 10px;border:1px solid var(--line);color:var(--soft-ink);
+  font-family:"Poppins","NanumHuman",sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em}
+.pill.is-accent{border-color:var(--accent);color:var(--accent)}
+
+/* ── Diagram wrapper + SVG palette ── */
+.diagram{background:var(--neutral-90);padding:var(--s-5) var(--s-4);margin:var(--gap-element) 0}
+.diagram .cap{margin-top:12px;color:var(--muted);font-size:11px;line-height:1.5;text-align:center;word-break:keep-all}
+svg .bx{fill:var(--neutral-60);stroke:var(--line);stroke-width:1}
+svg .bx-ink{fill:var(--ink);stroke:none}
+svg .bx-accent{fill:var(--accent-88);stroke:var(--accent);stroke-width:1.5}
+svg .hbar{fill:var(--ink)}
+svg .t{font-family:"NanumHuman",sans-serif;fill:var(--ink);font-weight:800;font-size:13px}
+svg .t-w{font-family:"NanumHuman",sans-serif;fill:#fff;font-weight:800;font-size:13px}
+svg .s{font-family:"NanumHuman",sans-serif;fill:var(--muted);font-weight:400;font-size:10px}
+svg .s-w{font-family:"NanumHuman",sans-serif;fill:var(--dark-70);font-weight:400;font-size:10px}
+svg .n{font-family:"Poppins",sans-serif;fill:var(--accent);font-weight:600;font-size:11px}
+svg .lab{font-family:"Poppins","NanumHuman",sans-serif;fill:var(--muted);font-weight:600;font-size:10px;letter-spacing:.1em}
+svg .ln{stroke:var(--dark-40);stroke-width:1.5;fill:none}
+svg .ln-soft{stroke:var(--line);stroke-width:1}
+svg .arw{fill:var(--dark-40)}
+svg .tag{font-family:"NanumHuman",sans-serif;fill:var(--accent);font-weight:800;font-size:10px}
+
+/* ── Mockup figures ── */
+.fig{margin:var(--gap-element) 0}
+.fig img{border:1px solid var(--line);width:100%}
+.fig figcaption{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.55;word-break:keep-all}
+.fig figcaption b{color:var(--ink);font-weight:800}
+.fig-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:768px){.fig-grid{grid-template-columns:1fr}}
+
+/* ── status chips in roadmap ── */
+.rm-now{color:var(--accent);font-weight:800}
+.done{color:var(--muted)}
+
+/* ── TOC ── */
+.toc{padding:var(--s-5) var(--s-6);background:var(--neutral-90)}
+.toc ol{columns:2;column-gap:var(--s-7);padding-left:18px}
+.toc li{font-size:13px}
+.toc a{color:var(--soft-ink);border:0}
+.toc a:hover{color:var(--accent)}
+
+/* ── Footer ── */
+.footer-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
+  padding:var(--s-5) var(--s-6);border-top:1px solid var(--line);margin-top:auto;
+  color:var(--muted);font-family:"Poppins","NanumHuman",sans-serif;font-size:10px;font-weight:500;letter-spacing:.1em}
+a{color:inherit}
+</style>
+</head>
+<body>
+<div class="report">
+
+  <div class="topbar">
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="Underdogs" style="height:22px">
+    <span class="doc">UD Planning Engine · PRD v2.0</span>
+  </div>
+
+  <!-- ===== COVER ===== -->
+  <section class="cover">
+    <div class="head">
+      <div class="issue">PRD v2.0 · 2026-06</div>
+      <img src="assets/logo/underdogs-wordmark-white.svg" alt="Underdogs" style="height:30px">
+    </div>
+    <p class="kicker">Internal Planning Think-Tank &amp; Engine</p>
+    <h1 class="display en">RFP → Winning Deck
+      <span class="ko">RFP 한 부에서 당선 가능한 제안 덱까지 — 자동으로, 당선 수준으로</span>
+    </h1>
+    <p class="lead">PM이 RFP와 자료를 넣으면, AI가 사내 자산·당선 제안서를 근거로 <strong>덱(논증)을 먼저 설계</strong>하고 슬라이드를 당선 밀도로 자동 저작해 <strong>디자인 완성된 1차 덱</strong>을 만든다. 산출물은 더 이상 와이어프레임이 아니라, 발주처에 그대로 낼 수 있는 수준을 지향한다.</p>
+    <dl class="meta">
+      <dt>Owner</dt><dd>udpb@udimpact.ai · 언더독스 / UD IMPACT</dd>
+      <dt>Audience</dt><dd>기획·운영·경영진 + 개발/AI</dd>
+      <dt>Version</dt><dd>v2.0 — 출력 구조 전환(덱-우선 HTML 렌더) 반영. v1.0(생성 엔진 중심) 승계</dd>
+      <dt>Decisions</dt><dd>ADR-019 과업 레이어 · ADR-021 단일 생성 엔진 · ADR-024 슬라이드 합성 · ADR-025 덱-우선 HTML 기질</dd>
+      <dt>Status</dt><dd>DECK-1·2·3·3a 완료(자동 저작 실 LLM 작동 검증) · DECK-3b(워커·라우트·UI) 진행 예정</dd>
+      <dt>Method</dt><dd>ADR-020 위임+검증+투명보고</dd>
+    </dl>
+  </section>
+
+  <!-- TOC -->
+  <section class="toc">
+    <p class="kicker">Contents</p>
+    <ol>
+      <li><a href="#s0">한 페이지 요약</a></li>
+      <li><a href="#s1">제품 프로세스 — 생성 파이프라인</a></li>
+      <li><a href="#s2">유저 플로우 — PM 여정</a></li>
+      <li><a href="#s3">산출물 목업 — 실제 자동 생성 슬라이드</a></li>
+      <li><a href="#s4">슬라이드 어휘 — 컴포넌트 카탈로그</a></li>
+      <li><a href="#s5">아키텍처 · 핵심 결정(ADR)</a></li>
+      <li><a href="#s6">유지 · 고도화 · 폐기 · 추가</a></li>
+      <li><a href="#s7">로드맵 — 현재 위치</a></li>
+    </ol>
+  </section>
+
+  <!-- ===== S0 요약 ===== -->
+  <section id="s0">
+    <div class="page-head">
+      <p class="kicker">00 · Executive Summary</p>
+      <h2 class="section-title">RFP를 넣으면, 당선 수준의 1차 덱이 나온다</h2>
+      <p class="small">북극성 · 한 페이지 요약</p>
+    </div>
+    <div class="lead-box">
+      <p class="lead">기존 PPTX 출력은 실제 당선 덱의 20~30% 수준에 머물렀다. 원인은 튜닝이 아니라 <strong>구조</strong> — ①8개 추상 패턴이라는 좁은 표현 어휘 ②손코딩 사각형(OOXML) 기질 ③산문을 쓰고 슬라이드로 쪼개는 거꾸로 된 저작 순서. v2.0은 이 셋을 모두 바꾼다: <em>HTML/CSS 렌더 기질 · 리치 컴포넌트 어휘 · 덱-우선 저작</em>.</p>
+    </div>
+    <div class="grid-3">
+      <div class="cell"><p class="kicker">North Star</p><p class="body">RFP + 사내 자산 → <strong>당선 가능성이 근거로 받쳐진 1차 덱</strong>. 디자인까지 완성된 PDF/HTML.</p></div>
+      <div class="cell"><p class="kicker">Flywheel</p><p class="body">우리가 만든 모든 자산·당선 제안서를 계속 학습 → <strong>다음 제안서는 직전보다 낫다</strong>.</p></div>
+      <div class="cell"><p class="kicker">Multi-과업</p><p class="body">교육·행사운영·장소·특강연사 등 <strong>여러 과업이 모인 프로젝트</strong>를 키메시지 + 과업별 근거로.</p></div>
+    </div>
+    <p class="body">현재 <strong>자동 저작이 실제로 작동</strong>한다(실 Gemini 검증). RFP 그라운딩 → 스토리라인 설계 → 슬라이드 슬롯 자동 채움 → 당선 밀도 PDF가 한 번에 나온다. 남은 일은 이 파이프라인을 앱에 붙이는 배선(DECK-3b)과 비평 루프(DECK-4)·실 자산 그라운딩(DATA-2)으로 품질을 더 끌어올리는 것이다.</p>
+  </section>
+
+  <!-- ===== S1 제품 프로세스 ===== -->
+  <section id="s1">
+    <div class="page-head">
+      <p class="kicker">01 · Product Process</p>
+      <h2 class="section-title">제품 프로세스 — 생성 파이프라인</h2>
+      <p class="small">RFP·자산이 들어와 당선 1차 덱으로 나오기까지. AI는 콘텐츠 생성자이자 오케스트레이터.</p>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 860 250" role="img" aria-label="생성 파이프라인 도식">
+        <!-- input label -->
+        <text x="16" y="34" class="lab">INPUT</text>
+        <rect x="16" y="42" width="150" height="44" class="bx-accent"/>
+        <text x="28" y="62" class="t" font-size="12">RFP · 사내 자산</text>
+        <text x="28" y="78" class="s">발주문서 · 자료 업로드</text>
+        <!-- arrow input->stage1 -->
+        <line x1="166" y1="64" x2="196" y2="64" class="ln"/>
+        <polygon points="196,59 206,64 196,69" class="arw"/>
+
+        <!-- 5 stage boxes -->
+        <!-- stage geometry: x = 210 + i*128, w=112, gap effectively 16, y=42 h=88 -->
+        <g>
+          <rect x="210" y="42" width="112" height="92" class="bx"/>
+          <text x="222" y="64" class="n">01</text>
+          <text x="222" y="84" class="t">그라운딩</text>
+          <text x="222" y="103" class="s">RFP 파싱·과업</text>
+          <text x="222" y="117" class="s">당선덱·자산 검색</text>
+        </g>
+        <line x1="322" y1="88" x2="338" y2="88" class="ln"/><polygon points="338,83 348,88 338,93" class="arw"/>
+        <g>
+          <rect x="350" y="42" width="112" height="92" class="bx"/>
+          <text x="362" y="64" class="n">02</text>
+          <text x="362" y="84" class="t">스토리라인</text>
+          <text x="362" y="103" class="s">액션 타이틀</text>
+          <text x="362" y="117" class="s">수평 논리 설계</text>
+        </g>
+        <line x1="462" y1="88" x2="478" y2="88" class="ln"/><polygon points="478,83 488,88 478,93" class="arw"/>
+        <g>
+          <rect x="490" y="42" width="112" height="92" class="bx"/>
+          <text x="502" y="64" class="n">03</text>
+          <text x="502" y="84" class="t">슬라이드 저작</text>
+          <text x="502" y="103" class="s">컴포넌트 슬롯</text>
+          <text x="502" y="117" class="s">근거로 채움</text>
+        </g>
+        <line x1="602" y1="88" x2="618" y2="88" class="ln"/><polygon points="618,83 628,88 618,93" class="arw"/>
+        <g>
+          <rect x="630" y="42" width="112" height="92" class="bx"/>
+          <text x="642" y="64" class="n">04</text>
+          <text x="642" y="84" class="t">비평 루프</text>
+          <text x="642" y="103" class="s">밀도·근거·</text>
+          <text x="642" y="117" class="s">so-what 게이트</text>
+        </g>
+        <line x1="742" y1="88" x2="758" y2="88" class="ln"/><polygon points="758,83 768,88 758,93" class="arw"/>
+        <g>
+          <rect x="770" y="42" width="74" height="92" class="bx"/>
+          <text x="782" y="64" class="n">05</text>
+          <text x="782" y="84" class="t" font-size="12">렌더</text>
+          <text x="782" y="103" class="s">워커</text>
+          <text x="782" y="117" class="s">→PDF</text>
+        </g>
+
+        <!-- output -->
+        <text x="744" y="160" class="lab" text-anchor="end" font-size="9">OUTPUT</text>
+        <line x1="807" y1="134" x2="807" y2="158" class="ln"/><polygon points="802,158 807,168 812,158" class="arw"/>
+        <rect x="694" y="170" width="150" height="44" class="bx-ink"/>
+        <text x="706" y="190" class="t-w" font-size="12">당선 1차 덱</text>
+        <text x="706" y="206" class="s-w">PDF · HTML (16:9)</text>
+
+        <!-- feedback flywheel -->
+        <path d="M 266 134 L 266 192 L 540 192" class="ln" stroke-dasharray="4 3"/>
+        <polygon points="540,187 550,192 540,197" class="arw"/>
+        <line x1="266" y1="192" x2="266" y2="138" class="ln" stroke-dasharray="4 3"/>
+        <polygon points="261,138 266,128 271,138" class="arw"/>
+        <text x="300" y="186" class="tag">↻ 당선·자산 지속 학습 (플라이휠) — 다음 제안서는 직전보다 낫다</text>
+      </svg>
+      <p class="cap">① 그라운딩·④ 비평 = 품질 결정(Pro 티어) · ② 스토리라인 = 논증 설계 · ③ 슬롯 채움 = plumbing(Flash) · ⑤ 렌더 = 별도 워커(chromium). 산출 덱은 다시 학습 코퍼스로 환류한다.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="cell"><p class="kicker">왜 덱-우선인가</p><p class="body">당선 덱은 산문을 쪼갠 게 아니라 <strong>논증으로 설계</strong>된다. 슬라이드 한 장 = 액션 타이틀(주장) + so-what + 근거. 그래서 스토리라인을 먼저 세운다.</p></div>
+      <div class="cell"><p class="kicker">왜 HTML 기질인가</p><p class="body">손코딩 사각형(OOXML)은 아이콘·사진·실제 타이포가 원천적으로 안 들어간다. 브라우저가 그리게 하면 <strong>웹 디자인 어휘 전체</strong>가 열린다.</p></div>
+    </div>
+  </section>
+
+  <!-- ===== S2 유저 플로우 ===== -->
+  <section id="s2">
+    <div class="page-head">
+      <p class="kicker">02 · User Flow</p>
+      <h2 class="section-title">유저 플로우 — PM의 여정</h2>
+      <p class="small">PM은 결정 지점에서만 개입한다. AI가 자동으로 채우고, PM은 승인·보강한다.</p>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 860 210" role="img" aria-label="PM 유저 플로우 도식">
+        <!-- 6 screen cards: x = 12 + i*140, w=124, y=30 h=96, ink header strip -->
+        <!-- card helper: rect bx, top hbar, num, title, sub -->
+        <!-- 1 -->
+        <rect x="12" y="30" width="124" height="96" class="bx"/><rect x="12" y="30" width="124" height="12" class="hbar"/>
+        <text x="24" y="62" class="n">01</text>
+        <text x="24" y="82" class="t" font-size="12">RFP 업로드</text>
+        <text x="24" y="100" class="s">프로젝트 생성</text>
+        <text x="24" y="114" class="s">자료 첨부</text>
+        <!-- 2 -->
+        <rect x="152" y="30" width="124" height="96" class="bx"/><rect x="152" y="30" width="124" height="12" class="hbar"/>
+        <text x="164" y="62" class="n">02</text>
+        <text x="164" y="82" class="t" font-size="12">AI 자동 진단</text>
+        <text x="164" y="100" class="s">채널·과업 추론</text>
+        <text x="164" y="114" class="s">그라운딩 매칭</text>
+        <!-- 3 -->
+        <rect x="292" y="30" width="124" height="96" class="bx"/><rect x="292" y="30" width="124" height="12" class="hbar"/>
+        <text x="304" y="62" class="n">03</text>
+        <text x="304" y="82" class="t" font-size="12">스토리라인</text>
+        <text x="304" y="100" class="s">덱 구성 미리보기</text>
+        <text x="304" y="114" class="s">승인/조정</text>
+        <!-- 4 -->
+        <rect x="432" y="30" width="124" height="96" class="bx"/><rect x="432" y="30" width="124" height="12" class="hbar"/>
+        <text x="444" y="62" class="n">04</text>
+        <text x="444" y="82" class="t" font-size="12">자동 저작</text>
+        <text x="444" y="100" class="s">슬라이드 생성</text>
+        <text x="444" y="114" class="s">진행 표시</text>
+        <!-- 5 -->
+        <rect x="572" y="30" width="124" height="96" class="bx"/><rect x="572" y="30" width="124" height="12" class="hbar"/>
+        <text x="584" y="62" class="n">05</text>
+        <text x="584" y="82" class="t" font-size="12">덱 미리보기</text>
+        <text x="584" y="100" class="s">편집·슬라이드</text>
+        <text x="584" y="114" class="s">재생성</text>
+        <!-- 6 -->
+        <rect x="712" y="30" width="136" height="96" class="bx-accent"/><rect x="712" y="30" width="136" height="12" class="hbar"/>
+        <text x="724" y="62" class="n">06</text>
+        <text x="724" y="82" class="t" font-size="12">PDF 다운로드</text>
+        <text x="724" y="100" class="s">공유 · 발주처 제출</text>
+        <text x="724" y="114" class="s">편집 export</text>
+
+        <!-- arrows between cards (y=78) -->
+        <g class="arw">
+          <polygon points="138,73 150,78 138,83"/><polygon points="278,73 290,78 278,83"/>
+          <polygon points="418,73 430,78 418,83"/><polygon points="558,73 570,78 558,83"/>
+          <polygon points="698,73 710,78 698,83"/>
+        </g>
+        <g class="ln"><line x1="136" y1="78" x2="150" y2="78"/><line x1="276" y1="78" x2="290" y2="78"/>
+          <line x1="416" y1="78" x2="430" y2="78"/><line x1="556" y1="78" x2="570" y2="78"/><line x1="696" y1="78" x2="710" y2="78"/></g>
+
+        <!-- PM decision tags under 02/03/05 -->
+        <text x="214" y="150" class="tag" text-anchor="middle">PM 확인</text>
+        <text x="354" y="150" class="tag" text-anchor="middle">PM 결정 · 구성 승인</text>
+        <text x="634" y="150" class="tag" text-anchor="middle">PM 결정 · 보강 지시</text>
+        <line x1="214" y1="128" x2="214" y2="140" class="ln-soft"/>
+        <line x1="354" y1="128" x2="354" y2="140" class="ln-soft"/>
+        <line x1="634" y1="128" x2="634" y2="140" class="ln-soft"/>
+
+        <text x="12" y="185" class="lab">AI 자동 = 02·04 · PM 결정 지점 = 03·05 (보강은 슬라이드별 재생성으로 즉시 반영)</text>
+      </svg>
+      <p class="cap">PM 입력 부담은 그대로 두고 AI가 더 일한다(Express 2.0 원칙). 무거운 외부 리서치만 별도, 왔다갔다 최소화.</p>
+    </div>
+  </section>
+
+  <!-- ===== S3 목업 ===== -->
+  <section id="s3">
+    <div class="page-head">
+      <p class="kicker">03 · Output Mockups</p>
+      <h2 class="section-title">산출물 목업 — 실제 자동 생성 슬라이드</h2>
+      <p class="small">아래는 합성 RFP(충남 청년창업)로 <b>AI가 그라운딩에서 자동 저작</b>한 실제 렌더 결과. 손코딩 아님.</p>
+    </div>
+    <div class="fig">
+      <img src="prd-v2-assets/mock-cover.png" alt="표지 슬라이드 목업">
+      <figcaption><b>표지</b> — 사진 배경 + 액션 타이틀 + 부제. 다크 1섹션·워드마크. (DECK-1 HTML 렌더 기질)</figcaption>
+    </div>
+    <div class="fig-grid">
+      <figure class="fig">
+        <img src="prd-v2-assets/mock-curriculum.png" alt="커리큘럼 매트릭스 목업">
+        <figcaption><b>커리큘럼 매트릭스</b> — 주차×단계 셀(핵심활동·산출물), Action Week accent 강조, 정량 EVIDENCE 밴드(60%/R-002·30건). 그라운딩 수치를 정확히 인용.</figcaption>
+      </figure>
+      <figure class="fig">
+        <img src="prd-v2-assets/mock-coach.png" alt="코치 상세 그리드 목업">
+        <figcaption><b>코치 상세</b> — 사진+약력+정량 실적 배지(120팀·₩340억 / 90팀·68%) + EVIDENCE(715명·1:5). 코치풀 단일 소스 연동 예정(DATA-2).</figcaption>
+      </figure>
+    </div>
+    <div class="fig">
+      <img src="prd-v2-assets/mock-kpi.png" alt="KPI 산출논리 목업">
+      <figcaption><b>기대 성과(KPI + 산출 논리)</b> — 빅넘버 + 그 수치가 나오는 메커니즘 + SROI. "증명 못 하면 말하지 않는다"의 시각화.</figcaption>
+    </div>
+    <div class="tint">
+      <p class="kicker">정직한 현황</p>
+      <p class="body">목업의 수치는 검증용 <strong>예시 그라운딩</strong>이다. 실제 코치 실명·실적·실수치는 <em>DATA-2(실 자산 그라운딩)</em>에서 주입된다. 또 LLM이 코치를 보수적으로(예: 2명) 채우는 등 밀도 선택은 <em>DECK-4 비평 루프</em>가 끌어올린다.</p>
+    </div>
+  </section>
+
+  <!-- ===== S4 컴포넌트 카탈로그 ===== -->
+  <section id="s4">
+    <div class="page-head">
+      <p class="kicker">04 · Component Vocabulary</p>
+      <h2 class="section-title">슬라이드 어휘 — 컴포넌트 카탈로그</h2>
+      <p class="small">표현 어휘를 8개 추상 패턴에서 의미 단위 컴포넌트로 확장. JSON DeckSpec ↔ 렌더가 1:1.</p>
+    </div>
+    <table>
+      <caption>리치 컴포넌트 — LLM이 슬라이드 목적에 맞게 선택해 채운다</caption>
+      <thead><tr><th style="width:170px">컴포넌트</th><th>쓰임</th></tr></thead>
+      <tbody>
+        <tr><td>bigNumberHero</td><td>한 핵심 수치 강조(One Loudest) — 배경·목적</td></tr>
+        <tr><td>strategyCanvas</td><td>2~4존 전략 카드(각 존 근거 한 줄) — 추진 전략·방법론</td></tr>
+        <tr><td>curriculumMatrix</td><td>주차×단계 셀(활동·산출물), Action Week 강조 — 커리큘럼</td></tr>
+        <tr><td>coachDetailGrid</td><td>사진+약력+정량 실적 배지 — 운영·코치진</td></tr>
+        <tr><td>kpiWithLogic</td><td>빅넘버 + 산출 메커니즘 + SROI — 기대 성과·임팩트</td></tr>
+        <tr><td>iconProcess · milestoneTimeline</td><td>N단계 흐름 · 마일스톤 일정</td></tr>
+        <tr><td>partnerLogoGrid · badgeRow</td><td>발주처·파트너 격자 · 정량 실적 배지 — 수행 실적</td></tr>
+        <tr><td>annotatedImage · composite</td><td>주석 이미지 · 복합(주 컴포넌트 + 근거 밴드 적층)</td></tr>
+        <tr><td>cover · sectionDivider · closing</td><td>표지 · 섹션 전환 · 마무리</td></tr>
+      </tbody>
+    </table>
+    <p class="body">모든 본문 컴포넌트는 <strong>EVIDENCE 밴드</strong>(수치 + 무엇을 증명 + 출처 3요소)를 품는다. 출처만 단 빈 근거는 금지 — "증명 못 하면 말하지 않는다."</p>
+  </section>
+
+  <!-- ===== S5 아키텍처/결정 ===== -->
+  <section id="s5">
+    <div class="page-head">
+      <p class="kicker">05 · Architecture &amp; Decisions</p>
+      <h2 class="section-title">아키텍처 · 핵심 결정(ADR)</h2>
+      <p class="small">되돌리기 어려운 결정만. 전체 인덱스 = docs/decisions/README.</p>
+    </div>
+    <table>
+      <thead><tr><th style="width:96px">ADR</th><th>결정</th><th style="width:90px">상태</th></tr></thead>
+      <tbody>
+        <tr><td>019</td><td>과업(Workstream) 레이어 — 제안서 = N과업 합성. 7섹션은 과업 위 투영</td><td>Accepted</td></tr>
+        <tr><td>021</td><td>단일 생성 엔진 — gather→assemble→win-theme→compliance→verify→self-score→정제</td><td>Proposed</td></tr>
+        <tr><td>022 · 023</td><td>모델 = Gemini 단일(2-tier: 품질=Pro / plumbing=Flash). @google/genai</td><td>Accepted</td></tr>
+        <tr><td>024</td><td>슬라이드 합성 v2 — 레이아웃 아키타입·고밀도. (OOXML은 025에서 보조 강등)</td><td>Proposed</td></tr>
+        <tr><td>025</td><td><strong>덱-우선 HTML 렌더 기질</strong> — 컴포넌트 어휘·스토리라인 저작·비평 루프. 렌더=별도 워커</td><td>Proposed</td></tr>
+      </tbody>
+    </table>
+    <div class="grid-3">
+      <div class="cell"><p class="kicker">엔진</p><p class="body">단일 생성 엔진이 과업·win-theme·검증을 한 곳에서. <code>src/lib/express/engine</code></p></div>
+      <div class="cell"><p class="kicker">덱</p><p class="body">DeckSpec(JSON) ↔ render-spec ↔ HTML 컴포넌트. <code>src/lib/deck</code></p></div>
+      <div class="cell"><p class="kicker">학습</p><p class="body">RET-1 검색 계약 + 당선 코퍼스. 그라운딩이 모든 근거의 원천.</p></div>
+    </div>
+  </section>
+
+  <!-- ===== S6 4분류 ===== -->
+  <section id="s6">
+    <div class="page-head">
+      <p class="kicker">06 · Keep / Improve / Deprecate / Add</p>
+      <h2 class="section-title">유지 · 고도화 · 폐기 · 추가</h2>
+      <p class="small">출력 구조 전환(v2.0) 기준 재정리.</p>
+    </div>
+    <div class="grid-2">
+      <div class="tint"><p class="kicker">유지 (Keep)</p>
+        <ul><li>단일 생성 엔진(과업·win-theme·검증·정제)</li><li>Gemini 2-tier 라우팅 · invokeAi 단일 진입점</li><li>공식 디자인 킷(단일 accent·장식 금지)</li><li>당선 패턴 학습(RET-1 검색 계약)</li></ul>
+      </div>
+      <div class="tint"><p class="kicker">고도화 (Improve)</p>
+        <ul><li>출력 OOXML → <strong>HTML 덱(완료)</strong></li><li>슬라이드 자동 저작 품질 — 비평 루프(DECK-4)</li><li>그라운딩 깊이 — 실 코퍼스(DATA-2)</li><li>미리보기·다운로드 UX</li></ul>
+      </div>
+      <div class="tint"><p class="kicker">폐기 (Deprecate)</p>
+        <ul><li>플래그십으로서의 OOXML PPTX → <strong>보조 편집 export로 강등</strong></li><li>레거시 3엔진(produce-ultimate-draft·proposal-ai·proposal-section)</li><li>구 slideSpec(8패턴) 단독 경로</li></ul>
+      </div>
+      <div class="tint"><p class="kicker">추가 (Add)</p>
+        <ul><li>별도 <strong>렌더 워커</strong>(컨테이너·chromium→PDF)</li><li>실 자산 그라운딩(pgvector·DATA-2)</li><li>슬라이드별 비평 루프(멀티 에이전트)</li><li>덱 미리보기·PDF 다운로드 API·UI</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S7 로드맵 ===== -->
+  <section id="s7">
+    <div class="page-head">
+      <p class="kicker">07 · Roadmap</p>
+      <h2 class="section-title">로드맵 — 현재 위치</h2>
+      <p class="small">덱 출력 구조 전환 아크. ◀ = 현재.</p>
+    </div>
+    <table>
+      <thead><tr><th style="width:120px">단계</th><th>내용</th><th style="width:96px">상태</th></tr></thead>
+      <tbody>
+        <tr><td>DECK-1</td><td>HTML 슬라이드 → headless chromium 고해상 PDF 렌더 기질</td><td class="done">완료</td></tr>
+        <tr><td>DECK-2</td><td>당선 밀도 컴포넌트 11종 + 밀도 proof(평균 12.9블록)</td><td class="done">완료</td></tr>
+        <tr><td>DECK-3 · 3a</td><td>JSON DeckSpec↔렌더 계약 + 덱-우선 자동 저작(실 LLM 8장 완전 덱)</td><td class="done">완료</td></tr>
+        <tr><td>DECK-3b</td><td>렌더 워커(컨테이너) + API 라우트 + 미리보기/PDF 다운로드 UI</td><td class="rm-now">◀ 진행</td></tr>
+        <tr><td>DECK-4</td><td>슬라이드별 비평 루프 — 밀도·근거·so-what 게이트(멀티 에이전트)</td><td>예정</td></tr>
+        <tr><td>DATA-2</td><td>pgvector + 실 코퍼스/실 자산 그라운딩 — 근거 수치의 진실화</td><td>예정</td></tr>
+        <tr><td>배포</td><td>master 머지 → Vercel(icn1) + 렌더 워커 배포 → ud-planner 가시화</td><td>예정</td></tr>
+      </tbody>
+    </table>
+    <div class="lead-box"><p class="lead">현재 막힘 없음: 자동 저작은 작동 검증됨. DECK-3b는 워커(로컬에서 fixture→PDF로 검증 가능, DB 불필요)부터 → 라우트·UI → DB 올려 E2E 검증 → 머지·배포.</p></div>
+  </section>
+
+  <div class="footer-bar">
+    <span class="en">UNDERDOGS · UD IMPACT</span>
+    <span>UD PLANNING ENGINE · PRD v2.0 · 2026-06</span>
+  </div>
+
+</div>
+</body>
+</html>
