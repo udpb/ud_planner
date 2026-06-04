@@ -38,6 +38,7 @@ ADR-024(EX-3)로 OOXML 레이아웃 아키타입·밀도를 올렸으나, 사용
 
 ### 1. 렌더 기질 (substrate)
 - 슬라이드를 **HTML/CSS 컴포넌트**로 렌더(기존 React `PpProposalSlides`/`SlideShell`/`underdogs-slide.css` 확장). headless browser(Playwright 또는 puppeteer-core+chromium)로 **고해상 PNG/PDF** 출력. 대표 산출물 = **디자인 완성 PDF/HTML 덱**.
+- **렌더 실행 위치 (2026-06-04 사용자 결정): 별도 렌더 워커(Cloud Run/컨테이너).** Vercel 서버리스는 chromium 미포함 → DeckSpec/HTML 을 받아 chromium 으로 PDF 를 반환하는 **독립 렌더 서비스**로 분리. Vercel API 라우트는 워커를 HTTP 호출. (서버리스 chromium 번들·콜드스타트·maxDuration 제약 회피.) **화면 미리보기는 워커 불필요** — 브라우저가 React 슬라이드를 직접 렌더(클라이언트). PDF export 만 워커 경유.
 - **편집 PPTX는 보조**: 기존 `pptx-builder.ts`(ADR-024)를 유지하되 "rough 편집용 export"로 강등. 또는 PNG-per-slide 임베드 PPTX.
 - 16:9, 디자인 킷 100%(단일 accent F05519, 라운드/그림자/이모지 금지, NanumHuman/Poppins). 한글 폰트 임베드 필수.
 

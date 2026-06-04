@@ -62,4 +62,4 @@
 - express `turn`·`init` auth = ✅ 닫음(FIX-2). lint baseline 4 에러 = 무관 .tsx(setState-in-effect·children-prop) 잔존.
 
 ## 🏁 다음 진입 한 줄
-**덱 출력 구조 전환(HTML 기질·당선 밀도·JSON 스펙↔렌더 계약)은 DECK-3까지 완료·검증. 다음 = DECK-3b(author 실 LLM 실행 + API 라우트 + 미리보기/PDF UI) — 이게 덱을 ud-planner에 보이게 한다. DB/env 올려 author 생성부터 메인이 직접 검증 → DECK-4(비평 루프)·DATA-2(실 grounding) → master 머지·배포.** (덱 검증: `_render-deck.ts`·`_render-spec.ts` → `docs/samples/*.pdf`.)
+**덱 자동 저작이 실 Gemini로 작동 확인됨(DECK-3+3a: RFP grounding→스토리라인→스키마-정확 슬롯→당선 밀도 PDF, 스모크 8장 완전 덱).** 다음 = **DECK-3b**: ① 별도 **렌더 워커**(Cloud Run/컨테이너 — DeckSpec→chromium PDF, 사용자 결정 2026-06-04) ② Vercel **API 라우트**(grounding→authorDeck→워커 호출) ③ **미리보기(클라 React, chromium 불필요)+PDF 다운로드 UI**. 워커는 로컬에서 fixture DeckSpec→PDF로 검증 가능(DB 불필요). 이후 DECK-4(비평 루프)·DATA-2(실 grounding)→master 머지·배포. (author 실측: `scripts/_smoke-author.ts`, ⚠️ 로컬 DB(docker)는 라우트 E2E에 필요 — Docker Desktop 기동 느림.)
