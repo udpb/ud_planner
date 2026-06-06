@@ -62,4 +62,6 @@
 - express `turn`·`init` auth = ✅ 닫음(FIX-2). lint baseline 4 에러 = 무관 .tsx(setState-in-effect·children-prop) 잔존.
 
 ## 🏁 다음 진입 한 줄
-**덱 자동 저작이 실 Gemini로 작동 확인됨(DECK-3+3a: RFP grounding→스토리라인→스키마-정확 슬롯→당선 밀도 PDF, 스모크 8장 완전 덱).** 다음 = **DECK-3b**: ① 별도 **렌더 워커**(Cloud Run/컨테이너 — DeckSpec→chromium PDF, 사용자 결정 2026-06-04) ② Vercel **API 라우트**(grounding→authorDeck→워커 호출) ③ **미리보기(클라 React, chromium 불필요)+PDF 다운로드 UI**. 워커는 로컬에서 fixture DeckSpec→PDF로 검증 가능(DB 불필요). 이후 DECK-4(비평 루프)·DATA-2(실 grounding)→master 머지·배포. (author 실측: `scripts/_smoke-author.ts`, ⚠️ 로컬 DB(docker)는 라우트 E2E에 필요 — Docker Desktop 기동 느림.)
+**덱 파이프라인 전체 배선·검증 완료(DECK-1~3b-2).** 실 데이터 E2E 확인됨 — 실 프로젝트(계원예술대 세대융합)→gather 실코퍼스(148docs/2048청크)→authorDeck→8장 당선 덱(이 RFP 특화: 6주·해커톤). 렌더 워커(`render-worker/`)·API 라우트(`/api/projects/[id]/deck`·`/deck/pdf`)·미리보기/다운로드 UI(`DeckPanel`) 전부 작동.
+**다음**: ① **로컬 풀 클릭 E2E**(`cd render-worker && node server.mjs` + `npm run dev` → 프로젝트 화면 "덱 생성"→미리보기→PDF) ② **master 머지 + Cloud Run 워커 배포**(`RENDER_WORKER_URL`/`TOKEN`) → ud-planner 가시화 ③ **DECK-4**(밀도 비평 루프 — 코치수·셀 여백) ④ **gather throttle/백오프**(7섹션 병렬 임베딩이 rate-limit 버스트 유발) ⑤ DeckSpec 영속화(스키마 마이그레이션, DATA 브리프) ⑥ DATA-2(코치 실명·실수치 — 코퍼스는 이미 적재됨).
+⚠️ Gemini 키 `ud_planner`(끝 …lFYrIw): 선결제 소진→2026-06-04 충전 완료. 멀티 프로젝트 키 주의(소진 시 그 프로젝트 결제 확인). (author 실측: `scripts/_smoke-deck-e2e.ts` [projectId].)
