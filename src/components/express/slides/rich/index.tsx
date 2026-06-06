@@ -546,10 +546,11 @@ export function CoachDetailGrid({ kicker, headline, coaches, evidence, columns =
                 <p className="ud-caption" style={{ marginTop: 2, lineHeight: 1.25 }}>{c.affiliation}</p>
               </div>
             </div>
-            <div style={{ padding: 'var(--ud-s-3)', display: 'flex', flexDirection: 'column', gap: 'var(--ud-s-2)', flex: 1 }}>
-              <ul style={{ margin: 0, paddingLeft: 'var(--ud-s-4)', display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {/* DECK-4: bio 영역이 가용 높이를 채우도록 항목을 세로 균등 분배(중앙 공백 제거). */}
+            <div style={{ padding: 'var(--ud-s-3)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+              <ul style={{ margin: 0, paddingLeft: 'var(--ud-s-4)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1, gap: 'var(--ud-s-2)' }}>
                 {c.bio.map((b, bi) => (
-                  <li key={bi} className="ud-caption" style={{ lineHeight: 1.35, color: 'var(--ud-soft-ink)' }}>{b}</li>
+                  <li key={bi} className="ud-caption" style={{ lineHeight: 1.45, color: 'var(--ud-soft-ink)' }}>{b}</li>
                 ))}
               </ul>
             </div>
@@ -641,12 +642,12 @@ export function CurriculumMatrix({ kicker, headline, phases, evidence }: Curricu
                 <p className="ud-caption en" style={{ color: 'var(--ud-white)', fontWeight: 600, marginTop: 2, letterSpacing: '0.08em' }}>ACTION WEEK</p>
               )}
             </div>
-            {/* activities */}
-            <div style={{ padding: 'var(--ud-s-3)', flex: 1 }}>
+            {/* activities — DECK-4: 활동 목록이 가용 높이를 채우도록 세로 균등 분배(셀 중앙 공백 제거). */}
+            <div style={{ padding: 'var(--ud-s-3)', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <span className="ud-label" style={{ color: 'var(--ud-muted)', fontSize: 'calc(var(--ud-type-label) * 0.85)' }}>핵심 활동</span>
-              <ul style={{ margin: '4px 0 0', paddingLeft: 'var(--ud-s-4)', display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <ul style={{ margin: '6px 0 0', paddingLeft: 'var(--ud-s-4)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1, gap: 'var(--ud-s-2)' }}>
                 {ph.activities.map((a, ai) => (
-                  <li key={ai} className="ud-caption" style={{ lineHeight: 1.3, color: 'var(--ud-soft-ink)' }}>{a}</li>
+                  <li key={ai} className="ud-caption" style={{ lineHeight: 1.4, color: 'var(--ud-soft-ink)' }}>{a}</li>
                 ))}
               </ul>
             </div>
@@ -771,7 +772,8 @@ export function StrategyCanvas({ kicker, headline, zones, evidence, columns = 4 
               {z.num && <span className="ud-label en" style={{ color: 'var(--ud-muted)' }}>{z.num}</span>}
             </div>
             <p style={{ margin: 0, fontWeight: 700, fontSize: 'var(--ud-type-body)', color: 'var(--ud-ink)', lineHeight: 1.2 }}>{z.title}</p>
-            <p className="ud-caption" style={{ lineHeight: 1.4, flex: 1 }}>{z.body}</p>
+            {/* DECK-4: 본문을 가용 높이에 채워 세로 중앙 정렬(아이콘/제목과 근거 사이 공백 제거). */}
+            <p className="ud-caption" style={{ lineHeight: 1.5, flex: 1, display: 'flex', alignItems: 'center' }}>{z.body}</p>
             <div data-block="strategy-rationale" style={{ borderTop: '1px solid var(--ud-line)', paddingTop: 'var(--ud-s-2)' }}>
               <p className="ud-caption" style={{ color: 'var(--ud-accent)', fontWeight: 600, lineHeight: 1.3 }}>{z.rationale}</p>
             </div>

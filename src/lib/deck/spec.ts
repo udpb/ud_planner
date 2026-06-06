@@ -794,3 +794,201 @@ export const KIND_EXAMPLE: Record<SlideKind, DeckSlide> = {
 export const KIND_FIELD_SPEC: Record<SlideKind, string> = Object.fromEntries(
   (Object.keys(KIND_EXAMPLE) as SlideKind[]).map((k) => [k, JSON.stringify(KIND_EXAMPLE[k], null, 2)]),
 ) as Record<SlideKind, string>
+
+// ═════════════════════════════════════════════════════════════════
+// 밀도 측정 — slideDensityScore (DECK-4, ADR-025 Phase 4)
+// ─────────────────────────────────────────────────────────────────
+//   사용자 피드백(2026-06-04): 자동 덱이 "유능하나 보수적" — 셀 중앙 여백이 크고 항목수가 적다
+//   (코치 2명만, 커리큘럼 셀 절반 비어 있음). DECK-4 = 결정론 밀도 측정 + author 비평 루프.
+//
+//   ⚠️ **add-export only** — zod 스키마/필드명/version 변경 금지(브리프 §2). 이 블록은 기존
+//   SlideSpec 구조를 **읽기만** 한다. 스키마와 1:1 미러(필드명 변경 시 여기도 같이 갱신).
+//
+//   "정보 항목수" = 슬라이드가 실제로 담은 콘텐츠 셀/항목의 개수. kind 별로 센다:
+//     - coachDetailGrid : coaches.length            (코치 카드 수)
+//     - curriculumMatrix: Σ(activities + 1 deliverable) per phase  (셀 내부 항목 총량)
+//     - kpiWithLogic    : kpis.length
+//     - strategyCanvas  : zones.length
+//     - iconProcess     : steps.length
+//     - iconCardGrid    : cards.length
+//     - composite       : Σ parts (각 part 의 itemCount 합)
+//     - 기타 본문 kind  : 자연 항목수(milestones/people/partners/badges/annotations/...)
+//
+//   per-kind FLOOR = "이 미만이면 sparse(반쯤 빈 셀)" 임계치. 코치≥4·커리큘럼 phases≥3(각 활동≥3)·
+//   kpis≥3·zones≥3 등(브리프 §3). 미달 슬라이드는 author 가 1회 densify 재저작한다.
+// ═════════════════════════════════════════════════════════════════
+
+/** 본문 컴포넌트 kind 별 항목수 FLOOR (이 미만이면 below-floor → densify 대상). */
+export const DENSITY_FLOORS: Partial<Record<SlideKind, number>> = {
+  coachDetailGrid: 4, // 코치 ≥ 4 (반쪽짜리 2명 카드 방지)
+  curriculumMatrix: 12, // phases ≥ 3 × (활동 3 + 산출물 1) = 12 항목
+  kpiWithLogic: 3, // KPI ≥ 3
+  strategyCanvas: 3, // 전략 존 ≥ 3
+  iconProcess: 3, // 프로세스 단계 ≥ 3
+  iconCardGrid: 3, // 카드 ≥ 3
+  milestoneTimeline: 3, // 마일스톤 ≥ 3
+  photoOrgGrid: 3, // 인물 ≥ 3
+  partnerLogoGrid: 6, // 파트너 ≥ 6 (격자 채움)
+  badgeRow: 3, // 배지 ≥ 3
+  bigNumberHero: 2, // 보조 포인트 ≥ 2
+  annotatedImage: 3, // 주석 ≥ 3
+  evidenceBand: 3, // 근거 항목 ≥ 3
+  beforeAfter: 6, // before+after metrics 합 ≥ 6 (각 3)
+}
+
+/** curriculumMatrix 가 충족해야 할 추가 형태 제약 — phase 수·phase 당 활동수 최소. */
+export const CURRICULUM_FLOOR = { phases: 3, activitiesPerPhase: 3 } as const
+
+/** 한 slide body 의 "정보 항목수"를 센다(컴포넌트별 콘텐츠 셀 합). 비본문(표지 등)은 0. */
+export function slideItemCount(body: SlideSpec): number {
+  switch (body.kind) {
+    case 'coachDetailGrid':
+      return body.coaches.length
+    case 'curriculumMatrix':
+      // 셀 내부 항목 총량 = Σ(활동 수 + 산출물 1) — 빈 셀일수록 작아진다.
+      return body.phases.reduce((sum, ph) => sum + ph.activities.length + 1, 0)
+    case 'kpiWithLogic':
+      return body.kpis.length
+    case 'strategyCanvas':
+      return body.zones.length
+    case 'iconProcess':
+      return body.steps.length
+    case 'iconCardGrid':
+      return body.cards.length
+    case 'milestoneTimeline':
+      return body.milestones.length
+    case 'photoOrgGrid':
+      return body.people.length
+    case 'partnerLogoGrid':
+      return body.partners.length
+    case 'badgeRow':
+      return body.badges.length
+    case 'bigNumberHero':
+      return body.supportingPoints?.length ?? 0
+    case 'annotatedImage':
+      return body.annotations.length
+    case 'evidenceBand':
+      return body.items.length
+    case 'beforeAfter':
+      return (body.before.metrics?.length ?? 0) + (body.after.metrics?.length ?? 0)
+    case 'composite':
+      return body.parts.reduce((sum, p) => sum + slideItemCount(p), 0)
+    // 비본문(표지/디바이더/마무리) — 항목 개념 없음
+    case 'cover':
+    case 'sectionDivider':
+    case 'closing':
+      return 0
+    default: {
+      // exhaustive — 새 kind 추가 시 컴파일러가 여기서 잡는다.
+      const _exhaustive: never = body
+      void _exhaustive
+      return 0
+    }
+  }
+}
+
+/** 밀도 측정 결과 — 점수·floor·미달 여부·부족 항목 설명(densify 프롬프트 시드). */
+export interface DensityScore {
+  /** slide body kind. */
+  kind: SlideKind
+  /** 정보 항목수(slideItemCount). */
+  itemCount: number
+  /** 이 kind 의 floor (없으면 null — floor 없는 kind 는 항상 합격). */
+  floor: number | null
+  /** floor 미달 여부(densify 대상). floor 없으면 false. */
+  belowFloor: boolean
+  /** 비본문(표지/디바이더/마무리) 여부 — 밀도 평가 제외. */
+  isNonBody: boolean
+  /** 부족 사유 사람-읽기용 문자열(densify 지시문 시드). 합격 시 빈 배열. */
+  deficiencies: string[]
+}
+
+/**
+ * 한 slide body 의 밀도를 결정론적으로 채점한다(LLM·DOM 불필요).
+ * author 비평 루프(densify 재저작 판정)와 검증 스크립트(floor 단언)가 공유하는 단일 진실.
+ *
+ * floor 가 정의된 kind 만 belowFloor 판정 대상. composite 는 합산 항목수로 floor(=parts 합)를
+ * 따지되, 내부 part 중 floor 미달이 있으면 그 사유도 deficiencies 에 모은다.
+ */
+export function slideDensityScore(body: SlideSpec): DensityScore {
+  const kind = body.kind
+  const isNonBody = NON_BODY_KINDS.has(kind)
+  const itemCount = slideItemCount(body)
+
+  if (isNonBody) {
+    return { kind, itemCount, floor: null, belowFloor: false, isNonBody: true, deficiencies: [] }
+  }
+
+  const deficiencies: string[] = []
+
+  // composite — 내부 part 각각의 floor 위반을 모은다(주 컴포넌트가 sparse 한 경우 잡힘).
+  if (body.kind === 'composite') {
+    let anyBelow = false
+    for (const part of body.parts) {
+      const sub = slideDensityScore(part)
+      if (sub.belowFloor) {
+        anyBelow = true
+        deficiencies.push(...sub.deficiencies)
+      }
+    }
+    return {
+      kind,
+      itemCount,
+      floor: null,
+      belowFloor: anyBelow,
+      isNonBody: false,
+      deficiencies,
+    }
+  }
+
+  const floor = DENSITY_FLOORS[kind] ?? null
+
+  // curriculumMatrix — phase 수·phase 당 활동수 형태 제약 추가 점검.
+  if (body.kind === 'curriculumMatrix') {
+    if (body.phases.length < CURRICULUM_FLOOR.phases) {
+      deficiencies.push(
+        `커리큘럼 단계 ${body.phases.length}개 → 최소 ${CURRICULUM_FLOOR.phases}개로 늘려라`,
+      )
+    }
+    body.phases.forEach((ph, i) => {
+      if (ph.activities.length < CURRICULUM_FLOOR.activitiesPerPhase) {
+        deficiencies.push(
+          `'${ph.phase}'(${ph.weeks}) 활동 ${ph.activities.length}개 → 최소 ${CURRICULUM_FLOOR.activitiesPerPhase}개로 채워라 (셀 ${i + 1})`,
+        )
+      }
+    })
+  }
+
+  if (floor !== null && itemCount < floor) {
+    deficiencies.push(
+      `${KIND_ITEM_LABEL[kind] ?? '항목'} ${itemCount}개 → 최소 ${floor}개로 늘려라`,
+    )
+  }
+
+  return {
+    kind,
+    itemCount,
+    floor,
+    belowFloor: deficiencies.length > 0,
+    isNonBody: false,
+    deficiencies,
+  }
+}
+
+/** kind 별 "항목"의 사람-읽기용 이름(densify 지시문에 박는다). */
+const KIND_ITEM_LABEL: Partial<Record<SlideKind, string>> = {
+  coachDetailGrid: '코치',
+  curriculumMatrix: '커리큘럼 셀 항목(활동+산출물)',
+  kpiWithLogic: 'KPI',
+  strategyCanvas: '전략 존',
+  iconProcess: '프로세스 단계',
+  iconCardGrid: '카드',
+  milestoneTimeline: '마일스톤',
+  photoOrgGrid: '인물',
+  partnerLogoGrid: '파트너',
+  badgeRow: '실적 배지',
+  bigNumberHero: '보조 포인트',
+  annotatedImage: '주석',
+  evidenceBand: '근거 항목',
+  beforeAfter: 'Before/After 지표',
+}

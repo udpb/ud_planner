@@ -35,7 +35,9 @@ Agent({ subagent_type: "Explore", prompt: "..." })
 🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
 ## 활성 브리프
-- `DECK-3b-2-route-and-ui.md` — 🟡 in-progress (2026-06-04). API 라우트(`POST /api/projects/[id]/deck` 생성: gather→findWinningReference→authorDeck) + PDF 라우트(DeckSpec→build-worker-html(이미지 인라인)→워커→PDF) + 미리보기(클라 React)·다운로드 UI. **영속화 없음(v1, 마이그레이션 회피)**. 메인 E2E 검증: 실 프로젝트(계원예술대)→실 코퍼스 grounding→8장 덱 작동 확인(2026-06-04).
+- `DECK-4-density-critic.md` — 🟡 in-progress (2026-06-04). 밀도 비평 루프(sparse 슬라이드 densify) + 컴포넌트 세로 여백 축소. 사용자 "훨씬 빡빡하게". 이미지 placeholder 존은 plan 항목(이번 X).
+- `QUAL-THROTTLE-gather-backoff.md` — 🟡 in-progress (2026-06-04). gather 동시성 캡 + invokeAi 429 지수 백오프(rate-limit 버스트 제거).
+- `DECK-3b-2-route-and-ui.md` — ✅ 완료 (2026-06-04). API 라우트(`POST /api/projects/[id]/deck` 생성: gather→findWinningReference→authorDeck) + PDF 라우트(DeckSpec→build-worker-html(이미지 인라인)→워커→PDF) + 미리보기(클라 React)·다운로드 UI. **영속화 없음(v1, 마이그레이션 회피)**. 메인 E2E 검증: 실 프로젝트(계원예술대)→실 코퍼스 grounding→8장 덱 작동 확인(2026-06-04).
 - `DECK-3b-1-render-worker.md` — ✅ 완료 (2026-06-04). 렌더 워커 12/12 검증. **ADR-025 Phase 3b.** 별도 렌더 워커(`render-worker/`, 컨테이너): `POST /render {html}` → 16:9 PDF. Next/deck 의존 0(범용 HTML→PDF). 자급자족 fixture(`render-worker/fixtures/sample-deck.html` 8p)로 로컬 결정론 검증. 다음(3b-2): API 라우트(grounding→authorDeck→워커) + 미리보기/다운로드 UI.
 - `DECK-3a-author-slot-fidelity.md` — ✅ 완료 (2026-06-04). authorSlide per-kind 필드 예시 주입 + zod-error 1회 재시도 → **실 Gemini 스모크에서 1장→8장 완전 덱**(grounding 인용 정확). 메인 실측 검증.
 - `DECK-3-storyline-authoring.md` — ✅ 완료 (2026-06-01). **ADR-025 Phase 3.** 스펙↔렌더 계약(`DeckSpec` JSON → DECK-2 컴포넌트 → PDF) + 덱-우선 자동 저작(스토리라인 아키텍트 + 슬라이드별 저작, invokeAi + 유사 당선 덱 골격). 검증=fixture DeckSpec(JSON)→당선 밀도 PDF(결정론적). LLM 실행·앱 UI 배선은 DECK-3b(환경 가용 후).

@@ -63,5 +63,10 @@
 
 ## 🏁 다음 진입 한 줄
 **덱 파이프라인 전체 배선·검증 완료(DECK-1~3b-2).** 실 데이터 E2E 확인됨 — 실 프로젝트(계원예술대 세대융합)→gather 실코퍼스(148docs/2048청크)→authorDeck→8장 당선 덱(이 RFP 특화: 6주·해커톤). 렌더 워커(`render-worker/`)·API 라우트(`/api/projects/[id]/deck`·`/deck/pdf`)·미리보기/다운로드 UI(`DeckPanel`) 전부 작동.
-**다음**: ① **로컬 풀 클릭 E2E**(`cd render-worker && node server.mjs` + `npm run dev` → 프로젝트 화면 "덱 생성"→미리보기→PDF) ② **master 머지 + Cloud Run 워커 배포**(`RENDER_WORKER_URL`/`TOKEN`) → ud-planner 가시화 ③ **DECK-4**(밀도 비평 루프 — 코치수·셀 여백) ④ **gather throttle/백오프**(7섹션 병렬 임베딩이 rate-limit 버스트 유발) ⑤ DeckSpec 영속화(스키마 마이그레이션, DATA 브리프) ⑥ DATA-2(코치 실명·실수치 — 코퍼스는 이미 적재됨).
+**다음(진행 중)**: ③ **DECK-4 밀도 비평 루프** + ④ **gather throttle/백오프** → 그 뒤 **chrome extension 라이브 E2E**(사용자 지시 2026-06-04).
+**나머지**: ① 로컬/배포 클릭 E2E ② master 머지 + Cloud Run 워커 배포 → ud-planner 가시화 ⑤ DeckSpec 영속화(스키마 마이그레이션, DATA) ⑥ DATA-2(코치 실명·실수치 — 코퍼스 적재됨).
+
+### ⭐ 품질 목표 (사용자 피드백 2026-06-04 — plan 반영)
+- **슬라이드를 훨씬 빡빡하게** — 현재 셀 중앙 여백·보수적 항목수(코치 2명 등) 개선. 밀도 비평 루프가 sparse 슬라이드를 densify(항목·코치·셀 채움). DECK-4 핵심.
+- **이미지 placeholder 존** — 실 이미지가 못 들어가도 "이미지 들어갈 자리"(라벨된 영역)가 보이게. 컴포넌트에 image-zone 추가 + author/storyline이 적절한 슬라이드에 배치. (DECK-4 포함 또는 후속 — 당장 필수는 아님, plan 항목.)
 ⚠️ Gemini 키 `ud_planner`(끝 …lFYrIw): 선결제 소진→2026-06-04 충전 완료. 멀티 프로젝트 키 주의(소진 시 그 프로젝트 결제 확인). (author 실측: `scripts/_smoke-deck-e2e.ts` [projectId].)

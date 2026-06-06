@@ -467,6 +467,25 @@
   print-color-adjust: exact;
 }
 
+/* ══ DECK-4 (ADR-025 Phase 4) — 키 큰 컴포넌트 세로 여백 축소 ══
+   사용자 피드백(2026-06-04): 셀 중앙 여백이 커서 "반쯤 빈" 느낌. 키 큰 본문 컴포넌트
+   (coachDetailGrid·curriculumMatrix·strategyCanvas)의 카드/셀이 가용 높이를 채우도록
+   콘텐츠를 세로 분배한다(props 불변 — 스타일만, 하위호환). 디자인 킷 가드 유지:
+   호흡(여백)은 두되, "빈 절반"만 없앤다. 인라인 style 의 flex/justify 분배를 보강. */
+
+/* 코치/커리큘럼 셀이 최소한의 키를 갖게 해 한두 항목만 있어도 카드가 안 찌그러지게 */
+.ud-slide-canvas [data-block="coach-card"] {
+  min-height: 168px;
+}
+.ud-slide-canvas [data-block="curriculum-phase"] {
+  min-height: 220px;
+}
+/* 약력/활동 리스트 항목 사이 줄을 살짝 띄워 가용 높이를 흡수(공백을 줄간격으로 분산) */
+.ud-slide-canvas [data-block="coach-card"] li,
+.ud-slide-canvas [data-block="curriculum-phase"] li {
+  padding-block: 1px;
+}
+
 /* ── Section divider 슬라이드 (큰 번호 + 섹션명) ── */
 .ud-slide-canvas.ud-section-divider {
   background: var(--ud-dark);

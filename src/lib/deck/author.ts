@@ -29,6 +29,7 @@ import type { WinThemeDraft } from '@/lib/express/engine/win-theme'
 import type { WinningReference } from '@/lib/express/winning-reference'
 import {
   safeParseDeckSpec,
+  slideDensityScore,
   KIND_FIELD_SPEC,
   type DeckSpec,
   type DeckSlide,
@@ -172,6 +173,7 @@ ${catalog}
 - **본문 위주로 설계** — body 슬라이드를 최소 6개 이상 확보하라(섹션마다 1~2장). 본문이 핵심이다.
 - sectionDivider 는 **장 전환에만** 절제해서 사용(과다 금지 — 전체 0~3개). 본문 슬라이드를 디바이더로 대체하지 말 것.
 - 본문에는 리치 kind(strategyCanvas·curriculumMatrix·coachDetailGrid·kpiWithLogic·beforeAfter·composite 등)를 우선 선택해 밀도를 확보하라.
+- **밀도 최우선(2026-06-04 피드백)**: 셀이 반쯤 비면 안 된다. evidenceNeeds 에 "코치 4명 이상", "커리큘럼 6단계 각 활동 3개", "KPI 3개 이상", "전략 존 3개 이상"처럼 **채워야 할 최소 항목수**를 함께 명시해 빡빡한 슬라이드를 유도하라.
 
 JSON 만 출력:
 {"title":"...","channel":"B2G|B2B|renewal","slides":[
@@ -203,7 +205,12 @@ const SLOT_TASK = 'engine.section' // Flash
  * authorSlide 프롬프트 빌더 — 선택된 kind 의 **정확한 필드 계약(few-shot 예시 JSON)** 을 주입.
  * `fixHint` 가 있으면(=1차 zod 실패 후) 그 에러를 덧붙여 교정 재시도 프롬프트를 만든다.
  */
-function buildSlidePrompt(outline: SlideOutline, input: DeckAuthorInput, fixHint?: string): string {
+function buildSlidePrompt(
+  outline: SlideOutline,
+  input: DeckAuthorInput,
+  fixHint?: string,
+  densifyHint?: string,
+): string {
   // 선택된 kind 의 정확한 필드 형태(필드명·중첩·근거 3요소)를 1:1 유효 예시로 제시 → 키 누락 방지.
   const kindExample = KIND_FIELD_SPEC[outline.recommendedKind]
 
@@ -211,6 +218,15 @@ function buildSlidePrompt(outline: SlideOutline, input: DeckAuthorInput, fixHint
     ? `\n[⚠️ 직전 출력이 zod 검증에 실패했다 — 아래 오류를 정확히 고쳐 다시 출력하라]
 ${fixHint}
 - 누락/오타 필드명을 위 [필드 계약 예시] 의 키와 1:1 로 맞춰라. 임의 키 추가 금지.\n`
+    : ''
+
+  // DECK-4 densify 재저작 — 직전 출력이 밀도 floor 미달이면 부족 항목을 명시해 셀을 채우게 한다.
+  const densifyBlock = densifyHint
+    ? `\n[⚠️ 직전 출력이 너무 듬성하다(셀이 반쯤 빔) — 아래를 채워 다시 출력하라]
+${densifyHint}
+- 위 부족분을 **grounding 의 추가 사실·수치로** 채워라. **창작 금지** — grounding 에 없는 코치/숫자/사실을 지어내지 말 것.
+- 빈 칸·반쪽 셀이 없게 항목을 늘리되, 컴포넌트가 감당할 범위(예: coachDetailGrid columns 4 → 코치 4~8명, curriculum 6단계, kpis 3~4개, zones 3~4개) 안에서 빡빡하게 채워라.
+- 각 항목의 내용은 짧은 라벨이 아니라 한 줄 설명·근거를 포함해 실하게 만들어라.\n`
     : ''
 
   return `다음 슬라이드 아웃라인을 DeckSpec 슬라이드(JSON)로 채워라. component kind 는 "${outline.recommendedKind}".
@@ -231,7 +247,8 @@ ${kindExample}
 - 위 [필드 계약 예시] 의 **필드명·구조를 그대로** 쓰고 내용만 본 RFP·grounding 으로 교체하라. 필드명을 바꾸거나 누락하면 검증 실패한다.
 - 근거(evidence) 항목은 반드시 {"figure","proves","source"} 3요소 모두 포함(특히 proves 누락 금지). figure 는 grounding 에 있는 값만, 없으면 evidence 배열을 비워라(수치 창작 금지).
 - 근거 밴드의 source 는 실제 출처(기관·연도·문서). 이미지/사진/로고 경로는 placeholder('/design-kit/sample/...') 허용.
-- 표지/디바이더/마무리(cover·sectionDivider·closing)는 meta 없이 body 만, 본문 컴포넌트는 meta.kicker(섹션번호 라벨)+density:"dense" 권장.${fixBlock}
+- 표지/디바이더/마무리(cover·sectionDivider·closing)는 meta 없이 body 만, 본문 컴포넌트는 meta.kicker(섹션번호 라벨)+density:"dense" 권장.
+- **셀을 비우지 말고 채워라(밀도 우선)**: grounding 에 사실이 있는 한 항목을 가능한 많이(컴포넌트 상한까지) — 코치는 4명 이상, 커리큘럼은 단계마다 활동 3개+산출물, KPI·전략 존은 3개 이상. 단 grounding 에 없는 항목은 만들지 말 것(창작 금지).${fixBlock}${densifyBlock}
 
 JSON 만 출력 (위 예시와 동일한 DeckSlide 형태, 내용만 교체):`
 }
@@ -239,6 +256,8 @@ JSON 만 출력 (위 예시와 동일한 DeckSlide 형태, 내용만 교체):`
 export async function authorSlide(
   outline: SlideOutline,
   input: DeckAuthorInput,
+  /** DECK-4 densify 재저작 — 밀도 floor 미달 시 부족 항목 지시문(authorDeck 이 주입). */
+  densifyHint?: string,
 ): Promise<DeckSlide | null> {
   input.onProgress?.('slide', `슬라이드 저작: ${outline.actionTitle.slice(0, 30)}...`)
 
@@ -246,7 +265,7 @@ export async function authorSlide(
   // (무한 루프 금지 — attempt 0(최초) · 1(교정) 단 2회.)
   let fixHint: string | undefined
   for (let attempt = 0; attempt < 2; attempt++) {
-    const prompt = buildSlidePrompt(outline, input, fixHint)
+    const prompt = buildSlidePrompt(outline, input, fixHint, densifyHint)
     const r = await invokeAi({
       prompt,
       model: modelFor(SLOT_TASK),
@@ -290,10 +309,42 @@ export async function authorDeck(input: DeckAuthorInput): Promise<DeckSpec> {
   const storyline = await architectStoryline(input)
 
   // 슬라이드별 저작 — 순차(429 회피). 실패 슬라이드는 skip(부분 degrade).
+  // DECK-4 밀도 비평 루프: 저작 직후 결정론 밀도 측정(slideDensityScore) → floor 미달이면
+  // 부족 항목을 명시해 **densify 1회** 재저작. floor 충족·재시도 후 더 빡빡한 쪽을 채택.
+  // (bounded — 슬라이드당 densify 최대 1회. 무한 루프·토큰 폭주 금지.)
   const slides: DeckSlide[] = []
   for (const outline of storyline.slides) {
     const slide = await authorSlide(outline, input)
-    if (slide) slides.push(slide)
+    if (!slide) continue
+
+    const score = slideDensityScore(slide.body)
+    if (score.belowFloor) {
+      const densifyHint = score.deficiencies.map((d) => `- ${d}`).join('\n')
+      input.onProgress?.(
+        'densify',
+        `밀도 미달(${score.kind}, ${score.itemCount}개) → densify 재저작: ${outline.actionTitle.slice(0, 24)}...`,
+      )
+      log.info('deck', 'densify 재저작 (floor 미달)', {
+        kind: score.kind,
+        itemCount: score.itemCount,
+        floor: score.floor,
+        deficiencies: score.deficiencies,
+      })
+      const densified = await authorSlide(outline, input, densifyHint)
+      // 재저작이 성공하고 항목수가 늘었으면(또는 floor 충족) 채택, 아니면 원본 유지(degrade 방지).
+      if (densified) {
+        const after = slideDensityScore(densified.body)
+        const improved = !after.belowFloor || after.itemCount > score.itemCount
+        slides.push(improved ? densified : slide)
+        if (!improved) {
+          log.warn('deck', 'densify 후에도 floor 미달·개선 없음 → 원본 채택', { kind: score.kind })
+        }
+      } else {
+        slides.push(slide) // 재저작 실패 → 원본 유지
+      }
+    } else {
+      slides.push(slide)
+    }
   }
 
   if (slides.length === 0) {
