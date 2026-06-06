@@ -25,6 +25,7 @@ import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import Link from 'next/link'
 import { Sparkles } from 'lucide-react'
+import { DeckPanel } from '@/components/deck/DeckPanel'
 // Wave V / F0 (ADR-015) — Feature flag + 5 Stage 통합 페이지
 import { isExpressParadigmV3 } from '@/lib/feature-flags'
 import { loadExpressInitialProps } from '@/lib/express/load-express-props'
@@ -793,6 +794,15 @@ export default async function ProjectDetailPage({
 
       </div>
       )}
+
+      {/* 제안 덱 (HTML→PDF) — DECK-3b-2 (ADR-025). v3/비v3 무관 항상 노출(최소 침습). */}
+      <div className="border-t p-6">
+        <DeckPanel
+          projectId={project.id}
+          projectName={project.name}
+          hasRfp={!!project.rfpParsed}
+        />
+      </div>
     </div>
   )
 }
