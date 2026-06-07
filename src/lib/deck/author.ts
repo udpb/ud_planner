@@ -27,6 +27,7 @@ import { log } from '@/lib/logger'
 import type { EngineInput, EvidencePool } from '@/lib/express/engine/types'
 import type { WinThemeDraft } from '@/lib/express/engine/win-theme'
 import type { WinningReference } from '@/lib/express/winning-reference'
+import type { PipelineContext } from '@/lib/pipeline-context'
 import {
   safeParseDeckSpec,
   slideDensityScore,
@@ -50,6 +51,12 @@ export interface DeckAuthorInput {
   winningReference?: WinningReference | null
   /** 언더독스 트랙레코드(실적·코치풀 등) — 표지/실적/코치 슬라이드 근거. */
   trackRecord?: string
+  /**
+   * DECK-5 (ADR-026) — 누적 기획(PipelineContext). **optional, 가산**.
+   * 있으면 커리큘럼·코치·예산·임팩트 슬라이드를 **실제 기획 산출물**(우선 근거)로 채운다.
+   * 없으면 기존 동작(EngineInput + EvidencePool)을 그대로 유지한다.
+   */
+  pipeline?: PipelineContext | null
   /** 진행 콜백 (CLI/스트리밍). */
   onProgress?: (step: string, detail: string) => void
 }
@@ -107,6 +114,114 @@ export const COMPONENT_CATALOG: Record<SlideKind, string> = {
 }
 
 // ─────────────────────────────────────────
+// DECK-5 (ADR-026) — 누적 기획(PipelineContext) → 사실 블록 (우선 근거)
+// 빈 슬라이스는 graceful 생략(블록 미생성). 수치 창작 금지 — 제공된 값만.
+// ─────────────────────────────────────────
+
+/** 커리큘럼 슬라이스 → curriculumMatrix 근거 (주차·세션·Action Week). */
+function pipelineCurriculumBlock(ctx: PipelineContext): string | null {
+  const c = ctx.curriculum
+  if (!c || c.sessions.length === 0) return null
+  const lines: string[] = ['[기획 — 확정 커리큘럼 (우선 근거: curriculumMatrix)]']
+  for (const s of c.sessions.slice(0, 16)) {
+    const tags: string[] = []
+    if (s.isActionWeek) tags.push('Action Week')
+    if (s.isTheory) tags.push('이론')
+    if (s.isCoaching1on1) tags.push('1:1코칭')
+    const tag = tags.length ? ` [${tags.join('·')}]` : ''
+    const moduleTag = s.impactModuleCode ? ` / IMPACT:${s.impactModuleCode}` : ''
+    lines.push(`  - ${s.sessionNo}회차: ${s.title} (${s.durationHours}h)${tag}${moduleTag}`)
+  }
+  if (c.designRationale) lines.push(`  설계 근거: ${c.designRationale.slice(0, 240)}`)
+  return lines.join('\n')
+}
+
+/** 코치 슬라이스 → coachDetailGrid 근거 (실명·역할·시수·사례비). */
+function pipelineCoachesBlock(ctx: PipelineContext): string | null {
+  const co = ctx.coaches
+  if (!co || co.assignments.length === 0) return null
+  const lines: string[] = [
+    `[기획 — 확정 코치진 ${co.assignments.length}명 (우선 근거: coachDetailGrid)]`,
+  ]
+  for (const a of co.assignments.slice(0, 8)) {
+    const hours = a.totalHours ?? a.sessions * a.hoursPerSession
+    const reason = co.recommendationReasons[a.coachId]
+    lines.push(
+      `  - ${a.coachName ?? '(코치 미상)'} (${a.role}) — ${a.sessions}회·${hours}h${
+        reason ? ` / ${reason.slice(0, 80)}` : ''
+      }`,
+    )
+  }
+  return lines.join('\n')
+}
+
+/** 예산 슬라이스 → 예산/kpi 근거 (구조·마진·SROI). */
+function pipelineBudgetBlock(ctx: PipelineContext): string | null {
+  const b = ctx.budget
+  if (!b) return null
+  const s = b.structure
+  const lines: string[] = ['[기획 — 확정 예산 (우선 근거: kpiWithLogic/예산 슬라이드)]']
+  lines.push(
+    `  - 직접비(PC) ${s.pcTotal.toLocaleString()}원 / 간접비(AC) ${s.acTotal.toLocaleString()}원 / 마진 ${(b.marginRate * 100).toFixed(1)}%`,
+  )
+  for (const item of s.items.slice(0, 8)) {
+    lines.push(`    • [${item.wbsCode}] ${item.name}: ${item.amount.toLocaleString()}원`)
+  }
+  if (b.sroiForecast) {
+    lines.push(
+      `  - SROI 예측: 총가치 ${b.sroiForecast.totalValueKrw.toLocaleString()}원 / 비율 ${b.sroiForecast.ratio.toFixed(2)}`,
+    )
+  }
+  return lines.join('\n')
+}
+
+/** 임팩트 슬라이스 → 임팩트 슬라이드 근거 (Logic Model 5계층). */
+function pipelineImpactBlock(ctx: PipelineContext): string | null {
+  const imp = ctx.impact
+  if (!imp) return null
+  const lm = imp.logicModel
+  const lines: string[] = ['[기획 — 확정 임팩트 (우선 근거: beforeAfter/임팩트 슬라이드)]']
+  if (imp.goal || lm.impactGoal) lines.push(`  - 임팩트 목표: ${imp.goal || lm.impactGoal}`)
+  const layers: Array<[string, typeof lm.impact]> = [
+    ['Impact', lm.impact],
+    ['Outcome', lm.outcome],
+    ['Output', lm.output],
+    ['Activity', lm.activity],
+    ['Input', lm.input],
+  ]
+  for (const [label, items] of layers) {
+    if (items.length === 0) continue
+    const txt = items
+      .slice(0, 4)
+      .map((it) => `[${it.id}] ${it.text}${it.estimatedValue ? `(${it.estimatedValue})` : ''}`)
+      .join(' · ')
+    lines.push(`  - ${label}: ${txt}`)
+  }
+  return lines.join('\n')
+}
+
+/**
+ * PipelineContext 사실 블록 전체 — 비어 있으면 빈 문자열.
+ * groundingBlock 에 append 되어 슬롯 채움 시 **우선 근거**로 인용된다.
+ */
+function pipelineGroundingBlock(input: DeckAuthorInput): string {
+  const ctx = input.pipeline
+  if (!ctx) return ''
+  const blocks = [
+    pipelineCurriculumBlock(ctx),
+    pipelineCoachesBlock(ctx),
+    pipelineBudgetBlock(ctx),
+    pipelineImpactBlock(ctx),
+  ].filter((b): b is string => !!b)
+  if (blocks.length === 0) return ''
+  return [
+    '',
+    '[누적 기획 (PipelineContext) — **슬라이드의 우선 근거**. 코퍼스보다 우선 인용. 여기 없는 단계는 생략 또는 "가안" 표시. 수치 창작 금지.]',
+    ...blocks,
+  ].join('\n')
+}
+
+// ─────────────────────────────────────────
 // grounding → 프롬프트 블록 (사실만 — 발명 금지)
 // ─────────────────────────────────────────
 function groundingBlock(input: DeckAuthorInput): string {
@@ -130,20 +245,38 @@ function groundingBlock(input: DeckAuthorInput): string {
   }
   if (input.trackRecord) lines.push(`[트랙레코드] ${input.trackRecord.slice(0, 600)}`)
   if (input.winningReference?.promptBlock) lines.push(input.winningReference.promptBlock.slice(0, 1600))
+  // DECK-5 (ADR-026): 누적 기획 사실(우선 근거)을 grounding 끝에 append. 비면 영향 없음.
+  const planning = pipelineGroundingBlock(input)
+  if (planning) lines.push(planning)
   return lines.join('\n')
 }
 
-/** evidence 풀을 "수치 후보" 텍스트로 요약 — authorSlide 가 근거 밴드에 인용(창작 금지). */
+/**
+ * evidence 풀을 "수치 후보" 텍스트로 요약 — authorSlide 가 근거 밴드에 인용(창작 금지).
+ * DECK-5 (ADR-026): pipeline 사실(우선 근거)이 있으면 **앞에** 붙여 슬롯이 실데이터로 채워지게 한다.
+ * pipeline 없으면 기존 동작(EvidencePool only) 그대로.
+ */
 function evidenceBlock(input: DeckAuthorInput, section?: string): string {
   const chunks =
     section && input.evidence.bySection.get(section as never)
       ? input.evidence.bySection.get(section as never)!
       : [...input.evidence.bySection.values()].flat()
-  if (!chunks.length) return '(인용 가능한 evidence 청크 없음 — 수치 창작 금지, 제공된 사실만 사용)'
-  return chunks
-    .slice(0, 6)
-    .map((c, i) => `  ${i + 1}. ${String((c as { text?: string }).text ?? '').slice(0, 240)}`)
-    .join('\n')
+  const corpus = chunks.length
+    ? chunks
+        .slice(0, 6)
+        .map((c, i) => `  ${i + 1}. ${String((c as { text?: string }).text ?? '').slice(0, 240)}`)
+        .join('\n')
+    : ''
+
+  const planning = pipelineGroundingBlock(input)
+  if (planning) {
+    // 기획 우선 → 코퍼스는 보조(차별화·헤드라인). 둘 다 없으면 비움(창작 금지).
+    const parts = [planning.trim()]
+    if (corpus) parts.push('[보조 근거 — 당선 코퍼스 (차별화·헤드라인 톤만)]\n' + corpus)
+    return parts.join('\n\n')
+  }
+  if (!corpus) return '(인용 가능한 evidence 청크 없음 — 수치 창작 금지, 제공된 사실만 사용)'
+  return corpus
 }
 
 // ─────────────────────────────────────────
@@ -166,6 +299,7 @@ ${groundingBlock(input)}
 ${catalog}
 
 [지침]
+- **기획-우선(ADR-026)**: grounding 의 "[누적 기획 (PipelineContext)]" 블록이 있으면 **그 실제 데이터로** 슬라이드를 설계하라(커리큘럼→curriculumMatrix, 코치→coachDetailGrid, 예산→kpiWithLogic, 임팩트→beforeAfter). 기획에 **없는 단계**는 슬라이드를 생략하거나 "가안"으로 표시하라(없는 단계를 코퍼스로 지어내지 말 것). 코퍼스는 차별화·헤드라인 톤 보조에만.
 - 수평 논리: 표지(cover) → 섹션별 본문(body) 1~N → 마무리(closing). 유사 당선 덱 골격을 미러링하되 본 RFP 로 채운다.
 - 본문 슬라이드는 제안서 7섹션('1'~'7') 중 하나에 연결(section). 액션 타이틀은 주장형(예: "...로 ...을 좁힙니다").
 - 각 슬라이드의 recommendedKind 를 카탈로그에서 고르고, evidenceNeeds(인용할 수치 유형)를 명시.
@@ -237,7 +371,7 @@ so-what: ${outline.soWhat}
 연결 섹션: ${outline.section ?? '(비본문)'}
 근거 요건: ${outline.evidenceNeeds.join(' / ')}
 
-[grounding — 인용 가능한 사실/수치 (창작 금지)]
+[grounding — 인용 가능한 사실/수치 (창작 금지). "[누적 기획]" 블록이 있으면 그 값을 **최우선**으로 슬롯에 채워라(코퍼스는 보조).]
 ${evidenceBlock(input, outline.section)}
 
 [필드 계약 예시 — kind="${outline.recommendedKind}" 는 정확히 이 필드 형태(필드명·중첩·필수 키)를 따라야 한다]

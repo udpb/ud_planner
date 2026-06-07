@@ -20,6 +20,8 @@ import { ChannelSchema } from '@/lib/express/schema'
 import { gather } from '@/lib/express/engine/gather'
 import { findWinningReference } from '@/lib/express/winning-reference'
 import { authorDeck } from '@/lib/deck/author'
+import { buildPipelineContext } from '@/lib/pipeline-context'
+import type { PipelineContext } from '@/lib/pipeline-context'
 import type { Channel } from '@/lib/express/schema'
 import type { EngineInput } from '@/lib/express/engine/types'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
@@ -58,6 +60,30 @@ function resolveChannel(
  */
 const UD_TRACK_RECORD =
   '언더독스: 실전 창업교육 10년, 누적 육성 창업가 20,211명, 코치풀 715명, 누적 매출 약 480억.'
+
+/**
+ * DECK-5 (ADR-026) — preflight 경고. 빈 슬라이스는 graceful(생략/가안)이지만,
+ * PM 에게 "이 슬라이드는 가안/생략" 임을 알려 신뢰도 착시를 막는다. 하드 게이트 아님(소프트).
+ */
+function computeDeckWarnings(pipeline: PipelineContext | null): string[] {
+  if (!pipeline) {
+    return ['기획 데이터(커리큘럼·코치·예산·임팩트)를 불러오지 못해 RFP·코퍼스 근거로만 생성됩니다 — 가안.']
+  }
+  const warnings: string[] = []
+  if (!pipeline.curriculum || pipeline.curriculum.sessions.length === 0) {
+    warnings.push('커리큘럼 미작성 — 커리큘럼 슬라이드는 가안입니다.')
+  }
+  if (!pipeline.coaches || pipeline.coaches.assignments.length === 0) {
+    warnings.push('코치 미배정 — 코치진 슬라이드는 가안입니다.')
+  }
+  if (!pipeline.budget) {
+    warnings.push('예산 미작성 — 예산 슬라이드는 가안 또는 생략됩니다.')
+  }
+  if (!pipeline.impact) {
+    warnings.push('임팩트 미작성 — 임팩트 슬라이드는 가안 또는 생략됩니다.')
+  }
+  return warnings
+}
 
 export async function POST(req: NextRequest, { params }: Params) {
   const { id } = await params
@@ -108,7 +134,7 @@ export async function POST(req: NextRequest, { params }: Params) {
       pmInputs: null,
     }
 
-    // ① grounding: 섹션별·과업별 evidence 풀 (당선 코퍼스 검색)
+    // ① grounding: 섹션별·과업별 evidence 풀 (당선 코퍼스 검색 — 보조 근거)
     const evidence = await gather(engine)
 
     // ② 유사 당선 덱 골격 (storyline 미러링용 — 없어도 graceful)
@@ -116,15 +142,21 @@ export async function POST(req: NextRequest, { params }: Params) {
       channel: channel as 'B2G' | 'B2B' | 'renewal',
     }).catch(() => null)
 
-    // ③ 덱-우선 저작 → 검증된 DeckSpec
+    // ③ DECK-5 (ADR-026): 누적 기획(PipelineContext) — **우선 근거**. fail-safe(null 폴백).
+    //    있으면 author 가 실 커리큘럼·코치·예산·임팩트로 슬라이드를 채운다. 없으면 기존 동작.
+    const pipeline = await buildPipelineContext(id).catch(() => null)
+    const warnings = computeDeckWarnings(pipeline)
+
+    // ④ 덱-우선 저작 → 검증된 DeckSpec
     const deckSpec = await authorDeck({
       engine,
       evidence,
       winningReference,
+      pipeline,
       trackRecord: UD_TRACK_RECORD,
     })
 
-    return NextResponse.json({ ok: true, deckSpec })
+    return NextResponse.json({ ok: true, deckSpec, warnings })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('[/api/projects/[id]/deck] error:', msg)

@@ -18,6 +18,7 @@ import { ResearchPanel } from '@/components/projects/research-panel'
 import { StrategyPanel } from '@/components/projects/strategy-panel'
 import type { PipelineContext } from '@/lib/pipeline-context'
 import { sectionLabel } from '@/lib/eval-strategy'
+import { DeckPanel } from '@/components/deck/DeckPanel'
 
 /* ───────────────────────────────────────── 상수 ── */
 
@@ -109,6 +110,9 @@ interface Props {
   initialSections: ProposalSection[]
   evalCriteria: Array<{ item: string; score: number; notes: string }>
   pipelineContext?: PipelineContext | null
+  /** DECK-5 (ADR-026): 덱 생성(흐름 끝)용 — 프로젝트명·RFP 파싱 여부. */
+  projectName?: string
+  hasRfp?: boolean
 }
 
 /* ─────────────────────────────── 자동 리사이즈 Hook ── */
@@ -130,7 +134,7 @@ function useAutoResize(value: string) {
 
 export function StepProposal({
   projectId, hasLogicModel, initialSections, evalCriteria,
-  pipelineContext,
+  pipelineContext, projectName, hasRfp,
 }: Props) {
   const [sections, setSections] = useState<ProposalSection[]>(initialSections)
   const [loadingSection, setLoadingSection] = useState<number | null>(null)
@@ -759,6 +763,20 @@ export function StepProposal({
           })}
         </div>
       )}
+
+      {/* ── DECK-5 (ADR-026): 제안 덱 — 흐름의 최종 산출물 ──
+          누적 기획(PipelineContext)을 소비해 덱을 생성한다. 소프트(하드 게이트 없음):
+          기획이 비면 가안/생략 경고만. hasRfp 미지정 시 pipelineContext.rfp 로 폴백. */}
+      <div className="border-t pt-4">
+        <p className="mb-2 text-xs text-muted-foreground">
+          기획(커리큘럼·코치·예산·임팩트)을 종합해 제안 덱을 생성합니다. 흐름의 마지막 산출물입니다.
+        </p>
+        <DeckPanel
+          projectId={projectId}
+          projectName={projectName}
+          hasRfp={hasRfp ?? !!pipelineContext?.rfp}
+        />
+      </div>
 
       {/* Back nav */}
       <Button variant="ghost" size="sm" className="gap-1.5"

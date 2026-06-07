@@ -25,7 +25,6 @@ import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import Link from 'next/link'
 import { Sparkles } from 'lucide-react'
-import { DeckPanel } from '@/components/deck/DeckPanel'
 // Wave V / F0 (ADR-015) — Feature flag + 5 Stage 통합 페이지
 import { isExpressParadigmV3 } from '@/lib/feature-flags'
 import { loadExpressInitialProps } from '@/lib/express/load-express-props'
@@ -451,6 +450,8 @@ export default async function ProjectDetailPage({
             initialSections: project.proposalSections as any,
             evalCriteria: (project.rfpParsed as any)?.evalCriteria ?? [],
             pipelineContext: context ?? undefined,
+            projectName: project.name,
+            hasRfp: !!project.rfpParsed,
           }}
           coachSummary={{
             count: project.coachAssignments.length,
@@ -781,6 +782,8 @@ export default async function ProjectDetailPage({
               initialSections={project.proposalSections as any}
               evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
               pipelineContext={context}
+              projectName={project.name}
+              hasRfp={!!project.rfpParsed}
             />
             {pmGuide && (
               <PmGuidePanel
@@ -795,14 +798,8 @@ export default async function ProjectDetailPage({
       </div>
       )}
 
-      {/* 제안 덱 (HTML→PDF) — DECK-3b-2 (ADR-025). v3/비v3 무관 항상 노출(최소 침습). */}
-      <div className="border-t p-6">
-        <DeckPanel
-          projectId={project.id}
-          projectName={project.name}
-          hasRfp={!!project.rfpParsed}
-        />
-      </div>
+      {/* DECK-5 (ADR-026): 덱 생성은 흐름의 끝(제안서 스텝 StepProposal)으로 이동.
+          독립 패널 제거 — 덱은 누적 기획을 소비하는 최종 산출물. */}
     </div>
   )
 }
