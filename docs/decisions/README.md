@@ -49,6 +49,7 @@
 | [023](023-gemini-only-genai-sdk.md) | **Accepted** | LLM = **Gemini 단일화** + `@google/genai` SDK 마이그레이션 (Claude 제거 · 네이티브 구조화출력 · thinking) |
 | [024](024-slide-composition-v2.md) | **Proposed** (부분 superseded by 025 — OOXML은 보조 편집 export로 강등, 레이아웃/밀도 원칙은 HTML 컴포넌트로 계승) | 슬라이드 합성 모델 v2 — 레이아웃 아키타입 + 고밀도(당선 109덱) + detail/근거 레이어 |
 | [025](025-deck-first-html-substrate.md) | **Proposed** | 덱-우선 저작 + HTML 렌더 기질(→고해상 PDF) + 리치 컴포넌트 어휘 + 슬라이드별 비평 루프 (출력 20-30% 천장 구조 전환) |
+| [026](026-deck-as-planning-culmination.md) | **Proposed** | 덱 = 기획의 최종 산출물 — PipelineContext(커리큘럼·코치·예산·임팩트) 소비 + 흐름의 마지막(제안서 스텝)에 배치 (렌더 파이프라인은 재사용, author 입력·UI 위치만 변경) |
 
 ## 다음 ADR 후보 (예정)
 - ~~ADR-021 단일 엔진~~ → **작성됨 (Proposed, 2026-06-01)**
