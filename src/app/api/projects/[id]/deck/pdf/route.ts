@@ -1,14 +1,11 @@
 /**
- * POST /api/projects/[id]/deck/pdf — DeckSpec → 워커 렌더 → PDF 다운로드 (DECK-3b-2, ADR-025 Phase 3b)
+ * POST /api/projects/[id]/deck/pdf — DeckSpec → 워커 렌더 → PDF 다운로드 (DECK-3b, ADR-025 Phase 3b)
  *
- * 클라가 보관한 DeckSpec(생성 라우트 반환)을 body 로 받아 PDF 로 렌더해 스트리밍한다.
- *   deckSpec → deckSpecToElements → buildWorkerHtml(이미지 data URI 인라인, file:// 0)
- *           → renderViaWorker(별도 렌더 워커) → application/pdf attachment.
+ * 클라가 보관한 DeckSpec(생성 라우트 반환)을 body 로 받아 워커가 PDF 로 렌더 → 스트리밍.
+ *   deckSpec(JSON) → renderDeckViaWorker(워커 /render-deck: React→HTML→chromium) → application/pdf.
  *
- * 렌더는 **워커에서만**(Next 앱은 chromium 안 띄움 — ADR-025 §1).
- *
- * ⚠️ buildWorkerHtml 은 buildDeckHtml(내부 renderToStaticMarkup) 호출 → Node 런타임 필수.
- *    `export const runtime = 'nodejs'` 명시(브리프 §4 RSC 주의).
+ * ⚠️ 렌더(react-dom/server)는 **워커에서만**. Next App Router 는 앱 번들에 react-dom/server
+ *    import 를 빌드 차단하므로, 앱은 DeckSpec(JSON)만 워커로 넘긴다 (DECK-3b-3).
  */
 
 import { NextRequest, NextResponse } from 'next/server'
