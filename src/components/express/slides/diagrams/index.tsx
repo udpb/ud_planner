@@ -1,6 +1,6 @@
-'use client'
 /**
  * Diagram Pattern Library — Phase N3 (2026-05-29)
+ * (server-safe: 'use client' 제거 — 순수 presentational. DECK-3b RSC fix)
  *
  * 8 핵심 도식화 패턴. 모두 디자인 시스템 (Action Orange · NanumHuman · 8pt grid · radius 0) 준수.
  *

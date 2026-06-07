@@ -14,10 +14,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requireProjectAccess } from '@/lib/auth-helpers'
-import { deckSpecToElements } from '@/lib/deck/render-spec'
-import { buildWorkerHtml } from '@/lib/deck/build-worker-html'
-import { renderViaWorker } from '@/lib/deck/worker-client'
+import { renderDeckViaWorker } from '@/lib/deck/worker-client'
 import { safeParseDeckSpec } from '@/lib/deck/spec'
+
+// ⚠️ 렌더(React→HTML, react-dom/server)는 **워커**가 수행한다. Next App Router 는
+//    react-dom/server import 를 빌드 차단하므로 앱은 DeckSpec(JSON)만 워커로 넘긴다.
+//    (build-worker-html/render-spec 을 여기서 import 하면 전체 앱 빌드 에러.)
 
 export const runtime = 'nodejs'
 export const maxDuration = 120
@@ -57,12 +59,8 @@ export async function POST(req: NextRequest, { params }: Params) {
       )
     }
 
-    // DeckSpec → React 엘리먼트 → 워커 전송용 자체완결 HTML(file:// 0)
-    const elements = deckSpecToElements(probe.deck)
-    const html = buildWorkerHtml(elements)
-
-    // 워커 렌더 → PDF
-    const { pdf } = await renderViaWorker(html)
+    // DeckSpec(JSON) → 워커가 React→HTML→chromium 렌더 → PDF (앱은 react-dom/server 미사용)
+    const { pdf } = await renderDeckViaWorker(probe.deck)
 
     const safeName = (parsed.data.filename ?? 'deck').replace(/[^\w가-힣\-]+/g, '_').slice(0, 80)
     const encoded = encodeURIComponent(`${safeName}.pdf`)

@@ -66,3 +66,44 @@ export async function renderViaWorker(html: string): Promise<RenderViaWorkerResu
   }
   return { pdf: buf, contentType }
 }
+
+/**
+ * DeckSpec(JSON)을 워커로 보내 PDF 를 받는다 — **렌더(React→HTML→chromium)를 워커가 수행**.
+ * Next App Router 는 `react-dom/server` import 를 빌드 차단하므로, 앱은 DeckSpec(JSON)만 넘기고
+ * HTML 생성은 워커의 deck-render 번들이 한다. (ADR-025 §1 — 렌더는 워커에서만.)
+ * 계약: POST `${RENDER_WORKER_URL}/render-deck` body `{ deckSpec }` → `application/pdf`.
+ */
+export async function renderDeckViaWorker(deckSpec: unknown): Promise<RenderViaWorkerResult> {
+  const base = (process.env.RENDER_WORKER_URL || DEFAULT_WORKER_URL).replace(/\/$/, '')
+  const url = `${base}/render-deck`
+  const token = process.env.RENDER_WORKER_TOKEN ?? ''
+
+  let res: Response
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'X-Render-Token': token },
+      body: JSON.stringify({ deckSpec }),
+    })
+  } catch (e) {
+    throw new Error(
+      `[worker-client] 렌더 워커(${url}) 연결 실패 — 워커 미기동/네트워크: ${
+        e instanceof Error ? e.message : String(e)
+      }`,
+    )
+  }
+  if (!res.ok) {
+    let detail = `${res.status} ${res.statusText}`
+    try {
+      const body = await res.json()
+      if (body?.error) detail = `${res.status} ${body.error}`
+    } catch {
+      /* non-JSON */
+    }
+    throw new Error(`[worker-client] 렌더 워커 오류: ${detail}`)
+  }
+  const contentType = res.headers.get('content-type') ?? 'application/pdf'
+  const buf = Buffer.from(await res.arrayBuffer())
+  if (buf.length === 0) throw new Error('[worker-client] 렌더 워커가 빈 응답 반환')
+  return { pdf: buf, contentType }
+}

@@ -1,6 +1,6 @@
-'use client'
 /**
  * SlideShell — 16:9 슬라이드 컨테이너 (Phase M2)
+ * (server-safe: 'use client' 제거 — 순수 presentational, 서버 renderToStaticMarkup(덱 PDF)+클라 미리보기 양쪽. DECK-3b RSC fix)
  *
  * 모든 슬라이드 변형이 이 shell 안에 들어간다.
  * head (로고 + page number) · main (children) · foot (페이지 카운터)
