@@ -4,8 +4,14 @@
 // The Next route (DECK-3b-2) builds the deck HTML and POSTs it here.
 //
 // Endpoints:
-//   POST /render   { html, width?=1280, height?=720, format?:'pdf'|'png'='pdf' } -> binary PDF/PNG
-//   GET  /healthz  -> 200 { ok: true }
+//   POST /render        { html, width?=1280, height?=720, format?:'pdf'|'png'='pdf' } -> binary PDF/PNG
+//   POST /render-deck   { deckSpec }  -> binary PDF  (worker renders DeckSpec JSON -> self-contained
+//                       HTML via the esbuild bundle deck-render.bundle.mjs, then HTML -> PDF)
+//   GET  /healthz       -> 200 { ok: true }
+//
+// WHY /render-deck (DECK-3b-3, ADR-025): Next 16 App Router HARD-BLOCKS importing react-dom/server in
+// the app bundle, so DeckSpec->HTML (renderToStaticMarkup) cannot run in the Next route. The Next app
+// POSTs the DeckSpec JSON here; the WORKER turns it into HTML (Next-independent bundle) then PDF.
 //
 // Chromium is launched ONCE and reused (new context+page per request).
 // Auth: if RENDER_WORKER_TOKEN env is set, require matching X-Render-Token header (401 otherwise).
@@ -21,6 +27,21 @@ const REQUEST_TIMEOUT_MS = Number(process.env.RENDER_TIMEOUT_MS) || 60_000;
 const MAX_CONCURRENCY = Number(process.env.RENDER_CONCURRENCY) || 3; // chromium memory cap
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
+
+// ---- deck-render bundle (lazy, cached) ----
+// deck-render.bundle.mjs is the esbuild bundle of the Next app's deck render code (DeckSpec -> HTML).
+// Built by build-deck-render.mjs and COMMITTED; the worker dynamic-imports it on first /render-deck.
+/** @type {((deckSpec: unknown) => string) | null} */
+let deckSpecToSelfContainedHtml = null;
+async function getDeckRenderer() {
+  if (deckSpecToSelfContainedHtml) return deckSpecToSelfContainedHtml;
+  const mod = await import(new URL('./deck-render.bundle.mjs', import.meta.url));
+  if (typeof mod.deckSpecToSelfContainedHtml !== 'function') {
+    throw new Error('deck-render bundle missing deckSpecToSelfContainedHtml export — rebuild it (node build-deck-render.mjs)');
+  }
+  deckSpecToSelfContainedHtml = mod.deckSpecToSelfContainedHtml;
+  return deckSpecToSelfContainedHtml;
+}
 
 // ---- shared browser (launched once, reused) ----
 /** @type {import('playwright').Browser | null} */
@@ -118,6 +139,29 @@ export async function render({ html, width = DEFAULT_WIDTH, height = DEFAULT_HEI
   }
 }
 
+/**
+ * Render a DeckSpec (JSON) to a PDF buffer: DeckSpec -> self-contained HTML (esbuild bundle) -> PDF.
+ * Reuses the exact same HTML->PDF path as /render (the shared `render` fn above).
+ * @param {{ deckSpec: unknown }} opts
+ * @returns {Promise<{ buffer: Buffer, contentType: string }>}
+ */
+export async function renderDeck({ deckSpec }) {
+  if (deckSpec === undefined || deckSpec === null) {
+    throw Object.assign(new Error('deckSpec is required'), { statusCode: 400 });
+  }
+  const toHtml = await getDeckRenderer();
+  let html;
+  try {
+    html = toHtml(deckSpec); // throws { statusCode: 400 } on invalid DeckSpec (zod)
+  } catch (err) {
+    // Bad DeckSpec -> 400 (don't surface as a 500). Bundle/load failures keep their own status.
+    const statusCode = err && err.statusCode ? err.statusCode : 400;
+    throw Object.assign(new Error(err && err.message ? err.message : 'invalid deckSpec'), { statusCode });
+  }
+  // DeckSpec decks are fixed 16:9 1280x720 (1 slide = 1 page); PDF only (no png for /render-deck).
+  return render({ html, format: 'pdf' });
+}
+
 // ---- http helpers ----
 function sendJson(res, status, obj) {
   const body = JSON.stringify(obj);
@@ -173,6 +217,32 @@ async function handle(req, res) {
         if (!res.headersSent) sendJson(res, 504, { error: 'render timeout' });
       }, REQUEST_TIMEOUT_MS);
       const { buffer, contentType } = await render(payload);
+      clearTimeout(timeout);
+      if (res.headersSent) return; // timed out already
+      res.writeHead(200, { 'Content-Type': contentType, 'Content-Length': buffer.length });
+      return res.end(buffer);
+    } catch (err) {
+      const status = err && err.statusCode ? err.statusCode : 500;
+      if (!res.headersSent) return sendJson(res, status, { error: err.message || 'render failed' });
+      return;
+    }
+  }
+
+  if (req.method === 'POST' && url.pathname === '/render-deck') {
+    if (!authorized(req)) return sendJson(res, 401, { error: 'unauthorized' });
+    let payload;
+    try {
+      const raw = await readBody(req);
+      payload = JSON.parse(raw.toString('utf8'));
+    } catch (err) {
+      const status = err && err.statusCode ? err.statusCode : 400;
+      return sendJson(res, status, { error: err.message || 'invalid request body' });
+    }
+    try {
+      const timeout = setTimeout(() => {
+        if (!res.headersSent) sendJson(res, 504, { error: 'render timeout' });
+      }, REQUEST_TIMEOUT_MS);
+      const { buffer, contentType } = await renderDeck(payload);
       clearTimeout(timeout);
       if (res.headersSent) return; // timed out already
       res.writeHead(200, { 'Content-Type': contentType, 'Content-Length': buffer.length });

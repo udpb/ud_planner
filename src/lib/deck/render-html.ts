@@ -18,8 +18,12 @@ import { pathToFileURL } from 'node:url'
 import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-const REPO_ROOT = path.resolve(__dirname, '..', '..', '..')
-const PUBLIC_DIR = path.join(REPO_ROOT, 'public')
+// 자산 루트 env (DECK-3b-3): 이 모듈은 esbuild 번들로 워커(plain node)에 들어갈 수 있다. 그 경우
+// `__dirname` 은 번들 위치(render-worker/)이라 레포 상대 경로가 깨진다. 워커는 public/src/styles 를
+// COPY 한 뒤 DECK_ASSETS_DIR(=public) 와 DECK_REPO_ROOT(=레포 루트) 를 env 로 주입한다.
+// 미설정 시 기존 동작(레포 public·src/styles) — 하위호환(Next/dev/스크립트 경로 불변).
+const REPO_ROOT = process.env.DECK_REPO_ROOT ?? path.resolve(__dirname, '..', '..', '..')
+const PUBLIC_DIR = process.env.DECK_ASSETS_DIR ?? path.join(REPO_ROOT, 'public')
 const CSS_PATH = path.join(REPO_ROOT, 'src', 'styles', 'underdogs-slide.css')
 const FONT_DIR = path.join(PUBLIC_DIR, 'design-kit', 'fonts')
 

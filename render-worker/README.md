@@ -10,13 +10,23 @@ why rendering lives in a separate worker (Vercel serverless has no Chromium).
 
 ## Endpoints
 
-| Method | Path       | Body                                                              | Response                       |
-| ------ | ---------- | ----------------------------------------------------------------- | ------------------------------ |
-| POST   | `/render`  | `{ html: string, width?=1280, height?=720, format?:'pdf'\|'png' }` | binary `application/pdf` / `image/png` |
-| GET    | `/healthz` | —                                                                 | `200 { ok: true }`             |
+| Method | Path           | Body                                                              | Response                       |
+| ------ | -------------- | ----------------------------------------------------------------- | ------------------------------ |
+| POST   | `/render`      | `{ html: string, width?=1280, height?=720, format?:'pdf'\|'png' }` | binary `application/pdf` / `image/png` |
+| POST   | `/render-deck` | `{ deckSpec }` (DeckSpec JSON)                                     | binary `application/pdf` (16:9) |
+| GET    | `/healthz`     | —                                                                 | `200 { ok: true }`             |
 
 - **PDF**: `page.pdf({ width, height, printBackground:true, preferCSSPageSize:false, margin:0 })`.
   The deck HTML's `.deck-page { break-after: page }` produces 1 slide = 1 page.
+- **`/render-deck`** (DECK-3b-3): the worker renders the **DeckSpec JSON itself** to PDF. It turns the
+  DeckSpec into self-contained HTML via the committed esbuild bundle `deck-render.bundle.mjs`
+  (DeckSpec → React → `renderToStaticMarkup` → HTML, fonts/images inlined as data URIs, 0 `file://`),
+  then runs the same HTML → PDF path as `/render`. **Why a worker, not the Next route?** Next 16 App
+  Router hard-blocks importing `react-dom/server` in the app bundle, so DeckSpec→HTML can only run
+  here. Invalid DeckSpec → `400`. Same auth/limits as `/render`.
+  - Rebuild the bundle after changing any deck render code (`src/lib/deck/*`, slide components):
+    `npm run build:deck-render` (requires the `esbuild` devDependency). The bundle is **committed** so
+    the runtime image needs no build step.
 - **PNG**: first-page (above-the-fold) screenshot at the requested viewport (thumbnail).
 - Chromium is launched **once** and reused (new context+page per request). Graceful
   shutdown on `SIGTERM`/`SIGINT`.
@@ -30,6 +40,8 @@ why rendering lives in a separate worker (Vercel serverless has no Chromium).
 | `RENDER_BODY_LIMIT`    | `12MB`  | Max request body bytes (deck HTML ~1.5MB + headroom).            |
 | `RENDER_TIMEOUT_MS`    | `60000` | Per-request render timeout.                                      |
 | `RENDER_CONCURRENCY`   | `3`     | Max concurrent renders (Chromium memory cap).                    |
+| `DECK_ASSETS_DIR`      | repo `public` | `/render-deck` only: dir the bundle reads fonts/images from (Docker: `/app/assets/public`). |
+| `DECK_REPO_ROOT`       | repo root | `/render-deck` only: root the bundle reads `src/styles/underdogs-slide.css` from (Docker: `/app/assets`). |
 
 ## Local run
 
@@ -60,7 +72,8 @@ If `RENDER_WORKER_TOKEN` is set, add `-H "X-Render-Token: <token>"`.
 ## Test
 
 ```bash
-npm test   # node test.mjs
+npm test        # node test.mjs       — /render (HTML -> PDF/PNG)
+npm run test:deck  # node test-deck.mjs — /render-deck (DeckSpec JSON -> PDF)
 ```
 
 Deterministic, no DB/LLM/Next. Starts the server on an ephemeral port, renders
@@ -69,10 +82,18 @@ first MediaBox 960×540pt (16:9), bytes > 50KB, `/healthz` 200, and auth (401 wi
 token / 200 with). The fixture has fonts + images inlined as data URIs (0 `file://`),
 so it renders with no external assets.
 
+`test:deck` exercises `/render-deck` end-to-end: it POSTs `docs/samples/fixtures/deckspec-B2G.json`
+as `{ deckSpec }` and asserts an 8-page 16:9 PDF, that the intermediate self-contained HTML has
+**0 `file://`**, and that an invalid DeckSpec → `400`. It defaults `DECK_ASSETS_DIR`/`DECK_REPO_ROOT`
+to the repo for local dev, and needs a built `deck-render.bundle.mjs` (run `npm run build:deck-render`).
+
 ## Docker
 
 ```bash
-docker build -t ud-render-worker .
+# ⚠️ BUILD CONTEXT = REPO ROOT (DECK-3b-3): /render-deck's bundle reads the deck CSS
+#    (src/styles) + assets (public/design-kit) from disk at runtime, so those repo dirs
+#    must be COPYable. Build from the repo root with -f:
+docker build -f render-worker/Dockerfile -t ud-render-worker .
 docker run --rm -p 8080:8080 ud-render-worker
 # with auth:
 docker run --rm -p 8080:8080 -e RENDER_WORKER_TOKEN=secret ud-render-worker
@@ -80,7 +101,8 @@ docker run --rm -p 8080:8080 -e RENDER_WORKER_TOKEN=secret ud-render-worker
 
 The base image (`mcr.microsoft.com/playwright:v1.59.1-jammy`) ships Chromium and OS
 deps. **Keep the image tag pinned to the `playwright` npm version in `package.json`**
-(both `1.59.1`) so the Chromium revision matches.
+(both `1.59.1`) so the Chromium revision matches. The Dockerfile rebuilds nothing — it
+COPYs the committed `deck-render.bundle.mjs` and the `public`/`src/styles` assets it reads.
 
 ## Cloud Run deploy notes
 
