@@ -63,8 +63,10 @@
 
 ## 🏁 다음 진입 한 줄
 **덱 파이프라인 전체 배선·검증 완료(DECK-1~3b-2).** 실 데이터 E2E 확인됨 — 실 프로젝트(계원예술대 세대융합)→gather 실코퍼스(148docs/2048청크)→authorDeck→8장 당선 덱(이 RFP 특화: 6주·해커톤). 렌더 워커(`render-worker/`)·API 라우트(`/api/projects/[id]/deck`·`/deck/pdf`)·미리보기/다운로드 UI(`DeckPanel`) 전부 작동.
-**라이브 E2E (chrome, 2026-06-07)**: ud-planner 로컬에서 프로젝트 "덱 생성"→**실 grounding 11장 덱 생성 + 브라우저 미리보기 작동**(계원예술대 특화). ⚠️ **PDF 다운로드는 Next 16 제약 발견** — App Router 가 `react-dom/server` import 를 **빌드 하드 차단** → 렌더(React→HTML)를 앱에서 못 함. 수정: 라우트가 DeckSpec(JSON)을 워커로 넘기고 **워커가 렌더**(`renderDeckViaWorker`→워커 `/render-deck`). 앱 빌드 복구됨. **남은 1조각 = DECK-3b-3**: 워커에 `/render-deck` 엔드포인트(esbuild 로 deck-render[render-spec+rich+render-html] 를 Next 무관 번들로 빌드 → DeckSpec→HTML→PDF). 이게 되면 PDF까지 끝.
-**그 뒤**: ③ **DECK-4 밀도 비평 루프**(✅ 완료) + ④ **gather throttle**(✅ 완료).
+**✅ 라이브 E2E 완주 (chrome, 2026-06-07)**: ud-planner 로컬에서 프로젝트 "덱 생성"→실 grounding 10장 덱 + 브라우저 미리보기 + **"PDF 다운로드"→`계원예술대학교_세대융합창업_프로그램_운영.pdf`(182KB·10p·16:9) 실제 다운로드 성공.** 전 체인 작동.
+- **핵심 발견·해결**: Next 16 App Router 는 앱 번들에 `react-dom/server` import **하드 차단** → 렌더를 **워커로 이관**(DECK-3b-3): 라우트가 DeckSpec(JSON)→워커 `/render-deck`(esbuild deck-render 번들로 React→HTML→chromium→PDF). `render-worker/{deck-render.bundle.mjs,build-deck-render.mjs}` + server.mjs `/render-deck`.
+- **운영 주의**: 로컬 dev 에서 라우트 수정 후 **stale `.next` 로 404** 날 수 있음 → 해당 라우트 재컴파일/`.next` 삭제로 해소(코드 문제 아님). 워커 로컬 기동: `DECK_ASSETS_DIR=<repo>/public DECK_REPO_ROOT=<repo> PORT=8080 node render-worker/server.mjs`. deck 컴포넌트/React 변경 시 `npm run build:deck-render` 재실행.
+- ③ DECK-4 밀도 비평(✅ 코치 2→4) + ④ gather throttle(✅ 429 버스트 0).
 **나머지**: ① 로컬/배포 클릭 E2E ② master 머지 + Cloud Run 워커 배포 → ud-planner 가시화 ⑤ DeckSpec 영속화(스키마 마이그레이션, DATA) ⑥ DATA-2(코치 실명·실수치 — 코퍼스 적재됨).
 
 ### ⭐ 품질 목표 (사용자 피드백 2026-06-04 — plan 반영)
