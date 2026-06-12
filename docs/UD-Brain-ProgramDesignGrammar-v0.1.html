@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로그램 설계 문법 v0.1 — 브레인 고도화 설계안</title>
+<style>
+/* ── Webfonts (local woff2, design kit — docs/fonts/ co-located) ── */
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+
+/* ── REFERENCE CSS — design kit tokens ── */
+:root{
+  --paper:#FFFFFF;
+  --ink:#373938;
+  --ink-soft:#5C5E5D;
+  --accent:#F05519;
+  --warm-gray:#D8D4D7;
+  --tint-neutral:#F4F3F2;
+  --tint-accent:#FDEFE8;
+  --tint-dark:#EBEAE9;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:22px; --s-6:28px; --s-7:40px; --s-8:60px;
+  --font-kr:"NanumHuman","Apple SD Gothic Neo",sans-serif;
+  --font-en:"Poppins","NanumHuman",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-kr);
+  color:var(--ink);
+  background:var(--paper);
+  word-break:keep-all;
+  line-height:1.7;
+  font-size:16px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 var(--s-5);}
+
+/* 텍스트 위계 4단계 */
+.kicker{
+  font-family:var(--font-en);
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:var(--s-3);
+}
+h1.display{
+  font-weight:800;
+  font-size:44px;
+  line-height:1.25;
+  letter-spacing:-0.01em;
+}
+h2{font-weight:800;font-size:26px;line-height:1.35;margin-bottom:var(--s-4);}
+h3{font-weight:700;font-size:18px;line-height:1.45;margin-bottom:var(--s-2);}
+p{font-size:16px;color:var(--ink);}
+.caption{font-size:13px;color:var(--ink-soft);line-height:1.6;}
+.lead{font-size:18px;line-height:1.75;color:var(--ink);}
+
+/* 디바이더 2종 */
+.div-line{border:none;border-top:1px solid var(--warm-gray);margin:var(--s-8) 0;}
+.div-ink{border:none;border-top:2px solid var(--ink);margin:0 0 var(--s-5) 0;}
+
+/* 박스 언어: web-scroll-report = tint */
+.box{background:var(--tint-neutral);padding:var(--s-5);}
+.box-accent{background:var(--tint-accent);padding:var(--s-5);}
+
+/* 헤더 / 푸터 */
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:var(--s-5) 0;}
+.topbar img{height:18px;display:block;}
+.topbar .meta{font-family:var(--font-en);font-size:12px;color:var(--ink-soft);letter-spacing:0.06em;}
+footer{padding:var(--s-7) 0 var(--s-8);}
+footer img{height:16px;display:block;margin-bottom:var(--s-3);}
+
+/* 섹션 */
+section{margin:var(--s-8) 0;}
+.section-no{
+  font-family:var(--font-en);font-weight:600;font-size:13px;
+  color:var(--accent);letter-spacing:0.12em;margin-bottom:var(--s-2);
+}
+
+/* 표 */
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.6;}
+th{
+  text-align:left;font-weight:700;font-size:13px;
+  border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:var(--s-3) var(--s-3);vertical-align:bottom;background:var(--paper);
+}
+td{border-bottom:1px solid var(--warm-gray);padding:var(--s-3) var(--s-3);vertical-align:top;}
+td.lab{font-weight:700;white-space:nowrap;}
+.num{font-family:var(--font-en);font-weight:600;}
+.tag{
+  display:inline-block;font-family:var(--font-en);font-weight:600;font-size:11px;
+  letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--tint-dark);color:var(--ink);padding:2px 8px;margin-right:var(--s-1);
+}
+.tag.hot{background:var(--tint-accent);color:var(--accent);}
+
+/* 통계 행 */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4);}
+.stat .v{font-family:var(--font-en);font-weight:600;font-size:32px;color:var(--accent);line-height:1.2;}
+.stat .k{font-size:13px;color:var(--ink-soft);margin-top:var(--s-1);}
+
+/* 그리드 카드 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4);}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4);}
+
+/* 다크 섹션 (산출물당 1개) */
+.dark{background:var(--ink);color:var(--paper);padding:var(--s-8) 0;}
+.dark h2{color:var(--paper);}
+.dark p{color:var(--warm-gray);}
+.dark .layer{
+  background:transparent;border-top:1px solid #5C5E5D;
+  padding:var(--s-5) 0;display:grid;grid-template-columns:120px 1fr;gap:var(--s-5);
+}
+.dark .layer:last-child{border-bottom:1px solid #5C5E5D;}
+.dark .layer .ln{font-family:var(--font-en);font-weight:600;font-size:14px;color:var(--accent);letter-spacing:0.08em;}
+.dark .layer h3{color:var(--paper);}
+.dark .layer p{font-size:14px;}
+.dark .caption{color:#9C9E9D;}
+
+/* 파이프라인 스텝 */
+.step{display:grid;grid-template-columns:64px 1fr;gap:var(--s-4);padding:var(--s-5) 0;border-bottom:1px solid var(--warm-gray);}
+.step:first-of-type{border-top:2px solid var(--ink);}
+.step .pno{font-family:var(--font-en);font-weight:600;font-size:22px;color:var(--accent);line-height:1.3;}
+.step p{font-size:15px;}
+.step .caption{margin-top:var(--s-2);}
+
+/* 필드 리스트 (데이터 모델) */
+.fields{font-size:14px;}
+.fields .f{display:grid;grid-template-columns:220px 1fr;gap:var(--s-3);padding:var(--s-2) 0;border-bottom:1px solid var(--warm-gray);}
+.fields .f:last-child{border-bottom:none;}
+.fields .fn{font-family:var(--font-en);font-weight:500;font-size:13px;}
+.fields .fd{color:var(--ink-soft);font-size:13px;}
+
+@media (max-width:720px){
+  h1.display{font-size:32px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .dark .layer{grid-template-columns:1fr;gap:var(--s-2);}
+  .step{grid-template-columns:48px 1fr;}
+  .fields .f{grid-template-columns:1fr;gap:var(--s-1);}
+  .tablewrap{overflow-x:auto;}
+}
+.tablewrap{overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="UNDERDOGS">
+    <div class="meta">BRAIN UPGRADE PROPOSAL · v0.1 · 2026-06-12</div>
+  </div>
+  <hr class="div-ink">
+</div>
+
+<!-- ───────────────── HERO ───────────────── -->
+<div class="wrap">
+  <section style="margin-top:var(--s-7);">
+    <div class="kicker">Program Design Grammar</div>
+    <h1 class="display">프로그램 설계 문법 —<br>대상이 바뀌면 설계가 어떻게<br>바뀌는지를 데이터로 만든다</h1>
+    <p class="lead" style="margin-top:var(--s-5);max-width:760px;">
+      언더독스의 모든 기획안에는 이미 답이 들어 있다. 사전학습을 언제 쓰는지, 온라인과 오프라인을
+      어떻게 섞는지, 코칭을 몇 회 넣는지, 데모데이를 어디에 두는지 — 대상에 따라 달라져 온
+      이 암묵지를 <strong>명시적 운영 변수 12축</strong>과 <strong>설계 규칙(Design Rule)</strong>으로
+      구조화하여, 브레인이 커리큘럼·프로그램 설계 1차안을 사람 검수 가능한 근거와 함께 내놓게 한다.
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 01 진단 ───────────────── -->
+  <section>
+    <div class="section-no">01</div>
+    <h2>진단 — 왜 의도만큼 안 나오는가</h2>
+    <p style="margin-bottom:var(--s-5);max-width:760px;">
+      자산의 양이 부족한 게 아니다. 수주 패턴 102건, 콘텐츠 자산 1,062건, ProgramProfile 11축,
+      커리큘럼 검증 룰 4종이 이미 있다. 문제는 <strong>"교육 운영의 구조"가 1급 데이터가 아니라는 것</strong>이다.
+    </p>
+    <div class="grid3">
+      <div class="box">
+        <h3>운영 변수가 흩어져 있다</h3>
+        <p class="caption">
+          사전학습은 notes 텍스트에, 코호트는 track 문자열에, 성과공유회·데모데이는 formats 라벨에
+          따로 존재한다. 회차 구조(CurriculumItem)와 연결되지 않아 "몇 회차에 무엇을 어떤 형태로"가
+          기계가 읽을 수 있는 형태가 아니다.
+        </p>
+      </div>
+      <div class="box">
+        <h3>대상 → 설계 매핑이 암묵적이다</h3>
+        <p class="caption">
+          현재 분기는 방법론 스위치(IMPACT·로컬브랜드·재창업 등 9종)와 프롬프트 휴리스틱에 묻혀 있다.
+          "소상공인 대상이면 왜 저녁 시간대 오프라인 격주인가" 같은 근거 규칙이 데이터로 존재하지
+          않으니, AI가 매번 일반론으로 회귀한다.
+        </p>
+      </div>
+      <div class="box">
+        <h3>학습 단위가 텍스트 조각이다</h3>
+        <p class="caption">
+          WinningPattern은 snippet + whyItWorks 서술 단위라 문장 인용에는 강하지만, 제안서 간
+          커리큘럼·운영 구조를 <strong>정량 비교</strong>할 수 없다. "수주한 B2G 청년 사업의 평균
+          코칭 회수" 같은 질문에 지금의 브레인은 답하지 못한다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 02 현재 자산 ───────────────── -->
+  <section>
+    <div class="section-no">02</div>
+    <h2>출발점 — 이미 가진 것</h2>
+    <div class="stats" style="margin:var(--s-5) 0;">
+      <div class="stat"><div class="v">102</div><div class="k">WinningPattern (수주·패배 패턴, 3-tuple 학습)</div></div>
+      <div class="stat"><div class="v">1,062</div><div class="k">ContentAsset (방법론·사례·콘텐츠 자산)</div></div>
+      <div class="stat"><div class="v">11<span style="font-size:18px;">축</span></div><div class="k">ProgramProfile (대상·채널·규모·방법론)</div></div>
+      <div class="stat"><div class="v">18+4</div><div class="k">IMPACT 18모듈 + CORE 4모듈 (완전 모듈화)</div></div>
+    </div>
+    <p class="caption">
+      그 외: 커리큘럼 검증 룰 R-001~R-004(이론 30% 상한 · Action Week 필수 · 이론 3연속 금지 · 코칭 전 실습),
+      ChannelPreset(B2G/B2B/연속사업 톤), Concept 온톨로지(Layer 3 진행 중), 예산 1,410건.
+      이 설계안은 새 시스템을 만드는 게 아니라 <strong>기존 브레인 5-Layer에 "운영 구조" 차원 하나를 추가</strong>하는 것이다.
+    </p>
+  </section>
+</div>
+
+<!-- ───────────────── 03 3층 구조 (다크 섹션 — 문서당 1개) ───────────────── -->
+<div class="dark">
+  <div class="wrap">
+    <div class="section-no">03</div>
+    <h2>제안 구조 — 설계 문법의 3층</h2>
+    <p style="margin-bottom:var(--s-6);max-width:720px;">
+      "대상에 따라 프로그램 설계가 달라진다"를 세 개의 층으로 분해한다.
+      입력은 이미 있고(Layer A), 어휘를 새로 만들고(Layer B), 문법을 학습한다(Layer C).
+    </p>
+
+    <div class="layer">
+      <div class="ln">LAYER A<br>입력 축</div>
+      <div>
+        <h3>누구를 위한 사업인가 — ProgramProfile 11축 (재사용)</h3>
+        <p>
+          대상 단계(예비창업·소상공인·임직원·재창업), 인구통계(청년·시니어·상인), 채널(B2G/B2B/연속사업),
+          규모·기간, 방법론. 새로 만들지 않는다. 이미 모든 프로젝트와 수주 패턴에 박혀 있는 이 11축이
+          설계 문법의 <strong>조건부</strong>가 된다.
+        </p>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="ln">LAYER B<br>운영 변수</div>
+      <div>
+        <h3>어떻게 운영하는가 — OperatingFormat 12축 (신규)</h3>
+        <p>
+          사전학습 · 전달 모드 · 회차 리듬 · 회당 시간 · 이론:실습 비율 · 코칭 구조 · 코호트 구조 ·
+          마일스톤 이벤트 · 선발 게이트 · Action Week · 사후관리 · 총 강도. 모든 기획안의 교육 운영을
+          이 12축 위의 <strong>좌표</strong>로 표현한다. 섹션 04에서 상세.
+        </p>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="ln">LAYER C<br>설계 규칙</div>
+      <div>
+        <h3>왜 그렇게 설계하는가 — Design Rule (학습 + 검수)</h3>
+        <p>
+          "조건(Layer A) → 권장 운영 변수(Layer B) + 근거 제안서 + 신뢰도" 형태의 규칙.
+          전체 기획안 재분석에서 통계적으로 도출하고, 수주/패배 결과로 가중하고,
+          <strong>사람이 규칙 단위로 승인</strong>해야만 생성에 반영된다. AI는 규칙을 만들 뿐,
+          무엇이 언더독스의 문법인지는 사람이 결정한다.
+        </p>
+      </div>
+    </div>
+
+    <p class="caption" style="margin-top:var(--s-5);">
+      기존 Brain 5-Layer와의 관계: Layer B 추출본은 Brain Layer 1(자산)에, Design Rule은
+      Layer 3(온톨로지)~4(자가강화)에 안착한다. 별도 시스템이 아니라 같은 브레인의 새 차원이다.
+    </p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ───────────────── 04 운영 변수 12축 ───────────────── -->
+  <section>
+    <div class="section-no">04</div>
+    <h2>Layer B — 운영 변수 12축 (OperatingFormat)</h2>
+    <p style="margin-bottom:var(--s-5);max-width:760px;">
+      모든 기획안에서 추출할 어휘. 각 축은 enum + 수치로 닫혀 있어야 통계 비교가 가능하다.
+      자유 서술은 evidence 필드에만 허용한다.
+    </p>
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th style="width:30px;">#</th><th style="width:170px;">축</th><th>값 공간 (enum / 수치)</th><th style="width:240px;">현재 데이터에서의 위치</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="lab">사전학습 preLearning</td><td>없음 | LMS VOD | 사전 진단(DOGS·ACTT PRE·5D) | 사전 과제 — 복수 가능 + 분량(시간)</td><td>notes 텍스트에 산재 → 구조화 필요</td></tr>
+        <tr><td class="num">2</td><td class="lab">전달 모드 deliveryMode</td><td>온라인(동기/비동기) | 오프라인 | 하이브리드 + onlineRatio(%)</td><td>isOnline boolean + delivery.onlineRatio — 회차별 연결 안 됨</td></tr>
+        <tr><td class="num">3</td><td class="lab">회차 리듬 cadence</td><td>총 회차 수 × 주기(주1회 | 주2회 | 격주 | 합숙 집중 | 캠프형)</td><td>sessionNo 만 존재, 주기 정보 없음</td></tr>
+        <tr><td class="num">4</td><td class="lab">회당 시간 sessionLength</td><td>시간(h) + 시간대(주간 | 저녁 | 주말 | 종일)</td><td>startTime/endTime 있으나 시간대 의미 태그 없음</td></tr>
+        <tr><td class="num">5</td><td class="lab">이론:실습 비율 theoryPracticeRatio</td><td>강의분 : 실습분 (IMPACT 표준 15:35 등)</td><td>lectureMinutes/practiceMinutes — 가장 잘 갖춰짐</td></tr>
+        <tr><td class="num">6</td><td class="lab">코칭 구조 coaching</td><td>유형(1:1 | 팀 | 그룹 | 없음) × 총 회수 × 회당 시간 × 배치(Action Week 페어 여부)</td><td>isCoaching1on1 + CoachAssignment — 유형·빈도 집계 불가</td></tr>
+        <tr><td class="num">7</td><td class="lab">코호트 구조 cohortStructure</td><td>코호트 러닝 여부 | 팀 빌딩 시점 | 분반 수 | 동료 네트워크 장치</td><td>track 문자열 뿐 — 의미 없음</td></tr>
+        <tr><td class="num">8</td><td class="lab">마일스톤 이벤트 milestoneEvents</td><td>중간 성과공유회 | 최종 데모데이 | IR | 네트워킹 | 박람회 — 각각 시점(진행률 %)</td><td>formats 라벨 — 시점 정보 없음</td></tr>
+        <tr><td class="num">9</td><td class="lab">선발 게이트 selectionGate</td><td>선발 단계 수 | 중간 탈락(스테이지 게이트) 여부 | 경쟁률</td><td>selection 축 있음 — 중간 게이트만 보강</td></tr>
+        <tr><td class="num">10</td><td class="lab">Action Week</td><td>실행 주간 수 + 배치 위치(회차 기준)</td><td>isActionWeek — 패턴 비교용 집계 없음</td></tr>
+        <tr><td class="num">11</td><td class="lab">사후관리 aftercare</td><td>없음 | alumni | 후속 보육 | 투자 연계 — 기간</td><td>aftercare 축 있음 — 그대로 사용</td></tr>
+        <tr><td class="num">12</td><td class="lab">총 강도 intensity</td><td>총 교육시간(h) × 총 기간(개월) → 집중형 / 장기형 분류</td><td>파생 계산 — 신규</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-4);">
+      원칙: 가변 값(enum 목록·기본값·임계치)은 데이터로, 축의 키 이름과 구조는 ADR로 동결.
+      기존 CLAUDE.md의 "가변은 데이터, 안정은 ADR 동결" 원칙과 동일하다.
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 05 가설 매트릭스 ───────────────── -->
+  <section>
+    <div class="section-no">05</div>
+    <h2>대상 × 운영 변수 — 초기 가설 매트릭스</h2>
+    <p style="margin-bottom:var(--s-4);max-width:760px;">
+      현재 분석된 시드 케이스(NH 애그테크 · GS리테일 · 종로 서촌 로컬브랜드 · 재창업 특화 · 청년마을 등)에서
+      읽히는 경향을 가설로 적는다. <strong>이 표는 결론이 아니라 재분석(섹션 06)이 검증·기각할 대상</strong>이다.
+      승인 전까지 어떤 규칙도 생성에 반영되지 않는다.
+    </p>
+    <div class="box-accent" style="margin-bottom:var(--s-5);">
+      <p class="caption" style="color:var(--ink);">
+        <span class="tag hot">HYPOTHESIS</span> 아래 모든 행은 재분석 파이프라인 P3에서 실제 분포·수주 상관과
+        대조한 뒤 Design Rule(draft) → 사람 승인(approved) 절차를 거친다.
+      </p>
+    </div>
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:130px;">대상 세그먼트</th>
+          <th>사전학습</th>
+          <th>전달 모드</th>
+          <th>리듬 · 시간대</th>
+          <th>코칭</th>
+          <th>코호트</th>
+          <th>마일스톤</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="lab">예비창업 청년<br><span class="caption">B2G 다수 · IMPACT</span></td>
+          <td>LMS VOD + 사전 진단(DOGS·ACTT PRE)</td>
+          <td>하이브리드, 온라인 약 30%</td>
+          <td>주 1~2회 × 3h, 4~6개월</td>
+          <td>1:1, Action Week 페어 배치</td>
+          <td>강함 — 팀 빌딩 + 동료 네트워크</td>
+          <td>중간 성과공유회 + 최종 데모데이 + IR</td>
+        </tr>
+        <tr>
+          <td class="lab">소상공인 · 상인<br><span class="caption">로컬브랜드 · 상권</span></td>
+          <td>최소화 (현장 부담 고려)</td>
+          <td>오프라인 중심 + 현장 방문</td>
+          <td>격주 × 2~3h, 저녁 시간대</td>
+          <td>1:1 컨설팅형 비중 높음</td>
+          <td>약함 — 개별 사업 단위</td>
+          <td>성과공유회를 지역 행사·페스티벌과 결합</td>
+        </tr>
+        <tr>
+          <td class="lab">임직원<br><span class="caption">B2B 사내벤처 · 프로보노</span></td>
+          <td>VOD 필수 (업무시간 점유 최소화)</td>
+          <td>오프라인 집중 워크숍형</td>
+          <td>소수 회차 × 종일, 2~3개월 단기</td>
+          <td>팀 단위 그룹 코칭</td>
+          <td>팀 = 코호트 (사내 팀 단위)</td>
+          <td>데모데이가 경영진 보고회 형태</td>
+        </tr>
+        <tr>
+          <td class="lab">시니어</td>
+          <td>디지털 사전학습 최소화</td>
+          <td>오프라인 중심</td>
+          <td>짧은 회당 시간, 주간 시간대</td>
+          <td>동행·반복형, 회수 많게</td>
+          <td>강함 — peer 지지 구조</td>
+          <td>네트워킹·공유회 중심, IR 비중 낮음</td>
+        </tr>
+        <tr>
+          <td class="lab">재창업자</td>
+          <td>실패 분석 사전 진단 필수</td>
+          <td>하이브리드</td>
+          <td>개별 일정 유연성 높게</td>
+          <td>1:1 심층 중심 (멘탈·회복 포함)</td>
+          <td>중간 — 동병상련 네트워크</td>
+          <td>단계 게이트 + 재기 IR</td>
+        </tr>
+        <tr>
+          <td class="lab">청소년 · 대학생</td>
+          <td>게임형 사전 미션</td>
+          <td>오프라인 + 캠프형</td>
+          <td>학사 일정 결합, 짧은 세션</td>
+          <td>그룹 멘토링</td>
+          <td>팀 프로젝트 코호트</td>
+          <td>공모전 · 페스티벌 포맷</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-4);">
+      채널 보정: 같은 대상이라도 B2G는 정량 KPI·선발 공정성·중간 보고 이벤트 가중,
+      B2B는 경영진 가시성·업무시간 효율 가중, 연속사업은 전년 대비 개선 포인트가 마일스톤 설계를 지배 —
+      ChannelPreset과 교차 적용한다.
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 06 재분석 파이프라인 ───────────────── -->
+  <section>
+    <div class="section-no">06</div>
+    <h2>재분석 파이프라인 — 기획안 전수 재학습 5단계</h2>
+    <p style="margin-bottom:var(--s-5);max-width:760px;">
+      학습시킨 모든 제안서를 12축 어휘로 다시 읽는다. 각 단계는 게이트이며, 통과 기준을 만족해야 다음으로 간다.
+    </p>
+
+    <div class="step">
+      <div class="pno">P1</div>
+      <div>
+        <h3>추출 스키마 동결</h3>
+        <p>OperatingFormat 12축의 키·enum·필수/선택을 확정하고 ADR 후보로 올린다. 여기가 흔들리면 전수 재추출이 무효가 되므로 가장 먼저 닫는다.</p>
+        <p class="caption">게이트: 시드 케이스 10건에 수동 적용해 "표현 못 하는 운영 형태"가 없는지 확인. 산출물: ADR + JSON Schema.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="pno">P2</div>
+      <div>
+        <h3>전수 구조화 추출</h3>
+        <p>전체 기획안의 커리큘럼·교육운영 파트를 AI(plumbing 티어)로 12축 추출. 모든 값에 원문 근거 문장(evidence)과 신뢰도를 함께 기록하고, 표본 10~15%는 사람이 스팟체크한다.</p>
+        <p class="caption">게이트: 스팟체크 정확도 90% 이상. 미달 축은 프롬프트 보정 후 해당 축만 재추출. 산출물: 제안서당 ProgramDesignPattern 1건.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="pno">P3</div>
+      <div>
+        <h3>패턴 마이닝</h3>
+        <p>Layer A 조건(대상 단계 × 인구통계 × 채널 × 규모)별로 12축 분포를 집계한다. "B2G 청년 사업의 코칭 회수 중앙값", "소상공인 사업의 저녁 시간대 비율"처럼 답할 수 있게 만들고, 수주/패배 케이스 간 차이가 있는 축을 표시한다. 경향에서 벗어난 예외 케이스는 버리지 않고 "왜 벗어났는가"를 별도 기록한다 — 예외가 곧 언더독스의 응용력이다.</p>
+        <p class="caption">게이트: 섹션 05 가설 매트릭스의 각 셀에 대해 지지 / 기각 / 데이터 부족 판정 완료.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="pno">P4</div>
+      <div>
+        <h3>Design Rule 발행 + 사람 승인</h3>
+        <p>통계가 지지하는 패턴을 "조건 → 권장값 + 근거 제안서 ID + 신뢰도" 규칙으로 발행한다. 규칙은 draft 상태로 태어나고, 검수 UI에서 사람이 근거 원문을 보며 승인·수정·기각한다. <strong>approved 규칙만 생성에 반영된다.</strong></p>
+        <p class="caption">게이트: 핵심 세그먼트(청년·소상공인·임직원) 각각 승인 규칙 확보. 산출물: DesignRule 테이블.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="pno">P5</div>
+      <div>
+        <h3>생성기 연결 + 설명 가능성</h3>
+        <p>커리큘럼 생성 시 프로젝트의 ProgramProfile에 매칭되는 approved 규칙을 컨텍스트로 주입한다. 생성된 1차안의 모든 운영 결정 옆에 "근거 규칙 + 출처 제안서"를 표시해, 검수자가 결과만이 아니라 <strong>이유</strong>를 검수하게 한다. PM의 수용/거절은 규칙 신뢰도로 다시 흘러 들어간다(Brain Layer 4 자가강화와 동일 루프).</p>
+        <p class="caption">게이트: 동일 RFP에 대해 규칙 적용 전/후 1차안을 비교하는 블라인드 평가에서 개선 확인.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 07 데이터 모델 ───────────────── -->
+  <section>
+    <div class="section-no">07</div>
+    <h2>데이터 모델 제안 — 신규 2개 (ADR 후보)</h2>
+    <div class="grid2">
+      <div class="box">
+        <h3>ProgramDesignPattern</h3>
+        <p class="caption" style="margin-bottom:var(--s-3);">제안서당 1건 — 그 사업의 운영 구조 좌표. WinningPattern(텍스트 3-tuple)과 1:1 연결되는 정량 짝.</p>
+        <div class="fields">
+          <div class="f"><div class="fn">sourceProject / patternId</div><div class="fd">원천 제안서 · WinningPattern 연결</div></div>
+          <div class="f"><div class="fn">profile (Json)</div><div class="fd">Layer A 스냅샷 — ProgramProfile 11축</div></div>
+          <div class="f"><div class="fn">operatingFormat (Json)</div><div class="fd">Layer B 12축 추출값</div></div>
+          <div class="f"><div class="fn">evidence (Json)</div><div class="fd">축별 원문 근거 문장 + 페이지</div></div>
+          <div class="f"><div class="fn">extractionConfidence</div><div class="fd">축별 추출 신뢰도</div></div>
+          <div class="f"><div class="fn">humanVerified</div><div class="fd">스팟체크 통과 여부</div></div>
+          <div class="f"><div class="fn">outcome / techEvalScore</div><div class="fd">수주 결과 — 가중 학습용</div></div>
+        </div>
+      </div>
+      <div class="box">
+        <h3>DesignRule</h3>
+        <p class="caption" style="margin-bottom:var(--s-3);">설계 문법의 한 문장 — 조건이 맞으면 권장하고, 근거를 댄다.</p>
+        <div class="fields">
+          <div class="f"><div class="fn">condition (Json)</div><div class="fd">Layer A 조건부 — 예: targetStage=소상공인 AND channel=B2G</div></div>
+          <div class="f"><div class="fn">recommendation (Json)</div><div class="fd">Layer B 권장값 — 예: cadence=격주, 시간대=저녁</div></div>
+          <div class="f"><div class="fn">rationale</div><div class="fd">왜 — 한 문장 설명 (검수자용)</div></div>
+          <div class="f"><div class="fn">supportingPatterns[]</div><div class="fd">근거 ProgramDesignPattern ID 목록</div></div>
+          <div class="f"><div class="fn">confidence / winRateDelta</div><div class="fd">지지 강도 · 수주율 차이</div></div>
+          <div class="f"><div class="fn">status</div><div class="fd">draft → approved → deprecated (사람만 전이)</div></div>
+          <div class="f"><div class="fn">pmFeedback 누적</div><div class="fd">생성 시 수용/거절 — 신뢰도 재계산</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:var(--s-4);">
+      기존 R-001~R-004와의 역할 분담: 커리큘럼 룰은 <strong>검증</strong>(하면 안 되는 것 — BLOCK/WARN),
+      DesignRule은 <strong>제안</strong>(이 대상이면 이렇게 — SUGGEST). 두 층은 충돌하지 않고,
+      제안이 검증을 통과해야 1차안이 된다.
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 08 검수 루프 ───────────────── -->
+  <section>
+    <div class="section-no">08</div>
+    <h2>사람 검수 루프 — 어디에서 사람이 개입하는가</h2>
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th style="width:140px;">시점</th><th>사람이 보는 것</th><th>사람이 결정하는 것</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="lab">P1 스키마</td><td>12축이 실제 운영 형태를 다 담는가</td><td>축 추가·삭제·enum 확정 (ADR 승인)</td></tr>
+        <tr><td class="lab">P2 추출</td><td>표본 추출 결과 vs 원문 대조</td><td>축별 정확도 합격 판정</td></tr>
+        <tr><td class="lab">P4 규칙</td><td>규칙 + 근거 원문 + 수주율 차이</td><td>승인 / 수정 / 기각 — 무엇이 우리 문법인가</td></tr>
+        <tr><td class="lab">P5 생성</td><td>1차안 + 결정별 근거 규칙 표시</td><td>설계 수용 / 수정 — 피드백이 규칙 신뢰도로 환류</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="box" style="margin-top:var(--s-5);">
+      <p class="caption">
+        설계 의도: AI가 패턴을 <strong>발견</strong>하고, 사람이 문법을 <strong>채택</strong>하고,
+        생성은 채택된 문법 안에서만 움직인다. "AI 1차 설계 + 사람 검수"가 결과물 단계에서만이 아니라
+        규칙 단계에서 한 번 더 일어나므로, 검수 비용이 매 제안서가 아닌 문법에 한 번 든다.
+      </p>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 09 다음 결정 ───────────────── -->
+  <section>
+    <div class="section-no">09</div>
+    <h2>다음 결정 — 사용자 확인이 필요한 것</h2>
+    <div class="grid3">
+      <div class="box">
+        <h3><span class="num" style="color:var(--accent);">1</span> &nbsp;12축 어휘 승인</h3>
+        <p class="caption">섹션 04의 축 구성이 실제 운영 경험과 맞는가. 빠진 축(예: 강사 구성, 장소 전략)이 있는가.</p>
+      </div>
+      <div class="box">
+        <h3><span class="num" style="color:var(--accent);">2</span> &nbsp;재추출 범위</h3>
+        <p class="caption">전수(전체 기획안) vs 우선 수주작 + 핵심 세그먼트. 전수 권장 — 패배 케이스가 규칙의 절반이다.</p>
+      </div>
+      <div class="box">
+        <h3><span class="num" style="color:var(--accent);">3</span> &nbsp;가설 매트릭스 1차 교정</h3>
+        <p class="caption">섹션 05를 현장 감각으로 먼저 교정해 주면 P3 검증이 빨라진다. 특히 임직원·시니어 행.</p>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:var(--s-5);">
+      승인 시 진행 경로: ADR 작성(스키마 동결) → DATA 브리프(P1~P2) → 분석 브리프(P3~P4) → 생성기 연결 브리프(P5).
+      기존 일하는 방식(메인 = 기획·검증, 서브 에이전트 = 구현) 그대로.
+    </p>
+  </section>
+
+</div>
+
+<div class="wrap">
+  <hr class="div-ink" style="margin-top:var(--s-8);">
+  <footer>
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="UNDERDOGS">
+    <p class="caption">프로그램 설계 문법 v0.1 — 브레인 고도화 설계안 · UD-Ops Workspace · 2026-06-12 · 내부 검토용 초안</p>
+  </footer>
+</div>
+
+</body>
+</html>
