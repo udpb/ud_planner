@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>프로그램 설계 문법 v0.1 — 브레인 고도화 설계안</title>
+<title>프로그램 설계 문법 v0.2 — 브레인 고도화 설계안 (ADR-028)</title>
 <style>
 /* ── Webfonts (local woff2, design kit — docs/fonts/ co-located) ── */
 @font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
@@ -154,7 +154,7 @@ td.lab{font-weight:700;white-space:nowrap;}
 <div class="wrap">
   <div class="topbar">
     <img src="assets/logo/underdogs-wordmark-black.svg" alt="UNDERDOGS">
-    <div class="meta">BRAIN UPGRADE PROPOSAL · v0.1 · 2026-06-12</div>
+    <div class="meta">BRAIN UPGRADE PROPOSAL · v0.2 · 2026-06-12 · ADR-028</div>
   </div>
   <hr class="div-ink">
 </div>
@@ -254,11 +254,12 @@ td.lab{font-weight:700;white-space:nowrap;}
     <div class="layer">
       <div class="ln">LAYER B<br>운영 변수</div>
       <div>
-        <h3>어떻게 운영하는가 — OperatingFormat 12축 (신규)</h3>
+        <h3>어떻게 운영하는가 — OperatingFormat 16축 + 콘텐츠 믹스 (v0.2 확장)</h3>
         <p>
           사전학습 · 전달 모드 · 회차 리듬 · 회당 시간 · 이론:실습 비율 · 코칭 구조 · 코호트 구조 ·
-          마일스톤 이벤트 · 선발 게이트 · Action Week · 사후관리 · 총 강도. 모든 기획안의 교육 운영을
-          이 12축 위의 <strong>좌표</strong>로 표현한다. 섹션 04에서 상세.
+          마일스톤 이벤트 · 선발 퍼널 · Action Week · <strong>산출물 · 지원금 · 강사 구성 · 장소 ·
+          수료 기준</strong> · 사후관리, 그리고 VOD 분류 v5.4와 정합하는 콘텐츠 믹스(전달형식 ×
+          콘텐츠유형 × 난이도 곡선)와 회차 시퀀스. 모든 기획안의 교육 운영을 이 좌표로 표현한다. 섹션 04 상세.
         </p>
       </div>
     </div>
@@ -287,10 +288,12 @@ td.lab{font-weight:700;white-space:nowrap;}
   <!-- ───────────────── 04 운영 변수 12축 ───────────────── -->
   <section>
     <div class="section-no">04</div>
-    <h2>Layer B — 운영 변수 12축 (OperatingFormat)</h2>
+    <h2>Layer B — 운영 변수 16축 (OperatingFormat, v0.2 · ADR-028 동결)</h2>
     <p style="margin-bottom:var(--s-5);max-width:760px;">
       모든 기획안에서 추출할 어휘. 각 축은 enum + 수치로 닫혀 있어야 통계 비교가 가능하다.
-      자유 서술은 evidence 필드에만 허용한다.
+      자유 서술은 evidence 필드에만 허용하고, 원문에 없는 값은 추측 대신 <strong>null + 신뢰도 0</strong>
+      (강의 분류 v5.4의 "[파악 불가]" 원칙과 동일). v0.1의 12축에서 산출물·지원금·강사·장소·수료
+      기준이 추가되고, 선발 게이트는 선발 퍼널로 확장됐다.
     </p>
     <div class="tablewrap">
     <table>
@@ -306,17 +309,73 @@ td.lab{font-weight:700;white-space:nowrap;}
         <tr><td class="num">6</td><td class="lab">코칭 구조 coaching</td><td>유형(1:1 | 팀 | 그룹 | 없음) × 총 회수 × 회당 시간 × 배치(Action Week 페어 여부)</td><td>isCoaching1on1 + CoachAssignment — 유형·빈도 집계 불가</td></tr>
         <tr><td class="num">7</td><td class="lab">코호트 구조 cohortStructure</td><td>코호트 러닝 여부 | 팀 빌딩 시점 | 분반 수 | 동료 네트워크 장치</td><td>track 문자열 뿐 — 의미 없음</td></tr>
         <tr><td class="num">8</td><td class="lab">마일스톤 이벤트 milestoneEvents</td><td>중간 성과공유회 | 최종 데모데이 | IR | 네트워킹 | 박람회 — 각각 시점(진행률 %)</td><td>formats 라벨 — 시점 정보 없음</td></tr>
-        <tr><td class="num">9</td><td class="lab">선발 게이트 selectionGate</td><td>선발 단계 수 | 중간 탈락(스테이지 게이트) 여부 | 경쟁률</td><td>selection 축 있음 — 중간 게이트만 보강</td></tr>
+        <tr><td class="num">9</td><td class="lab">선발 퍼널 selectionFunnel</td><td>선발 단계 수 | 방식(서류/PT/면접/진단) | 경쟁률 | 중간 탈락 게이트 여부</td><td>selection 축 있음 — 방식·중간 게이트 보강</td></tr>
         <tr><td class="num">10</td><td class="lab">Action Week</td><td>실행 주간 수 + 배치 위치(회차 기준)</td><td>isActionWeek — 패턴 비교용 집계 없음</td></tr>
-        <tr><td class="num">11</td><td class="lab">사후관리 aftercare</td><td>없음 | alumni | 후속 보육 | 투자 연계 — 기간</td><td>aftercare 축 있음 — 그대로 사용</td></tr>
-        <tr><td class="num">12</td><td class="lab">총 강도 intensity</td><td>총 교육시간(h) × 총 기간(개월) → 집중형 / 장기형 분류</td><td>파생 계산 — 신규</td></tr>
+        <tr><td class="num">11</td><td class="lab">산출물 deliverables</td><td>사업계획서 | IR덱 | MVP | 프로토타입 | 브랜드 | 매출 실적 — 복수</td><td>v0.2 신규 — 참여자가 만들어 내는 것</td></tr>
+        <tr><td class="num">12</td><td class="lab">지원금 incentives</td><td>사업화 지원금 | 시제품비 | 상금 | 후속 연계 + 금액</td><td>v0.2 신규 — 동기 구조</td></tr>
+        <tr><td class="num">13</td><td class="lab">강사 구성 faculty</td><td>전담코치 | 외부전문가 | 연사 | 동문코치 × 인원 × 전담 PM 여부</td><td>v0.2 신규 — CoachAssignment 와 연결</td></tr>
+        <tr><td class="num">14</td><td class="lab">장소 전략 venue</td><td>고정 교육장 | 현장 방문 | 합숙시설 | 온라인 | 지역 거점 — 복수</td><td>v0.2 신규 — venue 문자열 산재</td></tr>
+        <tr><td class="num">15</td><td class="lab">수료 기준 assessment</td><td>수료 조건(출석률/과제/결과물/발표) + 출석 임계치</td><td>v0.2 신규 — attendanceRate 만 존재</td></tr>
+        <tr><td class="num">16</td><td class="lab">사후관리 aftercare</td><td>없음 | alumni | 후속 보육 | 투자 연계 | 온라인 코칭 — 기간</td><td>aftercare 축 있음 — 그대로 사용</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top:var(--s-6);">확장 레이어 — 콘텐츠 믹스 · 회차 시퀀스 · 유효성 (v0.2 신규)</h3>
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th style="width:170px;">레이어</th><th>구조</th><th style="width:240px;">왜 필요한가</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="lab">콘텐츠 믹스 contentMix</td><td>전달형식 분포(강연/경험담/인터뷰·대담/워크숍·실습/데모·시연/패널) × 콘텐츠유형(이론·개념/사례·경험/실무·도구/트렌드) × 난이도 곡선(단일/상승/혼합)</td><td>강의 분류 v5.4의 "전달 형식 ⊥ 콘텐츠 유형" 2축 독립 원칙을 커리큘럼 레벨로 승격</td></tr>
+        <tr><td class="lab">회차 시퀀스 sessions[]</td><td>[{회차, 제목, 시간, 형식, 이론여부, 코칭여부, 이벤트여부}] — 추출 가능할 때만</td><td>리듬·배치 패턴(코칭 전 실습, 이벤트 위치)의 원천 데이터</td></tr>
+        <tr><td class="lab">유효성 validity</td><td>상시유효 | 점검필요 | 폐기후보 + 판단근거</td><td>v5.4 차용 — 코로나 비대면 강제 같은 시기 의존 운영 모델을 패턴 학습에서 디스카운트</td></tr>
+        <tr><td class="lab">KPI 목표 kpiTargets[]</td><td>[{지표명, 목표값}] — 수료율·만족도·창업 건수 등</td><td>운영 설계와 약속한 성과의 연결 고리</td></tr>
+        <tr><td class="lab">총 강도 intensity</td><td>총 교육시간 × 총 기간 → 집중형/장기형 (파생 계산)</td><td>v0.1의 12번 축 — 파생 레이어로 이동</td></tr>
       </tbody>
     </table>
     </div>
     <p class="caption" style="margin-top:var(--s-4);">
-      원칙: 가변 값(enum 목록·기본값·임계치)은 데이터로, 축의 키 이름과 구조는 ADR로 동결.
-      기존 CLAUDE.md의 "가변은 데이터, 안정은 ADR 동결" 원칙과 동일하다.
+      원칙: 가변 값(enum 목록·기본값·임계치)은 데이터로, 축의 키 이름과 구조는 ADR-028로 동결.
+      모든 축에 원문 인용(evidence)과 신뢰도(confidence)가 동반된다 — 근거 없는 값 금지.
     </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- ───────────────── 04b VOD 콘텐츠 레이어 ───────────────── -->
+  <section>
+    <div class="section-no">04b</div>
+    <h2>VOD 콘텐츠 레이어 — 강의 분류 v5.4 연동 (v0.2 신규)</h2>
+    <p style="margin-bottom:var(--s-5);max-width:760px;">
+      사용자가 완성한 VOD 학습 콘텐츠 재분류 체계(강의 분류 가이드 v5.4)가 설계 문법의
+      <strong>사전학습·보조학습 슬롯을 구체 콘텐츠까지 내려보내는 해석 공간</strong>이 된다.
+      설계 문법이 "사전학습 = LMS VOD"를 권장하면, VOD 분류가 "이 대상·이 단계에 어떤 영상"을 답한다.
+    </p>
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th style="width:200px;">v5.4 분류 축</th><th>값 공간</th><th style="width:260px;">설계 문법과의 접점</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="lab">청중_경험수준 · 사업형태</td><td>예비/초기/성장기/공통 × 스타트업/소상공인·자영업/프리랜서·1인/소셜벤처/공통</td><td>Layer A 대상 세그먼트와 직접 조인 — 같은 어휘로 수렴 필요</td></tr>
+        <tr><td class="lab">비즈니스 단계 (10)</td><td>아이디어 탐색~조직 만들기 + 전단계공통 (체감 현상 기반)</td><td>커리큘럼 회차가 다루는 단계에 VOD 를 정렬</td></tr>
+        <tr><td class="lab">전달 형식 (7)</td><td>강연/경험담/인터뷰·대담/패널/워크숍·실습/데모·시연/기타 — 경험담·인터뷰는 난이도·청중 기본값(입문~초급/공통)</td><td>contentMix 의 전달형식 분포와 동일 어휘</td></tr>
+        <tr><td class="lab">콘텐츠 유형 (4)</td><td>이론·개념/사례·경험/실무·도구/트렌드·인사이트</td><td>커리큘럼 이론:실습 비율 보완 — 사전학습은 이론·사례 VOD, 본 교육은 실습 중심으로 분담</td></tr>
+        <tr><td class="lab">난이도 (5) + 강의영역 (6)</td><td>입문~전문가 / 사업·전략, 재무·투자, 사람·조직, 고객·시장, 제품·운영, 법무·규제</td><td>난이도 곡선 설계 + 회차 주제에 영역 매칭</td></tr>
+        <tr><td class="lab">유효성 (3) + 판단근거</td><td>상시유효/점검필요/폐기후보</td><td>설계 문법의 validity 와 동일 개념 — 추천 풀에서 폐기후보 자동 제외</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="box" style="margin-top:var(--s-5);">
+      <p class="caption">
+        통합 시나리오: 설계 규칙이 "예비창업 청년 + 첫 제품 만들기 단계 → 사전학습 VOD 2시간"을 권장
+        → VOD 레이어가 "청중=예비창업자 ∧ 단계=첫 제품 만들기 ∧ 유효성=상시유효 ∧ 난이도≤초급"
+        필터로 후보 영상을 자동 제안 → PM 이 인사이트 필드(누구에게·왜)를 보고 선택.
+        전제: v5.4 분류 실데이터의 DB 이관 (ADR-028 Follow-up).
+      </p>
+    </div>
   </section>
 
   <hr class="div-line">
@@ -435,9 +494,9 @@ td.lab{font-weight:700;white-space:nowrap;}
     <div class="step">
       <div class="pno">P2</div>
       <div>
-        <h3>전수 구조화 추출</h3>
-        <p>전체 기획안의 커리큘럼·교육운영 파트를 AI(plumbing 티어)로 12축 추출. 모든 값에 원문 근거 문장(evidence)과 신뢰도를 함께 기록하고, 표본 10~15%는 사람이 스팟체크한다.</p>
-        <p class="caption">게이트: 스팟체크 정확도 90% 이상. 미달 축은 프롬프트 보정 후 해당 축만 재추출. 산출물: 제안서당 ProgramDesignPattern 1건.</p>
+        <h3>전수 구조화 추출 — 코퍼스 실측 반영 (v0.2)</h3>
+        <p>추출 대상은 <strong>WinningProposalDoc 148건 원문</strong>(총 186만 자, Drive fetch + OCR 파싱 완료분). AI(plumbing 티어)로 16축 + 콘텐츠 믹스 + 회차 시퀀스를 추출하고, 모든 값에 원문 근거(evidence)와 신뢰도를 기록한다. 저장은 DB가 아니라 <strong>JSON-first</strong>(data/program-design/) — migration 보류 정책을 지키면서 스키마 이터레이션 자유를 확보하고, 검증 후 DB 이관한다.</p>
+        <p class="caption">게이트: 표본 스팟체크 정확도 90% 이상. ⚠️ 현 코퍼스는 당선작 148 / 패배 0 — 당락 변별 학습은 패배 제안서 수급(사용자) 후 증분 추출.</p>
       </div>
     </div>
     <div class="step">
@@ -540,24 +599,24 @@ td.lab{font-weight:700;white-space:nowrap;}
   <!-- ───────────────── 09 다음 결정 ───────────────── -->
   <section>
     <div class="section-no">09</div>
-    <h2>다음 결정 — 사용자 확인이 필요한 것</h2>
+    <h2>결정 현황 (v0.2 — 2026-06-12)</h2>
     <div class="grid3">
       <div class="box">
-        <h3><span class="num" style="color:var(--accent);">1</span> &nbsp;12축 어휘 승인</h3>
-        <p class="caption">섹션 04의 축 구성이 실제 운영 경험과 맞는가. 빠진 축(예: 강사 구성, 장소 전략)이 있는가.</p>
+        <h3><span class="num" style="color:var(--accent);">1</span> &nbsp;축 어휘 — 16축 확장 동결</h3>
+        <p class="caption">v0.1 검토에서 지적된 누락(강사 구성·장소·산출물·지원금·수료 기준) 반영 + VOD 분류 v5.4 정합 레이어(콘텐츠 믹스·유효성) 추가. ADR-028 Accepted.</p>
       </div>
       <div class="box">
-        <h3><span class="num" style="color:var(--accent);">2</span> &nbsp;재추출 범위</h3>
-        <p class="caption">전수(전체 기획안) vs 우선 수주작 + 핵심 세그먼트. 전수 권장 — 패배 케이스가 규칙의 절반이다.</p>
+        <h3><span class="num" style="color:var(--accent);">2</span> &nbsp;재추출 — 전수 실행</h3>
+        <p class="caption">WinningProposalDoc 148건 전수. ⚠️ 패배 케이스 0건이 확인됨 — 패배 제안서 수급은 사용자 액션으로 남음 (수급 시 증분 추출).</p>
       </div>
       <div class="box">
-        <h3><span class="num" style="color:var(--accent);">3</span> &nbsp;가설 매트릭스 1차 교정</h3>
-        <p class="caption">섹션 05를 현장 감각으로 먼저 교정해 주면 P3 검증이 빨라진다. 특히 임직원·시니어 행.</p>
+        <h3><span class="num" style="color:var(--accent);">3</span> &nbsp;가설 매트릭스 — P3 검증 대기</h3>
+        <p class="caption">섹션 05는 가설 상태 유지. 전수 추출 집계(_aggregate)가 나오면 지지/기각/데이터부족 판정 + 현장 감각 교정(임직원·시니어 행)을 함께 진행.</p>
       </div>
     </div>
     <p class="caption" style="margin-top:var(--s-5);">
-      승인 시 진행 경로: ADR 작성(스키마 동결) → DATA 브리프(P1~P2) → 분석 브리프(P3~P4) → 생성기 연결 브리프(P5).
-      기존 일하는 방식(메인 = 기획·검증, 서브 에이전트 = 구현) 그대로.
+      진행 경로: ADR-028(동결) → BR-1 추출 브리프(P2 실행) → P3 집계 리포트 → P4 DesignRule + 검수 UI →
+      P5 생성기 연결. VOD 분류 실데이터 DB 이관은 별도 Follow-up.
     </p>
   </section>
 
@@ -567,7 +626,7 @@ td.lab{font-weight:700;white-space:nowrap;}
   <hr class="div-ink" style="margin-top:var(--s-8);">
   <footer>
     <img src="assets/logo/underdogs-wordmark-black.svg" alt="UNDERDOGS">
-    <p class="caption">프로그램 설계 문법 v0.1 — 브레인 고도화 설계안 · UD-Ops Workspace · 2026-06-12 · 내부 검토용 초안</p>
+    <p class="caption">프로그램 설계 문법 v0.2 — 브레인 고도화 설계안 · UD-Ops Workspace · 2026-06-12 · ADR-028 동결 + VOD 분류 v5.4 연동</p>
   </footer>
 </div>
 
