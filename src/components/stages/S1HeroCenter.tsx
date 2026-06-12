@@ -474,7 +474,7 @@ export function S1HeroCenter({
           className="pointer-events-none absolute right-0 top-0 h-full w-2/5"
           style={{
             background:
-              'linear-gradient(135deg, transparent 50%, rgba(255,130,4,0.08) 100%)',
+              'linear-gradient(135deg, transparent 50%, rgba(240,85,25,0.08) 100%)',
           }}
         />
 

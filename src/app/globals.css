@@ -6,48 +6,90 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────────────────────────────────────
- * Wave U / ActionAI 디자인 토큰 (2026-05-19)
+ * 공식 디자인 킷 260529 토큰 (UI-1, 2026-06-12)
  *
- * Single source: ActionAI/.claude/skills/actionai-design-system/SKILL.md
- *   - Action Orange 5종 + Dark 3종 + Sub 4종 = 12토큰
- *   - 사용 비율: Action Orange 는 전체 UI 면적의 10~15% 이하 (CTA·아이콘·강조)
- *   - 보라/파랑 사용 금지 — Light Beige + Action Orange 또는 Cyan 으로 통일
+ * Single source: docs/design-kit/index.html :root 토큰 블록 (그대로 복사)
+ *   + .claude/skills/ud-design-system/SKILL.md v2
+ *   - 포인트 컬러는 --accent(#F05519) 1개. 연한 강조는 accent-88/76/52/40.
+ *   - 면적비: paper(흰) 60%+ · 뉴트럴 20~30% · accent 면 최소.
+ *   - 폐기: 구 시안 · 구 오렌지 그라데이션 스케일 (킷 §1 폐기 목록 참조)
  *
- * 하위 호환: 기존 --ud-* 토큰은 --action-* / --primary-orange 등의 별칭으로 보존.
+ * 하위 호환: 구 변수(--action-orange/--primary-orange/--cyan/--light-beige 등)는
+ * 킷 토큰 별칭으로 수렴 (킷 index.html 의 별칭 블록과 동일 접근).
  * ────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* ── Action Orange 5종 ── */
-  --action-orange:    #FF8204;   /* 포인트 강조 · 아이콘 · 브랜드 배지 */
-  --primary-orange:   #E8541A;   /* CTA 버튼 (primary) */
-  --orange3:          #F05519;   /* hover · 보조 primary (구 --ud-orange) */
-  --orange2:          #FFA40D;   /* 연한 오렌지 · 보조 강조 */
-  --light-orange:     #F0845A;   /* 틴트 · 배경 하이라이트 */
+  /* ── 브랜드 컬러 3색 + 흑백 (불변) ── */
+  --accent:    #F05519;   /* PANTONE 1655 — 유일한 포인트 컬러 */
+  --dark:      #373938;   /* PANTONE 447 */
+  --warm-gray: #D8D4D7;   /* PANTONE Warm Gray 1 */
+  --white:     #FFFFFF;
+  --black:     #000000;
 
-  /* ── Dark 3종 ── */
-  --dark-charcoal:    #373938;   /* 사이드바 · 히어로 배경 */
-  --dark2:            #2D2D2D;   /* 2차 다크 (스프린트 카드 등) */
-  --dark3:            #1F2020;   /* 최심 다크 (거의 사용 안 함) */
+  /* ── 액센트 베리에이션 ── */
+  --accent-88: #FDEBE3;
+  --accent-76: #FBD6C8;
+  --accent-52: #F8AD91;
+  --accent-40: #F69975;
 
-  /* ── Sub 4종 ── */
-  --cyan:             #06A9D0;   /* Team · secondary 강조 · 보조 CTA */
-  --green:            #2ECC71;   /* 성공 · Gate 통과 */
-  --light-beige:      #F5F0EB;   /* 카드 배경 (본문 영역) */
-  --warm-gray:        #D8D4D7;   /* 다크 배경 위 보조 텍스트 */
+  /* ── 다크 베리에이션 (텍스트 위계) ── */
+  --dark-70: #C3C4C3;
+  --dark-55: #A5A6A5;
+  --dark-40: #878888;
+  --dark-25: #696A6A;
+  --dark-10: #4B4D4C;
 
-  /* ── 텍스트 ── */
-  --body-text:        #333333;   /* 본문 */
-  --subtitle-text:    #666666;   /* 보조 설명 */
+  /* ── 뉴트럴 베리에이션 (배경·면 구분) ── */
+  --neutral-90: #FBFBFB;
+  --neutral-60: #F0F0F0;
+  --neutral-30: #E4E4E4;
+  --neutral-0:  #D9D9D9;
+
+  /* ── 시맨틱 토큰 (컴포넌트는 이것만 참조) ── */
+  --paper:    var(--white);
+  --ink:      var(--dark);
+  --soft-ink: var(--dark-10);
+  --muted:    var(--dark-40);
+  --muted-2:  var(--dark-55);
+  --line:     var(--neutral-0);
+  --line-soft:var(--neutral-30);
+
+  /* spacing scale — 1차 primitive (8개) */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 22px; --s-6: 28px; --s-7: 40px; --s-8: 60px;
+
+  /* 간격 관계 토큰 */
+  --gap-section: 28px;
+  --gap-element: 16px;
+  --gap-tight:   6px;
+
+  /* ── 구(舊) 변수 → 킷 토큰 별칭 (인라인 스타일 호환, 포인트 컬러 1개로 수렴) ── */
+  --action-orange:  var(--accent);      /* 구 포인트 강조 → accent */
+  --primary-orange: var(--accent);      /* 구 CTA primary → accent */
+  --orange3:        var(--accent);      /* 구 #F05519 (동일값) */
+  --orange2:        var(--accent);      /* 구 연한 오렌지 → accent */
+  --light-orange:   var(--accent-52);   /* 구 틴트 → accent-52 */
+  --dark-charcoal:  var(--ink);
+  --dark2:          var(--ink);
+  --dark3:          var(--ink);
+  --cyan:           var(--ink);         /* 구 시안 보조 강조 → 다크 (accent 면적비 보호) */
+  --light-beige:    var(--neutral-90);  /* 구 라이트 베이지 → neutral-90 */
+  --body-text:      var(--soft-ink);
+  --subtitle-text:  var(--muted);
+  --hairline-strong: var(--neutral-30); /* 구 fallback #e4dfd6 정의 승격 */
+
+  /* ── 의미 컬러 (킷 스코프 밖 — 상태 시맨틱 유지) ── */
+  --green:          #2ECC71;            /* 성공 · Gate 통과 */
 
   /* ── 하위 호환 — 기존 --ud-* (점진 마이그레이션) ── */
-  --ud-orange:        var(--orange3);       /* 기존 #F05519 유지 */
-  --ud-orange-light:  #F48053;
-  --ud-orange-tint:   #F9BBA3;
-  --ud-orange-pale:   #FBD4C5;
-  --ud-orange-fg:     #FFFFFF;
-  --ud-black:         #000000;
-  --ud-dark:          var(--dark-charcoal);
+  --ud-orange:        var(--accent);
+  --ud-orange-light:  var(--accent-52);
+  --ud-orange-tint:   var(--accent-76);
+  --ud-orange-pale:   var(--accent-88);
+  --ud-orange-fg:     var(--white);
+  --ud-black:         var(--black);
+  --ud-dark:          var(--ink);
   --ud-gray:          var(--warm-gray);
-  --ud-white:         #FFFFFF;
+  --ud-white:         var(--white);
   --ud-cyan:          var(--cyan);
 }
 
@@ -74,10 +116,11 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
+  /* ⚠️ 킷 토큰 --accent/--muted 와 충돌 방지 — shadcn 표면 토큰은 --surface-* 로 분리 */
+  --color-accent-foreground: var(--surface-accent-foreground);
+  --color-accent: var(--surface-accent);
   --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
+  --color-muted: var(--surface-muted);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
@@ -86,16 +129,18 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  /* 브랜드 컬러 유틸리티 — Wave U / ActionAI */
-  --color-brand: var(--primary-orange);
-  --color-brand-light: var(--orange2);
-  --color-brand-tint: var(--light-orange);
-  --color-brand-pale: var(--light-beige);
-  --color-brand-fg: #FFFFFF;
-  --color-brand-cyan: var(--cyan);
-  --color-brand-green: var(--green);
-  --color-brand-dark: var(--dark-charcoal);
-  --color-brand-beige: var(--light-beige);
+  /* 브랜드 컬러 유틸리티 — 킷 260529 토큰으로 수렴 (UI-1) */
+  --color-brand: var(--accent);
+  --color-brand-light: var(--accent-40);
+  --color-brand-tint: var(--accent-76);
+  --color-brand-pale: var(--accent-88);
+  --color-brand-fg: var(--white);
+  --color-brand-cyan: var(--cyan);          /* → ink (별칭 수렴) */
+  --color-brand-green: var(--green);        /* 의미 컬러 — 킷 스코프 밖 유지 */
+  --color-brand-dark: var(--ink);
+  --color-brand-beige: var(--neutral-90);
+  /* 영문/숫자 강조 표면 (큰 지표·kicker) — Poppins */
+  --font-poppins: var(--font-poppins);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -106,53 +151,54 @@
 }
 
 :root {
-  /* 배경/텍스트 — 화이트 베이스 */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.1 0 0);          /* #000에 근접 */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.1 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.1 0 0);
+  /* shadcn 시맨틱 — 킷 260529 토큰 매핑 (UI-1, 2026-06-12) */
+  --background: var(--paper);
+  --foreground: var(--ink);              /* 킷 텍스트 위계 최상단 #373938 */
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
 
-  /* Wave U: Primary = #E8541A (ActionAI primary-orange, OKLCH 변환) */
-  --primary: oklch(0.605 0.198 36);
-  --primary-foreground: oklch(1 0 0);
+  /* Primary = 킷 accent #F05519 (PANTONE 1655 — 유일한 포인트 컬러) */
+  --primary: var(--accent);
+  --primary-foreground: var(--white);
 
-  /* Secondary — 밝은 그레이 */
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.27 0.003 165);
+  /* Secondary — 뉴트럴 면 */
+  --secondary: var(--neutral-60);
+  --secondary-foreground: var(--ink);
 
-  /* Muted */
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.52 0 0);
+  /* Muted — 표면=neutral-60, 텍스트=킷 muted(#878888) */
+  --surface-muted: var(--neutral-60);
+  --muted-foreground: var(--muted);
 
-  /* Accent — Light Beige #F5F0EB (보라 대체) */
-  --accent: oklch(0.953 0.011 60);
-  --accent-foreground: oklch(0.605 0.198 36);
+  /* Accent 표면(hover 등) — accent-88 틴트 + ink 텍스트 */
+  --surface-accent: var(--accent-88);
+  --surface-accent-foreground: var(--ink);
 
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.91 0 0);
-  --input: oklch(0.91 0 0);
-  --ring: oklch(0.605 0.198 36);          /* focus ring = primary-orange */
+  --destructive: oklch(0.577 0.245 27.325);  /* 의미 컬러 — 킷 스코프 밖 유지 */
+  --border: var(--line-soft);
+  --input: var(--line-soft);
+  --ring: var(--accent);                  /* focus ring = accent */
 
-  /* 차트 컬러 — Wave U 브랜드 팔레트 */
-  --chart-1: oklch(0.605 0.198 36);       /* primary-orange #E8541A */
-  --chart-2: oklch(0.62 0.13 213);        /* cyan #06A9D0 */
-  --chart-3: oklch(0.78 0.16 70);         /* action-orange #FF8204 */
-  --chart-4: oklch(0.77 0.18 152);        /* green #2ECC71 */
-  --chart-5: oklch(0.27 0.003 165);       /* dark-charcoal #373938 */
+  /* 차트 컬러 — 킷 단일 accent + 다크/액센트 베리에이션 램프 */
+  --chart-1: var(--accent);               /* #F05519 */
+  --chart-2: var(--ink);                  /* #373938 */
+  --chart-3: var(--accent-52);            /* #F8AD91 */
+  --chart-4: var(--dark-55);              /* #A5A6A5 */
+  --chart-5: var(--accent-76);            /* #FBD6C8 */
 
-  --radius: 0.5rem;
+  /* 킷 기본 — radius 전면 0 (Open Decision 1) */
+  --radius: 0;
 
-  /* Sidebar — 다크 charcoal (#373938) */
-  --sidebar: oklch(0.27 0.003 165);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.605 0.198 36);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.32 0.003 165);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.35 0.003 165);
-  --sidebar-ring: oklch(0.605 0.198 36);
+  /* Sidebar — 킷 --ink 다크 앵커 (#373938 동일값 유지) */
+  --sidebar: var(--ink);
+  --sidebar-foreground: var(--neutral-60);
+  --sidebar-primary: var(--accent);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--dark-10);
+  --sidebar-accent-foreground: var(--neutral-90);
+  --sidebar-border: var(--dark-10);
+  --sidebar-ring: var(--accent);
 }
 
 .dark {
@@ -162,41 +208,46 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.18 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.605 0.198 36);
-  --primary-foreground: oklch(1 0 0);
+  --primary: var(--accent);
+  --primary-foreground: var(--white);
   --secondary: oklch(0.25 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.25 0 0);
+  --surface-muted: oklch(0.25 0 0);
   --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.25 0.02 32);
-  --accent-foreground: oklch(0.85 0.12 32);
+  --surface-accent: oklch(0.25 0.02 32);
+  --surface-accent-foreground: oklch(0.85 0.12 32);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.605 0.198 36);
-  --chart-1: oklch(0.605 0.198 36);
-  --chart-2: oklch(0.62 0.13 213);
-  --chart-3: oklch(0.78 0.16 70);
-  --chart-4: oklch(0.77 0.18 152);
-  --chart-5: oklch(0.45 0 0);
+  --ring: var(--accent);
+  --chart-1: var(--accent);
+  --chart-2: var(--neutral-60);
+  --chart-3: var(--accent-52);
+  --chart-4: var(--dark-55);
+  --chart-5: var(--accent-76);
   --sidebar: oklch(0.15 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.605 0.198 36);
-  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-primary: var(--accent);
+  --sidebar-primary-foreground: var(--white);
   --sidebar-accent: oklch(0.22 0 0);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.605 0.198 36);
+  --sidebar-ring: var(--accent);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  /* 킷 기본: radius 0 전면 — `* { border-radius: 0 !important }` (Open Decision 1)
+   * shadcn 다이얼로그·인풋·배지 포함 전 요소. rounded-full 도트/아바타/스위치도 사각화됨. */
+  *, *::before, *::after {
+    border-radius: 0 !important;
+  }
   body {
     @apply bg-background text-foreground;
-    /* Wave U: Poppins 라텡 우선, 한글은 시스템 fallback (Pretendard 우선) */
-    font-family: var(--font-sans), 'Pretendard Variable', 'Pretendard',
+    /* 킷 260529: 국문 본문 = NanumHuman (next/font/local --font-sans) */
+    font-family: var(--font-sans), 'NanumHuman',
                  -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
                  'Noto Sans KR', 'Malgun Gothic', sans-serif;
     word-break: keep-all;
@@ -204,7 +255,7 @@
   html {
     @apply font-sans;
   }
-  /* 제목류 bold 강조 — ActionAI 스타일 */
+  /* 제목류 bold 강조 — 킷 heading 위계 (NanumHuman 700/800) */
   h1, h2, h3 {
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -252,55 +303,53 @@
 }
 
 @layer utilities {
-  /* Action Orange 강조 텍스트 (구 .text-brand) */
+  /* 킷 accent 강조 텍스트 — kicker·라벨·핵심 숫자 1포인트만 (본문 금지) */
   .text-brand {
-    color: var(--primary-orange);
+    color: var(--accent);
   }
   .text-brand-orange {
-    color: var(--action-orange);
+    color: var(--accent);
   }
-  /* CTA 버튼 배경 */
+  /* CTA 버튼 배경 — 킷 btn-primary 문법 */
   .bg-brand {
-    background-color: var(--primary-orange);
-    color: #FFFFFF;
+    background-color: var(--accent);
+    color: var(--white);
   }
   .bg-brand-hover:hover {
-    background-color: var(--orange3);
+    background-color: var(--ink);   /* 킷 nav-cta hover = ink 반전 */
   }
-  /* Cyan 포인트 */
+  /* 구 Cyan 포인트 — 킷 수렴: 보조 강조 = ink (시안 폐기) */
   .text-brand-cyan {
     color: var(--cyan);
   }
   .bg-brand-cyan {
     background-color: var(--cyan);
-    color: #FFFFFF;
+    color: var(--white);
   }
-  /* Green — 성공 / Gate 통과 */
+  /* Green — 성공 / Gate 통과 (의미 컬러, 킷 스코프 밖 유지) */
   .text-brand-green {
     color: var(--green);
   }
   .bg-brand-green {
     background-color: var(--green);
-    color: #FFFFFF;
+    color: var(--white);
   }
-  /* Light Beige — 카드 배경 (보라 대체) */
+  /* 구 Light Beige — 킷 neutral-90 면으로 수렴 */
   .bg-beige {
-    background-color: var(--light-beige);
+    background-color: var(--neutral-90);
   }
-  /* Repetition/Alignment 패턴: 오렌지 왼쪽 보더 */
+  /* Repetition/Alignment 패턴: accent 왼쪽 보더 */
   .border-brand-left {
-    border-left: 3px solid var(--primary-orange);
+    border-left: 3px solid var(--accent);
     padding-left: 0.75rem;
   }
-  /* Expansion/Progress: 오렌지 그라데이션 바 */
+  /* Expansion/Progress: 그라데이션 폐기 → accent 단색 (킷: 장식 그라데이션 금지) */
   .progress-brand {
-    background: linear-gradient(90deg, var(--primary-orange) 0%, var(--orange2) 100%);
+    background: var(--accent);
   }
-  /* Now Bar (U1) — 다음 1 액션 강조 */
+  /* Now Bar (U1) — 다음 1 액션 강조: accent-88 틴트 면 + accent-52 라인 */
   .now-bar-active {
-    background: linear-gradient(90deg,
-      color-mix(in oklab, var(--primary-orange) 8%, white) 0%,
-      color-mix(in oklab, var(--orange2) 4%, white) 100%);
-    border-color: color-mix(in oklab, var(--primary-orange) 40%, transparent);
+    background: var(--accent-88);
+    border-color: var(--accent-52);
   }
 }

@@ -44,7 +44,7 @@ interface GraphData {
 
 const TYPE_COLORS: Record<string, string> = {
   methodology: '#F05519',
-  metric: '#06A9D0',
+  metric: '#373938', /* 킷 ink (구 시안 폐기) */
   persona: '#8B5CF6',
   domain: '#10B981',
   tool: '#F59E0B',
@@ -378,7 +378,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
                         cy={n.y}
                         r={n.r + 6}
                         fill="none"
-                        stroke={isFocus ? '#F05519' : '#06A9D0'}
+                        stroke={isFocus ? '#F05519' : '#A5A6A5'}
                         strokeWidth={2}
                         strokeOpacity={0.7}
                       />
@@ -410,7 +410,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
                           y={n.y + n.r + 14}
                           textAnchor="middle"
                           fontSize={isFocus ? 12 : 10.5}
-                          fontFamily="Nanum Gothic, sans-serif"
+                          fontFamily="NanumHuman, sans-serif"
                           fontWeight={isFocus || isNeighbor ? 600 : 400}
                           fill="#111827"
                           style={{ pointerEvents: 'none' }}

@@ -20,7 +20,7 @@ import type { ProposalSectionKey } from '@/lib/pipeline-context'
 
 function completenessBarColor(completeness: number): string {
   if (completeness >= 0.8) return 'bg-primary'              // Action Orange
-  if (completeness >= 0.5) return 'bg-[var(--ud-orange-tint)]' // orange-tint (#F9BBA3)
+  if (completeness >= 0.5) return 'bg-[var(--ud-orange-tint)]' // 킷 accent-76 별칭
   return 'bg-muted'
 }
 

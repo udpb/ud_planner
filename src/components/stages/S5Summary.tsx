@@ -120,7 +120,7 @@ export function S5Summary({
           className="pointer-events-none absolute right-0 top-0 h-full w-[55%]"
           style={{
             background:
-              'linear-gradient(135deg, transparent 40%, rgba(255,130,4,0.08) 100%)',
+              'linear-gradient(135deg, transparent 40%, rgba(240,85,25,0.08) 100%)',
           }}
         />
         {/* ghost mark */}
@@ -141,7 +141,7 @@ export function S5Summary({
           className="relative mb-5 inline-block px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[2px]"
           style={{
             color: 'var(--action-orange)',
-            border: '1px solid rgba(255,130,4,.4)',
+            border: '1px solid rgba(240,85,25,.4)',
           }}
         >
           Stage 05 · Final Approval
@@ -213,8 +213,7 @@ export function S5Summary({
         <div
           className="relative mb-[2px] overflow-hidden p-9 text-white"
           style={{
-            background:
-              'linear-gradient(135deg, var(--primary-orange), var(--orange3))',
+            background: 'var(--accent)',
           }}
         >
           {/* decorative ring */}

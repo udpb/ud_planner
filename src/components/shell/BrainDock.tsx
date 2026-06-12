@@ -283,7 +283,7 @@ function AssetsTab({
                   className="ml-auto px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[1px]"
                   style={{
                     color: 'var(--action-orange)',
-                    background: 'rgba(255,130,4,.1)',
+                    background: 'rgba(240,85,25,.1)',
                   }}
                 >
                   high

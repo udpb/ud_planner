@@ -17,8 +17,8 @@ description: TRIGGER when creating/editing UI components, brand HTML outputs (la
 | | A. 브랜드 HTML 산출물 | B. 앱 UI (src/) |
 |---|---|---|
 | 대상 | 리포트·랜딩·포스터·PRD HTML 등 docs/ 산출물 | UD-Ops 웹앱 (shadcn/Tailwind) |
-| 기준 | 킷 토큰 + 아래 룰 **전면 적용** | ⚠️ **전환기** — §8 참조 |
-| 장식 | 문서형(스크롤 리포트)=엄격 / 인터랙티브(랜딩)=§6 완화 적용 | 마이그레이션(UI-1 브리프) 후 킷 정렬 |
+| 기준 | 킷 토큰 + 아래 룰 **전면 적용** | 킷 토큰 정렬 완료 (UI-1, 2026-06-12) — §8 참조 |
+| 장식 | 문서형(스크롤 리포트)=엄격 / 인터랙티브(랜딩)=§6 완화 적용 | §6 인터랙티브 완화 + §7 앱 공통 규칙 |
 
 ## 1. 컬러 토큰 (킷 그대로 복사 — 임의 hex 금지)
 
@@ -51,7 +51,7 @@ description: TRIGGER when creating/editing UI components, brand HTML outputs (la
 ## 2. 타이포그래피
 
 - **국문 = NanumHuman** (400/700/800) · **영문/숫자 = Poppins** (400/500/600). 한 단어 안에서 두 폰트 교차 금지.
-- 폰트는 로컬 woff2 (`docs/design-kit/fonts/`). 외부 폰트 import 금지. ⚠️ 구버전 "Nanum Gothic"은 앱 UI 잔존분 — 새 산출물은 NanumHuman.
+- 폰트는 로컬 woff2 (`docs/design-kit/fonts/`, 앱은 `public/fonts/` 복사본 + next/font/local). 외부 폰트 import 금지.
 - 위계 4단계: kicker(Poppins 600, letter-spacing 1.5~2px, uppercase, accent) > heading(800/700) > body(400, line-height 1.7) > caption(muted).
 - display 100% 크기 제목(One Loudest)은 산출물당 1개.
 - `word-break: keep-all` 국문 전체 적용.
@@ -99,15 +99,15 @@ description: TRIGGER when creating/editing UI components, brand HTML outputs (la
 - **상태 배지** (재정의 금지): DRAFT=yellow / PROPOSAL=blue / SUBMITTED=violet / IN_PROGRESS=green / COMPLETED=gray / LOST=red.
 - **접근성**: 버튼 aria-label, 컬러 단독 상태 전달 금지, 포커스 링 유지.
 
-## 8. ⚠️ 앱 UI 전환기 규칙 (마이그레이션 전까지)
+## 8. 앱 UI 킷 정렬 현황 (UI-1 마이그레이션 완료 — 2026-06-12)
 
-현행 `src/` 앱은 구 시스템(Nanum Gothic · rounded-md · lucide-react · 시안 서브컬러)으로 작성됨. 킷 정렬은 **UI-1 브리프**(`.claude/agent-briefs/UI-1-design-kit-app-migration.md`, deferred)로 일괄 진행 예정.
+`src/` 앱은 UI-1 브리프로 킷 260529 에 정렬됨 (globals.css 킷 토큰 + NanumHuman/Poppins next/font/local + `--radius: 0` 전면 + 폐기 컬러 0건).
 
-그 전까지:
-1. **기존 화면 유지보수** = 기존 컨벤션 따름 (한 화면 안에 신구 혼합 금지 — 어색한 반반 UI가 최악).
-2. **새 독립 화면·외부 노출 화면**(랜딩·공유 페이지·인쇄 뷰) = 새 킷 적용.
-3. **브랜드 HTML 산출물**(docs/) = 항상 새 킷.
-4. globals.css 토큰·radius 전역 변경은 UI-1 브리프 스코프 — 단발 PR로 건드리지 말 것.
+앱 작업 시:
+1. **새 코드는 킷 토큰만** — `--accent`/`--accent-88~40`/`--ink`/`--paper`/`--muted`/`--line` 계열 (globals.css `:root`). 구 변수(`--primary-orange`·`--cyan`·`--light-beige` 등)는 별칭으로만 살아있음 — 새 코드 사용 금지.
+2. shadcn 표면 토큰(`bg-accent`·`bg-muted`)은 내부적으로 `--surface-accent`/`--surface-muted` 로 분리됨 (킷 `--accent`/`--muted` 와 이름 충돌 방지) — Tailwind 클래스는 그대로 사용.
+3. radius 0 은 전역 `border-radius: 0 !important` 로 강제 — 둥근 모서리 재도입 금지.
+4. 시안·구 그라데이션 스케일 hex 재도입 금지 (§9). 의미 컬러(상태 배지·green·destructive)는 §7 대로 유지.
 
 ## 9. 금지 목록 (위반 시 STOP)
 

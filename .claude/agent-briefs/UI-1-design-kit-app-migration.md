@@ -9,7 +9,7 @@
 | ID | `UI-1-design-kit-app-migration` |
 | Owner | 메인 세션이 채움 |
 | 작성일 | 2026-06-12 |
-| 상태 | 🟡 **in-progress** — 2026-06-12 사용자 "전부다 가이드 기반으로 바꿔줘" 승인으로 착수. Open Decisions 3건 확정됨 (아래) |
+| 상태 | ✅ **완료** (2026-06-12) — 서브 구현 + 메인 라이브 검증(로그인·대시보드·프로젝트 B2G/B2B·Content Hub: 폐기 컬러 0건·radius 0 전면·NanumHuman 로드·사이드바 ink). 잔여: 시각 미세 QA(라디오·스위치 사각화 체감)·graph-view 비브랜드 팔레트 6색 결정·cyan→ink 수렴 사용자 컨펌 |
 | 의존 브리프 | 없음 (단 Open Decisions 사용자 확정 선행) |
 | 우선순위 | P2 |
 | 예상 시간 | 1.5~2.5일 (Wave 분할 권장) |

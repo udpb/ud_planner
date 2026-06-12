@@ -35,7 +35,7 @@ Agent({ subagent_type: "Explore", prompt: "..." })
 🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
 ## 활성 브리프
-- `UI-1-design-kit-app-migration.md` — 📦 **deferred** (2026-06-12). 앱 UI를 공식 디자인 킷 260529(`docs/design-kit/`)로 마이그레이션. 스킬(`ud-design-system` v2)은 선반영 완료 — 착수는 사용자 승인 + Open Decisions 3건(radius 전면 0 · lucide 존치 · NanumHuman 교체) 확정 후.
+- `UI-1-design-kit-app-migration.md` — ✅ **완료** (2026-06-12). 앱 UI 킷 260529 정렬: globals.css 킷 토큰+별칭 수렴 · NanumHuman/Poppins next/font · radius 전면 0 · 폐기 컬러(시안·구 그라데이션) 0건 · shadcn `--surface-accent/muted` 분리. 메인 라이브 검증 4화면 통과. 잔여 결정: cyan→ink 수렴 컨펌 · graph-view 노드 팔레트 6색 · 시각 미세 QA(라디오/스위치 사각화).
 - `DECK-5-consume-planning.md` — ⏸️ **ON HOLD / 재스코프 대기 (2026-06-12)**. ADR-026 기반이나 사용자 2026-06-12 피드백으로 방향 전환 — 덱은 PipelineContext를 **재저작**하면 안 되고 **정본 텍스트 제안서를 받아 슬라이드로 변환하는 분리된 터미널 모듈**이어야 함. **ADR-027(026 supersede) 작성 + 브리프 재스코프 전까지 이 브리프대로 진행 금지.** 상세: [HANDOFF.md](../../HANDOFF.md) 최상단.
 - `DECK-4-density-critic.md` — ✅ 완료 (2026-06-04). 밀도 비평 루프 + 여백 축소.
 - `QUAL-THROTTLE-gather-backoff.md` — ✅ 완료 (2026-06-04). gather 동시성 + 429 백오프.

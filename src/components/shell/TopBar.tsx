@@ -66,7 +66,7 @@ export function TopBar({
         className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[1.3px]"
         style={{
           color: 'var(--action-orange)',
-          border: '1px solid rgba(255,130,4,.4)',
+          border: '1px solid rgba(240,85,25,.4)',
         }}
       >
         v2
@@ -108,7 +108,7 @@ export function TopBar({
           style={{
             color: brainOpen ? 'var(--dark-charcoal)' : 'var(--action-orange)',
             background: brainOpen ? 'var(--action-orange)' : 'transparent',
-            border: `1px solid ${brainOpen ? 'var(--action-orange)' : 'rgba(255,130,4,.4)'}`,
+            border: `1px solid ${brainOpen ? 'var(--action-orange)' : 'rgba(240,85,25,.4)'}`,
           }}
           title="Brain — 자산 매칭 · 유사 사업 · AI 채팅"
         >

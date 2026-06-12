@@ -209,9 +209,9 @@ export function S3Checklist({
         <div
           className="mb-3 px-3 py-2 text-[11px]"
           style={{
-            background: 'rgba(255,130,4,.06)',
+            background: 'rgba(240,85,25,.06)',
             color: 'var(--action-orange)',
-            border: '1px solid rgba(255,130,4,.25)',
+            border: '1px solid rgba(240,85,25,.25)',
           }}
         >
           ● AI 검수 실패 → 휴리스틱 fallback 사용 중 · 1차본 보강 후 재시도 권장
@@ -284,7 +284,7 @@ export function S3Checklist({
             className="pointer-events-none absolute right-0 top-0 h-full w-1/2"
             style={{
               background:
-                'linear-gradient(135deg, transparent 50%, rgba(255,130,4,0.08) 100%)',
+                'linear-gradient(135deg, transparent 50%, rgba(240,85,25,0.08) 100%)',
             }}
           />
           <div
@@ -425,7 +425,7 @@ export function S3Checklist({
           <div
             className="text-[11px] leading-[1.7] tabular-nums"
             style={{
-              fontFamily: "'Poppins', monospace",
+              fontFamily: 'var(--font-poppins), monospace',
               color: 'var(--warm-gray)',
             }}
           >

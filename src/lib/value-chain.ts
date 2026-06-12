@@ -98,7 +98,7 @@ export const VALUE_CHAIN_STAGES: Record<ValueChainStage, ValueChainStageSpec> = 
     description: 'RFP 요구 산출물 + 최종 제안서',
     essentialQuestion: '무엇을 납품할 것인가?',
     colorToken: '--vc-output',
-    colorHex: '#06A9D0', // Cyan
+    colorHex: '#878888', // 킷 dark-40 (구 시안 폐기 — UI-1)
     uiSteps: ['rfp', 'proposal'],
   },
   activity: {
@@ -111,7 +111,7 @@ export const VALUE_CHAIN_STAGES: Record<ValueChainStage, ValueChainStageSpec> = 
     description: '실제 실행 체 (커리큘럼 · 코칭 · Action Week)',
     essentialQuestion: '어떻게 실행할 것인가?',
     colorToken: '--vc-activity',
-    colorHex: '#F48053', // Orange 80%
+    colorHex: '#F8AD91', // 킷 accent-52 (구 그라데이션 폐기 — UI-1)
     uiSteps: ['curriculum', 'coaches'],
   },
   outcome: {
