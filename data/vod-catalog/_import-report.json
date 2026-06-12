@@ -1,0 +1,22 @@
+{
+  "importedAt": "2026-06-12T14:13:00.636Z",
+  "inputFile": "_fixture-sample.csv",
+  "sheet": null,
+  "totalRows": 3,
+  "valid": 3,
+  "failed": 0,
+  "failures": [],
+  "unknownCellRate": 0.183,
+  "validityDistribution": {
+    "폐기후보": 1,
+    "상시유효": 1,
+    "점검필요": 1
+  },
+  "discardCandidates": 1,
+  "duplicateLectureIds": [],
+  "defaultsAppliedRows": 1,
+  "ignoredColumns": [
+    "강사"
+  ],
+  "unmappedColumns": []
+}

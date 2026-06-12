@@ -1,0 +1,468 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "창업자 트랙 : 사업 아이템을 보유한 개인 또는 팀 (예비/기창업)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "시니어"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "‘세대융합창업’을 희망하는 청년(만 39세 이하) 및 시니어(만 50세 이상)"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "AI, 콘텐츠, 소셜벤처 등",
+        "디자인 × 제조 , IT×문화콘텐츠",
+        "로컬푸드, 전통문화 등"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "경기/수도권 청년․시니어 대상 온/오프라인 홍보 및 참가자 모집"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "계원예술대학교 세대융합창업 Pre-Program 운영 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "계원예술대학교 세대융합창업 Pre-Program 운영 제안서"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "모집 인원 : 총 30~40명(최종 10~12팀 구성 및 데모데이 참가 목표)",
+        "모집 및 홍보 10월 4주차 ~ 11월 2주차",
+        "중장기 마스터 프랜 수립 완료 ~12월 4주"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트 러닝",
+        "피어 피드백"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "실습 중심(강의 30%, 실습/코칭 70%), 코호트 러닝, 피어 피드백, 1:1 코칭 병행"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전 설문조사 : 팀별/개인별 목표와 기대사항을 파악하여 교육 및 코칭에 반영"
+      ]
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 6,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 6회의 정규 교육과 팀별 코칭을 통해 아이디어를 실행 가능한 사업 계획으로 구체화",
+        "최종 데모데이 12월 3주 (1박 2일)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 30,
+        "practicePct": 70,
+        "basis": "명시"
+      },
+      "confidence": 1,
+      "evidence": [
+        "실습 중심(강의 30%, 실습/코칭 70%)"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": 1,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "상시 코칭 - 팀 별 전담 코칭 - 팀 별 진행에 맞춘 1:1 맞춤형 코칭 - 60분 진행(코칭 일지 작성)"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코호트 러닝, 피어 피드백, 1:1 코칭 병행",
+        "창업자 트랙 : 사업 아이템을 보유한 개인 또는 팀",
+        "개인 트랙 : 자신의 역량과 경험을 창업 팀에 기여하고 싶은 개인",
+        "전체 참가자가 처음 만나 네트워킹하고 프로그램의 비전과 목표를 공유하는 킥오프 행사 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "초반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "해커톤",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "전체 참가자 네트워킹 밋업 개최",
+        "최종 데모데이 12월 3주 (1박 2일) 비전 선포식, 해커톤 방식의 최종 아이템 발표"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "서류"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류 기반 팀/개인 매칭 및 전체 참가자 네트워킹 밋업 개최"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "실행 가능한 사업계획서 확보",
+        "최종 IR DECK 제출"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "대상",
+            "amountKrw": 3000000
+          },
+          {
+            "label": "최우수상",
+            "amountKrw": 2000000
+          },
+          {
+            "label": "우수상",
+            "amountKrw": 1000000
+          },
+          {
+            "label": "장려상",
+            "amountKrw": 500000
+          }
+        ]
+      },
+      "confidence": 1,
+      "evidence": [
+        "시상 : 총 1,000만원 규모 상금 수여",
+        "대상 3,000,000원(1팀), 최우수상 2,000,000원(1팀), 우수상 1,000,000원 (3팀), 장려상 500,000원 (4팀)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 7,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총괄PM",
+        "리드 코치",
+        "전담 코치(3인)",
+        "운영 스태프(2인)",
+        "특강 연사 초청",
+        "프로그램 전담 운영인력을 배치하여 교육 과정 중 발생하는 문의 및 건의사항에 신속하게 대응"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "수도권 호텔 연회장 및 세미나실(숙식 제공)",
+        "온라인 VOD 제공(1년)"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "결과물"
+        ],
+        "attendanceThreshold": 80
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "출석률 80% 이상, 산출물 90% 이상",
+        "각 실습 사항에 맞춘 산출물 제출 의무화",
+        "최종 IR DECK 제출"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": "1년"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 VOD 제공(1년), AI 트렌드 뉴스레터(월 1회), 우수팀 추가 코칭 진행",
+        "사후 관리 및 후속 지원(2~3차년도 연계)"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "정규 교육(4회), 특강(2회), 팀 별 전담 코칭 진행",
+      "실습 중심(강의 30%, 실습/코칭 70%)",
+      "AI 실습 : 효율적인 리서치/자료제작 등을 위해 AI 활용 방법론을 정규교육 내용에 맞춰 실습"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "조직 체계 만들기 / Problem & Persona",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "세대융합창업 우수사례 / 조직 구체화 하기",
+        "hours": null,
+        "format": "특강",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "기존 솔루션 분석 / 솔루션 구체화",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "MVP 계획 수립 / 시장 분석",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "세대공감 커뮤니케이션",
+        "hours": null,
+        "format": "특강",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "경쟁사 분석 / 비즈니스/수익 모델",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "상시 코칭 - 팀 별 전담 코칭",
+        "hours": 1,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "총 6회의 정규 교육과 팀별 코칭을 통해 아이디어를 실행 가능한 사업 계획으로 구체화",
+      "상시 코칭 - 팀 별 전담 코칭 - 팀 별 진행에 맞춘 1:1 맞춤형 코칭 - 60분 진행(코칭 일지 작성)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "'세대융합창업 5개년 로드맵'의 성공적인 첫발을 내딛는 1차년도 Pre-Program"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "팀 발굴 및 육성",
+        "targetValue": 10,
+        "unit": "개",
+        "raw": "10개팀 이상 교육 수료 및 데모데이 참가팀 수"
+      },
+      {
+        "metric": "출석률",
+        "targetValue": 80,
+        "unit": "%",
+        "raw": "출석률 80% 이상"
+      },
+      {
+        "metric": "산출물 제출률",
+        "targetValue": 90,
+        "unit": "%",
+        "raw": "산출물 90% 이상"
+      },
+      {
+        "metric": "데모데이 개최",
+        "targetValue": 1,
+        "unit": "회",
+        "raw": "1회"
+      },
+      {
+        "metric": "투자 연계",
+        "targetValue": 1,
+        "unit": "건",
+        "raw": "1팀 이상 투자사-참가팀 간 후속 미팅 1건 이상 연계"
+      },
+      {
+        "metric": "참가자 만족도",
+        "targetValue": 4.5,
+        "unit": "점",
+        "raw": "4.5점 / 5.0점"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "성과 측정 (1차년도 KPI)"
+    ]
+  },
+  "docId": "cmqazql6f000328vc131nvgvz",
+  "projectId": null,
+  "projectName": "2025 계원예술대학교 세대융합창업 Pre-Program 운영 제안서_251016 (1)",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 9,
+    "basis": "weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "docType": "proposal",
+    "charCount": 7427,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T13:59:14.099Z"
+  }
+}

@@ -82,6 +82,7 @@ async function main() {
       projectId: true,
       projectName: true,
       client: true,
+      fileName: true,
       channel: true,
       year: true,
       fullText: true,
@@ -115,12 +116,17 @@ async function main() {
 
     const truncated = doc.fullText.length > TRUNCATE_THRESHOLD
     const fullText = truncated ? `${doc.fullText.slice(0, TRUNCATE_KEEP)}\n…[중략]` : doc.fullText
+    // ADR-028 추록 2 — 파일명/프로젝트명에 '결과보고서' 포함 시 docType='result-report'
+    // (kpiTargets = 실측 실적 · 운영 구조 = 실행된 구조로 추출 지시)
+    const docType: 'proposal' | 'result-report' =
+      `${doc.fileName ?? ''}${doc.projectName}`.includes('결과보고서') ? 'result-report' : 'proposal'
     const prompt = buildExtractionPrompt({
       projectName: doc.projectName,
       client: doc.client,
       channel: doc.channel,
       year: doc.year,
       fullText,
+      docType,
     })
 
     const MAX_ATTEMPTS = 2 // 1차 + 재시도 1회 (zod/JSON 실패 시)
@@ -146,6 +152,7 @@ async function main() {
           intensity: deriveIntensity(output),
           extractionMeta: {
             model: res.model,
+            docType,
             charCount: doc.charCount,
             parseBy: doc.parseBy,
             lowText: doc.lowText,

@@ -1,0 +1,400 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "소상공인",
+      "confidence": 0.9,
+      "evidence": [
+        "경영개선 트랙(위기 극복 및 체질 개선) 재창업 트랙(실패 극복 및 재도약)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "일반소상공인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "소상공인의 자생력 강화와 도약을 견인하는 대한민국 최고의 현장 맞춤형 성장 파트너"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "개선 분야: 창업/R&D, 매출 확대, 비용 관리, 기타",
+        "사업 분야: 생활 밀착형 서비스, 판매업, 제조업, 기타 서비스업"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "서울/강원 포함 전국 대상"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2026년도 희망리턴패키지(재기사업화) 사업계획서"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "소상공인시장진흥공단의 보조금(이나라도움) 사업"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 600,
+        "durationMonths": 12
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "선정 인원 : 600 명",
+        "기간(월) 1 2 3 4 5 6 7 8 9 10 11 12"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "ACTT"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "누적 2,000명을 진단한 ‘실행 역량 진단 도구(ACTT)"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "ACTT"
+        ],
+        "hours": 6
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 운영시간 인당 6h (총 3,600h)",
+        "실행 역량 진단 도구를 활용"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2회의 집체교육(실행계획 수립, 심리치유 힐링캠프)",
+        "모바일로 쉽게 사용하는 AI 챗봇으로 채팅/음성을 통해 실시간 질답이 가능한 능동형 온라인 교육 제공"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "격주",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "격주 1회 방문"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 2,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총 운영시간 인당 2h*10회(총 6,000h)",
+        "10:00~17:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": 10,
+        "hoursPerRound": 2,
+        "coachToTeamRatio": "1:1",
+        "pairing": "AI 기술을 활용하여 컨설턴트의 이력과 지원 대상 소상공인의 특성을 대조, 적합도 높은 전담 PM 매칭"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전문가를 1:1로 배정함",
+        "총 운영시간 인당 2h*10회(총 6,000h)",
+        "AI 기술을 활용하여 컨설턴트의 이력과 지원 대상 소상공인의 특성을 대조, 적합도 높은 전담 PM 매칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "커뮤니티",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기수 기반의 커뮤니티를 형성",
+        "경영개선 트랙",
+        "재창업 트랙",
+        "동료 커뮤니티 형성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "성과공유회",
+          "timing": "종반"
+        },
+        {
+          "type": "IR",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "글로벌 성과공유회 개최",
+        "우수 기업 시상식, IR 피칭"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접",
+          "진단"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "자격 요건 검토(서면) ▶ 온라인 대면 평가 ▶ 최종 선정",
+        "실전 교육 선정 평가... 사전 교육 600명 중 실전 교육 300명 선정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI 사업계획서",
+        "실행 계획서",
+        "실무 결과물"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "투자연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "사업화자금",
+            "amountKrw": 17000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업화자금 -17,000천원(평균)",
+        "직접 투자 및 투자 연계"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 100,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전담 PM",
+        "채움 멘토",
+        "소상공인의 경영 지원 이력 있는 분야별 전담 PM 100명 이상 모집 지원 (전국)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인",
+        "지역거점"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "지하1층 교육실",
+        "패스트파이브 시청 2호점",
+        "서울 권역(7회, 450명) 및 강원권역(3회, 150명) 거점 교육장 분리 운영"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "결과물"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 출석표, 성장도평가지표, 코칭보고서 등",
+        "과제 및 개선 수행 과정을 함께 나누며"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업 종료 후에도 제안사 통합 창업 커뮤니티(총 2,992명 가입)에 참여 기업을 정식 등록하여",
+        "직접 투자 및 후속 연계"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "실패를 자산화하는 '재기 마인드셋' 특강",
+      "AI를 활용한 '말로 쓰는 사업계획서' 작성 실습",
+      "사전 교육 -> 실전 교육 -> 재기사업화"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "소상공인의 자생력 강화와 도약을 견인하는 대한민국 최고의 현장 맞춤형 성장 파트너"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "신청 인원",
+        "targetValue": 1200,
+        "unit": "명",
+        "raw": "신청 인원 : 1,200 명"
+      },
+      {
+        "metric": "선정 인원",
+        "targetValue": 600,
+        "unit": "명",
+        "raw": "선정 인원 : 600 명"
+      },
+      {
+        "metric": "교육 만족도",
+        "targetValue": 4.5,
+        "unit": "점",
+        "raw": "교육 만족도: 4.5/5.0"
+      },
+      {
+        "metric": "직접 투자",
+        "targetValue": 2,
+        "unit": "건",
+        "raw": "직접 투자 : 2건"
+      },
+      {
+        "metric": "투자 연계",
+        "targetValue": 4,
+        "unit": "건",
+        "raw": "투자 및 연계 : 4 건"
+      },
+      {
+        "metric": "과제 수행률",
+        "targetValue": 100,
+        "unit": "%",
+        "raw": "과제 수행률 100% 달성"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "신청 인원 : 1,200 명",
+      "선정 인원 : 600 명",
+      "교육 만족도: 4.5/5.0",
+      "직접 투자 : 2건",
+      "투자 및 연계 : 4 건",
+      "과제 수행률 100% 달성"
+    ]
+  },
+  "docId": "cmqazqkfj000028vckb9e7bh3",
+  "projectId": null,
+  "projectName": "2026년+희망리턴패키지+재기사업화+주관기관+모집공고 _ 제안서 _ FN2",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 52,
+    "basis": "weeks: durationMonths(12) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "docType": "proposal",
+    "charCount": 105832,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": true,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T14:04:22.951Z"
+  }
+}

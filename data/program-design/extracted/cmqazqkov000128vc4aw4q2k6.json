@@ -1,0 +1,363 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "시니어",
+        "청년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "일자리모델 제안 및 실행 가능한 시니어 일자리 모델을 발굴하기 위해 기획되었다."
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "2025 서울 시니어×청년 일자리 발굴 워크숍 제안서"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "정책 제안 5개 세부과제 중 하나를 선택해 실행가능한 아이디어와 랜딩페이지 도출"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.7,
+      "evidence": [
+        "2025 서울 시니어×청년 일자리 발굴 워크숍 제안서"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 40,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "Base44",
+        "Genspark",
+        "i.o.i 프레임",
+        "유디임팩트 방법론"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "언더독스의 업무성향 진단 솔루션 DOGS와 AI툴 Base44 / Genspark 를 활용",
+        "문제 정의 및 아이디어 도출 (유디임팩트 방법론)",
+        "i.o.i 프레임(Inside-Out / Outside-In) 기반 문제 정의"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "본 워크숍은 시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로, 3시간 동안"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "코치 4인으로 구성되어 운영. 강의+워크숍이 결합된 형태로 운영.",
+        "온라인 현장 투표: ‘가장 협력하고 싶은 아이디어’ 선정",
+        "크로스 팀 네트워킹으로 마무리"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "세부 타임라인 (총 3시간)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "세부 타임라인 (총 3시간)",
+        "13:00~13:20 — 아이스브레이킹 (DOGS 활용)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "4:10",
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "코치 4인으로 구성되어 운영.",
+        "총 10개 팀(40명)을 대상으로"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 4,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로",
+        "팀별 발표 및 네트워킹",
+        "크로스 팀 네트워킹으로 마무리"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "15:30~16:00 — 팀별 발표 및 네트워킹",
+        "온라인 현장 투표: ‘가장 협력하고 싶은 아이디어’ 선정"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "프로토타입",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "결과: 2~3페이지 일자리모델 제안서 PDF + 랜딩페이지 링크",
+        "랜딩페이지 프로토타입 제작 (Base44)"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": 4,
+        "dedicatedPm": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코치 4인으로 구성되어 운영.",
+        "시니어 코칭 경험이 있는 언더독스 파트너 코치로 구성하여 운영"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "온라인 현장 투표: ‘가장 협력하고 싶은 아이디어’ 선정",
+        "크로스 팀 네트워킹으로 마무리"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "본 워크숍은 시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로, 3시간 동안 ... 기획되었다."
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의+워크숍이 결합된 형태로 운영.",
+      "DOGS와 AI툴 Base44 / Genspark 를 활용",
+      "팀별 발표 및 네트워킹"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "아이스브레이킹 (DOGS 활용)",
+        "hours": 0.33,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제 정의 (i.o.i 프레임 + Base44)",
+        "hours": 0.33,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이디어 도출 (Base44 보드)",
+        "hours": 0.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "랜딩페이지 프로토타이핑 (Base44)",
+        "hours": 0.67,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "정책 제안서 프로토타입 작성 (AI 템플릿)",
+        "hours": 0.67,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "팀별 발표 및 네트워킹",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "4. 세부 타임라인 (총 3시간)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "본 워크숍은 시니어 2명과 청년 2명이 한 팀을 이루는 총 10개 팀(40명)을 대상으로"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmqazqkov000128vc4aw4q2k6",
+  "projectId": null,
+  "projectName": "2025 서울 시니어×청년 일자리 발굴 워크숍 제안서",
+  "intensity": {
+    "totalEducationHours": 3,
+    "totalWeeks": null,
+    "basis": "hours: sessions[6] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "docType": "proposal",
+    "charCount": 1717,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T13:58:17.667Z"
+  }
+}

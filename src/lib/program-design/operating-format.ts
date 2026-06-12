@@ -275,6 +275,12 @@ export type Intensity = z.infer<typeof intensitySchema>
 
 export const extractionMetaSchema = z.object({
   model: z.string(),
+  /**
+   * 문서 유형 (ADR-028 추록 2): 'proposal'(제안서, 기본) | 'result-report'(결과보고서).
+   * 결과보고서는 kpiTargets = 실측 실적 · 운영 구조 = 실행된 구조로 해석.
+   * optional — 기존 추출분(143건, docType 부재)과 호환 (부재 = proposal 로 간주).
+   */
+  docType: z.enum(['proposal', 'result-report']).optional(),
   charCount: z.number().int(),
   parseBy: z.string().nullable(),
   lowText: z.boolean(),

@@ -18,11 +18,18 @@ export interface ExtractionPromptInput {
   channel: string | null
   year: number | null
   fullText: string
+  /**
+   * 문서 유형 (ADR-028 추록 2). 'result-report'(결과보고서)면 kpiTargets 를
+   * "목표"가 아니라 실측 실적으로, 운영 구조를 "실행된 구조"로 추출하도록 지시.
+   * 생략 = 'proposal'(제안서).
+   */
+  docType?: 'proposal' | 'result-report'
 }
 
 /** 권장 어휘 — ProgramProfile v1.1 + ADR-028 표 + 강의 분류 v5.4 정합. */
 export const VOCAB = {
-  targetStage: ['예비창업_아이디어무', '예비창업_아이디어유', 'seed', 'pre-A', 'series-A이상', '소상공인', '비창업자'],
+  // '재창업' — 2026-06-12 추가 (희망리턴패키지 재기사업화 류. 폐업 후 재도전 = 소상공인과 구분되는 단계)
+  targetStage: ['예비창업_아이디어무', '예비창업_아이디어유', 'seed', 'pre-A', 'series-A이상', '소상공인', '재창업', '비창업자'],
   demographic: ['무관', '여성', '청소년', '대학생', '청년', '시니어', '임직원', '상인', '장인', '디자이너', '일반소상공인'],
   geography: ['일반', '로컬', '글로벌_한국인바운드', '글로벌_공통', '일본', '인도'],
   channel: ['B2G', 'B2B', 'renewal'],
@@ -58,7 +65,11 @@ const fmt = (arr: readonly string[]) => arr.join(' | ')
  * 응답은 JSON 만 (extractionOutputSchema 형태 — docId/intensity/extractionMeta 제외).
  */
 export function buildExtractionPrompt(input: ExtractionPromptInput): string {
-  return `당신은 교육 프로그램 제안서 분석 전문가다. 아래 당선 제안서 원문에서 "프로그램 운영 설계" 정보를 구조화 JSON 으로 추출하라.
+  const isResultReport = input.docType === 'result-report'
+  const resultReportNote = isResultReport
+    ? '\n**이 문서는 제안서가 아니라 결과보고서다.** kpiTargets 는 "목표"가 아니라 **실측 실적**(달성한 수료율·만족도·산출)을 추출하고(raw 에 원문 표현 보존), 운영 구조(operatingFormat·sessions)는 "계획"이 아니라 **실제 실행된 구조**로 추출하라.'
+    : ''
+  return `당신은 교육 프로그램 ${isResultReport ? '결과보고서' : '제안서'} 분석 전문가다. 아래 ${isResultReport ? '결과보고서' : '당선 제안서'} 원문에서 "프로그램 운영 설계" 정보를 구조화 JSON 으로 추출하라.${resultReportNote}
 
 ## 절대 원칙 (위반 시 전체 무효)
 1. **원문에 없는 정보는 절대 만들지 마라.** 해당 축은 "value": null, "confidence": 0, "evidence": [] 로 둔다. 추정·일반 상식 채움 금지.

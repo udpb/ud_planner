@@ -1,0 +1,460 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "청년 개인 팀 예비 기창업 - 시니어 개인 팀 예비 기창업 - 이미 청년 시니어가 함께하는 세대융합팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "시니어"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "세대융합창업에 관심있는 청년 시니어 누구나"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전통 민화를 세계 곳곳의 일상에서 누리는 아트 시계",
+        "노년층 개인 맞춤형 정서지원 및 잔존기능 서비스 구독 프로그램",
+        "개인별 맞춤 안경렌즈 글로벌 공급 서비스"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "창업에 관심 있는 수도권 거주자",
+        "경기도 내 시니어 취 창업 지원기관"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "계원예술대학교 사업단의 일환으로 세대융합창업 프로그램을 기획 운영",
+        "RISE"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "주최 계원예술대학교",
+        "주관 계원예술대학교 사업단 RISE"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 27,
+        "durationMonths": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "최종 참여 인원 명 27",
+        "사업 기간 2025 12 4 ~ 2026 2 28"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "PSST"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "정부지원 사업계획서 작성 교육(PSST)",
+        "PSST 기반 창업 교육 프로세스를 실제 적용 체감하는 데 효과적이었음이 확인되었음"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전설명회 및 세대융합특강 운영",
+        "10:00 ~ 12:10 행사 소개 및 사전 신청 안내..."
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온 오프라인 병행 운영이 원활했으며",
+        "온라인으로 진행되는 심화교육 일정",
+        "창업교육 제공 VOD"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "박 일 해커톤 1 2",
+        "온라인으로 진행되는 심화교육 일정",
+        "회차 교육 1, 회차 교육 2, 코칭, 데모데이"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "정부지원 사업계획서 교육 시간 2",
+        "팀별 사업 고도화 코칭 팀별 분 50",
+        "오전 시 오후 시 10 ~ 17"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": 0.83,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "팀별 사업 고도화 코칭 팀별 분 50 팀별 전담 코칭",
+        "담당 코치의 1:1 코칭에 대해 전반적으로 만족하시나요?"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 3,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "세대융합창업 선발팀 개팀 명 10 (27 )",
+        "우수팀 시상 및 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "해커톤",
+          "timing": "초반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "해커톤 운영 일시 : 2026 1 12 ~ 1 13",
+        "비전선포식 데모데이 행사 일시 : 2026 1 30"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "기타"
+        ],
+        "competitionRatio": "3.8:1",
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "구글폼 신청 명 102",
+        "신청서 검수 및 개별 확인 명 41",
+        "최종 선정 명 27"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "정부지원 사업계획서 교육",
+        "피칭 교육 IR 발표자료 시각화 스토리라인 정리 등"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 결과 시상",
+        "창업교육 VOD 제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사",
+          "전담코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업가 특강 연사 아립앤위립 대표 심현보",
+        "투자 심사역 등 전문 평가위원 인 3",
+        "팀별 전담 코칭"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "합숙시설",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "계원예술대학교 파라다이스홀 다목적홀",
+        "신라스테이 동탄",
+        "온라인으로 진행되는 심화교육 일정"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여율",
+        "최종 참여팀 피칭 IR",
+        "팀별 1인 이상 참여 안내"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "후속보육"
+        ],
+        "duration": "6개월"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업교육 VOD 제공",
+        "실효성 높은 스타트업 창업 교육 개 선별 개월 수강 기회 제공 / VOD 15 6"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "창업가 특강",
+      "정부지원 사업계획서 교육",
+      "팀별 사업 고도화 코칭",
+      "피칭 교육 IR"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "사전설명회",
+        "hours": 2.17,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "해커톤 1일차",
+        "hours": 14,
+        "format": "워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "해커톤 2일차",
+        "hours": 8,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      },
+      {
+        "no": 4,
+        "title": "1회차 코칭 (팀별 사업 고도화 코칭)",
+        "hours": 0.83,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "1회차 교육 (정부지원 사업계획서 교육)",
+        "hours": 2,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "2회차 코칭 (팀별 고도화 코칭)",
+        "hours": 0.83,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "2회차 교육 (피칭 교육)",
+        "hours": 2,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "비전선포식 데모데이",
+        "hours": 7,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "사전설명회 10:00 ~ 12:10",
+      "해커톤 일차 1 10:00 ~ 24:00",
+      "해커톤 일차 2 09:00 ~ 17:00",
+      "교육 및 코칭 일정"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "해커톤 교육 및 코칭 데모데이로 이어지는 단계별 운영 구조는 세대융합 창업팀의 구성에서부터 아이템 고도화 최종 발표에 이르기까지 참여자들의 잠재력을 체계적으로 이끌어냈으며"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "전체 만족도",
+        "targetValue": 4.63,
+        "unit": "점",
+        "raw": "전체 만족도 평균 점수 - : 4.63 /5"
+      },
+      {
+        "metric": "추천 지수 (NPS)",
+        "targetValue": 9.38,
+        "unit": "점",
+        "raw": "추천 지수 - : 9.38 /10"
+      },
+      {
+        "metric": "해커톤 참여율",
+        "targetValue": 100,
+        "unit": "%",
+        "raw": "해커톤 참여율 100%"
+      },
+      {
+        "metric": "데모데이 참여율",
+        "targetValue": 77,
+        "unit": "%",
+        "raw": "데모데이 참여율 77%"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "전체 만족도 평균 점수 - : 4.63 /5",
+      "추천 지수 - : 9.38 /10",
+      "참여율 해커톤 100% 데모데이 77%"
+    ]
+  },
+  "docId": "cmqazql3u000228vcjturfjuk",
+  "projectId": null,
+  "projectName": "[RISE사업] 계원예대 세대융합창업 결과보고서_FN",
+  "intensity": {
+    "totalEducationHours": 36.83,
+    "totalWeeks": 13,
+    "basis": "hours: sessions[8] hours 합산 · weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "docType": "result-report",
+    "charCount": 38464,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T13:58:38.961Z"
+  }
+}
