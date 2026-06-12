@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Action AI Boost — From Idea to Revenue in 6 Weeks</title>
+<meta name="description" content="From Idea to Revenue in 6 weeks. A 6-week · 13-quest · 4-stage AI solopreneur boosting program. Powered by Underdogs. 100% Free.">
+<link rel="stylesheet" href="styles/webfonts.css">
+<style>
+:root {
+  /* ── 브랜드 컬러 3색 + 흑백 (불변) ── */
+  --accent:    #F05519;   /* PANTONE 1655 — 유일한 포인트 컬러 */
+  --dark:      #373938;   /* PANTONE 447 */
+  --warm-gray: #D8D4D7;   /* PANTONE Warm Gray 1 */
+  --white:     #FFFFFF;
+  --black:     #000000;
+
+  /* ── 액센트 베리에이션 ── */
+  --accent-88: #FDEBE3;
+  --accent-76: #FBD6C8;
+  --accent-52: #F8AD91;
+  --accent-40: #F69975;
+
+  /* ── 다크 베리에이션 (텍스트 위계) ── */
+  --dark-70: #C3C4C3;
+  --dark-55: #A5A6A5;
+  --dark-40: #878888;
+  --dark-25: #696A6A;
+  --dark-10: #4B4D4C;
+
+  /* ── 뉴트럴 베리에이션 (배경·면 구분) ── */
+  --neutral-90: #FBFBFB;
+  --neutral-60: #F0F0F0;
+  --neutral-30: #E4E4E4;
+  --neutral-0:  #D9D9D9;
+
+  /* ── 시맨틱 토큰 (컴포넌트는 이것만 참조) ── */
+  --paper:    var(--white);
+  --ink:      var(--dark);
+  --soft-ink: var(--dark-10);
+  --muted:    var(--dark-40);
+  --muted-2:  var(--dark-55);
+  --line:     var(--neutral-0);
+  --line-soft:var(--neutral-30);
+  --bg:       var(--neutral-0);
+
+  /* ── 구(舊) 변수 → 디자인 시스템 토큰 별칭 (인라인 스타일 호환, 포인트 컬러 1개로 수렴) ── */
+  --action-orange: var(--accent);
+  --orange2:        var(--accent);
+  --orange3:        var(--accent);
+  --primary-orange: var(--accent);
+  --light-orange:   var(--accent);
+  --cyan:           var(--accent);
+  --green:          var(--accent);
+  --dark-charcoal:  var(--ink);
+  --dark2:          var(--ink);
+  --dark3:          var(--ink);
+  --light-beige:    var(--neutral-90);
+  --body-text:      var(--soft-ink);
+  --subtitle-text:  var(--muted);
+
+  /* spacing scale — 1차 primitive (8개) */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 22px; --s-6: 28px; --s-7: 40px; --s-8: 60px;
+
+  /* 간격 관계 토큰 */
+  --gap-section: 28px;
+  --gap-element: 16px;
+  --gap-tight:   6px;
+
+  /* 타입 비율 캐스케이드 */
+  --type-display: 56px;
+  --type-section-title: calc(var(--type-display) / 1.75);
+  --type-kicker:        calc(var(--type-display) / 5.1);
+  --type-body:          calc(var(--type-display) / 4.0);
+  --type-caption:       calc(var(--type-display) / 5.1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
+input, button, textarea, select { border-radius: 0 !important; }
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: "NanumHuman", system-ui, sans-serif;
+  color: var(--soft-ink);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; height: auto; }
+.logo-wordmark, .logo-symbol { display: block; width: auto; }
+
+/* EN/숫자 = Poppins, KO = NanumHuman — 한 단어 안에서 교차하지 않는다 */
+.en { font-family: "Poppins", "NanumHuman", sans-serif; }
+.lang.en { font-family: "Poppins", "NanumHuman", sans-serif; }
+.lang.id { font-family: "Poppins", system-ui, sans-serif; }
+
+/* ── Navigation ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.3s ease;
+}
+.nav.scrolled {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 40px;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 12px;
+}
+.nav-badge {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 10px; font-weight: 600;
+  color: var(--accent); letter-spacing: 1.5px;
+  padding: 4px 10px; border: 1px solid var(--accent);
+}
+.nav-links {
+  display: flex; align-items: center; gap: 28px;
+}
+.nav-links a {
+  font-size: 13px; font-weight: 500;
+  color: var(--soft-ink); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--white); background: var(--accent);
+  height: 34px; padding: 0 22px; text-decoration: none;
+  display: inline-flex; align-items: center;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--ink); }
+/* menu wrapper is transparent on desktop — children flow directly in the nav flexbox */
+.nav-menu { display: contents; }
+.nav-toggle {
+  display: none;
+  width: 40px; height: 40px; padding: 0;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; background: none; border: none; cursor: pointer;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+.nav.open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+.nav.open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+  .nav.open { background: var(--paper); border-bottom: 1px solid var(--line); }
+  .nav-menu {
+    display: flex; flex-direction: column; align-items: stretch;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--paper); border-bottom: 1px solid var(--line);
+    padding: 0 22px;
+    max-height: 0; overflow: hidden;
+    box-shadow: 0 18px 40px rgba(20,16,18,0.08);
+    transition: max-height 0.32s ease;
+  }
+  .nav.open .nav-menu { max-height: 460px; }
+  .nav-menu .nav-links {
+    flex-direction: column; align-items: stretch; gap: 0; width: 100%;
+  }
+  .nav-menu .nav-links a {
+    display: block; width: 100%;
+    padding: 16px 2px; font-size: 16px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-menu .nav-right {
+    flex-direction: column; align-items: stretch;
+    gap: 14px; padding: 18px 0 22px;
+  }
+  .nav-menu .lang-switch { margin-right: 0; align-self: flex-start; }
+  .nav-menu .nav-cta {
+    height: 48px; justify-content: center; font-size: 14px;
+  }
+}
+
+/* ── HERO (다크 앵커) ── */
+.hero {
+  background: radial-gradient(620px 520px at 7% 22%, var(--accent-88) 0%, var(--paper) 52%);
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 130px 40px 90px;
+}
+.hero-watermark {
+  position: absolute; bottom: -40px; right: -110px;
+  width: 560px; height: auto;
+  opacity: 0.05; z-index: 0; pointer-events: none;
+}
+/* 장식 요소(거대 따옴표·액센트 라인) 제거 — 디자인 시스템 장식 금지 */
+.hero-quote-mark, .hero-accent-1, .hero-accent-2 { display: none; }
+
+.hero-inner {
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  position: relative; z-index: 2;
+}
+.hero-badge {
+  display: inline-block;
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+  border: 1px solid rgba(240,85,25,0.4);
+  padding: 6px 16px; margin-bottom: 28px;
+  word-break: keep-all;
+  animation: fadeInUp 0.6s ease both;
+}
+.hero h1 {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: clamp(40px, 6vw, 76px); font-weight: 600;
+  color: var(--ink); line-height: 1.02;
+  letter-spacing: -2px; margin-bottom: 4px;
+}
+.hero h1 span { color: var(--accent); }
+.hero h1:nth-of-type(1) { animation: fadeInUp 0.7s 0.1s ease both; }
+.hero h1:nth-of-type(2) { animation: fadeInUp 0.7s 0.2s ease both; }
+.hero h1:nth-of-type(3) { animation: fadeInUp 0.7s 0.3s ease both; }
+
+.hero-subtitle {
+  font-size: clamp(15px, 2vw, 18px); font-weight: 400;
+  color: var(--soft-ink); max-width: 540px;
+  line-height: 1.7; margin-top: 28px; word-break: keep-all;
+  animation: fadeInUp 0.7s 0.4s ease both;
+}
+.hero-subtitle-en {
+  font-size: clamp(13px, 1.5vw, 15px); font-weight: 400;
+  color: rgba(216,212,215,0.6); max-width: 620px;
+  line-height: 1.6; margin-top: 8px; word-break: keep-all;
+  animation: fadeInUp 0.7s 0.45s ease both;
+}
+.hero-ctas {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  margin-top: 40px;
+  animation: fadeInUp 0.7s 0.5s ease both;
+}
+.btn-primary {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--white); background: var(--accent);
+  padding: 16px 40px; text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover {
+  background: var(--white); color: var(--accent);
+}
+.btn-secondary {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 15px; font-weight: 500;
+  color: var(--ink); background: transparent;
+  padding: 16px 32px; text-decoration: none;
+  border: 1px solid var(--line);
+  transition: all 0.3s;
+  display: inline-block;
+}
+.btn-secondary:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px; margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+  animation: fadeInUp 0.7s 0.65s ease both;
+}
+.hero-stat-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 40px; font-weight: 600;
+  color: var(--accent); line-height: 1;
+}
+.hero-stat-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px; color: var(--muted); margin-top: 8px; letter-spacing: 0.04em;
+}
+.hero-stat-label-ko {
+  font-size: 11px; color: var(--dark-55); margin-top: 4px;
+  line-height: 1.5; word-break: keep-all;
+}
+
+/* ── HERO 2-column + program name + "What you get" box ── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 60px; align-items: center;
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+.hero-program-name {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: clamp(22px, 3vw, 34px); font-weight: 600;
+  color: var(--accent); letter-spacing: -0.5px;
+  margin-bottom: 16px; word-break: keep-all;
+  animation: fadeInUp 0.7s 0.05s ease both;
+}
+.hero-benefits {
+  background: var(--paper);
+  box-shadow: 0 12px 40px rgba(55,57,56,0.10);
+  padding: 40px;
+  animation: fadeInUp 0.7s 0.55s ease both;
+}
+.hero-benefits-title {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 22px;
+}
+.hero-benefit-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.hero-benefit-item:first-of-type { padding-top: 0; }
+.hero-benefit-item:last-child { border-bottom: none; padding-bottom: 0; }
+.hb-icon { flex-shrink: 0; color: var(--accent); line-height: 0; margin-top: 2px; }
+.hb-icon svg { width: 24px; height: 24px; display: block; }
+.hb-text { min-width: 0; }
+.hero-benefits-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 28px -40px -40px; padding: 22px 40px;
+  background: var(--neutral-90);
+  text-align: center;
+}
+.hero-benefits-stats .hb-stat-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 26px; font-weight: 600;
+  color: var(--accent); line-height: 1;
+}
+.hero-benefits-stats .hb-stat-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px; color: var(--muted); margin-top: 6px; letter-spacing: 0.04em;
+}
+.hero-benefit-item .hb-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink); margin-bottom: 4px; word-break: keep-all;
+}
+.hero-benefit-item .hb-desc {
+  font-size: 13px; color: var(--soft-ink);
+  line-height: 1.6; word-break: keep-all;
+}
+.hero-benefit-item .hb-desc em {
+  font-style: normal; color: var(--muted);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Section Common ── */
+section { padding: 90px 40px; position: relative; scroll-margin-top: 70px; }
+.container { max-width: 1200px; margin: 0 auto; }
+
+.section-header { margin-bottom: 48px; text-align: center; }
+.section-label {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 14px; font-weight: 600;
+  color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.section-label::before { content: none; }
+.section-header h2 {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: clamp(28px, 4.5vw, 44px); font-weight: 700;
+  color: var(--ink); line-height: 1.2;
+  letter-spacing: -1px; margin: 0 auto 12px; max-width: 640px; word-break: keep-all;
+}
+.section-header h3 {
+  font-size: clamp(15px, 2vw, 20px); font-weight: 600;
+  color: var(--muted); margin-bottom: 28px; word-break: keep-all;
+}
+.section-header-divider { display: none; }
+.section-header p {
+  font-size: 16px; color: var(--soft-ink);
+  line-height: 1.8; max-width: 720px; margin: 0 auto; word-break: keep-all;
+}
+.section-header p.en {
+  font-size: 13px; color: var(--muted);
+  margin-top: 4px;
+}
+.section-header p strong { color: var(--accent); font-weight: 700; }
+
+/* Dark-class 섹션 → 라이트 뉴트럴 면으로 전환 (paper 60%+ 유지, 다크는 앵커에만) */
+section.dark { background: var(--neutral-60); }
+section.dark .section-header h2 { color: var(--ink); }
+section.dark .section-header h3 { color: var(--muted); }
+section.dark .section-header p { color: var(--soft-ink); }
+section.dark .section-label { color: var(--accent); }
+section.dark .section-label::before { background: var(--accent); }
+
+section.beige { background: var(--neutral-60); }
+
+/* ── PHILOSOPHY (tint 박스) ── */
+.phil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+  margin-top: 16px;
+}
+.phil-card {
+  background: var(--neutral-60);
+  padding: 40px 32px;
+  transition: transform 0.3s;
+}
+.beige .phil-card, section.dark .phil-card { background: var(--paper); }
+.phil-card:hover { transform: translateY(-2px); }
+.phil-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+.phil-title {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--ink); margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+.phil-title-ko {
+  font-size: 14px; font-weight: 700;
+  color: var(--accent); margin-bottom: 20px; word-break: keep-all;
+}
+.phil-card p {
+  font-size: 14px; color: var(--soft-ink);
+  line-height: 1.8; word-break: keep-all;
+}
+
+/* ── WHY (강조 주황 아코디언 카드) ── */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-top: 16px;
+}
+.why-card {
+  background: var(--accent); color: var(--white);
+  padding: 36px 28px; cursor: pointer;
+  min-height: 240px;
+  display: flex; flex-direction: column;
+  transition: transform 0.2s;
+}
+.why-card.alt { background: var(--accent-40); }
+.why-card:hover { transform: translateY(-2px); }
+.why-index {
+  font-family: "Poppins", sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.75); margin-bottom: 20px;
+}
+.why-card-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+}
+.why-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.5px; line-height: 1;
+}
+.why-title {
+  font-size: 15px; font-weight: 600;
+  color: rgba(255,255,255,0.95); margin-top: 10px; word-break: keep-all;
+}
+.why-icon {
+  font-family: "Poppins", sans-serif;
+  font-size: 26px; font-weight: 300; color: var(--white);
+  line-height: 1; flex-shrink: 0; transition: transform 0.3s;
+}
+.why-card.open .why-icon { transform: rotate(45deg); }
+.why-desc { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.why-card.open .why-desc { max-height: 260px; }
+.why-desc-inner { padding-top: 16px; }
+.why-desc p {
+  font-size: 14px; color: rgba(255,255,255,0.9);
+  line-height: 1.7; word-break: keep-all;
+}
+
+/* ── OVERVIEW INFO BOX (tint 박스) ── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 2px;
+  margin: 16px auto 0;
+  max-width: 760px;
+}
+@media (max-width: 860px) { .overview-grid { grid-template-columns: repeat(2, 1fr); max-width: 520px; } }
+@media (max-width: 520px) { .overview-grid { grid-template-columns: 1fr; max-width: 320px; } }
+.overview-cell {
+  background: var(--paper);
+  padding: 28px 24px;
+}
+.overview-cell.highlight { background: var(--ink); }
+.overview-cell .ov-label {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px;
+}
+.overview-cell.highlight .ov-label { color: var(--accent); }
+.overview-cell .ov-value {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.3px; line-height: 1.3; word-break: keep-all;
+}
+.overview-cell.highlight .ov-value { color: var(--white); }
+.overview-cell .ov-sub {
+  font-size: 12px; color: var(--muted); margin-top: 6px; word-break: keep-all;
+}
+.overview-cell.highlight .ov-sub { color: var(--warm-gray); }
+
+/* Overview 섹션 다크(검정) 전환 */
+#overview { background: var(--ink); }
+#overview .section-header-divider { background: var(--accent); }
+#overview .section-header h2 { color: var(--white); }
+#overview .section-header p { color: var(--warm-gray); }
+#overview .overview-cell.highlight { background: var(--accent); }
+#overview .overview-cell.highlight .ov-label { color: var(--white); }
+#overview .overview-cell.highlight .ov-sub { color: rgba(255,255,255,0.85); }
+
+/* Apply 섹션 — 검정 배경 */
+#apply { background: var(--ink); }
+#apply .section-header h2 { color: var(--white); }
+#apply .section-header p { color: var(--warm-gray); }
+
+/* ── EDUCATION / FRAMEWORK (Underdogs stats) ── */
+.edu-intro {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  margin-bottom: 48px;
+}
+@media (max-width: 900px) {
+  .edu-intro { grid-template-columns: 1fr; gap: 40px; }
+}
+.edu-block-label {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 14px; font-weight: 600;
+  color: var(--accent); letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+.edu-block h3 {
+  font-size: 32px; font-weight: 800;
+  color: var(--ink); margin-bottom: 8px;
+  letter-spacing: -1px; word-break: keep-all;
+}
+.edu-block h4 {
+  font-size: 15px; font-weight: 500;
+  color: var(--muted); margin-bottom: 16px;
+}
+.edu-block p {
+  font-size: 14px; color: var(--soft-ink); line-height: 1.7; word-break: keep-all;
+}
+
+/* stat letter grid reused for Underdogs metrics (tint 박스) */
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px; margin-top: 32px;
+}
+@media (max-width: 700px) {
+  .letter-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.letter-cell {
+  background: var(--paper);
+  padding: 28px 16px;
+  text-align: center;
+}
+.letter-cell .letter {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 40px; font-weight: 600;
+  color: var(--accent); line-height: 1;
+  margin-bottom: 12px;
+}
+.letter-cell .letter-name {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink); margin-bottom: 4px;
+}
+.letter-cell .letter-desc {
+  font-size: 11px; color: var(--muted); line-height: 1.5; word-break: keep-all;
+}
+
+/* keyword map box (tint) */
+.impact-map {
+  margin-top: 48px;
+  padding: 40px;
+  background: var(--neutral-60);
+}
+@media (max-width: 700px) {
+  .impact-map { padding: 28px 22px; }
+}
+.impact-map-title {
+  font-size: 24px; font-weight: 700;
+  color: var(--ink); margin-bottom: 8px;
+  letter-spacing: -0.5px; word-break: keep-all;
+}
+.impact-map-subtitle {
+  font-size: 14px; color: var(--muted); margin-bottom: 24px;
+}
+.impact-map-formula {
+  font-size: clamp(22px, 3vw, 32px); font-weight: 600;
+  color: var(--accent); letter-spacing: -0.5px;
+  margin-bottom: 16px;
+  font-family: "Poppins", "NanumHuman", sans-serif;
+}
+.impact-map-formula .plain { color: var(--ink); }
+.impact-map-desc {
+  font-size: 14px; color: var(--soft-ink); line-height: 1.8; word-break: keep-all;
+}
+
+/* ── PHASE / CURRICULUM SYSTEM (tint 박스) ── */
+.phase-journey {
+  display: flex; gap: 38px; margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+.phase-journey-item {
+  flex: 1; min-width: 180px;
+  padding: 40px 24px; min-height: 160px;
+  background: var(--neutral-60) !important;
+  color: var(--ink); font-size: 13px; font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+}
+.phase-journey-item::after {
+  content: '→';
+  position: absolute; right: -26px; top: 50%; transform: translateY(-50%);
+  font-size: 22px; color: var(--muted);
+}
+.phase-journey-item:last-child::after { display: none; }
+
+.phase-journey-item .phase-j-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); margin-bottom: 4px;
+}
+.phase-journey-item .phase-j-name {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.3px;
+}
+.phase-journey-item .phase-j-tag {
+  font-size: 11px; margin-top: 2px; color: var(--muted); word-break: keep-all;
+}
+
+.phase-detail {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  margin-bottom: 2px;
+  background: var(--neutral-90);
+  transition: transform 0.2s;
+}
+.phase-detail:hover { transform: translateX(2px); }
+@media (max-width: 700px) {
+  .phase-detail { grid-template-columns: 1fr; }
+}
+.phase-side {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--accent);
+  color: var(--white); padding: 32px 16px;
+  text-align: center;
+}
+.phase-side .side-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,0.85); letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.phase-side .side-name {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.5px;
+}
+.phase-side .side-tag {
+  font-size: 11px; margin-top: 6px;
+  color: rgba(255,255,255,0.9); font-weight: 500; word-break: keep-all;
+}
+.phase-body { padding: 32px 36px; }
+.phase-body h3 {
+  font-size: 22px; font-weight: 700;
+  color: var(--ink); margin-bottom: 4px;
+  letter-spacing: -0.5px; word-break: keep-all;
+}
+.phase-body .en-sub {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 20px; line-height: 1.6; word-break: keep-all;
+}
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+.phase-field-label {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 8px; color: var(--accent);
+}
+.phase-field-text {
+  font-size: 13px; line-height: 1.6;
+  color: var(--soft-ink); word-break: keep-all;
+}
+.quest-tags {
+  margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px;
+}
+.quest-tag {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  padding: 5px 10px;
+  background: var(--neutral-30);
+  color: var(--soft-ink);
+  word-break: keep-all;
+}
+.accent-stage .quest-tag { background: var(--accent-76); }
+
+/* Curriculum accordion */
+.phase-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; width: 100%;
+  background: none; border: none; padding: 0; margin: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.phase-toggle .phase-toggle-text { flex: 1; min-width: 0; }
+.phase-toggle .en-sub { margin-bottom: 0; }
+.phase-arrow {
+  flex-shrink: 0; width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 300; line-height: 1;
+  color: var(--accent);
+}
+.phase-arrow::before { content: "+"; }
+.phase-detail.open .phase-arrow::before { content: "\2212"; }
+.phase-collapse {
+  overflow: hidden; max-height: 0;
+  padding-top: 24px;
+  transition: max-height 0.35s ease;
+}
+
+/* Pivot callout — 산출물 전체에서 단 한 곳의 액센트 면 (연한 톤) */
+.pivot-callout {
+  margin-top: 40px;
+  padding: 40px;
+  background: var(--accent-88);
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .pivot-callout { padding: 28px; }
+}
+.pivot-callout h3 {
+  font-size: 26px; font-weight: 700;
+  color: var(--ink); margin-bottom: 4px; letter-spacing: -0.5px; word-break: keep-all;
+}
+.pivot-callout h4 {
+  font-size: 14px; font-weight: 500;
+  color: var(--dark-25); margin-bottom: 20px; word-break: keep-all;
+}
+.pivot-callout p {
+  font-size: 14px; line-height: 1.8;
+  max-width: 700px; color: var(--soft-ink); word-break: keep-all;
+}
+.pivot-callout .pivot-diagram {
+  margin-top: 28px;
+  padding: 20px 24px;
+  background: var(--paper);
+  font-size: 13px;
+  line-height: 1.9;
+  font-weight: 500;
+  color: var(--ink);
+  word-break: keep-all;
+}
+.pivot-callout .pivot-diagram strong { color: var(--accent); }
+
+/* ── HOW IT WORKS / SPRINT (tint 박스) ── */
+.sprint-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-top: 32px;
+}
+@media (max-width: 700px) {
+  .sprint-cards { grid-template-columns: 1fr; }
+}
+.sprint-card {
+  padding: 40px 32px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.sprint-card.accent { background: var(--ink); color: var(--white); }
+.sprint-card.dark { background: var(--paper); color: var(--ink); }
+.sprint-day {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.sprint-card.accent .sprint-day { color: var(--warm-gray); }
+.sprint-title {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 32px; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.5px;
+}
+.sprint-card.accent .sprint-title { color: var(--white); }
+.sprint-title-ko {
+  font-size: 14px; margin-top: 4px;
+  margin-bottom: 20px; color: var(--accent); font-weight: 500; word-break: keep-all;
+}
+.sprint-card.accent .sprint-title-ko { color: var(--warm-gray); }
+.sprint-desc {
+  font-size: 13px; line-height: 1.7;
+  color: var(--soft-ink); word-break: keep-all;
+}
+.sprint-card.accent .sprint-desc { color: var(--warm-gray); }
+
+/* Weekly grid (tint 박스) */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px; margin-top: 40px;
+}
+@media (max-width: 700px) {
+  .week-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.week-cell {
+  padding: 20px 8px; text-align: center;
+  background: var(--paper);
+  color: var(--ink);
+}
+.week-cell.cohort { background: var(--accent); }
+.week-cell.cohort .day-name { color: var(--white); }
+.week-cell.cohort .day-tag { color: rgba(255,255,255,0.9); }
+.week-cell .day-name {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink); letter-spacing: 1px;
+}
+.week-cell .day-phase {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 10px; font-weight: 600;
+  margin-top: 6px;
+  color: var(--accent);
+}
+.week-cell.cohort .day-phase { color: var(--white); }
+.week-cell .day-tag {
+  font-size: 9px; color: var(--muted);
+  margin-top: 4px; word-break: keep-all;
+}
+
+/* works list (tint 박스) */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2px; margin-top: 40px;
+}
+.work-card {
+  background: var(--paper);
+  padding: 28px 24px;
+}
+.work-title {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--ink); margin-bottom: 4px;
+}
+.work-title-ko {
+  font-size: 12px; color: var(--accent);
+  font-weight: 500; margin-bottom: 12px; word-break: keep-all;
+}
+.work-desc {
+  font-size: 12px; color: var(--soft-ink);
+  line-height: 1.6; word-break: keep-all;
+}
+
+/* ── COIN ECONOMY (tint 박스) ── */
+.coin-showcase {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+}
+@media (max-width: 900px) {
+  .coin-showcase { grid-template-columns: 1fr; }
+}
+.coin-col {
+  background: var(--paper);
+  padding: 36px 32px;
+}
+.coin-col.center { background: var(--ink); text-align: center; }
+.coin-col-title {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 20px; color: var(--accent);
+}
+.coin-col.center .coin-col-title { color: var(--warm-gray); }
+.coin-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 13px; color: var(--soft-ink); word-break: keep-all;
+}
+.coin-item:last-child { border-bottom: none; }
+.coin-item-amount {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.coin-center-visual {
+  margin: 40px 0;
+  display: flex; justify-content: center;
+}
+.coin-center-name {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.5px;
+  margin-bottom: 8px; word-break: keep-all;
+}
+.coin-center-desc {
+  font-size: 13px; color: var(--warm-gray);
+  line-height: 1.7; word-break: keep-all;
+}
+
+/* ── BENEFITS / RULES (tint 박스) ── */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2px; margin-top: 32px;
+}
+.rule-card {
+  background: var(--neutral-90);
+  padding: 32px 28px;
+}
+.rule-label {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 8px; color: var(--accent);
+}
+.rule-title {
+  font-size: 17px; font-weight: 700;
+  color: var(--ink); margin-bottom: 12px;
+  letter-spacing: -0.3px; word-break: keep-all;
+}
+.rule-desc {
+  font-size: 13px; color: var(--soft-ink);
+  line-height: 1.7; word-break: keep-all;
+}
+
+/* benefits two columns (tint 박스) */
+.benefit-cols {
+  display: grid; grid-template-columns: 1fr 1.18fr; gap: 16px;
+  margin-top: 40px; align-items: start;
+}
+@media (max-width: 700px) { .benefit-cols { grid-template-columns: 1fr; } }
+.benefit-col {
+  background: var(--neutral-90);
+  padding: 40px 36px;
+  position: relative;
+}
+.benefit-col.gold {
+  background: var(--paper);
+  border: 1px solid var(--accent);
+  box-shadow: 0 16px 44px rgba(240,85,25,0.12);
+  padding: 52px 44px;
+}
+.benefit-col .b-tag {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px; word-break: keep-all;
+}
+.benefit-col h3 {
+  font-size: 22px; font-weight: 700;
+  color: var(--ink); margin-bottom: 4px;
+  letter-spacing: -0.5px; word-break: keep-all;
+}
+.benefit-col .b-sub {
+  font-size: 13px; color: var(--muted); margin-bottom: 20px; word-break: keep-all;
+}
+.benefit-list { list-style: none; }
+.benefit-list li {
+  font-size: 14px; color: var(--soft-ink);
+  line-height: 1.6; padding: 10px 0 10px 26px;
+  position: relative; border-bottom: 1px solid var(--line-soft); word-break: keep-all;
+}
+.benefit-list li:last-child { border-bottom: none; }
+.benefit-col.gold .benefit-list li { font-weight: 700; }
+.benefit-list li::before {
+  content: '—'; position: absolute; left: 0; top: 10px;
+  color: var(--accent); font-weight: 700;
+}
+
+/* ── APPLY STEPS (tint 박스) ── */
+.apply-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  margin-top: 32px;
+}
+@media (max-width: 700px) { .apply-steps { grid-template-columns: 1fr; } }
+.apply-step {
+  background: var(--paper);
+  padding: 40px 36px;
+  color: var(--ink);
+  box-shadow: 0 12px 32px rgba(55,57,56,0.07);
+}
+.apply-step .step-num {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 48px; font-weight: 600;
+  color: var(--accent); line-height: 1;
+  margin-bottom: 16px;
+}
+.apply-step h3 {
+  font-size: 20px; font-weight: 700;
+  color: var(--ink); margin-bottom: 4px;
+  letter-spacing: -0.3px; word-break: keep-all;
+}
+.apply-step .step-en {
+  font-size: 12px; color: var(--muted); margin-bottom: 16px; word-break: keep-all;
+}
+.apply-step p {
+  font-size: 13px; color: var(--soft-ink);
+  line-height: 1.7; word-break: keep-all;
+}
+
+/* ── FAQ (tint 박스) ── */
+.faq-list { margin-top: 32px; display: flex; flex-direction: column; gap: 2px; }
+.faq-item {
+  background: var(--paper);
+  cursor: pointer; transition: background 0.2s;
+}
+.faq-header {
+  padding: 22px 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px;
+}
+.faq-q {
+  font-size: 21px; font-weight: 700;
+  color: var(--soft-ink); word-break: keep-all;
+}
+.faq-q-en {
+  font-size: 20px; color: var(--soft-ink);
+  margin-top: 3px; font-weight: 700;
+}
+.faq-icon {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 28px; font-weight: 300;
+  color: var(--accent);
+  transition: transform 0.3s;
+  flex-shrink: 0; line-height: 1;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.faq-item.open .faq-answer { max-height: 400px; }
+.faq-answer-inner {
+  padding: 0 28px 24px;
+  border-top: 1px solid var(--line-soft);
+}
+.faq-answer-inner p {
+  font-size: 14px; color: var(--soft-ink);
+  line-height: 1.8; margin-top: 14px; word-break: keep-all;
+}
+.faq-answer-inner p.en {
+  font-size: 14px; color: var(--soft-ink);
+  margin-top: 14px;
+}
+
+/* ── MID CTA (페이지 중간 전환) ── */
+.mid-cta { background: var(--neutral-60); text-align: center; }
+.mid-cta h2 {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: clamp(24px, 3.5vw, 36px); font-weight: 700;
+  color: var(--ink); letter-spacing: -0.5px;
+  margin: 0 auto 8px; max-width: 600px; word-break: keep-all;
+}
+.mid-cta p {
+  font-size: 15px; color: var(--soft-ink);
+  margin: 0 auto 28px; max-width: 520px;
+  line-height: 1.7; word-break: keep-all;
+}
+
+/* ── 흰색→그레이 그라데이션 + 심볼 워터마크 면 ── */
+.feature-soft {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--neutral-60) 100%);
+}
+.feature-soft .container { position: relative; z-index: 1; }
+.feature-watermark {
+  position: absolute; right: -40px; bottom: 24%;
+  width: 540px; height: auto;
+  opacity: 0.05; z-index: 0; pointer-events: none;
+}
+.mid-feature { min-height: 60vh; display: flex; align-items: center; }
+
+/* ── CTA (다크 앵커) ── */
+.cta-final {
+  background: var(--accent);
+  padding: 110px 40px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-deadline {
+  display: inline-block;
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--white); border: 1px solid rgba(255,255,255,0.5);
+  padding: 6px 16px; margin-bottom: 24px;
+  position: relative; z-index: 1; word-break: keep-all;
+}
+.cta-final h2 {
+  font-size: clamp(32px, 5vw, 52px); font-weight: 800;
+  color: var(--white); line-height: 1.15;
+  letter-spacing: -1px; margin-bottom: 8px; word-break: keep-all;
+  position: relative; z-index: 1;
+}
+.cta-final .cta-sub {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 18px; font-weight: 500;
+  color: rgba(255,255,255,0.92); margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+.cta-final p {
+  font-size: 15px; color: rgba(255,255,255,0.9);
+  max-width: 540px; margin: 0 auto 40px;
+  line-height: 1.7; position: relative; z-index: 1; word-break: keep-all;
+}
+.cta-final .btn-white {
+  display: inline-block;
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 16px; font-weight: 600;
+  color: var(--ink); background: var(--white);
+  padding: 18px 56px; text-decoration: none;
+  transition: all 0.3s;
+  position: relative; z-index: 1;
+}
+.cta-final .btn-white:hover {
+  background: var(--ink); color: var(--white);
+}
+
+/* ── Footer (다크 앵커) ── */
+.footer {
+  background: var(--ink);
+  padding: 56px 40px 32px;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+}
+@media (max-width: 700px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+.footer-brand-name {
+  margin-bottom: 16px;
+}
+.footer-brand-text {
+  font-size: 13px; color: var(--dark-55); line-height: 1.7;
+}
+.footer-col-title {
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+.footer-col a, .footer-col span {
+  display: block;
+  font-size: 13px; color: var(--warm-gray);
+  text-decoration: none; line-height: 2;
+  transition: color 0.2s; word-break: keep-all;
+}
+.footer-col a:hover { color: var(--accent); }
+.footer-bottom {
+  max-width: 1200px; margin: 48px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  font-family: "Poppins", "NanumHuman", sans-serif;
+  font-size: 11px; color: var(--dark-55);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ── LANGUAGE TOGGLE (EN default / ID) ── */
+/* markup uses class="lang en" / "lang id" */
+/* EN mode (default): show English, hide Indonesian */
+.lang.id { display: none; }
+.lang.en { display: inline; }
+.faq-q-en.lang.en { display: block; }
+/* ID mode */
+html.id .lang.en { display: none; }
+html.id .lang.id { display: inline; }
+/* paragraphs that carry lang classes must be block, not inline */
+p.lang.en { display: block; }
+html.id p.lang.en { display: none; }
+html.id p.lang.id { display: block; }
+/* FAQ question lines (faq-q = ID, faq-q-en = EN) */
+.faq-q.lang.id { display: none; }
+html.id .faq-q-en.lang.en { display: none; }
+html.id .faq-q.lang.id { display: block; }
+
+.lang-switch {
+  display: flex; align-items: center;
+  height: 34px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  margin-right: 14px;
+}
+.lang-switch button {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.5px;
+  height: 100%; padding: 0 12px;
+  display: flex; align-items: center;
+  background: transparent;
+  color: var(--muted);
+  border: none; cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-switch button:hover { color: var(--ink); }
+.lang-switch button.active {
+  background: var(--primary-orange);
+  color: var(--white);
+}
+.lang-switch .lang-divider {
+  width: 1px; height: 14px;
+  background: var(--line);
+}
+.nav-right { display: flex; align-items: center; }
+@media (max-width: 768px) {
+  .lang-switch { margin-right: 10px; }
+  .lang-switch button { padding: 6px 10px; font-size: 11px; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  section { padding: 70px 22px; }
+  .hero { padding: 110px 22px 70px; }
+  .nav { padding: 12px 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAVIGATION ══ -->
+<nav class="nav" id="nav">
+  <div class="nav-brand">
+    <img class="logo-wordmark" src="assets/logo/Action_AI_logo_black.svg" alt="Action AI" style="height: 26px;">
+    <span class="nav-badge">BOOST</span>
+  </div>
+  <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navMenu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-menu" id="navMenu">
+    <div class="nav-links">
+      <a href="#overview"><span class="lang id">Program</span><span class="lang en">Overview</span></a>
+      <a href="#curriculum"><span class="lang id">Kurikulum</span><span class="lang en">Curriculum</span></a>
+      <a href="#how"><span class="lang id">Cara Kerja</span><span class="lang en">How It Works</span></a>
+      <a href="#benefits"><span class="lang id">Manfaat</span><span class="lang en">Benefits</span></a>
+      <a href="#faq"><span class="lang id">FAQ</span><span class="lang en">FAQ</span></a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" id="btn-en" class="active" onclick="setLang('en')">EN</button>
+        <span class="lang-divider"></span>
+        <button type="button" id="btn-id" onclick="setLang('id')">ID</button>
+      </div>
+      <a href="https://boost.actionai.asia/en/p/actionai-cohort1/signup" target="_blank" rel="noopener noreferrer" class="nav-cta"><span class="lang id">Daftar</span><span class="lang en">Apply Now</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <img class="hero-watermark" src="assets/logo/underdogs-symbol-black.svg" alt="" aria-hidden="true">
+
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <div class="hero-main">
+        <div class="hero-badge"><span class="lang id">1st Cohort 2026 : Indonesia</span><span class="lang en">1st Cohort 2026 : Indonesia</span></div>
+        <div class="hero-program-name"><span class="lang id">Action AI Boost Program</span><span class="lang en">Action AI Boost Program</span></div>
+        <h1>From Idea</h1>
+        <h1>to <span>Revenue</span></h1>
+        <h1>in 6 Weeks.</h1>
+
+        <p class="hero-subtitle">
+          <span class="lang id">Action AI bukan kuliah. <strong style="color:var(--ink);">Dari ide hingga pendapatan pertama Anda hanya dalam 6 minggu, 100% gratis.</strong><br>
+          Tidak ada lagi pelajaran — belajarlah dengan cara Anda sendiri. Apa yang Anda bangun adalah lamaran Anda.</span>
+          <span class="lang en">Action AI is not lectures. <strong style="color:var(--ink);">From Idea to your first revenue in just 6 weeks, 100% Free.</strong><br>
+          No more lesson, learn your own way. What you build is your application.</span>
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://boost.actionai.asia/en/p/actionai-cohort1/signup" target="_blank" rel="noopener noreferrer" class="btn-primary">
+            <span class="lang id">Daftar Sekarang</span><span class="lang en">Apply Now</span> <span>→</span>
+          </a>
+          <a href="#curriculum" class="btn-secondary">
+            <span class="lang id">Lihat Kurikulum</span><span class="lang en">See Curriculum</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-benefits">
+        <div class="hero-benefits-title"><span class="lang id">Yang Anda Dapatkan</span><span class="lang en">What you get</span></div>
+        <div class="hero-benefit-item">
+          <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="7 14 11 10 14 13 20 6"/><polyline points="15 6 20 6 20 11"/></svg></span>
+          <div class="hb-text">
+            <div class="hb-title"><span class="lang id">Produk Nyata Penghasil Pendapatan</span><span class="lang en">A Live, Revenue-Generating Product</span></div>
+            <div class="hb-desc"><span class="lang id">Produk AI nyata yang meraih pendapatan pertamanya</span><span class="lang en">A real AI product that earns its first revenue</span></div>
+          </div>
+        </div>
+        <div class="hero-benefit-item">
+          <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></span>
+          <div class="hb-text">
+            <div class="hb-title"><span class="lang id">Mentorship 1:1</span><span class="lang en">1:1 Mentorship</span></div>
+            <div class="hb-desc"><span class="lang id">Pelatih khusus untuk memecahkan masalah Anda bersama</span><span class="lang en">A dedicated coach to solve your problem together</span></div>
+          </div>
+        </div>
+        <div class="hero-benefit-item">
+          <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-1-1.4-1.6-2.5-1.6-1.5 0-2.6 1-2.6 2.1 0 2.6 5.2 1.3 5.2 4 0 1.2-1.2 2.1-2.6 2.1-1.2 0-2.2-.6-2.6-1.6"/></svg></span>
+          <div class="hb-text">
+            <div class="hb-title"><span class="lang id">Pencocokan Investor</span><span class="lang en">Investor Matching</span></div>
+            <div class="hb-desc"><span class="lang id">Lulusan terbaik terhubung dengan investor, kesempatan diundang ke Korea</span><span class="lang en">Top graduates get connected with investors, invitation to korea</span></div>
+          </div>
+        </div>
+        <div class="hero-benefit-item">
+          <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5 12 4l10 4.5-10 4.5z"/><path d="M6 10.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/><path d="M22 8.5V14"/></svg></span>
+          <div class="hb-text">
+            <div class="hb-title"><span class="lang id">Jalan Menjadi Pelatih</span><span class="lang en">A Path to Become a Coach</span></div>
+            <div class="hb-desc"><span class="lang id">Lulusan terbaik dapat kembali sebagai pelatih di kohort berikutnya.</span><span class="lang en">Top graduates can return as a coach next cohort.</span></div>
+          </div>
+        </div>
+        <div class="hero-benefit-item">
+          <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.4 2.6 15.6 0 18"/><path d="M12 3c-2.6 2.4-2.6 15.6 0 18"/></svg></span>
+          <div class="hb-text">
+            <div class="hb-title"><span class="lang id">Jaringan Builder Se-Asia</span><span class="lang en">Asia-Wide Builder Network</span></div>
+            <div class="hb-desc"><span class="lang id">Akses seumur hidup ke 30.000+ builder di seluruh Asia.</span><span class="lang en">Lifetime access to 30,000+ builders across Asia.</span></div>
+          </div>
+        </div>
+
+        <div class="hero-benefits-stats">
+          <div><div class="hb-stat-num">6</div><div class="hb-stat-label">weeks</div></div>
+          <div><div class="hb-stat-num">13</div><div class="hb-stat-label">quests</div></div>
+          <div><div class="hb-stat-num">100%</div><div class="hb-stat-label">free</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PHILOSOPHY ══ -->
+<section class="beige">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">About the Program</div>
+      <h2>Build First, Learn by Doing.</h2>
+      <div class="section-header-divider"></div>
+      <p>
+        <span class="lang id">Di era AI, menghabiskan berbulan-bulan untuk kuliah tidak lagi efektif. Action AI Boost adalah program booster 6 minggu yang dirancang untuk membangun produk dengan cepat.</span><span class="lang en">In the AI era, spending months on lectures will no longer works. Action AI Boost is a 6 Week booster program designed for fast product building.</span>
+      </p>
+    </div>
+
+    <div class="phil-grid">
+      <div class="phil-card reveal">
+        <div class="phil-num">01 · Principle</div>
+        <div class="phil-title">Speed over Perfection</div>
+        <p><span class="lang id">Bangun dengan AI, rilis ke pasar, lalu sempurnakan. Setiap quest meminta "sesuatu yang benar-benar dirilis," bukan "draf yang sempurna."</span><span class="lang en">Build with AI, ship to the market, then refine. Every quest asks for "something actually shipped," not a "perfect draft."</span></p>
+      </div>
+      <div class="phil-card reveal">
+        <div class="phil-num">02 · Principle</div>
+        <div class="phil-title">Community over Classroom</div>
+        <p><span class="lang id">Kohort Discord dan tim operasional lokal berjalan bersama Anda. Lulusan kembali sebagai pelatih, menciptakan ekosistem startup yang berkelanjutan.</span><span class="lang en">Discord cohorts and local operators run alongside you. Graduates return as coaches, creating a self-sustaining startup ecosystem.</span></p>
+      </div>
+      <div class="phil-card reveal">
+        <div class="phil-num">03 · Principle</div>
+        <div class="phil-title">Proof over Promise</div>
+        <p><span class="lang id">Kenaikan setiap Stage hanya diraih lewat hasil nyata (prototipe · pelanggan terkunci · pembayaran). Dengan hasil, bukan ide. AI menilai berdasarkan bukti.</span><span class="lang en">Stage advancement is earned only by real proof — prototype, locked-in customers, payment. By results, not ideas. AI grades on evidence.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY (참여 혜택 요약) ══ -->
+<section>
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Why ActionAI Boost</div>
+      <h2><span class="lang id">Dari Pencocokan Investor hingga Jaringan Se-Asia</span><span class="lang en">From Investor Matching to an Asia-Wide Network</span></h2>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id"><strong style="color:var(--ink);">Bukan sekadar sertifikat kelulusan.</strong> Produk yang menghasilkan pembayaran, pelatih khusus, koneksi investor, dan jaringan builder seumur hidup — itulah yang tersisa setelah 6 minggu.</span><span class="lang en"><strong style="color:var(--ink);">Not just a certificate of completion.</strong> A product that gets paid for, a dedicated coach, investor connections, and a builder network for life — what remains after 6 weeks.</span></p>
+    </div>
+
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-index">WHY 1</div>
+        <div class="why-card-head">
+          <div>
+            <div class="why-num">Free</div>
+            <div class="why-title"><span class="lang id">100% gratis · program live 6 minggu</span><span class="lang en">100% free · 6-week live program</span></div>
+          </div>
+          <span class="why-icon">+</span>
+        </div>
+        <div class="why-desc"><div class="why-desc-inner"><p><span class="lang id">Tanpa biaya kuliah. Pelatihan, quest, dan komunitas tanpa biaya setelah seleksi.</span><span class="lang en">No tuition. Coaching, quests, and community at zero cost after selection.</span></p></div></div>
+      </div>
+      <div class="why-card alt">
+        <div class="why-index">WHY 2</div>
+        <div class="why-card-head">
+          <div>
+            <div class="why-num">Coach</div>
+            <div class="why-title"><span class="lang id">Pelatih khusus 1:1</span><span class="lang en">1:1 dedicated coach</span></div>
+          </div>
+          <span class="why-icon">+</span>
+        </div>
+        <div class="why-desc"><div class="why-desc-inner"><p><span class="lang id">Mulai dari tahap Acquire, seorang pelatih menemui Anda, memantau perkembangan, dan menjaga ritme harian Anda.</span><span class="lang en">From the Acquire stage, a coach meets you, tracks your progress, and keeps your daily rhythm.</span></p></div></div>
+      </div>
+      <div class="why-card">
+        <div class="why-index">WHY 3</div>
+        <div class="why-card-head">
+          <div>
+            <div class="why-num">Investor</div>
+            <div class="why-title"><span class="lang id">Pencocokan investor untuk tim terbaik</span><span class="lang en">Investor matching for top teams</span></div>
+          </div>
+          <span class="why-icon">+</span>
+        </div>
+        <div class="why-desc"><div class="why-desc-inner"><p><span class="lang id">Tim terbaik yang menyelesaikan tahap Team terhubung dengan investor terpilih; 3 Besar diundang ke Korea untuk kemitraan yang dipersonalisasi.</span><span class="lang en">Top teams that complete the Team stage are connected with selected investors; the Top 3 are invited to Korea for tailored partnerships.</span></p></div></div>
+      </div>
+      <div class="why-card alt">
+        <div class="why-index">WHY 4</div>
+        <div class="why-card-head">
+          <div>
+            <div class="why-num">Alumni</div>
+            <div class="why-title"><span class="lang id">Jaringan alumni se-Asia</span><span class="lang en">Asia-wide alumni network</span></div>
+          </div>
+          <span class="why-icon">+</span>
+        </div>
+        <div class="why-desc"><div class="why-desc-inner"><p><span class="lang id">Bergabunglah dengan komunitas 30.000+ builder underdogs di seluruh Asia untuk usaha Anda berikutnya.</span><span class="lang en">Join underdogs' 30,000+ builder community across Asia for your next venture.</span></p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ OVERVIEW ══ -->
+<section class="dark" id="overview">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Program Overview</div>
+      <h2><span class="lang id">Program Sekilas</span><span class="lang en">The Program at a Glance</span></h2>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id"><strong style="color:var(--action-orange);">Program 100% gratis</strong> untuk mahasiswa dan calon founder tahap awal di Indonesia.</span><span class="lang en">A <strong style="color:var(--action-orange);">100% free program</strong> for university students and early-stage founders in Indonesia.</span></p>
+    </div>
+
+    <div class="overview-grid reveal">
+      <div class="overview-cell">
+        <div class="ov-label">Application</div>
+        <div class="ov-value">6/2 – 6/26</div>
+        <div class="ov-sub"><span class="lang id">Pengumuman hasil 7/1</span><span class="lang en">Results on 7/1</span></div>
+      </div>
+      <div class="overview-cell">
+        <div class="ov-label">Orientation</div>
+        <div class="ov-value">7/3 <span class="lang id">(Jum)</span><span class="lang en">(Fri)</span></div>
+        <div class="ov-sub">OT · Zoom Live</div>
+      </div>
+      <div class="overview-cell">
+        <div class="ov-label">Duration</div>
+        <div class="ov-value">6 Weeks</div>
+        <div class="ov-sub"><span class="lang id">6 Jul (Sen) – 14 Agu (Jum)</span><span class="lang en">Jul 6 (Mon) – Aug 14 (Fri)</span></div>
+      </div>
+      <div class="overview-cell">
+        <div class="ov-label">Format</div>
+        <div class="ov-value">Online Live</div>
+        <div class="ov-sub"><span class="lang id">Zoom · 2 sesi/minggu</span><span class="lang en">Zoom · 2 sessions/week</span></div>
+      </div>
+      <div class="overview-cell">
+        <div class="ov-label">Target</div>
+        <div class="ov-value">Indonesia</div>
+        <div class="ov-sub"><span class="lang id">Mahasiswa &amp; calon founder di Indonesia</span><span class="lang en">University students &amp; Aspiring founders in Indonesia</span></div>
+      </div>
+      <div class="overview-cell highlight">
+        <div class="ov-label">Tuition</div>
+        <div class="ov-value">Completely Free</div>
+        <div class="ov-sub"><span class="lang id">100% gratis untuk peserta</span><span class="lang en">100% free for participants</span></div>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:16px; font-size:12px; color:var(--warm-gray); word-break:keep-all;">
+      <span class="lang id">* Jadwal program dapat berubah karena alasan operasional.</span>
+      <span class="lang en">* The program schedule may change for operational reasons.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══ UNDERDOGS ══ -->
+<section class="feature-soft">
+  <img class="feature-watermark" src="assets/logo/underdogs-symbol-black.svg" alt="" aria-hidden="true">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Powered by</div>
+      <img class="logo-wordmark" src="assets/logo/underdogs-wordmark-black.svg" alt="Underdogs" style="height:38px; margin:10px auto 34px;">
+      <h2 style="font-size:clamp(18px,2.4vw,28px); font-weight:600; color:var(--soft-ink); max-width:none; white-space:nowrap;"><span class="lang id">Pemimpin ekosistem startup builder-first di Asia</span><span class="lang en">The leader of Asia's builder-first startup ecosystem</span></h2>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id">Selama lebih dari satu dekade, kami telah membina 30.000+ wirausahawan bersama jaringan 800+ pelatih ahli global. Kini kami berjalan bersama setiap founder ambisius di Asia yang bermimpi berinovasi dengan AI.</span><span class="lang en">For over a decade we've nurtured 30,000+ entrepreneurs with a network of 800+ global expert coaches. Now we run alongside every ambitious founder in Asia dreaming of AI-driven innovation.</span></p>
+    </div>
+
+    <div class="letter-grid reveal">
+      <div class="letter-cell">
+        <div class="letter">30K+</div>
+        <div class="letter-name">Entrepreneurs</div>
+        <div class="letter-desc"><span class="lang id">Wirausahawan dibina</span><span class="lang en">Entrepreneurs nurtured</span></div>
+      </div>
+      <div class="letter-cell">
+        <div class="letter">800+</div>
+        <div class="letter-name">Expert Coaches</div>
+        <div class="letter-desc"><span class="lang id">Pelatih ahli global</span><span class="lang en">Global expert coaches</span></div>
+      </div>
+      <div class="letter-cell">
+        <div class="letter">11Y</div>
+        <div class="letter-name">Experience</div>
+        <div class="letter-desc"><span class="lang id">11 tahun beroperasi</span><span class="lang en">11 years of operation</span></div>
+      </div>
+      <div class="letter-cell">
+        <div class="letter">Asia</div>
+        <div class="letter-name">Wide Network</div>
+        <div class="letter-desc"><span class="lang id">Jaringan se-Asia</span><span class="lang en">Asia-wide network</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CURRICULUM ══ -->
+<section id="curriculum">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">The Curriculum</div>
+      <h2><span class="lang id">Perjalanan Eksekusi 4 Stage, 13 Quest</span><span class="lang en">4 Stages, 13 Quests</span></h2>
+      <h3><span class="lang id">Dari ide hingga pembayaran pertama — terbukti dalam 6 minggu</span><span class="lang en">From idea to first payment, proven by results in 6 weeks</span></h3>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id">Kenaikan setiap stage hanya diraih lewat hasil nyata — prototipe, pelanggan terkunci, pembayaran. Program yang membuktikan diri lewat hasil, bukan ide. Ulangi siklus build-measure-learn selama 6 minggu.</span><span class="lang en">Stage advancement is earned only by real proof — prototype, locked-in customers, payment. A program that proves itself by results, not ideas. Repeat the build-measure-learn cycle for 6 weeks.</span></p>
+    </div>
+
+    <div class="phase-journey reveal">
+      <div class="phase-journey-item" style="background:var(--primary-orange);">
+        <div class="phase-j-num">Stage 1</div>
+        <div class="phase-j-name">Build</div>
+        <div class="phase-j-tag"><span class="lang id">Bangun · masalah·pelanggan·MVP</span><span class="lang en">Build · problem·customer·MVP</span></div>
+      </div>
+      <div class="phase-journey-item" style="background:var(--orange3);">
+        <div class="phase-j-num">Stage 2</div>
+        <div class="phase-j-name">Acquire</div>
+        <div class="phase-j-tag"><span class="lang id">Kumpulkan · temukan pembeli</span><span class="lang en">Acquire · find buyers</span></div>
+      </div>
+      <div class="phase-journey-item" style="background:var(--action-orange);">
+        <div class="phase-j-num">Stage 3</div>
+        <div class="phase-j-name">Commerce</div>
+        <div class="phase-j-tag"><span class="lang id">Jual · pembayaran pertama·sistematisasi</span><span class="lang en">Sell · first payment·systemize</span></div>
+      </div>
+      <div class="phase-journey-item" style="background:var(--cyan);">
+        <div class="phase-j-num">Stage 4</div>
+        <div class="phase-j-name">Team</div>
+        <div class="phase-j-tag"><span class="lang id">Tumbuhkan · roadmap 12 bulan</span><span class="lang en">Grow · 12-month roadmap</span></div>
+      </div>
+    </div>
+
+    <!-- Build Phase -->
+    <div class="phase-detail reveal">
+      <div class="phase-side" style="background:var(--accent);">
+        <div class="side-num">STAGE 1</div>
+        <div class="side-name">Build</div>
+        <div class="side-tag"><span class="lang id">Bangun</span><span class="lang en">Build</span> · 4 Quests</div>
+      </div>
+      <div class="phase-body">
+        <button class="phase-toggle" type="button" aria-expanded="false">
+          <div class="phase-toggle-text">
+            <h3><span class="lang id">Motivasi → Pelanggan → MVP</span><span class="lang en">Motivation → Customer → MVP</span></h3>
+            <div class="en-sub"><span class="lang id">Tentukan satu pelanggan nyata, bangun MVP dalam 72 jam, dan sempurnakan model dengan 5 reaksi.</span><span class="lang en">Define one real customer, build an MVP in 72 hours, and refine the model with 5 reactions.</span></div>
+          </div>
+          <span class="phase-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="phase-grid phase-collapse">
+          <div>
+            <div class="phase-field-label" style="color:var(--primary-orange);"><span class="lang id">Tujuan</span><span class="lang en">Goal</span></div>
+            <div class="phase-field-text"><span class="lang id">Tentukan satu pelanggan, bangun MVP dengan satu fitur inti, lalu validasikan ke 5 orang.</span><span class="lang en">Define one customer, build an MVP with a single core feature, and validate it with 5 people.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--primary-orange);"><span class="lang id">Format</span><span class="lang en">Format</span></div>
+            <div class="phase-field-text"><span class="lang id">Mandiri, didukung eduBot/actBot dan peer review.</span><span class="lang en">Self-directed, supported by eduBot/actBot and peer reviews.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--primary-orange);">Quest</div>
+            <div class="quest-tags">
+              <span class="quest-tag"><span class="lang id">Q1 Persempit ke satu pelanggan</span><span class="lang en">Q1 Narrow to one customer</span></span>
+              <span class="quest-tag"><span class="lang id">Q2 Bangun dalam 72 jam</span><span class="lang en">Q2 Build in 72 hours</span></span>
+              <span class="quest-tag"><span class="lang id">Q3 Uji ke 5 orang</span><span class="lang en">Q3 Test with 5 people</span></span>
+              <span class="quest-tag"><span class="lang id">Q4 Perbaiki model dengan data</span><span class="lang en">Q4 Fix the model with data</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acquire Phase -->
+    <div class="phase-detail reveal accent-stage" style="background:#FEF4EE;">
+      <div class="phase-side" style="background:var(--ink);">
+        <div class="side-num">STAGE 2</div>
+        <div class="side-name">Acquire</div>
+        <div class="side-tag"><span class="lang id">Kumpulkan</span><span class="lang en">Acquire</span> · 4 Quests</div>
+      </div>
+      <div class="phase-body">
+        <button class="phase-toggle" type="button" aria-expanded="false">
+          <div class="phase-toggle-text">
+            <h3><span class="lang id">Perluas segmen → temukan grup pembeli</span><span class="lang en">Expand segments → find the buyers</span></h3>
+            <div class="en-sub"><span class="lang id">Melampaui persona Anda, temukan grup "pembeli" di antara orang asing dan finalkan apa yang akan dijual.</span><span class="lang en">Beyond your persona, find the group of "buyers" among strangers and finalize what to sell.</span></div>
+          </div>
+          <span class="phase-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="phase-grid phase-collapse">
+          <div>
+            <div class="phase-field-label" style="color:var(--orange3);"><span class="lang id">Tujuan</span><span class="lang en">Goal</span></div>
+            <div class="phase-field-text"><span class="lang id">Temukan pembeli nyata di antara orang asing, lalu kunci harga dan penawaran Anda.</span><span class="lang en">Find real buyers among strangers, then lock in your price and offer.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--orange3);"><span class="lang id">Format</span><span class="lang en">Format</span></div>
+            <div class="phase-field-text"><span class="lang id">Mandiri + <strong>pelatih khusus 1:1</strong> + check-in harian Discord / komunitas peer.</span><span class="lang en">Self-directed + <strong>a dedicated 1:1 coach</strong> + daily Discord check-ins / peer community.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--orange3);">Quest</div>
+            <div class="quest-tags">
+              <span class="quest-tag"><span class="lang id">Q5 Temukan segmen baru</span><span class="lang en">Q5 Find new segments</span></span>
+              <span class="quest-tag"><span class="lang id">Q6 Validasikan ke 5 orang asing</span><span class="lang en">Q6 Validate with 5 strangers</span></span>
+              <span class="quest-tag"><span class="lang id">Q7 Kunci harga dan penawaran</span><span class="lang en">Q7 Lock price and offer</span></span>
+              <span class="quest-tag"><span class="lang id">Q8 Latihan sebelum menjual</span><span class="lang en">Q8 Rehearse before selling</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commerce Phase -->
+    <div class="phase-detail reveal">
+      <div class="phase-side" style="background:var(--accent);">
+        <div class="side-num">STAGE 3</div>
+        <div class="side-name">Commerce</div>
+        <div class="side-tag"><span class="lang id">Jual</span><span class="lang en">Sell</span> · 5 Quests</div>
+      </div>
+      <div class="phase-body">
+        <button class="phase-toggle" type="button" aria-expanded="false">
+          <div class="phase-toggle-text">
+            <h3><span class="lang id">Dari pengguna gratis hingga pendapatan nyata</span><span class="lang en">From free users to real revenue</span></h3>
+            <div class="en-sub"><span class="lang id">Raih pembayaran nyata, temukan pola penjualan yang berulang, lalu otomatiskan agar terjual tanpa Anda.</span><span class="lang en">Make real payments, find a repeatable sales pattern, then automate so it sells without you.</span></div>
+          </div>
+          <span class="phase-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="phase-grid phase-collapse">
+          <div>
+            <div class="phase-field-label" style="color:var(--action-orange);"><span class="lang id">Tujuan</span><span class="lang en">Goal</span></div>
+            <div class="phase-field-text"><span class="lang id">Raih pembayaran pertama, temukan alur penjualan yang berulang, dan otomatiskan.</span><span class="lang en">Land your first payment, find a repeatable sales flow, and automate it.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--action-orange);"><span class="lang id">Format</span><span class="lang en">Format</span></div>
+            <div class="phase-field-text"><span class="lang id">Mandiri + pelatih khusus 1:1 + check-in harian Discord / komunitas peer.</span><span class="lang en">Self-directed + a dedicated 1:1 coach + daily Discord check-ins / peer community.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--action-orange);">Quest</div>
+            <div class="quest-tags">
+              <span class="quest-tag"><span class="lang id">Q9 Tawarkan ke 10 orang, kumpulkan penolakan</span><span class="lang en">Q9 Pitch 10, collect rejections</span></span>
+              <span class="quest-tag"><span class="lang id">Q10 Raih pembayaran pertama</span><span class="lang en">Q10 Get the first payment</span></span>
+              <span class="quest-tag"><span class="lang id">Q11 Temukan pola yang laku</span><span class="lang en">Q11 Find the selling pattern</span></span>
+              <span class="quest-tag"><span class="lang id">Q12 Buat terjual tanpa campur tangan</span><span class="lang en">Q12 Make it sell hands-off</span></span>
+              <span class="quest-tag"><span class="lang id">Q13 Kelola dengan angka</span><span class="lang en">Q13 Manage by the numbers</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Phase -->
+    <div class="phase-detail reveal accent-stage" style="background:#FEF4EE;">
+      <div class="phase-side" style="background:var(--ink);">
+        <div class="side-num">STAGE 4</div>
+        <div class="side-name">Team</div>
+        <div class="side-tag"><span class="lang id">Tumbuhkan</span><span class="lang en">Grow</span> · 3 Quests</div>
+      </div>
+      <div class="phase-body">
+        <button class="phase-toggle" type="button" aria-expanded="false">
+          <div class="phase-toggle-text">
+            <h3><span class="lang id">Visi · Tim AI Agent · roadmap 12 bulan</span><span class="lang en">Vision · AI Agent Team · 12-month roadmap</span></h3>
+            <div class="en-sub"><span class="lang id">Bukan merekrut orang — rancang tim AI agent yang mengotomatiskan peran dan tugas Anda, lalu petakan roadmap 12 bulan.</span><span class="lang en">Not hiring people — design a team of AI agents that automate your roles and tasks, then map a 12-month roadmap.</span></div>
+          </div>
+          <span class="phase-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="phase-grid phase-collapse">
+          <div>
+            <div class="phase-field-label" style="color:var(--cyan);"><span class="lang id">Aktivitas utama</span><span class="lang en">Key activities</span></div>
+            <div class="phase-field-text"><span class="lang id">Tentukan visi dan misi Anda, lalu rancang AI agent pertama untuk mengotomatiskan peran inti dan susun roadmap 12 bulan.</span><span class="lang en">Define your vision and mission, then design your first AI agents to automate core roles and a 12-month roadmap.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--cyan);"><span class="lang id">Manfaat kelulusan</span><span class="lang en">Graduation perks</span></div>
+            <div class="phase-field-text"><span class="lang id">Tim lulusan terbaik mendapat pencocokan investor; <strong>3 Besar diundang ke Korea dengan koneksi kemitraan yang dipersonalisasi</strong>.</span><span class="lang en">Top graduating teams get investor matching; the <strong>Top 3 are invited to Korea with tailored partnership connections</strong>.</span></div>
+          </div>
+          <div>
+            <div class="phase-field-label" style="color:var(--cyan);">Quest</div>
+            <div class="quest-tags">
+              <span class="quest-tag"><span class="lang id">T1 Tetapkan arah</span><span class="lang en">T1 Nail the direction</span></span>
+              <span class="quest-tag"><span class="lang id">T2 Rancang agent yang bergabung</span><span class="lang en">T2 Design the agents that join</span></span>
+              <span class="quest-tag"><span class="lang id">T3 Rancang 12 bulan</span><span class="lang en">T3 Design 12 months</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ APPLY CTA (커리큘럼 하단) ══ -->
+<section style="background:var(--paper); text-align:center; padding:0 40px 82px;">
+  <div class="container">
+    <a href="https://boost.actionai.asia/en/p/actionai-cohort1/signup" target="_blank" rel="noopener noreferrer" class="btn-primary reveal"><span class="lang id">Daftar Sekarang</span><span class="lang en">Apply Now</span> <span>→</span></a>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section class="dark" id="how">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">How It Works</div>
+      <h2><span class="lang id">Bangun, ukur, dan belajar setiap minggu</span><span class="lang en">Build, measure, and learn every week</span></h2>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id">Jaga ritme dengan 1–3 quest per minggu dan pertemuan kohort Zoom dua kali seminggu (Sen/Kam). Check-in harian di Discord membantu Anda menyempurnakan produk dengan cepat.</span><span class="lang en">Keep the rhythm with 1–3 quests a week and twice-weekly (Mon/Thu) Zoom cohort meetings. Daily Discord check-ins help you refine your product fast.</span></p>
+    </div>
+
+    <div class="sprint-cards reveal">
+      <div class="sprint-card accent">
+        <div class="sprint-day">Weekly · Build</div>
+        <div class="sprint-title">BUILD</div>
+        <div class="sprint-title-ko"><span class="lang id">Membangun</span><span class="lang en">Build</span></div>
+        <div class="sprint-desc"><span class="lang id">Gunakan AI untuk membuat fitur · konten · materi pemasaran dengan cepat. 1–3 quest diberikan tiap minggu.</span><span class="lang en">Use AI to quickly make features, content, and marketing assets. 1–3 quests are assigned each week.</span></div>
+      </div>
+      <div class="sprint-card dark">
+        <div class="sprint-day">Weekly · Measure</div>
+        <div class="sprint-title">MEASURE</div>
+        <div class="sprint-title-ko"><span class="lang id">Mengukur</span><span class="lang en">Measure</span></div>
+        <div class="sprint-desc"><span class="lang id">Rilis ke pasar dan kumpulkan respons pengguna. Kirim check-in harian di Discord.</span><span class="lang en">Ship to the market and gather user reactions. Submit a daily check-in on Discord.</span></div>
+      </div>
+      <div class="sprint-card dark">
+        <div class="sprint-day">Weekly · Learn</div>
+        <div class="sprint-title">LEARN</div>
+        <div class="sprint-title-ko"><span class="lang id">Belajar</span><span class="lang en">Learn</span></div>
+        <div class="sprint-desc"><span class="lang id">Analisis data dan temukan perbaikan. Bagikan dengan pelatih dan rekan di pertemuan kohort Sen/Kam.</span><span class="lang en">Analyze data and find improvements. Share with coaches and peers at the Mon/Thu cohort meetings.</span></div>
+      </div>
+    </div>
+
+    <div class="week-grid reveal">
+      <div class="week-cell cohort"><div class="day-name">MON</div><div class="day-phase">COHORT</div><div class="day-tag"><span class="lang id">Pertemuan Zoom</span><span class="lang en">Zoom</span></div></div>
+      <div class="week-cell"><div class="day-name">TUE</div><div class="day-phase">BUILD</div><div class="day-tag"><span class="lang id">Check-in Discord</span><span class="lang en">Discord check-in</span></div></div>
+      <div class="week-cell"><div class="day-name">WED</div><div class="day-phase">MEASURE</div><div class="day-tag"><span class="lang id">Check-in Discord</span><span class="lang en">Discord check-in</span></div></div>
+      <div class="week-cell cohort"><div class="day-name">THU</div><div class="day-phase">COHORT</div><div class="day-tag"><span class="lang id">Pertemuan Zoom</span><span class="lang en">Zoom</span></div></div>
+      <div class="week-cell"><div class="day-name">FRI</div><div class="day-phase">BUILD</div><div class="day-tag"><span class="lang id">Check-in Discord</span><span class="lang en">Discord check-in</span></div></div>
+      <div class="week-cell"><div class="day-name">SAT</div><div class="day-phase">MEASURE</div><div class="day-tag"><span class="lang id">Check-in Discord</span><span class="lang en">Discord check-in</span></div></div>
+    </div>
+
+    <!-- Activities -->
+    <div style="margin-top: 80px;">
+      <div class="section-header reveal">
+        <div class="section-label">Community Rhythm</div>
+        <h2 style="color:var(--ink);font-size:clamp(22px,3.5vw,32px);"><span class="lang id">6 Minggu, Berlari Bersama</span><span class="lang en">6 Weeks, Running Together</span></h2>
+      </div>
+      <div class="works-grid reveal">
+        <div class="work-card">
+          <div class="work-title">Weekly Quest</div>
+          <div class="work-title-ko"><span class="lang id">1–3 quest / minggu</span><span class="lang en">1–3 quests / week</span></div>
+          <div class="work-desc"><span class="lang id">Quest teruji yang mendorong aksi. AI melakukan tinjauan pertama dan menilai berdasarkan hasil.</span><span class="lang en">Proven quests that drive action. AI does the first review and grades on output.</span></div>
+        </div>
+        <div class="work-card">
+          <div class="work-title">Cohort Meeting</div>
+          <div class="work-title-ko"><span class="lang id">2 pertemuan kohort / minggu</span><span class="lang en">2 cohort meetings / week</span></div>
+          <div class="work-desc"><span class="lang id">Sesi live setiap Sen/Kam. Pelatih dan rekan menjaga ritme bersama Anda.</span><span class="lang en">Live sessions every Mon/Thu. Coaches and peers keep the rhythm with you.</span></div>
+        </div>
+        <div class="work-card">
+          <div class="work-title">Monthly Pitch</div>
+          <div class="work-title-ko"><span class="lang id">Pitch bulanan</span><span class="lang en">Monthly pitch</span></div>
+          <div class="work-desc"><span class="lang id">Sesi live gabungan seluruh komunitas di tahap penutup.</span><span class="lang en">A whole-community live session at the closing stage.</span></div>
+        </div>
+        <div class="work-card">
+          <div class="work-title">Investor Talk</div>
+          <div class="work-title-ko"><span class="lang id">Talk investor global</span><span class="lang en">Global investor talk</span></div>
+          <div class="work-desc"><span class="lang id">Satu sesi talk investor global yang menyampaikan perspektif pasar dan tips pitching langsung.</span><span class="lang en">One global investor talk delivering market perspective and pitching tips firsthand.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BENEFITS ══ -->
+<section id="benefits">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Completion &amp; Benefits</div>
+      <h2><span class="lang id">Kelulusan & Manfaat</span><span class="lang en">Completion & Benefits</span></h2>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id">Dua cara menyelesaikan. Kelulusan standar mengharuskan Anda menyelesaikan hingga tahap Acquire (A). Selesaikan hingga tahap Team (T) untuk membuka peluang menjadi pelatih kohort berikutnya dan pencocokan investor.</span><span class="lang en">Two ways to complete. Standard completion requires finishing through the Acquire (A) stage. Finish through the Team (T) stage to unlock next-cohort coaching and investor matching.</span></p>
+    </div>
+
+    <div class="benefit-cols reveal">
+      <div class="benefit-col">
+        <div class="b-tag">Standard · <span class="lang id">dasar</span><span class="lang en">basic</span></div>
+        <h3><span class="lang id">Selesai hingga Stage 2</span><span class="lang en">Complete through Stage 2</span></h3>
+        <div class="b-sub"><span class="lang id">Wajib menyelesaikan hingga tahap Acquire (A)</span><span class="lang en">Complete through the Acquire (A) stage</span></div>
+        <ul class="benefit-list">
+          <li><span class="lang id">Sertifikat kelulusan <span style="color:var(--muted); font-weight:400;">(setelah menyelesaikan semua quest Stage A)</span></span><span class="lang en">Certificate of completion <span style="color:var(--muted); font-weight:400;">(upon completing all Stage A quests)</span></span></li>
+          <li><span class="lang id">Kelayakan peluncuran ke pasar</span><span class="lang en">Market launch eligibility</span></li>
+          <li><span class="lang id">Akses ke jaringan alumni</span><span class="lang en">Access to the alumni network</span></li>
+        </ul>
+      </div>
+      <div class="benefit-col gold">
+        <div class="b-tag">Full · <span class="lang id">hingga T</span><span class="lang en">through T</span></div>
+        <h3><span class="lang id">Selesai Semua Stage</span><span class="lang en">Complete All Stages</span></h3>
+        <div class="b-sub"><span class="lang id">Selesaikan seluruh perjalanan (Build → Acquire → Commerce → Team)</span><span class="lang en">Finish the full journey (Build → Acquire → Commerce → Team)</span></div>
+        <ul class="benefit-list">
+          <li><span class="lang id">Kesempatan menjadi pelatih kohort berikutnya</span><span class="lang en">Chance to coach the next cohort</span></li>
+          <li><span class="lang id">3 tim terbaik → pencocokan investor</span><span class="lang en">Top 3 teams → investor matching</span></li>
+          <li><span class="lang id">3 Besar diundang ke Korea dengan kemitraan yang dipersonalisasi</span><span class="lang en">Top 3 invited to Korea with tailored partnerships</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ APPLY ══ -->
+<section class="dark" id="apply">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">How To Apply</div>
+      <h2><span class="lang id">Produk Anda adalah lamaran Anda</span><span class="lang en">Your product is your application</span></h2>
+      <div class="section-header-divider"></div>
+      <p><span class="lang id">Tanpa esai, tanpa rencana bisnis. Yang kami lihat hanyalah apa yang benar-benar Anda bangun. Daftar, lalu unggah prototipe atau produk yang berfungsi ke feed Anda. Makin detail dan makin banyak sinyal respons pasar, makin tinggi nilai seleksi Anda.</span><span class="lang en">No essays, no business plans. The only thing we look at is what you actually built. Sign up and post a working prototype or product to your feed. More detail and market signals earn selection bonus points.</span></p>
+    </div>
+
+    <div class="apply-steps reveal">
+      <div class="apply-step">
+        <div class="step-num">01</div>
+        <h3><span class="lang id">Daftar</span><span class="lang en">Sign up</span></h3>
+        <div class="step-en"><span class="lang id">Google atau email · 30 detik</span><span class="lang en">Google or email · 30 seconds</span></div>
+        <p><span class="lang id">Pilih karakter DOGS Anda + hubungkan Discord untuk notifikasi kohort.</span><span class="lang en">Pick your DOGS character + link Discord for cohort notifications.</span></p>
+      </div>
+      <div class="apply-step">
+        <div class="step-num">02</div>
+        <h3><span class="lang id">Tunjukkan produk Anda</span><span class="lang en">Show your product</span></h3>
+        <div class="step-en"><span class="lang id">Unggah ke feed Anda</span><span class="lang en">Upload to your feed</span></div>
+        <p><span class="lang id">Unggah satu produk atau prototipe yang berfungsi ke feed. Makin detail dan makin banyak sinyal traksi, makin kuat lamaran Anda.</span><span class="lang en">Upload one product or working prototype to the feed. The more detail and traction signal, the stronger your application.</span></p>
+      </div>
+      <div class="apply-step">
+        <div class="step-num">03</div>
+        <h3><span class="lang id">Terpilih</span><span class="lang en">Get selected</span></h3>
+        <div class="step-en"><span class="lang id">Terbukti lewat produk Anda</span><span class="lang en">Proven by your product</span></div>
+        <p><span class="lang id">Biarkan produk Anda membuktikan dirinya — dan raih peluang luar biasa untuk membawanya lebih jauh.</span><span class="lang en">Let your product prove itself — and unlock a remarkable opportunity to take it further.</span></p>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center; margin-top:40px;">
+      <a href="https://boost.actionai.asia/en/p/actionai-cohort1/signup" target="_blank" rel="noopener noreferrer" class="btn-primary"><span class="lang id">Daftar Sekarang</span><span class="lang en">Apply Now</span> <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="beige" id="faq" style="background:var(--paper);">
+  <div class="container" style="max-width: 880px;">
+    <div class="section-header reveal">
+      <div class="section-label">FAQ</div>
+      <h2><span class="lang id">Pertanyaan yang Sering Diajukan</span><span class="lang en">Frequently Asked Questions</span></h2>
+      <div class="section-header-divider"></div>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Siapa yang bisa mendaftar?</div>
+            <div class="faq-q-en lang en">Who can apply?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Kohort ini ditujukan untuk <strong>mahasiswa calon founder di Indonesia</strong>. Siapa pun yang tertarik membangun startup dengan AI dan dapat mengikuti sesi live dua kali seminggu selama 6 minggu dapat mendaftar.</p>
+          <p class="en lang en">This cohort targets university student aspiring founders in Indonesia, interested in AI entrepreneurship.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Apakah ada biaya?</div>
+            <div class="faq-q-en lang en">Is there a fee?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Tidak. <strong>Seluruh program 6 minggu 100% gratis untuk peserta terpilih.</strong></p>
+          <p class="en lang en">No. The full 6-week program is 100% free for selected participants.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Berapa lama programnya?</div>
+            <div class="faq-q-en lang en">How long is the program?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Total <strong>6 minggu (6 Jul – 14 Agu)</strong>. Dimulai dengan OT pada Jumat, 3 Jul, dengan 1–3 quest per minggu dan pertemuan kohort dua kali seminggu (Sen/Kam). Pendaftaran 2–26 Jun, pengumuman 1 Jul.</p>
+          <p class="en lang en">6 weeks (Jul 6 – Aug 14). OT on Jul 3. Application Jun 2–26, results Jul 1.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Apa saja 4 tahapnya?</div>
+            <div class="faq-q-en lang en">What are the 4 stages?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id"><strong>Build → Acquire → Commerce → Team</strong>. Di Build Anda membangun masalah·pelanggan·MVP, di Acquire menemukan pembeli, di Commerce meraih pembayaran pertama, dan di Team merancang ekspansi. Ini adalah tahap 2–4 dari AI Startup University (tanpa jalur literasi).</p>
+          <p class="en lang en">Build → Acquire → Commerce → Team. These are stages 2–4 of the AI Startup University (literacy track excluded).</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Kapan dukungan pelatih dimulai?</div>
+            <div class="faq-q-en lang en">When does coach support start?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Tahap Build berjalan mandiri bersama AI dan rekan. Mulai tahap Acquire, Anda mendapat <strong>pelatih khusus 1:1</strong>.</p>
+          <p class="en lang en">The Build stage is self-directed with AI and peers. From the Acquire stage onward, you get a 1:1 dedicated coach.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Bagaimana penilaiannya?</div>
+            <div class="faq-q-en lang en">How is my work evaluated?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Kenaikan setiap Stage hanya lewat <strong>hasil nyata (prototipe · pelanggan terkunci · pembayaran)</strong>. Dibuktikan dengan hasil, bukan ide atau rencana, dan <strong>AI menilai berdasarkan bukti</strong>.</p>
+          <p class="en lang en">Stage advancement is by real proof only — prototype, locked-in customers, payments. AI grades on evidence.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Apa yang saya dapat saat lulus?</div>
+            <div class="faq-q-en lang en">What do I get on completion?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Kelulusan standar (hingga tahap A): <strong>sertifikat · kelayakan peluncuran · jaringan alumni</strong>. Selesai hingga tahap Team: <strong>kesempatan menjadi pelatih</strong>, pencocokan investor untuk 3 tim terbaik, dan undangan ke Korea untuk 3 Besar.</p>
+          <p class="en lang en">Standard (through A): certificate, launch eligibility, alumni network. Full (through T): coach opportunity + investor matching for top 3 teams.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Bisakah saya mendaftar tanpa produk?</div>
+            <div class="faq-q-en lang en">Can I apply without a product?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Ya. <strong>Anda bisa membangun prototipe dan mengunggahnya.</strong> Proses membangun itulah yang ingin kami lihat.</p>
+          <p class="en lang en">Yes. You can build a prototype and upload it. The process of building is exactly what we want to see.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Bagaimana quest dinilai?</div>
+            <div class="faq-q-en lang en">How are quests graded?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id"><strong>AI melakukan tinjauan pertama</strong>, lalu pelatih mengonfirmasi. Dinilai dari hasil nyata (prototipe · pelanggan terkunci · pembayaran), bukan ide atau rencana.</p>
+          <p class="en lang en">AI does the first review, then a coach confirms. Graded on real output — not ideas or plans.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Bagaimana karakter saya ditentukan?</div>
+            <div class="faq-q-en lang en">How is my character set?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Diagnostik singkat saat onboarding mencocokkan karakter profil komunitas Anda, yang digunakan dalam fitur Connect untuk menemukan rekan dan berkolaborasi.</p>
+          <p class="en lang en">A quick onboarding diagnostic matches your community profile character, used in the Connect feature.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-header">
+          <div>
+            <div class="faq-q lang id">Apakah saya harus menghubungkan Discord?</div>
+            <div class="faq-q-en lang en">Do I need to connect Discord?</div>
+          </div>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer"><div class="faq-answer-inner">
+          <p class="lang id">Ya. <strong>Kenaikan tahap, notifikasi, dan check-in harian berjalan lewat Discord.</strong> Ini kanal utama yang menjaga ritme 6 minggu tetap berjalan, jadi kami sarankan untuk menghubungkannya.</p>
+          <p class="en lang en">Yes — advancement, alerts, and daily check-ins run through Discord. It keeps the 6-week rhythm unbroken.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-final">
+  <div class="cta-deadline reveal"><span class="lang id">Action AI Boost Program 1st Cohort in Indonesia</span><span class="lang en">Action AI Boost Program 1st Cohort in Indonesia</span></div>
+  <h2 class="reveal"><span class="lang id">Mulai Bangun. Lalu Daftar.</span><span class="lang en">Start Building. Then Apply.</span></h2>
+  <div class="cta-sub reveal">From Idea to Revenue in 6 Weeks.</div>
+  <p class="reveal">
+    <span class="lang id">Ide saja tidak cukup — bangun, ukur, dan belajar, mulai sekarang.<br>
+    Produk yang Anda bangun adalah lamaran Anda.</span>
+    <span class="lang en">An idea alone isn't enough — build, measure, learn, starting now.<br>
+    The product you build is your application.</span>
+  </p>
+  <a href="https://boost.actionai.asia/en/p/actionai-cohort1/signup" target="_blank" rel="noopener noreferrer" class="btn-white reveal"><span class="lang id">Mulai Bangun →</span><span class="lang en">Start Building →</span></a>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name"><img class="logo-wordmark" src="assets/logo/underdogs-wordmark-white.svg" alt="Underdogs" style="height: 26px;"></div>
+      <div class="footer-brand-text">
+        Turning Potential into Reality<br>
+        A New Startup Ecosystem Led by Act-preneur.<br><br>
+        ActionAI Boost — From Idea to First Payment in 6 Weeks.
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Program</div>
+      <a href="#overview"><span class="lang id">Program</span><span class="lang en">Overview</span></a>
+      <a href="#curriculum"><span class="lang id">Kurikulum</span><span class="lang en">Curriculum</span></a>
+      <a href="#how"><span class="lang id">Cara Kerja</span><span class="lang en">How It Works</span></a>
+      <a href="#benefits"><span class="lang id">Manfaat</span><span class="lang en">Benefits</span></a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Links</div>
+      <a href="https://actionai.asia" target="_blank" rel="noopener noreferrer">actionai.asia</a>
+      <a href="https://boost.actionai.asia/en/p/actionai-cohort1/signup" target="_blank" rel="noopener noreferrer"><span class="lang id">Daftar</span><span class="lang en">Apply Now</span></a>
+      <a href="#faq">FAQ</a>
+      <span style="color:var(--muted-2);">Seoul · South Korea</span>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>copyright © 2026 underdogs. all rights reserved</span>
+    <span>ActionAI Boost · Powered by underdogs.</span>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+}, { passive: true });
+
+// Mobile menu toggle
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+if (navToggle && navMenu) {
+  const closeMenu = () => {
+    nav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  };
+  navToggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  // close after tapping a nav link (anchor jumps)
+  navMenu.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+  });
+  // close when tapping outside the nav
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('open') && !nav.contains(e.target)) closeMenu();
+  });
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FAQ toggle
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-header').addEventListener('click', () => {
+    item.classList.toggle('open');
+  });
+});
+
+// Curriculum stage accordion
+document.querySelectorAll('.phase-detail').forEach(detail => {
+  const toggle = detail.querySelector('.phase-toggle');
+  const panel = detail.querySelector('.phase-collapse');
+  if (!toggle || !panel) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = detail.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    panel.style.maxHeight = isOpen ? panel.scrollHeight + 'px' : '0';
+  });
+});
+
+// Why cards toggle
+document.querySelectorAll('.why-card').forEach(card => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('open');
+  });
+});
+
+// Language toggle (EN / ID)
+function setLang(lang) {
+  const root = document.documentElement;
+  if (lang === 'id') {
+    root.classList.add('id');
+    root.setAttribute('lang', 'id');
+  } else {
+    root.classList.remove('id');
+    root.setAttribute('lang', 'en');
+  }
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+  // re-measure any open accordion panels (ID/EN text heights differ)
+  document.querySelectorAll('.phase-detail.open .phase-collapse').forEach(panel => {
+    panel.style.maxHeight = panel.scrollHeight + 'px';
+  });
+  try { localStorage.setItem('aab-lang', lang); } catch (e) {}
+}
+// restore saved language (default EN)
+(function () {
+  let saved = 'en';
+  try { saved = localStorage.getItem('aab-lang') || 'en'; } catch (e) {}
+  if (saved !== 'en' && saved !== 'id') saved = 'en';
+  setLang(saved);
+})();
+</script>
+
+</body>
+</html>

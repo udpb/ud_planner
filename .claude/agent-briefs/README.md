@@ -35,7 +35,8 @@ Agent({ subagent_type: "Explore", prompt: "..." })
 🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
 ## 활성 브리프
-- `DECK-5-consume-planning.md` — 🟡 in-progress (2026-06-07). **ADR-026.** 덱이 `buildPipelineContext`(커리큘럼·코치·예산·임팩트)를 우선 근거로 소비(소프트+가산, 빈 단계 graceful) + 덱 UI를 제안서 스텝(흐름 끝)으로 이동. 렌더 파이프라인 무변경. 사용자: "PPT는 마지막에, 기획을 반영해서."
+- `UI-1-design-kit-app-migration.md` — 📦 **deferred** (2026-06-12). 앱 UI를 공식 디자인 킷 260529(`docs/design-kit/`)로 마이그레이션. 스킬(`ud-design-system` v2)은 선반영 완료 — 착수는 사용자 승인 + Open Decisions 3건(radius 전면 0 · lucide 존치 · NanumHuman 교체) 확정 후.
+- `DECK-5-consume-planning.md` — ⏸️ **ON HOLD / 재스코프 대기 (2026-06-12)**. ADR-026 기반이나 사용자 2026-06-12 피드백으로 방향 전환 — 덱은 PipelineContext를 **재저작**하면 안 되고 **정본 텍스트 제안서를 받아 슬라이드로 변환하는 분리된 터미널 모듈**이어야 함. **ADR-027(026 supersede) 작성 + 브리프 재스코프 전까지 이 브리프대로 진행 금지.** 상세: [HANDOFF.md](../../HANDOFF.md) 최상단.
 - `DECK-4-density-critic.md` — ✅ 완료 (2026-06-04). 밀도 비평 루프 + 여백 축소.
 - `QUAL-THROTTLE-gather-backoff.md` — ✅ 완료 (2026-06-04). gather 동시성 + 429 백오프.
 - `DECK-3b-2-route-and-ui.md` — ✅ 완료 (2026-06-04). API 라우트(`POST /api/projects/[id]/deck` 생성: gather→findWinningReference→authorDeck) + PDF 라우트(DeckSpec→build-worker-html(이미지 인라인)→워커→PDF) + 미리보기(클라 React)·다운로드 UI. **영속화 없음(v1, 마이그레이션 회피)**. 메인 E2E 검증: 실 프로젝트(계원예술대)→실 코퍼스 grounding→8장 덱 작동 확인(2026-06-04).
