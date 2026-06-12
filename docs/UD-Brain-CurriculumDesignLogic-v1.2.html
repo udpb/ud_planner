@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>커리큘럼 설계 로직 v1.2 — 목표에서 시작해, 인풋은 줄이고 임팩트는 키운다</title>
+<style>
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"NanumHuman";src:url("fonts/NanumHuman-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+:root{
+  --paper:#FFFFFF; --ink:#373938; --ink-soft:#4B4D4C; --muted:#878888;
+  --accent:#F05519; --warm-gray:#D8D4D7;
+  --tint-neutral:#F4F3F2; --tint-accent:#FDEBE3; --tint-dark:#EBEAE9;
+  --line:#D9D9D9; --line-soft:#E4E4E4;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:22px; --s-6:28px; --s-7:40px; --s-8:60px;
+  --font-kr:"NanumHuman","Apple SD Gothic Neo",sans-serif;
+  --font-en:"Poppins","NanumHuman",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;}
+body{font-family:var(--font-kr);color:var(--ink);background:var(--paper);word-break:keep-all;line-height:1.7;font-size:16px;}
+.wrap{max-width:900px;margin:0 auto;padding:0 var(--s-5);}
+.kicker{font-family:var(--font-en);font-weight:600;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:var(--s-3);}
+h1.display{font-weight:800;font-size:42px;line-height:1.25;letter-spacing:-0.01em;}
+h2{font-weight:800;font-size:25px;line-height:1.35;margin-bottom:var(--s-4);}
+h3{font-weight:700;font-size:17px;line-height:1.45;margin-bottom:var(--s-2);}
+h4{font-weight:700;font-size:14.5px;margin-bottom:var(--s-2);}
+p{font-size:15.5px;}
+.caption{font-size:13px;color:var(--muted);line-height:1.6;}
+.lead{font-size:18px;line-height:1.75;}
+.div-line{border:none;border-top:1px solid var(--warm-gray);margin:var(--s-8) 0;}
+.div-ink{border:none;border-top:2px solid var(--ink);margin:0 0 var(--s-5) 0;}
+.box{background:var(--tint-neutral);padding:var(--s-5);}
+.box-accent{background:var(--tint-accent);padding:var(--s-5);}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:var(--s-5) 0;}
+.topbar img{height:18px;display:block;}
+.topbar .meta{font-family:var(--font-en);font-size:12px;color:var(--muted);letter-spacing:0.06em;}
+footer{padding:var(--s-7) 0 var(--s-8);}
+footer img{height:16px;display:block;margin-bottom:var(--s-3);}
+section{margin:var(--s-8) 0;}
+.section-no{font-family:var(--font-en);font-weight:600;font-size:13px;color:var(--accent);letter-spacing:0.12em;margin-bottom:var(--s-2);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.55;}
+th{text-align:left;font-weight:700;font-size:12.5px;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:var(--s-3);vertical-align:bottom;}
+td{border-bottom:1px solid var(--line-soft);padding:var(--s-3);vertical-align:top;}
+td.lab{font-weight:700;white-space:nowrap;}
+.num{font-family:var(--font-en);font-weight:600;}
+.tag{display:inline-block;font-family:var(--font-en);font-weight:600;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--tint-dark);color:var(--ink);padding:2px 8px;}
+.tag.hot{background:var(--tint-accent);color:var(--accent);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line-soft);}
+.stat{background:var(--tint-neutral);padding:var(--s-5);}
+.stat .v{font-family:var(--font-en);font-weight:600;font-size:30px;color:var(--accent);line-height:1.2;}
+.stat .k{font-size:13px;font-weight:700;margin-top:var(--s-2);}
+.stat .d{font-size:12.5px;color:var(--ink-soft);margin-top:var(--s-1);line-height:1.55;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4);}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4);}
+.dark{background:var(--ink);color:var(--paper);padding:var(--s-8) 0;}
+.dark h2{color:var(--paper);}
+.dark p{color:var(--warm-gray);}
+.dark .caption{color:#9C9E9D;}
+.dark .dstep{border-top:1px solid #5C5E5D;padding:var(--s-5) 0;display:grid;grid-template-columns:96px 1fr;gap:var(--s-5);}
+.dark .dstep:last-of-type{border-bottom:1px solid #5C5E5D;}
+.dark .dstep .dn{font-family:var(--font-en);font-weight:600;font-size:15px;color:var(--accent);letter-spacing:0.06em;}
+.dark .dstep h3{color:var(--paper);}
+.dark .dstep p{font-size:14px;}
+.dark .dstep .ev{font-size:12.5px;color:#9C9E9D;margin-top:var(--s-2);line-height:1.6;}
+.dark .dstep .ev strong{color:var(--warm-gray);}
+.flow{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin:var(--s-5) 0;}
+.flow .fcell{background:var(--tint-neutral);padding:var(--s-3) var(--s-2);font-size:11.5px;font-weight:700;line-height:1.45;color:var(--ink);}
+.flow .fcell .fn{font-family:var(--font-en);font-weight:600;font-size:10px;color:var(--accent);display:block;margin-bottom:2px;}
+.flow .fcell .fd{display:block;font-weight:400;font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
+.flow .fcell.hl{background:var(--tint-accent);}
+.flow .fcell.dk{background:var(--ink);color:var(--paper);}
+.flow .fcell.dk .fd{color:var(--warm-gray);}
+.seq{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;margin:var(--s-3) 0;}
+.seq .cell{background:var(--tint-neutral);padding:var(--s-2) var(--s-1);text-align:center;font-size:10px;font-weight:700;color:var(--ink-soft);line-height:1.35;}
+.seq .cell .pn{font-family:var(--font-en);font-weight:600;font-size:9.5px;color:var(--muted);display:block;}
+.seq .cell.theory{background:var(--tint-dark);}
+.seq .cell.coach{background:var(--tint-accent);color:var(--accent);}
+.seq .cell.event{background:var(--ink);color:var(--paper);}
+.case{border-top:2px solid var(--ink);padding-top:var(--s-4);margin-bottom:var(--s-6);}
+.case .meta-row{font-size:12.5px;color:var(--ink-soft);margin-bottom:var(--s-3);}
+.bar-row{display:grid;grid-template-columns:110px 1fr 60px;gap:var(--s-3);align-items:center;font-size:12.5px;padding:var(--s-1) 0;}
+.bar-row .bar{height:14px;background:var(--tint-dark);position:relative;}
+.bar-row .bar i{display:block;height:100%;background:var(--accent);}
+.bar-row .bv{font-family:var(--font-en);font-weight:600;font-size:12px;text-align:right;}
+@media (max-width:720px){
+  h1.display{font-size:30px;}
+  .stats{grid-template-columns:1fr;}
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .dark .dstep{grid-template-columns:1fr;gap:var(--s-2);}
+  .flow{grid-template-columns:repeat(2,1fr);}
+  .seq{grid-template-columns:repeat(4,1fr);}
+  .tablewrap{overflow-x:auto;}
+}
+.tablewrap{overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="UNDERDOGS">
+    <div class="meta">CURRICULUM DESIGN LOGIC · v1.2 · 2026-06-12 · ADR-028 기반</div>
+  </div>
+  <hr class="div-ink">
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <section style="margin-top:var(--s-7);">
+    <div class="kicker">Goal-first · Less Input, More Impact</div>
+    <h1 class="display">커리큘럼 설계 로직 v1.2 —<br>클라이언트의 목표에서 시작해,<br>인풋은 줄이고 임팩트는 키운다</h1>
+    <p class="lead" style="margin-top:var(--s-5);max-width:780px;">
+      이 문서는 두 재료로 만들어졌다. 하나는 <strong>실측</strong> — 언더독스가 실제로 이긴 제안서
+      143건에서 추출한 운영 구조의 반복 패턴. 다른 하나는 <strong>지향</strong> — 사전학습으로 과정을
+      평가해 선발하고, 같은 퀘스트를 바라보는 사람들을 모아 코호트러닝으로 깨게 하는 지금의
+      운영 모델. 발견(02~03) → 실제 사례(07) → 설계 로직(08) → <strong>로직이 실제로 뽑아내는
+      예시 커리큘럼(09)</strong> 순서로 읽으면 손에 잡힌다.
+    </p>
+  </section>
+
+  <!-- 00 제0원칙 -->
+  <section>
+    <div class="section-no">00</div>
+    <h2>제0원칙 — 이 로직은 백그라운드다</h2>
+    <div class="box-accent">
+      <p style="font-size:16.5px;font-weight:700;line-height:1.7;">
+        클라이언트마다 달성하고 싶은 목표가 있다. 그 목표를 가장 효율적이고 효과적으로
+        달성하는 것이 설계의 전부다. 임팩트창업방법론을 꼭 써야 하는 것도, 코칭을 강제해야
+        하는 것도 아니다 — 전부 수단이다.
+      </p>
+      <p class="caption" style="margin-top:var(--s-3);color:var(--ink);">
+        아래의 모든 문법은 <strong>기본값(default)이지 규칙(rule)이 아니다.</strong>
+        설계의 목적 함수는 하나 — <strong>클라이언트 목표 달성도 ÷ 투입 인풋.</strong> 인풋(참여자의 시간 부담,
+        운영 인력, 예산)을 줄이면서 임팩트(목표 달성, 참여자가 들고 가는 것)를 키우는 선택만 살아남는다.
+      </p>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 01 지향 운영 모델 -->
+  <section>
+    <div class="section-no">01</div>
+    <h2>지향 운영 모델 — 우리가 프로그램을 굴리는 방식</h2>
+    <p style="margin-bottom:var(--s-4);max-width:780px;">
+      AI로 누구나 그럴듯한 텍스트와 사업계획서를 만드는 시대 — 서류만으로는 진짜를 가릴 수 없다.
+      그래서 선발의 무게중심이 <strong>결과물 심사에서 과정 평가로</strong> 옮겨간다. 사전학습이
+      "예습"이 아니라 <strong>선발 장치</strong>가 되는 이유다.
+    </p>
+    <div class="flow">
+      <div class="fcell"><span class="fn">1</span>사전학습<span class="fd">AI런치패드 · LMS — 학습·실행 과정 데이터가 쌓인다</span></div>
+      <div class="fcell hl"><span class="fn">2</span>과정 평가 → 선발<span class="fd">텍스트가 아니라 과정을 보고 진짜를 가린다</span></div>
+      <div class="fcell"><span class="fn">3</span>킥오프<span class="fd">하루~1박2일 길게 — 창업의 관점·방향·로드맵 + 네트워킹</span></div>
+      <div class="fcell hl"><span class="fn">4</span>퀘스트 코호트러닝<span class="fd">같은 단계를 바라보는 사람들이 퀘스트를 깬다 (온/오프)</span></div>
+      <div class="fcell"><span class="fn">5</span>몰입 유지<span class="fd">코칭 + AI코치의 실행 push — 몰입이 깨지지 않게</span></div>
+      <div class="fcell"><span class="fn">6</span>중간 발표<span class="fd">중간 점검 — 50% 지점</span></div>
+      <div class="fcell dk"><span class="fn">7</span>마무리<span class="fd">들고 가는 것 · 이후 연계 · 성과 입증</span></div>
+    </div>
+    <div class="grid2">
+      <div class="box">
+        <h3>예산은 옵션 레이어를 결정한다</h3>
+        <p class="caption">기본 골격(선발 → 킥오프 → 퀘스트 코호트 → 마무리)은 예산과 무관하게 유지된다. 예산이 늘면 특강 연사·인사이트 세션이 <strong>본체 위에 얹힌다</strong> — 본체를 대체하는 게 아니다. (예산이 실제로 무엇을 사는지는 03 참조 — 답: 코칭)</p>
+      </div>
+      <div class="box">
+        <h3>실측 코퍼스와의 관계 — 솔직한 주석</h3>
+        <p class="caption">코퍼스(2022~25 당선작)는 <strong>과거의 문법</strong>이다. 사전진단 기반 선발(45건)·LMS 사전학습(16건)은 이 모델의 전신이고, "사전학습 = 과정 평가 = 선발"의 완성형은 코퍼스에 아직 적게 나타난다. 브레인은 <strong>실측을 기본값으로, 지향 모델을 우선순위로</strong> 설계한다 — 충돌하면 지향이 이긴다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 02 발견 -->
+  <section>
+    <div class="section-no">02</div>
+    <h2>실측의 발견 — 143건이 말해 준 7가지</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="v">5<span style="font-size:16px;">개</span></div>
+        <div class="k">운영 유형은 5개로 수렴한다</div>
+        <div class="d">진행 방식(매주 / 몰아치기 / 개별)·강도·팀 구조·예산이 함께 움직이는 묶음이 실재. 정규 강좌형 / 몰입 캠프형 / 장기 여정형 / 개별 밀착형 / 행사 운영형. 섹션 04 상세.</div>
+      </div>
+      <div class="stat">
+        <div class="v">0.89</div>
+        <div class="k">프로그램에는 흐름의 문법이 있다</div>
+        <div class="d">회차 구성 77건: 마인드셋·이론은 앞에(상대위치 0.41), 코칭은 실행이 시작된 뒤에(0.70), 발표·행사는 끝에(0.89). 중간 발표 중반 27/28 · 최종 발표 종반 33/34 — 사실상 결정론.</div>
+      </div>
+      <div class="stat">
+        <div class="v">0.93</div>
+        <div class="k">"몰입 육성"은 세트로 온다</div>
+        <div class="d">사전진단(DOGS 등) 투입 45건 = 소수(24.5명)·장기(6개월)·팀 코호트 0.93·코칭 5회. 미투입 98건 = 다수(40명)·단기(3.5개월)·팀 0.54·코칭 2회. 깊게 가기로 했으면 진단·팀빌딩·밀착 지원이 한 묶음.</div>
+      </div>
+      <div class="stat">
+        <div class="v">10<span style="font-size:16px;">회</span></div>
+        <div class="k">예산은 회차가 아니라 코칭을 산다</div>
+        <div class="d">예산 0.5억을 넘으면 교육 회차는 <strong>10회에서 멈춘다</strong>(0.5~1.5억=10회 → 4억+에서도 10회). 대신 코칭이 3회 → 8회 → <strong>23.5회</strong>(1.5~4억)로 폭증. 참여자의 시간(인풋)에 상한이 있어서다 — 돈이 늘면 모임을 늘리는 게 아니라 밀착도를 늘린다.</div>
+      </div>
+      <div class="stat">
+        <div class="v">2~3<span style="font-size:16px;">vs</span>7+</div>
+        <div class="k">기간은 둘 중 하나 — 중간이 없다</div>
+        <div class="d">2~3개월(27건)과 7개월+(30건)에 몰리고 4~6개월(17건)이 골짜기. "압축해서 검증"하거나 "길게 동행"하거나 — 어중간한 기간은 데이터가 지지하지 않는다.</div>
+      </div>
+      <div class="stat">
+        <div class="v">0.6</div>
+        <div class="k">코칭 기본 강도 = 회차의 60%</div>
+        <div class="d">코칭 회수 ÷ 교육 회차 비 중앙 0.6 (n=33). 교육 10회면 코칭 ~6회. 단 코칭은 산출물이 아니라 <strong>몰입을 지키는 장치</strong> — AI코치의 push 가 흡수하는 만큼 줄여도 된다 (인풋↓).</div>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:var(--s-4);">
+      일곱 번째: 본 과정은 강연 106 + 워크숍·실습 102의 2종 패키지(실무·도구 중심 107)이고
+      경험담·인터뷰형은 각 3건뿐 — <strong>그 형식은 VOD 사전학습의 몫</strong>. 난이도는 쉽게 시작해
+      어렵게 끝나는 상승 곡선(49)이 기본. 시기 의존 오염 적음(상시유효 128/143).
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 03 다각도 분석 -->
+  <section>
+    <div class="section-no">03</div>
+    <h2>다각도 분석 — 교차해 보면 더 선명해진다</h2>
+
+    <h3>3-1. 대상 × 운영 유형 교차표 — 누구에게 무엇을 써 왔나</h3>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>대상</th><th>T1 정규강좌</th><th>T2 몰입캠프</th><th>T3 장기여정</th><th>T4 개별밀착</th><th>T5 행사운영</th><th>해석</th></tr></thead>
+      <tbody>
+        <tr><td class="lab">청년·대학생 (49)</td><td class="num">14</td><td class="num">14</td><td class="num">5</td><td class="num">3</td><td class="num">5</td><td>정규강좌·몰입캠프 정확히 양분 — 학사 일정이 갈림 변수</td></tr>
+        <tr><td class="lab">임직원 (14)</td><td class="num">4</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">4</td><td>캠프·여정 0건 — 업무시간 제약. 정규 소수 회차 또는 행사형</td></tr>
+        <tr><td class="lab">소상공인 (9)</td><td class="num">2</td><td class="num">0</td><td class="num">2</td><td class="num">1</td><td class="num">0</td><td>몰입캠프 0건 — 생업 이탈 불가. 표본 적어 방향성만</td></tr>
+        <tr><td class="lab">청소년 (6)</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td class="num">0</td><td class="num">0</td><td>캠프·여정 — 방학 캠프 패턴</td></tr>
+        <tr><td class="lab">기타·무관 (70)</td><td class="num">8</td><td class="num">6</td><td class="num">11</td><td class="num">20</td><td class="num">9</td><td>개별밀착(20)이 최빈 — 일반·소상공인 보육 사업이 다수 포함</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-2);margin-bottom:var(--s-6);">
+      읽는 법: <strong>대상의 시간 구조가 운영 유형을 결정한다.</strong> 캠프(몰아치기)는 시간을 통으로 낼 수 있는
+      청년·청소년에서만 나타나고, 생업·업무가 있는 소상공인·임직원에서는 0건. (미분류 31건 제외)
+    </p>
+
+    <h3>3-2. 예산 구간별 구조 — 돈은 어디로 가는가 (예산 명시 59건)</h3>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>예산 구간</th><th style="width:36px;">n</th><th>교육 회차</th><th>코칭 회수</th><th>인원</th><th>기간</th><th>특강 포함률</th><th>행사 수</th></tr></thead>
+      <tbody>
+        <tr><td class="lab">0.5억 미만</td><td class="num">26</td><td class="num">4.5회</td><td class="num">3회</td><td class="num">20명</td><td class="num">2개월</td><td class="num">85%</td><td class="num">1개</td></tr>
+        <tr><td class="lab">0.5~1.5억</td><td class="num">13</td><td class="num">10회</td><td class="num">8회</td><td class="num">30명</td><td class="num">4개월</td><td class="num">85%</td><td class="num">2개</td></tr>
+        <tr><td class="lab">1.5~4억</td><td class="num">10</td><td class="num">10회</td><td class="num"><strong>23.5회</strong></td><td class="num">25명</td><td class="num">8.5개월</td><td class="num">80%</td><td class="num">2개</td></tr>
+        <tr><td class="lab">4억 이상</td><td class="num">10</td><td class="num">10회</td><td class="num">6회</td><td class="num">36명+</td><td class="num">6.5개월</td><td class="num">90%</td><td class="num">2개</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-2);margin-bottom:var(--s-6);">
+      읽는 법: 회차는 0.5억 이상에서 <strong>10회로 포화</strong>. 추가 예산은 ① 1.5~4억 구간에서 <strong>코칭 밀착도</strong>(23.5회 —
+      개별 보육 결합)로, ② 4억+ 에서는 <strong>인원 규모와 행사</strong>로 간다. 설계 시사점: 예산이 커져도 "회차를 늘리겠다"는
+      제안은 데이터에 없다 — 참여자 시간이 인풋의 상한이고, 깊이(코칭)나 폭(인원·행사)을 사는 게 언더독스 패턴.
+    </p>
+
+    <h3>3-3. 규모 분포 — 양봉 구조 둘</h3>
+    <div class="grid2">
+      <div>
+        <h4>교육 회차 (n=78)</h4>
+        <div class="bar-row"><span>1~3회</span><div class="bar"><i style="width:100%"></i></div><span class="bv">26건</span></div>
+        <div class="bar-row"><span>4~8회</span><div class="bar"><i style="width:77%"></i></div><span class="bv">20건</span></div>
+        <div class="bar-row"><span>9~15회</span><div class="bar"><i style="width:100%"></i></div><span class="bv">26건</span></div>
+        <div class="bar-row"><span>16회+</span><div class="bar"><i style="width:23%"></i></div><span class="bv">6건</span></div>
+        <p class="caption" style="margin-top:var(--s-2);">1~3회(특강·행사형)와 9~15회(여정형)의 양봉 — "교육인가 행사인가"가 첫 갈림길이라는 증거.</p>
+      </div>
+      <div>
+        <h4>참여 인원 (n=76)</h4>
+        <div class="bar-row"><span>~20명</span><div class="bar"><i style="width:100%"></i></div><span class="bv">27건</span></div>
+        <div class="bar-row"><span>21~50명</span><div class="bar"><i style="width:96%"></i></div><span class="bv">26건</span></div>
+        <div class="bar-row"><span>51~100명</span><div class="bar"><i style="width:41%"></i></div><span class="bv">11건</span></div>
+        <div class="bar-row"><span>100명+</span><div class="bar"><i style="width:44%"></i></div><span class="bv">12건</span></div>
+        <p class="caption" style="margin-top:var(--s-2);">~50명이 70%. 100명+ 는 확산·행사형 — 몰입 육성과 양립하지 않는다.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 04 운영 유형 -->
+  <section>
+    <div class="section-no">04</div>
+    <h2>운영 유형 5종 — 회차표보다 먼저 정하는 것</h2>
+    <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th style="width:150px;">운영 유형</th><th style="width:46px;">n</th><th>실측 프로파일 (중앙값)</th><th>언제 선택하나</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="lab">T1 정규 강좌형<br><span class="caption">매주 만남</span></td><td class="num">23</td>
+          <td>2개월 · 25명 · <span class="num">8회 × 3.2h</span> · 코칭 5회 · 팀 코호트 0.91 · ~0.2억</td>
+          <td>저예산 · 교육이 과업의 중심 · 매주 만나는 정기 모임으로 실행 습관을 만드는 압축 과정</td>
+        </tr>
+        <tr>
+          <td class="lab">T2 몰입 캠프형<br><span class="caption">며칠 몰아치기</span></td><td class="num">22</td>
+          <td>3개월 · 30명 · <span class="num">7.5회 × 8h</span>(종일·합숙) · 코칭 2회 · 팀 0.91 · ~0.4억</td>
+          <td>해커톤·캠프 — 단기 몰입으로 결과물까지. 시간을 통으로 낼 수 있는 청년·청소년 전용 (3-1 교차표)</td>
+        </tr>
+        <tr>
+          <td class="lab">T3 장기 여정형<br><span class="caption">킥오프+정기+행사 조합</span></td><td class="num">20</td>
+          <td>5개월 · 20명 · <span class="num">10회 × 3h</span> · 코칭 4회 · 팀 0.90 · <span class="num">~1.3억</span></td>
+          <td>고예산 대형 사업 — 킥오프·퀘스트·발표를 단계별로 섞는 여정 설계. <strong>지향 운영 모델과 가장 닮은 유형</strong></td>
+        </tr>
+        <tr>
+          <td class="lab">T4 개별 밀착형<br><span class="caption">정기 모임 없음</span></td><td class="num">24~31</td>
+          <td>8.5개월 · 28명 · 회차 15(개별 일정) · 코칭 6회 · <span class="num">팀 코호트 0.23</span></td>
+          <td>팀이 아니라 <strong>개별 사업체 단위</strong>로 도는 모드 — 소상공인·재창업·후속 보육. 코호트러닝 문법이 적용되지 않는 유형</td>
+        </tr>
+        <tr>
+          <td class="lab">T5 행사 운영형<br><span class="caption">교육 회차 최소</span></td><td class="num">18~42</td>
+          <td>5개월 · 52명+ · <span class="num">교육 회차 중앙 2</span> · 코칭 1회 · 팀 0.57</td>
+          <td>경진대회·박람회·공모전 운영 대행 — 본체가 커리큘럼이 아니라 <strong>행사 설계</strong>인 사업. 회차표를 강요하면 안 됨</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-4);">
+      함의: 모든 사업에 "주차별 커리큘럼표"를 그리면 T4+T5 — 코퍼스의 1/3~1/2 — 에서 현실과 어긋난 1차안이 나온다.
+      (n 범위 표기는 분류 기준에 따른 폭. 미분류 31건은 어휘 보강 후 재분류 예정)
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 05 흐름의 문법 -->
+  <section>
+    <div class="section-no">05</div>
+    <h2>프로그램 흐름의 문법 — 무엇을 어디에 두는가</h2>
+    <p style="margin-bottom:var(--s-4);max-width:760px;">
+      회차 구성을 가진 77건의 요소 위치를 정규화(0=시작, 1=끝)한 결과.
+      "킥오프(마인드셋·관점) → 퀘스트 실행 → 몰입 유지 → 발표" 흐름이 실측에서 그대로 확인된다.
+    </p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>요소</th><th>상대 위치 (중앙)</th><th>분포</th><th>설계 기본값으로 번역</th></tr></thead>
+      <tbody>
+        <tr><td class="lab">마인드셋·이론</td><td class="num">0.41</td><td>전반(&lt;0.34)에 40% · 1회차가 이론 48/77</td><td>관점·동기부여는 앞에 — 킥오프를 하루~1박2일로 길게 잡는 지향 모델과 정합</td></tr>
+        <tr><td class="lab">코칭</td><td class="num">0.70</td><td>후반(&gt;0.66)에 56%</td><td>코칭은 실행이 시작된 뒤에 — 몰입이 흔들리는 구간을 받친다 (기존 R-004 의 정량 근거)</td></tr>
+        <tr><td class="lab">발표·행사</td><td class="num">0.89</td><td>후반에 64%</td><td>공유·심사는 끝으로 수렴</td></tr>
+        <tr><td class="lab">중간 발표</td><td>중반</td><td>중반 27 / 종반 1</td><td>중간 점검은 50% 지점 — 예외 없음 수준</td></tr>
+        <tr><td class="lab">최종 발표</td><td>종반</td><td>종반 33 / 중반 1</td><td>최종 공유는 마지막 회차 고정</td></tr>
+        <tr><td class="lab">네트워킹</td><td>중·종반 자유</td><td>중반 18 / 종반 14 / 초반 2</td><td>유일하게 자유 배치 — 결속용이면 킥오프에, 확장용이면 끝에</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 06 몰입 육성 모드 -->
+  <section>
+    <div class="section-no">06</div>
+    <h2>몰입 육성 모드 — 진단·팀빌딩·밀착 지원은 세트다</h2>
+    <div class="grid2">
+      <div class="box-accent">
+        <h3>몰입 육성 (45건)</h3>
+        <p style="font-size:14px;">소수 <span class="num">24.5명</span> · 장기 <span class="num">6개월</span> · 팀 코호트 <span class="num">0.93</span> · 코칭 <span class="num">5회</span></p>
+        <p class="caption" style="margin-top:var(--s-2);">사전진단(DOGS 26건) → 팀빌딩 → 밀착 지원이 한 묶음. 지향 모델의 "과정 평가 선발 → 퀘스트 코호트"는 이 모드의 진화형.</p>
+      </div>
+      <div class="box">
+        <h3>확산 교육 (98건)</h3>
+        <p style="font-size:14px;">다수 <span class="num">40명</span> · 단기 <span class="num">3.5개월</span> · 팀 0.54 · 코칭 <span class="num">2회</span></p>
+        <p class="caption" style="margin-top:var(--s-2);">넓게 가르치고 행사로 모은다 — 진단·밀착 없이. T5 행사 운영형과 자주 겹침.</p>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:var(--s-4);">
+      "진단을 넣을까, 코칭을 몇 회 할까"는 따로 묻는 질문이 아니다. <strong>깊게 갈 것인가부터 정하면</strong>
+      나머지가 세트로 따라온다. 그리고 제0원칙 — 클라이언트 목표가 확산이라면 몰입 세트를 강요하지 않는다.
+    </p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 07 실제 사례 -->
+  <section>
+    <div class="section-no">07</div>
+    <h2>실제 사례 3건 — 당선작은 이렇게 지어져 있었다</h2>
+    <p style="margin-bottom:var(--s-5);max-width:760px;">
+      코퍼스에서 추출한 그대로다 (요약·각색 없음, 출처: data/program-design/extracted/).
+      세 사례가 세 운영 유형의 교과서다.
+    </p>
+
+    <div class="case">
+      <h3>사례 1 — 여수시 청년 도전 창업캠프 <span class="tag">T2 몰입 캠프형</span></h3>
+      <div class="meta-row">B2G 공공기관 · 예비창업 청년 · 2박 3일 16세션 · 오프라인 종일 · 그룹+팀전담 코칭 · 산출물: 사업계획서+IR덱</div>
+      <div class="seq">
+        <div class="cell"><span class="pn">1-2</span>OT·기초 소양</div>
+        <div class="cell theory"><span class="pn">3-6</span>문제 정의 → 페르소나 → 솔루션 분석 → 관점 도출</div>
+        <div class="cell theory"><span class="pn">7-10</span>피칭 → 스토리보드 → BM → 시장분석</div>
+        <div class="cell"><span class="pn">11-12</span>경쟁사 분석 → 사업계획서</div>
+        <div class="cell coach"><span class="pn">13</span>사업계획서 피드백 (코칭)</div>
+        <div class="cell coach"><span class="pn">14</span>발표 준비 (코칭)</div>
+        <div class="cell event"><span class="pn">15</span>발표·모의 투자</div>
+        <div class="cell event"><span class="pn">16</span>시상·폐회</div>
+      </div>
+      <p class="caption">읽을 점: 2박 3일 안에서도 흐름 문법이 그대로 — 이론·워크숍 전반, 코칭은 13~14(상대위치 0.81), 발표는 마지막. 몰아치기는 기간을 압축할 뿐 아크를 바꾸지 않는다.</p>
+    </div>
+
+    <div class="case">
+      <h3>사례 2 — GS리테일 에코 소셜임팩트 7기 <span class="tag">T1+T3 · B2B 2억</span> <span class="tag hot">지향 모델의 실증</span></h3>
+      <div class="meta-row">B2B 대기업 · 24명 · 9개월 · 하이브리드 · 사전진단 + 서류·면접 2단계 선발(중간 탈락 게이트) · 시제품비 200만 + 시상금 4,000만 · 연계: alumni+후속보육+투자연계</div>
+      <div class="seq">
+        <div class="cell event"><span class="pn">1</span>OT + DOGS 네트워킹 (킥오프)</div>
+        <div class="cell theory"><span class="pn">2-3</span>문제 정의 → 가설 설정</div>
+        <div class="cell event"><span class="pn">4</span>선배 창업가 토크콘서트 (특강)</div>
+        <div class="cell"><span class="pn">5</span>액션위크: MVP 실행</div>
+        <div class="cell coach"><span class="pn">7</span>중간 점검 코칭</div>
+        <div class="cell event"><span class="pn">8-10</span>특강 ×2 + GS MD 연계 행사</div>
+        <div class="cell coach"><span class="pn">11-15</span>IR 코칭 ×3 + 액션위크 + 모의발표</div>
+        <div class="cell event"><span class="pn">16</span>최종 데모데이·시상</div>
+      </div>
+      <p class="caption">읽을 점: 지향 모델의 7단계가 거의 전부 들어 있다 — 사전진단 선발, 킥오프에서 DOGS 로 팀 라포 형성, 퀘스트 실행(액션위크 2회), 특강은 클라이언트 자산(GS MD)과 연계한 옵션 레이어, <strong>코칭 5회가 전부 후반(11~15회차)</strong>, 마무리는 시제품비·상금·3종 연계까지. 예산 2억이 산 것 = 코칭 밀착도와 행사이지 회차가 아니다.</p>
+    </div>
+
+    <div class="case">
+      <h3>사례 3 — 예비창업패키지 창업씨앗공방 (사전인큐베이팅) <span class="tag">T3 장기 여정형</span></h3>
+      <div class="meta-row">B2G 공공기관 · 20명 · 3개월 + 사후 2개월 · 하이브리드 · 팀별 전담 코치제(1:4) · 데모데이+경진대회 · 사후 온라인 멘토링 2회</div>
+      <div class="seq">
+        <div class="cell"><span class="pn">1</span>OT</div>
+        <div class="cell theory"><span class="pn">2-4</span>문제 정의 → 페르소나 → 솔루션 분석</div>
+        <div class="cell coach"><span class="pn">5-6</span>아이템 구체화 + <strong>코호트러닝 1차</strong></div>
+        <div class="cell theory"><span class="pn">7-10</span>MVP 계획 → 시장 → 경쟁사 → BM</div>
+        <div class="cell coach"><span class="pn">11</span><strong>코호트러닝 2차</strong></div>
+        <div class="cell coach"><span class="pn">12-14</span>사업계획서 → 발표자료 코칭 ×2</div>
+        <div class="cell event"><span class="pn">16-17</span>데모데이 + 심사·시상</div>
+        <div class="cell coach"><span class="pn">18-19</span>사후 온라인 멘토링 (10·11월)</div>
+      </div>
+      <p class="caption">읽을 점: 제안서에 "코호트러닝"이 회차명으로 박혀 있는 사례 — 상호학습 세션이 이론 블록 사이에 끼어 들어 처지는 몰입을 다시 끌어올리는 환기 장치 역할. 프로그램이 끝나도 사후 멘토링 2회가 이어진다 — "연계 약속" 표준의 실물.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ───── 08 설계 로직 (다크 앵커) ───── -->
+<div class="dark">
+  <div class="wrap">
+    <div class="section-no">08</div>
+    <h2>설계 로직 — 브레인이 1차안을 짓는 순서</h2>
+    <p style="margin-bottom:var(--s-6);max-width:740px;">
+      모든 단계는 근거 데이터(승인되면 DesignRule)를 깔고 결정하며, 1차안의 결정마다 근거를
+      표시해 사람이 <strong>결과가 아니라 이유를 검수</strong>한다. 어느 단계든 클라이언트 목표와
+      충돌하면 목표가 이긴다 (제0원칙). 이 로직이 실제로 뽑은 결과물은 섹션 09.
+    </p>
+
+    <div class="dstep">
+      <div class="dn">D0</div>
+      <div>
+        <h3>목표 정의 — 클라이언트는 무엇을 달성하고 싶은가</h3>
+        <p>이 사업으로 클라이언트가 만들고 싶은 변화(성과 지표 · 대상의 변화 · 보여줘야 할 것)를 먼저 적는다. 이후 모든 결정의 분모(인풋)와 분자(임팩트)가 여기서 정해진다.</p>
+        <div class="ev"><strong>근거 연결:</strong> 추출 143건의 profileSnapshot·kpiTargets 와 같은 어휘 — 비슷한 목표의 과거 사업이 바로 검색된다.</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D1</div>
+      <div>
+        <h3>운영 유형 선택 — 회차표보다 먼저</h3>
+        <p>판별 순서: 교육이 본체인가 행사가 본체인가(T5) → 팀인가 개별 사업체인가(T4) → 압축(2~3개월)인가 동행(7개월+)인가 → <strong>대상이 시간을 통으로 낼 수 있는가</strong>(가능하면 T2 캠프, 아니면 T1/T3).</p>
+        <div class="ev"><strong>근거:</strong> 섹션 04 + 3-1 교차표 — 캠프는 청년·청소년 전용(소상공인·임직원 0건), 회차 분포 양봉(1~3 vs 9~15).</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D2</div>
+      <div>
+        <h3>선발 설계 — 사전학습으로 과정을 평가한다</h3>
+        <p>AI런치패드·LMS 기반 사전학습을 선발 앞에 배치하고, 결과물(서류)이 아니라 <strong>학습·실행 과정 데이터</strong>로 평가해 선발한다. 몰입 육성 모드라면 진단(DOGS 등)을 과정 평가에 결합.</p>
+        <div class="ev"><strong>근거:</strong> 지향 모델(우선) + 실측 전신 — 사전진단 선발 45건, GS 7기의 2단계+중간 탈락 게이트 (사례 2).</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D3</div>
+      <div>
+        <h3>킥오프 설계 — 처음은 길게, 마인드셋과 네트워킹</h3>
+        <p>최초 세션은 하루~1박2일로 길게: 창업의 관점·방향·전체 로드맵 + 참여자 네트워킹. 같은 퀘스트를 바라보는 동료라는 감각이 코호트러닝의 연료다.</p>
+        <div class="ev"><strong>근거:</strong> 마인드셋·이론 상대위치 0.41 · 1회차 이론 62% · 사례 2의 "OT + DOGS 네트워킹" 킥오프.</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D4</div>
+      <div>
+        <h3>퀘스트 코호트러닝 본체 — 단계를 깨는 구조</h3>
+        <p>목표를 퀘스트(명확한 단계별 미션)로 분해하고, 같은 퀘스트를 바라보는 사람들을 코호트로 묶어 온/오프라인으로 깨 나가게 한다. <strong>교육 회차는 10회를 상한 기본값</strong>으로 — 예산이 늘어도 회차가 아니라 밀착도를 늘린다.</p>
+        <div class="ev"><strong>근거:</strong> 예산 구간 분석(회차 10 포화) · 팀 코호트 0.93 · 사례 3의 코호트러닝 회차 실물.</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D5</div>
+      <div>
+        <h3>몰입 유지 장치 — 코칭과 AI코치의 분업</h3>
+        <p>코칭은 산출물이 아니라 <strong>몰입이 깨지지 않게 하는 장치</strong>다. 실행이 시작된 뒤(흐름의 후반)에 배치하고, 일상의 실행 push 는 AI코치가 맡는다. 사람 코칭 기본값 = 교육 회차의 ~60%, 예산 1.5억+ 의 몰입 육성이면 개별 코칭을 대폭 증설(실측 23.5회).</p>
+        <div class="ev"><strong>근거:</strong> 코칭/회차 비 0.6 · 코칭 위치 0.70 · 예산이 사는 것 = 코칭(3-2) · 사례 2의 후반 코칭 5연속.</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D6</div>
+      <div>
+        <h3>옵션 레이어 — 예산이 허락하면 얹는 것</h3>
+        <p>도메인·스킬 확장용 특강 연사, 인사이트 세션, 클라이언트 자산 연계 행사(예: GS MD 토크콘서트)는 본체 위에 얹는 옵션이다. 본체를 대체하지 않고, 예산이 줄면 가장 먼저 뺀다.</p>
+        <div class="ev"><strong>근거:</strong> 특강 포함률은 전 예산 구간 80~90%로 일정하나 규모가 다름 · 사례 2의 특강 3회 = 전부 클라이언트 자산 연계.</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D7</div>
+      <div>
+        <h3>마무리 설계 — 들고 가는 것 · 연계 · 성과</h3>
+        <p>중간 발표(50% 지점)와 최종 발표(마지막 회차)를 고정하고 세 가지를 설계한다: ① 참여자가 <strong>무엇을 들고 가는가</strong> — 실행 증거(고객·매출·작동하는 결과물) 중심으로. ② <strong>무엇을 연계해 줄 것인가</strong> — 후속 보육·투자·동문 네트워크. ③ <strong>성과를 어떻게 입증할 것인가</strong> — D0 의 목표 지표로 회귀.</p>
+        <div class="ev"><strong>근거:</strong> 중간 발표 중반 27/28 · 최종 종반 33/34 · 연계 "없음" 12.6%뿐 · 사례 2·3의 사후 설계 실물.</div>
+      </div>
+    </div>
+    <div class="dstep">
+      <div class="dn">D8</div>
+      <div>
+        <h3>검증 + 사람 검수 — 근거가 보이는 1차안</h3>
+        <p>자동 검증(이론 비중 상한·실행 주간 필수 등 R-001~004) 통과 후, 1차안의 모든 결정 옆에 근거(승인된 DesignRule + 출처 제안서 + 유사 당선 사례)를 붙여 PM 에게 전달. PM 의 수용/거절이 규칙 신뢰도로 환류된다.</p>
+        <div class="ev"><strong>근거:</strong> 설계 문법 v0.2 검수 루프 — 검수 비용을 제안서마다가 아니라 문법에 한 번 지불.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- 09 예시 커리큘럼 -->
+  <section>
+    <div class="section-no">09</div>
+    <h2>예시 커리큘럼 — 이 로직이 실제로 뽑아내는 것</h2>
+    <p style="margin-bottom:var(--s-5);max-width:780px;">
+      가상의 RFP 세 건에 D0~D8 을 적용한 1차안. <strong>모든 결정에 근거가 붙는다</strong> —
+      이것이 브레인이 PM 에게 건네는 산출물의 모습이다.
+    </p>
+
+    <!-- 시나리오 A -->
+    <h3 style="font-size:19px;">시나리오 A — 지자체 청년 예비창업 육성 <span class="tag hot">메인 예시 · 풀버전</span></h3>
+    <p class="caption" style="margin-bottom:var(--s-3);">
+      가상 RFP: ○○시 청년(만 19~39) 예비창업가 30명 · 5개월 · 1.5억 · 클라이언트 목표 "창업 7건 이상 + 첫 매출 발생 사례 확보"
+    </p>
+    <div class="box" style="margin-bottom:var(--s-4);">
+      <h4>결정 로그 (D0~D8)</h4>
+      <table style="font-size:12.5px;">
+        <tr><td class="lab" style="width:60px;">D0</td><td>목표 = 창업 7건 + 첫 매출 사례. 성공 지표를 "수료율"이 아니라 <strong>실행 증거</strong>로 정의</td><td class="caption" style="width:230px;">목표가 실행 증거이므로 전 설계가 "만들고 파는 것" 중심</td></tr>
+        <tr><td class="lab">D1</td><td><strong>T3 장기 여정형</strong> (5개월 = 동행 구간 + 예산 1.5억 = 코칭 증설 구간)</td><td class="caption">기간 양봉 · 예산 1.5~4억 구간 = 코칭 23.5회 패턴</td></tr>
+        <tr><td class="lab">D2</td><td>사전학습 3주: AI런치패드 퀘스트 2개(고객 인터뷰 3건 + 문제 정의서) + DOGS 진단 → <strong>과정 평가로 60→30명 선발</strong></td><td class="caption">지향 모델 · 사전진단 선발 45건 · 몰입 육성 세트 발동</td></tr>
+        <tr><td class="lab">D3</td><td>킥오프 1박2일 합숙: 창업 관점·5개월 로드맵·팀빌딩(DOGS 기반)·네트워킹</td><td class="caption">이론 전반 0.41 · 사례 2 킥오프 패턴</td></tr>
+        <tr><td class="lab">D4</td><td>본체 = 퀘스트 5개 × 격주 세션 10회(3h, 회차 상한 준수) — 퀘스트: 아이디어 검증 → 첫 제품 → 첫 고객 → 반복 매출 → 자금 준비</td><td class="caption">회차 10 포화 · 퀘스트 어휘 = 강의분류 v5.4 비즈니스단계 10</td></tr>
+        <tr><td class="lab">D5</td><td>전담 코치 1:5 코칭 6회(중반 이후 집중) + AI코치 주간 실행 push</td><td class="caption">코칭 = 회차×0.6 · 위치 0.70 · AI코치로 사람 인풋 절약</td></tr>
+        <tr><td class="lab">D6</td><td>특강 2회(지역 선배 창업가 · 판로/마케팅) — 예산 잔여로 편성, 빠져도 본체 무손상</td><td class="caption">특강 포함률 85% · 옵션 레이어 원칙</td></tr>
+        <tr><td class="lab">D7</td><td>중간 발표 W10 · 데모데이 W20 · 들고 가는 것 = <strong>첫 고객 증거 + 작동하는 제품 + IR덱</strong> · 연계 = 시 후속사업 + 동문 네트워크 · 성과 보고 = D0 지표</td><td class="caption">중간 발표 50% 고정 · 연계 표준 87% · 실행 증거 전환</td></tr>
+        <tr><td class="lab">D8</td><td>R-001~004 통과 (이론 비중 24% · 액션위크 2회 포함) → PM 검수로</td><td class="caption">자동 검증 게이트</td></tr>
+      </table>
+    </div>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:64px;">주차</th><th style="width:150px;">구분</th><th>내용</th><th style="width:120px;">형식</th></tr></thead>
+      <tbody>
+        <tr><td class="num">W-3~-1</td><td class="lab">사전학습 = 선발</td><td>AI런치패드 퀘스트 ① 고객 인터뷰 3건 ② 문제 정의서 + DOGS 진단 → 과정 데이터로 60→30명 선발</td><td>온라인 · AI코치</td></tr>
+        <tr><td class="num">W1</td><td class="lab">킥오프 (1박2일)</td><td>창업의 관점·5개월 로드맵 / DOGS 기반 팀빌딩 / 동기부여 네트워킹 나이트</td><td>오프라인 합숙</td></tr>
+        <tr><td class="num">W2</td><td class="lab">퀘스트 1 아이디어 검증</td><td>세션 1: 문제·고객 정의 워크숍 (강의 0.5h + 실습 2.5h)</td><td>오프라인 3h</td></tr>
+        <tr><td class="num">W4</td><td class="lab">퀘스트 1</td><td>세션 2: 검증 결과 코호트 리뷰 — 팀 간 상호 피드백</td><td>온라인 3h</td></tr>
+        <tr><td class="num">W5</td><td class="lab">몰입 유지</td><td>코칭 1 (팀별 1h) — 검증 막힌 지점 해소 · AI코치 주간 push 상시</td><td>온/오프 혼합</td></tr>
+        <tr><td class="num">W6</td><td class="lab">퀘스트 2 첫 제품</td><td>세션 3: MVP 설계 워크숍 / 액션위크 ①: 2주 내 출시</td><td>오프라인 3h</td></tr>
+        <tr><td class="num">W8</td><td class="lab">퀘스트 2</td><td>세션 4: MVP 데모 코호트 리뷰 + 코칭 2</td><td>오프라인 3h</td></tr>
+        <tr><td class="num">W9</td><td class="lab">옵션 특강 1</td><td>지역 선배 창업가 — "첫 고객을 만난 날" (경험담은 본 과정 예외적 투입)</td><td>오프라인 2h</td></tr>
+        <tr><td class="num">W10</td><td class="lab" style="color:var(--accent);">중간 발표</td><td>MVP·초기 반응 공유 + 클라이언트(시) 참관 — 중간 성과 입증 지점</td><td>오프라인 행사</td></tr>
+        <tr><td class="num">W11~12</td><td class="lab">퀘스트 3 첫 고객</td><td>세션 5·6: 채널·세일즈 워크숍 / 액션위크 ②: 첫 결제 만들기 + 코칭 3</td><td>혼합</td></tr>
+        <tr><td class="num">W13~14</td><td class="lab">퀘스트 4 반복 매출</td><td>세션 7·8: 가격·재구매 설계 + 코칭 4 (이탈 위험 팀 집중)</td><td>혼합</td></tr>
+        <tr><td class="num">W15</td><td class="lab">옵션 특강 2</td><td>판로·마케팅 실무 (실무·도구형)</td><td>온라인 2h</td></tr>
+        <tr><td class="num">W16~18</td><td class="lab">퀘스트 5 자금 준비</td><td>세션 9·10: 사업계획·IR 워크숍 + 코칭 5·6 (IR 집중 — 후반 코칭 문법)</td><td>혼합</td></tr>
+        <tr><td class="num">W20</td><td class="lab" style="color:var(--accent);">데모데이</td><td>최종 발표·심사·시상 + 투자자·시 관계자 네트워킹</td><td>오프라인 행사</td></tr>
+        <tr><td class="num">W21+</td><td class="lab">연계</td><td>시 후속 지원사업 연결 · 동문 네트워크 편입 · 온라인 후속 코칭 2회 (사례 3 패턴)</td><td>온라인</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-3);margin-bottom:var(--s-6);">
+      합계: 교육 세션 10회(상한 준수) + 코칭 6회 + 특강 2회 + 행사 2회 + 사전학습 3주 + 사후 연계.
+      참여자 오프라인 구속 시간 ≈ 52시간 — 같은 목표의 과거 사업(중앙 8회×4h + 코칭) 대비 인풋은 비슷하지만
+      사전학습·AI코치·실행 증거 중심으로 임팩트 밀도를 높인 구성.
+    </p>
+
+    <!-- 시나리오 B -->
+    <h3 style="font-size:19px;">시나리오 B — 소상공인 매출 성장 지원 <span class="tag">T4 개별 밀착형 — 회차표가 없는 게 정답</span></h3>
+    <p class="caption" style="margin-bottom:var(--s-3);">가상 RFP: 전통시장 상인 20개 점포 · 8개월 · 클라이언트 목표 "점포당 매출 +20%"</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:110px;">단계</th><th>내용</th><th style="width:230px;">근거</th></tr></thead>
+      <tbody>
+        <tr><td class="lab">진단 방문</td><td>점포별 현장 진단 1회 — 매출 구조·디지털 수준 파악 (사전학습 대신 <strong>현장 과정 관찰</strong>이 평가)</td><td class="caption">T4 는 사전학습 최소화 — 소상공인 디지털 부담 · 현장방문 5/9</td></tr>
+        <tr><td class="lab">공통 세션 ×2</td><td>킥오프(반나절: 방향·목표 합의·상인 네트워킹) + 중간 공유회(우수 사례 전파)</td><td class="caption">T4 도 공통 접점 2회는 유지 — 코호트 0.78 기각 근거 반영</td></tr>
+        <tr><td class="lab">개별 컨설팅 ×4</td><td>점포별 방문 컨설팅 4회 (상품·가격·온라인 판로·고객 관리) — 점포 일정에 맞춰 유연 배치</td><td class="caption">소상공인 코칭 = 횟수보다 개별 밀착의 질 (중앙 2회 → 목표가 매출이라 4회로 상향)</td></tr>
+        <tr><td class="lab">AI코치 상시</td><td>주간 실행 체크 + 매출 데이터 기록 push — 사람 방문 사이를 메움</td><td class="caption">인풋↓ 레버 — 방문 회수 절약</td></tr>
+        <tr><td class="lab">마무리</td><td>지역 축제 연계 성과전 (판매 부스) — 발표회 대신 <strong>실제 판매가 성과 입증</strong> · 매출 전후 데이터 리포트</td><td class="caption">성과공유=지역행사 결합 가설 + D0 목표(매출)로 회귀</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-2);margin-bottom:var(--s-6);">핵심: 주차별 회차표를 만들지 않는다 — 20개 점포의 영업시간이 제각각이라 정기 모임 자체가 인풋 낭비. 이 판단이 자동으로 나오는 것이 운영 유형 선택(D1)의 가치.</p>
+
+    <!-- 시나리오 C -->
+    <h3 style="font-size:19px;">시나리오 C — 대기업 사내벤처 발굴 <span class="tag">B2B 컴팩트 — 짧고 굵게</span></h3>
+    <p class="caption" style="margin-bottom:var(--s-3);">가상 RFP: 임직원 12팀 · 3개월 · 클라이언트 목표 "경영진 승인 가능한 신사업 3건"</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:110px;">단계</th><th>내용</th><th style="width:230px;">근거</th></tr></thead>
+      <tbody>
+        <tr><td class="lab">사전</td><td>사전진단(팀 역량) + 아이템 1페이지 — 업무시간 잠식 최소화, 평가는 진단+과정 데이터</td><td class="caption">임직원 VOD 필수 기각(2/14) — 사전진단(4)이 실측 우세</td></tr>
+        <tr><td class="lab">워크숍 1 (종일)</td><td>킥오프 + 문제·고객 검증 스프린트 — 팀 단위 몰입</td><td class="caption">임직원 회차 중앙 2.5 · 종일 워크숍 — 캠프·여정 0건 (3-1)</td></tr>
+        <tr><td class="lab">실행 4주</td><td>현업 병행 검증 — AI코치 push + 팀별 1:1 코칭 2회 (온라인)</td><td class="caption">업무 병행 = 정기 모임 대신 비동기 + 짧은 코칭</td></tr>
+        <tr><td class="lab">워크숍 2 (종일)</td><td>BM·수익성 구체화 + 모의 피칭 (코칭 결합)</td><td class="caption">코칭 후반 배치 문법</td></tr>
+        <tr><td class="lab">경영진 보고회</td><td>최종 발표 = 데모데이가 아니라 <strong>경영진 의사결정 회의</strong> 형태 — 3건 승인이 곧 성과</td><td class="caption">D0 목표(승인 3건)가 마무리 형식 자체를 결정 — 제0원칙의 실례</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="caption" style="margin-top:var(--s-2);">총 임직원 구속: 종일 2회 + 코칭 2회 + 발표 1회 ≈ 22시간. 인풋 최소화가 B2B 의 수주 조건이다.</p>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 10 대상별 기본값 -->
+  <section>
+    <div class="section-no">10</div>
+    <h2>대상별 검증된 기본값 — 가설이 아니라 판정 결과</h2>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:120px;">대상</th><th>실측이 지지한 것</th><th>실측이 교정·기각한 것</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="lab">청년·대학생<br><span class="caption">n=49 · 신뢰 높음</span></td>
+          <td>1:1 밀착(30건) · 팀 코호트(0.84) · 온오프 혼합 우세 · 최종 발표 + 중간 발표</td>
+          <td>"매주 만나는 장기형" 단일 가설 → <strong>몰입 캠프형(14)과 정규 강좌형(14)의 정확한 양분</strong>으로 교정. 경진대회(17)가 최빈 행사라는 발견 추가</td>
+        </tr>
+        <tr>
+          <td class="lab">소상공인·상인<br><span class="caption">n=9 · 방향성만</span></td>
+          <td>1:1 컨설팅형(7/9) · 현장 방문 + 지역 거점 · <strong>T4 개별 밀착형 적합</strong> · 몰입 캠프 0건(생업 이탈 불가)</td>
+          <td>"오프라인 중심" 기각(혼합 7/9) · "코호트 약함" 기각(0.78) · 코칭 회수는 오히려 적음(중앙 2회) — 횟수보다 개별 밀착의 질</td>
+        </tr>
+        <tr>
+          <td class="lab">임직원<br><span class="caption">n=14</span></td>
+          <td><strong>짧고 굵게 — 회차 중앙 2.5회</strong> · 종일 워크숍 · 팀=코호트(0.79) · 캠프·장기여정 0건</td>
+          <td>"VOD 사전학습 필수" 기각(2/14 — 사전진단이 더 흔함) · "그룹 코칭 중심"은 1:1과 혼재</td>
+        </tr>
+        <tr>
+          <td class="lab">청소년<br><span class="caption">n=6 · 참고</span></td>
+          <td>오프라인 · 캠프형 · 경진대회 — 가설 방향 일치 (방학 캠프 패턴)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="lab">시니어 · 재창업<br><span class="caption">n=2 · 0</span></td>
+          <td colspan="2">판정 불가 — 표본 부족(시니어 2건) + 어휘 한계(재창업 식별 0건). 어휘 보강 후 재집계 + 운영 실적 데이터 수급 필요</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <hr class="div-line">
+
+  <!-- 11 한계와 다음 -->
+  <section>
+    <div class="section-no">11</div>
+    <h2>정직한 한계, 그리고 다음</h2>
+    <div class="grid2">
+      <div class="box">
+        <h3>이 로직이 아직 모르는 것</h3>
+        <p class="caption">
+          ① <strong>당락 변별</strong> — 패배 케이스 0건. 지금은 "이긴 설계의 문법"이지 "이기는 설계의 조건"이 아니다.<br>
+          ② <strong>지향 모델의 실측 부족</strong> — "사전학습 과정 평가 선발"·"AI코치 push"는 코퍼스에 과소대표. 운영하면서 데이터를 쌓아야 한다.<br>
+          ③ 예산 분석은 59건 한정(예산 명시분) · 시간대는 제안서에 거의 없음 — 운영 실적에서 역보강.<br>
+          ④ 시니어·재창업 표본 부족 + 미분류 31건 — 어휘 보강 필요.
+        </p>
+      </div>
+      <div class="box">
+        <h3>다음 단계</h3>
+        <p class="caption">
+          ① 본 문서의 기본값을 <strong>DesignRule 초안</strong>으로 발행 → 사람이 규칙 단위 승인.<br>
+          ② 승인 규칙 + 운영 유형 + 흐름 문법을 커리큘럼 생성기에 주입 → 섹션 09 형태(결정 로그 + 회차표 + 근거)의 1차안 자동 생성.<br>
+          ③ 강의 분류 v5.4 실데이터 이관 → 사전학습 VOD 자동 제안.<br>
+          ④ 패배 제안서 · 운영 실적 데이터 수급 → 당락·성과 변별 학습으로 승격.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="wrap">
+  <hr class="div-ink" style="margin-top:var(--s-8);">
+  <footer>
+    <img src="assets/logo/underdogs-wordmark-black.svg" alt="UNDERDOGS">
+    <p class="caption">커리큘럼 설계 로직 v1.2 · 제0원칙: 클라이언트 목표 ÷ 인풋 · 당선작 143건 16축 추출(ADR-028) + 지향 운영 모델 + 실제 사례 3건 + 예시 커리큘럼 3종 · UD-Ops Workspace · 2026-06-12</p>
+  </footer>
+</div>
+
+</body>
+</html>
