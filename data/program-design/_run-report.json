@@ -1,0 +1,55 @@
+{
+  "runAt": "2026-06-12T09:59:31.589Z",
+  "args": {
+    "ids": null,
+    "limit": null,
+    "concurrency": 3,
+    "force": false
+  },
+  "targeted": 148,
+  "succeeded": 29,
+  "skipped": 111,
+  "failed": 8,
+  "failures": [
+    {
+      "docId": "cmpsn8e3q00098gvceh8snfli",
+      "projectName": "『2025. 청년창업 아이디에이션 4.0』프로젝트 퍼실리테이션 운영",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"theoryPracticeRatio\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"coaching\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n  "
+    },
+    {
+      "docId": "cmpsn8unf000f8gvcj6ypg9rs",
+      "projectName": "2025년 창업아이디어 빌드UP 캠프",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"kpiTargets\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  }\n]"
+    },
+    {
+      "docId": "cmpsne6d600298gvcxjd4hkq5",
+      "projectName": "2025 DX기반 기술융합창업가 양성 교육 프로그램",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"milestoneEvents\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"selectionFunnel\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\","
+    },
+    {
+      "docId": "cmpsnfc3k002l8gvcd0sqidy9",
+      "projectName": "한국타이어나눔재단 2023 드림위드 비긴어게인",
+      "error": "[design-pattern-extract] JSON 파싱 실패: Expected ',' or ']' after array element in JSON at position 8066 (line 383 column 8) (원본 길이: 8219)"
+    },
+    {
+      "docId": "cmpsnib2l003p8gvct4fsn0rr",
+      "projectName": "신중년 도시재생 창업지원 프로젝트 점프업5060 3기 운영 용역",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"theoryPracticeRatio\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"coaching\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n  "
+    },
+    {
+      "docId": "cmpsnigvg003s8gvcw5kwjkyx",
+      "projectName": "2022 콘텐츠 스타트업 스케일업 프로그램 운영",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"cadence\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"sessionLength\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"th"
+    },
+    {
+      "docId": "cmpsnyc6l0005dgvcllen62wx",
+      "projectName": "2023년 신사업창업사관학교 운영(서울)",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"coaching\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      \"cohortStructure\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\",\n      "
+    },
+    {
+      "docId": "cmpsnyivo0007dgvc83m877h4",
+      "projectName": "여수시 청년 도전 창업지원사업 2박 3일 창업캠프",
+      "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"profileSnapshot\",\n      \"methodologySignals\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"operatingFormat\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"contentMix\"\n    ],\n    \"message\": \"Inva"
+    }
+  ]
+}

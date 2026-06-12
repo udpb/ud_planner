@@ -1,0 +1,468 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대상: 예비 창업자 및 창업 3년 이내 스타트업"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대상: 예비 창업자 및 창업 3년 이내 스타트업",
+        "최초 사내벤처 육성을 위해 기획, 외부 지원자 참여로 확장"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "Food-Tech Startup",
+        "ESG Startup",
+        "All Others"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "본그룹 창업가 발굴대회"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.8,
+      "evidence": [
+        "본그룹의 창업가 발굴대회는 새로운 비즈니스 모델 및 창업가를 발굴하기 위한 창업 공모전입니다."
+      ]
+    },
+    "clientTier": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "본그룹"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 20,
+        "durationMonths": 3
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "규모: 총 7개 팀 선발 (팀별 1~3명, 총 20명 내외)",
+        "일정: 2023년 6월~8월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "Underdogs Original Methodology",
+        "4-step Methodology"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "Underdogs Original Methodology",
+        "4-step Methodology"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 VOD 기반 Flip-Learning",
+        "개인별 진단(온라인 서베이로 사전진단)",
+        "창업가 성향 진단"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 VOD 기반 Flip-Learning",
+        "온오프라인 코칭 시스템",
+        "장소: 본그룹 본사"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 12,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 커리큘럼 (12회차)",
+        "서류 합격 7개 팀 대상 6주간 창업 전문 코칭 및 멘토링 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 30,
+        "practicePct": 70,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "강의 & 워크숍 비중 3:7"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "기타"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "일대일 코칭",
+        "서류 합격 7개 팀 대상 6주간 창업 전문 코칭 및 멘토링 진행",
+        "창업팀의 지역, 성장 단계, 분야 및 비즈니스 모델 등을 고려하여 최적의 창업 코치를 배정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 3,
+        "tracks": 3,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "규모: 총 7개 팀 선발 (팀별 1~3명, 총 20명 내외)",
+        "트랙 구분 1. Food-Tech Startup 2. ESG Startup 3. All Others",
+        "중간 성과공유회",
+        "성과공유회"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "8회차: 중간 성과공유회",
+        "12회차: 성과공유회",
+        "Demo Day: 9-10월 중 진행"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류 합격 7개 팀 대상 6주간 창업 전문 코칭 및 멘토링 진행",
+        "최종 우수 팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "완성도 높은 사업계획서",
+        "IR 피치덱 작성",
+        "낮은 단계의 MVP 제작",
+        "실제 사용 가능한 MVP 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "상금 지급 및 본그룹과의 협력/투자 검토 기회 제공",
+        "SI 투자 검토 기회 제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 내부코치 + 언더독스 파트너코치",
+        "분야별 현직 전문가 인사이트 특강 및 컨설팅 제공"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "장소: 본그룹 본사",
+        "온오프라인 코칭 시스템"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "최종 성과공유회",
+        "중간 평가를 통한 팀별 중간 점검"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "후속보육"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "SI 투자 검토 기회 제공",
+        "후속 성장 및 투자 유치를 위한 다양한 지원 체계 구축 및 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의 & 워크숍 비중 3:7",
+      "전문가 실전 특강",
+      "일대일 코칭",
+      "자체 방법론을 통한 체계적 학습",
+      "실전 비즈니스에 적용할 수 있는 학습 템플릿 적용",
+      "분야별 현직 전문가 인사이트 특강"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "창업가의 마인드셋",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "관점 도출",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이템 구체화",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "MVP",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "아이템 고도화 (비즈니스 모델)",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "시장, 경쟁사 분석",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서 교육",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "중간 성과공유회",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 9,
+        "title": "MVP 실행",
+        "hours": null,
+        "format": "실행",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "전문가 컨설팅",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "모의 피칭/IR",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "성과공유회",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "교육 커리큘럼 (12회차)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2023년 사업 컨셉 제안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngfmw002x8gvcsxqvkvqg",
+  "projectId": "A.23.0027",
+  "projectName": "『2023년 본그룹 창업가 발굴대회』 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 13,
+    "basis": "weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7644,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:18:28.927Z"
+  }
+}

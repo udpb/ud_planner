@@ -135,7 +135,7 @@ async function main() {
           label: 'design-pattern-extract',
         })
         const parsed = safeParseJson<unknown>(res.raw, 'design-pattern-extract')
-        const normalized = normalizeExtraction(parsed)
+        const { output: normalized, demotedAxes } = normalizeExtraction(parsed)
         const output = extractionOutputSchema.parse(normalized)
 
         const pattern = programDesignPatternSchema.parse({
@@ -152,6 +152,7 @@ async function main() {
             unsupported: doc.parseBy === 'unsupported',
             truncated,
             fallback: res.fallback,
+            demotedAxes,
             extractedAt: new Date().toISOString(),
           },
         })
@@ -160,7 +161,8 @@ async function main() {
         succeeded++
         console.log(
           `✅ ${doc.id} ${doc.projectName} (${doc.charCount.toLocaleString()}자` +
-            `${truncated ? '·절단' : ''}${res.fallback ? '·⚠️fallback:' + res.model : ''})`,
+            `${truncated ? '·절단' : ''}${res.fallback ? '·⚠️fallback:' + res.model : ''}` +
+            `${demotedAxes.length > 0 ? `·강등 ${demotedAxes.length}축[${demotedAxes.join(',')}]` : ''})`,
         )
         return
       } catch (err) {

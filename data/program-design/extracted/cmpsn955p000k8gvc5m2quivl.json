@@ -1,0 +1,449 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "SAY Track 창업팀 대상으로 3가지 세션의 전환을 통해",
+        "전국 AI 청년 창업팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "전국 AI 청년 창업팀",
+        "청년 창업팀과 업계 리더가 직접 마주 앉아"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI 시장의 미래를 배우고",
+        "AI 트렌드를 다루어 기술 트렌드를 선도하는 플랫폼"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "서울 AI 영포럼",
+        "전국 AI 청년 창업팀"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "서울 AI 허브 앵커시설(서울특별시 서초구 태봉로 108 4층 라운지)"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.8,
+      "evidence": [
+        "박찬진 서울 AI 허브 센터장",
+        "서울 AI 허브 앵커시설"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 200,
+        "durationMonths": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "명찰 - 200(ea)",
+        "리플렛 - 200(ea)",
+        "참가자 초대장 - 200(ea)",
+        "행사 제안 및 기획 (계약 체결): 9월 5주 ~ 10월 1주 ... 결과보고: 11월 4주"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "‘무엇이든 물어보는 대화(AMA / Ask Me Anything)’ 형식",
+        "IR 발표",
+        "배너 피칭"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서울 AI 영포럼 프로그램 기획(안)"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 1,
+      "evidence": [
+        "운영형식: 오프라인 형태"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "운영일시: 2025년 11월 14일 (금) 13:00~18:00"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "운영일시: 2025년 11월 14일 (금) 13:00~18:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "토크 콘서트는 배너피칭과 IR피칭 심사를 맡은 업계 전문가들이 청년 창업팀과 자유롭게 대화를 나누는 시간으로 단순히 점수 평가를 넘어... 솔직하게 조언"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "SAY Track 창업팀 대상으로",
+        "15개 팀(SAY Track), 5개 팀(알럼나이)",
+        "네트워킹을 통해",
+        "현장 투표"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "스타트업의 IR 데모데이와 성과공유회는 영화의 예고편과 같다",
+        "네트워킹",
+        "시상식 및 기념 촬영"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IR 발표",
+        "제작한 배너를 기준으로 솔루션, AI 기술 및 경쟁력, 팀 하이라이트 등을 자유롭게 피칭"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "1등",
+            "amountKrw": 3000000
+          },
+          {
+            "label": "2등",
+            "amountKrw": 2000000
+          },
+          {
+            "label": "3등",
+            "amountKrw": 1000000
+          },
+          {
+            "label": "우수팀",
+            "amountKrw": 2000000
+          },
+          {
+            "label": "혁신상",
+            "amountKrw": 2000000
+          },
+          {
+            "label": "인기상",
+            "amountKrw": 1000000
+          }
+        ]
+      },
+      "confidence": 1,
+      "evidence": [
+        "1등 | 배너 피칭 점수 + IR 발표 점수 | 300만원",
+        "2등 | 배너 피칭 점수 + IR 발표 점수 | 200만원",
+        "3등 | 배너 피칭 점수 + IR 발표 점수 | 100만원",
+        "우수팀 | IR 발표 점수가 가장 높은 팀 (1~3등 제외) | 200만원",
+        "혁신상 | 배너 피칭 점수가 가장 높은 팀 (1~3등 제외) | 200만원",
+        "인기상 | 현장 투표 | 100만원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "AI 창업 전문가 강연",
+        "심사위원 리스트(안)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "운영장소: 서울 AI 허브 앵커시설(서울특별시 서초구 태봉로 108 4층 라운지)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서울 AI 영포럼 프로그램 기획(안)"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "AI 창업 전문가 강연",
+      "강연 연사와 패널 토크",
+      "IR 발표",
+      "배너 피칭 프로그램",
+      "AI 기술의 방향성과 한국 스타트업의 미래 비전",
+      "AI 글로벌 트렌드와 한국 스타트업의 경쟁력"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "등록 및 입장",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "오프닝 및 개회사",
+        "hours": 0.33,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 3,
+        "title": "강연 1부 & 2부",
+        "hours": 0.67,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "패널 토크",
+        "hours": 0.33,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "배너 피칭",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "IR 발표 1부 & 2부",
+        "hours": 0.67,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 7,
+        "title": "토크 콘서트",
+        "hours": 0.33,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "시상식 및 클로징",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 9,
+        "title": "네트워킹",
+        "hours": 1,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "12:30~13:00 | Session 1 | 등록 및 입장",
+      "13:00~13:10 | | 오프닝",
+      "13:20~13:40 | Session 2 | *강연 1부",
+      "14:00~14:20 | | *패널 토크",
+      "14:40~15:10 | Session 3 | *배너 피칭",
+      "15:10~15:30 | | *IR 발표 1부",
+      "16:10~16:30 | Session 4 | *토크 콘서트",
+      "16:30~16:50 | | *시상식",
+      "17:00~18:00 | | 네트워킹"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "서울 AI 영포럼 프로그램 기획(안)"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn955p000k8gvc5m2quivl",
+  "projectId": "A.25.0056",
+  "projectName": "2025 서울 AI 영포럼",
+  "intensity": {
+    "totalEducationHours": 4.83,
+    "totalWeeks": 9,
+    "basis": "hours: sessions[9] hours 합산 · weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 11391,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:52:43.384Z"
+  }
+}

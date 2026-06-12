@@ -1,0 +1,178 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "demographic": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "businessDomain": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "geography": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "channel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "성과 점검 및 발표\n운영 성과 및 발표를\n바탕으로 우수팀 선정"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "성과 점검 및 발표\n운영 성과 및 발표를\n바탕으로 우수팀 선정"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngbic002v8gvc4t41opsm",
+  "projectId": "A.23.0025",
+  "projectName": "2023 지역인력 성장지원 사례 및 수요 조사",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 1668,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:17:34.677Z"
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.7,
+      "evidence": [
+        "창업가들이 기술 기반 아이디어를 단순히 구상하는 데 그치지 않고, 실질적인 문제 해결과 성과 창출로 연결될 수 있도록"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "디지털 트랜스포메이션 시대에 대응하는 기술 기반 액트프러너 육성"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "디지털 트랜스포메이션(DT) 요소를 반영하여, 창업가들이 최신 기술과 디지털 혁신을 기반으로 한 솔루션을 구상할 수 있도록 지원합니다."
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.7,
+      "evidence": [
+        "참가자들은 수도권 내 창업 특화 오피스와 창업 거점 시설을 직접 방문하여 창업 현장을 체험합니다"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "정부지원사업 선정 및 투자 유치 등 교육 이후 실질적인 성과를 도출합니다."
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "4Steps 실전 창업 방법론",
+        "6Dimension 비즈니스 진단 방법론",
+        "DOGS 창업성향진단",
+        "I.O.I 문제 탐색 방법론",
+        "코호트러닝",
+        "PSST"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스는 자체 개발한 4Steps 실전 창업 방법론과 6Dimension 비즈니스 진단 방법론을 통해",
+        "DOGS 창업성향진단과 I.O.I 문제 탐색 방법론을 통해"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "DOGS 창업성향진단과 I.O.I 문제 탐색 방법론을 통해 창업가는 스스로 자신의 창업 성향을 진단하고"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 교육 프로그램 일정 (2일)",
+        "오프라인 교육 일정 (1월 중)",
+        "현장 방문 1박2일"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "현장 방문 1박2일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "13:00~18:00",
+        "10:00~18:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 33,
+        "practicePct": 67,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 강의는 챕터당 20분 이내의 강의와 40분의 실습으로 구성되며"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "그룹"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "창업가의 성향과 상태를 분석하여 맞춤형 교육을 제공"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "가장 만족도 높은 전현직 창업가의 1:1 코칭",
+        "창업가의 성향과 상태를 분석하여 맞춤형 교육을 제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "코호트 러닝 방식을 통해 참가자들 간의 활발한 상호 학습이 이루어지며"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "IR",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "해커톤 마지막 날, 실제 사업계획서 형식에 맞게 나의 아이템을 스토리텔링하고, 내 아이템의 고객 관점에서 설득력 있게 피칭하는 경험"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱",
+        "MVP",
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일이라는 짧은 시간 안에 창업가들이 IR Deck을 완성하고",
+        "나만의 솔루션 핵심 가치를 바탕으로 랜딩페이지를 작성하고",
+        "사업계획서 작성"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 4,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전국적으로 261명의 전현직 창업가 출신 코치를 보유하고 있으며",
+        "투입 인력"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "지역거점",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "참가자들은 수도권 내 창업 특화 오피스와 창업 거점 시설을 직접 방문하여",
+        "판교 스타트업 캠퍼스",
+        "MARU 180"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의, 워크숍, 코칭이 결합된 실전형 교육",
+      "플랫폼 매각 경험 및 DT 트렌드, 성공 사례 소개",
+      "온라인 교육 프로그램 일정 (2일)",
+      "오프라인 교육 일정 (1월 중)",
+      "현장 방문 1박2일"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "온라인 교육 프로그램 일정 (2일)",
+      "오프라인 교육 일정 (1월 중)",
+      "현장 방문 1박2일"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsne6d600298gvcxjd4hkq5",
+  "projectId": "A.24.0041",
+  "projectName": "2025 DX기반 기술융합창업가 양성 교육 프로그램",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 19610,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:52:28.423Z"
+  }
+}

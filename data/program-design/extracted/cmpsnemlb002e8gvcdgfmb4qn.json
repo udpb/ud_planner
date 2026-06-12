@@ -1,0 +1,208 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "demographic": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "커머스 마케팅 전문가 코치/멘토단"
+      ]
+    },
+    "geography": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "channel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "액트프러너 세션"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "커머스 마케팅 전문가 코치/멘토단"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": null,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 소개",
+        "팀별 성과 측정을 위한 정량 및 정성 지표 확인"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "성과 보고",
+        "우수팀 발표",
+        "참여팀\n인사이트 공유"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "커머스 마케팅 전문가 코치/멘토단"
+      ]
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "kpiTargets": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnemlb002e8gvcdgfmb4qn",
+  "projectId": "F.24.0002",
+  "projectName": "네이버 프로젝트 꽃 브랜드 런처 프로그램 운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 771,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:13:41.058Z"
+  }
+}

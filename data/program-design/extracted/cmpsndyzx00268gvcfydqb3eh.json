@@ -1,0 +1,307 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "0~7년차 사회적 가치 + 글로벌 잠재력 대학생부터 여성 창업가까지"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "여성",
+        "대학생",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "대학생부터 여성 창업가까지",
+        "여성 창업가들의 공감과 성장, 협업을 목표로"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사회혁신 분야 여성 창업가 커뮤니티 구축"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_공통",
+      "confidence": 0.8,
+      "evidence": [
+        "글로벌 진출 발판 플랫폼으로 전환",
+        "CWI 중심 글로벌 진출 발판"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.5,
+      "evidence": [
+        "정부의 정책과 방향성이 글로벌을 바라보고 있습니다."
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "까르띠에 여성 창업 이니셔티브(CWI)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 8
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "2024년 10월 10월~11월",
+        "2025년 4월~5월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "사회혁신 창업 방법론",
+        "액트-프러너형 현장 경험 공유 교육",
+        "사회적 가치 측정 방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 사회혁신 창업 방법론 교육",
+        "액트-프러너형 현장 경험 공유 교육",
+        "사회적 가치 측정 방법론 교육"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "경험 공유 커뮤니티 모임(2주/6회)",
+        "글로벌+CWI 준비 커뮤니티(2주/6회)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "글로벌 진출 1:1 컨설팅",
+        "글로벌 진출 코칭 시스템"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": null,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더우먼 4기",
+        "피어러닝과 커뮤니티 강화",
+        "1~4기 연대 강화 네트워크 형성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "12월 HOME Ground Party (홈커밍 파티)",
+        "글로벌 피칭 및 최종 평가 (우수팀)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "글로벌 사업계획서 + 비즈니스 모델",
+        "글로벌 진출을 위한 초기 결과물 (사업계획서, 피칭 등)"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "오사카 엑스포 탐방 지원 *추가 예산",
+        "CWI 유형별 지원서+피칭 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사",
+          "동문코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "DE&I 및 글로벌 여성 창업 관련 연사 강의",
+        "선배 기수 호스트 특강 & 네트워킹",
+        "글로벌 진출 1:1 컨설팅"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "서울 와룡동 : 서울 종로구 돈화문로 88-1, 2층",
+        "군산 영화동 : 전라북도 군산시 구영5길 104-4",
+        "제주 일도일동 : 제주시 관덕로 44 제주시 소통협력센터 410호"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1~4기 연대 강화 네트워크 형성",
+        "Global with CWI follow-up support"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "DE&I 및 글로벌 여성 창업 관련 연사 강의",
+      "언더독스 사회혁신 창업 방법론 교육",
+      "액트-프러너형 현장 경험 공유 교육 (공통과제해결) 워크숍, 피어러닝",
+      "CWI 수상자 관점에서 DE&I 사례 발표"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2024년은 CWI의 가치와 비전, 언더우먼이 만들어 온 여정에 여성 창업의 성장 단계 최적화 지원과 글로벌 확장이 시작됩니다."
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsndyzx00268gvcfydqb3eh",
+  "projectId": "A.24.0031",
+  "projectName": "여성 창업가 프로그램 후원",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 35,
+    "basis": "weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7936,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:10:23.578Z"
+  }
+}

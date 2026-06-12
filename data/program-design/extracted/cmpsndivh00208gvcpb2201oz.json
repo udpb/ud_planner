@@ -1,0 +1,348 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "초기 창업기업 지원",
+        "창업 안정기 기업 지원"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생",
+        "일반소상공인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "소상공인",
+        "대학 학내 벤처"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "탄소중립",
+        "에너지효율화",
+        "ESG"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "에너지효율화 등 탄소중립 관련 분야 창업 기업 선발/지원"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "부산시와의 지역상생 및 새로운 ESG 가치 창출"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "부산 ESG펀드 운영사인 「부산 창조경제혁신센터」와 협업 추진"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.8,
+      "evidence": [
+        "부산시와의 지속적인 협력을 통해 EV/SV 제고"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 950000000,
+        "participants": null,
+        "durationMonths": 6
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체 사업비 총 9.5억원 중 E&S는 4.5억원 지원",
+        "프로젝트 실행 및 성과 창출(7~12월; 6month)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "SK SPC 방법론",
+        "리빙랩"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "SK SPC 방법론을 활용하여프로젝트 SV DB Set 구성",
+        "부산 시민 참여 리빙랩 기획 및 프로그램 운영"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "오리엔테이션 및 프로젝트 조정 계획 수립을 위한 워크숍 개최"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 플랫폼을 통해",
+        "부산 워케이션 거점을 활용하여 숙박 및 프로젝트 세부계획 수립을 위한 교육·코칭 제공"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1박 2일 워크숍",
+        "6주 집중 교육(5~6월)",
+        "주 1회 전체 교육",
+        "월 1회 공유회(7~11월)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "주 1회 일대일 코칭을 통해 성과 점검",
+        "월 1회 프로젝트 현황 및 성과 점검을 위한 일대일 코칭 제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 3,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "A트랙: ESG 오픈 이노베이션 프로젝트",
+        "B트랙: ESG 액셀러레이팅",
+        "C트랙: ESG 바우처 지원",
+        "선정된 기업간의 상호 네트워크를 위한 별도의 커뮤니티 조성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간 성과 공유회(내부)",
+        "최종 성과 공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우선 검증/추천 받은 기업, 단체를 대상으로 제안 PT 등 별도 선발 심사과정을 진행하여 최종 20개 지원 기업 선정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "MVP 계획 수립 및 실행 교육",
+        "프로젝트별 SV 성과측정 보고서",
+        "프로젝트 과정 및 성과 아카이빙북 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "A트랙 프로젝트 지원금",
+            "amountKrw": 50000000
+          },
+          {
+            "label": "B트랙 사업화 지원금",
+            "amountKrw": 20000000
+          },
+          {
+            "label": "C트랙 ESG 바우처 지원금",
+            "amountKrw": 10000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "5개 SV업체 x 5천만원/社 프로젝트 지원금",
+        "10개 SV업체 x 2천만원/社 사업화 지원금",
+        "5개 중소기업 업체 x 1천만원/社 ESG 바우처 지원금"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "내/외부 전문가로 구성한 평가단",
+        "일대일 코칭 제공",
+        "수행기관(언더독스) 지급 계획임"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "부산 워케이션 거점을 활용하여 숙박",
+        "창경센터(4F) 및 부산 워케이션 거점공간 이용료"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "지속 성장을 위한 투자/판로 등 연계",
+        "BEF 펀드 연계를 통해 기업(기관)의 ESG 성과 확산을 위한 컨설팅 및 활동지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "1박 2일 워크숍",
+      "MVP 계획 수립 및 실행 교육",
+      "프로젝트 수행에 필요한 특강 및 세미나"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "지역 사회 문제 해결에 특화된 중소기업, 사회적 경제 기업 등을 육성/지원하는 플랫폼 기반의 신규사업"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsndivh00208gvcpb2201oz",
+  "projectId": "A.24.0023",
+  "projectName": "BEF 부산 ESG 플랫폼 활성화 운영 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 26,
+    "basis": "weeks: durationMonths(6) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 11360,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:08:16.658Z"
+  }
+}

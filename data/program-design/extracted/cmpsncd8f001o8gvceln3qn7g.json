@@ -1,0 +1,310 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.8,
+      "evidence": [
+        "아이디어가 있는 창업가를 중심으로 팀빌딩하여 1day 해커톤 진행"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "예비 창업자(달서구 청년) 대구 달서구 소재 증빙 가능한 19-30세"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "청년창업을 관심 또는 현실적으로 준비를 희망하는 예비 창업가 30명"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "대구 달서구 소재 증빙 가능한 19-30세"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2024년 달서구 청년창업지원센터 D창업아카데미 프로그램 제안서(안)"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "2024년 달서구 청년창업지원센터"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 8000000,
+        "participants": 30,
+        "durationMonths": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 예산 : 일금 8,000,000원(VAT 포함)",
+        "청년창업을 관심 또는 현실적으로 준비를 희망하는 예비 창업가 30명",
+        "프로그램 일정 : 2024년 4월 ~5월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "창업가 성향 진단 DOGS 워크숍"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전 진단 인터뷰",
+        "창업가 성향 진단 DOGS 워크숍"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기초 트랙 오프라인",
+        "실행 트랙 온라인 줌(Zoom)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기초 트랙 오프라인",
+        "실행 트랙 온라인 줌(Zoom)",
+        "주 1회(총 3회) 1:1 멘토링 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "혼합"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "09:30-10:00",
+        "17:50-18:00",
+        "온라인 1:1 멘토링 진행"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 3,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "주 1회(총 3회) 1:1 멘토링 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기초 트랙과 실전 트랙으로 단계를 나누어",
+        "프로그램 대상 : 20-30명(5개 팀)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "이후 경진대회에서 고객 검증 성과를 공유하고"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "진단"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기초트랙에서 발굴된 실제 창업가가 1:1 코칭을 통해 시장에서 고객검증을 진행할 수 있는 검증 과정 진행"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서를 작성하여 아이템에 대한 사업화 기반을 마련"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 2,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업 코치(전담) 5,555,500 1명",
+        "파트너 코치 350,000 1명",
+        "프로그램 운영 총괄 매니저 5,555,500 1명"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 대구시 달서구 청년창업지원센터",
+        "교육 장소 : 온라인 플랫폼(ZOOM) 활용"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "접수 출석체크 진행",
+        "발표 스토리보드 발표 워크숍"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "기초 창업 이론 학습 및 기초 역량 강화",
+      "실제 창업과정을 워크숍으로 구현한 커리큘럼",
+      "기초 트랙 ▶ 실행 트랙"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "기초 트랙과 실전 트랙으로 단계를 나누어 창업을 실질적으로 준비하는 그룹과 창업과정에 대해 학습을 희망하는 그룹 모두를 담을 수 있는 교육 프로그램 구성"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsncd8f001o8gvceln3qn7g",
+  "projectId": "A.24.0006",
+  "projectName": "2024년 달서구 청년창업지원센터 D-청년창업 아카데미",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 9,
+    "basis": "weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6839,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:48:57.674Z"
+  }
+}

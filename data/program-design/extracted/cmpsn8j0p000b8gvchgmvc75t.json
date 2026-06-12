@@ -1,0 +1,435 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "무안 지역 청년(인근 대학교 재학생 등) 대상 창업 역량 및 지역 문제 해결 역량 강화를 통한 무안 창업 인재로 성장"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생",
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "지역 청년, 특히 창업에 관심 있는 대학생으로 대상 조정"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "항공",
+        "관광",
+        "식품",
+        "모빌리티"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "항공 관광 식품 모빌리티"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "무안 지역 경제 성장을 견인하는 지역 청년 창업가 육성"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "KAC 청소년 창업 아이디어톤 (2기) 한국공항공사"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "한국공항공사의 ‘지속가능한 지역 창업가 육성 프로그램’으로 브랜딩"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 50000000,
+        "participants": 30,
+        "durationMonths": 6
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일금 오천만원 정(₩50,000,000) / 기부금",
+        "최종 30명 내외 예비 창업가 선발",
+        "7월 2주차~4주차 8월 1주차~4주차 ... ~12월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "AI 창업방법론",
+        "DOGS",
+        "DISC"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI 창업방법론 기반 지역 문제 분석",
+        "DOGS 팀빌딩 워크숍 및 진단",
+        "DISC 기반의 창업가와 구성원의 성향진단"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전과제",
+          "사전진단",
+          "기타"
+        ],
+        "diagnostics": [
+          "DOGS",
+          "DISC"
+        ],
+        "hours": 4.5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 방법 온라인(ZOOM / 50명 동시 진행)",
+        "13:30~18:00(안)",
+        "DOGS 팀빌딩 워크숍 및 진단",
+        "DISC 기반의 창업가와 구성원의 성향진단"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 방법 온라인(ZOOM",
+        "1박 2일 몰입형 캠프",
+        "온라인 VOD 제공"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 3,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1박 2일 몰입형 캠프",
+        "1박 2일 캠프 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "13:00~20:00",
+        "10:00~17:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": 24,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1:1 컨설팅 24회 (기업별 2회 이상)",
+        "후속 창업 사업 연계를 희망하는 팀 대상으로 1:1 후속 코칭 제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "갤러리워크 및 피어피드백",
+        "참여자간 네트워킹 진행",
+        "팀별 지역문제 및 특화분야 창업아이템 구체화"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 발표 및 우수팀 시상을 통한 지역 창업가로서의 데뷔 응원"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2단계 심사 프로세스 도입",
+        "사전교육 과제 심사를 통한 최종 참여자 확정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "창업 아이디어 과제 제출",
+        "사업계획서 제작 교육 및 워크숍"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "1위(대상)",
+            "amountKrw": 1500000
+          },
+          {
+            "label": "2위(최우수상)",
+            "amountKrw": 1000000
+          },
+          {
+            "label": "3위(우수상)",
+            "amountKrw": 500000
+          },
+          {
+            "label": "4/5위(장려상)",
+            "amountKrw": 350000
+          },
+          {
+            "label": "참여자 장학금",
+            "amountKrw": 100000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1위(대상):150만원, 2위(최우수상):100만원, 3위(우수상):50만원, 4/5위(장려상):35만원",
+        "참여자 대상 1인당 장학금"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 6,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사업 총괄 책임자 이 * 태 사무국장",
+        "프로젝트 총괄 PM (전체 사업 총괄)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "합숙시설",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "진행 방법 온라인(ZOOM",
+        "세미나실 2개실 및 강당 1개실 대관비",
+        "숙박비(인당 110,000원 기준)"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전교육 이후 창업 아이디어 제출 과제를 통해 지역 문제 연관성 및 창업 가능성을 기준으로 심사하여 최종 캠프 참여자 30명 내외 선정"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": "사후 1년"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "참여인원 전원 창업교육 VOD 컨텐츠 제공(사후 1년)",
+        "ai창업 코치 챗봇 사용료(사후 1년)"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "AI 창업방법론 교육을 통한 창업 기초 이해",
+      "사업계획서 제작 교육 및 워크숍",
+      "전문 분야의 역량 강화를 위한 온라인 VOD 제공"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "온라인 사전교육 (AI 창업 방법론 및 지역 문제 분석)",
+        "hours": 4.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "1박 2일 창업캠프 1일차 (지역 창업 아이템 구체화)",
+        "hours": 7,
+        "format": "워크숍/피드백",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "1박 2일 창업캠프 2일차 (사업계획서 발표 및 시상)",
+        "hours": 7,
+        "format": "발표/이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "8월 4주차, 13:30~18:00(안)",
+      "1일차: 2025년 9월 19일(금) 13:00~20:00",
+      "2일차: 2025년 9월 20일(토) 10:00~17:00"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "AI 창업 방법론과 로컬 창업을 결합한 하이브리드 형태의 최신 교육 모델임"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "AI 창업 방법론 교육을 통한 실질적인 문제 해결 역량 함양"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "만족도",
+        "targetValue": 4.5,
+        "unit": "점",
+        "raw": "평균 4.5점 이상"
+      },
+      {
+        "metric": "수혜 대학생",
+        "targetValue": 50,
+        "unit": "명",
+        "raw": "50명"
+      },
+      {
+        "metric": "지역 창업 도전",
+        "targetValue": 5,
+        "unit": "건",
+        "raw": "5회"
+      },
+      {
+        "metric": "지역 현안 문제 발굴",
+        "targetValue": 50,
+        "unit": "건",
+        "raw": "50건"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "프로그램 만족도 평균 4.5점 이상",
+      "수혜 대학생 50명",
+      "지역 창업 도전* 5회",
+      "지역 현안 문제 발굴 50건"
+    ]
+  },
+  "docId": "cmpsn8j0p000b8gvchgmvc75t",
+  "projectId": "A.25.0040",
+  "projectName": "『2025 KAC 대학생 창업 아이디어톤』운영 용역",
+  "intensity": {
+    "totalEducationHours": 18.5,
+    "totalWeeks": 26,
+    "basis": "hours: sessions[3] hours 합산 · weeks: durationMonths(6) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 20004,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:48:07.687Z"
+  }
+}

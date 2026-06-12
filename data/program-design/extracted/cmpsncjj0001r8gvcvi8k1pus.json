@@ -1,0 +1,385 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "순천시 내 창업 아이템을 발굴하려는 18세~45세 예비창업자"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "순천시 내 창업 아이템을 발굴하려는 18세~45세 예비창업자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "순천시 내 창업 아이템을 발굴하려는 18세~45세 예비창업자"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "순천시 내 창업 아이템을 발굴하려는 18세~45세 예비창업자"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "순천시 1박2일 창업캠프(해커톤) 제안서(안)"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "순천시 1박2일 창업캠프(해커톤) 제안서(안)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 5500000,
+        "participants": 30,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 대상 : 20-30명(10개 팀)",
+        "프로그램 예산 : 일금 5,500,000원(VAT 포함)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 창업가 성향 진단 DOGS 워크숍"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업가 성향 온라인 자가 진단 및 창업팀 팀웍 워크숍"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "온라인 자가진단과 오프라인 워크숍"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 9,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 일정 : 1박 2일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 일정 : 1박 2일"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "언더독스 코치들이 교육과 코칭, 퍼실리테이션을 진행하며 사업화 실행을 위한 노하우 전수"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 대상 : 20-30명(10개 팀)",
+        "창업팀 빌딩과 창업팀 상호 이해 향상과 팀 룰셋팅"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "발표 스토리보드 발표 및 피드백 위크숍"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "간이 사업계획서 작성 강의 및 초안 작성",
+        "스토리보드를 작성함으로써"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기초적인 창업교육과 실무에 도움이 되는 200여개의 VOD 강좌 1년 무료 제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": 4,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코치들이 교육과 코칭",
+        "프로그램 운영 총괄 매니저 1명 9%"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "교육 장소 : 순천시 내 프로그램 진행공간"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "기타"
+        ],
+        "duration": "1년"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 프로그램 출신 창업가 (ud.crew) 풀 후속 지원 콘텐츠 제공",
+        "기초적인 창업교육과 실무에 도움이 되는 200여개의 VOD 강좌 1년 무료 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "실제 창업과정을 워크숍으로 구현한 커리큘럼",
+      "간이 사업계획서 작성 강의 및 초안 작성"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "프로그램 소개",
+        "hours": 0.08,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "아이스브레이킹",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "문제정의, 페르소나",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기존 솔루션",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "아이템구체화",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "시장 분석",
+        "hours": 0.67,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서 작성",
+        "hours": 0.67,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "발표준비",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "발표",
+        "hours": 1.67,
+        "format": "발표 및 피드백 위크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1일차",
+      "2일차"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2024년 5월(예정)"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsncjj0001r8gvcvi8k1pus",
+  "projectId": "A.24.0010",
+  "projectName": "2024년 상반기 순천청년창업스쿨(해커톤캠프) 운영 용역",
+  "intensity": {
+    "totalEducationHours": 7.41,
+    "totalWeeks": null,
+    "basis": "hours: sessions[9] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7081,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:05:17.358Z"
+  }
+}

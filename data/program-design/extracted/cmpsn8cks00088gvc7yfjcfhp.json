@@ -1,0 +1,349 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "AI 기술에 대한 관심도가 있는 예비/초기 청년 창업가 대상 모집 및 유입 유도",
+        "예비/초기 단계로 구분하여 공통 교육 이후 단계별 워크숍 및 코칭을 통해 단계에 필요한 맞춤 교육 제공"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI 기술 창업에 관심을 가지고 있는 청년 대상 홍보를 위해 키비주얼 기반 홍보 진행"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI 청년 창업팀(가)을 위한 AI 심화 기술·창업 교육"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "서울 AI 허브「AI 청년 창업팀(가)을 위한 AI 심화 기술·창업 교육」용역"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "서울 AI 허브「AI 청년 창업팀(가)을 위한 AI 심화 기술·창업 교육」용역"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "서울 AI 허브「AI 청년 창업팀(가)을 위한 AI 심화 기술·창업 교육」용역"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 500,
+        "durationMonths": 8
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "정기교육 총 참여자 수 500명 내외",
+        "5월 6월 7월 8월 9월 10월 11월 12월"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "기타"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": 60
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 LMS를 통한 사전 교육 진행 후 단계별 오프라인 코칭을 진행",
+        "60 시간 이상의 창업가 대상 온라인 vod 콘텐츠 제공",
+        "창업가 성향 진단 툴을 통해 창업가 성향을 확인"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 LMS를 통한 사전 교육 진행 후 단계별 오프라인 코칭을 진행",
+        "5회차 오프라인 교육을 통해 구체화한 AI 비즈니스 모델을 바탕으로 10회차 교육 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "기타",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "정기교육(10회)",
+        "1박 2일 집중 교육의 구조로 진행",
+        "1박 2일 IR 데모데이"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 IR피칭 준비 세션 IR피칭 개별 코칭 1:1코칭",
+        "후속지원 1:1 코칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "함께 참여한 창업팀의 피드백을 받아 구체화하고",
+        "예비단계 코칭 + 초기단계 코칭",
+        "스크립트 기반 발표 및 피어피드백 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일 IR 데모데이",
+        "최종 우수팀 발표 및 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "6~10회차 40명 내외 5회차 교육에 1회 이상 참여자 중 선발",
+        "1~5회차 참여자 중 선발 50명 내외 창업 의지 등 기준을 통한 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": {
+        "count": 1,
+        "placement": "BM 고도화 교육 종료 후 약 2주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "*BM 고도화 교육 종료 후 약 2주간 창업 아이템 시장 조사 등 고도화 기간 제공"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "구체화된 창업 아이템을 실제 사업계획서로 제작 및 발표까지 진행할 수 있도록 사업계획서 제작 집중 교육",
+        "최종발표 활용 IR Deck 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "최종 우수팀 발표 및 시상",
+        "개발자 커뮤니티 활동 1개월 무료 지원",
+        "글로벌 진출 가능성 지원",
+        "투자가능성 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 7,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "7명의 창업·교육 전문 인력이 사업 기획·운영을 핵심적으로 담당",
+        "사업 총괄(PM) 우영승"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "서울 AI 허브 앵커시설",
+        "온라인 LMS를 통한 사전 교육 진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "투자연계",
+          "기타"
+        ],
+        "duration": "1개월"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "개발자 커뮤니티 활동 1개월 무료 지원",
+        "글로벌 플랫폼 Asia tomorrow 와의 연계지원을 통해 희망팀 글로벌지원 추진",
+        "투자전문기관 뉴키즈 인베스트먼트와의 연계를 통해 창업팀 투자유치 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의 및 워크숍 형태로 제공",
+      "유명연사 특강",
+      "1:1코칭",
+      "AI 기술 / AI 활용 창업 사례들을 바탕으로 한 심화 교육",
+      "회차별 코칭 주제가 심화되며"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "회차별 커리큘럼 ... 1회차 ... 2회차 ... 3회차 ... 4회차 ... 5회차"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "단계별 창업 프로세스를 통한 실전 창업 역량 강화 중심의 5회차 오프라인 교육"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "수료자 수",
+        "targetValue": 80,
+        "unit": "명",
+        "raw": "수료자 수 80명 내외"
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "수료자 수 80명 내외"
+    ]
+  },
+  "docId": "cmpsn8cks00088gvc7yfjcfhp",
+  "projectId": "A.25.0034",
+  "projectName": "2025 AI 청년 창업가를 위한 AI 및 창업 교육 운영 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 35,
+    "basis": "weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 24084,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:44:32.601Z"
+  }
+}

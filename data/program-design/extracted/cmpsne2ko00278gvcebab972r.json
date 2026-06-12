@@ -1,0 +1,322 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "① 4차 산업혁명 분야 중 관심 분야 1개 선택 -> 3~4명(1팀) -> 총 4팀 빌딩"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "국립한경대학교 창업캠프"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "중소기업 기술로드맵 4차 산업혁명 분야 중 하나를 선택하여"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "국립한경대학교 창업캠프"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "국립한경대학교 창업캠프"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "국립한경대학교 창업캠프"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": [
+        "3~4명(1팀) -> 총 4팀 빌딩"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DOGS 성격 유형 검사란?"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "DOGS 대화 게임 20분",
+        "3분 동안 실제 성향을 공개하고 대화를 나눠주세요!"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 7,
+        "rhythm": "집중캠프",
+        "campDays": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "09:30~10:00 OT 및 교육 프로그램 소개",
+        "16:00~18:30 AI활용 랜딩페이지 기획 및 발표"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 9,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "09:30~10:00 OT 및 교육 프로그램 소개",
+        "16:00~18:30 AI활용 랜딩페이지 기획 및 발표"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 4,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "3~4명(1팀) -> 총 4팀 빌딩",
+        "3분 발표 / 3분 피드백 (30분)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "랜딩페이지 발표\n3분 발표 / 3분 피드백 (30분)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI를 활용한 랜딩페이지 제작",
+        "실제 랜딩페이지를 제작하는 것"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": 2,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 김용운 코치",
+        "김용운 김진환"
+      ]
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "DOGS 대화 게임 20분",
+      "AI 도구를 활용하여 빠르고 효율적으로 실제 랜딩페이지를 제작하는 것"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT 및 교육 프로그램 소개",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "팀빌딩",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "문제 정의",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "페르소나 정의",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "기존 솔루션 분석(관점도출)",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "아이템 구체화",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "AI활용 랜딩페이지 기획 및 발표",
+        "hours": 2.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "시간 학습 내용\n09:30~10:00 OT 및 교육 프로그램 소개\n10:00~11:00 팀빌딩\n11:00~12:00 문제 정의\n13:00~14:00 페르소나 정의\n14:00~15:00 기존 솔루션 분석(관점도출)\n15:00~16:00 아이템 구체화\n16:00~18:30 AI활용 랜딩페이지 기획 및 발표"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "AI 도구(ChatGPT, Framer 등)를 활용한 랜딩페이지 제작 및 창업 기초 교육으로 범용적이고 지속 가능한 모델임"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "AI 도구를 활용하여 빠르고 효율적으로 실제 랜딩페이지를 제작하는 것"
+    ]
+  },
+  "kpiTargets": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsne2ko00278gvcebab972r",
+  "projectId": "A.24.0034",
+  "projectName": "2024-2학기 AI 활용 랜딩페이지 제작 창업캠프 운영 공급계약",
+  "intensity": {
+    "totalEducationHours": 8,
+    "totalWeeks": null,
+    "basis": "hours: sessions[7] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 30439,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:11:09.476Z"
+  }
+}

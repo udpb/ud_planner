@@ -1,0 +1,377 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "신사업창업사관학교 기초교육",
+        "신사업창업사관학교 상업에 참여중인 예비소상공인을 대상으로",
+        "프로그램 참여 대상: 예비창업가 30명"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "신사업창업사관학교 상업에 참여중인 예비소상공인을 대상으로"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "소상공인분야 전.현직 창업가를 코칭 및 강의자 역할로 투입"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "지역자원조사",
+        "지역이 보유한 자원,특성 및 한계를 조사하여 새로운 가치를 추출하고 솔루션과 결합 하여 새로운 가치 창출"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "대전창조경제혁신센터 신사업창업사관학교 기초교육"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "대전창조경제혁신센터"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 30,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 참여 대상: 예비창업가 30명"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업방법론",
+        "사회혁신창업 4단계"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "언더독스 창업방법론에 기반한 소상공인 맞춤형 커리큘럼 체득",
+        "언더독스의 사회혁신창업 4단계를 바탕으로"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소: 대전창조경제혁신센터 임팩트창업본부 소셜벤처실"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 2,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 기간: 2023년 6월 29일, 7월 07일",
+        "1일차 프로그램 일정",
+        "2일차 프로그램 일정"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "10:00~10:15",
+        "15:10~17:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 1,
+        "hoursPerRound": 0.25,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 코칭 코칭 ud MVP 가설수립 및 실행방법에 대한 팀별 (15분) 1:1 코칭 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 과업, 상호 피드백, 엘리베이터 피칭, 갤러리 워크 등 Action 중심 워크숍",
+        "그룹별 피어피드백 진행",
+        "원페이지 사업계획서 갤러리워크 (네트워킹) 대전 원페이지 사업계획서를 바탕으로 참가자들 자유 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "원페이지 사업계획서 갤러리워크 (네트워킹) 대전 원페이지 사업계획서를 바탕으로 참가자들 자유 네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "과제 원페이지 사업계획서 (페르소나 정의 + 아이디어 구체화 + MVP테스트계획서)"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "소상공인분야 전.현직 창업가를 코칭 및 강의자 역할로 투입",
+        "진행자 ud"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소: 대전창조경제혁신센터 임팩트창업본부 소셜벤처실"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념",
+        "사례·경험"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "전‧현직 소상공인이 직접 진행하는 이론, 워크숍, 케이스스터디 등 실무 중심의 교육"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT",
+        "hours": 0.25,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "지역자원조사",
+        "hours": 0.75,
+        "format": "강의+워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "페르소나 분석",
+        "hours": 0.83,
+        "format": "강의+워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "아이디어 구체화",
+        "hours": 1.5,
+        "format": "강의+워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "MVP",
+        "hours": 1.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "이해관계자 분석",
+        "hours": 1,
+        "format": "강의 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "가격 설정",
+        "hours": 0.83,
+        "format": "강의 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "사업계획서",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "1:1 코칭",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "원페이지 사업계획서 갤러리워크 (네트워킹)",
+        "hours": 2,
+        "format": "네트워킹",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1일차 프로그램 일정",
+      "2일차 프로그램 일정"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "언더독스의 사회혁신창업 4단계를 바탕으로 소상공인 맞춤형 방법론과 노하우를 전달"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngzg100368gvciava8f6r",
+  "projectId": "A.23.0038",
+  "projectName": "2023 신사업창업사관학교 창업아카데미 '창업 IT Go'",
+  "intensity": {
+    "totalEducationHours": 11.99,
+    "totalWeeks": null,
+    "basis": "hours: sessions[10] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 4832,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:20:20.725Z"
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "로컬 \t분야 \t창업팀을 \t대상으로",
+        "창업팀의 \t단계에 \t맞는"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬다운 \t청년창업 \t기본교육"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬 \t분야 \t창업팀을 \t대상으로"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "로컬 \t분야 \t창업팀을 \t대상으로",
+        "지역적 \t가치를 \t창출할 \t수 \t있는"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "로컬다운 \t청년창업 \t기본교육"
+      ]
+    },
+    "clientTier": {
+      "value": "기타",
+      "confidence": 0.6,
+      "evidence": [
+        "주관사와 \t협의하에"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "스타트업 \t창업방법론에 \t기반한 \t교육을"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "실제 \t창업에 \t필요한 \t과정을 \t워크숍 \t형태 로 \t진행해, \t향후 \t사용자와 \t고객들을 \t대상으로 \t현장에서 \t검증해가며"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10:00~11:00 로컬 \t비즈니스",
+        "15:00~16:00 \t비즈니스모델"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10:00~11:00 로컬 \t비즈니스",
+        "15:00~16:00 \t비즈니스모델"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "언더독스 \t전문 \t코치진의 \t맞춤형 \t교육 \t및 \t코칭 \t제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": null,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "창업팀의 \t단계에 \t맞는",
+        "참여 \t창업팀의 \t현황 \t파악"
+      ]
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "비즈니스 \t1 \tpage \t정리",
+        "관점도출 \t템플릿 \t작성",
+        "1차 \t비즈니스모델 \t정립"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 \t전문 \t코치진의 \t맞춤형 \t교육 \t및 \t코칭 \t제공"
+      ]
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "운영방식",
+      "강의",
+      "강의 \t& \t워크숍",
+      "템플릿 \t및 \t툴킷"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "로컬 비즈니스 이해",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제/니즈 정의",
+        "hours": 1,
+        "format": "강의 & 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "페르소나",
+        "hours": 1,
+        "format": "강의 & 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기존솔루션",
+        "hours": 1,
+        "format": "강의 & 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "비즈니스모델",
+        "hours": 1,
+        "format": "강의 & 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "2. \t커리큘럼 \t구성",
+      "1) \t프로그램 \t내용"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "스타트업 \t창업방법론에 \t기반한 \t교육을"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngcvz002w8gvcmxbvyauz",
+  "projectId": "A.23.0026",
+  "projectName": "2023년 지역주도형 청년일자리사업 <로컬다운 청년창업> 실전 로컬 창업 워크숍",
+  "intensity": {
+    "totalEducationHours": 5,
+    "totalWeeks": null,
+    "basis": "hours: sessions[5] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 1489,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:18:13.758Z"
+  }
+}

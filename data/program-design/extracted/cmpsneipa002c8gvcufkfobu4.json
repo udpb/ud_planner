@@ -1,0 +1,340 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "과학기술정보통신부, Kisia, S-개발자 및 AI보안 기술 개발인력 양성 교육생, 재직자 및 예비 창업자 등 개발인력 300명 내외"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "과학기술정보통신부, Kisia, S-개발자 및 AI보안 기술 개발인력 양성 교육생, 재직자 및 예비 창업자 등 개발인력 300명 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "정보보호 최신 기술 트렌드 정보 공유를 통한 개발자의 역량 강화 및 예비 창업자 지원"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "노보텔 앰배서더 강남 샴페인홀 (2F)"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "과학기술정보통신부, Kisia, S-개발자 및 AI보안 기술 개발인력 양성 교육생"
+      ]
+    },
+    "clientTier": {
+      "value": "중앙부처",
+      "confidence": 0.9,
+      "evidence": [
+        "과학기술정보통신부, Kisia, S-개발자 및 AI보안 기술 개발인력 양성 교육생"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 300,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "개발인력 300명 내외",
+        "일 시 2024년 11월 28일(목)"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "노보텔 앰배서더 강남 샴페인홀 (2F)",
+        "온라인 생중계 운영방안"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일 시 2024년 11월 28일(목)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 8.5,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "09:30~11:30 밋업데이",
+        "18:00~ 식사"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "샴페인 홀 A • 최신 정보 보호 개발 트렌드 세미나 주요 행사에 사용",
+        "샴페인 홀 B • 밋업데이 (특강 및 토크 콘서트) • AI 보안 기술개발 인력 양성 프로젝트 발표회"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "09:30~11:30 밋업데이",
+        "12:30~16:00 AI보안 기술 개발 인력양성 프로젝트 발표회",
+        "16:00~18:00 최신 정보보호 개발 트렌드 세미나"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "경품",
+            "amountKrw": null
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "경품 추첨 및 폐회"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "김창덕 변리사 특강 : 개발 기술 특허 출원의 A to Z(60분)",
+        "토크 콘서트 : 스타트업 대표, VC와의 만남",
+        "PM을 중심으로 신속하고 정확한 커뮤니케이션 구축"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "노보텔 앰배서더 강남 샴페인홀 (2F)",
+        "온라인 생중계 운영방안"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "인터뷰·대담",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "김창덕 변리사 특강 : 개발 기술 특허 출원의 A to Z(60분)",
+      "토크 콘서트 : 스타트업 대표, VC와의 만남",
+      "최신 정보보호 개발 트렌드 세미나"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "김창덕 변리사 특강 : 개발 기술 특허 출원의 A to Z",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "토크 콘서트 : 스타트업 대표, VC와의 만남",
+        "hours": 1,
+        "format": "토크콘서트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 3,
+        "title": "AI보안 기술 개발 인력양성 프로젝트 발표회",
+        "hours": 3.5,
+        "format": "발표회",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 4,
+        "title": "최신 정보보호 개발 트렌드 세미나",
+        "hours": 1.5,
+        "format": "세미나",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 5,
+        "title": "기업 및 정보보호 제품 전시회(로비)",
+        "hours": 5,
+        "format": "전시회",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "김창덕 변리사 특강 : 개발 기술 특허 출원의 A to Z(60분)",
+      "토크 콘서트 : 스타트업 대표, VC와의 만남",
+      "AI보안 기술 개발 인력양성 프로젝트 발표회",
+      "최신 정보보호 개발 트렌드 세미나",
+      "기업 및 정보보호 제품 전시회(로비)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "일반적인 온/오프라인 하이브리드 세미나 및 발표회 운영 설계로 상시 유효함"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2024 최신 정보보호 개발 트렌드 세미나"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "참가자 수",
+        "targetValue": 300,
+        "unit": "명",
+        "raw": "개발인력 300명 내외"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "개발인력 300명 내외"
+    ]
+  },
+  "docId": "cmpsneipa002c8gvcufkfobu4",
+  "projectId": "D.24.0011",
+  "projectName": "2024 최신 정보보호 개발 트렌드 세미나 운영용역",
+  "intensity": {
+    "totalEducationHours": 12,
+    "totalWeeks": null,
+    "basis": "hours: sessions[5] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 20692,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:14:07.820Z"
+  }
+}

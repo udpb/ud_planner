@@ -1,0 +1,386 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "Track A (SEED) 매출 50억 미만 사업자",
+        "Track B (Pre-A or Series A) 매출 50억 이상 사업자"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "일반소상공인"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "SME 사업자",
+        "SME 브랜드"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "분야 회사 브랜드 TRACK 추정 매출 F&B ... 패션 ... 리빙 ... 화장품"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "SME 뿐만 아니라 네이버 Engage",
+        "글로벌 진출이 가능한 브랜드는 AC투자 & 네이버 Engagement 상승 유도"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "네이버 투자연계 프로그램 운영 용역업무 위탁 계약"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "네이버 Business Impact_투자연계프로그램"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 20,
+        "durationMonths": 4
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2차 최종합격선정(20개팀)",
+        "참여자들이 다같이 4개월간 활동한 프로그램을 회고하고"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "OKR",
+        "데이터 기반 성과 관리"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "데이터 기반 성과 관리 OKR 기반 실행 관리"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "사전설명회를 통한 투자 필요성 공유",
+        "개별지원안내및온라인설명회2회진행"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대면 우선 진행 검토/ 필요 시 비대면",
+        "전국단위 SME 특성을 고려한 온라인 VC멘토링"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "격주",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "6월 3주 – 7월 1주 (격주 총 2회 진행)",
+        "Step4. 1박2일 마무리 워크샵"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "시간 : 15:00 – 18:00",
+        "전체 워크숍 (OT) 13:30 – 17:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "그룹"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:2.5",
+        "pairing": "오리엔테이션 & 투자사 멘토 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기업당 2회 멘토링",
+        "투자사 멘토단 4명씩 2개 트랙 배치",
+        "오리엔테이션 & 투자사 멘토 매칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "그룹 피어러닝을 통한 IR자료 상향 평준화",
+        "2개 트랙 나누어서 진행",
+        "참여자간 네트워크 형성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "2025 라운드업 리그 데모데이 & 시상식",
+        "9월 (프로그램 종료시점) 장소 미정(부산/강원 등)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT"
+        ],
+        "competitionRatio": "3:1",
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1차 서류 심사",
+        "2차 발표 심사",
+        "1차심사합격기업선정(3배수)"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IR Deck 제작/IR 지표 설정 교육",
+        "IR자료 제작 및 투자를 위한 실무 교육"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "TRACK A 대상",
+            "amountKrw": 10000000
+          },
+          {
+            "label": "TRACK A 최우수상",
+            "amountKrw": 8000000
+          },
+          {
+            "label": "TRACK A 우수상",
+            "amountKrw": 5000000
+          },
+          {
+            "label": "TRACK A 장려상",
+            "amountKrw": 3000000
+          },
+          {
+            "label": "TRACK B 대상",
+            "amountKrw": 20000000
+          },
+          {
+            "label": "TRACK B 최우수상",
+            "amountKrw": 15000000
+          },
+          {
+            "label": "TRACK B 우수상",
+            "amountKrw": 10000000
+          },
+          {
+            "label": "TRACK B 장려상",
+            "amountKrw": 5000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대상 1팀 1,000만원 + 비즈머니 500만원",
+        "대상 1팀 2,000만원 + 비즈머니 500만원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 8,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "LIPS 및 기존 SME 투자사들로 8개사 멘토단 구성"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "지역거점",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "공간 : 네이버 1784 3층 세미나실",
+        "네이버 그린팩토리 커넥트홀",
+        "장소 미정(부산/강원 등)"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 출석률 - 전체 프로그램 이수율"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "투자연계",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "알럼나이 및 임직원 참여 세션",
+        "실제 투자 연계 트래킹 및 지원",
+        "라운드리그 커뮤니티 라벨(RCL)"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "마인드셋 교육 및 기본 투자 이해",
+      "데이터를 활용한 IR Deck 제작",
+      "VC특강 - 투자사 관점 및 투자사례 중심"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "네이버 Business Impact_투자연계프로그램"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "투자 유치율",
+        "targetValue": 30,
+        "unit": "%",
+        "raw": "투자 유치율 30% 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "투자 유치율 30% 이상 네이버 다양성 생태계 확보"
+    ]
+  },
+  "docId": "cmpsn8an000078gvcf8vvygrb",
+  "projectId": "A.25.0031",
+  "projectName": "네이버 투자연계 프로그램 운영 용역업무 위탁 계약",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 17,
+    "basis": "weeks: durationMonths(4) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 17449,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:45:47.010Z"
+  }
+}

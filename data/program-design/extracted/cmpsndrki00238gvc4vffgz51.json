@@ -1,0 +1,443 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "예비~초기단계(0~3년차)의\n창업팀모집",
+        "선발 기준 : 시드단계 이후인 시리즈A단계의 스타트업을 발굴하여 성장 전망을 분석하여 투자 가치를 판단"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "본그룹의 미션 및 비전에 공감하고 푸드테크를 통해 문제해결방안을\n제시하는 기술 및 서비스를 보유한 스타트업 0~3년차"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "식품/농업",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "푸드테크 분야에 부합하는 기술, 제품을 연구 또는 기술, 제품을\n보유한 스타트업",
+        "고령친화사업 분야에 부합하는 기술, 제품을 연구 또는 기술, 제품을\n보유한 기업"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "전국단위로 본프로그램참가자\n모집"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "2024년 사업 세부계획(안)"
+      ]
+    },
+    "clientTier": {
+      "value": "중견기업",
+      "confidence": 0.8,
+      "evidence": [
+        "대한민국의 외식문화를 이끌어가는 본 그룹의 핵심 정체성을 반영하여 ‘외식업’을 넘어 Food-Tech 영역의 스타트업을 발굴·육성"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "9주 정규 창업교육 프로그램을 통해 우수한 사업 아이디어를 통해 본그룹의 투자 및 협업으로의 시너지를 만들어\n내고"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트러닝",
+        "6Dimension"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "상호\n학습\n코호트\n러닝",
+        "제안서 자체 개발 6Dimension 진단 도구를\n통해 비즈니스 모델 보완요소 도출"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "제안서 자체 개발 6Dimension 진단 도구를\n통해 비즈니스 모델 보완요소 도출"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1:1 온오프라인코칭(주1회)",
+        "실행을강조하는실시간집중코칭을매주진행하여,방향성확립및계획수립"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 9,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "9주 정규 창업교육 프로그램을 통해",
+        "1:1 온오프라인코칭(주1회)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2024년 9월2일(월) 13:30~16:30",
+        "2024년 9월2일(월) 10:00~12:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담",
+          "기타"
+        ],
+        "totalRounds": 10,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "본그룹 전담 멘토제 운영 (참여팀 선정이후 내부에서 전담 멘토 희망 인원을 뽑아 진행)"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1:1 온오프라인코칭(주1회)",
+        "BM진단및\n고도화\n계획수립\n(8회)",
+        "BM고도화를\n통한스케일업\n(2회)",
+        "본그룹 전담 멘토제 운영 (참여팀 선정이후 내부에서 전담 멘토 희망 인원을 뽑아 진행)"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "상호\n학습\n코호트\n러닝",
+        "참가팀 7팀\n최종 선발"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간 성과 공유회\n(5주차)",
+        "최종 성과 공유회\n(9주차)",
+        "품평회 및 최종 성과공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1차서류평가, 2차대면평가를통한최종\n참가팀선발"
+      ]
+    },
+    "actionWeek": {
+      "value": {
+        "count": 1,
+        "placement": "7회차"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "7회차 액션 위크"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업\n계획서",
+        "완성도높은사업계획서를토대로IR 피치덱작성",
+        "MVP\n실행 주간을 통해 제품의 개발과 검증을 진행"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "지원금을 전달하고 향후 투자 및 협업 기회를 갖습니다.",
+        "우수팀 시상"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전현직창업가코치, 심사역",
+        "선배창업가연사강연을통해인사이트를얻고",
+        "마케팅& 브랜딩코치의진단및 과제진행"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "본아이에프1층아카데미홀",
+        "본아이에프1층로비(변동가능성있음)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "후속보육"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스지주사‘뉴블랙’투자\n연계(해당시)",
+        "본그룹의 투자 및 협업으로의 시너지"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연",
+        "경험담"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의\n워크샵\n1:1 코칭",
+      "선배 창업가 사례소개",
+      "품평회 및 최종 성과공유회"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT / 참가팀 현황 진단",
+        "hours": null,
+        "format": "OT/진단",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "IR 전략 수립",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "마케팅 전략",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기업회계 관리",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "중간 성과공유회",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "사업계획서 교육 / 선배 창업가 사례소개",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "액션 위크",
+        "hours": null,
+        "format": "실습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "모의 피칭/IR",
+        "hours": null,
+        "format": "코칭/실습",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "성과공유회",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1회차 OT\n참가팀 현황 진단",
+      "2회차 IR 전략 수립",
+      "3회차 마케팅 전략",
+      "4회차 기업회계 관리",
+      "5회차 중간 성과공유회",
+      "6회차 사업계획서 교육\n선배 창업가 사례소개",
+      "7회차 액션 위크",
+      "8회차 모의 피칭/IR",
+      "9회차 성과공유회"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "9주 정규 창업교육 프로그램을 통해 우수한 사업 아이디어를 통해 본그룹의 투자 및 협업으로의 시너지를 만들어\n내고"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsndrki00238gvc4vffgz51",
+  "projectId": "A.24.0027",
+  "projectName": "2024년 제 3회 넥스트본(NextBON)",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 9,
+    "basis": "weeks: totalSessions(9) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 10695,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:52:49.907Z"
+  }
+}

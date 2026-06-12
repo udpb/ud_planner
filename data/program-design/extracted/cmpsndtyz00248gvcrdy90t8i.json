@@ -1,0 +1,426 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "로컬 콘텐츠 기반의 예비/초기 창업자 중 선발"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "천안 청년 및 시민",
+        "기수 당 20명 선발 예비 로컬 창업자 천안 청년 및 시민"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "천안형 문화 콘텐츠 기반 제품/서비스를 개발하는 창업 전문 과정 개발 필요성이 존재함"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "천안형 로컬 크리에이터에 대한 정체성 확립을 위한 로컬 크리에이터 양성"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "2024 천안문화도시 로컬크리에이터 양성 사업"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "천안시는 2019년 문화도시 사업 대상지역으로 지정"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 60,
+        "durationMonths": 5
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "천안형 로컬 크리에이터 양성과정 개발 및 3개 기수(60명) 육성",
+        "6월 7월 8월 9월 10월 ... 보고 및 종료 사업 결과보고서 작성 및 제출"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "Flipped-Learning",
+        "Local-preneurship"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "Flipped-Learning: 사전 학습을통해 현장 교육 및 학습 활동의 효과를높이는 학습법",
+        "로컬 기업가정신(Local-preneurship) 함양"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 강좌를 통한 사전 학습",
+        "제안사가 보유한 창업교육 전문 온라인 플랫폼을 통해 예비 단계/로컬 창업가 맞춤형 과정을 4주간 수강",
+        "창업가 성향 및 기업가정신에 대한 진단 및 워크숍 제공"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "VOD"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온오프라인 융합 교육과 일대일 코칭을 통해 4주 내 지역 자원을 활용한 창업 아이템 및 기본 사업계획 도출"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 45,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "로컬 크리에이터양서교육 (45회 이상)",
+        "온라인에서 학습한 내용을 바탕으로 주 1회(총 4회) 정규 오프라인 교육을 통해 주차별 핵심 목표를 이해하고 실행 계획을 수립합니다."
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "창업팀 단계 및 역량별 맞춤형 전문가 배정"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온오프라인 융합 교육과 일대일 코칭을 통해",
+        "[2주차] 문제 및솔루션 도출과정진단 1차 코칭 [4주차] 최종사업계획및 실행계획KPI 점검 2차 코칭",
+        "창업팀 단계 및 역량별 맞춤형 전문가 배정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "워크숍 및 동료간 피드백 상호학습",
+        "기수간 네트워킹을 통해 공감대를 형성하는 것입니다."
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "초반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1차 시민 네트워크 모임은 문화독립회 컨퍼런스로",
+        "최종 성과 공유회 (시민네트워크 통합 행사)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1차 서류평가, 2차 대면평가를 통한 최종 참가팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "기본 사업계획 도출",
+        "천안형 로컬크리에이터 가이드 북 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수수료자 특전제공 (추가일대일코칭/ 투자사매칭등)",
+        "중기부 LIPS 연계한 선배 창업가 펀드 투자"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 5,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업 전문 코치의 교육/워크숍 제공",
+        "조OO 대표, 우OO 파트너, 유OO 파트너, 홍OO 매니저, 김OO 매니저",
+        "사업 PM 우OO 파트너"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화독립도시 천안 아트홀",
+        "제안사 온라인 플랫폼"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "결과물"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "모임 출석률, 제출한 결과물에 대한 정성/정량평가 실시",
+        "4주 간 강좌 수강 및 주차별 달성 목표에 따른 과제 수행 후 제출"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "제안사 알럼나이 커뮤니티 멤버십과 회원 전용프로그램을 제공합니다.",
+        "우수팀은 형제회사이자 엑셀러레이터에 패스트트랙 투자 검토 연계하겠습니다."
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "온라인에서 학습한 내용을 바탕으로 주 1회(총 4회) 정규 오프라인 교육을 통해",
+      "Lv.1 <창업가의 관점> ... Lv.10 <사업계획서 & IR 피칭>"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "1주차: 문제 정의",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "2주차: 관점 도출",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "3주차: 시장 분석",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "4주차: 사업계획서 작성",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "W1 : 문제 정의",
+      "W2: 관점 도출",
+      "W3: 시장 분석",
+      "W4: 사업계획서 작성"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "본 사업은 시민 네트워크 구축을 위한 문화독립회 행사를 기반으로 천안 지역의 문화적 자원에 대한 이해를 바탕으로 활동하는 로컬크리에이터 양성"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "시민네트워크파티 개최",
+        "targetValue": 2,
+        "unit": "건",
+        "raw": "시민네트워크파티 2회 이상 개최"
+      },
+      {
+        "metric": "로컬 크리에이터 양성교육",
+        "targetValue": 45,
+        "unit": "회",
+        "raw": "로컬 크리에이터양서교육 (45회 이상)"
+      },
+      {
+        "metric": "가이드북 발간",
+        "targetValue": 300,
+        "unit": "부",
+        "raw": "비기너 패키지가이드북발간 (300부)"
+      },
+      {
+        "metric": "시민 모니터링단 모집",
+        "targetValue": 20,
+        "unit": "명",
+        "raw": "시민 모니터링단 20명 모집"
+      },
+      {
+        "metric": "활동 보고서",
+        "targetValue": 100,
+        "unit": "건",
+        "raw": "활동 보고서100건"
+      },
+      {
+        "metric": "SNS 업로드",
+        "targetValue": 100,
+        "unit": "건",
+        "raw": "SNS 업로드100건"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "시민네트워크파티 2회 이상 개최",
+      "로컬 크리에이터양서교육 (45회 이상)",
+      "비기너 패키지가이드북발간 (300부)",
+      "시민 모니터링단 20명 모집",
+      "활동 보고서100건",
+      "SNS 업로드100건"
+    ]
+  },
+  "docId": "cmpsndtyz00248gvcrdy90t8i",
+  "projectId": "A.24.0028",
+  "projectName": "2024 천안문화도시 로컬 크리에이터 육성 사업 운영 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 45,
+    "basis": "weeks: totalSessions(45) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 35037,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:10:42.882Z"
+  }
+}

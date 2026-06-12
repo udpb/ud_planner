@@ -1,0 +1,374 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "오프라인 발표 평가 (예비창업팀 / 기 창업팀)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전국창업가대상함께성장가능한공정한경쟁도전기회제공"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "참가팀 사업분야 시장•기술 평가가 가능한"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "전국창업가대상함께성장가능한공정한경쟁도전기회제공"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "도전! K-스타트업 2024 통합본선 위탁용역"
+      ]
+    },
+    "clientTier": {
+      "value": "중앙부처",
+      "confidence": 0.9,
+      "evidence": [
+        "11개부처관계자및\n210팀의창업자들대상"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 210,
+        "durationMonths": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "통합본선 진출팀(210팀)",
+        "8월 9월 10월 11월 12월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "6 Dimension",
+        "4 Steps 실전 창업 방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "4 Steps 실전 창업 방법론",
+        "6 Dimension 비즈니스 진단 방법론",
+        "DOGS 창업성향진단 방법론"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 발표 평가",
+        "실시간 온라인\n송출"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대회 통합본선 킥오프",
+        "통합본선 발표평가",
+        "왕중왕전 사전 밋업",
+        "왕중왕전 시상식",
+        "간담회 및 알럼나이"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "24.10.29.(화)~11.1.(금), 09:30~17:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "팀 별 분야 맞춤 멘토링"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "선배 멘토와 1:1 상담 진행",
+        "팀 별 분야 맞춤 멘토링 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "통합본선 진출팀(210팀)",
+        "예비창업리그 | 창업리그 | 시상식",
+        "참여자간 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "중반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대회 통합본선 킥오프",
+        "통합본선 발표평가",
+        "왕중왕전 사전 밋업",
+        "왕중왕전 시상식",
+        "간담회 및 알럼나이"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "PT"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "통합본선에 진출할 30팀 선발",
+        "오프라인 발표 평가"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "IR Deck 제작 지원",
+        "출전팀 홍보영상"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계"
+        ],
+        "amounts": [
+          {
+            "label": "총상금",
+            "amountKrw": 1490000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "정부시상20점,총상금14.9억원,\n창업사업화지원사업후속연계"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "전담코치"
+        ],
+        "headcount": 20,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일반평가단, 투자심사역 총 20명 섭외",
+        "제안사 PM의 K-스타트업 운영 경험"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "서울창업허브 대강당",
+        "캠퍼스타운 기업성장 1센터",
+        "팁스타운 S1",
+        "코엑스 D홀",
+        "용산 드래곤시티 호텔"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 발표 평가"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업사업화지원사업후속연계",
+        "제안사 보유투자사및\n자체VC를통한후속지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "기 수상팀 강연",
+      "실패와 도전 끝에 이루어낸\n연 매출 200억 기업",
+      "IR 역량강화 및 발표 교육"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "도전! K-스타트업 2024 통합본선 위탁용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "참가자 만족도",
+        "targetValue": 90,
+        "unit": "%",
+        "raw": "참가자만족도\n90%이상"
+      },
+      {
+        "metric": "후속지원 창업팀",
+        "targetValue": 50,
+        "unit": "명",
+        "raw": "후속지원창업팀\n50팀이상"
+      },
+      {
+        "metric": "제안사 창업팀 투자",
+        "targetValue": 20,
+        "unit": "명",
+        "raw": "제안사창업팀투자\n20팀이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "참가자만족도\n90%이상",
+      "후속지원창업팀\n50팀이상",
+      "제안사창업팀투자\n20팀이상"
+    ]
+  },
+  "docId": "cmpsnef0j002b8gvcznw8n5zn",
+  "projectId": "D.24.0008",
+  "projectName": "도전! K-스타트업 2024 통합본선 위탁운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 22,
+    "basis": "weeks: durationMonths(5) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 33605,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:51:55.151Z"
+  }
+}

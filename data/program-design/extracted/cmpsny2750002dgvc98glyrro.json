@@ -1,0 +1,397 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상 : 예비창업패키지 참여기업 25개사 내외",
+        "2022년 예비창업패키지 수료 창업기업임을 고려하여, 2023년 초기창업패키지 신청을 위한 사업계획서와 예비창업패키지 사업계획서 간의 차이를 중심으로 교육을 구성"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "진행 대상 : 예비창업패키지 참여기업 25개사 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "창업아이템 분야, 창여팀 수에 따라 커리큘럼은 조정될 수 있음"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "강원창조경제혁신센터 2022년 예비창업패키지 NEXT LEVEL 프로그램 및 일정 안내"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "2022년 예비창업패키지 Next level 프로그램 용역"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "강원창조경제혁신센터 2022년 예비창업패키지 NEXT LEVEL 프로그램 및 일정 안내"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 25,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상 : 예비창업패키지 참여기업 25개사 내외",
+        "진행 기간 : 2023.02.23.(목)~02.24.(금) (1박 2일)"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 방법 : 특강 4회, 워크숍(실습) 2회, 창업기업 네트워킹 1회"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": null
+      },
+      "confidence": 1,
+      "evidence": [
+        "진행 장소 : 유진인재개발원 (서울 종로구 자하문로33다길 36-4)",
+        "진행 방식 Ÿ 오프라인 운영 / OT",
+        "진행 방식 Ÿ 오프라인 특강"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 8,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 기간 : 2023.02.23.(목)~02.24.(금) (1박 2일)",
+        "진행 방법 : 특강 4회, 워크숍(실습) 2회, 창업기업 네트워킹 1회"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "12:30-13:00 30 접수 운영",
+        "19:00~20:30 90 창업기업 네트워킹",
+        "13:00-15:00 120 투자유치 계약서 작성 워크숍"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 50,
+        "practicePct": 34,
+        "basis": "추정"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 방법 : 특강 4회, 워크숍(실습) 2회, 창업기업 네트워킹 1회",
+        "후속 지원 사업 설명회 강의",
+        "사업계획서 및 발표자료 작성 워크숍"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": 0.5,
+        "coachToTeamRatio": "1:5",
+        "pairing": "멘토별 4~5개 창업기업을 전담하도록 구성해 1:1 맞춤형 멘토링 운영"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "멘토별 4~5개 창업기업을 전담하도록 구성해 1:1 맞춤형 멘토링 운영",
+        "1명의 멘토별로 4~5개 창업기업을 30분간 멘토링을 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 대상 : 예비창업패키지 참여기업 25개사 내외",
+        "창업기업 네트워킹 1회"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "19:00~20:30 창업기업 네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서, 발표자료 실습",
+        "투자유치 계약서 작성 진행"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 방법 : 특강 4회, 워크숍(실습) 2회, 창업기업 네트워킹 1회"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 6,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "25개 창업기업에 대해 6명의 전담멘토를 투입하여, 1명의 멘토별로 4~5개 창업기업을 30분간 멘토링을 진행"
+      ]
+    },
+    "venue": {
+      "value": [
+        "합숙시설",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소 : 유진인재개발원 (서울 종로구 자하문로33다길 36-4)",
+        "숙박형태 : 양실 및 한실"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "안내 14:45~15:00 15 버퍼(이동시간) 및 프로그램 수료식, 단체사진 촬영"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 방법 : 특강 4회, 워크숍(실습) 2회, 창업기업 네트워킹 1회"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "진행 방법 : 특강 4회, 워크숍(실습) 2회, 창업기업 네트워킹 1회",
+      "예비창업패키지 신청용 사업계획서 대비 초기창업패키지 신청용 사업계획서의 차이점과 강조해야 할 점을 중심으로",
+      "강사가 VC로서 실무를 경험하며 얻은 인사이트를 투자사례를 통해 전달"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션",
+        "hours": 0.17,
+        "format": "OT",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "후속 지원 사업 설명회",
+        "hours": 1.83,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "사업계획서 작성 특강",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "사업계획서 및 발표자료 작성 워크숍",
+        "hours": 2,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "창업기업 네트워킹",
+        "hours": 1.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "투자유치 전략 특강",
+        "hours": 1.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "자금유치 전략 및 투자유치 계약서 작성 특강",
+        "hours": 1.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "투자유치 계약서 작성 워크숍",
+        "hours": 2,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "4. 프로그램 내용",
+      "13:10-15:00 110 후속 지원 사업 설명회",
+      "13:00-15:00 120 투자유치 계약서 작성 워크숍"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2022년 예비창업패키지 Next level 프로그램 용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsny2750002dgvc98glyrro",
+  "projectId": "A.23.0012",
+  "projectName": "2022년 예비창업패키지 Next level 프로그램",
+  "intensity": {
+    "totalEducationHours": 11.5,
+    "totalWeeks": null,
+    "basis": "hours: sessions[8] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 12211,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:29:39.727Z"
+  }
+}

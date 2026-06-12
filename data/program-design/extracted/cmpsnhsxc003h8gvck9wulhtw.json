@@ -1,0 +1,310 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "#예비초기 #소셜임팩트 #더데뷔"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "창업가 및 스타트업 관계자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "ESG·기후·로컬·SME·취창업 등 전 분야에 걸쳐"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_한국인바운드",
+      "confidence": 0.8,
+      "evidence": [
+        "(드래프트 데이) 글로벌 밋업",
+        "외국인 유학생은 이벤트 신청 시 이력서와 포트폴리오 제출"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.7,
+      "evidence": [
+        "2023년 디캠프 디데이 운영사로 선정되어"
+      ]
+    },
+    "clientTier": {
+      "value": "재단/비영리",
+      "confidence": 0.9,
+      "evidence": [
+        "디캠프"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 460000000,
+        "participants": null,
+        "durationMonths": 4
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체사업비 총계(백만원 미만 절삭) 460,000,000",
+        "9월 10월 11월 12월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 업무 성향 테스트(DOGS test) 체험부스 운영"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온/오프라인 생중계 (디캠프 유튜브 채널 활용)",
+        "오프라인 현장 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "2023 디캠프 올스타전 in 디캠프 스타디움"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10:00 - 16:00 / 3층 라운지",
+        "18:00 - 21:00 / B1, 소무대"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:多",
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "스타트업의 멘탈과 커리어를 위한 1:多 멘토링 프로그램"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "디캠프 올스타전 참가인원 전체 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "(올스타 게임) D∙DAY",
+        "(애프터 파티) 네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "서류"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "사전신청 후 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "출전팀 항공 지원료",
+            "amountKrw": 1500000
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우승 트로피 시상 / 베네핏 제공",
+        "유럽(런던) 왕복 1인 기준 항공료 1,500,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "커리어 코치ㅣ김정헌 대표",
+        "사업 기획/운영 PM 김재형 디렉터"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "[B1] 프론트원 내 유휴 공간 활용",
+        "[1F] 시설내 300명 수용가능 공간",
+        "[3F] 기존 공유오피스 라운지 공간 활용"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "엑셀러레이터 투자검토 & 창업가 1박 2일 리트릿 프로그램 초청",
+        "스타트업 워케이션 참여 기회제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "데모·시연",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "스타트업 10개사 피칭 진행",
+      "해외 비즈니스 트랜드 및 지원사업 정보 공유"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2023년 디캠프 올스타전 운영 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnhsxc003h8gvck9wulhtw",
+  "projectId": "D.23.0002",
+  "projectName": "2023 디캠프 올스타전",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 17,
+    "basis": "weeks: durationMonths(4) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 15590,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:24:55.057Z"
+  }
+}

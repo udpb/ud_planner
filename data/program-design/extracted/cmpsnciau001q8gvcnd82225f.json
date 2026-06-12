@@ -1,0 +1,336 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "비창업자",
+      "confidence": 0.8,
+      "evidence": [
+        "대상: 보안 업계에 관심 있는 대학생 및 일반인"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대상: 보안 업계에 관심 있는 대학생 및 일반인",
+        "모객 대상: 사이버 보안 업계 종사자, 보안 기술 관련 자격증 보유자, 해킹 기술 및 보안 업계 관심 있는 자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "고도화된 디지털 환경에 맞춰 사이버 보안의 중요성이 제기됨에 따라"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "전국 지역의 사이버 보안 분야 전문가 및 관심 있는 사람들을 대상으로 홍보하기 위하여"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "두나무의 '보안 인재 사관학교' 브랜드 구축"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "두나무의 '보안 인재 사관학교' 브랜드 구축"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 11
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "본 과업은 1년 여간의 기간 동안 2기수를 운영하여",
+        "2023년 (9월~12월) | 2024년 (1월~7월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "성장 관리: 교육 기간 내 상시, 이를 통한 성장 관리 (초기 자기 진단 평가)"
+      ]
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "비즈니스 관리: 비즈니스 성찰 및 애로사항 점검 (창업 전문 코치 멘토링, 1:1 맞춤 멘토링 제도)"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "홍보 기간: 프로그램 몰입을 위하여 기수 별 참가자 모집",
+        "창업팀 사업 아이템 보호 및 개인정보 관련 체계 구축",
+        "참여팀 및 관계자를 초대하여 참여자, 관계자 간 네트워크 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "중간 성과 공유회",
+        "더 데뷔 (졸업식)",
+        "보안 커리어 세미나 및 컨퍼런스"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "선발 및 교육 (1차 서류 및 2차 면접)",
+        "주요 업무 수행: 서류/대면 심사 -> 교육 프로그램 참가자 선정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "두나무 사관학교 커뮤니티 및 후속 지원",
+        "사전 설명회 참석자 가산점 부여",
+        "취업 및 기업 교육 프로그램"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사",
+          "전담코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "티오리의 교육을 통해 사업 내 각 프로그램이 유기적으로 진행되며",
+        "보안 업계의 유명 연사 특강",
+        "창업 전문 코치 멘토링, 1:1 맞춤 멘토링 제도"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "오프라인 사전 설명회",
+        "온라인 커뮤니티 운영"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여도 관리: 교육 참여 및 과제 수행 여부 등 점검 (성실성, 평가 제도 운영)"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "기타"
+        ],
+        "duration": "상시"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 커뮤니티를 통한 알럼나이들 간의 상시 소통 및 선배/후배 개발자 간의 소통의 장",
+        "취업 및 기업 교육 프로그램"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "패널",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "연사 특강 및 패널 토의 운영",
+      "실습 기반 최신 해킹 노하우, 웹, 모바일, OS 등 분야별 핵심 기술",
+      "다양한 보안 업계의 성장 과정 및 인재 성공 사례 아카이빙"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "보안 업계의 양적, 질적 활성화를 위하여 지속 가능한 보안 인재 지원"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "운영 기수",
+        "targetValue": 2,
+        "unit": "개",
+        "raw": "2기수를 운영"
+      },
+      {
+        "metric": "컨퍼런스 참가 인원",
+        "targetValue": 1000,
+        "unit": "명",
+        "raw": "보안 업계에 관심 있는 관계자 1,000여 명"
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "본 과업은 1년 여간의 기간 동안 2기수를 운영하여",
+      "대상: 보안 업계에 관심 있는 관계자 1,000여 명"
+    ]
+  },
+  "docId": "cmpsnciau001q8gvcnd82225f",
+  "projectId": "A.24.0009",
+  "projectName": "두나무 업사이드 아카데미 1기",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 48,
+    "basis": "weeks: durationMonths(11) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 9888,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:04:19.695Z"
+  }
+}

@@ -1,0 +1,442 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "만 7년 미만 교통 환경 분야 창업 기업"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "비즈니스를 통해 교통 및 환경문제를 해결하고자하는 소셜벤처 ·스타트업"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "교통/환경"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "교통·환경 분야 혁신 스타트업의 성장 지원을 통한 ESG 역량 강화"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "비즈니스를 통해 교통 및 환경문제를 해결하고자하는 소셜벤처 ·스타트업"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "DB손해보험교통·환경챌린지는사회적문제해결을위한혁신솔루션을보유한소셜벤처를발굴, 육성하는DB손해보험의사회공헌프로젝트입니다."
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "(주최) DB손해보험 주최"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 8
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2025년 5월~12월 (총8개월)",
+        "총 8개 기업 선정"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트러닝"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "코호트러닝을 통한 실제 기업 운영 관점의 운영 효율화(자동화) 실습과 상호 피드백"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "다양한 분야의 기업 경영 분야를 온/오프라인 강의, 코호트 학습을 통하여 습득하고"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 15,
+        "rhythm": null,
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전체 교육은 9회차 교육과 6회차 1:1 멘토링으로 구성되어 있으며"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": 6,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "VC 멘토별 담당팀 집중 관리 및 참여팀 각각의 니즈에 맞춘 특화 분야 컨설팅"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코칭 총 6회 진행: VC 정규 멘토링 5회, 전문 분야 멘토링 1회 진행",
+        "VC 멘토별 담당팀 집중 관리",
+        "참여팀 각각의 니즈에 맞춘 특화 분야 컨설팅을 1회 진행합니다."
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코호트러닝을 통한 실제 기업 운영 관점의 운영 효율화(자동화) 실습과 상호 피드백",
+        "동료 창업가 피어 피드백"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "오리엔테이션",
+        "데모데이(8팀)",
+        "수료식"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 3,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류심사",
+        "대면심사 1차 / 2차",
+        "최종선발(8개팀)"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱",
+        "브랜드",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IR 자료 고도화(피치덱 구성 및 스토리라인 검토)",
+        "임팩트 보고서 & 브랜딩 보고서 제작 지원"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금"
+        ],
+        "amounts": [
+          {
+            "label": "사업비",
+            "amountKrw": 30000000
+          }
+        ]
+      },
+      "confidence": 1,
+      "evidence": [
+        "기업당 최대 30,000,000원 (3천만 원)",
+        "창업 및 사업화를 위한 최대 3천만 원 사업비 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "전담코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "VC 멘토별 담당팀 집중 관리",
+        "전문 코치의 퍼실리테이팅"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "다양한 분야의 기업 경영 분야를 온/오프라인 강의, 코호트 학습을 통하여 습득하고"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "기타"
+        ],
+        "duration": "11월~12월"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "11월~12월 후속지원",
+        "기수 간 네트워크 커뮤니티 운영 및 후속 교류 프로그램 기획"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "다양한 분야의 기업 경영 분야를 온/오프라인 강의, 코호트 학습을 통하여 습득하고",
+      "1:1 멘토링방식으로 투자유치의 단계별 전략에 관해 5회 진행하며",
+      "기업 운영 효율화 관련 ai자동화 실습",
+      "투자 트렌드",
+      "임팩트 측정에 대한 이해와 방법"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT 및 조직관리",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "환경교육",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "비즈니스 임팩트 측정(1)",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "비즈니스 임팩트 측정(2)",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "코호트러닝(1)",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "투자트렌드",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "팀빌딩의 중요성",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "글로벌진출전략",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "코호트러닝(2)",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "교육세부계획(안)",
+      "코호트러닝(1)",
+      "코호트러닝(2)",
+      "비즈니스 임팩트 측정(1)",
+      "비즈니스 임팩트 측정(2)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025년 5월~12월 (총8개월)"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "수료율",
+        "targetValue": 70,
+        "unit": "%",
+        "raw": "수료율(70% 이상)"
+      },
+      {
+        "metric": "사업화 성과 달성률",
+        "targetValue": 75,
+        "unit": "%",
+        "raw": "참여 스타트업의 75%이상이 사업화 성과* 달성"
+      },
+      {
+        "metric": "데모데이 규모",
+        "targetValue": 100,
+        "unit": "명",
+        "raw": "100명 이상 규모의 데모데이 개최"
+      },
+      {
+        "metric": "모집 규모",
+        "targetValue": 100,
+        "unit": "개",
+        "raw": "지원 분야 스타트업 100개 이상 모집"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "참여 몰입도 및 수료율(70% 이상) 제고",
+      "참여 스타트업의 75%이상이 사업화 성과* 달성",
+      "100명 이상 규모의 데모데이 개최",
+      "지원 분야 스타트업 100개 이상 모집 및 선발 프로세스 운영"
+    ]
+  },
+  "docId": "cmpsn8q4u000d8gvcjgawkzt9",
+  "projectId": "A.25.0042",
+  "projectName": "DB손해보험 교통·환경챌린지 7기 프로젝트 사업",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 35,
+    "basis": "weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 9441,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:49:41.032Z"
+  }
+}

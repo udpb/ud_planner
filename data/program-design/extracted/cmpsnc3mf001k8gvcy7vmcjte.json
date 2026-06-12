@@ -1,0 +1,470 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "기존 초기&예비 창업가 육성 프로그램에서 지원대상을 기창업단계로 확장하고 이들을 위한 창업 생애 주기별 맞춤 성장 과정을 신규로 도입"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "신청 권역 내 활동이 가능한 만 18~34세 청년"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "F&B, 숙박, 제조, 관광, 공간 기반 창업 등의 실제 현직 대표들의 강의와 멘토링을 통한 실질적 교육 진행"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "매년 1,500 명의 지역정착형 창업 인재를 발굴/육성하는 국내 최초의 거점대학 연계형 청년 창업 육성 프로그램"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "고용노동부 청년친화형 기업 ESG 사업의 우수기관 선정"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "하나금융그룹과 동반성장을 강화하겠습니다."
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 1500,
+        "durationMonths": 11
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "매년 1,500 명의 지역정착형 창업 인재를 발굴/육성",
+        "2월 거점대학 미팅을 시작으로 12월 최종성과공유회까지 약 1년간"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "프리토 타이핑"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DOGS테스트 진행 *업무 성향 테스트",
+        "제품 없이 사업 검증법 : 프리토 타이핑"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": 60
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "60시간 온라인 VOD 강의",
+        "DOGS테스트 진행 *업무 성향 테스트",
+        "참여자별 창업 단계 진단"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 사전 교육 시작",
+        "오프라인 집체교육",
+        "온라인 라이브 강의"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 8,
+        "rhythm": "주2회",
+        "campDays": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기본창업 교육 7월1주 -7월4주 4주 8회(주2회)",
+        "우수팀_ 스타트캠프 8월4주 4박5일 2박3일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 4,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "32시간 (회당4시간)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 15,
+        "practicePct": 85,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "이론강의 (15%) 워크샵 (70%) 코칭 (15%)"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": 8,
+        "hoursPerRound": 1,
+        "coachToTeamRatio": null,
+        "pairing": "권역별 2명이 전담코치 배치"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "우수팀_ 1:1코칭 8회(2주1회) 8시간 (회당1시간) 1:1 온오프라인 코칭 • 권역별 2명이 전담코치 배치"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기수제 코호트 성장 커뮤니티",
+        "창업팀 간 네트워킹 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "최종성과공유회 24년 12월",
+        "대학별 경진대회 개최"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서면 심사 대면 심사 및 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "BM 및 사업계획서",
+        "MVP 실행자금"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "상금",
+          "후속연계"
+        ],
+        "amounts": [
+          {
+            "label": "교육훈련 수당",
+            "amountKrw": 1000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육훈련 수당 100만원",
+        "우수팀 대상 창업지원기금/최종성과공유회 상금 지급"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "5-6 명의 전담 코치들이 8회차 동안 창업가를 집중 케어",
+        "전담 인원 배정",
+        "지역PM"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "지역거점",
+        "합숙시설"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "30개 거점 대학",
+        "온라인 VOD",
+        "2박3일 캠프"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률"
+        ],
+        "attendanceThreshold": 70
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기본 창업 교육 수료 창업팀(전체 인원 몰입형 창업교육 70%이상 참여팀)"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1,2기 졸업팀 후속 지원",
+        "스타트업 투자 및 성장 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "이론강의 (15%) 워크샵 (70%) 코칭 (15%)",
+      "창업이론 및 방법론 강의",
+      "실전형 창업 교육 콘텐츠",
+      "운영 실무 관련 콘텐츠"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "창업가 관점 도출 1 (고객정의 및 문제분석)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "창업가 관점 도출 2 (핵심가치과 관점도출)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이템 구체화 1 (구체화 진행 및 피어피드백)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "아이템 구체화 2 (고객검증 내용 아이템 반영)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "BM수립1 (시장 규모 분석 및 경쟁자 분석)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "사업계획서 1 (작성 및 실습 워크샵)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서2 (사업계획서 내용 보완)",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "사업계획 발표 및 학교별 우수팀 선정",
+        "hours": 4,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "기본창업 교육 7월1주 -7월4주 4주 8회(주2회) 32시간 (회당4시간)",
+      "1 7월 1주차(1회) 창 업 가 관 점 도 출 1 ( 고 고객정의 및 문제분석)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "지역 청년 소상공인 창업 프로그램"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "창업 교육생 배출 수",
+        "targetValue": 1500,
+        "unit": "명",
+        "raw": "1,500 명"
+      },
+      {
+        "metric": "기창업가 발굴/육성",
+        "targetValue": 500,
+        "unit": "팀",
+        "raw": "500 팀"
+      },
+      {
+        "metric": "법인사업자 신규 등록 수",
+        "targetValue": 400,
+        "unit": "팀",
+        "raw": "400 팀"
+      },
+      {
+        "metric": "외부 투자 유치 기업 수",
+        "targetValue": 5,
+        "unit": "팀",
+        "raw": "5 팀"
+      },
+      {
+        "metric": "하나은행 법인 대출 연계 수",
+        "targetValue": 40,
+        "unit": "개",
+        "raw": "40 개"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "창업 교육생 배출 수 1,500 명",
+      "기창업가 발굴/육성 500 팀",
+      "법인사업자 신규 등록 수 400 팀",
+      "외부 투자 유치 기업 수 5 팀",
+      "하나은행 법인 대출 연계 수 40 개"
+    ]
+  },
+  "docId": "cmpsnc3mf001k8gvcy7vmcjte",
+  "projectId": "A.24.0002",
+  "projectName": "2024년 하나 소셜벤처 유니버시티 예비 창업가 육성 사업 용역",
+  "intensity": {
+    "totalEducationHours": 32,
+    "totalWeeks": 4,
+    "basis": "hours: sessions[8] hours 합산 · weeks: totalSessions(8) ÷ rhythm(주2회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 40485,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:49:04.423Z"
+  }
+}

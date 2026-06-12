@@ -1,0 +1,417 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.7,
+      "evidence": [
+        "아이디어 구체화 세션 문제, 페르소나, 핵심가치 구체화 강의, 워크숍"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "2025 한국외대 창업캠프(1박2일) 제안서"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "2025 한국외대 창업캠프(1박2일) 제안서"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "2025 한국외대 창업캠프(1박2일) 제안서"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2025 한국외대 창업캠프(1박2일) 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "2025 한국외대 창업캠프(1박2일) 제안서"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "4Steps 실전 창업 방법론",
+        "6Dimension 비즈니스 진단 방법론",
+        "DOGS 팀빌딩 솔루션"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "자체 개발한 4Steps 실전 창업 방법론과 6Dimension 비즈니스 진단 방법론을 통해",
+        "DOGS 팀빌딩 솔루션 5인 1팀 구성하여"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1일차(06/26, 10:30~20:00) 진행 시간 프로그램 내용 운영방식 10:30~11:00 출석 및 OT"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박2일 창업캠프 일정",
+        "1일차(06/26, 10:30~20:00)",
+        "2일차(06/27, 10:00~13:30)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 11,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박2일 창업캠프 일정",
+        "1일차(06/26, 10:30~20:00)",
+        "2일차(06/27, 10:00~13:30)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1일차(06/26, 10:30~20:00)",
+        "2일차(06/27, 10:00~13:30)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "가장 만족도 높은 전현직 창업가의 1:1 코칭",
+        "20:00~ 사업계획서 작성&코칭",
+        "09:00~11:00 사업계획서 작성&코칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 5,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "5인 1팀 구성하여 창업가 성향을 진단하고 팀 네트워크 극대화",
+        "5단계 맞춤형 상호 학습 시스템(교육+워크숍+코호트러닝+피어피드백+코칭)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "IR",
+          "timing": "종반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "11:00~12:00 사업계획서 발표 IR 피칭 및 피드백(3분 발표, 3분 피드백)",
+        "13:000~13:30 시상 및 마무리"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박 이일이라는 짧은 시간 안에 창업가들이 IR Deck을 완성할 수 있도록 설계",
+        "노코드 툴 활용 랜딩페이지 제작",
+        "사업계획서 작성&코칭"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "13:000~13:30 시상 및 마무리"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 4,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "김용운 현) 언더독스(주) 코치",
+        "정운 현) 장서 대표",
+        "김대홍 현) 프레드랩 대표",
+        "김진환 현) 언더독스(주) PM"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "1박2일 창업캠프 일정"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "1박2일 창업캠프 일정"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의, 워크숍",
+      "노코드 툴 활용 랜딩페이지 제작",
+      "비즈니스모델 구축 세션",
+      "사업계획서 강의",
+      "사업계획서 발표 IR 피칭 및 피드백"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "출석 및 OT",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "DOGS 팀빌딩 솔루션",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이디어 구체화 세션",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "Ai/노코드 활용 랜딩페이지 제작",
+        "hours": 2,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "랜딩페이지 발표",
+        "hours": 1,
+        "format": "발표",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "비즈니스모델 구축 세션",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서 강의",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "사업계획서 작성&코칭 (1일차)",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "사업계획서 작성&코칭 (2일차)",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "사업계획서 발표",
+        "hours": 1,
+        "format": "발표",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 11,
+        "title": "시상 및 마무리",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1-1) 1박2일 창업캠프 일정",
+      "❍ 1일차(06/26, 10:30~20:00)",
+      "❍ 2일차(06/27, 10:00~13:30)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025 한국외대 창업캠프(1박2일) 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn84hj00048gvcoc3i3vkt",
+  "projectId": "A.25.0023",
+  "projectName": "2025 한국외국어대학교 학생창업캠프",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 9052,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:44:37.139Z"
+  }
+}

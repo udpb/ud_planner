@@ -1,0 +1,170 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "demographic": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "businessDomain": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "geography": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "channel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "점검필요",
+      "reason": "제안서 원문의 텍스트 데이터가 유실되어 기호와 페이지 번호만 존재하므로 프로그램 운영 설계를 분석할 수 없음"
+    },
+    "confidence": 1,
+    "evidence": [
+      "-- 1 of 19 --",
+      "-- 19 of 19 --"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn9q37000u8gvcr1pxwwsg",
+  "projectId": "B.25.0016",
+  "projectName": "이마트-브랜드K 식품 기업 해외판로 개척",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 637,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:53:54.648Z"
+  }
+}

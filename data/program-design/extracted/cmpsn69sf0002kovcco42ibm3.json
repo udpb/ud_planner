@@ -1,0 +1,324 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.7,
+      "evidence": [
+        "창업가들이 기술 기반 아이디어를 단순히 구상하는 데 그치지 않고, 실질적인 문제 해결과 성과 창출로 연결될 수 있도록 연쇄 실행(실행과 피드백 반복)을 통한 지속 가능한 실행력을 길러줍니다."
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "창업가들이 기술 기반 아이디어를 단순히 구상하는 데 그치지 않고"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "디지털 트랜스포메이션 시대에 대응하는 기술 기반 액트프러너 육성",
+        "신기술 창업 및 학제 간 융합을 통한 지식창업 역량 강화"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.7,
+      "evidence": [
+        "참가자들은 수도권 내 창업 특화 오피스와 창업 거점 시설을 직접 방문하여 창업 현장을 체험합니다"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2024년 언더독스 창업교육 기획/운영 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "4Steps 실전 창업 방법론",
+        "6Dimension 비즈니스 진단 방법론",
+        "DOGS 창업성향진단",
+        "I.O.I 문제 탐색 방법론",
+        "코호트러닝",
+        "PSST"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스는 자체 개발한 4Steps 실전 창업 방법론과 6Dimension 비즈니스 진단 방법론을 통해 체계적이고 구체적인 맞춤형 창업 교육을 제공합니다.",
+        "DOGS 창업성향진단과 I.O.I 문제 탐색 방법론을 통해 창업가는 스스로 자신의 창업 성향을 진단하고"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "DOGS 창업성향진단과 I.O.I 문제 탐색 방법론을 통해 창업가는 스스로 자신의 창업 성향을 진단하고"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 교육 프로그램 일정 (2일)",
+        "오프라인 교육 일정 (1월 중)",
+        "현장 방문 1박2일"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 교육 프로그램 일정 (2일)",
+        "오프라인 교육 일정 (1월 중)",
+        "현장 방문 1박2일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "13:00~13:30 OT",
+        "10:00~10:10 OT"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 33,
+        "practicePct": 67,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 강의는 챕터당 20분 이내의 강의와 40분의 실습으로 구성되며"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "그룹",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "창업가의 비즈니스 상황에 맞춰 세밀하게 설계된 이 교육 방법론은 실질적인 성과를 도출하기 위한 최적의 솔루션을 제공합니다."
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "가장 만족도 높은 전현직 창업가의 1:1 코칭",
+        "5단계 맞춤형 상호 학습 시스템(교육+워크숍+코호트러닝+피어피드백+코칭)"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "코호트 러닝 방식을 통해 참가자들 간의 활발한 상호 학습이 이루어지며",
+        "전현직 창업가 출신 코치들이 소회의실에서 조별 상호 학습을 지원합니다."
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "IR",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "해커톤 마지막 날, 실제 사업계획서 형식에 맞게 나의 아이템을 스토리텔링하고, 내 아이템의 고객 관점에서 설득력 있게 피칭하는 경험",
+        "사업계획서 모의 피칭"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱",
+        "MVP",
+        "프로토타입",
+        "사업계획서"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일이라는 짧은 시간 안에 창업가들이 IR Deck을 완성하고",
+        "최소한의 자원(비용, 시간)으로 아이디어를 빠르게 검증할 수 있는 MVP를 기획하고 설계하여",
+        "나만의 솔루션 핵심 가치를 바탕으로 랜딩페이지를 작성하고 발표하는 경험",
+        "실제 사업계획서 형식에 맞게 나의 아이템을 스토리텔링하고"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 4,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "4. 투입 인력",
+        "임재성",
+        "김용운",
+        "정연호",
+        "정홍래"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "현장방문",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 교육 프로그램 일정 (2일)",
+        "참가자들은 수도권 내 창업 특화 오피스와 창업 거점 시설을 직접 방문하여 창업 현장을 체험합니다",
+        "판교 스타트업 캠퍼스",
+        "MARU 180"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "온라인 강의 및 워크숍",
+      "랜딩페이지 제작 및 발표",
+      "선배 창업가 특강",
+      "선배 창업가 멘토링"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "커리큘럼 일정이 온라인, 오프라인, 현장방문, 세부 커리큘럼 2일차 등으로 분산되어 있어 정확한 회차별 복원이 불가능함."
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "디지털 트랜스포메이션 시대에 대응하는 기술 기반 액트프러너 육성"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn69sf0002kovcco42ibm3",
+  "projectId": "A.25.0005",
+  "projectName": "디지털 트랜스포메이션 기반 액트프러너 양성",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 19610,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:43:01.895Z"
+  }
+}

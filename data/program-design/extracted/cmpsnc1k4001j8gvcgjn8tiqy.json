@@ -1,0 +1,491 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "에코제조 비즈니스 초기 창업팀 타겟 콘텐츠 마케팅"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "에코제조 분야의 소셜벤처 개인 및 팀(15개팀)"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "에코제조 분야의 소셜벤처 개인 및 팀"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "전국 단위로 본 프로그램의 참가자 모집"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.8,
+      "evidence": [
+        "GS리테일 에코 소셜임팩트 프로젝트는 2018년부터 GS리테일 사회공헌사업의 일환으로 진행된 프로젝트입니다."
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "GS리테일 에코 소셜임팩트 프로젝트는 2018년부터 GS리테일 사회공헌사업의 일환으로 진행된 프로젝트입니다."
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 200000000,
+        "participants": 24,
+        "durationMonths": 9
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 사업예산: 200,000,000 / 지정위탁금 포함",
+        "실전교육: 24명(15개팀)",
+        "총 9개월간 참여팀 모객, 프로젝트 홍보, 참여팀 교육, 데모데이 진행, 후속 지원 등을 진행"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "사회혁신 창업방법론",
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "자체 개발 프로그램 '사회혁신 창업방법론' 기반으로 비즈니스 방향성을 확립하는 교육을 진행합니다.",
+        "DOGS 네트워킹 프로그램 (팀 라포 형성)"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "온라인 서베이로 사전 진단 -> 결과 보고서"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "현재 창업을 하고 있는 참여자들이 효과적으로 집중할 수 있도록 주 2회 온, 오프라인 블렌디드 교육 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "주2회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "현재 창업을 하고 있는 참여자들이 효과적으로 집중할 수 있도록 주 2회 온, 오프라인 블렌디드 교육 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "담당 코치의 1:1 코칭",
+        "완성도 있는 IR 피치덱을 위한 2:1 코칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "실전교육: 24명(15개팀)",
+        "DOGS 네트워킹 프로그램 (팀 라포 형성)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간평가 (8개팀)",
+        "7주차: 최종 데모데이 진행, 우수팀 선발 및 시상 / 오프라인"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "01 서류심사 02 대면심사",
+        "중간평가를 통한 15개팀 -> 8개팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": {
+        "count": 2,
+        "placement": "실전교육 4주차와 5주차 사이, 집중교육 4주차와 5주차 사이"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "액션위크: 검증하고자 하는 가설 기반 MVP 진행",
+        "액션위크: 자체 IR 피치덱 보완 및 MVP 결과 분석"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "결과물: 아이템 구체화, MVP TEST",
+        "결과물: 아이템 고도화, 최종 사업계획서",
+        "IR 피치덱 고도화"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "시제품비",
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "시제품 제작 지원금",
+            "amountKrw": 2000000
+          },
+          {
+            "label": "사업화 시상금",
+            "amountKrw": 40000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "시제품 제작 지원금 팀별 200만원: 16,000,000",
+        "사업화 시상금: 40,000,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로젝트 총괄 PM: 16,500,000",
+        "프로젝트 운영 매니저: 33,600,000",
+        "창업 코치: 5,100,000"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "방식: 현재 창업을 하고 있는 참여자들이 효과적으로 집중할 수 있도록 주 2회 온, 오프라인 블렌디드 교육 진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "투자연계"
+        ],
+        "duration": "상시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사후관리 (상시) 01 창업팀 현황 조사 02 네트워크 구축 지원 03 투자, HR 등 자원 연계 지원",
+        "언더독스 알럼나이의 성공을 이끄는 자체 후속 투자 연계 프로그램 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "담당 코치의 1:1 코칭, 사업 고도화 워크숍, 에코제조 특강",
+      "사회적 가치 측정 워크숍, 판로 개척을 위한 에코제조 특강, GS MD 연계 프로그램, 완성도 있는 IR 피치덱을 위한 2:1 코칭"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT : 프로그램 소개 및 참가팀 소개, DOGS 네트워킹 프로그램 (팀 라포 형성)",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "페르소나 문제 정의 및 원인 분석, 기존 솔루션 분석 기반 창업가 관점 도출",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이템 소개서 작성 기반 아이템 구체화, 고객 중심 검증하고자 하는 가설 설정",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "에코제조 선배 창업가 MVP 토크콘서트, 라운드 테이블을 통한 MVP 계획 검토",
+        "hours": null,
+        "format": "강의",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 5,
+        "title": "액션위크: 검증하고자 하는 가설 기반 MVP 진행",
+        "hours": null,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "시장 규모, 경쟁사 대비 차별점 도출, 사업계획서 10가지 흐름 구성",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "진행하고 있는 MVP 진행 상황 공유, 중간 점검을 통한 방향성 확립",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "사회적 가치 측정 특강, 팀별 집중교육 KPI 설정",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "에코제조 분야 판로 개척 선배 창업가 특강",
+        "hours": null,
+        "format": "강의",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "GS MD 연계 토크콘서트 및 라운드 테이블",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 11,
+        "title": "IR 피치덱 구체화를 위한 2:1 코칭",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "액션위크: 자체 IR 피치덱 보완 및 MVP 결과 분석",
+        "hours": null,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "IR 피치덱 고도화를 위한 2:1 코칭",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "최종 데모데이 준비를 위한 모의 발표",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 15,
+        "title": "피칭 스킬 및 최종 발표 연습 코칭",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 16,
+        "title": "최종 데모데이 진행, 우수팀 선발 및 시상",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1주차: OT : 프로그램 소개 및 참가팀 소개, DOGS 네트워킹 프로그램 (팀 라포 형성) / 오프라인",
+      "1주차: 사회적 가치 측정 특강, 팀별 집중교육 KPI 설정 / 오프라인"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "GS리테일 에코 소셜임팩트 7기 프로그램 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnc1k4001j8gvcgjn8tiqy",
+  "projectId": "A.24.0001",
+  "projectName": "GS 리테일 에코 소셜임팩트 7기 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 39,
+    "basis": "weeks: durationMonths(9) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 12222,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:49:54.296Z"
+  }
+}

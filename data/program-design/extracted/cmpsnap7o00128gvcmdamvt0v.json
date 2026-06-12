@@ -1,0 +1,287 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "비창업자",
+      "confidence": 0.9,
+      "evidence": [
+        "만 18세 이상~ 만 70세 미만 신체 건강한 성인 대상"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "만 18세 이상~ 만 70세 미만 신체 건강한 성인 대상"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화예술, 콘텐츠 등 지역 콘텐츠 개발-브랜딩 확산-글로벌화 설계-지속가능 모델 개발-성과 고도화 지원까지"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_한국인바운드",
+      "confidence": 0.9,
+      "evidence": [
+        "DDP 루프탑 투어를 콘텐츠 IP로 전환, 서울의 대표 글로벌 문화체험 플랫폼 확장하는 성과를 만들어 가겠습니다.",
+        "3회 중 1회는 영어로 진행 외국인 방문객, 거주자 기준"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "DDP·서울디자인재단 홈페이지 / 네이버 예약 / 인터파크 / 글로벌 OTA"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "DDP·서울디자인재단 홈페이지 / 네이버 예약 / 인터파크 / 글로벌 OTA"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 182000000,
+        "participants": 1300,
+        "durationMonths": 4
+      },
+      "confidence": 1,
+      "evidence": [
+        "일금 일억팔천이백만 원정(₩182,000,000), 부가가치세 포함",
+        "총 1,300명 이상 참가자 중",
+        "계약체결일 ~ 2025. 12. 15 / 약 4개월"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "구성 : 장비 착용 및 주의사항 안내 & 루프탑 투어(왕복 652m) 총 60분 운영"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 1,
+      "evidence": [
+        "투어 시나리오 개발 및 도슨트 투어 운영, 시민참여 이벤트 운영 등"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 90,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기간 : 25. 10월 말 ~ 11월 (5주) / 일 3회 운영 (11:00 / 13:30 / EN_15:30) 약 90회 운영"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 1,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "구성 : 장비 착용 및 주의사항 안내 & 루프탑 투어(왕복 652m) 총 60분 운영"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 예매 시스템 (사전 예약 중심)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": [
+        "온라인 예매 시스템 (사전 예약 중심)"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "DDP루프탑 투어 경험을 확산하는 공식 굿즈 제작안",
+        "참여자 웰컴 키트 제공 (매트·아이마스크·메시지카드)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "리드 도슨트 (앞)_1명 서브 도슨트 (뒤)_2명 세이프티 (측면/선행)_2명",
+        "안전관리본부(총괄 PM + 안전책임자) 운영"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "See Seoul from Above – DDP 루프탑 4구간",
+        "투어구간 : 왕복 652.17 m"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "투어 시나리오 개발 및 도슨트 투어 운영, 시민참여 이벤트 운영 등",
+      "도슨트 해설(축약판) 후 루프탑에서 요가·명상·사운드 힐링(싱잉볼, 핸드팬) 진행"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "루프탑 투어 프로그램 정례화 및 유료화 : 정규 루트 개발 및 봄·가을 시즌 정례화와 DDP 상징 프로그램화 및 정체성 강화"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "만족도",
+        "targetValue": 95,
+        "unit": "%",
+        "raw": "만족도 95%이상"
+      },
+      {
+        "metric": "참가자 수",
+        "targetValue": 1300,
+        "unit": "명",
+        "raw": "총 1,300명 이상 참가자"
+      },
+      {
+        "metric": "외국인 참여 비율",
+        "targetValue": 10,
+        "unit": "%",
+        "raw": "10%▲"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "2024-25년 만족도 95%이상 지속적인 참가자 만족도 유지",
+      "총 1,300명 이상 참가자 중",
+      "외국인 참여 비율 10%▲"
+    ]
+  },
+  "docId": "cmpsnap7o00128gvcmdamvt0v",
+  "projectId": "B.25.0074",
+  "projectName": "[서울디자인재단] 2025 하반기 루프탑 투어 운영 및 DDP 투어 홍보",
+  "intensity": {
+    "totalEducationHours": 90,
+    "totalWeeks": 17,
+    "basis": "hours: cadence.totalSessions(90) × sessionLength.hoursPerSession(1) · weeks: durationMonths(4) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 30007,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:56:33.088Z"
+  }
+}

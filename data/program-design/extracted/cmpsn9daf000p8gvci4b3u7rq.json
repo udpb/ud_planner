@@ -1,0 +1,249 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "우수 액션그룹의 핵심 성공요소를 바탕으로 지역문제를 해결하고 자립하는‘농촌혁신가’모델 정의 필요"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "성장모델 제시로 청년, 귀농귀촌인들의 농촌 유입을 촉진하고 지역 소멸 위기 대응에 기여"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "농촌신활력플러스사업 사례를 통한 농촌혁신 생태계 구축 전략 수립 용역"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "지역문제를 해결하고 자립하는‘농촌혁신가’모델 정의 필요"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "한국농어촌공사"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 1,
+      "evidence": [
+        "한국농어촌공사"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 45000000,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "용역기간 : 계약 체결일로부터 2025년 12월 23일(화) 까지",
+        "소요예산 : 금45,000,000원(금사천오백만원정) * 부가세 포함"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "우수 액션그룹의 핵심 성공요인과 사회․경제적 임팩트를 측정하는 농촌혁신가형 임팩트 프레임워크 개발"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": null,
+        "syncType": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "농촌혁신 생태계 미래 전략 포럼* 기획 및 운영 전반 * 12/18(목) 세종컨벤션센터(예정)"
+      ]
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "중간보고 착수 후 60일 이내 범위에서 협의 중간 성과 보고",
+        "최종보고 계약종료일 10일 이전 최종 성과 보고",
+        "농촌혁신 생태계 미래 전략 포럼* 기획 및 운영 전반 * 12/18(목) 세종컨벤션센터(예정)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "착수보고서",
+        "중간보고서",
+        "최종보고서 ․ 용역(포럼 포함) 최종성과물"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전문가 및 이해관계자 의견 수렴",
+        "과업수행자의 자격요건은 ｢예정가격 작성기준(기획재정부 계약예규)｣에서 정하는 “제4절 학술연구용역 원가계산”의 등급별 적격자로 하여야 한다."
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "12/18(목) 세종컨벤션센터(예정)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "주요 대기업 ESG 담당자 등 민/관의 이해관계자 대상 FGI",
+      "우수 액션그룹 대상으로 모델 기반 사업분석 및 사업추진 관계자(추진단, 지자체 등) 심층 인터뷰",
+      "우수 액션그룹의 핵심 성공요소를 바탕으로 지역문제를 해결하고 자립하는‘농촌혁신가’모델 정의 필요"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "농촌신활력플러스사업 사례를 통한 농촌혁신 생태계 구축 전략 수립 용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn9daf000p8gvci4b3u7rq",
+  "projectId": "A.25.0070",
+  "projectName": "농촌신활력플러스사업 사례를 통한 농촌혁신 생태계 구축 전략 수립 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 9,
+    "basis": "weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6266,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:53:15.123Z"
+  }
+}

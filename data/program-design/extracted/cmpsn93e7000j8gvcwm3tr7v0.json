@@ -1,0 +1,361 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "규모: 약 60명 내외 (지역 문제에 관심이 있는 전문가 및 업계 관계자)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "규모: 약 60명 내외 (지역 문제에 관심이 있는 전문가 및 업계 관계자)"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "한·일 지역활성화를 위한 교류 행사"
+      ]
+    },
+    "geography": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "한·일 지역활성화를 위한 교류 행사"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "(주최/주관) 중소벤처기업부, 주식회사 유디임팩트"
+      ]
+    },
+    "clientTier": {
+      "value": "중앙부처",
+      "confidence": 0.9,
+      "evidence": [
+        "(주최/주관) 중소벤처기업부, 주식회사 유디임팩트"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 60,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "규모: 약 60명 내외 (지역 문제에 관심이 있는 전문가 및 업계 관계자)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "일본의 지속가능성: 지역 사회와 공존을 중시하며 수익과 사회적 가치의 균형을 추구하는 ‘제브라’ 모델",
+        "정부의 적극적 지원(LIPS 프로그램 등)"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "(장소) 커먼즈필드 대전 ‘모두의 공터’ 공간"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "(일정) 2025년 11월 14일 (금), 14:00 ~ 17:00 *이후 자유 네트워킹 장 마련"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "(일정) 2025년 11월 14일 (금), 14:00 ~ 17:00 *이후 자유 네트워킹 장 마련"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "18:00-19:30 90‘ 네크워킹 자유 네트워킹 *케이터링 OR 식사 장소 마련"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "18:00-19:30 90‘ 네크워킹 자유 네트워킹 *케이터링 OR 식사 장소 마련"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "유디임팩트와 중소벤처기업부는 귀하의 참여가 최고의 경험이 될 수 있도록 이동 및 숙박 등 모든 여정에서부터 현장에서의 지원에 이르기까지, 귀하께서 온전히 행사에 집중하실 수 있도록 함."
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "로컬 주요 플레이어 및 투자자 섭외: 한국의 대표 브랜드 8개 사의 대표를 포함하여, 한국 LIPS 프로그램과 임팩트 투자사를 이끄는 대표 그룹과 교류할 수 있는 기회를 제공"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "(장소) 커먼즈필드 대전 ‘모두의 공터’ 공간"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "패널",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "트렌드·인사이트",
+        "실무·도구"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "기조연설 1 (중기부) 달라지는 로컬 창업 지원 정책 및 방향성",
+      "세션 1-1: 사례발표",
+      "세션 1-2: 패널토크",
+      "VIP 세션 워크숍 라운드 테이블 워크숍 진행"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오프닝 및 축사 / 기조연설 1 (중기부) 달라지는 로컬 창업 지원 정책 및 방향성",
+        "hours": 0.17,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "기조연설 2 (UDI) AI & 로보틱스와 함께 변화하는 로컬의 미래",
+        "hours": 0.17,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "세션 1-1: 사례발표 (무사시노대학 학장) 창업이 지역을 바꾸는 힘: 일본 사례와 자본의 역할",
+        "hours": 0.25,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "세션 1-2: 패널토크 (뉴키즈인베스트먼트, SIIF) 임팩트 펀드 조성과 지역 생태계 자본",
+        "hours": 0.5,
+        "format": "패널토크",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "세션 2-1: 사례발표 (D3쥬빌리 정원석 심사역) 한일 투자사 관점에서 보는 로컬 창업 생태계",
+        "hours": 0.25,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "세션 2-2: 패널토크 (어반플레이, 뉴로컬) 한일 로컬 플레이어: 지역브랜딩/공간기획 전략 비교",
+        "hours": 0.5,
+        "format": "패널토크",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "세션 3-1: 사례발표 (UDI) 로컬에서 글로벌로 확장 및 글로컬의 미래",
+        "hours": 0.25,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "세션 3-2: 패널토크 (윙윙, 지브라) 지역 커뮤니티에서 글로벌 네트워크 확장 방안",
+        "hours": 0.5,
+        "format": "패널토크",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "VIP 세션 워크숍 라운드 테이블 워크숍 진행",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "네트워킹 자유 네트워킹",
+        "hours": 1.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "2 프로그램 주요 프로그램 내용 (안)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "한·일 지역활성화를 위한 교류 행사"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn93e7000j8gvcwm3tr7v0",
+  "projectId": "A.25.0055",
+  "projectName": "2025 한일 글로컬 임팩트 컨퍼런스",
+  "intensity": {
+    "totalEducationHours": 5.09,
+    "totalWeeks": null,
+    "basis": "hours: sessions[10] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 4282,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:47:34.734Z"
+  }
+}

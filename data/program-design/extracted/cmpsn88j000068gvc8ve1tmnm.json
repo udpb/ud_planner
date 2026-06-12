@@ -1,0 +1,402 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "전남 창경 예비창업패키지 서류 합격자 대상 BM 점검 및 피칭 역량 강화"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경 예비창업패키지 서류 합격자 54명"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경 예비창업패키지 서류 합격자 54명"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "전남 창경 예비창업패키지 서류 합격자"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "전남창경 예비창업패키지 서류 합격자"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 54,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전남창경 예비창업패키지 서류 합격자 54명"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트러닝",
+        "퍼실리테이팅"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "<코호트러닝+퍼실리테이팅+1:1 맞춤형 코칭>"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전과제"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "발표 덱 PPT 자료와 발표 시나리오 자료 사전 준비"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석 및 OT",
+        "노트북 소지"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 2,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "원데이 교육 2회 나눠서 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 8,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "10:00~18:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 33,
+        "practicePct": 67,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "10분 압축 강의 + 20분 워크숍 방식으로 각 세션별 실습 중심 진행"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 1,
+        "hoursPerRound": 0.33,
+        "coachToTeamRatio": "1:7",
+        "pairing": "1:1 전담 코치 매칭"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 전담 코치 매칭",
+        "각 코치별 20분씩 7팀 멘토링"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "<코호트러닝+퍼실리테이팅+1:1 맞춤형 코칭>",
+        "창업가별 사업 아이템에 맞춤형으로 발표 구조 설계"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "발표 시나리오",
+        "1:1 멘토링 보고서"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "결과물(KPI): 만족도 조사(54명), 1:1 멘토링 보고서(54개), 발표 시나리오(54개)"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": 5,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "담당: 전반적인 in&out 총괄 운영/관리 코치 1명 / 멘토링 전담 코치 4명"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "출석 및 OT",
+        "노트북 소지"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "원데이 교육 2회 나눠서 진행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "10분 압축 강의 + 20분 워크숍 방식으로 각 세션별 실습 중심 진행",
+      "1:1 멘토링 및 발표 시나리오 고도화"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "출석 및 OT",
+        "hours": 0.5,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "오프닝/필요성 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "해결책 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "실제 성과 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "경쟁사 분석 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "시장 진입 전략 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "비즈니스 모델 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "확장 전략(비전) 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "팀/클로징 보완",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "1:1 멘토링 및 발표 시나리오 고도화",
+        "hours": 2.5,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "발표 교육 및 멘토링(27팀씩 2회 진행, 04/09(수)~10(목) 10:00~18:00)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "원데이 교육 2회 나눠서 진행"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "만족도 조사",
+        "targetValue": 54,
+        "unit": "명",
+        "raw": "만족도 조사(54명)"
+      },
+      {
+        "metric": "1:1 멘토링 보고서",
+        "targetValue": 54,
+        "unit": "건",
+        "raw": "1:1 멘토링 보고서(54개)"
+      },
+      {
+        "metric": "발표 시나리오",
+        "targetValue": 54,
+        "unit": "건",
+        "raw": "발표 시나리오(54개)"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "결과물(KPI): 만족도 조사(54명), 1:1 멘토링 보고서(54개), 발표 시나리오(54개)"
+    ]
+  },
+  "docId": "cmpsn88j000068gvc8ve1tmnm",
+  "projectId": "A.25.0029",
+  "projectName": "\"2025년 예비창업패키지\" 사전 인큐베이팅 기획·운영",
+  "intensity": {
+    "totalEducationHours": 7,
+    "totalWeeks": null,
+    "basis": "hours: sessions[10] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 8051,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:44:18.161Z"
+  }
+}

@@ -1,0 +1,415 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "창업중심대학 출신 학생들 중 창업에 관심이 있지만, 본격적으로 시작하지 않은 학생들을 대상으로 아이디어를 구체화하는 과정을 경험"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "대상 : 사회문제 해결에 관심이 있는 대학생 90명"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사회문제 해결에 관심이 있는 대학생",
+        "사회문제를 해결하는 지속가능 모델의 구축"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.7,
+      "evidence": [
+        "장소 : 전북대학교 국제컨벤션센터 컨벤션홀 및 세미나실"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "중기부 인턴 69명",
+        "창진원"
+      ]
+    },
+    "clientTier": {
+      "value": "중앙부처",
+      "confidence": 0.8,
+      "evidence": [
+        "중기부 인턴 69명",
+        "심사총평 : 중기부 실장님"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 90,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대상 : 사회문제 해결에 관심이 있는 대학생 90명",
+        "일시 : 2024년 8월 12일(월) ~ 13일(화)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "가점점수구분 : 사전온라인수강율",
+        "수강일정 : 8월 2일 ~ 8월 9일"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참가자사전교육(온라인)",
+        "장소 : 전북대학교 국제컨벤션센터"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 9,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일시 : 2024년 8월 12일(월) ~ 13일(화)",
+        "기숙사(한빛관) 이동 및 안내"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "일시 : 2024년 8월 12일(월) ~ 13일(화)",
+        "22:00 ~ 팀별사업계획서작성"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:2",
+        "pairing": "멘토당 2팀 / 공간에서 멘토-멘티 자유롭게 진행"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "멘토당 2팀 / 공간에서 멘토-멘티 자유롭게 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "학생 참가자 83명(18개팀)",
+        "모의투자 방식 / 온라인 구글폼 활용"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "아이디어톤최종심사오프닝",
+        "우수팀시상식및폐회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "대상 : 사회문제 해결에 관심이 있는 대학생 90명"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서작성및전문가멘토링",
+        "사업계획서마무리작업및제출"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수팀 시상식",
+        "우수팀 5개팀 호명 및 시상보드 전달"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "이슬기 PM",
+        "언더독스 최인영 코치 진행",
+        "전문 심사 위원 : 멘토단 9명"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "합숙시설"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "장소 : 전북대학교 국제컨벤션센터 컨벤션홀 및 세미나실",
+        "기숙사(한빛관) 다목적실"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "제출마감: 12:00(정오)",
+        "팀원전체수강율80% 이상: 2점만점"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "우수팀시상식및폐회"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "사회문제해결워크샵및BM 특강",
+      "사업계획서작성및전문가멘토링",
+      "토크콘서트참여"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "프로그램 OT 및 사회문제해결워크샵/BM 특강",
+        "hours": 1.67,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "사업계획서 작성 및 전문가 멘토링 1",
+        "hours": 2.5,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "토크콘서트 참여",
+        "hours": 2.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 4,
+        "title": "사업계획서 작성 및 전문가 멘토링 2",
+        "hours": 1.67,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "중간점검",
+        "hours": 0.5,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "팀별 사업계획서 작성",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서 마무리 작업 및 제출",
+        "hours": 3,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "아이디어톤 최종 심사 및 발표",
+        "hours": 3.17,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 9,
+        "title": "우수팀 시상식 및 폐회",
+        "hours": 0.67,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "전체 일정표"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2024 별빛 아이디어톤 운영계획안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "사전 온라인 수강율",
+        "targetValue": 80,
+        "unit": "%",
+        "raw": "팀원전체수강율80% 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "팀원전체수강율80% 이상: 2점만점"
+    ]
+  },
+  "docId": "cmpsndott00228gvciaqi3sns",
+  "projectId": "A.24.0026",
+  "projectName": "별빛 아이디어톤 운영 위탁 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7490,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:09:42.498Z"
+  }
+}

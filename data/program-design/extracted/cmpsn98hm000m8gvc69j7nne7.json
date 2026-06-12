@@ -1,0 +1,387 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.8,
+      "evidence": [
+        "단순한 아이디어 단계에 머물지 않고 작은 실행을 반복할 수 있게 도와줌"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "2025 대전대학교 AI와 함께하는 테크창업캠프 기획안"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "AI와 함께하는 테크창업캠프 기획안"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "2025 대전대학교"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2025 대전대학교 AI와 함께하는 테크창업캠프 기획안"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "2025 대전대학교"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "자체 개발한 4Steps 실전 창업 방법론과 6Dimension 비즈니스 진단 방법론",
+        "DOGS 대화 카드 게임"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1-1) 1박2일 해커톤 일정"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "충추 켄싱턴 리조트 버스 이동",
+        "대전대학교 버스 이동"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일이라는 짧은 시간 안에",
+        "1-1) 1박2일 해커톤 일정"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1-1) 1박2일 해커톤 일정"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "가장 만족도 높은 전현직 창업가의 1:1 코칭",
+        "팀별 발표자료 준비 및 멘토링 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 5,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "5인 1팀 구성하여 창업가 성향을 진단하고 팀 네트워크 극대화",
+        "코호트러닝: 창업가의 아이템을 다양한 관점에서 다각도로 검토하고 보완하는 교육"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "11:00~12:00 사업계획서 발표 아이디어 발표 및 심사",
+        "13:00~13:30 시상 및 마무리"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일이라는 짧은 시간 안에 창업가들이 IR Deck을 완성할 수 있도록 설계",
+        "Ai/노코드 활용 랜딩페이지 제작",
+        "AI를 활용한 사업계획서 작성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "13:00~13:30 시상 및 마무리"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전국적으로 261명의 전현직 창업가 출신 코치를 보유하고 있으며, 이들은 창업가에게 1:1 맞춤형 코칭을 제공"
+      ]
+    },
+    "venue": {
+      "value": [
+        "합숙시설",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "충추 켄싱턴 리조트 버스 이동"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "아이디어 발표 및 심사 (3분 발표, 3분 피드백 진행)"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "1-1) 1박2일 해커톤 일정"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의, 워크숍, 코칭이 결합된 실전형 교육",
+      "AI/노코드 활용 랜딩 페이지 제작 특강",
+      "AI를 활용한 사업계획서 작성 및 비즈니스 모델 구축 멘토링"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT 및 팀빌딩 (창업가 성향진단)",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "아이디어 구체화 특강",
+        "hours": 2,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "Ai/노코드 활용 랜딩페이지 제작",
+        "hours": 3,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "사업계획서 작성",
+        "hours": 2,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "발표준비",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "사업계획서 고도화",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서 발표",
+        "hours": 1,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 8,
+        "title": "시상 및 마무리",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1-1) 1박2일 해커톤 일정"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "AI 및 노코드 툴을 활용한 실전형 창업 교육은 현재 및 향후 창업 교육 시장에서 매우 유효한 모델임."
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "AI와 함께하는 테크창업캠프 기획안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "2025 대전대학교 AI와 함께하는 테크창업캠프 기획안"
+    ]
+  },
+  "docId": "cmpsn98hm000m8gvc69j7nne7",
+  "projectId": "A.25.0058",
+  "projectName": "대전대학교_AI활용 창업프로그램",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6567,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:52:45.532Z"
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "소상공인",
+      "confidence": 0.8,
+      "evidence": [
+        "기 발굴된 문화장인(최대 20인) 대상 문화장인 글로컬 인사이트 교류",
+        "공예산업 종사자 - 문화장인"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "장인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "국내·외 문화장인 교류를 통한 협업 작품 제작 및 사업 범위 확장"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "공예가, 관광객 대상 안성 공예 문화 홍보 및 교류 협조 체계 마련"
+      ]
+    },
+    "geography": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "국내·외 문화장인 교류를 통한 협업 작품 제작 및 사업 범위 확장",
+        "일본",
+        "대만",
+        "중국"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "주최/주관 : 안성시 / 안성문화재단"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "주최/주관 : 안성시 / 안성문화재단"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 650000000,
+        "participants": 30,
+        "durationMonths": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업비 일금 육억오천만원정(₩650,000,000)",
+        "문화장인 총 30명 선발",
+        "사업 기간 계약체결일 ~ 2024. 12. 05 / 약 5개월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "디자인씽킹"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "디자인씽킹 교육 경력10년 이상"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "사전 설명회",
+        "방식 : 온라인(ZOOM) 진행"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행일시 : 2025년 8~11월까지, 격주 1회 대면/비대면진행",
+        "방식 : 온라인(ZOOM) 진행",
+        "진행 방식 : 오프라인 행사"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 3
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행 일정: 2025년 8월 (2박 3일)",
+        "진행 일정: 2025년 10월 23일(목) ~ 25일(금)(2박 3일)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 디자인 협업 방향 발표",
+        "자유 네트워킹 및 현장정리"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        },
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "안성문화장 글로컬 페스티벌 개최(10월 말 예정)",
+        "디자인 협업 현황 공유"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "(1차)서류평가, (2차)인터뷰"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "프로토타입",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "협업 디자인 7건 이상",
+        "조별 시제품 지참",
+        "공식 굿즈"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "해외 박람회 참가 경비 지원",
+            "amountKrw": 2000000
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "제품 1개 DP + 각 1인 경비 지원(약200만원)",
+        "글로벌 온-오프라인 유통 플랫폼 연계 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 10,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "백** 팀장 사업 총괄",
+        "문** 그룹장 기획 운영 총괄",
+        "조직 및 인력 현황"
+      ]
+    },
+    "venue": {
+      "value": [
+        "현장방문",
+        "합숙시설",
+        "지역거점",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "일본 교토",
+        "호텔 마에스트로 안산",
+        "안성문화장 특화거리 일원",
+        "빈 점포, 주택, 소형 상가 등 유휴공간"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "투자연계",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "글로벌 박람회 진출 지원",
+        "사후 투자 및 유통판로 연계 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "안성문화장인 사례 특강",
+      "디자인 협업 워크숍",
+      "인사이트 트립",
+      "포럼"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2025년 안성문화장 글로컬 특화사업 운영 용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "만족도",
+        "targetValue": 90,
+        "unit": "%",
+        "raw": "페스티벌 및 프로그램 참여자 만족도 90% 이상 달성"
+      },
+      {
+        "metric": "만족도",
+        "targetValue": 9,
+        "unit": "점",
+        "raw": "참가자만족도 9점 이상"
+      },
+      {
+        "metric": "협업 디자인 건수",
+        "targetValue": 7,
+        "unit": "건",
+        "raw": "협업 디자인 7건 이상"
+      },
+      {
+        "metric": "선발 인원",
+        "targetValue": 30,
+        "unit": "명",
+        "raw": "문화장인 총 30명 선발"
+      },
+      {
+        "metric": "해외박람회 참가 지원 팀수",
+        "targetValue": 4,
+        "unit": "팀",
+        "raw": "해외박람회 참가 지원 : 4팀 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "페스티벌 및 프로그램 참여자 만족도 90% 이상 달성",
+      "참가자만족도 9점 이상",
+      "협업 디자인 7건 이상",
+      "문화장인 총 30명 선발",
+      "해외박람회 참가 지원 : 4팀 이상"
+    ]
+  },
+  "docId": "cmpsna8x3000z8gvcmzqybzrk",
+  "projectId": "B.25.0068",
+  "projectName": "2025년 안성문화장 글로컬 특화사업 운영 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 22,
+    "basis": "weeks: durationMonths(5) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 63348,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": true,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:32:31.094Z"
+  }
+}

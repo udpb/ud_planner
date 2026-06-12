@@ -1,0 +1,226 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.5,
+      "evidence": [
+        "2025 강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "2025 강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "2025 강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.6,
+      "evidence": [
+        "2025 강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "2025 강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "Act-preneur 7steps for hackathon"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "집중캠프",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2025 강원대학교 ACE College 창업캠프"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": null,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "Team Building Workshop"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "해커톤",
+          "timing": null
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "Act-preneur 7steps for hackathon"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "1. 오프닝\n(Opening)\n2. 필요성(문제/니즈)\n(Problem/Needs)\n3. 해결책\n(Solution)\n4. 실제성과\n(Performance)\n5. 경쟁현황\n(Competition)\n6. 시장기회\n(Market Opportunity)\n7. 비즈니스 모델\n(Business Model)\n8. 향후전략\n(Growth Strategy)\n9. 팀\n(Te"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "Team Building Workshop",
+      "Idea Development"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025 강원대학교 ACE College 창업캠프"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn8stb000e8gvc1avfo4ep",
+  "projectId": "A.25.0045",
+  "projectName": "2025년 글로컬대학30 사업 ACE College 창업캠프 운영 용역 건",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 2707,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:48:37.100Z"
+  }
+}

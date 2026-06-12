@@ -1,0 +1,270 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "참여 대상 : CJ그룹 사내벤처 선발 4개팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "참여 대상 : CJ그룹 사내벤처 선발 4개팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "고객검증프로세스및설계와실제플랫폼사업자의특강과멘토링으로프로그램진행"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "교육 장소 : CJ INNO Lab"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.9,
+      "evidence": [
+        "참여 대상 : CJ그룹 사내벤처 선발 4개팀"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 1,
+      "evidence": [
+        "참여 대상 : CJ그룹 사내벤처 선발 4개팀"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 2500000,
+        "participants": 14,
+        "durationMonths": 2
+      },
+      "confidence": 1,
+      "evidence": [
+        "인원 규모 : 14명",
+        "사업 기간 : 2025년 2월 01일 – 3월 31일",
+        "진행 예산 : 250만원(부가세 포함 275만원)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "고객검증프로세스및설계",
+        "MVP 실행계획 수립 및 가설&검증 워크숍"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : CJ INNO Lab",
+        "교육 일정 : 2025년 2월 20일 (목) 13:00 – 18:00"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 일정 : 2025년 2월 20일 (목) 13:00 – 18:00"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 1,
+      "evidence": [
+        "교육 일정 : 2025년 2월 20일 (목) 13:00 – 18:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "고객검증프로세스및설계와실제플랫폼사업자의특강과멘토링으로프로그램진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여 대상 : CJ그룹 사내벤처 선발 4개팀"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "MVP 실행계획 수립 및 가설&검증 워크숍"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 2,
+        "dedicatedPm": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 운영 : 언더독스 코치 2인 (특강 1인, 언더독스 인원 1인)",
+        "우영승 파트너",
+        "정홍래 코치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : CJ INNO Lab"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "교육 형태 : 강의+워크샵+특강 진행",
+      "고객검증프로세스및설계와실제플랫폼사업자의특강과멘토링으로프로그램진행",
+      "MVP 실행계획 수립 및 가설&검증 워크숍"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "MVP 실행계획 수립 및 가설&검증 워크숍"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn7ztd00028gvcwuo27fat",
+  "projectId": "A.25.0020",
+  "projectName": "CJ그룹 사내벤처 특강 강사 용역계약서",
+  "intensity": {
+    "totalEducationHours": 5,
+    "totalWeeks": 9,
+    "basis": "hours: cadence.totalSessions(1) × sessionLength.hoursPerSession(5) · weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 819,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:43:36.775Z"
+  }
+}

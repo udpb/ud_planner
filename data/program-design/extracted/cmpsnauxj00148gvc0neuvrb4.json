@@ -1,0 +1,348 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "모집대상\n: 게임제작과 통영의 역사, 문화 등 관심이 있거나\n관련직종에 취업을 희망하는 중 ∙ 고등학생"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청소년",
+        "상인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "모집대상\n: 게임제작과 통영의 역사, 문화 등 관심이 있거나\n관련직종에 취업을 희망하는 중 ∙ 고등학생",
+        "지역\n상인\n게임형 콘텐츠의 참여자가 되어\n통영 브랜딩에 함께하고자 하는 거주민"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술",
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화·예술·역사 중심의 스마트 관광도시 구현",
+        "제안사 보유 게임 제작 플랫폴\n‘플레이메이커’ 를 통해 쉽고 빠른 콘텐츠 제작 가능"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "도시-바다-섬이 공존하는 통영시만의 차별적 관광경험 제공 위한\n스마트 관광도시 구현"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "발주처-제안사의 원활한 소통을 위한 보고체계 수립",
+        "통영시 스마트 도시 계획 (2022~2026)"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "통영시 스마트 도시 계획 (2022~2026)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 8
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "구 분 1월 2월 3월 4월 5월 6월 7월 8월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "플레이메이커",
+        "WebXR",
+        "WebGL"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "제안사 보유 게임 제작 플랫폴\n‘플레이메이커’ 를 통해 쉽고 빠른 콘텐츠 제작 가능",
+        "WebGL 3D 그래픽 렌더링을 위한 웹 표준 API",
+        "WebXR VR /AR 디바이스와 상호 작용하는 데 사용되는 웹 표준"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "1차 온라인\n교육\n-행사 개요 및 전체 일정\n-행사 장소 운영계획 및 프로그램 소개"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1차 온라인\n교육",
+        "2차\n현장\n실무\n교육"
+      ]
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "콘텐츠 검토 및 전문가 가이드"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "콘텐츠 검토 및 전문가 가이드 개인 크리에이터"
+      ]
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "중간 보고",
+        "데이터 취합&결과보고",
+        "단계별 콘텐츠 테스트 방식 MZ 테스터 운영방안"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "선발 기준\n: 게임개발과 통영지역에 대한 관심도 ∙ 인지도\n: 스마트폰 사용 및 홍보 〮 의사소통 능숙도\n: 개인 SNS를 운영하고 있고 활발하게 사용하고 있는자"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "최종 결과보고서 1부, 정산보고서 1부 및 USB원본",
+        "제작도구를 통한\n유/무료 콘텐츠 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수참여자 유료콘텐츠 제작 지원",
+        "판매대금\n지급\n수수료(30%)등\n비용정산",
+        "컨셉을 반영한 리워드 굿즈 제공을 통한 브랜딩"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "전담코치",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "운영인력, 강사 업무분장",
+        "콘텐츠 검토 및 전문가 가이드",
+        "최종 책임자 : 사업 책임 PM / 데이터 최종 확인 : 운영 총괄 PM + 운영 매니저"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "온라인",
+        "현장방문",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "지역의 거점 시설을 기반으로 진행되는 미션 게임",
+        "통영의 주요 명소들에서 숨겨진 메시지를 풀어가게 된다.",
+        "1차 온라인\n교육"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": "지속적"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "지속적인 유지보수 전담인력의 정기점검 진행",
+        "철저한설문조사결과분석및피드백전달을\n통해추후발전적인운영진행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "‘플레이메이커’ 기본 사용 가이드 제공\n다양한 콘텐츠 제작 심화 교육 제공을 통한 콘텐츠 퀄리티 강화",
+      "난이도 ●●○ 난이도 ●●●\t#낚시 #사랑 난이도 ●○○"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "1차 온라인 교육 (행사 개요 및 전체 일정, 행사 장소 운영계획 및 프로그램 소개)",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "2차 현장 실무 교육 (기본교육 및 현장업무 플로우 숙지)",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "1차 온라인\n교육\n-행사 개요 및 전체 일정\n-행사 장소 운영계획 및 프로그램 소개",
+      "2차\n현장\n실무\n교육\n· 기본교육\n-근무 규정 및 운영 원칙 안내\n-업무배정 및 소양교육\n· 현장업무 플로우 숙지\n- 배정된 업무 별 세부 교육\n- 행사장 내 주요 시설 답사 및 이용 안내"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "스마트 관광도시 구현을 위한 ‘다양한 경험요소 개발’ 필요"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "노출량",
+        "targetValue": 20000,
+        "unit": "건",
+        "raw": "노출량 컨텐츠별 2만건 목표 (통영시 인구의 20% - 2024년 기준 약 11만명)"
+      },
+      {
+        "metric": "만족도",
+        "targetValue": 95,
+        "unit": "%",
+        "raw": "95%"
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "노출량 컨텐츠별 2만건 목표 (통영시 인구의 20% - 2024년 기준 약 11만명)",
+      "프로그램에 만족하는 편인가?\n95%"
+    ]
+  },
+  "docId": "cmpsnauxj00148gvc0neuvrb4",
+  "projectId": "D.25.0001",
+  "projectName": "게임형 미션 투어 콘텐츠 제작",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 35,
+    "basis": "weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 15230,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:58:37.991Z"
+  }
+}

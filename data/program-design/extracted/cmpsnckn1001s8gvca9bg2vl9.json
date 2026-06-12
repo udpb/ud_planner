@@ -1,0 +1,381 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "참가 대상 : 예비 창업자(달서구 청년) 대구 달서구 소재 증빙 가능한 19-30세",
+        "예비 창업가의 사업 아이템이 분야별 전문가의 피드백을 통해 사업 가능성을 검증 받는 기회를 제공"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "참가 대상 : 예비 창업자(달서구 청년) 대구 달서구 소재 증빙 가능한 19-30세"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대구 지역 내에서 지속가능한 비즈니스 모델을 통해 지역 내에서 성장할 수 있는 예비창업가를 발굴하는 것을 목표로 함"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "대구 지역 내에서 지속가능한 비즈니스 모델을 통해 지역 내에서 성장할 수 있는 예비창업가를 발굴하는 것을 목표로 함"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "2024년 달서구 청년창업지원센터 BM 경진대회 제안서(안)"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "2024년 달서구 청년창업지원센터 BM 경진대회 제안서(안)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 12000000,
+        "participants": 10,
+        "durationMonths": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 예산 : 일금 12,000,000원(VAT 포함)",
+        "참여 인원 : 10명 내외 (발표자 중 5명 수상 선정)",
+        "기간(시간/투입률) 1개월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 재원 활용",
+        "심사 위원 : 언더독스 내부 전담 코치"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "경진대회 참여자 1차 선발 평가 <2024.04-05> - 서류 선발 진행"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "경진대회 및 현장심사 수상자 선정 <2024.5>",
+        "사전 준비 현장 세팅 및 진행 준비"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "경진대회 일정 : 3시간 진행 예정 (14:00~17:00)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "경진대회 일정 : 3시간 진행 예정 (14:00~17:00)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 0,
+        "practicePct": 100,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "발표5분/질의응답5분",
+        "경진대회 발표 1부 (5명 발표) 5분 발표 / 5분 질의응답"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 1,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "언더독스 마케팅 전문가 창업팀별 일대일 진단 컨설팅 진행"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 마케팅 전략 컨설팅 1회 제공",
+        "언더독스 마케팅 전문가 창업팀별 일대일 진단 컨설팅 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": 1,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여 인원 : 10명 내외 (발표자 중 5명 수상 선정)",
+        "1명당 발표 5분, 질의응답 5분"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "경진대회 및 현장심사 수상자 선정 <2024.5>"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "경진대회 참여자 1차 선발 평가 <2024.04-05> - 서류 선발 진행",
+        "경진대회 및 현장심사 수상자 선정 <2024.5>"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "MVP 검증을 위한 광고 세팅 및 집행 (광고 실비 30만원 지원)",
+        "광고 콘텐츠 디자인 5개 제공"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "후속 지원 콘텐츠",
+            "amountKrw": 1500000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "지원 내역 : 1인당 150만원 상당의 후속 지원 콘텐츠 제공",
+        "상금 후속지원 1,500,000 5식 1회 7,500,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 5,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업 코치(전담) 3,713,664 2명",
+        "심사위원 300,000 3명",
+        "프로그램 운영 총괄 매니저 1명",
+        "프로그램 운영 매니저 2명"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "사전 준비 현장 세팅 및 진행 준비"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "발표5분/질의응답5분",
+        "최종 수상자 5명 선청"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "온라인코칭"
+        ],
+        "duration": "1년"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 교육 플랫폼(스타트유어스)에 vod 1년 무료 수강",
+        "1:1 마케팅 전략 컨설팅 1회 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "경진대회 발표 1부 (5명 발표) 5분 발표 / 5분 질의응답"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "개회식 및 프로그램 소개",
+        "hours": 0.25,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "경진대회 1부 (5명 발표)",
+        "hours": 0.83,
+        "format": "발표",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 3,
+        "title": "경진대회 2부 (5명 발표)",
+        "hours": 0.83,
+        "format": "발표",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 4,
+        "title": "평가위원 전체 피드백",
+        "hours": 0.17,
+        "format": "피드백",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "발표 및 시상",
+        "hours": 0.25,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "경진대회 일정 : 3시간 진행 예정 (14:00~17:00)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2024년 달서구 청년창업지원센터 BM 경진대회 제안서(안)"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnckn1001s8gvca9bg2vl9",
+  "projectId": "A.24.0011",
+  "projectName": "2024년 달서구 청년창업지원센터 BM 경진대회",
+  "intensity": {
+    "totalEducationHours": 2.33,
+    "totalWeeks": 4,
+    "basis": "hours: sessions[5] hours 합산 · weeks: durationMonths(1) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 5009,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:06:06.197Z"
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대상: 국내외 FAST · 스트리밍 업계 종사자 및 행사 참관객"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "대상: 국내외 FAST · 스트리밍 업계 종사자 및 행사 참관객"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술",
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "신규유망매체(FAST, 숏폼 등 뉴미디어)의 국내홍보 및 FAST 등 스트리밍 산업 선도를 위한 국내·외 거버넌스 구축"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_공통",
+      "confidence": 0.9,
+      "evidence": [
+        "국내·외 거버넌스 구축",
+        "국내 OTT 플랫폼 및 콘텐츠 국내·외 네트워크 확대"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "용역명 NEXT K-MEDIA Festival 행사 개최 및 운영 위탁용역"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "한국콘텐츠진흥원계정으로 추가 홍보",
+        "2025 BCWW 운영\nwith 한국콘텐츠진흥원, 2025"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 700000000,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업예산 700,000,000원(VAT 포함)",
+        "용역기간 계약체결일 ~ ‘25. 10. 31. (금)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참가기업 정보 취합",
+        "참가기업 수요조사"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "장소: 무대 및 E1, E2홀",
+        "코엑스 B홀 로비, 동문 광장"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "일시: 2025년 9월 16일(화) 10:00-12:00",
+        "일 시 2025년 9월 16일 ~ 19일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오전\n(07:30\n~13:00)",
+        "오후\n(03:30\n~22:00)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "참가기업·바이어 선호도 교차분석으로 기업별 맞춤형 리스트를 제공"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "참가사 맞춤\n네트워킹\n콘텐츠 성격에 맞춘 연사와의\n1:1 피드백 및 직접 교류",
+        "참가기업·바이어 선호도 교차분석으로 기업별 맞춤형 리스트를 제공하는 등 기업의 니즈에 맞는 매칭을 위한 사전 비즈매칭 단계 고도화"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": 4,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "성과지향 4트랙(플랫폼 입점·편성 / 해외 판권·공동제작 / 광고 수익화 / 현지화·마케팅) 기준으로 선별",
+        "서밋에서 얻은 인사이트를 현장에서 바로 나누고, 참가사 간 교류와 협력 가능성을 탐색하는 비공식 네트워킹 프로그램"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "서밋에서 얻은 인사이트를 현장에서 바로 나누고, 참가사 간 교류와 협력 가능성을 탐색하는 비공식 네트워킹 프로그램",
+        "K-FAST SUMMIT"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "행사 종료 후 기업의 MOU 및 계약 체결 등의\n추가 성과 확인"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "쿠팡 플레이 1년 구독권",
+            "amountKrw": null
+          },
+          {
+            "label": "웨이브 구독권",
+            "amountKrw": null
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "최종으로 남겨진 참여자들에게는\n쿠팡 플레이 1년 구독권 증정",
+        "가장 낮은 평균 심장 박동을 유지한\n참가자에게 웨이브 구독권 증정."
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사",
+          "기타"
+        ],
+        "headcount": 6,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기조급 해외 연사 1인을 포함한 6인 이상 전문가를 선정",
+        "연사자 전담 케어 PM 도입"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "장소: 무대 및 E1, E2홀",
+        "코엑스 B홀 로비, 동문 광장"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": "지속"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전시 종료 후에도 지속되는\n후속 비즈니스 지원 및 홍보"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "실무·도구",
+        "트렌드·인사이트",
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "글로벌 유통 전문가들\n실전 사례 및 전략 공유",
+      "현업 최전선 리더들의\n실전형 인사이트 제공"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "FAST·OTT 동시 진출로 멀티 플랫폼 시대의 매출 성장 시나리오 제시",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "로컬라이즈 콘텐츠로 구독·광고 수익 2배 확대 전략",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "‘홈시어터 경제권’에서 K-콘텐츠 수익화 파이프라인 구축",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "CTV·FAST 타깃팅 혁신으로 광고 ROI 150% 가속화",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "연사&참가사 자유 네트워킹 및 소규모 질의응답 교류",
+        "hours": 0.83,
+        "format": "네트워킹",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "10:00 –10:30 (30`) FAST·OTT 동시 진출로 멀티 플랫폼 시대의\n매출 성장 시나리오 제시",
+      "10:30 –11:00 (30’) 로컬라이즈 콘텐츠로 구독·광고 수익 2배 확대 전략",
+      "11:00 –11:30 (30’) ‘홈시어터 경제권’에서 K-콘텐츠 수익화 파이프라인 구축",
+      "11:30 –12:00 (30’) CTV·FAST 타깃팅 혁신으로 광고 ROI 150% 가속화",
+      "11:10 –12:00 (50`) 연사&참가사 자유 네트워킹 및 소규모 질의응답 교류"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "NEXT K-MEDIA Festival 행사 개최 및 운영 위탁용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "사전 비즈매칭 달성률",
+        "targetValue": 85,
+        "unit": "%",
+        "raw": "사전 비즈매칭 85% 달성 필수"
+      },
+      {
+        "metric": "노쇼율",
+        "targetValue": 0,
+        "unit": "%",
+        "raw": "노쇼율 0% 달성 목표"
+      },
+      {
+        "metric": "총 상담건수",
+        "targetValue": 360,
+        "unit": "건",
+        "raw": "총 상담건수 360건 목표"
+      },
+      {
+        "metric": "전문가 연사 수",
+        "targetValue": 6,
+        "unit": "명",
+        "raw": "6인 이상 전문가를 선정"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "사전 비즈매칭 85% 달성 필수",
+      "노쇼율 0% 달성 목표",
+      "총 상담건수 360건 목표",
+      "기조급 해외 연사 1인을 포함한 6인 이상 전문가를 선정"
+    ]
+  },
+  "docId": "cmpsnbkwf001a8gvcwts94zjy",
+  "projectId": "D.25.0062",
+  "projectName": "NEXT K-MEDIA Festival 행사 개최 및 운영 위탁 용역",
+  "intensity": {
+    "totalEducationHours": 2.83,
+    "totalWeeks": 9,
+    "basis": "hours: sessions[5] hours 합산 · weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 33479,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:59:32.775Z"
+  }
+}

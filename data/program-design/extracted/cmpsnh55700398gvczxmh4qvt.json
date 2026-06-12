@@ -1,0 +1,384 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "예비 단계의 창업의 아이템을 창업방법론을 통해 구체화 하여 사업의 실현가능성을 끌어올려"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "광운대 보육 예비창업패키지 참여 창업팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "다양한 분야 단계의 예비창업팀들이 검증하는데 사용해온 교육 워크숍 템플릿"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소 : 광운대학교내 교육장"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "주최 : 광운대 산학협력단",
+        "예비창업패키지"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "주최 : 광운대 산학협력단"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 30000000,
+        "participants": null,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "소요예산 : 30,000 천원 부가세 포함"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "자체 개발한 DOGS 워크샵"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업가 성향 온라인 자가 진단 및 창업팀 팀웍 워크샵",
+        "온라인 자가진단과 오프라인 워크샵"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 자가진단과 오프라인 워크샵"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 일정 : 8 월 8 일 ( 화 ) 09:30 ~ 18:00"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 8.5,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 일정 : 8 월 8 일 ( 화 ) 09:30 ~ 18:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 30,
+        "practicePct": 70,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "실습 워크숍과 교육 강의의 비중을 7:3 으로 하여"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "팀별로 배정"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "훈련된 창업가 육성 코치를 팀별로 배정하여"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "광운대 보육 예비창업패키지 참여 창업팀",
+        "피어 피드백"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 아이디어 발표 및 질의응답",
+        "심사계획"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "템플릿 작성 실습",
+        "아이디어 정리"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "훈련된 창업가 육성 코치를 팀별로 배정하여"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소 : 광운대학교내 교육장",
+        "온라인 자가진단"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석체크 진행",
+        "아이디어 발표",
+        "만족도조사"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스의 관계사 뉴키즈인베스트먼트 액셀러레이터 를 통한 투자 연계 파이프라인 보유"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "실습 워크숍과 교육 강의의 비중을 7:3 으로 하여",
+      "강의/워크숍",
+      "아이디어 발표"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "프로그램 소개 과정 안내",
+        "hours": 0.08,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "ICE Breaking 창업가 성향진단 테스트",
+        "hours": 0.67,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "문제정의, 페르소나",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기존 솔루션 분석",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "관점도출",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "발표준비",
+        "hours": 0.67,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "아이디어 발표 및 질의응답",
+        "hours": 2,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "프로그램 일정 및 진행사항",
+      "10:05-10:10 05‘ 프로그램 소개 과정 안내",
+      "10:10-10:50 40‘ ICE Breaking 창업가 성향진단 테스트",
+      "11:00-12:00 60‘ 문제정의, 페르소나",
+      "13:00-14:00 60 기존 솔루션 분석",
+      "14:10-15:00 50‘ 관점도출",
+      "15:10-15:50 40‘ 발표준비",
+      "15:50-17:50 120‘ 발표 아이디어 발표"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2023년 예비창업패키지 가상창업스쿨 비즈톤 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnh55700398gvczxmh4qvt",
+  "projectId": "A.23.0042",
+  "projectName": "「2023년 예비창업패키지」 가상창업스쿨(비즈톤) 수행기관 용역",
+  "intensity": {
+    "totalEducationHours": 6.25,
+    "totalWeeks": null,
+    "basis": "hours: sessions[7] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 3937,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:21:08.378Z"
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대상 (특이사항) \t부산 지역 재직자 30명"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "대상 (특이사항) \t부산 지역 재직자 30명"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "강의명 \tESG 창업 특강"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "대상 (특이사항) \t부산 지역 재직자 30명"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "채널(시트 기재): B2G"
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 30,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대상 (특이사항) \t부산 지역 재직자 30명"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "온라인",
+        "onlineRatio": 100,
+        "syncType": "실시간"
+      },
+      "confidence": 1,
+      "evidence": [
+        "형태 ☑ 비대면 온라인(실시간 ZOOM 등)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 2,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1) 2023.04.26 (수) 오전 10시 00분 ~ 오후 6시 00분 (7H)",
+        "2) 2023.04.27 (목) 오전 10시 00분 ~ 오후 6시 00분 (7H)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 7,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1) 2023.04.26 (수) 오전 10시 00분 ~ 오후 6시 00분 (7H)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가"
+        ],
+        "headcount": 1,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "강사 성명/소속/연락처 최인영",
+        "현장 담당자 유규연"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "형태 ☑ 비대면 온라인(실시간 ZOOM 등)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "교육 당일 수강생 준비 사항 (노트북 지참, 실습 프로그램 설치, 실습파일 등 수강생에게 안내할 것)"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "ESG 창업 특강 1일차",
+        "hours": 7,
+        "format": "온라인 실시간 강의 및 실습",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "ESG 창업 특강 2일차",
+        "hours": 7,
+        "format": "온라인 실시간 강의 및 실습",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "1) 2023.04.26 (수) 오전 10시 00분 ~ 오후 6시 00분 (7H)",
+      "2) 2023.04.27 (목) 오전 10시 00분 ~ 오후 6시 00분 (7H)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "일반적인 단기 온라인 특강 형태로, 코로나 등의 특수 상황에 종속되지 않음"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "형태 ☑ 비대면 온라인(실시간 ZOOM 등)"
+    ]
+  },
+  "kpiTargets": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngh2m002y8gvclh22fzy1",
+  "projectId": "A.23.0028",
+  "projectName": "ESG 창업 특강",
+  "intensity": {
+    "totalEducationHours": 14,
+    "totalWeeks": null,
+    "basis": "hours: sessions[2] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 949,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:18:50.476Z"
+  }
+}

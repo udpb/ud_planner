@@ -1,0 +1,533 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "seed",
+      "confidence": 0.8,
+      "evidence": [
+        "비즈니스 아이템 구체화, 비즈니스 모델 검증, 경영계획 수립 등의 창업준비기 주요 주제들에 대해 입교자와 단기 목표 및 실행 과제를 설정"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "세종 청년창업사관학교 입교자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "지역 특화 산업 - 스마트시티 및 스마트그린융합부품/소재"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "세종청년창업사관학교",
+        "세종/대전/충청 지역 전문가 추가 풀링"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "창업성공패키지 지원사업 민간운영사",
+        "창업성공패키지 운영 지침"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "중소벤처기업진흥공단의 운영 지침을 준용"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 239400000,
+        "participants": 25,
+        "durationMonths": 10
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "합 계 239.4",
+        "세종 청년창업사관학교 입교자 25명 전원",
+        "1명*10월*5.0백만원"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "IOI 방법론",
+        "TOC",
+        "소셜 픽션"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IOI 방법론",
+        "변화 이론 (TOC) 기반의 소셜 픽션 (Social Fiction) 워크숍 진행"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진단검사 실시 및 해당 결과 전담 코치 매칭에 반영",
+        "자가 진단 검사지"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 진행 시 세종청년창업사관학교 온라인 진행 시 zoom 활용 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 12,
+        "rhythm": "주1회",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일시: 2022년 4월 2주 ~ 2022년 6월 4주 (1회*3시간*12주, 총 36시간)",
+        "일시: 2022년 6월 내 2일 (2일*6시간, 총 12시간)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1회*3시간*12주, 총 36시간"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "그룹",
+          "기타"
+        ],
+        "totalRounds": 36,
+        "hoursPerRound": 1.5,
+        "coachToTeamRatio": "1:10",
+        "pairing": "비전리더십캠프를 통해 각 입교자의 특성, 현재 비즈니스 단계 및 진행 상황은 물론 코치진의 전문 분야, 코칭 스타일, 전담 코치 그룹 내 타 입교자와의 협업 가능성 등을 종합적으로 고려하여 배정"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일시: 2022년 4월 1주 ~ 2022년 12월 2주 (1회*1.5시간*36주, 1명당 총 54시간)",
+        "각 코치 당 전담 팀은 최대 10개 이하로 유지"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "입교자 간의 자발적인 창업 학습 조직 운영을 통한 기업가정신 함양 및 창업기업간 협력 유도",
+        "피어피드백"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간 평가 실시",
+        "성공 평가 실시",
+        "온라인 품평회",
+        "입교자 네트워킹 데이"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "산출물 Ÿ 팀별 IR 피칭덱 사업계획서",
+        "MVP 실행 결과보고서 제출 팀 수"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사업비 차등 지급",
+        "온라인 협업툴 크레딧 제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 9,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업관리자 이한욱",
+        "전담 코치 김성주, 유태우",
+        "운영사 코치(파트너)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "장소: 세종청년창업사관학교",
+        "온라인 진행 시 zoom 활용 진행",
+        "장소: 충청연수원"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "결과물",
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 프로그램 출석 및 이수율 관리",
+        "자가 진단 및 과제 수행",
+        "성공 평가에서 보통 이상 등급 획득률"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "투자연계",
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": "상시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 자체 후속 지원 프로그램 ud.crew 연계",
+        "사업 종료 이후 6개월 이후인 2022년 7월을 시작으로... 성장이력 추적관리 진행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "문제 정의 -> 리서치 -> 아이템 구체화 -> 시장검증 -> BM 수립 -> 사업계획서 작성 및 IR"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "문제 정의 (IOI 방법론, 문제 정의와 문제 원인 파악, 수요자 중심 관점의 중요성)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제 정의 (페르소나 정의와 분석, 페르소나 중심 문제 재정의)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "문제 정의 (페르소나 니즈 중심 기존 솔루션 분석)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "리서치 방법론 (고객 리서치의 중요성, 정량적/정성적 시장 조사방법 기초)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "아이템 구체화 (리서치 및 기존 솔루션 분석 기반 관점 및 솔루션 차별화 지점 도출, 관점 도출 템플릿 작성)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "아이템 구체화 (솔루션 도출, 솔루션 실현을 위한 GNSC 이해관계자 분석)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "아이템 구체화 (엘리베이터 피칭, 피어피드백)",
+        "hours": 3,
+        "format": "발표/워크숍/과제",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 8,
+        "title": "시장 검증 (가설 수립 방식, 다양한 MVP 가설 검증 방식 이해, MVP 계획 수립)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "시장 검증 (시장 정의 및 규모 분석, 시장 내 경쟁사 분석, 시장 확장 전략)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "BM 수립 (수익 모델과 비즈니스 모델, 비즈니스 모델 수립 및 구체화, Financial Projection 기초)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "IR 모의 평가 (IR 피칭덱을 통한 실제 발표 진행 및 코치들을 통한 평가 진행)",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      },
+      {
+        "no": 12,
+        "title": "IR 약점 부분 보완 진행",
+        "hours": 3,
+        "format": "강의/워크숍/과제",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "교육 커리큘럼 (안)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "5년간 8,700명의 예비/초기 창업가를 만나며 도출한 인사이트를 반영해 꾸준히 업데이트 해온 콘텐츠"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "프로그램 이수 및 졸업률",
+        "targetValue": 95,
+        "unit": "%",
+        "raw": "95%"
+      },
+      {
+        "metric": "MVP 테스트 진행 비율",
+        "targetValue": 90,
+        "unit": "%",
+        "raw": "90%"
+      },
+      {
+        "metric": "중간평가 평균 점수",
+        "targetValue": 75,
+        "unit": "점",
+        "raw": "75점/100점"
+      },
+      {
+        "metric": "성공평가 평균 점수",
+        "targetValue": 85,
+        "unit": "점",
+        "raw": "85점/100점"
+      },
+      {
+        "metric": "매출",
+        "targetValue": 500000000,
+        "unit": "원",
+        "raw": "5억"
+      },
+      {
+        "metric": "고용 창출",
+        "targetValue": 20,
+        "unit": "명",
+        "raw": "20명"
+      },
+      {
+        "metric": "투자 유치",
+        "targetValue": 5,
+        "unit": "명",
+        "raw": "5명"
+      },
+      {
+        "metric": "전체 프로그램 만족도",
+        "targetValue": 8,
+        "unit": "점",
+        "raw": "8/10점"
+      },
+      {
+        "metric": "오픈 이노베이션 연계 사례",
+        "targetValue": 5,
+        "unit": "건",
+        "raw": "5건"
+      },
+      {
+        "metric": "후속 성장 자원 연계율",
+        "targetValue": 20,
+        "unit": "%",
+        "raw": "20%"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "창업기업 관리 목표",
+      "창업기업 관리 운영체계 구축 계획"
+    ]
+  },
+  "docId": "cmpsnicny003q8gvc98vtbcw6",
+  "projectId": "A.22.0009",
+  "projectName": "2022 창업성공패키지 지원사업 민간운영사",
+  "intensity": {
+    "totalEducationHours": 36,
+    "totalWeeks": 12,
+    "basis": "hours: sessions[12] hours 합산 · weeks: totalSessions(12) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 32723,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:25:59.226Z"
+  }
+}

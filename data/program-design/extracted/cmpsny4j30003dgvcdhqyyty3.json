@@ -1,0 +1,325 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "참여 대상 : ❍ 신규사내벤처 2 개 팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "제일제당 사내벤처",
+        "참여 대상 : ❍ 신규사내벤처 2 개 팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "식품/농업"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "식품분야 창업에 이해도가 높은 코치가 함께"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.5,
+      "evidence": [
+        "INNO Play 내 교육장"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.6,
+      "evidence": [
+        "B2C, B2B, B2G 등 영업 전략을 구성하는 단계임"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "2023 CJ 제일제당 사내벤처"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 5000000,
+        "participants": null,
+        "durationMonths": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 예산 : ❍ 총 500 만원 (VAT 포함)",
+        "교육 일정 : ❍ 2023 년 6 월 19 일 ~ 7 월 21 일 까지"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 형태 : ❍ 워크샵 중심의 참여형 오프라인 교육"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 5,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 회 교육 ( 4 ), 1 ~ 5"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 4,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "오후 1 ~ 5 시 진행"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "팀전담",
+          "그룹"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코치와 식품분야 창업에 이해도가 높은 코치가 함께 단순 강의 방식이 아닌 이론, 워크숍 사례 학습 등 실무 중심의 교육 및 코칭을 통해"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참가팀 간의 지속적인 피드백을 통해 고객의 의견을 수용하고 설득하는 과정을 경험"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "회차 4 목 (7/13 ) 공유회 MVP - 진행사항 공유 MVP 공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": {
+        "count": 1,
+        "placement": "중반"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "회차 3 (7/3~7 월 금 ~ ) Action day - 계획을 기반으로 한 MVP 실행주간 실행주간 결과보고서 MVP"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP",
+        "프로토타입"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 구조화 템플릿 사업계획서 스토리라인 사업계획서 핵심 요소 이해 - IR Deck 장표 작성 - IR Deck",
+        "Action day - 계획을 기반으로 한 MVP 실행주간 실행주간 결과보고서 MVP"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코치와 식품분야 창업에 이해도가 높은 코치가 함께",
+        "전 현직 창업가의 실무 중심 교육 및 코칭"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : ❍ 내 교육장 INNO Play"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "단순 강의 방식이 아닌 이론, 워크숍 사례 학습 등 실무 중심의 교육 및 코칭"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션, 문제 정의, 페르소나 고객 분석, 기존 솔루션 분석",
+        "hours": 4,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "관점 도출, MVP 수립 계획",
+        "hours": 4,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "Action day - MVP 실행주간",
+        "hours": null,
+        "format": "실행",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "MVP 공유회, 시장 경쟁사 분석",
+        "hours": 4,
+        "format": "공유회, 강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 5,
+        "title": "비즈니스모델, 사업계획서 구조화",
+        "hours": 4,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "교육 커리큘럼 4. 회차 주제 내용 형태 과제 결과물"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "체계적인 창업방법론 내용과 함께 실제 비즈니스에서 곧바로 적용 가능한 템플릿 및 툴킷 등을 제공"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsny4j30003dgvcdhqyyty3",
+  "projectId": "A.23.0014",
+  "projectName": "2023 CJ 제일제당 사내벤처",
+  "intensity": {
+    "totalEducationHours": 20,
+    "totalWeeks": 4,
+    "basis": "hours: cadence.totalSessions(5) × sessionLength.hoursPerSession(4) · weeks: durationMonths(1) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 3326,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:29:34.201Z"
+  }
+}

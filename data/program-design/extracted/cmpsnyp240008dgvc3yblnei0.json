@@ -1,0 +1,360 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "비창업자",
+      "confidence": 0.9,
+      "evidence": [
+        "참여대상 취업준비생 구직자 및 마케터 개발자 채용 희망 기업"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "참여대상 취업준비생 구직자 및 마케터 개발자 채용 희망 기업"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "마케터 개발자 채용 밋업"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "행사장소 제주관광공사 1층",
+        "제주사업팀"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "제주관광공사 마케팅 개발자 채용 밋업"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "제주관광공사"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 9700000,
+        "participants": 60,
+        "durationMonths": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총계 만 단위 절사( ) 9,700,000",
+        "웰컴키트 굿바이키트/ 35,000 60 1 2,100,000"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 세부 운영안"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "행사장소 제주관광공사 1층"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "행사일시 금 : 2023. 07. 21. . 13:00 18:00"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "행사일시 금 : 2023. 07. 21. . 13:00 18:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "현직 마케터 네크워킹",
+        "이벤트 참여 및 기업 담당자 네트워킹 증명사진 촬영 등"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "현직 마케터 네크워킹",
+        "면접자 해당 시간대 면접 배치 및 진행"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "웰컴키트/굿바이키트",
+            "amountKrw": 2100000
+          },
+          {
+            "label": "럭키드로우 상품",
+            "amountKrw": 1000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "웰컴키트 굿바이키트/ 35,000 60 1 2,100,000",
+        "럭키드로우 상품 50,000 20 1 1,000,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 5,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "특강 연사 인 강의비2 100,000 2 1 200,000",
+        "사진작가 섭외 300,000 1 1 300,000",
+        "행사 운영 파트타임 시간 인(7 ) 2 15,000 7 2 210,000"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "행사장소 제주관광공사 1층"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "마케터 포트폴리오 작성법",
+      "스타트업에서 필요로 하는 인재상"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "참여자 체크인 및 개회",
+        "hours": 0.33,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "키노트1 특강 (현직 마케터 1: Gmarket 마케터)",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "현직 마케터 네트워킹",
+        "hours": 0.5,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 4,
+        "title": "키노트2 기업 키노트 (채용 기업 소개)",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 5,
+        "title": "네트워킹 (이벤트 참여 및 기업 담당자 네트워킹 등)",
+        "hours": 1,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "키노트3 특강 (미스터맨션 CEO) 및 면접 진행",
+        "hours": 1.17,
+        "format": "혼합",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 7,
+        "title": "럭키드로우 및 폐회",
+        "hours": 0.5,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "개회 13:00 13:20 – 참여자 체크인 및 개회",
+      "키노트1 13:20 14:20 – 특강 1: 현직 마케터 (Gmarket )",
+      "14:20 14:50 – 현직 마케터 네크워킹",
+      "키노트2 14:50 15:20 – 기업 키노트 채용 기업 소개",
+      "네트워킹 15:20 16:20 – 이벤트 참여 및 기업 담당자 네트워킹 증명사진 촬영 등 다양한 이벤트 참여",
+      "키노트3 16:20 17:30 – 특강 2: CEO의 관점 (미스터맨션 CEO)",
+      "폐회 17:30 18:00 – 럭키드로우 및 폐회"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "제주관광공사 마케팅 개발자 채용 밋업"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnyp240008dgvc3yblnei0",
+  "projectId": "A.23.0047",
+  "projectName": "제주관광공사 밋업프로그램 행사 운영",
+  "intensity": {
+    "totalEducationHours": 5,
+    "totalWeeks": null,
+    "basis": "hours: sessions[7] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 2073,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:32:58.393Z"
+  }
+}

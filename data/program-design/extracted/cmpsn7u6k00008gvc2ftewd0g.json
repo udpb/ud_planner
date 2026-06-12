@@ -1,0 +1,521 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "전남 지역 예비창업가의 아이디어를 실행 가능한 비즈니스로 전환하고"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대상: 전남 지역 예비창업가 20팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전남 지역 예비창업가의 아이디어를 실행 가능한 비즈니스로 전환하고"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "전남 지역 예비창업가의 아이디어를 실행 가능한 비즈니스로 전환하고"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2025년 전남창경 창업씨앗공방 교육 프로그램 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "전남창경"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 20,
+        "durationMonths": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대상: 전남 지역 예비창업가 20팀",
+        "기간: 2025년 9월 23일(화) ~ 9월 25일(목) [2박 3일]",
+        "후속 온라인 코칭 2회 (10월, 11월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업방법론",
+        "코호트러닝"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스만의 체계적인 창업방법론을 통한 창업 역량 강화",
+        "코호트러닝을 통한 상호 성장"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2박 3일 집중 해커톤 프로그램"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2박 3일 집중 해커톤 프로그램",
+        "후속 온라인 코칭 2회 (10월, 11월)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2박 3일 집중 해커톤 프로그램",
+        "후속 온라인 코칭 2회 (10월, 11월)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2박 3일 집중 해커톤",
+        "13:00~20:30",
+        "09:00~21:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 20,
+        "practicePct": 80,
+        "basis": "명시"
+      },
+      "confidence": 1,
+      "evidence": [
+        "강의(20%) + 워크숍(80%) + 코칭의 실전형 구성"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "온라인후속"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": 1,
+        "coachToTeamRatio": "1:4",
+        "pairing": "팀별 전담 코치제"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "팀별 전담 코치제로 1:1 맞춤형 멘토링 제공",
+        "후속 온라인 코칭 2회 (10월, 11월)",
+        "회당 1시간",
+        "5명의 전문 코치 투입",
+        "대상: 전남 지역 예비창업가 20팀"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코호트러닝을 통한 상호 성장 (네트워킹 효과)",
+        "5팀씩 4테이블 코호트러닝",
+        "피어피드백"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "Day 3: 데모데이(20팀 발표) → 심사 및 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서(IR Deck) 완성",
+        "MVP 실행 로드맵 (2주 내 실행 가능)"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수팀 3팀 시상",
+        "정부지원사업 연계, 사업화 전략 코칭"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 5,
+        "dedicatedPm": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전현직 창업가 출신 전문 코치진",
+        "5명의 전문 코치 투입"
+      ]
+    },
+    "venue": {
+      "value": [
+        "합숙시설",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "장소: 여수 베네치아 호텔(예정)",
+        "후속 온라인 코칭 2회"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "해커톤 수료 20팀 전체"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "후속보육"
+        ],
+        "duration": "2개월"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "후속 온라인 코칭 2회 (10월, 11월)",
+        "정부지원사업 연계, 사업화 전략 코칭"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "강의(20%) + 워크숍(80%) + 코칭의 실전형 구성",
+      "데모데이를 통한 실전 IR 피칭 경험 및 전문가 피드백",
+      "문제정의 → 페르소나 → 기존솔루션 → 아이템구체화 → MVP설계 → 시장/경쟁사분석 → 비즈니스모델 → 발표자료 제작 → 데모데이"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT",
+        "hours": 0.5,
+        "format": "오리엔테이션",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제 정의",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "페르소나 정의",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기존 솔루션 분석",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "아이템 구체화",
+        "hours": 1.5,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "코호트러닝 1차",
+        "hours": 1.5,
+        "format": "상호학습",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "MVP 계획 수립",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "시장 분석",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "경쟁사 분석",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "비즈니스/수익 모델",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "코호트러닝 2차",
+        "hours": 1.5,
+        "format": "상호학습",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "사업계획서",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "발표 자료 실습",
+        "hours": 1.5,
+        "format": "실습/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "발표 자료 고도화",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 15,
+        "title": "발표 준비",
+        "hours": 1,
+        "format": "실습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 16,
+        "title": "데모데이",
+        "hours": 4,
+        "format": "발표",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 17,
+        "title": "심사 및 시상식",
+        "hours": 0.8,
+        "format": "운영",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 18,
+        "title": "1차 멘토링 (10월)",
+        "hours": 1,
+        "format": "온라인 코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 19,
+        "title": "2차 멘토링 (11월)",
+        "hours": 1,
+        "format": "온라인 코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "2박2일 집중 해커톤 타임테이블",
+      "후속 성장 지원 (1:1 온라인 코칭)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025년 전남창경 창업씨앗공방 교육 프로그램 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "육성 팀 수",
+        "targetValue": 20,
+        "unit": "팀",
+        "raw": "전남 지역 예비창업가 20팀 육성"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "전남 지역 예비창업가 20팀 육성"
+    ]
+  },
+  "docId": "cmpsn7u6k00008gvc2ftewd0g",
+  "projectId": "A.25.0013",
+  "projectName": "2025년 예비창업패키지 창업씨앗공방(사전인큐베이팅) 운영",
+  "intensity": {
+    "totalEducationHours": 24.3,
+    "totalWeeks": 13,
+    "basis": "hours: sessions[19] hours 합산 · weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 8481,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:43:44.391Z"
+  }
+}

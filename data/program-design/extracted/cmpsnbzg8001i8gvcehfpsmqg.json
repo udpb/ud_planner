@@ -1,0 +1,389 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "참 가 대 상 과기정통부 , NIPA,전국5대 권역ICT 이노베이션스퀘어 사업책임자, 담당자등",
+        "참 가 대 상 청년참가자60명(30명*2회)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "디지털 신기술 분야취업준비지원프로그램참여를통해청년층의마인드향상및 동기부여제공",
+        "참 가 대 상 과기정통부 , NIPA,전국5대 권역ICT 이노베이션스퀘어 사업책임자, 담당자등"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "호남IS 디지털신기술행사",
+        "디지털 신기술 분야취업준비지원프로그램참여를통해청년층의마인드향상및 동기부여제공"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "지역디지털산업종사자간 전국단위네트워킹",
+        "전국5대 권역ICT 이노베이션스퀘어 사업책임자, 담당자등"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "Business B2B/B2G AI창업, 로컬, 콘텐츠육성, 홍보마케팅",
+        "과기정통부 , NIPA,전국5대 권역ICT 이노베이션스퀘어 사업책임자, 담당자등"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "과기정통부 , NIPA,전국5대 권역ICT 이노베이션스퀘어 사업책임자, 담당자등"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 90000000,
+        "participants": null,
+        "durationMonths": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 예산 일금구천만원정 (₩90,000,000) / VAT 포함",
+        "사업기간 계약체결일~ 2025. 11. 28. ( 금)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "사전조사를통해전공, 관심분야(도메인), 역량을기반으로팀 매칭"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "개 최 장 소 라한호텔전주",
+        "개 최 장 소 광주광역시청소년수련원"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 3,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전국협의체1회 개최 청년성장역량강화사업2회",
+        "일 시 2025 년 11월 10일 (월) ~ 11 일 (화) / 2일",
+        "일 시 2025 년 11월 14일 (금) ~ 15일 (토) 2025 년 11월 21일 (금) ~ 22일 (토) / 2회"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1일차타임테이블",
+        "2일차타임테이블"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 1,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "청년참가자60명(30명*2회)",
+        "사전조사를통해전공, 관심분야(도메인), 역량을기반으로팀 매칭",
+        "청년참가자간 네트워킹촉진"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "05. 워크샵성과공유및 결과발표 12:00 ~ 12:40 (40`)",
+        "강사, 운영진, 참가자상호평가에기반한우수참가자선출및 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "브랜드",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "AI를 활용해자신의비전(Vision) 문장, 브랜드스토리만들기",
+        "앞선활동을통해높아진자기이해기반의셀프브랜드포트폴리오완성이목표"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "강사, 운영진, 참가자상호평가에기반한우수참가자선출및 시상",
+        "참가자대상석식제공",
+        "제공숙소숙박인원대상조식제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 6,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사업기간중 본 사업운영을책임질 10년 내외경력전문인력6인 투입",
+        "총괄책임 서지훈 부대표 만 41세 11 년 10 개월 IT기술교육기획및 운영사업수행"
+      ]
+    },
+    "venue": {
+      "value": [
+        "합숙시설",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "개 최 장 소 라한호텔전주",
+        "개 최 장 소 광주광역시청소년수련원"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "ICT 인재양성사업등 참가자대상후속지원안내"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "트렌드·인사이트",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "(강연) 선택이아닌필수가된 AX 시대의기업맞춤형에이전틱AI",
+      "(팀활동1)나의하루를분석해나만의핵심가치발견하기",
+      "최신트렌드동향강연",
+      "AI를 활용해나만의비전문장, 브랜드스토리만들기",
+      "디지털신기술교육기획-운영사례공유"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "선택이아닌필수가된 AX 시대의기업맞춤형에이전틱AI",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "ICT 이노베이션스퀘어 실무자대상정보보호가이드라인및 대응방안",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "AI 시대AI, BC,데이터, IoT 등 디지털신기술교육과정의방향성",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "AI시대직업전망및 취업트렌드분석",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "나의하루를분석해나만의핵심가치발견하기",
+        "hours": 1.16,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "성과를높이고불안을관리하는핵심기술",
+        "hours": 1.16,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "알고리즘, 최애컨텐츠기반나만의관심사발견하기",
+        "hours": 0.83,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "대화게임을바탕으로나만의강점을발견하기",
+        "hours": 0.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "AI를 활용해나만의비전문장, 브랜드스토리만들기",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "1일차타임테이블",
+      "2일차타임테이블"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "디지털 신기술 분야취업준비지원프로그램참여를통해청년층의마인드향상및 동기부여제공"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnbzg8001i8gvcehfpsmqg",
+  "projectId": "Y.25.0012",
+  "projectName": "호남 IS 디지털 신기술 행사",
+  "intensity": {
+    "totalEducationHours": 6.65,
+    "totalWeeks": 4,
+    "basis": "hours: sessions[9] hours 합산 · weeks: durationMonths(1) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 19394,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:02:05.056Z"
+  }
+}

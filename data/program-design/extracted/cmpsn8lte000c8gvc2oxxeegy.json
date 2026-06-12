@@ -1,0 +1,379 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대상: 지역자원을 활용한 창업 아이템을 갖고 있는 예비·기창업자"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대상: 지역자원을 활용한 창업 아이템을 갖고 있는 예비·기창업자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "식품/농업",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "양양군소재기업을6차산업형강소기업및사회적경제기업으로육성하여지역경제를활성화",
+        "지역자원을 연계한 6차 산업 창업 아이템"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "양양군소재기업을6차산업형강소기업및사회적경제기업으로육성하여지역경제를활성화"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "양양군 신활력 창업도약 사업 운영 용역"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 1,
+      "evidence": [
+        "양양군 신활력 창업도약 사업 운영 용역"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 6
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "운영 시기 7월 3주차 ~ 12월 4주차"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "ACTT",
+        "6Dimension",
+        "Flipped-Learning"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "6Dimension 비즈니스진단",
+        "DOGS창업성향진단",
+        "ACTT창업실행역량진단",
+        "Flipped-Learning"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전진단",
+          "사전과제"
+        ],
+        "diagnostics": [
+          "DOGS",
+          "ACTT"
+        ],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "제안사 온라인 플랫폼 활용 4주 간 강좌 수강 및 주차별 달성 목표에 따른 과제 수행 후 제출",
+        "DOGS창업성향진단",
+        "ACTT창업실행역량진단"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "운영 형태 온/오프라인 병행",
+        "제안사 온라인 플랫폼 활용 4주 간 강좌 수강",
+        "온라인 네트워킹 세션 운영"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "Beginner’s Package 4주 과정 구성(안)",
+        "밀착코칭해커톤",
+        "프로그램 1일차",
+        "프로그램 2일차"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담",
+          "온라인후속"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "사전 수요조사 및 창업 단계 구분을 통한 멘토 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업 단계로 구분하여 컨설턴트 및 멘토 매칭",
+        "사전 수요조사를 통한 성장 맞춤형 컨설팅 구성",
+        "후속 코칭 2회"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "액션 그룹 3기 전체 (10팀 내외)",
+        "사업 성장 트랙",
+        "사회적경제 전환 트랙",
+        "참여자 간 라포 형성을 통한 기수 간 경험 공유 및 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "해커톤",
+          "timing": "초반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "IR",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "액션그룹 도약 페스티벌 (IR데모데이)",
+        "밀착코칭해커톤",
+        "AC/VC 초청 투자상담회 및 참여자간 네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "선발 프로세스 서류심사 발표심사"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "코칭 일지, MVP 테스트 결과물",
+        "사업계획서, IR 덱"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "과정 평가에 따른 사업화지원금 차등 지급",
+        "우수팀 선정 및 지원금 지급",
+        "중기부 LIPS 융자 매칭"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업 PM 심OO 그룹장 사업운영총괄관리",
+        "선배 창업자 강연자",
+        "전문코치의 실전창업교육"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "양양군 농업기술센터 또는 행복나눔터",
+        "제안사 온라인 플랫폼 활용"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수기업 투자 패스트트랙 연계 검토",
+        "전국 창업가 커뮤니티 연계 및 후속 멘토링"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "강의, 워크숍",
+      "선배 창업자 강연으로 지역 자원 활용 6차 산업 창업 성공 전략 확인",
+      "노코드 툴(아임웹 등)을 활용한 랜딩페이지 제작",
+      "스타트업 투자 단계에 대한 이해",
+      "참여팀이 다음 단계로 나아갈 수 있도록 입문-맞춤형교육-투자유치-후속관리까지 집중지원"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "양양군 신활력 창업도약 사업 운영 용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "모의투자 참여 군민 수",
+        "targetValue": 50,
+        "unit": "명",
+        "raw": "군민 50명 모의투자 참여"
+      },
+      {
+        "metric": "시제품 전시 팀 수",
+        "targetValue": 10,
+        "unit": "개",
+        "raw": "총 10개 팀 시제품 전시"
+      },
+      {
+        "metric": "선발 팀 수",
+        "targetValue": 10,
+        "unit": "개",
+        "raw": "액션 그룹 3기 전체 (10팀 내외)"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "군민 50명 모의투자 참여",
+      "총 10개 팀 시제품 전시",
+      "액션 그룹 3기 전체 (10팀 내외)"
+    ]
+  },
+  "docId": "cmpsn8lte000c8gvc2oxxeegy",
+  "projectId": "A.25.0041",
+  "projectName": "‘2025년 양양군 신활력 창업도약’ 사업 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 26,
+    "basis": "weeks: durationMonths(6) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 27357,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:48:18.065Z"
+  }
+}

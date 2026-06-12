@@ -1,0 +1,186 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.6,
+      "evidence": [
+        "금융·재무에 대해서 기업 내 개선의 의지가 있는 팀들"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "금융·재무에 대해서 기업 내 개선의 의지가 있는 팀들"
+      ]
+    },
+    "businessDomain": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "geography": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "channel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "기업 재무제표 분석 및 재무제표를 통한 각종 지표 확인",
+      "현재 기업 BM에 대한 재무 타당성 분석"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "재무제표 분석 및 타당성 분석 교육은 시기와 무관하게 상시 유효함"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "기업 재무제표 분석 및 재무제표를 통한 각종 지표 확인"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnerkg002g8gvc5kcf4wsf",
+  "projectId": "A.23.0003",
+  "projectName": "KB금융캠퍼스 S.I.N.G 프로젝트 4기",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 506,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:14:32.962Z"
+  }
+}

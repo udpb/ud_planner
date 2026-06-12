@@ -1,0 +1,333 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "DE&I 분야 여성 창업가 선발",
+        "5년 미만 여성 사회혁신 창업가 대상"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "여성",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "여성창업가의 주도적 성장과 교류 활성화를 위한 커뮤니티",
+        "3040 경력보유여성과 소셜 벤처를 연결",
+        "혁신적인 여성 시니어 대상 특화 프로그램"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DE&I 및 여성창업 관련 연사 강의",
+        "사회혁신 창업 방법론"
+      ]
+    },
+    "geography": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "CWI 한국 진출자 배출",
+        "글로벌 진출 가능성"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.5,
+      "evidence": [
+        "청년친화형 기업 ESG 지원사업"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "까르띠에만의 여성 취·창업 생태계 마련"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 8
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "2023년 10월",
+        "2024년 4월~5월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 사회혁신 창업 방법론 교육",
+        "사회적 가치 측정 방법론 교육"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": null
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "프랑스 CWI 탐방",
+        "커뮤니티 모임"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "역량 강화 커뮤니티 모임(2주/6회)",
+        "CWI 준비 커뮤니티 모임(2주/8회)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전문 코치진의 1:1 코칭, 전문가 멘토링",
+        "CWI 진출자 멘토링"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "여성 창업가 커뮤니티",
+        "글로벌 진출 가능성 두 가지 조건에 부합한 창업팀 선발",
+        "피어러닝",
+        "1-3기 기수간 커뮤니티 형성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획서 발표 & 중간 점검",
+        "지원서 발표 및 최종 평가"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "DE&I 관련 창업팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획서 발표",
+        "사회적 가치 보고서 작성",
+        "CWI 유형별 지원서 작성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "(우수팀) 프랑스 CWI 탐방"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전문 코치진",
+        "전문가 멘토링",
+        "연사 강의",
+        "선배 기수 호스트"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "프랑스 CWI 탐방"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "지원서 발표 및 최종 평가"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1-2기 통합 네트워크 구축",
+        "1-3기 기수간 커뮤니티 형성"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "DE&I 및 여성창업 관련 연사 강의",
+      "CWI 경험이 있는 여성 창업가 사례 발표",
+      "사회혁신 창업 방법론 교육",
+      "CWI 유형별 지원서 작성 교육",
+      "피어러닝"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2023 언더우먼 3기"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnfto6002s8gvcw9cy3l5l",
+  "projectId": "A.23.0022",
+  "projectName": "언더우먼 임팩트 커뮤니티 컨설팅",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 35,
+    "basis": "weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7620,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:16:56.845Z"
+  }
+}

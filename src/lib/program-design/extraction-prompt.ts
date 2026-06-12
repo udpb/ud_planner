@@ -71,6 +71,8 @@ export function buildExtractionPrompt(input: ExtractionPromptInput): string {
 
 ## 공통 축 구조
 모든 축은 { "value": <축별 구조 또는 null>, "confidence": 0~1, "evidence": ["원문 인용", ...] } 형태다.
+profileSnapshot·operatingFormat 의 각 축뿐 아니라 **contentMix·sessions·validity·kpiTargets 도 동일한 축 래퍼**다 — "value" 래퍼 없이 평면 객체·문자열로 반환하지 마라.
+예: "validity": { "value": { "status": "상시유효", "reason": null }, "confidence": 0.9, "evidence": ["오프라인 집합교육을 원칙으로 운영"] }
 
 ## 출력 JSON 구조 (이 키 이름 그대로, 빠짐없이)
 {

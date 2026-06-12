@@ -1,0 +1,364 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "교육 대상 \t영월 지역에서 창업을 준비 \t희망하는 청년 개인 팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "쳥넌의 기준은 만 \t세 \t세로 한정\t19 \t~39"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬 창업교육 방법론을 통한 영월 지역 창업가를 육성하고자 함"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "영월 지역에서 창업을 준비",
+        "로컬 창업교육 방법론"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "영월군청 및 영월 청년사업단 공식 채널과 네트워크 활용"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.8,
+      "evidence": [
+        "영월군청 및 영월 청년사업단 공식 채널과 네트워크 활용"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 22000000,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "합계\n22,000,000",
+        "교육 기간 \t주간 매주 목요일 \t월 \t일 \t월 \t일 예정\t3 \t: 8 \t(7 \t7 \t~ 8 \t25 \t)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업방법론",
+        "로컬 창업방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 창업방법론과 로컬 창업방법론을 토대로"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "주간의 오프라인 집체교육 운영 방식"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 8,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 기간 \t주간 매주 목요일 \t월 \t일 \t월 \t일 예정\t3 \t: 8 \t(7 \t7 \t~ 8 \t25 \t)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 6,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "시간 풀타임 교육의 효과성을 높이도록\t6\n구성"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "매회 오피스아워 운영을 통해 창업팀의 교육 이해도 강화를\n위한 퍼실리테이션과 맞춤 코칭 제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 3,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "주간의 오프라인 집체교육 운영 방식과 워크숍 \t피어피드백 \t검증\t8 \t, \t,\n인사이트 공유 등을 통해 서로의 사업 이해도를 높이고",
+        "개인 또는 \t인 이내 팀\t3"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획 발표"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접",
+          "PT"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "차 평가\t1 \t차 평가\t2 \t선발\n▷ \t서류 심사\n배수 선발\t(2 \t)\n▶ 면접\tPT ▶ 팀 선발\t12"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 작성"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 2,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "허예리 프로그램 기획 및\n사업 관리 총괄\n디렉터",
+        "정운 창업교육 기획 및 운영\n창업팀 코칭\n디렉터"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소 \t영월군 청년사업단"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "단순 이론 강의 방식으로 전달되지 않으며 워크숍 \t사\t,\n례 학습 등 실무 중심의 교육으로"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션 / 로컬 창업가 마인드셋 / 문제 정의",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "리서치 방법론 / 지역자원조사 1",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "지역자원조사 2 / 고객 구체화",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "진행 상황 공유 / 솔루션 핵심가치 / 솔루션 구체화",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "솔루션 시각화 / 피어피드백",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "MVP test / 계획 수립",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "로컬 비즈니스 전문가 특강 / 목표시장 정의 / 비즈니스 모델",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "로컬 비즈니스 전문가 특강 / 사업계획서 작성 / 사업계획서 발표 / 수료식",
+        "hours": 6,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "교육 커리큘럼"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "로컬 창업교육 방법론을 통한 영월 지역 창업가를 육성하고자 함"
+    ]
+  },
+  "kpiTargets": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnygjs0006dgvcqkgi43uw",
+  "projectId": "A.23.0032",
+  "projectName": "「레지던스 in 영월」창업교육 시행 용역",
+  "intensity": {
+    "totalEducationHours": 48,
+    "totalWeeks": 8,
+    "basis": "hours: sessions[8] hours 합산 · weeks: totalSessions(8) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6218,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:57:57.922Z"
+  }
+}

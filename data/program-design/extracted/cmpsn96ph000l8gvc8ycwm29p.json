@@ -1,0 +1,413 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "창업 아이디어를 보유한 광주․전남 및 전국 (예비)창업가의 창업 역량 강화"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "광주․전남 및 전국 대학생 12팀(총 30명 내외) 예상"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "창의적인 아이디어를 실현가능한 비즈니스 모델로 고도화할 수 있는 역량 강화"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "광주․전남 및 전국 대학생 12팀(총 30명 내외) 예상"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "2025 KENTECH 아이디어톤 행사 대행 용역"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "Kentech Future Makers Idea-thon 2025"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 30,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "광주․전남 및 전국 대학생 12팀(총 30명 내외) 예상"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트러닝",
+        "5Why"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "5단계 상호학습 시스템(교육+워크숍+코호트러닝+피어피드백+코칭)",
+        "①5Why 기법으로 원인 분석"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일간 집중 교육으로 사업계획서(IR Deck) 완성"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 11,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일간 집중 교육으로 사업계획서(IR Deck) 완성"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "10:00~23:00",
+        "08:00~16:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 20,
+        "practicePct": 80,
+        "basis": "명시"
+      },
+      "confidence": 1,
+      "evidence": [
+        "강의(20%) + 워크숍(80%) + 코칭의 실전형 구성"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "팀별 전담 코치제"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "팀별 전담 코치제로 1:1 맞춤형 멘토링 제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코호트러닝을 통한 상호 성장 (네트워킹 효과)",
+        "5단계 상호학습 시스템(교육+워크숍+코호트러닝+피어피드백+코칭)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 1,
+      "evidence": [
+        "데모데이 1조 6팀 발표( 5분 발표, 5분 Q&A)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "1박 2일간 집중 교육으로 사업계획서(IR Deck) 완성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "대상",
+            "amountKrw": 500000
+          },
+          {
+            "label": "우수상",
+            "amountKrw": 300000
+          },
+          {
+            "label": "장려상",
+            "amountKrw": 200000
+          }
+        ]
+      },
+      "confidence": 1,
+      "evidence": [
+        "대상 1인(팀) 500,000원",
+        "우수상 1인(팀) 300,000원",
+        "장려상 1인(팀) 200,000원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 5,
+        "dedicatedPm": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전국 261명 액션코치 중 5명의 전문 코치 투입"
+      ]
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "결과물(KPI): 만족도 조사, 발표자료 제출, 결과 보고서"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의, 워크숍",
+      "실습/코칭",
+      "발표/심사",
+      "문제 정의 단계부터 사업계획서 작성, 데모데이까지 단계별 고도화"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT 및 문제 정의",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "페르소나 정의",
+        "hours": 0.83,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "기존 솔루션 분석",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "솔루션 구체화",
+        "hours": 0.83,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "코호트러닝",
+        "hours": 0.83,
+        "format": "상호학습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "시장 분석",
+        "hours": 0.83,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "경쟁사 분석",
+        "hours": 0.83,
+        "format": "상호학습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "비즈니스 모델 설계",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "사업계획서",
+        "hours": 2.83,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "발표자료 완성",
+        "hours": 3,
+        "format": "실습/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "데모데이",
+        "hours": 2.17,
+        "format": "발표/심사",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "운영시간표 및 운영 방식"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "Kentech Future Makers Idea-thon 2025"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn96ph000l8gvc8ycwm29p",
+  "projectId": "A.25.0057",
+  "projectName": "2025 KENTECH 아이디어톤 행사 대행 용역",
+  "intensity": {
+    "totalEducationHours": 15.15,
+    "totalWeeks": null,
+    "basis": "hours: sessions[11] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7281,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:52:16.863Z"
+  }
+}

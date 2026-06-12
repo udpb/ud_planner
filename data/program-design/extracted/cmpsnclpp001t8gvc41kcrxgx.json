@@ -1,0 +1,326 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "초기 창업가의 성장에 필요한 기업가정신을 강화하고, 초기 창업 이후 사업 확장 및 투자 유치 가능성을 높이는데 필요한 실무 역량 강화를 목적으로"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "2023 김제청년 창업 도약 지원사업 TOKTOK(톡톡)"
+      ]
+    },
+    "businessDomain": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "대상 : 김제 소재 7개사",
+        "교육장소 : 김제청년창업공간 이다(E:DA) 1층 교육장 및 온라인 컨설팅"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2023 김제청년 창업 도약 지원사업 TOKTOK(톡톡) 공통교육 및 컨설팅 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "2023 김제청년 창업 도약 지원사업 TOKTOK(톡톡)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 9500000,
+        "participants": 7,
+        "durationMonths": 2
+      },
+      "confidence": 1,
+      "evidence": [
+        "대상 : 김제 소재 7개사",
+        "진행기간 : 2024년 4월~2024년 5월",
+        "합 계(만원 단위 이하 절사) 9,500,000"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트 러닝"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "코호트 러닝 기반 워크숍 형태 교육을 통해 참여팀의 교육 콘텐츠 이해도 향상"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 구성 : 오프라인 교육 1회, 오프라인 컨설팅 1회, 온라인 컨설팅 2회"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 5,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 구성 : 오프라인 교육 1회, 오프라인 컨설팅 1회, 온라인 컨설팅 2회",
+        "오프라인 사업고도화 교육 및 실무 창업교육 4월 16일(화) 10:00~16:00 - 4월 17일(수) 10:00~16:00"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "4월 16일(화) 10:00~16:00",
+        "교육 이수시간 10시간"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "온라인후속"
+        ],
+        "totalRounds": 3,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:5",
+        "pairing": "분야별 전문가 매칭"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업팀 단계 맞춤형 1:1: 전문가 컨설팅을 제공해 사업 고도화 가능성 고도화",
+        "언더독스 내부 코치진 및 분야별 전문가와의 1:1 온 오프라인 코칭",
+        "전문분야 컨설팅 : 마케팅 분야 4월 중 팀별 1회",
+        "전문분야 컨설팅 : BM 고도화 5월 중 팀별 1회"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "기타"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코호트 러닝 기반 워크숍 형태 교육을 통해 참여팀의 교육 콘텐츠 이해도 향상",
+        "창업팀 단계 맞춤형 1:1: 전문가 컨설팅을 제공"
+      ]
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획서 및 IR DECK 교육 콘텐츠 (예시)"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 4,
+        "dedicatedPm": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 내부 코치진 및 분야별 전문가와의 1:1 온 오프라인 코칭",
+        "투입 인력: 조상래, 유연성, 이혜미, 하주은",
+        "교육 및 코칭 매니저 3,713,664 1명 1개월(35%)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "교육장소 : 김제청년창업공간 이다(E:DA) 1층 교육장 및 온라인 컨설팅"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "전‧현직 창업가 및 스타트업 육성 10년 이상 전문가가 직접 진행하는 이론, 워크숍, 케이스 스터디 등 실무중심의 교육",
+      "실제 창업 사례 및 스타트업 사례, 코호트 러닝 기반 워크숍 형태 교육"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "관점도출 (창업가 관점도출: 문제정의, 고객분석, 기존 솔루션 분석)",
+        "hours": 5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "사업계획 수립 (아이템구체화, 비즈니스모델 수립 및 MVP구체화)",
+        "hours": 5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "1차코칭 (홍보 마케팅 전략 수립, SNS 채널 활용한 비이럴 마메팅)",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "2차코칭 (제품, 가격, 유통, 촉진 전략 전달 적용 방안 모색, 진행방식 검토 및 계획 수정)",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "3차코칭 (시장에서의 고객검증 상황 점검, 계획 보안 및 수정)",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "4/16(화) 10:00-16:00 관점도출 •창업가 관점도출(문제정의, 고객분석, 기존 솔루변 분석)",
+      "4/17(수) 10:00-16:00 사업계획 수립 •아이템구체화 •비즈니스모델 수립 및 MVP구체화",
+      "1차코칭 오프라인 •홍보 마케팅 전략 수립 •SNS 채널 활용한 비이럴 마메팅",
+      "2차코칭 온라인 •제품, 가격, 유통, 촉진 전략 전달 적용 방안 모색 •진행방식 검토 및 계획 수정",
+      "3차코칭 온라인 •시장에서의 고객검증 상황 점검 •계획 보안 및 수정"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "초기 창업가의 성장에 필요한 기업가정신을 강화하고, 초기 창업 이후 사업 확장 및 투자 유치 가능성을 높이는데 필요한 실무 역량 강화를 목적으로"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnclpp001t8gvc41kcrxgx",
+  "projectId": "A.24.0013",
+  "projectName": "2024 김제청년 창업 도약 지원사업 톡톡플러스",
+  "intensity": {
+    "totalEducationHours": 25,
+    "totalWeeks": 9,
+    "basis": "hours: cadence.totalSessions(5) × sessionLength.hoursPerSession(5) · weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 3012,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:06:06.233Z"
+  }
+}

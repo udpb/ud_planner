@@ -1,0 +1,440 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "비창업자",
+      "confidence": 0.9,
+      "evidence": [
+        "창업에 관심이 있거나 희망하는 사천공항 인근 지역 고등학교에 재학 중인 청소년"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청소년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "청소년 창업 아이디어톤",
+        "고등학교에 재학 중인 청소년"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "지역과 사회의 다양한 이슈와 문제점을 발견하고 이를 해결하기 위한 솔루션으로서 비즈니스 모델을 구상"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "사천공항 인근 지역 청소년들이 그들의 참신하고 혁신적인 관점에서 지역과 사회의 다양한 이슈와 문제점을 발견하고"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "한국공항공사 Bloom the Potential 청소년 창업 아이디어톤"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "한국공항공사"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 50000000,
+        "participants": 30,
+        "durationMonths": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체 예산 50,000,000",
+        "최대 30명",
+        "개월/횟수 3"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "UOR",
+        "창업방법론",
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "창업교육 전문기업 언더독스의 [UOR, 창업방법론]",
+        "창업가 성향 진단 및 팀빌딩 DOGS 워크숍"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1일차 09:00 11:30 2h 30m 사천종합운동장에서 집결 및 인원 점검"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": null
+      },
+      "confidence": 1,
+      "evidence": [
+        "진행 장소: 한국공항공사 항공기술훈련원 (충북 청주시)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 2,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 1,
+      "evidence": [
+        "진행 일정(안): 2023년 8월 17-18일 (목-금) / 1박 2일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일 프로그램 전체 일정에 참여가 가능한 고등학생"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획서 발표 준비 w/담당 멘토",
+        "대학 멘토 활동비"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 4,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "동료리뷰"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "팀 단위의 워크숍 활동",
+        "개인(1인) 혹은 팀 (4인) 단위",
+        "피어피드백 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "비즈니스 모델을 구상하고 이를 경연하는 자리를 마련",
+        "우수팀 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "홍보 및 모집/선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "팀별 사업계획서 작성",
+        "스토리보드 작성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계"
+        ],
+        "amounts": [
+          {
+            "label": "1등 시상품",
+            "amountKrw": 1000000
+          },
+          {
+            "label": "2등 시상품",
+            "amountKrw": 500000
+          },
+          {
+            "label": "3등 시상품",
+            "amountKrw": 300000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1등 100만원, 2등 50만원, 3등 30만원 상당의 시상품",
+        "참여자 수료 혜택 (온라인 창업교육 수강권)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사",
+          "기타"
+        ],
+        "headcount": 6,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 CM 및 전담 코치",
+        "파트너 코치",
+        "스타트업 CEO 특강",
+        "프로그램 총괄 PM",
+        "투입 인력(안)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "합숙시설"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "진행 장소: 한국공항공사 항공기술훈련원 (충북 청주시)",
+        "숙소 배정 후 점심식사"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "수료증 및 기념품 수여"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": "1년간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "참여자 수료 혜택 (온라인 창업교육 수강권)",
+        "9월 프로그램 종료일부터 1년간 수강 가능"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "특강 및 연사 세션",
+      "강의 및 워크숍",
+      "Peer Feedback",
+      "청소년 기업가정신",
+      "사업계획서 작성법"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오프닝 세레모니",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "항공기술훈련원 견학",
+        "hours": 1,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "특강 및 연사 세션",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "아이스브레이킹 및 DOGS 워크숍",
+        "hours": 1.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "Part1. 청소년 창업가 마인드셋",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "Part2. 아이데이션",
+        "hours": 1.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "Part3. 갤러리워크",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "Part4. 사업계획서 작성",
+        "hours": 2.75,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "Part5. 사업계획서 발표",
+        "hours": 1.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 10,
+        "title": "클로징 세레모니",
+        "hours": 0.67,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "아이디어톤 운영 계획(안)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "1박 2일 청소년 창업 아이디어톤"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnheo4003c8gvczpyavj73",
+  "projectId": "A.23.0048",
+  "projectName": "KAC 청소년 창업 아이디어톤 운영 용역",
+  "intensity": {
+    "totalEducationHours": 12.42,
+    "totalWeeks": 13,
+    "basis": "hours: sessions[10] hours 합산 · weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 10534,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:53:48.217Z"
+  }
+}

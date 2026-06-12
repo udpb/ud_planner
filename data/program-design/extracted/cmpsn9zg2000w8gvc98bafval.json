@@ -1,0 +1,396 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "참가자격 한지를이용한문화상품디자인및 개발에관심있는개인‧단체(3인 인하)‧업체"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "참가자격 한지를이용한문화상품디자인및 개발에관심있는개인‧단체(3인 인하)‧업체"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "전통한지를활용한문화상품",
+        "공예, 한지등에종사하는창작자 , 기업"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "국내외유통채널발굴및 입점지원(공진원유통처제외3개사이상)"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "문화체육관광부 /한국공예‧디자인문화진흥원 명의상장및 상금"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "문화체육관광부 /한국공예‧디자인문화진흥원 명의상장및 상금"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 100000000,
+        "participants": null,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업비 • 일금일억원정(₩100,000,000) 부가가치세포함",
+        "사업기간 • 계약체결일~ 2025. 12. 15"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "Startup 6 Dimension"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "제안사보유6각형기업진단tool을 바탕으로분석 Startup 6 Dimension"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2차 심사후 선발된10팀은자가진단도구를 활용하여기업 맞춤형코치를배정",
+        "Startup 6 Dimension"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "▪ [특강]오프라인 집체교육 *현장불참자대상온라인중계",
+        "▪ [컨설팅 ]진단기반1:1컨설팅운영"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "컨설팅기획및 운영(총 2회)",
+        "교육: 2회 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "기업자가진단을 통해 컨설팅팀-멘토매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출품작한지선택을위한1:1컨설팅",
+        "기업자가진단을 통해 컨설팅팀-멘토매칭",
+        "내부코치를통한코칭지원: 1회/팀"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": null,
+        "teamBased": true,
+        "teamSize": 3,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참가자격 한지를이용한문화상품디자인및 개발에관심있는개인‧단체(3인 인하)‧업체",
+        "전시관람및 네트워킹 공모전참여제품전시관람, 참가자간 교류"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "박람회",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "공모전운영지원, 컨설팅기획및 운영(총 2회), 시상식개최및 운영",
+        "공예트렌드페어 전시참가지원, 한지가헌전시기획·운영및 입점지원"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 3,
+        "methods": [
+          "서류",
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1차 서류심사 ※ 30팀선정",
+        "2차 실물심사 ※ 10팀선정",
+        "3차 최종심사 ※ 4팀선정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "프로토타입",
+        "브랜드"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "시제품의정밀도, 내구성, 기능성등 품질수준",
+        "브랜드별특성과콘셉트를반영한 제품촬영부터상세페이지제작지원등"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "한지지원",
+            "amountKrw": 200000
+          },
+          {
+            "label": "프로젝트제품투자",
+            "amountKrw": 5000000
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "선택전통한지지원(각 20만원상당)",
+        "프로젝트제품투자진행: 500 만원이상"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "내부코치를통한코칭지원",
+        "심사및컨설팅 , 집체교육을 위한제안사 보유전문가 POOL",
+        "문화예술 분야콘텐츠발굴부터 행사, 전시까지 경험/노하우가 있는전문인력배치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "1안) 오프라인제안사회의실서면심사 2안) 온라인서면심사",
+        "DDP 디자인랩2층 서울-온",
+        "코엑스A Hall",
+        "한지가헌"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "컨설팅참여도검토"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "투자연계",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "판매‧유통후속지원",
+        "지속적인성장로드맵구축을위한제안사만의특화관리방안제공",
+        "프로젝트제품투자진행: 500 만원이상"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "1. 브랜딩및디자인고도화전략 2. 지식재산권 보호기본교육",
+      "1. 국내외유통및판매채널진입전략 2. 비즈니스모델과 수익구조설계",
+      "상품성과 디자인기획력강화를위한기초역량교육 사업화실행력을 높이기위한실전중심교육"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2025 한지문화상품 디자인 공모전 사업 운영 대행"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "전체프로그램만족도",
+        "targetValue": 90,
+        "unit": "점",
+        "raw": "전체프로그램만족도 90 점이상"
+      },
+      {
+        "metric": "홍보콘텐츠",
+        "targetValue": 60,
+        "unit": "건",
+        "raw": "사업/팀 홍보콘텐츠 60 건이상"
+      },
+      {
+        "metric": "글로벌진출지원",
+        "targetValue": 1,
+        "unit": "건",
+        "raw": "글로벌진출지원: 1건"
+      },
+      {
+        "metric": "글로벌플랫폼입점",
+        "targetValue": 1,
+        "unit": "건",
+        "raw": "글로벌플랫폼입점: 1건"
+      },
+      {
+        "metric": "컨설팅지원",
+        "targetValue": 2,
+        "unit": "회",
+        "raw": "한지, 제작, 유통등컨설팅 2회/팀이상"
+      },
+      {
+        "metric": "온-오프라인플랫폼입점",
+        "targetValue": 3,
+        "unit": "건",
+        "raw": "온-오프라인플랫폼입점 3건/팀 이하"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "전체프로그램만족도 90 점이상",
+      "사업/팀 홍보콘텐츠 60 건이상",
+      "글로벌진출지원: 1건",
+      "글로벌플랫폼입점: 1건",
+      "한지, 제작, 유통등컨설팅 2회/팀이상",
+      "온-오프라인플랫폼입점 3건/팀 이하"
+    ]
+  },
+  "docId": "cmpsn9zg2000w8gvc98bafval",
+  "projectId": "B.25.0058",
+  "projectName": "「2025 한지문화상품 디자인 공모전」사업 운영 대행",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 30844,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:55:14.827Z"
+  }
+}

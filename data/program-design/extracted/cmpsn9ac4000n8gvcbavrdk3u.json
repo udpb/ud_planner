@@ -1,0 +1,404 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "오전에 진행되는 로컬 문제 기반의 아이디어 도출 과정과 오후의 실제 고객 설득 도구(렌딩페이지) 제작을 연계함으로써, 아이디어 구상에서부터 실행까지의 창업 전반의 완전한 사이클을 경험"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "충청도 지역 청년이 지역 문제를 창업으로 해결할 수 있는 실전형 창업 역량 강화",
+        "2025년 한서대학교 원데이 로컬 기술창업 아이디어톤 교육 기획안"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬 기술창업"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "충청도 지역 청년이 지역 문제를 창업으로 해결할 수 있는 실전형 창업 역량 강화",
+        "로컬 문제 기반의 아이디어 도출 과정"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "2025년 한서대학교 원데이 로컬 기술창업 아이디어톤 교육 기획안"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "한서대학교"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS Test",
+        "5Why",
+        "MVP",
+        "생성형 AI",
+        "바이브코딩"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "팀 빌딩 솔루션 “DOGS Test”로 창업팀 구성",
+        "5Why 기법으로 근본 원인 분석",
+        "바이브코딩으로 고객 설득용 웹페이지 제작 완성",
+        "생성형 AI, 데이터 기반 리서치, 지역 분석 방법론, 그리고 AI 기반 랜딩페이지 제작"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "오전에 진행되는 로컬 문제 기반의 아이디어 도출 과정과 오후의 실제 고객 설득 도구(렌딩페이지) 제작을 연계"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석체크 및 OT",
+        "참여자 식사",
+        "사진 촬영"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "원데이 로컬 기술창업 아이디어톤",
+        "아이디어 구상에서부터 실행까지의 창업 전반의 완전한 사이클을 하루에 경험"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 7.5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "10:30~11:00 출석체크 및 OT",
+        "17:30~18:00 마무리"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹",
+          "기타"
+        ],
+        "totalRounds": 1,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "참가자들의 피드백과 코치들의 발전 방향 피드백"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "동료리뷰"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀 빌딩 솔루션 “DOGS Test”로 창업팀 구성 및 팀워크 경험",
+        "참가자들의 피드백과 코치들의 발전 방향 피드백",
+        "창업가 성향진단 및 팀빌딩/네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "랜딩페이지 발표 및 질의응답(피어 피드백)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "MVP",
+        "프로토타입",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "바이브코딩으로 고객 설득용 웹페이지 제작 완성",
+        "MVP 계획 및 검증 시나리오 설계"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "코치들의 발전 방향 피드백"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "한서대학교"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석체크 및 OT",
+        "랜딩페이지 발표 및 질의응답",
+        "만족도 조사"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "하루에 경험"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념",
+        "기타"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "단순한 이론 교육이 아닌 지역 내 문제 분석→창업 아이디어 구체화→고객 설득용 랜딩페이지 제작→발표 및 피어피드백까지 전체 과정을 경험할 수 있는 실습 중심 교육"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "출석체크 및 OT",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "팀빌딩 및 워크숍",
+        "hours": 0.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "문제 정의 및 페르소나 정의",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기존 솔루션 분석을 통한 핵심가치 정의 및 솔루션 구체화 & MVP 계획",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "카피 제작 (AI 활용)",
+        "hours": 0.5,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "이미지 제작 (AI 활용)",
+        "hours": 0.67,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "랜딩페이지 제작 및 실습 (AI 활용)",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "발표 내용 작성",
+        "hours": 0.83,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "랜딩페이지 발표 및 질의응답 (피어 피드백)",
+        "hours": 1.33,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      },
+      {
+        "no": 10,
+        "title": "마무리",
+        "hours": 0.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "진행시간 프로그램 주요 내용 10:30~11:00 출석체크 및 OT ... 17:30~18:00 마무리"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "원데이 로컬 기술창업 아이디어톤 교육 기획안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn9ac4000n8gvcbavrdk3u",
+  "projectId": "A.25.0059",
+  "projectName": "한서대학교 원데이 기술창업 프로그램",
+  "intensity": {
+    "totalEducationHours": 7.66,
+    "totalWeeks": null,
+    "basis": "hours: sessions[10] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 8412,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:53:08.586Z"
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.8,
+      "evidence": [
+        "지원서 작성을 통해 참여자 모집을 진행하여, 사내벤처 아이디어를 구체화할 8팀을 선발합니다."
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사내벤처 프로그램 참여에 대한 임직원의 진입장벽을 낮추고"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "사내 직원들의 혁신적인 아이디어를 아이디어 구체화 단계와 MVP 실행 단계를 거쳐"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "2023 코오롱베니트 사내벤처 육성 프로그램"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.9,
+      "evidence": [
+        "2023 코오롱베니트 사내벤처 육성 프로그램"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "2023 코오롱베니트 사내벤처 육성 프로그램"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 9
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기간 | 2022.04~05 | 22.06~22.08 | 22.09 | 22.09~22.12"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업 방법론",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문제해결 사업화 방법론 (언더독스 창업 방법론)"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "1단계 : 아이디어 공모",
+        "이벤트, 창업가 특강"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인(스타트유어스) 강의 제공",
+        "2단계 교육 시 주 1회 오전 교육, 오후 사업 구체화 활동을 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업교육 (10회차 교육)",
+        "2단계 교육 시 주 1회 오전 교육, 오후 사업 구체화 활동을 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2단계 교육 시 주 1회 오전 교육, 오후 사업 구체화 활동을 진행하여, 오로지 창업 과정에 집중할 수 있는 시간 마련",
+        "전일제 교육으로 변경 (오후 시간 전체 활용)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 30,
+        "practicePct": 70,
+        "basis": "명시"
+      },
+      "confidence": 1,
+      "evidence": [
+        "강의와 워크샵 비중을 3:7로 나누어 운영"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "1단계부터 3단계까지 동일한 코치진이 참여"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1:1 코칭 [팀 현황 진단, 과제 확인 및 피드백]",
+        "1단계부터 3단계까지 동일한 코치진이 참여하여, 사업 과정 및 멘탈 관리를 통해 사업 성장과정 전반 서포트"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 1,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "점심 특강 및 선배 창업가 네트워킹 세션",
+        "스타트업 팀빌딩 프로그램 제공"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "중반"
+        },
+        {
+          "type": "IR",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획서 발표, 우수팀 시상금 지급",
+        "투자심의 지원"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "지원서 작성을 통해 참여자 모집",
+        "사내, 사외 전문가들의 심사를 통해 2단계에 참여할 8팀 선발",
+        "사업계획서 발표",
+        "팀수 | 20개팀 | 8~10개팀 | | 1~2개팀"
+      ]
+    },
+    "actionWeek": {
+      "value": {
+        "count": 2,
+        "placement": "2단계 창업교육 중 2주간 배치"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "Action Week (2주)"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "산출물 | 2단계 참여 지원서 | 사업계획서 | | 서비스 도출 / 투자심의서"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "시제품비"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수팀 시상금 지급",
+        "MVP 지원금: MVP 시제품/서비스 제작 지원금"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코치 코칭",
+        "외부 전문가 컨설팅",
+        "선배 사내벤처 특강"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "온라인(스타트유어스) 강의 제공",
+        "현장·실행 중심의 창업교육"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "지속가능한 사내벤처 육성 프로세스 구축"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의와 워크샵 비중을 3:7로 나누어 운영",
+      "창업교육 (10회차 교육) [창업방법론, 사업계획서 작성법], Action Week (2주) [사내벤처 사례, 비즈니스 코칭]"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "창업가의 마인드셋",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "관점 도출",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이템 구체화",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "MVP",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "시장, 경쟁사 분석",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "비즈니스 모델",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "사업계획서 교육",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "사업계획서 작성 워크숍",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "모의 피칭",
+        "hours": null,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "피칭 컨설팅",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1회차 | 창업가의 마인드셋 | 창업가의 마인드셋 정립, 창업가 성향 진단",
+      "10회차 | 피칭 컨설팅 | 피칭 전문가 컨설팅"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2023 코오롱베니트 사내벤처 육성 프로그램"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnfi3o002o8gvcknvowkpa",
+  "projectId": "A.23.0017",
+  "projectName": "2023 코오롱베니트 사내벤처 육성 프로그램",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 10,
+    "basis": "weeks: totalSessions(10) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 16363,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:32:41.855Z"
+  }
+}

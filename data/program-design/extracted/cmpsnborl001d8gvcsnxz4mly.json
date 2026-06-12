@@ -1,0 +1,428 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "소상공인",
+      "confidence": 1,
+      "evidence": [
+        "광주광역시 지역 내 사회적기업/여성기업을 포함한 소상공인들 또한 이로부터 자유로울 수 없는 만큼 교육을 통해 그들의 사업 역량을 강화시켜"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "여성",
+        "일반소상공인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "광주광역시 소재 사회적기업, 여성기업을 포함한 소상공인 중 온라인 시장 진출에 의지가 있는 사업체 30개 사",
+        "사회적기업, 여성기업을 우선 선발합니다."
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "광주광역시 소재 소상공인으로 넓게 가져가되, 사회적기업, 여성기업을 우선 선발합니다."
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "광주광역시 지역 기반의 사회적기업/여성기업을 포함한 소상공인들이 실제적인 사업 성과 개선을 통해"
+      ]
+    },
+    "channel": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "신한라이프 지정 후원금 사업계획서"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "신한라이프 지정 후원금 사업계획서"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 50000000,
+        "participants": 30,
+        "durationMonths": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총계 | | | 50,000,000",
+        "온라인 시장 진출에 의지가 있는 사업체 30개 사",
+        "프로젝트 기획 및 운영 총괄 매니저 (1명*3개월*투입율 10%)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트 러닝",
+        "생성형 AI"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 코호트 러닝(5회)",
+        "생성형 AI를 활용한 콘텐츠 기획 및 제작"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 맞춤형 코칭(팀 당 1회)으로 이어지는 온/오프라인 혼합 교육 및 코칭 운영"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 9,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오리엔테이션 (2시간)",
+        "1회차 (2시간) ... 6회차 (2시간)",
+        "1:1 코칭 ... 참여 팀 당 온라인 코칭 1회(1시간)",
+        "성과공유회"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 2,
+        "timeOfDay": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "오리엔테이션 (2시간)",
+        "1회차 (2시간)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "온라인후속"
+        ],
+        "totalRounds": 1,
+        "hoursPerRound": 1,
+        "coachToTeamRatio": "1:1",
+        "pairing": "참여 팀별 교육 성취도 및 진단 결과에 따라 코칭 부문 설정"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "참여 팀 당 온라인 코칭 1회(1시간)",
+        "참여 팀별 교육 성취도 및 진단 결과에 따라 코칭 부문 설정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 1,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 코호트 러닝(5회)",
+        "업체 당 대표자 혹은 실무자 1인 참석을 원칙으로 하여 30명을 기준으로 하나",
+        "장기 프로젝트를 함께 할 참여팀, 코치진, 운영진 간 밍글링 및 친밀감 형성",
+        "네트워킹이 가능한 커뮤니티 구성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "성과공유회 | 12/30 (월) | 오프라인 | 성과공유회 | • 교육 참여 우수 성과 공유 및 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "온라인 스토어(네이버, 쿠팡 등 오픈마켓 플랫폼, 자사몰 등) 개설 여부를 최소한의 기준으로 삼습니다."
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "마케팅 콘텐츠 기획 및 제작",
+        "상세페이지/썸네일 기획",
+        "광고 소재 기획 및 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여팀들의 성공 사례 공유 및 우수팀 시상"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 1,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 전담 코치 | 7,330,000 | 12주 진행 (1명*3개월*투입율 43%)",
+        "프로그램 총괄 PM | 2,220,000 | 프로젝트 기획 및 운영 총괄 매니저 (1명*3개월*투입율 10%)",
+        "광주광역시 권역 내 선배 사업가 특강 운영"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "오리엔테이션 (2시간) | 11/11 (화) | 오프라인",
+        "1회차 (2시간) | 11/13 (목) | 온라인"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "참여율",
+        "교육 성취도 및 진단 결과"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "온라인 기초 마케팅 교육(1회) -> 실행 기반",
+      "온라인 광고 마케팅 실습",
+      "지역 내 우수 선배 브랜드의 이커머스 성공 경험 공유 및 네트워킹"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션",
+        "hours": 2,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "브랜드 및 고객 정의",
+        "hours": 2,
+        "format": "온라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "시장 분석 및 목표 설정",
+        "hours": 2,
+        "format": "온라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "이커머스 마케팅 기초",
+        "hours": 2,
+        "format": "온라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "마케팅 콘텐츠 제작(1)",
+        "hours": 2,
+        "format": "온라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "마케팅 콘텐츠 제작(2)",
+        "hours": 2,
+        "format": "온라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "온라인 광고 기초",
+        "hours": 2,
+        "format": "온라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "1:1 맞춤형 코칭",
+        "hours": 1,
+        "format": "온라인",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "성과공유회",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "오리엔테이션 (2시간) | 11/11 (화) | 오프라인 | 오리엔테이션",
+      "1회차 (2시간) | 11/13 (목) | 온라인 | 브랜드 및 고객 정의",
+      "1:1 코칭 | 12/8~12/26 | 온라인 | 1:1 맞춤형 코칭",
+      "성과공유회 | 12/30 (월) | 오프라인 | 성과공유회"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "온라인 코호트 러닝(5회) -> 1:1 맞춤형 코칭(팀 당 1회)으로 이어지는 온/오프라인 혼합 교육 및 코칭 운영"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "참여율",
+        "targetValue": null,
+        "unit": null,
+        "raw": "참여율"
+      },
+      {
+        "metric": "만족도",
+        "targetValue": null,
+        "unit": null,
+        "raw": "만족도"
+      },
+      {
+        "metric": "사업 성과 성장 지표",
+        "targetValue": null,
+        "unit": null,
+        "raw": "사업 성과 성장 지표"
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "산출목표 | • 참여율 • 만족도 • 사업 성과 성장 지표"
+    ]
+  },
+  "docId": "cmpsnborl001d8gvcsnxz4mly",
+  "projectId": "F.25.0020",
+  "projectName": "광주광역시 사회적기업_여성기업_소상공인 디지털 전환 지원 사업",
+  "intensity": {
+    "totalEducationHours": 18,
+    "totalWeeks": 13,
+    "basis": "hours: cadence.totalSessions(9) × sessionLength.hoursPerSession(2) · weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 4135,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:48:15.547Z"
+  }
+}

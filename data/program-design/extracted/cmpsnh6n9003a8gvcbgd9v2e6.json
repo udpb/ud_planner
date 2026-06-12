@@ -1,0 +1,412 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "초기/스케일 업 팀 대상 조직문화 워크샵",
+        "스케일업 단계에 있는 팀들을 대상으로"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "교통‧환경 분야의 팀을 육성해보았거나"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교통‧환경 분야의 팀을 육성해보았거나"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.5,
+      "evidence": [
+        "프로그램 진행 장소 : 언더독스 교육장 및 미팅룸"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "DB손해보험 교통·환경 챌린지 5기 액셀러레이팅 사업계획서"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "DB손해보험 교통·환경 챌린지 5기"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 일정 : 총 8주, 엑셀러레이팅 지원 및 사업화 실행"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "ONE TEAM"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 ONE TEAM 솔루션",
+        "DOGS 팀 대화 워크샵"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스가 만든 스타트업 단계 진단검사를 통하여 참여 창업팀의 단계를 진단하고",
+        "DOGS 팀 대화 워크샵"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": 40,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 교육과 온라인 교육의 비율을 6:4로 조정하여 병행 운영하였음에도",
+        "워크샵 등 함께 인사이트를 공유할 수 있는 활동은 오프라인으로 구성하고 이외의 강의는 온라인으로 구성하여 온오프믹스로 운영할 필요가 있음"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 8,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 일정 : 총 8주",
+        "1회차(10/5)",
+        "2회차(10/12)",
+        "3회차(10/19)",
+        "4회차(10/26)",
+        "5회차(11/2)",
+        "6회차(11/9)",
+        "7회차(11/16)",
+        "8회차(11/30)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "참가팀의 사업 분야에 맞는 현역 투자 심사역 코치를 매칭"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 밀착 멘토링 및 맞춤형 지원 제공",
+        "참가팀의 사업 분야에 맞는 현역 투자 심사역 코치를 매칭하여"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업팀 간에 서로 알아 갈 수 있는 시간을 통해 상호 간에 협업 포인트를 도출할 수 있도록 함",
+        "창업팀간의 네트워킹을 유도할 수 있다는 점에서 중요함"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "5회차(11/2) 중간점검 교육 § 중간 성과공유회",
+        "8회차(11/30) 최종점검 § 최종 성과공유회 § 실전 IR 피칭 발표 및 최종 점검"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IR 피치덱 작성 특강 및 피드백",
+        "프로그램을 통해 작성된 사업계획서에 대해"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "엑셀러레이팅 지원 및 사업화 실행"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀 별로 슈퍼바이저와 심사역 코치를 배정하여",
+        "VC 전문가 특강",
+        "사회적 가치 측정 전문가"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 진행 장소 : 언더독스 교육장 및 미팅룸",
+        "오프라인 교육과 온라인 교육의 비율을 6:4로 조정하여 병행 운영"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석 기준 관련하여 외근 신청과 같은 운영 방식에 대한 개선이 필요해 보임",
+        "수료 기준을 명확히 전달하고 운영할 계획임"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 후속 영업/지원/투자 등으로의 연계지점 모색"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "조직문화 워크샵",
+      "VC 전문가 특강",
+      "관리 회계 중요성 및 팀별 관리 회계 검토",
+      "IR 피칭전략 수립 및 트레이닝"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션 및 팀 빌딩 & 조직문화 교육",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "소셜&비즈니스 KPI 설정 교육",
+        "hours": null,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "사회적 가치 특강 교육",
+        "hours": null,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "관리 회계",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "중간점검",
+        "hours": null,
+        "format": "이벤트/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "맞춤형 전문가 컨설팅",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "IR 피치덱 작성 특강 및 피드백",
+        "hours": null,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "최종점검",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "세부 프로그램 내용"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "DB손해보험 교통·환경 챌린지 5기 액셀러레이팅 사업계획서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "만족도",
+        "targetValue": 4.2,
+        "unit": "점",
+        "raw": "4.2/5.0"
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "이후 사업에서도 이 같은 높은 만족도를 유지할 수 있도록",
+      "평균 만족도 점수 4.2/5.0"
+    ]
+  },
+  "docId": "cmpsnh6n9003a8gvcbgd9v2e6",
+  "projectId": "A.23.0044",
+  "projectName": "DB손해보험 교통·환경 챌린지 5기",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 8,
+    "basis": "weeks: totalSessions(8) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6860,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:21:57.172Z"
+  }
+}

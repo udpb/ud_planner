@@ -1,0 +1,299 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "규모: 기업[대표, 전략‧인사담당자, CSR담당자 등], 유관기관 200명 내외"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "규모: 기업[대표, 전략‧인사담당자, CSR담당자 등], 유관기관 200명 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "규모: 기업[대표, 전략‧인사담당자, CSR담당자 등], 유관기관 200명 내외"
+      ]
+    },
+    "geography": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "2025 지속가능 인재활용 컨퍼런스 리:액트 시니어 서울"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "[주최] 서울특별시"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "[주최] 서울특별시"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 200,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "규모: 기업[대표, 전략‧인사담당자, CSR담당자 등], 유관기관 200명 내외"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "장소: 대한상공회의소 회의장 및 소회의실"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일시: 2025. 11. 19.(수) 14:00~18:00 (약 4시간 소요)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 4,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일시: 2025. 11. 19.(수) 14:00~18:00 (약 4시간 소요)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": 5,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총 5세션(예정), 공동 개최 기업‧기관이 1개의 분과를 맡아서 기획‧진행",
+        "세션4. 네트워크 행사"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "세션4. 네트워크 행사"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "조성준교수",
+        "김광현교수",
+        "최영준교수"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "장소: 대한상공회의소 회의장 및 소회의실"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "인터뷰·대담",
+        "패널",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "키노트 스피치 및 대담+기업파트너스데이+밋업+네트워킹행사",
+      "기업 사례 발표",
+      "패널 발표 및 질의응답 진행"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "세션1. 키노트",
+        "hours": 1,
+        "format": "강의/대담",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "세션2. 파트너스 데이",
+        "hours": 0.83,
+        "format": "사례발표/대담",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "세션3. 지속가능 밋업",
+        "hours": 0.83,
+        "format": "패널발표/토론",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "세션4. 참여자 네트워킹",
+        "hours": 0.5,
+        "format": "네트워킹",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "세션1. 키노트(60’)",
+      "세션2. 파트너스 데이(50’)",
+      "세션3. 지속가능 밋업(50’)",
+      "세션4. 참여자 네트워킹(30’)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "본 컨퍼런스는 초고령화 사회 대응과 경영 현장을 연결하는 자리로, 시니어 인력의 고용자이자 사회문제 해결 주체인 기업이 시니어를 활용하여 경쟁력 있는 조직을 설계‧운영할 수 있도록 인사이트 및 실천 가능한 방안을 모색하고자 함"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn9br6000o8gvckmc93j13",
+  "projectId": "A.25.0064",
+  "projectName": "50플러스재단 리액트 컨퍼런스",
+  "intensity": {
+    "totalEducationHours": 3.16,
+    "totalWeeks": null,
+    "basis": "hours: sessions[4] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 2412,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:53:14.613Z"
+  }
+}

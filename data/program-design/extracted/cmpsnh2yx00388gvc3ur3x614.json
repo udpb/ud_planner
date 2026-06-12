@@ -1,0 +1,291 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "비창업자",
+      "confidence": 0.9,
+      "evidence": [
+        "참여 대상 : LS그룹 신입사원"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "참여 대상 : LS그룹 신입사원"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "신사업 아이디어의 사업화 가능성 여부 및 사업화를 위한 비즈니스 아이템 구체화부터 사업 타당성 분석까지"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 경기도 안성 LS그룹 연수원"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.9,
+      "evidence": [
+        "2023 LS그룹 신입직원 애자일 워킹"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "LS그룹 신입사원"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 6600000,
+        "participants": 80,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "인원 규모 : 총 80명 (13팀 ~ 14팀)",
+        "예산 규모 : 총 6,600,000원"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "애자일",
+        "창업방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "애자일 워킹",
+        "체계적인 창업방법론"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "오프라인 현장 강의 및 팀 워크숍 프로그램 운영"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 2,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 일정 : 2023년 7월 7일, 7월 14일 (총 2회 교육)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 4,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총괄 기획 및 관리 400,000 1 4 2 3,200,000 4시간",
+        "내부코치 350,000 1 4 2 2,800,000"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 2,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "마무리 Q&A 운영 필요한 팀의 경우 1:1로 코치진에 질문",
+        "오프라인 현장 강의 및 워크숍, 1:1 코칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "인원 규모 : 총 80명 (13팀 ~ 14팀)",
+        "창업 과정을 오프라인 현장 워크숍으로 실습하며 소속감 및 협력 증진"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획 수립을 위한 역량 강화"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "내부코치"
+        ],
+        "headcount": 1,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전, 현직 언더독스 코치",
+        "내부코치 350,000 1 4 2",
+        "총괄 기획 및 관리 400,000 1 4 2"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 경기도 안성 LS그룹 연수원"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "혁신창업방법론 이론 교육 및 정보전달을 위한 강의 형태와 학습한 내용을 기반으로 툴킷과 템플릿을 활용하여 팀 워크숍으로 실습 진행"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "아이템 도출",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "사업 타당성 분석",
+        "hours": 4,
+        "format": "강의/워크숍/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "2023. 7. 7. (금요일) 오프라인 현장 강의 및 워크숍, 1:1 코칭 아이템 도출",
+      "2023. 7. 14. (금요일) 오프라인 현장 강의 및 워크숍, 1:1 코칭 사업타당성 분석"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "체계적인 창업방법론 내용과 함께 실제 비즈니스에서 곧바로 적용 가능한 템플릿 및 툴킷을 제공"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnh2yx00388gvc3ur3x614",
+  "projectId": "A.23.0040",
+  "projectName": "2023 LS그룹 신입직원 애자일 워킹",
+  "intensity": {
+    "totalEducationHours": 8,
+    "totalWeeks": 2,
+    "basis": "hours: sessions[2] hours 합산 · weeks: totalSessions(2) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 4348,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:21:28.821Z"
+  }
+}

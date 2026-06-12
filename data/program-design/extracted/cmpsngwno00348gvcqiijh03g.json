@@ -1,0 +1,477 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "서울 지역을 기반으로 창업을 했거나 창업을 준비 중인 예비, 초기 0~3년차 창업가(팀)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "주거 및 공간을 혁신하는 0~3년차 청년 창업가를 발굴·육성하여"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "주거 및 공간"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "주거 및 공간 분야 창업팀 육성",
+        "주거, 업무, 상업 공간 관련하여 환경 개선, 복지, 플랫폼 활용 솔루션, 콘텐츠를 제공하는 창업가(팀)"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "서울 지역을 기반으로 창업을 했거나 창업을 준비 중인 예비, 초기 0~3년차 창업가(팀)"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "SH공사 창업팀 육성 신규 프로그램 세부계획(안)"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "SH공사 창업팀 육성 신규 프로그램 세부계획(안)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 70000000,
+        "participants": null,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체 사업비 총계 (십만원 미만 절삭) 70,000,000",
+        "10주 정규 창업교육 프로그램"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "마르쉐"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 자체 개발 팀빌딩 솔루션 ‘마르쉐’ 및 ‘DOGS’ 워크숍"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전과제",
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "‘온라인 강의 패키지’를 사전 제공하여 사전 학습 및 과제 진행",
+        "구체적인 사전 진단을 통해 맞춤형 1:1 멘토링을 진행합니다.",
+        "‘DOGS’ 워크숍"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온·오프라인",
+        "‘온라인 강의 패키지’를 사전 제공하여 사전 학습 및 과제 진행",
+        "온라인(ZOOM)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1주차: 오리엔테이션, 해결하고자 하는 문제 정의 (오프라인)",
+        "10주차: 최종 성과 공유회 (오프라인)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "창업팀 사전 진단-코치의 의견 기반으로, 근본적인 문제를 해결할 수 있는 멘토를 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전담 코치의 1:1 코칭",
+        "창업팀 사전 진단-코치의 의견 기반으로, 근본적인 문제를 해결할 수 있는 멘토를 매칭하여 최적의 솔루션을 도출"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "동료리뷰"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대상 5개 팀",
+        "창업팀들 간의 밍글 및 네트워킹을 통한 라포 형성",
+        "질의응답 등 자유로운 형식의 코칭 및 피어 피드백 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간 성과 공유회(6주차)",
+        "최종 성과 공유회(10주차)",
+        "발표 및 과정 평가를 통해 우수팀 선발 및 시상금 지급"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류 & 발표 평가 -> 참가팀 최종 선발",
+        "1차 서류 평가, 2차 대면 평가를 통한 최종 참가팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": {
+        "count": null,
+        "placement": "중간 성과 공유회 이후"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "중간 성과 공유회 이후 MVP 실행 주간을 거치며 제품 개발 및 검증을 위한 컨설팅을 운영합니다."
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP",
+        "프로토타입"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "프로토타입 테스트 및 설계 방법",
+        "MVP 실행 결과 중심",
+        "작성한 사업계획서를 기반으로"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "참가팀 MVP 개발 지원금",
+            "amountKrw": 1000000
+          },
+          {
+            "label": "우수팀 시상금",
+            "amountKrw": 5000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "참가팀 MVP 개발 지원금",
+        "우수팀 시상금"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "분야별 전담 코치",
+        "특강 강사",
+        "프로젝트 운영 PM"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "온라인(ZOOM)",
+        "오프라인 진행"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제"
+        ],
+        "attendanceThreshold": 80
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 참석률(출석+과제)",
+        "교육 프로그램 출석률 80% 이상"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "투자연계"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 알럼나이 프로그램 참여 기회 부여, 언더독스 지주사 ‘뉴블랙’ 투자 연계(해당 시)"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "방식 교육, 워크숍, 네트워킹",
+      "강연 및 질의응답",
+      "창업 방법론 학습",
+      "실전형 MVP 특강",
+      "선배 창업가 MVP 강연"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션, 해결하고자 하는 문제 정의",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "고객, 사용자 분석, 기존 솔루션 분석",
+        "hours": null,
+        "format": "온라인(ZOOM)",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "솔루션 관점 도출, 경쟁사 분석",
+        "hours": null,
+        "format": "온라인(ZOOM)",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "프로토타입 설계 및 테스트 준비, 선배 창업가 MVP 강연",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "MVP 특강 1: 랜딩페이지 제작, 비즈니스 모델",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "중간 성과 공유회",
+        "hours": null,
+        "format": "온라인(ZOOM)",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      },
+      {
+        "no": 7,
+        "title": "MVP 특강 2: MVP 데이터 분석, 시장 분석, 경쟁사 분석",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "사업계획서 작성",
+        "hours": null,
+        "format": "온라인(ZOOM)",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "1:1 사업계획서 피드백",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "최종 성과 공유회",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1주차: 오리엔테이션, 해결하고자 하는 문제 정의 (오프라인)",
+      "2주차: 고객, 사용자 분석, 기존 솔루션 분석 (온라인(ZOOM))",
+      "3주차: 솔루션 관점 도출, 경쟁사 분석 (온라인(ZOOM))",
+      "4주차: 프로토타입 설계 및 테스트 준비, 선배 창업가 MVP 강연 (오프라인)",
+      "5주차: MVP 특강 1: 랜딩페이지 제작, 비즈니스 모델 (오프라인)",
+      "6주차: 중간 성과 공유회 (온라인(ZOOM))",
+      "7주차: MVP 특강 2: MVP 데이터 분석, 시장 분석, 경쟁사 분석 (오프라인)",
+      "8주차: 사업계획서 작성 (온라인(ZOOM))",
+      "9주차: 1:1 사업계획서 피드백 (오프라인)",
+      "10주차: 최종 성과 공유회 (오프라인)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "10주 정규 창업 교육 과정을 통해 창업팀 성과(KPI) 달성, 임팩트 진단, 전문 분야 컨설팅 등 집중 지원 및 육성"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "만족도",
+        "targetValue": 4.2,
+        "unit": "점",
+        "raw": "만족도 4.2 이상"
+      },
+      {
+        "metric": "출석률",
+        "targetValue": 80,
+        "unit": "%",
+        "raw": "교육 프로그램 출석률 80% 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "만족도 4.2 이상, 교육 프로그램 출석률 80% 이상"
+    ]
+  },
+  "docId": "cmpsngwno00348gvcqiijh03g",
+  "projectId": "A.23.0036",
+  "projectName": "『소셜벤처 지원사업』용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 10,
+    "basis": "weeks: totalSessions(10) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 12503,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:20:26.494Z"
+  }
+}

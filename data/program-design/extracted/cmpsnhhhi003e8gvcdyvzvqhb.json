@@ -1,0 +1,368 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "seed",
+      "confidence": 0.8,
+      "evidence": [
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "초기창업패키지 지원사업 프로그램 운영계획서"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "2023 한국수자원공사 K-WATER 투자역량강화 프로그램"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 20000000,
+        "participants": 10,
+        "durationMonths": 1.5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 소요예산 총 2,000만원(VAT포함)",
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀",
+        "추진일정 2023년 9월 3주 - 10월 4주"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여팀 별 비즈니스 역량 파악 및 향후 집중 강화 분야 파악을위해 사전 셀프 온라인 자가진단 진행",
+        "6개 영역 30개 질문 (영역 : ①문제이해, ②아이템 구체화, ③MVP, ④비즈니스 모델, ⑤비즈니스 성장성, ⑥팀역량)"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 형태 : 온(ZOOM) ·오프라인 혼합"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 4,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "일정 2023.09월 3주-10월 1주 / 총 3회",
+        "2023.10월 2주-4주 / 1회",
+        "23.09월 3주, 1회",
+        "23.09월 4주, 1회",
+        "23.10월 1주, 1회"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 2,
+        "timeOfDay": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "온라인(120‘)",
+        "오프라인(120‘)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 0,
+        "practicePct": 100,
+        "basis": "추정"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "투자유치를 위한 IR멘토링 (3회) 및 IR 피치덱 제작 지원"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": 3,
+        "hoursPerRound": 2,
+        "coachToTeamRatio": "1:1",
+        "pairing": "담당 코치님과 해당 주차 스케줄 조율하여 진행"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전문코치와의 1:1 맞춤형 코칭",
+        "IR 멘토링 (3회)",
+        "온라인(120‘)",
+        "오프라인(120‘)",
+        "멘토링 진행 전 교육일정표를 통해 담당 코치님과 해당 주차 스케줄 조율하여 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "K-Water 초기창업패키지 선정기업 중 지원 10개 팀"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "Seed IR피치덱 총 10부",
+        "IR 피치덱 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "IR 피치덱 제작 지원",
+            "amountKrw": 12000000
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "IR 피치덱 제작 12,000,000 1,200,000원 * 10개= 12,000,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 4,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "박병룡 본부장",
+        "최인영 코치",
+        "한완희 파트너",
+        "문석진 이사",
+        "프로젝트 운영 PM 2,010,920"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 언더독스, 수자원공사 내 회의실",
+        "온라인(ZOOM)"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "결과물"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "최종 산출물",
+        "Seed IR피치덱 총 10부"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "최종 산출물 예시 ... 제출시기 2023.11.30"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "투자유치를 위한 IR멘토링 (3회) 및 IR 피치덱 제작 지원",
+      "투자가능성 진단기반, IR 피칭 전략 구축 멘토링 진행",
+      "1:1 팀 맞춤형 IR피치덱 자료 디자인 및 제작"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "투자 가능성 진단 멘토링",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "IR 피치덱 구성 멘토링",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "IR 피칭 최종 멘토링",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "IR 피치덱 디자인 제작",
+        "hours": null,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1 투자 가능성 진단 멘토링 23.09월 3주 온라인(120‘)",
+      "2 IR 피치덱 구성 멘토링 23.09월 4주 온라인(120‘)",
+      "3 IR 피칭 최종 멘토링 23.10월 1주 오프라인(120‘)",
+      "4 IR 피치덱 디자인 제작 23.10월 2-4주 -"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2023 한국수자원공사 K-WATER 투자역량강화 프로그램"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnhhhi003e8gvcdyvzvqhb",
+  "projectId": "A.23.0052",
+  "projectName": "투자역량강화 프로그램",
+  "intensity": {
+    "totalEducationHours": 8,
+    "totalWeeks": 4,
+    "basis": "hours: cadence.totalSessions(4) × sessionLength.hoursPerSession(2) · weeks: totalSessions(4) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6025,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:23:27.406Z"
+  }
+}

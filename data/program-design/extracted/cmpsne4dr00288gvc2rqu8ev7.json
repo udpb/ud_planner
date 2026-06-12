@@ -1,0 +1,436 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "조선대학교 \t해커톤 \t창업교육 \t제안서"
+      ]
+    },
+    "businessDomain": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.5,
+      "evidence": [
+        "조선대학교 \t해커톤 \t창업교육 \t제안서"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "조선대학교 \t해커톤 \t창업교육 \t제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "조선대학교 \t해커톤 \t창업교육 \t제안서"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "4Steps 실전 창업 방법론",
+        "6Dimension 비즈니스 진단 방법론",
+        "PSST"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스는 \t자체 \t개발한 \t4Steps \t실전 \t창업 \t방법론과 \t6Dimension \t비즈니스 \t진단 \t방법\n론을 \t통해 \t체계적이고 \t구체적인 \t맞춤형 \t창업 \t교육을 \t제공합니다.",
+        "PSST(Problem, \tSolution, \tScale-up, \tTeam) \t전략에 \t맞춰 \t체\n계적으로 \t정리."
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1일차(12/05, \t10:30~21:00)",
+        "10:00~10:30 \t출석 \t사전준비 \t및 \t출석 \t체크"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1박 \t2일이\n라는 \t짧은 \t시간 \t안에 \t창업가들이 \tIR \tDeck을 \t완성하고",
+        "10:00~10:30 \t출석 \t사전준비 \t및 \t출석 \t체크"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1-1) \t1박2일 \t해커톤 \t일정",
+        "1박 \t2일이\n라는 \t짧은 \t시간 \t안에 \t창업가들이 \tIR \tDeck을 \t완성하고"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1일차(12/05, \t10:30~21:00)",
+        "2일차(12/06, \t10:00~15:00)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "가장 \t만족도 \t높은 \t전현직 \t창업가의 \t1:1 \t코칭",
+        "코호트러닝: \t창업가의 \t아이템을 \t다양한 \t관점에서 \t다각도로 \t검토하고 \t보완하는 \t교육"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "5단계 \t맞춤형 \t상호 \t학습 \t시스템(교육+워크숍+코호트러닝+피어피드백+코칭)을 \t통해",
+        "코호트러닝: \t창업가의 \t아이템을 \t다양한 \t관점에서 \t다각도로 \t검토하고 \t보완하는 \t교육"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1차 \t발표 \tIR \t피칭 \t및 \t피드백(3분 \t발표, \t3분 \t피드백)",
+        "시상 \t및 \t마무리"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박 \t2일이\n라는 \t짧은 \t시간 \t안에 \t창업가들이 \tIR \tDeck을 \t완성하고",
+        "PSST \t중심의 \t사업계획서 \t작성 \t방법 \t교육"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "단순 \t사업계획서 \t작성법 \t교육이 \t아닌 \t지원사업 \t및 \t투자유치 \t연계",
+        "시상 \t및 \t마무리"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 4,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "투입 \t인력",
+        "임재성",
+        "김용운",
+        "정연호",
+        "정운"
+      ]
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "후속보육"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "단순 \t사업계획서 \t작성법 \t교육이 \t아닌 \t지원사업 \t및 \t투자유치 \t연계"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의, \t워크숍",
+      "실습, \t코칭",
+      "발표, \t운영",
+      "문제 \t원인 \t분석에 \t기반한 \t문제 \t명확화",
+      "PSST \t중심의 \t사업계획서 \t작성 \t방법 \t교육",
+      "IR \t피칭 \t및 \t피드백"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT",
+        "hours": 0.5,
+        "format": "운영",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제 정의",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "페르소나 분석",
+        "hours": 0.67,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "기존 솔루션 분석",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "관점 도출",
+        "hours": 1,
+        "format": "발표, 워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "아이템 구체화",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "시장/경쟁사 분석",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "비즈니스 모델",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "사업계획서 작성",
+        "hours": 1,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "사업계획서 실습",
+        "hours": null,
+        "format": "실습, 코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "발표 준비",
+        "hours": 0.5,
+        "format": "운영",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "1차 발표",
+        "hours": 1.5,
+        "format": "발표, 운영",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 13,
+        "title": "2차 발표",
+        "hours": 1.5,
+        "format": "발표, 운영",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 14,
+        "title": "시상 및 마무리",
+        "hours": 0.5,
+        "format": "운영",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1-1) \t1박2일 \t해커톤 \t일정",
+      "1일차(12/05, \t10:30~21:00)",
+      "2일차(12/06, \t10:00~15:00)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "언더독스의 \t해커톤 \t프로그램은 \t강의, \t워크숍, \t코칭이 \t결합된 \t실전형 \t교육으로"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsne4dr00288gvc2rqu8ev7",
+  "projectId": "A.24.0039",
+  "projectName": "2024 C-StartUp Compitition#2 심화 창업캠프&경진대회",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 12339,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:12:29.321Z"
+  }
+}

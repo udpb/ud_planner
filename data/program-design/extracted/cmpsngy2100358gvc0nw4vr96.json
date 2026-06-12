@@ -1,0 +1,392 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "교육 대상 : 비영리사업에 대한 아이디어를 가지고 가능성을 타진하고자 하는 초기단계 그룹"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "교육 대상 : 비영리사업에 대한 아이디어를 가지고 가능성을 타진하고자 하는 초기단계 그룹"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "공익적 목적의 비영리사업을 추진하고자 하는 예비 또는 초기단계 창업팀"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "교육 대상 : 비영리사업에 대한 아이디어를 가지고 가능성을 타진하고자 하는 초기단계 그룹"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "일반관리비 (사업비의 5%)",
+        "기업이윤 (‘사업비+일반관리비’의 5%)"
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 12000000,
+        "participants": 20,
+        "durationMonths": 1
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업비 총계 (십만원 단위 이하 절사) 12,000,000",
+        "온라인 강의 70,000 20 1 100% 1,400,000",
+        "교육 기간 : 2023년 5월 17일 ~ 2023년 6월 중순"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "플립러닝",
+        "사회혁신창업방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "플립러닝(Flipped Learning) 방식의 창업기초교육",
+        "언더독스 아카이브 온라인 강의 플랫폼을 통해 사회혁신창업방법론 선수강",
+        "OT + 코치 밋업 + DOGS"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 아카이브 온라인 강의 플랫폼을 통해 사회혁신창업방법론 선수강",
+        "DOGS 팀빌딩 워크숍 (창업가 성향 진단)"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 방식 : 원데이 교육 1회, 온라인 코칭 4회, 최종성과공유회",
+        "ZOOM으로 실시간 1:1 온라인 멘토링 진행",
+        "온라인 강의 수강"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 6,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1 오프라인 5/17",
+        "2 온라인 5/22 주차",
+        "6 오프라인 6/21(예정)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "09:00~09:30 30 접수",
+        "17:50~18:00 10 마무리 Q&A"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 4,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 방식 : 원데이 교육 1회, 온라인 코칭 4회, 최종성과공유회",
+        "전현직 창업가로 구성된 전담코치와의 1:1 맞춤형 멘토링"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "초기단계 그룹",
+        "DOGS 팀빌딩 워크숍 (창업가 성향 진단)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "최종성과공유회 -",
+        "6 오프라인 6/21(예정) § 최종성과공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": {
+        "count": 3,
+        "placement": "중반"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2 온라인 5/22 주차 § MVP 실행주간 1회차",
+        "3 온라인 5/29 주차 § MVP 실행주간 2회차",
+        "4 온라인 6/5 주차 § MVP 실행주간 3회차"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 작성 주간",
+        "비즈니스 모델 도출",
+        "고객 및 문제당사자 인터뷰 결과와 이를 통해 창업팀이 얻은 인사이트"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금"
+        ],
+        "amounts": [
+          {
+            "label": "우수 창업팀 사업화 지원금",
+            "amountKrw": null
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "우수 창업팀 평가 및 선발을 통해 사업화 지원금 제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": 2,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전현직 창업가로 구성된 전담코치와의 1:1 맞춤형 멘토링",
+        "교육운영 총괄 및 코치 6,993,408 1",
+        "교육 운영 코치 5,362,452 1"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1 오프라인 5/17",
+        "ZOOM으로 실시간 1:1 온라인 멘토링 진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": "교육기간동안"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사후관리 과정 (온라인) 플립러닝",
+        "창업패키지(언더독스 혁신창업방법론 전과정을 패키지로 제공하여 교육기간동안 언제든지 수강할 수 있도록 함."
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "플립러닝(Flipped Learning) 방식의 창업기초교육",
+      "MVP 실행주간",
+      "사업계획서 작성 주간",
+      "최종성과공유회"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT + 코치 밋업 + DOGS / 문제정의, 페르소나 분석 / 기존솔루션 분석, 관점도출 / 리서치 방법론, 아이템 구체화 / 비즈니스 모델 도출",
+        "hours": 9,
+        "format": "강의+워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "MVP 실행주간 1회차 (MVP)",
+        "hours": null,
+        "format": "1:1 온라인 멘토링",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "MVP 실행주간 2회차 (MVP 결과 및 인사이트 공유)",
+        "hours": null,
+        "format": "1:1 온라인 멘토링",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "MVP 실행주간 3회차 (초기 핵심시장 정의)",
+        "hours": null,
+        "format": "1:1 온라인 멘토링",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "사업계획서 작성 주간 (사업계획서)",
+        "hours": null,
+        "format": "1:1 온라인 멘토링",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "최종성과공유회",
+        "hours": null,
+        "format": "발표 및 평가회",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1 오프라인 5/17 § OT + 코치 밋업 + DOGS",
+      "2 온라인 5/22 주차 § MVP 실행주간 1회차",
+      "6 오프라인 6/21(예정) § 최종성과공유회"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "플립러닝(Flipped Learning) 방식의 창업기초교육"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngy2100358gvc0nw4vr96",
+  "projectId": "A.23.0037",
+  "projectName": "2023 비영리 스타트업 첫걸음 떼기",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 6,
+    "basis": "weeks: totalSessions(6) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6481,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:54:13.897Z"
+  }
+}

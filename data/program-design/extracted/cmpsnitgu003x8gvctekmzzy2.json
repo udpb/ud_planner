@@ -1,0 +1,450 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "지역문제해결에 니즈가 있는 사회적경제 조직"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "시니어"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "시니어 팀 필수 포함"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "로컬"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬 비즈니스의 특수성을 고려한 커리큘럼 필요"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "로컬 비즈니스의 특수성을 고려한 커리큘럼 필요"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "드림위드 \t3기 \t교육 \t프로그램 \t기획안"
+      ]
+    },
+    "clientTier": {
+      "value": "재단/비영리",
+      "confidence": 0.9,
+      "evidence": [
+        "한국타이어나눔재단 드림위드3기"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 20000000,
+        "participants": 12,
+        "durationMonths": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 \t사업예산 \t20,000,000",
+        "프로그램 \t기간: \t2022년 \t5월 \t26일(목) \t~ \t10월 \t27일(목)",
+        "*6개팀x2명",
+        "*팀(12명)/언독(4명)/한타(3명)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "로컬창업방법론",
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "로컬창업방법론 적용",
+        "창업가 성향진단 \tDOGS \t테스트"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업가 성향진단 \tDOGS \t테스트"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육, \t코칭 \t– \t온라인 \t/ \t네트워킹 \t및 \t수료식 \t– \t오프라인(지역팀 \t소재)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "혼합",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "4회차 \t교육 \t운영",
+        "1:1 \t코칭 \t격주로 \t진행 \t(6, \t8, \t10, \t12주차)",
+        "최종성과공유회 \t1박 \t2일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1주차 \t(3h)",
+        "2주차 \t(3h)",
+        "3주차 \t(3h)",
+        "4주차 \t(3h)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 4,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업 \t경험이 \t있는 \t코치의 \t팀별 \t맞춤형 \t1:1 \t코칭 \t진행",
+        "코칭 \t(4회 \t진행) \t1:1 \t코칭 \t격주로 \t진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 2,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "동료리뷰"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "3~5팀",
+        "*6개팀x2명",
+        "피어 \t피드백",
+        "참여팀들의 \t네트워크를 \t구축하고 \t참여팀 \t간 \t협업 \t기능을 \t제공"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간점검(네트워킹) \t(5주차 \t진행)",
+        "최종성과공유회 \t1박 \t2일"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류 \t및 \t대면심사 \t: \t6월 \t2일(수)~ \t6월 \t17일(금)"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "MVP \t제작 \t실행계획서 \t작성방법 \t교육",
+        "실행계획서 \t작성 \t워크숍"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "1차 사업화 지원금",
+            "amountKrw": 5000000
+          },
+          {
+            "label": "2차 사업화 지원금 (2팀)",
+            "amountKrw": 2700000
+          },
+          {
+            "label": "2차 사업화 지원금 (1팀)",
+            "amountKrw": 3000000
+          },
+          {
+            "label": "3차 사업화지원금",
+            "amountKrw": 2000000
+          },
+          {
+            "label": "상금 1등",
+            "amountKrw": 600000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1차 \t사업화 \t지원금 500만원",
+        "2차 \t사업화 \t지원금 270만원 \t: \t2팀 300만원 \t: \t1팀",
+        "3차 \t사업화지원금 200만원",
+        "상금 1등: \t60만원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 4,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "책임연구원(실무책임) 1",
+        "연구원(교육운영/코칭) 1",
+        "연구보조원(교육운영) 2",
+        "언독(4명)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "지역거점",
+        "합숙시설"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육, \t코칭 \t– \t온라인 \t/ \t네트워킹 \t및 \t수료식 \t– \t오프라인(지역팀 \t소재)",
+        "참가팀 \t지역에서 \t1박 \t2일 \t최종 \t성과공유회 \t워크숍 \t진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "전· 현직 창업가가 직접 진행하는 이론, 워크숍, 사례 학습 등 실무 중심의 교육"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "아이스브레이킹 및 로컬 창업가 관점 세팅",
+        "hours": 3,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "진행 내용 공유 및 로컬자원조사",
+        "hours": 3,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "진행 내용 공유 및 로컬 비즈니스 아이템 도출",
+        "hours": 3,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "진행 내용 공유 및 아이디어 검증(MVP)",
+        "hours": 3,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "중간점검(네트워킹)",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "1:1 코칭 1회차",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "1:1 코칭 2회차",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "1:1 코칭 3회차 및 피칭 컨설팅",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "1:1 코칭 4회차 및 피칭 컨설팅",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "수료식 및 최종 쇼케이스 (1박 2일)",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1주차 (3h) 아이스브레이킹, 로컬 창업가 관점 세팅",
+      "2주차 (3h) 진행 내용 공유, 로컬자원조사",
+      "3주차 (3h) 진행 내용 공유, 로컬 비즈니스 아이템 도출",
+      "4주차 (3h) 진행 내용 공유, 아이디어 검증(MVP)",
+      "중간점검(네트워킹) (5주차 진행)",
+      "코칭 (4회 진행) 1:1 코칭 격주로 진행 (6, 8, 10, 12주차)",
+      "수료식 (13주차 진행)",
+      "최종성과공유회 1박 2일"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "코로나로 진행하지 못했던 오프라인 네트워킹 기회 마련 > 최종 쇼케이스"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnitgu003x8gvctekmzzy2",
+  "projectId": "A.22.0021",
+  "projectName": "한국타이어나눔재단 드림위드3기",
+  "intensity": {
+    "totalEducationHours": 30,
+    "totalWeeks": 22,
+    "basis": "hours: cadence.totalSessions(10) × sessionLength.hoursPerSession(3) · weeks: durationMonths(5) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 5889,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:56:24.865Z"
+  }
+}

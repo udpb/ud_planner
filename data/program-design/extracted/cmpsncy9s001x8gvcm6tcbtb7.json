@@ -1,0 +1,432 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "성장및스케일업단계 3~7년차"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "디자이너",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "디자인 스타트업",
+        "참여기업 소속 디자이너 및 프리랜서 디자이너들을 초청"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "2024 서울디자인스케일업프로젝트운영"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "서울디자인창업센터"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "서울디자인재단"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "서울디자인재단"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 195000000,
+        "participants": 6,
+        "durationMonths": 7
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 계 십만원이하절삭 195,000,000",
+        "선정된 6개 기업 대상",
+        "7개월 월 2"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "6 Dimension Tool",
+        "DISC"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "언더독스 창업가 유형진단도구(DOGS)",
+        "언더독스 창업팀 진단도구(6 Dimension Tool)",
+        "DISC 기반의 업무성향진단"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사전제출한 언더독스 창업가 유형진단도구(DOGS) 결과 제출"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "온라인 사전교육",
+        "오프라인 프로그램"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 8,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "8주간 8회의 트렌드 대중강연회 개최"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "그룹"
+        ],
+        "totalRounds": 11,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "언더독스 코치 및 전문가 풀을 활용하여 창업기업 경영 분야별 전문가 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업전문코치의 일대일 진단을 통해",
+        "창업팀 성장전략 수립 컨설팅 주월 1회, 총 6회",
+        "분야별 전문가 컨설팅 팀별 총 5회",
+        "언더독스 코치 및 전문가 풀을 활용하여 창업기업 경영 분야별 전문가 매칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "성장형 코호트 커뮤니티",
+        "참여기업 간 라포형성을 통해 알럼나이 네트워크 구축"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "디자인스타트업 데모데이",
+        "Pre-Demo Day"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "IR피칭 자료 제작 노하우",
+        "아카이빙 북 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "디자인페어 참여지원",
+            "amountKrw": 8000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "LIPS 투자 연계",
+        "디자인페어 참여지원",
+        "디자인페어참여지원 식 1 8,000,000 8,000,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 9,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "인하우스 코치진",
+        "분야별 전문가",
+        "특강 메인 연사",
+        "책임연구원 2명 * 참여율30% * 7개월",
+        "류민 PM"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "서울디자인창업센터 (3F, 컨퍼런스홀)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "alumni"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "LIPS 투자 연계",
+        "알럼나이 네트워크 구축"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "특강",
+      "워크숍",
+      "데모데이",
+      "1:1 코칭",
+      "ESG 경영전략",
+      "성공사례 공유",
+      "피칭 스킬 교육",
+      "디자인 산업 트렌드"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "ESG경영전략과 철학",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "디자이너 발굴과 육성",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "로컬 브랜딩",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "브랜드 전략",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "전통 디자인",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "공간 디자인",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "디자인 덴티티",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "토크 콘서트",
+        "hours": null,
+        "format": "토크콘서트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "D-School 강연주제 구성 및 세부내용"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2024 서울디자인스케일업프로젝트운영"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "회차별 신청 인원",
+        "targetValue": 100,
+        "unit": "명",
+        "raw": "회차별 신청목표 인원 100명"
+      },
+      {
+        "metric": "회차별 현장 참석 인원",
+        "targetValue": 60,
+        "unit": "명",
+        "raw": "현장참석 목표 인원 60명"
+      },
+      {
+        "metric": "총 모객 인원",
+        "targetValue": 450,
+        "unit": "명",
+        "raw": "총 450명 모객 목표 기준"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "회차별 신청목표 인원 100명",
+      "현장참석 목표 인원 60명",
+      "총 450명 모객 목표 기준"
+    ]
+  },
+  "docId": "cmpsncy9s001x8gvcm6tcbtb7",
+  "projectId": "A.24.0019",
+  "projectName": "2024 서울 디자인스케일업 프로젝트 운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 30,
+    "basis": "weeks: durationMonths(7) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 39514,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:07:25.712Z"
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_공통",
+      "confidence": 0.8,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1",
+        "해외연사 섭외비"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "전체 운영예산(파본+스포트라이트"
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 10941000,
+        "participants": 50,
+        "durationMonths": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총 사업비 계(부가세 별도) \t22,496,200 \t10,941,000",
+        "테이블없이 의자 배치 (50석)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "테이블없이 의자 배치 (50석)",
+        "현장 동시 통역만 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 100,
+        "practicePct": 0,
+        "basis": "추정"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "강연자 집중 최대화",
+        "원형 테이블과 캐쥬얼한 의자로 장내 원활한 토론의 분위기 유도"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "테이블없이 의자 배치 (50석)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [],
+      "confidence": 0,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 3,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "연사 섭외비(서현선, 전영수 교수)",
+        "해외연사 섭외비"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "마련된 의자 제외 모든 집기 렌탈 필요",
+        "자체 장비(빔 프로젝트, TV 제외) 활용 불가"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "pacemaker GLOBAL SEMINAR EP.1"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "기타"
+      ],
+      "contentTypes": [
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "강연자 집중 최대화",
+      "원형 테이블과 캐쥬얼한 의자로 장내 원활한 토론의 분위기 유도"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "섹션1,2 : 장내 조도를 최소화 하고 무대를 강조한 조명 활용하여 강연자 집중 최대화",
+      "섹션 3 : 장내 조도를 최대화하여 열린 분위기 강조"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "현장운영계획(안) 및예산_230510 v1"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsngkgg00308gvcl0cz50h3",
+  "projectId": "A.23.0030",
+  "projectName": "페이스메이커",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 3086,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:53:04.351Z"
+  }
+}

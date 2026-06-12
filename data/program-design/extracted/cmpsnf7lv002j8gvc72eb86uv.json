@@ -1,0 +1,276 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "청년 로컬크리에이터 육성 사업 운영"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "청년 로컬크리에이터 육성 사업 운영"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "청년 로컬크리에이터 육성 사업 운영",
+        "지역 키맨"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "청년 로컬크리에이터 육성 사업 운영"
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 953500000,
+        "participants": 36,
+        "durationMonths": 10
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체 사업비 총계 (십만원 미만 절삭) 953,500,000",
+        "식사 및 다과비 교육생 식사 및 간식, 회식비, 네트워킹비 15,000 36 12 100% 6,480,000",
+        "프로그램 총괄 회사내규 준용 5,000,000 1 10 100% 50,000,000"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "창업가 진단 워크숍 솔루션 진단, 워크숍 진행 및 진단 굿즈 제공"
+      ]
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "팀전담",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "전담코치의 진단 특화전문가 코치 매칭 실행"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "창업 코치 창업코치(전담)",
+        "외부 파트너코치",
+        "전담코치의\n진단\n특화전문가\n코치 매칭 실행"
+      ]
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "성과 점검 및 발표\n운영 성과 및 발표를\n바탕으로 우수팀 선정",
+        "성과공유회 성과공유회 성과공유회 진행 및 운영"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 19,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업 코치 창업코치(전담) 3,500,000 2",
+        "외부 파트너코치 400,000 9",
+        "지역 키맨 500,000 3",
+        "외부연사 특강강사비 800,000 5",
+        "프로젝트 운영 PM 회사내규 준용 3,400,000 2"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "현장방문",
+        "온라인"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "공간 구축",
+        "탐방 프로그램\n교통비 자원조사 교통비",
+        "사후관리 온라인 교육 제공 사후관리"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "성과 점검 및 발표\n운영 성과 및 발표를\n바탕으로 우수팀 선정"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사후관리 온라인 교육 제공 사후관리"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "창업가 진단 워크숍 솔루션 진단, 워크숍 진행 및 진단 굿즈 제공",
+      "창업가 섭외 프로그램 체험 및 인사이트 토크쇼",
+      "외부연사 특강강사비"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "청년 로컬크리에이터 육성 사업 운영"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnf7lv002j8gvc72eb86uv",
+  "projectId": "A.23.0009",
+  "projectName": "청년 로컬크리에이터 육성 사업 운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 43,
+    "basis": "weeks: durationMonths(10) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 4248,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:15:42.561Z"
+  }
+}

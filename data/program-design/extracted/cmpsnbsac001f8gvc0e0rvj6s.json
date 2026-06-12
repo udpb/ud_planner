@@ -1,0 +1,353 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.9,
+      "evidence": [
+        "글로벌 친구들과 한일 사회문제를 해결하고자 하는 예비 창업가 고등학생(만 18세 이하)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청소년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "만 18세 이하 고등학생"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "일본과 한국 간의 공통된 사회 문제에 집중하고, 양국의 자원을 활용하여 독창적인 솔루션 발굴"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_공통",
+      "confidence": 0.9,
+      "evidence": [
+        "Cross-Border Program은 일본과 한국의 공통된 사회 문제를 해결하는 것을 목표로 합니다."
+      ]
+    },
+    "channel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 40,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "고등학생(만 18세 이하) / 40명"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": 38,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 (3일) 오프라인 (5일)",
+        "실시간 교육 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 8,
+        "rhythm": "혼합",
+        "campDays": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 (3일) 오프라인 (5일)",
+        "오프라인 Day 4 8.4(월) ~ 8.8(금) *출입국 포함"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 Day 1 7.12(토) 14시-17시",
+        "시간 : 14시 – 17시"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "다른 연령대, 학교, 그리고 국가의 또래들과 팀을 이루어 함께 도전"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DAY 7 데모데이"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 지원서(구글폼)",
+        "서류 심사",
+        "최종 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IR 피칭덱"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "업계 전문가들의 강연"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 (3일) 오프라인 (5일)",
+        "서울/도쿄 (택1)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "실용적이고 실습 중심적인 방식으로 창업 역량 강화",
+      "현장에서 사회 문제에 대한 솔루션 탐색 기회",
+      "업계 전문가들의 강연"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "팀빌딩",
+        "hours": 3,
+        "format": "온라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제정의",
+        "hours": 3,
+        "format": "온라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "페르소나",
+        "hours": 3,
+        "format": "온라인",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "페르소나 인터뷰",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "MVP, BM",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "IR 피칭덱",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "데모데이",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 8,
+        "title": "출입국 포함",
+        "hours": null,
+        "format": "오프라인",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "DAY 1 팀빌딩",
+      "DAY 2 문제정의",
+      "DAY 3 페르소나",
+      "DAY 4 페르소나 인터뷰",
+      "DAY 5 MVP, BM",
+      "DAY 6 IR 피칭덱",
+      "DAY 7 데모데이",
+      "DAY 8",
+      "온라인 (3일) 오프라인 (5일)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "Cross-Border Program은 일본과 한국의 공통된 사회 문제를 해결하는 것을 목표로 합니다."
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnbsac001f8gvc0e0rvj6s",
+  "projectId": "G.25.0003",
+  "projectName": "[탁토피아] Glocal Entrepreneurship Journey in Japan & Korea",
+  "intensity": {
+    "totalEducationHours": 24,
+    "totalWeeks": null,
+    "basis": "hours: cadence.totalSessions(8) × sessionLength.hoursPerSession(3)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 1849,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:48:08.189Z"
+  }
+}

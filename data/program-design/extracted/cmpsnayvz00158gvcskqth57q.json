@@ -1,0 +1,241 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "관람객의 참여로 완성되는 영화의 한 장면"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "언어와 문화의 장벽을 낮춘 외국인 전용 프로그램 제공"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "빛과 예술, 학문의 향연이 펼쳐지는 도심 속 왕릉에서의 특별한 순간"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_한국인바운드",
+      "confidence": 0.8,
+      "evidence": [
+        "언어와 문화의 장벽을 낮춘 외국인 전용 프로그램 제공"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2025년 세계유산 조선왕릉축전 운영 대행 용역"
+      ]
+    },
+    "clientTier": {
+      "value": "기타",
+      "confidence": 0.5,
+      "evidence": [
+        "2025년 세계유산 조선왕릉축전 운영 대행 용역"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "모바일 어플리케이션을 활용한 [야외 방탈출 게임]",
+        "직접 왕릉을 탐험하며 온몸으로 체험하는"
+      ]
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        },
+        {
+          "type": "기타",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "조선의 500년 영화, 2025년 조선왕릉축전 제작발표회 현장에 초대",
+        "분야와 주제를 넘나드는 왕릉 토크콘서트"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10개 이상 왕릉 스탬프 적립 시 (선착순)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "전문가의 역사강의"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "현장방문"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "동구릉과 서오릉 행행에서 만나는",
+        "도심 속 왕릉에서의 특별한 순간"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "전문가의 역사강의",
+      "모바일 어플리케이션을 활용한 [야외 방탈출 게임]",
+      "왕릉음악회를 통해 만나는 조선왕실 이야기"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025년 세계유산 조선왕릉축전 운영 대행 용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnayvz00158gvcskqth57q",
+  "projectId": "D.25.0018",
+  "projectName": "2025년 세계유산 조선왕릉축전 운영 대행",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 4013,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:57:35.190Z"
+  }
+}

@@ -1,0 +1,423 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "사업을 준비하는 아이디어 단계에 있는 팀에 특히 집중하여 창업가를 발굴하고 육성"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "소셜 청년창업스쿨 (가칭)",
+        "창업을 희망하는 청년"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "취약계층 고용 및 사회서비스 제공으로 목적하는 사업 및 다양한 공익 활동 수행을 목적 등으로 하는 사업"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "지원지역 \t(예비)창업팀"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "신용카드사회공헌재단",
+        "한국사회투자"
+      ]
+    },
+    "clientTier": {
+      "value": "재단/비영리",
+      "confidence": 0.9,
+      "evidence": [
+        "신용카드사회공헌재단"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 150000000,
+        "participants": 40,
+        "durationMonths": 12
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "합  \t계 \t150,000,000",
+        "1기: \t10개팀(20명내외)\n2기: \t10개팀(20명내외)",
+        "사업기간 \t2021.12~2022.12"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "린스타트업",
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "flipped \tlearning 형태로 사전 제공",
+        "린스타트업 기반의 아이템 구체화",
+        "MVP 제작과 검증"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "기타"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 교육은 사전에 배울 창업 교육 부분을 flipped learning 형태로 사전 제공",
+        "팀빌딩솔루션/워크샵 개인 진단별 활용 및 결과분석"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "운영장소 \t온라인 \tZOOM \t/ \t현대카드 \tCEO \t라운지",
+        "창업을 준비하는 기초 역량 부분은 온라인교육으로 진행하고",
+        "flipped \tlearning 형태로 사전 제공"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 6,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "주차 \t교육내용 \t세부내용",
+        "1\n문제 정의",
+        "6 \t사업계획서 \t발표"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 30,
+        "practicePct": 70,
+        "basis": "명시"
+      },
+      "confidence": 1,
+      "evidence": [
+        "실습 워크숍과 이론 강의 비중을 7:3으로 하여"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "언더독스 코치 및 현대카드 실무자가 전담 러닝메이트로 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "담당 코치진의 1:1 맞춤형 코칭",
+        "언더독스 내부 인하우스 코치진 및 파트너 코치진들이 팀의 전담 러닝메이트가 되어",
+        "현대카드 창업지원팀의 실무자들도 실무역량강화 파트 분야의 러닝메이트가 되어"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1기: \t10개팀(20명내외)\n2기: \t10개팀(20명내외)",
+        "창업가의 네트워킹 기회 제공",
+        "피어 피드백, 갤러리워크"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "IR",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "모의 \tIR \t피칭(사업계획서 \t발표)",
+        "교육생\n네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2단계 심사과정을 통해 최종 선발 예정",
+        "1차 서류전형\n▶\n2차 면접전형",
+        "PT(5분 발표) 및 Q&A"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "완성도 높은 사업계획서 작성",
+        "MVP 제작과 검증"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "상금"
+        ],
+        "amounts": [
+          {
+            "label": "1등 상금",
+            "amountKrw": 10000000
+          },
+          {
+            "label": "2등 상금",
+            "amountKrw": 6000000
+          },
+          {
+            "label": "3등 상금",
+            "amountKrw": 4000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업화 \t지원금: \t총 \t4,000만원\n \t(기수별 \t- \t1등: \t1,000만원 \t2등: \t600만원 \t3등: \t400만원)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 5,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 내부 인하우스 코치진 및 파트너 코치진",
+        "외부 전문가",
+        "총괄: \t6,491,758원x1명x11개월x5%",
+        "운영: \t3,327,486원×2명",
+        "코칭:4,977,794원x2명"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "운영장소 \t온라인 \tZOOM \t/ \t현대카드 \tCEO \t라운지"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "과제",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "담당코치와 운영진이 진도, 과제 완성도 및 실행 여부 체크"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "실습 워크숍과 이론 강의 비중을 7:3으로 하여",
+      "모의 IR 발표",
+      "현대카드 창업지원 프로그램(CEO PLAN) 노하우와 실제 창업사례 접목",
+      "Step1: 관점도출\n- 시장에서의 고객들의 니즈를 분석하여 창업가만의 관점도출\n\no Step2: 아이템 구체화\n- 고객 분석 결과를 기반으로 아이템 구체화\n\no Step3: 사업 고도화"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "문제 정의, 페르소나 원인분석",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "기존솔루션 분석 관점도출",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "아이템 구체화 MVP",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "비즈니스 모델 구축 시장/경쟁자 분석",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "사업계획서",
+        "hours": null,
+        "format": "강의/워크숍/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "사업계획서 발표 모의 IR 발표",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1\n문제 정의, \n페르소나\n원인분석",
+      "2 기존솔루션 분석\n관점도출",
+      "3 아이템 구체화\nMVP",
+      "4\n비즈니스 모델\n구축\n시장/경쟁자 분석",
+      "5 \t사업계획서",
+      "6 \t사업계획서 \t발표 \t모의 \tIR \t발표"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "실전 창업교육 지원을 통해 우수한 예비창업팀를 육성"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnyq2t0009dgvc9ugmon90",
+  "projectId": "A.22.0002",
+  "projectName": "현대카드 사회 혁신 예비 창업팀 교육 지원 사업",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 6,
+    "basis": "weeks: totalSessions(6) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 8165,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [
+      "operatingFormat.aftercare"
+    ],
+    "extractedAt": "2026-06-12T09:58:49.277Z"
+  }
+}

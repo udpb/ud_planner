@@ -1,0 +1,443 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상: 문화예술 분야 내 비즈니스를 운영하고자 하는 예비, 초기 창업자 10개 팀 내외 (1년 미만이거나 매출이 잘 나오지 않는 팀)"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "2022 성북구 청년창업 Scale-up!"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "문화예술 분야 내 비즈니스를 운영하고자 하는 예비, 초기 창업자"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "성북구 청년창업",
+        "청년공간 길이음 (서울시 성북구 삼양로 31)"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "성북구 청년창업",
+        "성북구청 문화예술 예비초기 창업가 육성 사업"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "성북구청 문화예술 예비초기 창업가 육성 사업"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 10,
+        "durationMonths": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10개 팀 내외 (1년 미만이거나 매출이 잘 나오지 않는 팀)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "혁신창업방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DOGS 창업가 성향 분석 워크숍",
+        "혁신창업방법론 Lv.1"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "1주차 OT 5월 30일(월) 10:00~14:00 오리엔테이션 ... DOGS 창업가 성향 분석 워크숍"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온·오프라인 블렌디드 교육",
+        "온라인 진행(온라인 생중계(줌) 및 스타트유어스(온라인 교육) 병행)",
+        "코칭: 청년공간 길이음"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 6,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 기간: 5월 30일(월) ~ 7월 4일(월)",
+        "1주차",
+        "2회차",
+        "3회차",
+        "4회차",
+        "5회차",
+        "6회차"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": [
+        "10:00~14:00",
+        "13:00~17:00",
+        "10:00~12:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 5,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 오프라인 코칭 5",
+        "1:1 오프라인 코칭을 통한 사업계획서 작성 피드백"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10개 팀 내외",
+        "온라인 생중계를 통해 팀 간 네트워킹 및 외부 특강 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "3회차 교육 ... 아이템 구체화 공유회",
+        "6회차 사업계획서 발표 ... 사업계획서 발표 및 피드백 제공"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "프로토타입"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 제작 및 발표",
+        "MVP 진행을 위한 프로토 타입을 만들 수 있는 이론적인 방법 전달",
+        "IR 피칭 진행"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 전문 코치진의 맞춤형 코칭",
+        "외부 특강 진행",
+        "2명의 문화예술 분야 선배 창업가와의 네트워킹"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "지역거점"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육: 온라인 진행(온라인 생중계(줌) 및 스타트유어스(온라인 교육) 병행)",
+        "코칭: 청년공간 길이음"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "DOGS 창업가 성향 분석 워크숍",
+      "혁신창업방법론",
+      "문화예술 우수창업가 사업계획서 피칭 사례 소개",
+      "사업계획서 작성"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션 및 DOGS 워크숍, 윤리교육",
+        "hours": 4,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제 정의 및 고객, 사용자 관점 도출",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "1주차 1:1 코칭 (팀 현황 파악)",
+        "hours": 4,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "선배 창업가와의 네트워킹",
+        "hours": 2,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 5,
+        "title": "아이템 구체화",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "2회차 1:1 코칭 (과제 확인 및 사업 코칭)",
+        "hours": 4,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "아이템 구체화 공유회",
+        "hours": 2,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 8,
+        "title": "시장분석 및 비즈니스 모델",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "3회차 1:1 코칭 (과제 확인 및 사업 코칭)",
+        "hours": 4,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "문화예술 창업 사례 공유",
+        "hours": 2,
+        "format": "강의",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "사업계획서 작성",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "4회차 1:1 코칭 (사업계획서 작성 관련 코칭)",
+        "hours": 4,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "5회차 1:1 코칭 (1:1 사업계획서 피드백)",
+        "hours": 4,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "사업계획서 발표",
+        "hours": 4,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "일정 및 운영 개요",
+      "1주차",
+      "2회차",
+      "3회차",
+      "4회차",
+      "5회차",
+      "6회차"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "온·오프라인 블렌디드 교육 형태를 통한 교육 효과성 강화"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsniiks003t8gvc25i57q5l",
+  "projectId": "A.22.0015",
+  "projectName": "길이음 전문 창업교육 프로그램 운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 6,
+    "basis": "weeks: totalSessions(6) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6274,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:26:54.248Z"
+  }
+}

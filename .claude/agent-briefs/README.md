@@ -35,6 +35,7 @@ Agent({ subagent_type: "Explore", prompt: "..." })
 🟡 in-progress → ✅ 완료 → `_archive/` 이동. 완료 후 메인이 `git diff --name-only` ⊆ CAN-touch 검증 → 위반 시 revert. 브리프는 살아있는 문서 — 실행 전 Prerequisites 재확인, 실행 후 교훈을 Hints 에 추가.
 
 ## 활성 브리프
+- `BR-1-design-pattern-extraction.md` — ✅ **완료** (2026-06-12). ADR-028 운영 16축 전수 추출: **143/148건** (실패 5 — JSON 파싱, `_run-report.json`). evidence 원문 일치 96.9%(스모크) · normalize 관용 흡수+demotedAxes 패치. 산출: `data/program-design/{extracted/×143, _aggregate.json, _p3-segment-stats.json, _p3-hypothesis-report.md}`. P3 1차 판정 완료(청년 캠프·주1회 이원구조 발견, 소상공인 오프라인 가설 기각, 임직원 소수회차 집중 지지). 다음: 사용자 교정 → P4 DesignRule 브리프 + enum 어휘 보강(기타 클러스터링).
 - `UI-1-design-kit-app-migration.md` — ✅ **완료** (2026-06-12). 앱 UI 킷 260529 정렬: globals.css 킷 토큰+별칭 수렴 · NanumHuman/Poppins next/font · radius 전면 0 · 폐기 컬러(시안·구 그라데이션) 0건 · shadcn `--surface-accent/muted` 분리. 메인 라이브 검증 4화면 통과. 잔여 결정: cyan→ink 수렴 컨펌 · graph-view 노드 팔레트 6색 · 시각 미세 QA(라디오/스위치 사각화).
 - `DECK-5-consume-planning.md` — ⏸️ **ON HOLD / 재스코프 대기 (2026-06-12)**. ADR-026 기반이나 사용자 2026-06-12 피드백으로 방향 전환 — 덱은 PipelineContext를 **재저작**하면 안 되고 **정본 텍스트 제안서를 받아 슬라이드로 변환하는 분리된 터미널 모듈**이어야 함. **ADR-027(026 supersede) 작성 + 브리프 재스코프 전까지 이 브리프대로 진행 금지.** 상세: [HANDOFF.md](../../HANDOFF.md) 최상단.
 - `DECK-4-density-critic.md` — ✅ 완료 (2026-06-04). 밀도 비평 루프 + 여백 축소.

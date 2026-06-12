@@ -1,0 +1,338 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대상 100개 스마트스토어 브랜드사 • 상표권 보유 및 파워/빅파워 등급 브랜드"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "분야별/등급별/대표자&실무자별 그룹핑을 통한 네트워킹 프로그램 운영"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "100개 스마트스토어 브랜드사"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "100개 스마트스토어 브랜드사"
+      ]
+    },
+    "channel": {
+      "value": "renewal",
+      "confidence": 0.9,
+      "evidence": [
+        "2024 네이버 브랜드 부스터 2기"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.8,
+      "evidence": [
+        "TEAM NAVER 실무진 교육",
+        "네이버 브랜드 부스터"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 130000000,
+        "participants": 100,
+        "durationMonths": 8
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체 사업비 총계 (십만원 미만 절삭) 130,000,000",
+        "대상 100개 스마트스토어 브랜드사",
+        "2024년 5월 ~ 2024년 12월(안)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "OKR",
+        "그로스 마인드셋"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "OKR 시트 기반 계획/회고 진행",
+        "그로스 마인드셋"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전과제"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "브랜드 스토어 전환 및 B&A 과제 제출"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "마인드셋 교육(3회 : 1회 오프라인 / 2, 3회 온라인)",
+        "온라인 교육(zoom)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "마인드셋 교육(3회)",
+        "TEAM NAVER 교육1",
+        "TEAM NAVER 교육2"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 3.5,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "14:00~14:30 사전 네트워킹",
+        "16:40~17:30 공지 및 마무리 / 자율 네트워킹"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "참여도 미달 브랜드 별도 관리 (Special Care)"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "2024 네이버 브랜드 부스터 2기",
+        "100개 스마트스토어 브랜드사",
+        "온/오프라인 네트워킹 기획 및 운영"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 밋업데이 네트워크",
+        "온라인 밋업데이 네트워크",
+        "수료식 기획 및 운영 관리"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "참여팀 모객&선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "OKR 시트 기반 계획/회고 진행",
+        "Self-check 기반 목표 달성 검토",
+        "브랜드 스토어 전환"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "플랫폼 기능 활용 지원금",
+        "기획전 등 브랜드 홍보"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 12,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로젝트 총괄 PM",
+        "프로젝트 운영 PM",
+        "프로젝트 운영 매니저",
+        "특강 강사비",
+        "모더레이터 섭외비",
+        "연사 섭외비"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "네이버 1784 28층 HALL",
+        "온라인 교육(zoom)"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석 및 과제 제출 현황&점수 관리"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "그로스 마인드셋 ... 강의",
+      "1기 우수 사례 특강",
+      "Q&A 세션",
+      "브랜드 스토어 기능 활용 방법",
+      "OKR 시트"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "마인드셋 교육(3회 : 1회 오프라인 / 2, 3회 온라인)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "브랜드 스토어 기반 브랜드의 자발적 학습&성장을 만드는 2024 네이버 브랜드 부스터 2기"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnekii002d8gvcj7l747wa",
+  "projectId": "F.24.0001",
+  "projectName": "네이버 브랜드 부스터 프로그램 2기 운영 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 35,
+    "basis": "weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 9142,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [
+      "operatingFormat.aftercare"
+    ],
+    "extractedAt": "2026-06-12T09:53:17.869Z"
+  }
+}

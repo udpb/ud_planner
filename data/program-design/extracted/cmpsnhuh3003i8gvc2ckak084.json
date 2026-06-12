@@ -1,0 +1,259 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "참여대상\t-\t로컬에서 활동하는 현역 플레이어\n-\t로컬에 관심있는 도시재생, 창업 관련 지자체 관계자\n-\t지역에 거점을 두고 있는 대학 관계자\n-\t그외 로컬 및 소상공인 영역에 관심있는 사람"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "참여대상\t-\t로컬에서 활동하는 현역 플레이어\n-\t로컬에 관심있는 도시재생, 창업 관련 지자체 관계자\n-\t지역에 거점을 두고 있는 대학 관계자\n-\t그외 로컬 및 소상공인 영역에 관심있는 사람"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬의\t변화를\t심도있게\t바라보고,\t지역\t소상공인,\t지자체,\t대학들도\t새로운\t관점으로\t내가\t속한\t지역을\t다시\t보고\t변화의\t움직임을\t만들어야\t함을\t강조하고자\t함"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "로컬라이즈\t군산\t프로젝트는\tSK\tE&S 와\t언더독스가\t군산\t원도심에\t활력을\t불어넣기\t위해\t시작된\t프로젝트로"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.7,
+      "evidence": [
+        "로컬라이즈\t군산\t프로젝트는\tSK\tE&S 와\t언더독스가\t군산\t원도심에\t활력을\t불어넣기\t위해\t시작된\t프로젝트로"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "로컬라이즈\t군산\t프로젝트는\tSK\tE&S 와\t언더독스가"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 100,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "예상인원\t약 100 명",
+        "일시\t2023 년 10 월 27 일 ~ 28 일"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "장소\t로컬라이즈 타운 (전북 군산시 구영 5 길 104-4) 외"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일시\t2023 년 10 월 27 일 ~ 28 일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "-\t10 월 27 일 오후 1 시 ~ 오후 9 시\n-\t10 월 28 일 오후 1 시 ~ 오후 3 시"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": null,
+        "teamBased": null,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "-\t네트워킹을 통해 참여자간 인사이트를 나누고"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "행사구성\t로컬라이즈 포럼 및 부대행사\n-\t포럼을 통해 현장의 사례를 듣고,\n-\t네트워킹을 통해 참여자간 인사이트를 나누고\n-\t워크샵을 통해 새로운 로컬을 그려보는 프로그램"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "4. 연사 섭외 현황",
+        "키노트 연사\t모종린 교수 (연세대학교 국제학대학원)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "지역거점"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "장소\t로컬라이즈 타운 (전북 군산시 구영 5 길 104-4) 외"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "트렌드·인사이트",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "행사구성\t로컬라이즈 포럼 및 부대행사\n-\t포럼을 통해 현장의 사례를 듣고,\n-\t네트워킹을 통해 참여자간 인사이트를 나누고\n-\t워크샵을 통해 새로운 로컬을 그려보는 프로그램"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2023 로컬라이즈 캠프 개요"
+    ]
+  },
+  "kpiTargets": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnhuh3003i8gvc2ckak084",
+  "projectId": "D.23.0003",
+  "projectName": "2023 로컬라이즈 페스티벌",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 1988,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:24:11.239Z"
+  }
+}

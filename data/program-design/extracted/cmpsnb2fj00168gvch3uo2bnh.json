@@ -1,0 +1,322 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "3050 남성\tT A R G E T"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "3050 남성\tT A R G E T",
+        "직장인 인구 밀접 지역(잠실야구장, 광장)\tV E N U E"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 게임의 첫 인상을 단순한 디지털 광고가 아닌 직접 마주하는 물리적 경험으로 만들어줄 시간."
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "직장인 인구 밀접 지역(잠실야구장, 광장)\tV E N U E"
+      ]
+    },
+    "channel": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "온라인 게임의 첫 인상을 단순한 디지털 광고가 아닌 직접 마주하는 물리적 경험으로 만들어줄 시간."
+      ]
+    },
+    "clientTier": {
+      "value": "기타",
+      "confidence": 0.5,
+      "evidence": [
+        "온라인 게임의 첫 인상을 단순한 디지털 광고가 아닌 직접 마주하는 물리적 경험으로 만들어줄 시간."
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전(티징) 이벤트 트럭 투어"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "직장인 인구 밀접 지역(잠실야구장, 광장)\tV E N U E"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "드라이빙 총 15일 운영"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 8,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2025년 08월 13일 ~ 8월 31일中 (14:00 – 22:00)\tD A T E"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 0,
+        "practicePct": 100,
+        "basis": "명시"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "이벤트 트럭 팝업 사전 예약 혜택 & 게임 플레이 시연"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "게임시연대상자별도인터뷰진행유도"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "PC 배치(안) : 총 5대 배치"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "8월 메인 이벤트"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "이벤트 트럭 팝업 사전 예약 혜택 & 게임 플레이 시연"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "인플루언서 섭외비(여푸)",
+            "amountKrw": 3500000
+          },
+          {
+            "label": "인플루언서 섭외비(만만)",
+            "amountKrw": 4000000
+          },
+          {
+            "label": "인플루언서 섭외비(게임하는 인기)",
+            "amountKrw": 2000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1. 여푸 (유튜브 구독자 11.2만명) – 350만원 [채널]",
+        "2. 만만 (유튜브 구독자 33.8만명) - 400만원 [채널]",
+        "3. 게임하는 인기(유튜브 구독자 7.92만명) - 200만원 [채널]"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 9,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "슈퍼바이저 전체 관리 운영 및 인력 관리 1",
+        "현장 상황에 맞게 유동적 배치 7 9"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "직장인 인구 밀접 지역(잠실야구장, 광장)\tV E N U E"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "새롭게 출시된 아키텍트 : 랜드 오브 액자일 사전예약 확인하겠습니다."
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": "9월 중"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "~ 9월 사후(바이럴) SNS 콘텐츠"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "기타"
+      ],
+      "contentTypes": [
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "이벤트 트럭 팝업 사전 예약 혜택 & 게임 플레이 시연"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "점검필요",
+      "reason": "2025년 8월 특정 게임 프로모션 일정에 맞춰 설계된 일회성 오프라인 행사 제안서임"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025년 08월 13일 ~ 8월 31일中 (14:00 – 22:00)\tD A T E"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "일반 참여자 수(Lite형)",
+        "targetValue": 360,
+        "unit": "명",
+        "raw": "360명"
+      },
+      {
+        "metric": "시연 참여자 수(Insight형)",
+        "targetValue": 248,
+        "unit": "명",
+        "raw": "248명"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "360명 야구 경기 시간 18~21시 참여자 수 30%로 설정",
+      "248명 야구 경기 시간 18~21시 참여자 수 30%로 설정"
+    ]
+  },
+  "docId": "cmpsnb2fj00168gvch3uo2bnh",
+  "projectId": "D.25.0032",
+  "projectName": "2025 '아키텍트 랜드 오브 액자일' 오프라인 프로모션 운영 대행 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 13836,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:58:23.572Z"
+  }
+}

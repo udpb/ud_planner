@@ -1,0 +1,295 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "지역 내 신에너지 관련 기 연구개발 및 상용화 추진 기업",
+        "연료전지, 수소저장기술 등 고부가가치 스타트업"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "지역 기업: 기업의 제품/서비스를 활용하여 지역사회 문제 해결 프로젝트 수행"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "시민이 선정한 '에너지'를 핵심 테마로 문제 해결 프로젝트와 시민 인식 제고 활동을 지원합니다."
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "부산은 전통 제조 산업과 미래 전략 산업이 공존하며, 변화 가능성과 글로벌 도시로의 도약과 성장 잠재력이 큰 도시임"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "부산시, 해운대구, 중소벤처기업부 등 주요 공공 및 지자체 협업 및 초청, 시민 참여형 행사 추진"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "SK이노베이션 E&S는 지속 가능한 방식으로 부산 사회문제를 해결하는 기업의 성장을 지원합니다."
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 10,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "10개 기업 프로젝트 지원"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "Collective Impact"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "아임인부산은 지역의 사회문제를 해결하기 위해, 기업과 생태계가 함께하는 Collective Impact 플랫폼입니다."
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "지역 대학 협업, 온·오프라인 세미나 개최",
+        "[1차/오프라인] 에너지 기술과 비즈니스 트렌드",
+        "[2차/온라인] 미래 에너지와 글로벌 동향"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "연간 진행되는 주요 행사 취재 콘텐츠 제작(세미나, 아임인부산 DAY 등)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": 3,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10개 기업 프로젝트 지원",
+        "A. 신에너지 기술개발 지원",
+        "B. 신에너지 솔루션 활성화 지원",
+        "C. 에너지 인식 개선 및 확산 지원",
+        "네트워크: 지역 대학, 지자체 등과의 세미나·포럼 참여를 통한 지식 교류 및 협력 기반 마련"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "생태계 관계자 네트워킹 - 아임인부산 DAY 개최",
+        "프로젝트 성과 발표: 아임인부산 지역 프로젝트 발표회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "기업의 기술개발 등 과제 실행을 위한 사업 자금 지원"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "사업화 지원금",
+            "amountKrw": 50000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업화 지원금: 기업의 기술개발 등 과제 실행을 위한 사업 자금 지원(최대 5천만원)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "부산수소공유대학 교수",
+        "해외 에너지 분야 명사",
+        "에너지 분야 전문가 패널"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "지역 대학 협업, 온·오프라인 세미나 개최",
+        "아임인부산 DAY (해운대 플랫폼)"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "협업 기회: SKI E&S 등 관련 부서와의 협업 연계, 제품 구매·연결 가능성 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "패널",
+        "기타"
+      ],
+      "contentTypes": [
+        "트렌드·인사이트",
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "키노트 스피치: 부산수소공유대학 교수, 수소 및 미래 에너지 분야 기술 트렌드",
+      "기업 사례 발표: 아임인부산 참여 기업 기술 및 비즈니스 현장 사례 발표",
+      "패널 토론: 연사/교수/기업 대표, 국내 미래 에너지 활성화 방향성/전략"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "커리큘럼 회차표를 신뢰성 있게 복원할 수 없으므로 빈 배열로 둠"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025 아임인부산 사업 추진 전략"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn61y80000kovcpvlaqq2n",
+  "projectId": "A.25.0003",
+  "projectName": "SK이노베이션 E&S 아임인부산 2기",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7930,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:42:52.824Z"
+  }
+}

@@ -1,0 +1,419 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "경기도 내 임팩트 창출 기업의 프랜차이즈화 및 프랜차이즈 성장 기업 대상"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "경기도 내 임팩트 창출 기업의 프랜차이즈화 및 프랜차이즈 성장 기업 대상"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "임팩트 프랜차이즈 관련 다양한 형태의 업종을 보유하고 있어 본 사업과 연계"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "경기도 내 임팩트 창출 기업의 프랜차이즈화 및 프랜차이즈 성장 기업 대상"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "경기도형 임팩트 프랜차이즈 사업 협력기관 제안"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "경기도 - 임팩트 비즈니스 허브 역할, 민관 거버넌스 구축"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 320000000,
+        "participants": 12,
+        "durationMonths": 9
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업비 총액(만단위 절삭) 320,000",
+        "성공모델 발굴 후보 12건 / 성공모델 6건",
+        "임팩트 프랜차이즈 참여팀 홍보 및 모객 (3월)",
+        "최종 결과보고서 (11월 말) 제출"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "ACT-PRENEURSHIP",
+        "DOGS",
+        "Startup 6 Dimension"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "ACT-PRENEURSHIP DOGS Team Building Startup 6 Dimension"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS",
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전진단 과정운영 사후진단",
+        "ACT-PRENEURSHIP DOGS Team Building Startup 6 Dimension"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": null,
+        "syncType": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총4주,주1회집합교육"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총4주,주1회집합교육",
+        "프로그램2차 교육프로그램운영 월1회,총6회프로그램진행"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 4,
+        "timeOfDay": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "임팩트 프랜차이즈 이해 (4시간)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": 100,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "멘토링 100회+a",
+        "성장을 위한 1:1 컨설팅"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "커뮤니티",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "성장형 코호트 커뮤니티",
+        "기수제 성장 커뮤니티 운영"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "지원금 수령 팀 선발을 위한 중간성과공유회 기획 및 운영",
+        "최종 성과공유회 기획 및 운영"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": "4:1",
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "모객 24개팀 (2배수 이상 팀을 모객하여 우수한 팀 선발)",
+        "서류심사(2배수)",
+        "대면심사",
+        "지원금 수령 팀 선발을 위한 중간성과공유회"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업성 분석보고서 6회(개별 기업 분석 보고서)",
+        "프랜차이즈 가이드북 제작",
+        "프랜차이즈 매뉴얼 가이드 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금"
+        ],
+        "amounts": [
+          {
+            "label": "지원금",
+            "amountKrw": 200000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "지원금 팀당 5~7,000만원 총 6팀, 2억원 상당 차등 지급 예정"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 6,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "류민(언더독스) 매니저 사업 운영 담당자",
+        "허경현(히즈빈즈) 팀장 업종별 서비스 매뉴얼 제작 및 응대 훈련",
+        "전국 260명의 코치진과 400명의 분야별 전문가 네트워크 보유"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "현장방문"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "총4주,주1회집합교육",
+        "현장실사 본사방문및점검&개선"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업팀 지속성장을 위한 ud.alumni 연계",
+        "사업 이후에도 끝까지 책임지는 후속관리 진행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "임팩트 프랜차이즈 사례 특강",
+      "환경 임팩트 극대화를 위한 아이디어 워크샵",
+      "제품/서비스 프로세스별 안전과 접근성 점검과 개선 전략 수립"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "임팩트 프랜차이즈 이해",
+        "hours": 4,
+        "format": "강의/특강",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "환경(E) 임팩트 점검과 극대화 전략",
+        "hours": 4,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "사회(S) 임팩트 점검과 극대화 전략",
+        "hours": 4,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "지배구조(G) 임팩트 이해와 극대화 전략",
+        "hours": 4,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "임팩트 프랜차이즈 이해 (4시간)",
+      "환경(E) 임팩트 점검과 극대화 전략 (4시간)",
+      "사회(S) 임팩트 점검과 극대화 전략 (4시간)",
+      "지배구조(G) 임팩트 이해와 극대화 전략 (4시간)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "경기도형 임팩트 프랜차이즈 사업 협력기관 제안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "성공모델 발굴",
+        "targetValue": 6,
+        "unit": "건",
+        "raw": "성공모델 6건"
+      },
+      {
+        "metric": "가맹점 개설",
+        "targetValue": 10,
+        "unit": "개",
+        "raw": "가맹(체인)점 개설 10개"
+      },
+      {
+        "metric": "멘토링",
+        "targetValue": 100,
+        "unit": "건",
+        "raw": "멘토링 100회+a"
+      },
+      {
+        "metric": "업체별 매출 성장",
+        "targetValue": 150,
+        "unit": "%",
+        "raw": "업체별 매출 성장 150% 이상"
+      },
+      {
+        "metric": "고용효과",
+        "targetValue": 15,
+        "unit": "명",
+        "raw": "가맹점 개설을 통한 고용효과 15명 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "성공모델 발굴 후보 12건 / 성공모델 6건",
+      "가맹(체인)점 개설 10개",
+      "멘토링 100회+a",
+      "업체별 매출 성장 150% 이상",
+      "가맹점 개설을 통한 고용효과 15명 이상"
+    ]
+  },
+  "docId": "cmpsncfr0001p8gvcwf1yjowk",
+  "projectId": "A.24.0007",
+  "projectName": "2024년 임팩트 프랜차이즈 성공모델 발굴 및 육성",
+  "intensity": {
+    "totalEducationHours": 16,
+    "totalWeeks": 39,
+    "basis": "hours: sessions[4] hours 합산 · weeks: durationMonths(9) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 15135,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:51:24.196Z"
+  }
+}

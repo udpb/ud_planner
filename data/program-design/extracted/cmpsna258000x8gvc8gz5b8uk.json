@@ -1,0 +1,402 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "서강대학교 E.ph.D 과정 재학생의 글로벌 트렌드 이해 및 연구 역량강화를 바탕으로, 스타트업·중소기업 간 1:1매칭을 통해 실무 기반 연구와 기업 경쟁력 강화를 동시에 추구"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "대상 : 석사학위 소지자 중 실무경력 8년 이상인 고위 실무자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "조 구성(AI, 로봇, 모빌리티, 핀테크)"
+      ]
+    },
+    "geography": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "중국 CIFTIS 2025 박람회 관람 및 중국 유명 기업 탐방 프로그램 운영"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "2025학년도 서강대학교 E.ph.D 글로벌 리서치 세미나 대행사 선정"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "2025학년도 서강대학교 E.ph.D 글로벌 리서치 세미나 대행사 선정"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 118000000,
+        "participants": null,
+        "durationMonths": 4
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업비 일금 일억일천팔백만원정(₩118,000,000), 부가가치세 포함",
+        "사업 기간 계약체결일 ~ 2025. 9.14.(일) / 약 4개월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트 러닝",
+        "DOGs",
+        "6 Dimension"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "코호트 러닝 방식 도입으로 토론과 상호학습을 통한 지식 및 기술 공유",
+        "기업가 성향 진단(DOGs) 6 Dimension 진단"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단",
+          "기타"
+        ],
+        "diagnostics": [
+          "DOGS",
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전 원우-스타트업 대상 기업가 성향 및 6Dimension 진단",
+        "국내 사전 미팅 진행으로 원우 X 스타트업 매칭·조 구성"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "방식 : 온라인(ZOOM) 모임",
+        "방식 : 오프라인 모임"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "집중캠프",
+        "campDays": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "일 정 : 2025. 09. 10.(수) ~ 14.(일), 4박 5일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "일 정 : 2025. 09. 10.(수) ~ 14.(일), 4박 5일"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 5,
+        "tracks": 4,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "코호트 러닝 방식 도입으로 토론과 상호학습을 통한 지식 및 기술 공유",
+        "총 8개 조 구성 *원우 5명당 1개 기업 매칭",
+        "조 구성(AI, 로봇, 모빌리티, 핀테크)"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "국내 사전 미팅 진행으로 원우 X 스타트업 매칭·조 구성",
+        "원우 및 스타트업 전체 참여 사후 네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "신청접수 서류검토 최종선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "교과 연계 원우 x 혁신 스타트업 공동연구 리포트 작성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "성과를 학문과 비즈니스로 연결할 수 있도록 장기적 후속 연계까지 지원하겠습니다."
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 5,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "E-Ph.D. 전담 교수진",
+        "한국 운영 인력 : 총 5명",
+        "성명 : 문** 그룹장 전체 사업 총괄 및 관리"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "방식 : 온라인(ZOOM) 모임",
+        "장 소 : CIFTIS 2025 행사장(Shougang Industry Heritage Park), 중관춘 등",
+        "숙박 • Hualuxe Beiging Xinan"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "성과를 학문과 비즈니스로 연결할 수 있도록 장기적 후속 연계까지 지원하겠습니다.",
+        "원우 및 스타트업 전체 참여 사후 네트워킹"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "초청 특강 “중국 ICT 생태계”(안)",
+      "박람회 자유투어 통한 조별(원우x스타트업) 연구과제 해결 및 라포 형성"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "출국 및 오리엔테이션",
+        "hours": null,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "박람회 자유투어",
+        "hours": null,
+        "format": "워크숍/실습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "박람회 가이드 투어 및 ICT기관 간담회",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "혁신기업 방문 및 자유 관광",
+        "hours": null,
+        "format": "워크숍/실습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "교수님 랩업 및 귀국",
+        "hours": null,
+        "format": "워크숍/실습",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1일차 09. 10.(수) 출국 및 오리엔테이션",
+      "2일차 09. 11.(목) 박람회 자유투어",
+      "3일차 09. 12.(금) 박람회 가이드 투어 및 ICT기관 간담회",
+      "4일차 09. 13.(토) 혁신기업 방문",
+      "5일차 09. 14.(일) 귀국"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025학년도 서강대학교 E.ph.D 글로벌 리서치 세미나 대행사 선정"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "참여 국내 스타트업",
+        "targetValue": 4,
+        "unit": "개",
+        "raw": "참여 국내 스타트업 4팀 이상"
+      },
+      {
+        "metric": "프로그램 운영 횟수",
+        "targetValue": 3,
+        "unit": "회",
+        "raw": "프로그램 운영 횟수 총 3회 이상"
+      },
+      {
+        "metric": "참가자 만족도",
+        "targetValue": 4.3,
+        "unit": "점",
+        "raw": "참가자 만족도 4.3점 이상"
+      },
+      {
+        "metric": "참여율",
+        "targetValue": 100,
+        "unit": "%",
+        "raw": "참여율 100%"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "참여 국내 스타트업 4팀 이상",
+      "프로그램 운영 횟수 총 3회 이상",
+      "참가자 만족도 4.3점 이상",
+      "참여율 100%"
+    ]
+  },
+  "docId": "cmpsna258000x8gvc8gz5b8uk",
+  "projectId": "B.25.0061",
+  "projectName": "[서강대학교] 2025 E-Ph.D. 글로벌 리서치 세미나",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 17,
+    "basis": "weeks: durationMonths(4) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 39425,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:55:30.762Z"
+  }
+}

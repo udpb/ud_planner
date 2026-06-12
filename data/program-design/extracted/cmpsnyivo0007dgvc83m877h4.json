@@ -1,0 +1,434 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 참여 대상 : 예비창업가",
+        "해당 사업 아이템이 고객, 사용자 문제를 잘 해결해줄 수 있는지 구체화"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "창업을 위한 방법을 모르는 청년들을 대상으로"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "창업을 목표로 하고는 있으나 아직 창업에 대한 이해도가 높지 않고 효과적인, 창업을 위한 방법을 모르는 청년들을 대상으로"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 전남 여수 내 교육장"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "전남창조경제혁신센터"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "전남창조경제혁신센터"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 창업방법론에 따른 커리큘럼 구성"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 전남 여수 내 교육장",
+        "실습 중심의 워크숍 구성으로 교육 현장에서, 곧바로 체득함"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 16,
+        "rhythm": "집중캠프",
+        "campDays": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 기간 : 2023 6 07 ~ 6 09 , 2 박 3 일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 일정"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업팀 코칭 및 퍼실리테이션",
+        "사업계획서 피드백"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 과업 상호 피드백 엘리베이터 피칭 갤러리 워크 등 중심",
+        "작성된 스토리보드를 타 참가자에게 설명하고 피드백을 받는 워크숍 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "발표 및 모의 투자",
+        "최우수팀 우수팀 및 우수 투자팀 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "실제 발표에 사용되는 사업계획서 작성 IR"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "최우수팀 우수팀 및 우수 투자팀 시상"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": 3,
+        "dedicatedPm": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "박병룡 프로그램 기획 및 운영",
+        "윤수향 창업팀 코칭 및 퍼실리테이션",
+        "정태영 창업팀 코칭 및 퍼실리테이션"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 전남 여수 내 교육장"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "소감 발표 및 만족도 조사 진행"
+      ]
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "전 현직 창업가가 직접 진행하는 이론 워크숍 케이스 스터디 등 실무 중심의 교육"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT",
+        "hours": 0.5,
+        "format": "OT",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "프로그램 소개, 창업가 기초 소양교육",
+        "hours": 0.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "문제 정의",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "페르소나 분석",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "기존 솔루션 분석",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "관점도출",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "엘리베이터 피칭",
+        "hours": 1.5,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "스토리보드",
+        "hours": 1.67,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "BM",
+        "hours": 1.17,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "시장분석",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "경쟁사 분석",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "사업계획서",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "사업계획서 피드백",
+        "hours": 1.67,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "발표 준비",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 15,
+        "title": "발표 및 모의 투자",
+        "hours": 2,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 16,
+        "title": "우수팀 결과 발표/폐회식",
+        "hours": 0.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "프로그램 일정"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "전남창조경제혁신센터 박 일 창업 캠프 프로그램 안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnyivo0007dgvc83m877h4",
+  "projectId": "A.23.0039",
+  "projectName": "여수시 청년 도전 창업지원사업 2박 3일 창업캠프",
+  "intensity": {
+    "totalEducationHours": 17.509999999999998,
+    "totalWeeks": null,
+    "basis": "hours: sessions[16] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 5134,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:58:02.989Z"
+  }
+}

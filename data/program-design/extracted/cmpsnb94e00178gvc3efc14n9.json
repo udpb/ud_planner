@@ -1,0 +1,268 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "평택시 통합 30주년 시민 대화합 축제"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "64만 평택 시민의 하나된 힘으로"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "평택시 통합 30주년 시민 대화합 축제"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "평택시 통합 30주년 시민 대화합 축제"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "평택시 통합 30주년 시민 대화합 축제\n운영대행 용역\n제 \t안 \t서"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "평택시 통합 30주년 시민 대화합 축제"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 640000,
+        "durationMonths": 7
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "64만 평택 시민의 하나된 힘으로",
+        "약 200일간의 추진 일정 고려하여 체계적인 보고 및 추진 일정 계획 수립"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "소사벌레포츠타운\n종합운동장",
+        "평택시합정초~ 중앙2로구간"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 3,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10월 24일 (금)",
+        "10월 25일(토) - 10월 26일 (일)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "11:00 - 20:00",
+        "16:00 - 21:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 3,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서포터즈 리더 접수 \t인터뷰 안내 \t면접 \t교육",
+        "서포터즈 접수 \t면접 안내 \t합격자 발표"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "결과보고서 및 사후 정산",
+        "행사 결과보고서 작성 및 제출"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "우수상",
+            "amountKrw": 50000
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "문화상품권 5만원권 (우수상)",
+        "축제 기념품(참가상)"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 21,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "이재원\n| 평택시 30주년 시민 대화합 축제 총감독 |",
+        "실행시 배정 투입 \t21명 \t총인원",
+        "서OO 팀장\n대행사 업무 총괄"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "소사벌레포츠타운\n종합운동장",
+        "평택시합정초~ 중앙2로구간"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2025년, 더 큰 내일을 향한 도약의 순간!"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "사고율",
+        "targetValue": 0,
+        "unit": "건",
+        "raw": "사고율 0건 만들기"
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "사고율 0건 만들기"
+    ]
+  },
+  "docId": "cmpsnb94e00178gvc3efc14n9",
+  "projectId": "D.25.0037",
+  "projectName": "2025 평택시 30주년 기념 시민 대화합 축제 용역 위탁 계약",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 30,
+    "basis": "weeks: durationMonths(7) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 44991,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:58:20.818Z"
+  }
+}

@@ -84,6 +84,13 @@ export const profileSnapshotSchema = z.object({
   methodologySignals: axis(z.array(z.string())),
 })
 
+/**
+ * 축 value 내부의 배열 필드 — LLM 이 "없음"을 `[]` 대신 `null` 로 표기하는
+ * 관용을 흡수 (null/undefined → []). 키 구조 불변 — 표기 보정일 뿐 값 변조 아님.
+ */
+const innerArr = <T extends z.ZodType>(item: T) =>
+  z.preprocess((v) => (v === null || v === undefined ? [] : v), z.array(item))
+
 // ─────────────────────────────────────────────────────────────────
 // Layer B — operatingFormat 16축 (키 이름 동결, ADR-028 표)
 // ─────────────────────────────────────────────────────────────────
@@ -92,8 +99,8 @@ export const operatingFormatSchema = z.object({
   /** 1. 사전학습 */
   preLearning: axis(
     z.object({
-      types: z.array(z.string()), // 없음/LMS_VOD/사전진단/사전과제/기타
-      diagnostics: z.array(z.string()), // DOGS/ACTT/5D/기타
+      types: innerArr(z.string()), // 없음/LMS_VOD/사전진단/사전과제/기타
+      diagnostics: innerArr(z.string()), // DOGS/ACTT/5D/기타
       hours: z.number().nullable(),
     }),
   ),
@@ -131,7 +138,7 @@ export const operatingFormatSchema = z.object({
   /** 6. 코칭 구조 */
   coaching: axis(
     z.object({
-      types: z.array(z.string()), // 1:1/팀전담/그룹/온라인후속
+      types: innerArr(z.string()), // 1:1/팀전담/그룹/온라인후속
       totalRounds: z.number().int().nullable(),
       hoursPerRound: z.number().nullable(),
       coachToTeamRatio: z.string().nullable(), // 예: '1:5'
@@ -145,7 +152,7 @@ export const operatingFormatSchema = z.object({
       teamBased: z.boolean().nullable(),
       teamSize: z.number().int().nullable(),
       tracks: z.number().int().nullable(),
-      peerDevices: z.array(z.string()), // 동료리뷰/커뮤니티/네트워킹
+      peerDevices: innerArr(z.string()), // 동료리뷰/커뮤니티/네트워킹
     }),
   ),
   /** 8. 마일스톤 이벤트 */
@@ -161,7 +168,7 @@ export const operatingFormatSchema = z.object({
   selectionFunnel: axis(
     z.object({
       stages: z.number().int().nullable(),
-      methods: z.array(z.string()), // 서류/PT/면접/진단
+      methods: innerArr(z.string()), // 서류/PT/면접/진단
       competitionRatio: z.string().nullable(), // 예: '5:1'
       midDropGate: z.boolean().nullable(), // 중간 탈락 게이트 존재 여부
     }),
@@ -178,8 +185,8 @@ export const operatingFormatSchema = z.object({
   /** 12. 인센티브 */
   incentives: axis(
     z.object({
-      types: z.array(z.string()), // 사업화지원금/시제품비/상금/후속연계
-      amounts: z.array(
+      types: innerArr(z.string()), // 사업화지원금/시제품비/상금/후속연계
+      amounts: innerArr(
         z.object({
           label: z.string(),
           amountKrw: z.number().int().nullable(), // 원 단위 정수
@@ -190,7 +197,7 @@ export const operatingFormatSchema = z.object({
   /** 13. 운영 인력 */
   faculty: axis(
     z.object({
-      types: z.array(z.string()), // 전담코치/외부전문가/연사/동문코치
+      types: innerArr(z.string()), // 전담코치/외부전문가/연사/동문코치
       headcount: z.number().int().nullable(),
       dedicatedPm: z.boolean().nullable(),
     }),
@@ -200,14 +207,14 @@ export const operatingFormatSchema = z.object({
   /** 15. 수료/평가 */
   assessment: axis(
     z.object({
-      completionCriteria: z.array(z.string()), // 출석률/과제/결과물/발표
+      completionCriteria: innerArr(z.string()), // 출석률/과제/결과물/발표
       attendanceThreshold: z.number().int().min(0).max(100).nullable(), // % 정수
     }),
   ),
   /** 16. 사후관리 */
   aftercare: axis(
     z.object({
-      types: z.array(z.string()), // 없음/alumni/후속보육/투자연계/온라인코칭
+      types: innerArr(z.string()), // 없음/alumni/후속보육/투자연계/온라인코칭
       duration: z.string().nullable(),
     }),
   ),
@@ -219,8 +226,8 @@ export const operatingFormatSchema = z.object({
 
 export const contentMixSchema = axis(
   z.object({
-    deliveryFormats: z.array(z.string()), // 강연/경험담/인터뷰·대담/워크숍·실습/데모·시연/패널
-    contentTypes: z.array(z.string()), // 이론·개념/사례·경험/실무·도구/트렌드·인사이트
+    deliveryFormats: innerArr(z.string()), // 강연/경험담/인터뷰·대담/워크숍·실습/데모·시연/패널
+    contentTypes: innerArr(z.string()), // 이론·개념/사례·경험/실무·도구/트렌드·인사이트
     difficultyArc: z.string().nullable(), // 단일/상승/혼합
   }),
 )
@@ -277,6 +284,13 @@ export const extractionMetaSchema = z.object({
   truncated: z.boolean(),
   /** invokeAi intra-Gemini 폴백 발생 여부 (plumbing 티어 이탈 감시). */
   fallback: z.boolean(),
+  /**
+   * normalize 단계에서 "non-null 값 + evidence 0개"로 value=null·confidence=0
+   * 강등된 축 경로 (예: 'operatingFormat.aftercare'). ADR-028 "근거 없는 값 금지"
+   * invariant 를 축 단위 강등으로 유지한 흔적 — 어떤 축이 증거 부족인지 가시화.
+   * (기존 산출 파일 호환을 위해 default []).
+   */
+  demotedAxes: z.array(z.string()).default([]),
   extractedAt: z.string(),
 })
 
@@ -306,19 +320,24 @@ export const programDesignPatternSchema = extractionOutputSchema.extend({
 export type ProgramDesignPattern = z.infer<typeof programDesignPatternSchema>
 
 // ─────────────────────────────────────────────────────────────────
-// normalize — LLM 출력의 사소한 위반(긴 evidence·범위 밖 confidence)을
-// zod 검증 전에 보정. 값 자체는 바꾸지 않는다 (추측 채움 아님).
+// normalize — LLM 출력의 표기 관용(축 래퍼 누락·긴 evidence·범위 밖/누락
+// confidence)을 zod 검증 전에 흡수. 값 창작은 없다 — "근거 없는 값 금지"
+// invariant 는 축 단위 강등(value=null·confidence=0 + demotedAxes 기록)으로 유지.
 // ─────────────────────────────────────────────────────────────────
 
-function isAxisLike(o: unknown): o is { value: unknown; confidence: unknown; evidence: unknown } {
-  return (
-    typeof o === 'object' &&
-    o !== null &&
-    !Array.isArray(o) &&
-    'value' in o &&
-    'confidence' in o &&
-    'evidence' in o
-  )
+/** 모든 프로퍼티가 축인 컨테이너 키. */
+const AXIS_CONTAINER_KEYS = ['profileSnapshot', 'operatingFormat'] as const
+/** 최상위 단일 축 키. */
+const TOP_LEVEL_AXIS_KEYS = ['contentMix', 'sessions', 'validity', 'kpiTargets'] as const
+
+export interface NormalizedExtraction {
+  output: unknown
+  /** "non-null 값 + evidence 0개"로 강등된 축 경로 (extractionMeta.demotedAxes 에 기록). */
+  demotedAxes: string[]
+}
+
+function isPlainObject(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v)
 }
 
 /**
@@ -338,37 +357,76 @@ function isDeepEmpty(v: unknown): boolean {
 }
 
 /**
- * LLM 출력 deep-walk 보정:
+ * 축 1개 보정 (값 변조가 아니라 표기 관용 흡수 + invariant 유지):
+ *  - 축 래퍼 누락 — 평면 객체(`value` 키 없음)·원시값·배열로 온 경우
+ *    → `{ value: <그것> }` 으로 승격 후 아래 규칙 적용
+ *  - validity 가 문자열로 온 경우 → `{ status: <그것>, reason: null }` 승격
+ *  - value === undefined → null · 깊은-빈 객체 value → null (전부-null 내부 필드).
+ *    단 배열은 빈 배열([]) 표기를 보존 (sessions 의 "회차표 복원 불가 = []" 규약)
  *  - evidence: 문자열 배열 강제 + 각 항목 200자 절단
- *  - confidence: 숫자 강제 + [0,1] clamp · value 비어 있으면 0
- *  - value === undefined → null · 깊은-빈 객체 value → null (전부-null 내부 필드)
+ *  - confidence: 숫자 강제 + [0,1] clamp · 빈 값이면 0 · 값 있는데 누락이면 0.5
+ *  - **non-null 값인데 evidence 0개 → 그 축만 value=null·confidence=0 강등**
+ *    (문서 전체를 버리지 않는다 — ADR-028 "근거 없는 값 금지" 유지) + demotedAxes 기록
  */
-export function normalizeExtraction(input: unknown): unknown {
-  if (Array.isArray(input)) return input.map(normalizeExtraction)
-  if (typeof input !== 'object' || input === null) return input
+function normalizeAxis(raw: unknown, axisPath: string, demotedAxes: string[]): AxisValue<unknown> {
+  const wrapper: { value?: unknown; confidence?: unknown; evidence?: unknown } =
+    isPlainObject(raw) && 'value' in raw
+      ? (raw as { value?: unknown; confidence?: unknown; evidence?: unknown })
+      : { value: raw }
 
-  if (isAxisLike(input)) {
-    const valueRaw = (input as { value: unknown }).value
-    let value = valueRaw === undefined ? null : normalizeExtraction(valueRaw)
-    // 전부-null 내부 필드 객체 등 깊은-빈 값 → null 로 통일 ("정보 없음" 표기 일원화).
-    // 단 배열은 빈 배열([]) 표기를 보존 (sessions 의 "회차표 복원 불가 = []" 규약).
-    if (!Array.isArray(value) && isDeepEmpty(value)) value = null
-    const evidenceRaw = (input as { evidence: unknown }).evidence
-    const evidence = (Array.isArray(evidenceRaw) ? evidenceRaw : [])
-      .filter((e): e is string => typeof e === 'string' && e.trim().length > 0)
-      .map((e) => (e.length > MAX_EVIDENCE_CHARS ? e.slice(0, MAX_EVIDENCE_CHARS) : e))
-    const confRaw = (input as { confidence: unknown }).confidence
-    let confidence = typeof confRaw === 'number' && Number.isFinite(confRaw) ? confRaw : 0
-    confidence = Math.min(1, Math.max(0, confidence))
-    if (isEmptyAxisValue(value)) confidence = 0
-    return { value, confidence, evidence }
+  let value: unknown = wrapper.value === undefined ? null : wrapper.value
+  // validity 평면 문자열 관용: "상시유효" → { status: '상시유효', reason: null }
+  if (axisPath === 'validity' && typeof value === 'string') {
+    value = { status: value, reason: null }
+  }
+  if (!Array.isArray(value) && isDeepEmpty(value)) value = null
+
+  const evidence = (Array.isArray(wrapper.evidence) ? wrapper.evidence : [])
+    .filter((e): e is string => typeof e === 'string' && e.trim().length > 0)
+    .map((e) => (e.length > MAX_EVIDENCE_CHARS ? e.slice(0, MAX_EVIDENCE_CHARS) : e))
+
+  const confRaw = wrapper.confidence
+  let confidence =
+    typeof confRaw === 'number' && Number.isFinite(confRaw)
+      ? Math.min(1, Math.max(0, confRaw))
+      : isEmptyAxisValue(value)
+        ? 0
+        : 0.5 // 값은 있는데 confidence 누락 — 중간값 보정 (evidence 규칙은 그대로)
+  if (isEmptyAxisValue(value)) confidence = 0
+
+  if (!isEmptyAxisValue(value) && evidence.length === 0) {
+    demotedAxes.push(axisPath)
+    value = null
+    confidence = 0
   }
 
-  const out: Record<string, unknown> = {}
-  for (const [k, v] of Object.entries(input)) {
-    out[k] = normalizeExtraction(v)
+  return { value, confidence, evidence }
+}
+
+/**
+ * LLM 출력 전체 보정 — 축 위치(profileSnapshot.*·operatingFormat.*·contentMix·
+ * sessions·validity·kpiTargets)를 알고 normalizeAxis 를 적용한다.
+ * 축 키 자체가 누락(undefined)된 경우는 보정하지 않는다 — 출력 절단 가능성이
+ * 있어 zod 실패 → AI 재시도로 보내는 것이 데이터 손실보다 낫다.
+ */
+export function normalizeExtraction(input: unknown): NormalizedExtraction {
+  const demotedAxes: string[] = []
+  if (!isPlainObject(input)) return { output: input, demotedAxes }
+
+  const out: Record<string, unknown> = { ...input }
+  for (const containerKey of AXIS_CONTAINER_KEYS) {
+    const container = input[containerKey]
+    if (!isPlainObject(container)) continue
+    const normalized: Record<string, unknown> = {}
+    for (const [axisKey, axisRaw] of Object.entries(container)) {
+      normalized[axisKey] = normalizeAxis(axisRaw, `${containerKey}.${axisKey}`, demotedAxes)
+    }
+    out[containerKey] = normalized
   }
-  return out
+  for (const axisKey of TOP_LEVEL_AXIS_KEYS) {
+    if (axisKey in input) out[axisKey] = normalizeAxis(input[axisKey], axisKey, demotedAxes)
+  }
+  return { output: out, demotedAxes }
 }
 
 // ─────────────────────────────────────────────────────────────────

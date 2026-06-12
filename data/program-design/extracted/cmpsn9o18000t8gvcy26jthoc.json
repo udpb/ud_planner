@@ -1,0 +1,364 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "비창업자",
+      "confidence": 0.9,
+      "evidence": [
+        "일반시민(성인및 청소년)",
+        "대상연령: 8세 이상어린이",
+        "주 타켓: 문화역서울284 인근직장인"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청소년",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "일반시민(성인및 청소년)",
+        "대상연령: 8세 이상어린이",
+        "주 타켓: 문화역서울284 인근직장인",
+        "대상: 청각장애인및보호자동반가능"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화유산의가치를보존하며소통하는복합문화공간으로서 정체성확립을위한상설기획프로그램운영"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "지역성과 동시대문화의 조화",
+        "서울을포함한전국의 로컬브랜드 및제품을널리알리기"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "한국공예디자인문화진흥원에서 발행하는공예매거진구독서비스제공",
+        "발주처와협의후 프로젝트기획, 설계"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "한국공예디자인문화진흥원에서 발행하는공예매거진구독서비스제공"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 330000000,
+        "participants": 15000,
+        "durationMonths": 8
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업비 • 일금삼억삼천만원정 (₩330,000,000) 부가가치세포함",
+        "누적참여자 1만5천명이상",
+        "활동기간: 4월~ 12월(약8개월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "문화역서울284 의 자료를 교육이전에사전으로제공"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업실행및 프로그램현장운영",
+        "프로그램운영을위한공간조성, 기술지원"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 1300,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "연간약 1,300 회의프로그램진행이원활하게운영될수있도록",
+        "총 1,204회 추가공간투어 총 33 회",
+        "기존RTO365 총 29회 추가RTO365 총 5회"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 1,
+        "timeOfDay": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1회 당 약 60분 소요예상",
+        "12:00 ~ 13:00 ( 총12회)",
+        "20시 이후, 월 2회 진행"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": false,
+        "teamBased": false,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "특정프로그램을제외한일반프로그램은누구나예약가능"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "로컬마켓: 바자르 284 일정: 7월중주말양일진행",
+        "업사이클링 캠페인 : 순환공작소 일정: 9월중주말하루진행",
+        "100 주년기념프로그램: 00(공공)북페어"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "선발계획 • 선발인원: 전문해설자 4인 - 1차 서류전형: 제출서류에의한자격요건및 전문경력등 심사 - 2차 면접전형: 서류전형합격자에한해개별연락후 실시"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "워크숍:시간캡슐Zine제작",
+        "업사이클링 패션소품제작 청바지→파우치 ,헌티셔츠→에코백등으로변신"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "공간투어및RTO365 프로그램3회 참석시우선예약기회제공권지급",
+        "5회참석시소정의굿즈제공및 한국공예디자인문화진흥원에서 발행하는공예매거진구독서비스제공"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "선발인원: 전문해설자 4인",
+        "김** 본부장 [사업총괄]",
+        "문** 그룹장 기획 총괄 2023 문화역서울 284 RTO 프로그램종합운영 사업책임자"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "지역거점"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화유산의가치를보존하며소통하는복합문화공간으로서 정체성확립을위한상설기획프로그램운영"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "공간투어및RTO365 프로그램3회 참석시우선예약기회제공권지급",
+        "5회참석시소정의굿즈제공"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램에참여한크리에이터대상만족도조사진행",
+        "내년도프로그램정례화및공간투어-RTO365간 연계방안을위한데이터축적"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "북마켓, 북토크, 강연, 워크숍, 도서관",
+      "전문해설사의 문화적·역사적·건축적이야기를 소개"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "문화유산의가치를보존하며소통하는복합문화공간으로서 정체성확립을위한상설기획프로그램운영"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "전체 프로그램 만족도",
+        "targetValue": 90,
+        "unit": "점",
+        "raw": "90 점이상"
+      },
+      {
+        "metric": "누적 참여자",
+        "targetValue": 15000,
+        "unit": "명",
+        "raw": "1만5천명이상"
+      },
+      {
+        "metric": "5회 이상 참여자",
+        "targetValue": 100,
+        "unit": "명",
+        "raw": "*5회이상참여자100명이상확보"
+      },
+      {
+        "metric": "협력 크리에이터",
+        "targetValue": 30,
+        "unit": "명",
+        "raw": "30 명이상"
+      },
+      {
+        "metric": "참여자 노쇼율",
+        "targetValue": 15,
+        "unit": "%",
+        "raw": "15% 이하"
+      },
+      {
+        "metric": "프로그램 홍보 콘텐츠",
+        "targetValue": 50,
+        "unit": "건",
+        "raw": "50 건이상 전체프로그램진행기준"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "전체프로그램만족도 90 점이상",
+      "1만5천명이상 *5회이상참여자100명이상확보",
+      "30 명이상",
+      "15% 이하",
+      "50 건이상 전체프로그램진행기준"
+    ]
+  },
+  "docId": "cmpsn9o18000t8gvcy26jthoc",
+  "projectId": "B.25.0014",
+  "projectName": "2025 문화역서울284 상설 기획 프로그램(공간투어, RTO365)종합 운영 대행",
+  "intensity": {
+    "totalEducationHours": 1300,
+    "totalWeeks": 35,
+    "basis": "hours: cadence.totalSessions(1300) × sessionLength.hoursPerSession(1) · weeks: durationMonths(8) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 25581,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:54:23.584Z"
+  }
+}

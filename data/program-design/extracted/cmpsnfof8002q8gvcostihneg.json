@@ -1,0 +1,500 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대전 지역 내 7년 이내의 창업 기업 15개사 내외",
+        "대전지역 (예비)창업팀 교육"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대전 지역 내 7년 이내의 창업 기업 15개사 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "기술 기반의 ESG 소셜벤처로의 전환을 원하는 창업기업"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "대전 지역 내 7년 이내의 창업 기업 15개사 내외"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "대전창조경제혁신센터 소셜임팩트체인저스"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "대전창조경제혁신센터 소셜임팩트체인저스"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 15,
+        "durationMonths": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대전 지역 내 7년 이내의 창업 기업 15개사 내외",
+        "계약체결일 ~ 2023.8.31 (약 5개월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "린스타트업",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "지속가능 성장전략 <린스타트업>",
+        "사회혁신 창업 방법론"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사전진단 [언더독스 비즈니스 진단툴]"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온/오프라인 교육",
+        "상시교육을 온라인으로 제공"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "총 12주간의 교육 및 멘토링",
+        "소셜 캠프"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "팀별 상황에 맞춘 전문 멘토를 배치"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "각 팀별 수준과 상황에 맞는 1:1 전담 멘토링 진행",
+        "팀별 상황에 맞춘 전문 멘토를 배치하여 맞춤형 멘토링을 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "소셜임팩트 체인저스 4기",
+        "참여팀 간 네트워킹 자리를 마련하여, 협업 및 네트워크 기반 구축"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간평가 : 중간평가를 통해 사업화자금 지원대상 기업 선정",
+        "최종 성과공유회 : 전체과정 성과공유 및 최종 IR"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "PT",
+          "면접",
+          "진단"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "중간평가를 통해 사업화자금 지원대상 기업 선정(10개사)",
+        "발표(5분)+ 질의응답(10분)을 통해 우수팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간발표를 위한 사업계획서 완성 및 IR 역량강화",
+        "창업팀 진단 보고서 주차별 교육 및 멘토링 보고서 참여팀 기업 소개서"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "중간평가를 통해 사업화자금 지원대상 기업 선정(10개사)",
+        "투자기회 마련을 통한지속가능한 성장 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 4,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로젝트 PM (서상우 매니저) 프로젝트운영/예산관리",
+        "사업수행 참여 인력 주요 이력"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대면 교육 &코칭",
+        "비대면 교육&코칭"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 참석율 10",
+        "현장 평가(심사위원 평가) 과정 평가(운영진 평가)"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "투자연계",
+          "온라인코칭"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "알럼나이 커뮤니티에 속하게 됩니다.",
+        "사업 종료 후 제안 코치진 및 전현직 창업가와 1:1 온라인 코칭 진행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "1단계 아이디어 검증과정 : ... 기본과정 지원",
+      "2단계 사업 고도화과정 : ... 사업고도화, 판로개척, IR 피칭 및 투자 유치 및 멘토링 진행"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "1단계 1회차: 소셜벤처 창업가 관점 정립",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "1단계 2회차: 사회적기업가 마인드세팅",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "1단계 3회차: SV BM 수립",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "1단계 4회차: 중간발표를 위한 사업계획서 완성 및 IR 역량강화",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "2단계 1주차: Kick-off 및 멘토링 매칭",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "2단계 2주차: 특강#1 소셜벤처 미션과 비즈니스 모델",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "2단계 3주차: 특강#2 ESG 개념과 적용",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "2단계 4주차: 특강#3 지속가능 성장전략 <린스타트업>",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "2단계 5주차: 특강#4 영업비밀의 개념과 보호방법",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "2단계 6주차: 특강#5 소셜벤처 조직 및 임팩트 전략",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "2단계 7주차: 특강#6 지적재산권이란?",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "2단계 8주차: 특강#7 지적재산권 및 오픈이노베이션",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "2단계 9주차: 특강#8 임팩트 투자 A to Z",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "2단계 10주차: 피칭 전략 및 트레이닝",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "상세교육 커리큘럼 (안)",
+      "상세교육 커리큘럼(안)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "기술기반 (예비)소셜벤처 집중 육성"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "대전지역 (예비)창업팀 교육",
+        "targetValue": 15,
+        "unit": "명",
+        "raw": "15팀"
+      },
+      {
+        "metric": "기술기반 (예비)소셜벤처 발굴",
+        "targetValue": 10,
+        "unit": "명",
+        "raw": "10팀"
+      },
+      {
+        "metric": "네트워킹 추진",
+        "targetValue": 3,
+        "unit": "건",
+        "raw": "3회 이상"
+      },
+      {
+        "metric": "다음 단계 지원사업 진입",
+        "targetValue": 50,
+        "unit": "%",
+        "raw": "50%이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "대전지역 (예비)창업팀 교육 15팀",
+      "기술기반 (예비)소셜벤처 발굴 10팀",
+      "SIC 1-3 기 창업가 및 VC투자자와의 네트워킹 추진 3회 이상",
+      "다음 단계 지원사업 진입 50%이상"
+    ]
+  },
+  "docId": "cmpsnfof8002q8gvcostihneg",
+  "projectId": "A.23.0020",
+  "projectName": "소셜임팩트 체인저스 4기 위탁운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 22,
+    "basis": "weeks: durationMonths(5) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 30168,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:16:17.041Z"
+  }
+}

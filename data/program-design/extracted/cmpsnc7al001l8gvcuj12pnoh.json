@@ -1,0 +1,320 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "소상공인",
+      "confidence": 0.9,
+      "evidence": [
+        "소상공인은 소비자, 지역경제, 국가경제 측면에서 주요한 역할을 하는 시장경제의 근간이 되는 그룹입니다."
+      ]
+    },
+    "demographic": {
+      "value": [
+        "일반소상공인"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "소상공인은 소비자, 지역경제, 국가경제 측면에서 주요한 역할을 하는 시장경제의 근간이 되는 그룹입니다."
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "[참여 사업 분야] - 로컬푸드 - 소형가전 및 디자인 굿즈 - 라이프스타일(펫, 여행 등) - 기타"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.7,
+      "evidence": [
+        "전국 파트너 기반 모집 파이프라인"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "GS리테일 SME 소셜임팩트 부스팅 프로그램 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "GS리테일 SME 소셜임팩트 부스팅 프로그램 제안서"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 30000000,
+        "participants": null,
+        "durationMonths": 16
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 사업예산 | | 30,000,000 | 지정위탁금 포함",
+        "사업 준비 및 계획 기간 (23' 12-24' 1월)",
+        "부스팅 프로그램 운영 기간 (2월-3월)",
+        "후속 관리 및 종료 기간 (24' 4월-25' 3월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "자체 개발한 창업 방법론 (Undg. methodology)"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀빌딩 솔루션: 개인별 진단, 온라인 서베이로 사전 진단, 결과 보고서, 개인별 결과 분석 보고서"
+      ]
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담",
+          "온라인후속"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "시장 중심의 상품 진단 및 적합 코치 배정"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전문적인 언더독스 컨설턴트가 1:1 팀의 현황 진단 후 맞춤형 교육과 후속 서비스를 연계하여 제공합니다.",
+        "시장 중심의 상품 진단 및 적합 코치 배정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "15개 팀 선정",
+        "GS리테일 에코소셜임팩트 프로그램을 중심으로 창업가 네트워크를 형성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "Step 3 (3월) SME 품평회 - GS리테일 MD가 참여한 품평회 진행 및 홈쇼핑 참가 최종팀 선발",
+        "성과 공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1월: 참여 기업 모집·선발 - 01 ud 알럼나이 내부 추천 - 02 서류 심사 - 03 최종 선발 - 15개 팀 선정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "상품 정보 및 마케팅 소구점을 평가할 수 있는 부스 기획",
+        "아이템 구체화 품평회 준비"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수팀 선발 (5개 팀) - 5개 팀 선발",
+        "GS리테일 홈쇼핑 연계",
+        "투자 검토 및 매칭 융자"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로젝트 총괄 PM",
+        "전문적인 언더독스 컨설턴트가 1:1 팀의 현황 진단 후 맞춤형 교육과 후속 서비스를 연계하여 제공합니다."
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "후속 코칭: VOD + 코칭",
+        "온라인 서베이로 사전 진단"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "underbase: 교육생 입력 (가치, 성향, 역량, 템플릿, 창업 일지) -> 관리 데이터 -> 출결, 과제, 현황 (종합 진단 관리)"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "투자연계",
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": "1년"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "GS리테일 채널 연계 관리 및 후속 모니터링 - GS리테일 판매 채널 연계에 앞서 참여 팀 상품에 대한 후속 고도화 및 참여 팀 성장을 위한 언더독스 후속 모니터링 수행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "상품성을 강화하기 위한 고객 검증 및 마케팅 집중형 부스팅 교육 진행",
+      "후속 코칭: VOD + 코칭"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "GS리테일 SME 소셜임팩트 부스팅 프로그램 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnc7al001l8gvcuj12pnoh",
+  "projectId": "A.24.0003",
+  "projectName": "GS 리테일 작은가게 성장다리 프로그램 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 69,
+    "basis": "weeks: durationMonths(16) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 12402,
+    "parseBy": "vision-ocr",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:02:53.482Z"
+  }
+}

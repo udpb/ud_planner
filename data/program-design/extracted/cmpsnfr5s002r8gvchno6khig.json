@@ -1,0 +1,346 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "로컬 콘텐츠 기반의 예비/초기 창업자 중 선발",
+        "여주 사업장에서 2차 브랜드 준비중인 기창업자 중 선발",
+        "지역가치에 기반한 로컬크리에이터 육성가로 성장하고자 하는 신청자 중 선발"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "청년층, 지역 자원 활용 분야 등을 위한 맞춤형 취업 지원 교육",
+        "청년 로컬 창업가 커뮤니티 구축"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "식품/농업",
+        "문화/예술",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "농산물",
+        "식음료(F&B)",
+        "관광레저",
+        "역사문화"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "경기 동부 지역의 특색을 가진 로컬크리에이터 육성"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "(재)경기 콘텐츠 진흥원 과 사전 업무 협의"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "(재)경기 콘텐츠 진흥원 과 사전 업무 협의"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 132300000,
+        "participants": 50,
+        "durationMonths": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전체 사업비 총계 (십만원 미만 절삭) 132,300,000",
+        "대상: 참가팀 전체(30팀, 50명)",
+        "총 8주의 과정동안"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "마르쉐"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "제안사 자체 개발 팀빌딩 솔루션 ‘마르쉐’ 및 ‘DOGS’ 워크숍"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 대면강의 및 워크숍",
+        "코로나19 확산 상황에 따른 대응 및 온오프라인 블렌디드 교육을 통해 안전&지속가능한 교육 환경 구축"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "오프라인 2회차",
+        "오프라인 4회차",
+        "오프라인 4회차",
+        "총 8주의 과정동안"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "전담코치",
+          "기타"
+        ],
+        "totalRounds": 6,
+        "hoursPerRound": 0.5,
+        "coachToTeamRatio": "1:1",
+        "pairing": "전담코치가 팀과 협의하여 확정"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "전담 코치 멘토링 (1:1 온/오프라인 30분, 6회)",
+        "1:1 코칭을 통해 각 팀의 단계 및 니즈에 적합한 전문과정을 전담코치가 팀과 협의하여 확정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업가 트랙",
+        "활동가 트랙",
+        "창업가 간 네트워킹 및 커뮤니티 구축을 위한 프로그램 운영"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간 평가",
+        "최종 성과공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1차 서류평가, 2차 대면평가를 통한 최종 참가팀 선발",
+        "서류심사 PT심사 심층면접"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "프로토타입",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 수립",
+        "프로토타입 형태의 시제품 등 20건",
+        "실제 사용 가능한 MVP 제작"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수팀은 해외교류와 개발실습의 혜택이 주어집니다",
+        "평가를 통한 지원금 지급"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사",
+          "기타"
+        ],
+        "headcount": 11,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업수행 참여 인력",
+        "프로젝트 운영 PM"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "경기콘텐츠진흥원 동부 경기문화창조허브",
+        "1:1 온/오프라인",
+        "일본 가미야마",
+        "일본 야마구치"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률"
+        ],
+        "attendanceThreshold": 57
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총 교육시간 35시간 중 최소 이수시간 20시간 이상"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "후속보육",
+          "투자연계",
+          "온라인코칭"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램이 종료된 후에도 다양한 혜택을 누릴 수 있는 알럼나이 커뮤니티",
+        "모회사 투자 프로그램 진행 시 가점 부여",
+        "1:1 온라인 코칭 진행"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "이론 강의 워크숍 실습 퍼실리테이션",
+      "선배 창업가의 사례 통해 참여자 관심도 증대"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "로컬크리에이터 육성을 위한 교육과정은, 크게 강의와 워크숍, 멘토링으로 구성됩니다."
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnfr5s002r8gvchno6khig",
+  "projectId": "A.23.0021",
+  "projectName": "로컬크리에이터 육성 프로그램 운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 9,
+    "basis": "weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 38595,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:53:01.588Z"
+  }
+}

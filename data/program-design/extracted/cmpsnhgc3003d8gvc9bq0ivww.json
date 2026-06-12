@@ -1,0 +1,431 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "지속가능한 패션, 패션산업 문제 해결을 위한 솔루션을 보유하고 있는 대학(원)생"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생",
+        "기타"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "대학(원) 재/휴학 중인 국내외 대학(원)생 4 인 1 팀(입학예정자/졸업유예생 포함)"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "지속가능한 패션, 패션산업 문제 해결을 위한 솔루션"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "국내외 대학(원)생"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "채널(시트 기재): B2G"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 1,
+      "evidence": [
+        "코오롱 FnC 에 제안하고 검증하는 대회"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 64,
+        "durationMonths": 5
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "연 1 회 64 여 명의 지속가능한 패션에 관심있는 대학(원)생을 모집",
+        "사업 기간: 2023.08 ~ 2022.12 (약 5 개월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업방법론",
+        "MVP"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 창업방법론 기반 솔루션 구체화 교육",
+        "시제품 제작 및 테스트를 위한 MVP 방법론 교육"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사전에 온라인 강의를 제공하여 ESG 패션 아이디어 도출 및 구체화",
+        "언더독스 온라인 플랫폼(https://www.startyours.co.kr/) 활용"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 방식 오프라인(사전교육 및 토론 운영) 온라인(콘텐츠 발행 및 홍보)",
+        "최종 선정 16 팀 대상 아이템 고도화를 위한 온라인 강의 제공"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "오프라인 1 박 2 일 사전교육을 통해 지속가능한 패션 솔루션을 구체화할 수 있도록 집중 교육 진행"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "언더독스 전담 코치진의 팀 별 1:1 코칭"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "최종 발표 팀 대상으로 사업계획서 고도화를 위한 1:1 사업계획서 멘토링 진행",
+        "본선 8 강 종료 후 결선 운영 전 언더독스 전담 코치진의 팀 별 1:1 코칭을 통한 솔루션 구체화 및 사업계획서 고도화 진행"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 4,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대학(원) 재/휴학 중인 국내외 대학(원)생 4 인 1 팀",
+        "대학생 간 연대와 상호학습",
+        "스토리보드 및 관점도출 템플릿을 기반으로 한 피어피드백"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "본선/결선 오프라인 운영",
+        "결선 대회 운영",
+        "4 강 /결승전 운영 및 시상식 진행"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 1,
+        "methods": [
+          "서류"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "선발: 2023 년 10 월 (서류 심사 진행)",
+        "지원자 전체 대상 서면 심사 진행",
+        "본선 8 강 종료 후 결선 운영 전"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 고도화를 위한 1:1 사업계획서 멘토링 진행",
+        "IR 피칭 자료작성",
+        "결과 자료집 최종본(PDF) 제작 완료"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대상/최우수상/우수상 시상 전체 참가자 대상 수료증 전달",
+        "코오롱 FnC 지원으로의 파이프라인 구축"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 창업 코치",
+        "코오롱 FnC 연사 특강, ESG 패션 창업가 특강",
+        "디베이트포올 토론교육 진행"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "헤이그라운드 서울숲 브릭스",
+        "리움미술관 대강당",
+        "언더독스 온라인 플랫폼"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "접수 출석체크 진행",
+        "전체 참가자 대상 수료증 전달"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대회 종료 이후 바이럴 연상 및 자료집 발행",
+        "코오롱 FnC 지원으로의 파이프라인 구축"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "코오롱 FnC ESG 패션 특강 및 Q&A",
+      "MVP 이론 이해 및 계획 수립 강의/워크숍",
+      "디베이트포올 토론 교육 및 실습 진행"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "사전 온라인 강의 (문제정의, 페르소나 분석, 기존 솔루션 분석, 관점도출)",
+        "hours": null,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "사전교육 1일차 (ESG 패션 특강, MVP, 경쟁사/시장/BM 분석, 사업계획서 및 IR 피칭 작성)",
+        "hours": 10,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "사전교육 2일차 (토론 교육 및 실습, 최종 IR 피칭 발표 및 점검)",
+        "hours": 5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "본선 대회 (16강 및 8강 토론 세션)",
+        "hours": 4,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 5,
+        "title": "1:1 사업계획서 멘토링",
+        "hours": null,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "결선 대회 및 시상식 (4강/결승 토론, Keynote 특강, 시상식)",
+        "hours": 4,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "사전교육 전 사전 온라인 강의 수강",
+      "사전교육 1일차: 10/28(토)",
+      "사전교육 2일차: 10/29(일)",
+      "본선 대회 운영 2023 년 11 월 4 일(토) 14:00~18:00",
+      "1:1 사업계획서 멘토링",
+      "결선 대회 운영 2023 년 11 월 13 일(월) 13:00~17:00"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "온라인 강의와 오프라인 워크숍, 토론 대회를 결합한 하이브리드 형태의 공모전 운영 모델"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "대회 지원자 수",
+        "targetValue": 300,
+        "unit": "명",
+        "raw": "300 명 이상"
+      },
+      {
+        "metric": "아이디어 접수",
+        "targetValue": 80,
+        "unit": "건",
+        "raw": "80 건"
+      },
+      {
+        "metric": "바이럴 영상 콘텐츠 조회수",
+        "targetValue": 100000,
+        "unit": "회",
+        "raw": "100,000 회"
+      },
+      {
+        "metric": "오픈 이노베이션",
+        "targetValue": 1,
+        "unit": "건",
+        "raw": "1 건"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "대회 지원자 수 300 명 이상",
+      "아이디어 접수 80 건",
+      "바이럴 영상 콘텐츠 조회수 100,000 회",
+      "오픈 이노베이션 1 건"
+    ]
+  },
+  "docId": "cmpsnhgc3003d8gvc9bq0ivww",
+  "projectId": "A.23.0050",
+  "projectName": "코오롱 FnC 패션 임팩트 챌린지",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 22,
+    "basis": "weeks: durationMonths(5) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 8091,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:22:19.620Z"
+  }
+}

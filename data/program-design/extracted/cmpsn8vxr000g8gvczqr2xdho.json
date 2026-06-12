@@ -1,0 +1,215 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.8,
+      "evidence": [
+        "선정된 창업기업의 사업화 수준을 진단하고 구체적인 개선 방안을 제시"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "과업 대상: 2025년 창업중심대학 10개사"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.5,
+      "evidence": [
+        "과업 대상: 2025년 창업중심대학 10개사"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.5,
+      "evidence": [
+        "과업 대상: 2025년 창업중심대학 10개사"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "입찰 공고(나라장터)"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "성균관대학교 창업지원단"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 65000000,
+        "participants": 10,
+        "durationMonths": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "금 65,000,000원(금육천오백만원)(VAT 포함)",
+        "과업 대상: 2025년 창업중심대학 10개사",
+        "계약일 ~ 2025. 11. 28.(금) 프로그램 운영"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "STP"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "현황 분석 및 STP 전략 수립"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "시장 분석 컨설팅",
+        "사업 개발 컨설팅"
+      ]
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "기업별 역량 진단 보고서",
+        "기업별 시장 분석 보고서",
+        "고객(파트너) 맞춤형 제안서(전략)",
+        "사업 개발 컨설팅 보고서"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "venue": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": null,
+    "confidence": 0,
+    "evidence": []
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2025년 성균관대학교 창업중심대학 Go to Market 프로그램 운영 용역"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn8vxr000g8gvczqr2xdho",
+  "projectId": "A.25.0050",
+  "projectName": "2025년 창업중심대학 Go to Market 프로그램",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 13,
+    "basis": "weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 2223,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:49:28.424Z"
+  }
+}

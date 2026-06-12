@@ -1,0 +1,351 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "경기도 소재 사회적경제 조직 담당자 (대)기업, 공공기관 ESG 및 사회공헌 실무자 비영리기관 ,학계 담당자 등"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "임직원",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "경기도 소재 사회적경제 조직 담당자 (대)기업, 공공기관 ESG 및 사회공헌 실무자 비영리기관 ,학계 담당자 등"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "환경, 지방소멸, 로컬 등 ESG 및 사회문제 해결을 위한 협력프로젝트"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "경기도 내 사회문제 해결 임팩트 증가",
+        "경기도 소재 사회적경제 조직 담당자"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "경기사회적경제원 • 2024 임팩트솔루션테이블 사업총괄",
+        "제안사 • 임팩트솔루션테이블 사업운영"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "경기사회적경제원 • 2024 임팩트솔루션테이블 사업총괄"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 50,
+        "durationMonths": 10
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "라운드테이블 (권역별 50명 내외)",
+        "사업참여기간 계약일~2024.12.18"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "콜렉티브 임팩트",
+        "DOGS 테스트"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "콜렉티브 임팩트 기반 다양한 주체의 협업을 통한 사회문제 해결 임팩트 확산",
+        "자체개발 Dogs Test 워크숍 운영"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단",
+          "사전과제"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전제안된 의제에 대한 이해 및 협업 방안 논의",
+        "자체개발 Dogs Test 워크숍 운영",
+        "각 주체별 사전과제 기반 컨소시엄의 미션과 비전에 대해 공유"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "네트워킹데이, 라운드테이블, 성과공유회 기획 및 운영",
+        "공동의 목표 최종 설정 및 역할 정리 (온라인zoom진행)"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "네트워킹 데이 (4.16)",
+        "라운드 테이블 (권역별 2회) (4-5월)",
+        "성과공유회 (12.11)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "그룹",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "창업팀 단계 및 역량별 맞춤형 전문가 배정"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "실행을 위한 컨소시엄별 멘토링 지원",
+        "창업팀 단계 및 역량별 맞춤형 전문가 배정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "네트워킹",
+          "커뮤니티"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "의제기반 컨소시엄 구성",
+        "권역별(남부, 북부) 우수의제 및 컨소시엄 선정",
+        "밴드 채널을 활용한 참여팀 소통 강화 및 진행과정 상시 점검"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "네트워킹",
+          "timing": "초반"
+        },
+        {
+          "type": "해커톤",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "네트워킹 데이 (4.16)",
+        "2회차 라운드테이블 (실행기반 해커톤)",
+        "성과공유회 (12.11)"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "의제 모집",
+        "권역별(남부, 북부) 우수의제 및 컨소시엄 선정"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "실행사업계획서 작성 워크숍",
+        "실행결과보고서 작성 및 보완"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "후속실행지원 운영"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 6,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업총괄 책임자(PM) 이00",
+        "전국 261명의 코치진과 400명의 분야별 전문가 네트워크 보유",
+        "사업수행참여인력현황"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "타운홀코사이어티 (판교역 )",
+        "남부: 경기도 옛 청사 신관 대회의실(남부)",
+        "북부: 킨텍스 제 2전시장 305 호",
+        "코리아드 수원",
+        "온라인zoom진행"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "실행결과보고서 작성 및 보완",
+        "온라인 설문 도구를 활용한 참여 기업 만족도 조사 실시"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "컨소시엄별 참여주체의 역량강화를 위한 트렌트 리포트 및 세미나 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "경험담",
+        "워크숍·실습",
+        "패널",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "실무·도구",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "사례발표",
+      "성향진단 테스트 워크숍",
+      "패널, 사례발표자 진행자와의 토크쇼 형태",
+      "DOGS 테스트",
+      "트렌드리포트"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "다양한 주체들이 일회성이 아닌 지속가능한 협업을 통해 사회문제를 해결할 수 있는 경기도형 콜렉티브 임팩트 모델 필요"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsncrmf001v8gvc5lse4mao",
+  "projectId": "A.24.0015",
+  "projectName": "2024년 임팩트솔루션테이블(사회문제 해결 프로그램) 운영 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 43,
+    "basis": "weeks: durationMonths(10) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 32618,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:07:57.161Z"
+  }
+}

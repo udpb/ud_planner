@@ -1,0 +1,402 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상: 대구지역 내 예술인활동증명 완료 및 경제적 활동을 원하는 예술인 20개 팀 내외"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상: 대구지역 내 예술인활동증명 완료 및 경제적 활동을 원하는 예술인 20개 팀 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "아트랩:범어 문화산업진출지원사업 교육 및 컨설팅 프로그램",
+        "지역 예술인의 문화산업시장 진출과 경쟁력 및 자생력 강화를 위한 기반 마련"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상: 대구지역 내 예술인활동증명 완료 및 경제적 활동을 원하는 예술인 20개 팀 내외"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "아트랩:범어 문화산업진출지원사업 교육 및 컨설팅 프로그램"
+      ]
+    },
+    "clientTier": {
+      "value": "기타",
+      "confidence": 0.7,
+      "evidence": [
+        "아트랩:범어 문화산업진출지원사업 교육 및 컨설팅 프로그램"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 20,
+        "durationMonths": 9
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상: 대구지역 내 예술인활동증명 완료 및 경제적 활동을 원하는 예술인 20개 팀 내외",
+        "교육 기간: 4월 ~ 12월 (약 9개월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DOGS 창업가 성향 분석 워크숍을 통한 팀 구성원 업무 성향 확인 및 안정적인 팀빌딩 방법을 안내할 수 있음"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "DOGS 창업가 성향 분석 워크숍을 통한 팀 구성원 업무 성향 확인 및 안정적인 팀빌딩 방법을 안내할 수 있음"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소\n- 교육: 아트랩범어 내 공간 진행\n- 코칭: 아트랩범어 및 온라인(Zoom) 진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 기간: 4월 ~ 12월 (약 9개월)",
+        "1회차\n(4/28 목)",
+        "6회차\n(6/2 목)"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "팀의 진행상황 및 단계에 맞는 성장을 지원하기 위한 1:1 코칭 진행"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "팀 별 사업분야, 단계에 맞는 성장을 지원하기 위한 1:1 코칭 진행",
+        "브랜딩, 마케팅, 세무회계 등 창업팀에게 필요한 컨설팅 제공"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": 1,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 대상: 대구지역 내 예술인활동증명 완료 및 경제적 활동을 원하는 예술인 20개 팀 내외",
+        "스토리보드 및 관점도출 템플릿을 기반으로 피어 피드백",
+        "문화예술 분야 선배 창업가와의 특강 진행 및 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "중반"
+        },
+        {
+          "type": "중간공유회",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "창창 챌린지 (공모전)\n6월\n16명(팀)",
+        "중간 공유회\n12월",
+        "12월 최종 성과공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창창 스쿨 (기초과정)\n4 ~ 6월\n20명(팀)\nê\n창창 챌린지 (공모전)\n6월\n16명(팀)\nê\n창창 챌린지 수상팀 사업화 지원 과정\n7 ~ 12월\n창창 챌린지 우수 3팀"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP",
+        "프로토타입"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "솔루션 검증을 위한 시제품 설계",
+        "MVP 개념 이해 및 계획수립",
+        "사업계획서 초안 작성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창창 챌린지 수상팀 사업화 지원 과정\n7 ~ 12월\n창창 챌린지 우수 3팀\n1:1 코칭 전문가 컨설팅 및 1:1 코칭"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업팀 육성 및 관리 경험이 있는 언더독스 전문 코치진의 맞춤형 코칭이 제공됨",
+        "브랜딩, 마케팅, 세무회계 등 창업팀에게 필요한 컨설팅 제공",
+        "문화예술 분야 선배 창업가와의 특강 진행"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소\n- 교육: 아트랩범어 내 공간 진행\n- 코칭: 아트랩범어 및 온라인(Zoom) 진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육"
+        ],
+        "duration": "6개월"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창창 챌린지 수상팀 사업화 지원 과정\n7 ~ 12월"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "진행 방식 강의 및 워크샵",
+      "문화예술 분야 선배 창업가와의 특강 진행",
+      "창창 스쿨 (기초과정) -> 창창 챌린지 (공모전) -> 창창 챌린지 수상팀 사업화 지원 과정"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "문제 정의 및 고객, 사용자 관점 도출",
+        "hours": null,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "아이템 구체화 MVP",
+        "hours": null,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "시장분석 경쟁사분석 비즈니스 모델",
+        "hours": null,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "사업계획서",
+        "hours": null,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "1:1 사업계획서 피드백",
+        "hours": null,
+        "format": "강의, 워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "사업계획서 발표",
+        "hours": null,
+        "format": "발표",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 7,
+        "title": "창창 챌린지 사업계획서 작성",
+        "hours": null,
+        "format": "강의, 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "창창 챌린지 사업계획서 멘토링",
+        "hours": null,
+        "format": "멘토링",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "창창 스쿨 1기 커리큘럼",
+      "창창 챌린지 커리큘럼"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "창창 스쿨 (기초과정)",
+      "창창 챌린지 (공모전)",
+      "창창 챌린지 수상팀 사업화 지원 과정"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnyvzs000bdgvcsjufbvb6",
+  "projectId": "A.22.0016",
+  "projectName": "2022 아트랩범어 예술창업 육성 교육 프로그램",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 39,
+    "basis": "weeks: durationMonths(9) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 5194,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:33:49.745Z"
+  }
+}

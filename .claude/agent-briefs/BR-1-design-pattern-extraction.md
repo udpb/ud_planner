@@ -9,7 +9,7 @@
 | ID | `BR-1-design-pattern-extraction` |
 | Owner | 메인 세션 |
 | 작성일 | 2026-06-12 |
-| 상태 | 🟡 in-progress |
+| 상태 | ✅ 완료 (2026-06-12) — 전수 143/148 추출·집계·P3 1차 판정. 실패 5건 = `_run-report.json`. 후속: P4 DesignRule · enum 어휘 보강 |
 | 의존 브리프 | 없음 (ADR-028 Accepted 선행 완료) |
 | 우선순위 | P0 |
 | 예상 시간 | 0.5~1일 |

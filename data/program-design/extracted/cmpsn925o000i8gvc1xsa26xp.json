@@ -1,0 +1,387 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "전국수도권외 대학(원) 졸업 3년 이내, 기창업자 3년 이내"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생",
+        "청년"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "전국수도권외 대학(원) 졸업 3년 이내",
+        "대학생 창업팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대학창업생태계중심 지역과도시의미래전략구축"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "지역대학의 창업팀",
+        "지역인재의 창업 및 투자유치"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2026 지역창업솔버톤대회행사대행용역"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.8,
+      "evidence": [
+        "주최/주관 대학연대지역인재양성사업단"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 154000000,
+        "participants": 30,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업예산 일금154,000,000원(부가세포함)",
+        "참여팀 수: 30개팀"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "솔버톤"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "2026 지역창업솔버톤대회"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전과제",
+          "기타"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "온라인으로 진행되는 사전인큐베이팅 프로그램",
+        "사업계획서 및 온라인사업평가"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인으로 진행되는 사전인큐베이팅 프로그램과 오프라인으로 진행되는 현장교육 프로그램"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "집중캠프",
+        "campDays": 3
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "이틀간 진행되는 솔버톤 행사",
+        "2박3일간",
+        "총 3일간의 전체 프로그램을 밀도있게 운영"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "10:00-20:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.6,
+      "evidence": [
+        "전문가 피드백을 통한 객관적인 아이템 검증"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 5,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "참여팀 수: 30개팀",
+        "팀당 5인 내외",
+        "참여자간 교류 기회 확보 및 자발적 참여를 유도하며 창업네트워크 강화"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "경진대회",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "우수기업선정 & 시상식 진행",
+        "Day 1 부스운영 및 네트워킹"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 3,
+        "methods": [
+          "서류",
+          "PT",
+          "기타"
+        ],
+        "competitionRatio": null,
+        "midDropGate": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "(예선) 사업계획서 및 온라인사업평가",
+        "부스심사결과 합산 및 최종 10개 팀 발표",
+        "결선진출 10개팀 발표 및 심사위원 평가"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "사업계획서 및 온라인사업평가",
+        "IR피칭은 7분 발표"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "후속연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "직접투자",
+            "amountKrw": 50000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2개 우수기업에 대한 제안사 직접투자 확정 (팀당 5000 만원)",
+        "글로벌 박람회 참가 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": 30,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "별도섭외한 30명의 전문 심사위원단",
+        "전담운영담당자 배치",
+        "전담운영매니저 배치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "과학기술컨벤션센터",
+        "행사장 인근 도보 10분 이내 호텔 숙소 지원"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "부스심사결과 합산",
+        "결선진출 10개팀 발표 및 심사위원 평가"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "기타"
+        ],
+        "duration": "2026년 1분기"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "일정: 2026년 1분기(사업종료 후 추가검토 후 투자확정)",
+        "글로벌 박람회 참가 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구",
+        "트렌드·인사이트"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "Keynote Speech",
+      "Panel Talk",
+      "부스 운영",
+      "발표 피칭"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2026 지역창업솔버톤대회"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "참여자 운영만족도",
+        "targetValue": 85,
+        "unit": "%",
+        "raw": "평균 85점이상"
+      },
+      {
+        "metric": "심사위원 및 관계자 만족도",
+        "targetValue": 85,
+        "unit": "%",
+        "raw": "85점이상"
+      },
+      {
+        "metric": "창업팀 만족도",
+        "targetValue": 85,
+        "unit": "%",
+        "raw": "평균 85점이상"
+      },
+      {
+        "metric": "전체 만족도",
+        "targetValue": 85,
+        "unit": "%",
+        "raw": "평균 85점이상"
+      },
+      {
+        "metric": "언론 보도",
+        "targetValue": 3,
+        "unit": "건",
+        "raw": "3~5건 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "참여자 운영만족도 평균 85점이상",
+      "심사위원 및 관계자 만족도 85점이상",
+      "창업팀 만족도 평균 85점이상",
+      "전체 만족도 평균 85점이상",
+      "메이저급 언론사 3~5건 이상"
+    ]
+  },
+  "docId": "cmpsn925o000i8gvc1xsa26xp",
+  "projectId": "A.25.0052",
+  "projectName": "2026 지역 창업 솔버톤 대회 행사 대행 용역_PA202501679",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 36485,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:45:34.000Z"
+  }
+}

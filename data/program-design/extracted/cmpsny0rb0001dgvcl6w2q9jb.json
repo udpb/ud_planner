@@ -1,0 +1,336 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "KENTECH 재학생 중 창업에 관심 있거나 창업을 준비 중인 예비창업자를 대상으로"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "KENTECH 재학생 중 창업에 관심 있거나 창업을 준비 중인 예비창업자를 대상으로"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "KENTECH 재학생 중 창업에 관심 있거나 창업을 준비 중인 예비창업자를 대상으로"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.9,
+      "evidence": [
+        "KENTECH 교육장 내 오프라인 교육"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "KENTECH 재학생 중 창업에 관심 있거나 창업을 준비 중인 예비창업자를 대상으로"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "KENTECH 재학생 중 창업에 관심 있거나 창업을 준비 중인 예비창업자를 대상으로"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 20,
+        "durationMonths": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대상 : KENTECH 재학생 20명 내외",
+        "진행기간 : 2023년 1월~2023년 2월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "창업가 성향진단(DOGs 워크숍)",
+        "언더독스가 자체 개발한 4단계 창업방법론"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD"
+        ],
+        "diagnostics": [
+          "DOGS"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 창업교육 VOD 수강",
+        "창업가 성향진단(DOGs 워크숍)"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "KENTECH 교육장 내 오프라인 교육, 줌을 활용한 온라인 병행",
+        "온라인 창업교육 VOD 수강 ❍ 기간 내 자율 수강",
+        "창업 코치 1:1 멘토링 ❍ 기간 내 오피스아워 형태 운영"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "기간 내 1 Day 프로그램 통합 운영",
+        "기간 내 오피스아워 형태 운영",
+        "기간 내 자율 수강"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "주간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "13:00~17:30"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업 코치 1:1 멘토링",
+        "언더독스 내부 코치진 및 전현직 창업가와의 1:1 온라인 코칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": null,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대상 : KENTECH 재학생 20명 내외",
+        "선배창업가와 그룹별 네트워킹"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "관점도출 템플릿 : 우리 비즈니스 1page정리"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 3,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "박병룡 § 현) 언더독스(주) 코치",
+        "박형호 § 현) 언더독스(주) 코치",
+        "김경리 § 현) 언더독스(주) 매니저"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "KENTECH 교육장 내 오프라인 교육, 줌을 활용한 온라인 병행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "2023 KENTECH 창업 교육 프로그램 기획안"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "창업가 성향진단(DOGs 워크숍)",
+      "대학생 창업가 특강",
+      "창업 기초 교육",
+      "창업 코치 1:1 멘토링",
+      "온라인 창업교육 VOD 수강"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션 및 DOGs 워크숍",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "창업 기초 교육",
+        "hours": 2,
+        "format": "강의 및 워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "선배창업가 특강",
+        "hours": 0.83,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "라운드 테이블",
+        "hours": 0.67,
+        "format": "네트워킹",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "4. 오프라인 프로그램 커리큘럼"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "2023 KENTECH 창업 교육 프로그램 기획안"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsny0rb0001dgvcl6w2q9jb",
+  "projectId": "A.23.0010",
+  "projectName": "2023 KENTECH 창업 교육 프로그램",
+  "intensity": {
+    "totalEducationHours": 4.5,
+    "totalWeeks": 9,
+    "basis": "hours: sessions[4] hours 합산 · weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 2907,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:28:59.460Z"
+  }
+}

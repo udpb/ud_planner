@@ -1,0 +1,436 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 참여 대상 : 예비, 초기 창업가 40명 내외"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "홍익대학교 Starting Course 해커톤 2021",
+        "프로그램 참여 대상 : 예비, 초기 창업가 40명 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "창업 아이템 분야, 참여팀 수에 따라 커리큘럼은 조정될 수 있음"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "zoom을 활용하여 온라인 프로그램 진행 예정"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "홍익대학교 Starting Course 해커톤 2021"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "홍익대학교 Starting Course 해커톤 2021"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 20000000,
+        "participants": 40,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 참여 대상 : 예비, 초기 창업가 40명 내외",
+        "프로그램 예산 : 총 – 2,000만 원(VAT 포함)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 창업 방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 창업 방법론을 바탕으로 한 아이템 점검 및 구체화"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사전 OT/해커톤 : 1월 4일(화) ~ 1월 5일(수)"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "온라인",
+        "onlineRatio": 100,
+        "syncType": "실시간"
+      },
+      "confidence": 1,
+      "evidence": [
+        "사전교육/해커톤 2일, 공유회 1일 총 3회 일정을 모두 온라인으로 진행",
+        "온라인 실시간 교육 진행 방법"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 3,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사전교육/해커톤 2일, 공유회 1일 총 3회 일정을 모두 온라인으로 진행",
+        "온라인 해커톤 2일(사전 OT 포함), 최종 발표(온라인) 1일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 8,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "09:30-18:00",
+        "09:30~17:00"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "필요한 팀의 경우 1:1로 코치진에 질문 진행하는 시간 마련",
+        "개별 코칭 시, zoom 내 소그룹 기능 등을 활용하여 개별 팀들의 코칭 및 일정을 관리하고자 함"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코치, 피어들(참가 팀)간의 지속적인 피드백을 통해",
+        "해커톤을 시작하기 전 네트워킹 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "최종발표 : 1월 12일(수)",
+        "온라인 모의투자 운영 방식"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "작성한 사업계획서 발표"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "상품",
+            "amountKrw": null
+          }
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1등 팀에 투자한 투자자 1명을 선발하여 간단한 상품을 주는 행사로 운영"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전, 현직 언더독스 코치들이 교육과 코칭을 진행하며"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "zoom을 활용하여 온라인 프로그램 진행 예정"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "실시간 접속 현황을 바탕으로 출석 확인을 진행하고"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "최종발표 : 1월 12일(수)"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "온라인에 최적화된 창업 교육, 워크숍, 코칭 등을 통해",
+      "스타트업의 창업 전 과정을 실습해보며"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "사전 OT/팀빌딩",
+        "hours": 1.8,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "문제정의, 원인분석",
+        "hours": 1.2,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "페르소나 분석",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "관점도출",
+        "hours": 1.2,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "문제해결 솔루션 구체화",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "비즈니스 모델",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "경쟁사 분석",
+        "hours": 0.8,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "시장분석",
+        "hours": 1.7,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "사업계획서 이론",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "사업계획서 작성",
+        "hours": 2.2,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "사업계획서 작성 확인",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "최종발표 진행 안내",
+        "hours": 0.3,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "발표 행사",
+        "hours": 3.5,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1월 4일(화)- 사전 OT/해커톤 1일 차",
+      "1월 5일(수)- 해커톤 2일 차",
+      "1월 12일(수) - 최종발표회"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "zoom을 활용하여 온라인 프로그램 진행 예정"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsneswf002h8gvc6tqwc8aw",
+  "projectId": "A.23.0005",
+  "projectName": "홍익대학교 2023 창업캠프 해커톤 프로그램 운영",
+  "intensity": {
+    "totalEducationHours": 17.7,
+    "totalWeeks": null,
+    "basis": "hours: sessions[13] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 7008,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:15:02.402Z"
+  }
+}

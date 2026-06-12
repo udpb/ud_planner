@@ -1,0 +1,342 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "건국대학교 창업아이디어 경진대회에서 선발된 창업기업"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "건국대학교 창업아이디어 경진대회에서 선발된 창업기업"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "창업기업 분야에 적합한 컨설턴트 섭외"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "건국대학교 캠퍼스타운 입주기업"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "건국대학교 캠퍼스타운사업단 사업센터"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "건국대학교 캠퍼스타운사업단 사업센터"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 50000000,
+        "participants": 25,
+        "durationMonths": 6
+      },
+      "confidence": 1,
+      "evidence": [
+        "일금오천만원정 (₩50,000,000), 부가가치세 포함",
+        "컨설팅 참여기업 25팀",
+        "사업기간 계약체결일~ 2025. 10 /약6개월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "DISC 이론을 바탕으로 제안사가 지금까지 만나왔던 스타트업 기업가들의 유형을 분석하고 분류하여 만든"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "비즈니스모델 자가진단(사전진행)"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 운영시 타임로그 사용",
+        "집체교육... 운영사 보유 커뮤니티 공간"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 200,
+        "rhythm": "기타",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "선발기업당 한달기준 2회 실시",
+        "컨설팅 운영 횟수 총 200회"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:5",
+        "pairing": "창업기업 진단 내용 기반 전문가 1차 매칭 후 전달"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기업전담컨설턴트 (컨설턴트 1 : 창업기업 5 매칭)",
+        "창업기업 진단 내용 기반 전문가 1차 매칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업기업 밍글링 활동 통한 라포 형성"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "집체교육 운영 프로세스 및 상세내용... 6월 중"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 1,
+        "methods": [
+          "서류"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류평가 진행 및 최종 선정",
+        "서류심사(필요시)"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "전문가 기업진단 결과, 컨설팅 운영 계획서, 운영일지, KPI 달성도, 결과보고서, 사업계획서 등 명확한 성장 증명 결과물 도출",
+        "IR덱"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "전담코치",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업이해도가 높고 운영관련 풍부한 경험 보유한 전담운영담당자 배치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "운영사 보유 커뮤니티 공간",
+        "온라인 운영시 타임로그 사용"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "수료율 100%"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "alumni",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업기업 DB 아카이빙 및 관리... 알럼나이 관리 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "창업기업의 실질적 비즈니스모델 고도화를 위해 이론형 컨설팅이 아닌 과제 부여 > 수행하며 성장할 수 있도록 운영"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "주요사업별 일정계획에 따라 명확한 의사소통 및 관리통한 성공적 사업추진"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "기존의 단기 컨설팅 프로그램을 개선하여 참여기업에게 풍부한 창업혜택 지원을 위해 장기적인 전략 창업 컨설팅 프로그램 신설"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "컨설팅 참여기업",
+        "targetValue": 25,
+        "unit": "팀",
+        "raw": "컨설팅 참여기업 25팀"
+      },
+      {
+        "metric": "컨설팅 운영 횟수",
+        "targetValue": 200,
+        "unit": "회",
+        "raw": "컨설팅 운영 횟수 총 200회"
+      },
+      {
+        "metric": "컨설팅 만족도",
+        "targetValue": 4.3,
+        "unit": "점",
+        "raw": "컨설팅 만족도 4.3점 이상"
+      },
+      {
+        "metric": "수료율",
+        "targetValue": 100,
+        "unit": "%",
+        "raw": "수료율 100%"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "컨설팅 참여기업 25팀",
+      "컨설팅 운영 횟수 총 200회",
+      "컨설팅 만족도 4.3점 이상",
+      "수료율 100%"
+    ]
+  },
+  "docId": "cmpsn9vs2000v8gvcvsxmdkjw",
+  "projectId": "B.25.0053",
+  "projectName": "[캠퍼스타운사업] 건국대학교 KU 마라톤 컨설팅 사업 위탁 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 26,
+    "basis": "weeks: durationMonths(6) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 31181,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:54:46.312Z"
+  }
+}

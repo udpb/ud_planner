@@ -1,0 +1,463 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "구체적인 아이템을 도출 및 사업계획서 수립을 유도하고, 궁극적으로 프로그램 종료 이후에도 스타트업 창업을 유도할 수 있는 경험 제공"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "대상 : 연세대학교 재학생 50명 내외, 10개 팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "새로운 관점에서 문제 해결 역량 강화",
+        "구체적인 아이템을 도출 및 사업계획서 수립을 유도"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "교육장소 : 연세대학교 외"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "연세대학교 \t팀빌딩 \t해커톤 \t캠프 \t운영 \t제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 1,
+      "evidence": [
+        "연세대학교 \t팀빌딩 \t해커톤 \t캠프 \t운영 \t제안서"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 22000000,
+        "participants": 50,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대상 : 연세대학교 재학생 50명 내외, 10개 팀",
+        "합계(만원 \t단위 \t이하 \t절사) \t22,000,000"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DISC",
+        "창업가 성향진단"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스가 자체 개발한 창업가 성향진단 테스트",
+        "DISC 이론과 언더독스가 교육했던 창업가들의 데이터를 기반으로 한 성향 분석"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스가 자체 개발한 창업가 성향진단 테스트를 통해 창업가 개개인의 업무 성향과 이를 활용한 워크샵을 통해 팀을 만들고"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육장소 : 연세대학교 외",
+        "1박 2일 해커톤 : 9월 27일(금) 13:00~9월 28일(토) 15:30"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 14,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 구성 : 원데이 창업 교육+팀별 액션 위크+1박 2일 해커톤 캠프",
+        "1박 2일 해커톤 : 9월 27일(금) 13:00~9월 28일(토) 15:30"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "원데이 창업 교육 : 9월 20일(금) 10:00~18:00",
+        "1박 2일 해커톤 : 9월 27일(금) 13:00~9월 28일(토) 15:30"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1박 2일 해커톤 : 창업방법론 교육, 팀별 1:1 코칭, 사업계획 작성 및 발표",
+        "팀 별 사업계획서 작성 및 코칭 워크숍, 코칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 5,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대상 : 연세대학교 재학생 50명 내외, 10개 팀",
+        "참여자 간 서로 다른 역량과 경험 공유 및 협업 능력을 강화"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "액션위크 활동 발표 및 코치 피드백 발표, 피드백",
+        "데모데이 팀 별 사업계획 발표 및 모의 심사 발표"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": {
+        "count": 1,
+        "placement": "중반"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "액션 위크 : 9월 21일(토)~9월 26일(목)",
+        "원데이 창업 교육을 바탕으로 팀 내 아이템 구체화 실행 기간 부여"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "MVP",
+        "프로토타입"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "고객 인터뷰, MVP 테스트 및 피드백, 프로토타입 제작 등 활동 실행",
+        "사업계획서(IR \tDeck) \t강의"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 4,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "이형민 § 프로그램 주강사 § 팀별 코칭",
+        "김용운 § 프로그램 보조강사 § 팀별 코칭",
+        "서지혜 § 프로그램 보조강사 § 팀별 코칭",
+        "홍성훈 § 프로그램 운영"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "합숙시설"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "교육장소 : 연세대학교 외",
+        "1박 2일 해커톤 : 9월 27일(금) 13:00~9월 28일(토) 15:30"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "발표"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석체크",
+        "교육 마무리 및 과제 전달",
+        "팀 별 사업계획 발표 및 모의 심사 발표"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "프로그램 종료 이후에도 스타트업 창업을 유도할 수 있는 경험 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "데모·시연"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "선배 창업가 동기부여 특강 강의",
+      "창업가 성향 진단 워크숍 및 팀 운영원칙 설계 워크숍",
+      "실제 창업 사례 및 스타트업 사례에 기반한 교육 콘텐츠",
+      "실제 비즈니스에서 곧바로 적용 가능한 템플릿 및 툴킷 등을 제공"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT",
+        "hours": 0.17,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "팀빌딩 마르쉐",
+        "hours": 0.33,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "리더 그룹 마르쉐 및 팀 구성 워크숍",
+        "hours": 1,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "팀빌딩 워크숍",
+        "hours": 1.33,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "키노트 스피치",
+        "hours": 1,
+        "format": "강의",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "창업 교육 (고객 및 문제 정의)",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "기존 솔루션 분석",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "아이템 구체화",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "과제 발표 및 피드백",
+        "hours": 2,
+        "format": "발표/피드백",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "창업 교육 (사업계획서 강의)",
+        "hours": 1.5,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "팀 워크숍 및 코칭 (1차)",
+        "hours": 1.5,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "팀 워크숍 및 코칭 (2차)",
+        "hours": 3,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "팀 워크숍 (사업계획 작성 및 제출)",
+        "hours": 2,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "데모데이 (사업계획 발표 및 모의 심사)",
+        "hours": 2,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "원데이 창업 교육 일정",
+      "1박 2일 해커톤 일정"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "원데이 창업 교육+팀별 액션 위크+1박 2일 해커톤 캠프"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnxyyp0000dgvckidbakdx",
+  "projectId": "A.24.0029",
+  "projectName": "연세대학교 팀빌딩 해커톤 캠프 운영",
+  "intensity": {
+    "totalEducationHours": 18.83,
+    "totalWeeks": null,
+    "basis": "hours: sessions[14] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6633,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "demotedAxes": [],
+    "extractedAt": "2026-06-12T09:57:50.330Z"
+  }
+}

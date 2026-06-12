@@ -1,0 +1,460 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 참여 대상 예비 년 차 이하 환경 분야 스타트업 개 팀 : ~5 8"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "무관"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전국 범위의 예비 ~5 년 차 미만 스타트업 대상"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "환경 분야 스타트업 8 개 팀"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "전국 범위의 예비 ~5 년 차 미만 스타트업 대상"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "손해보험 교통 환경 챌린지 기 DB · 6 프로그램 운영 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "손해보험 교통 환경 챌린지 기 DB · 6"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 500000000,
+        "participants": 8,
+        "durationMonths": 6
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 사업 예산 500,000,000",
+        "프로그램 참여 대상 예비 년 차 이하 환경 분야 스타트업 개 팀 : ~5 8",
+        "프로그램 일정 년 월 월 개월 : 2024 7 ~12 (6 )"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "코호트러닝",
+        "액트프러너십"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "코호트러닝 방식을 적용하여",
+        "액트프러너십 역량이 얼마나 강화"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스가 만든 스타트업 단계 진단 검사를 통하여 참여 창업팀의 단계를 진단"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "진행 장소 온 오프라인 : ·",
+        "교육 온라인 진행 : ZOOM",
+        "중간 점검 사업계획서 피드백 최종 점검 등 오프라인으로 진행 , , :"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 10,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "회차 오리엔테이션 및 마인드셋 (1 ) ... 회차 최종 점검 데모데이 개최 (10 ) :"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 2,
+        "timeOfDay": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 2H"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "그룹"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "분야 / 성장단계에 따른 창업가-VC 그룹 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "코칭 (1:1)",
+        "그룹 멘토링",
+        "분야 성장단계에 따른 창업가 그룹 매칭 / -VC"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "동료리뷰",
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "코호트러닝 방식을 적용하여 동료들이 작성한 워크시트에 피어 피드백",
+        "지속적인 네트워킹 기회를 통해"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "회차 중간 점검 (5 )",
+        "회차 최종 점검 데모데이 개최 (10 ) :"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "단계 서면심사 최종 선발의 배 배수 선발 1 : ( 1.5 ~2 )",
+        "단계 대면심사 분 발표 분 질의 응답 차 대면심사 진행 2 : PT (5 , 10 )"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사업계획서 피드백",
+        "피치덱 작성 특강 IR",
+        "임팩트 분석 리포트 /ESG"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "상금",
+          "시제품비"
+        ],
+        "amounts": [
+          {
+            "label": "MVP 제작지원금",
+            "amountKrw": 20000000
+          },
+          {
+            "label": "시상금 총액",
+            "amountKrw": 80000000
+          },
+          {
+            "label": "1등 상금",
+            "amountKrw": 40000000
+          },
+          {
+            "label": "2등 상금",
+            "amountKrw": 10000000
+          },
+          {
+            "label": "3등 상금",
+            "amountKrw": 5000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "상금 시제품 제작 지원금",
+        "개팀 제작지원금 8 MVP 20,000,000",
+        "상금 시상금 최우수상 우수팀 80,000,000",
+        "등 팀 만원 1 1 4,000",
+        "등 팀 만원 2 2 1,000",
+        "등 팀 만원 3 5 500"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "프로그램 운영 매니저 2명",
+        "외부 특강강사비",
+        "창업 코치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "진행 장소 온 오프라인 언더독스 사옥 지하 층 : · ( 1 )",
+        "교육 온라인 진행 : ZOOM"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률"
+        ],
+        "attendanceThreshold": 70
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "수료기준 출석 이상 을 통해 참여팀 출석 관리 (* 70% )"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "네트워킹",
+          "기타"
+        ],
+        "duration": "11월 중 1박 2일 및 후속 프로그램 기간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "수료식 및 후속 네트워킹 프로그램 인사이트 트립 일정 년 월 중 박 일 : 2024 11 1 2",
+        "창업팀 일대일 진단 컨설팅 진단 후 체크리스트 제공 및 전문가 매칭"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "기타"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "교통 환경 전문 프로그램 교육 및 이론을 통해 이론을 넘어 공통된 주제 기반의 팀별 워크숍과 현장 코칭과 퍼실리테이션을 제공하고"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "오리엔테이션 및 CEO 마인드셋",
+        "hours": 2,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "조직 관리",
+        "hours": 2,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "소셜 비즈니스 & KPI 설정",
+        "hours": 2,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "사회적 가치 특강",
+        "hours": 2,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "중간 점검",
+        "hours": 2,
+        "format": "이벤트/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      },
+      {
+        "no": 6,
+        "title": "투자 트렌드 ESG 특강",
+        "hours": 2,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "투자 및 기업 ESG대응 전략",
+        "hours": 2,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "IR 피치덱 작성 특강",
+        "hours": 2,
+        "format": "강의/코칭",
+        "isTheory": true,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "사업계획서 피드백",
+        "hours": 2,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "최종 점검 - 데모데이",
+        "hours": 2,
+        "format": "이벤트",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "교육 및 코칭 커리큘럼"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "손해보험 교통 환경 챌린지 기 DB · 6 프로그램 운영 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsndgq7001z8gvcottyrkxe",
+  "projectId": "A.24.0022",
+  "projectName": "DB손해보험 교통환경 챌린지 6기",
+  "intensity": {
+    "totalEducationHours": 20,
+    "totalWeeks": 10,
+    "basis": "hours: sessions[10] hours 합산 · weeks: totalSessions(10) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 18679,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:07:53.933Z"
+  }
+}

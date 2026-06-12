@@ -1,0 +1,354 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "0~3년차 사회적 가치+잠재 글로벌 창업가"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "여성"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "여성 창업가 역량 강화 및 사회적 가치 창출의 교육과 성장 지원"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "사회혁신 분야 여성 창업가 커뮤니티 구축",
+        "사회적 가치"
+      ]
+    },
+    "geography": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "글로벌 진출을 위한 실전형 기업가 육성",
+        "CWI 중심 글로벌 진출 발판"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.5,
+      "evidence": [
+        "2024-25 언더우먼 4기 for EMPOWERMENT"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "까르띠에 언더우먼은 2021년 1기를 시작으로",
+        "까르띠에의 CWI 가치를 공유하고"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 101000000,
+        "participants": 15,
+        "durationMonths": 6
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "총 사업 예산(십만원 미만 절삭) 101,000,000",
+        "15팀 / ,",
+        "개월수/횟수 ... 6"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "사회혁신 창업 방법론",
+        "코호트러닝"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "자체 개발 프로그램 '사회혁신 창업방법론'을 중심으로",
+        "상호 학습으로 교육 효과를 극대화 하는 코호트러닝 교육방식"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "참여팀 사전진단 및 사업기간 내 목표(KPI) 달성 지원",
+        "개인별 진단툴 활용 및 결과"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1:1 코칭 (온라인) *필요시 오프라인",
+        "온•오프라인 커뮤니케이션을 통해"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 36,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "총 9주, 주 2회(1주차 및 9주차는 1회) / 총 16회",
+        "총 7주, 주 2회(7주차는 1회) / 총 13회",
+        "총 4주, 주 1회 / 총 7회"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 10,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "창업팀의 성장 단계, 비즈니스 모델, 사회적 가치 등을 고려하여 코칭 방향 설정"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1 코칭 (온라인)",
+        "2월 4회 ... 3월 3회 ... 4월 3회",
+        "창업팀의 성장 단계, 비즈니스 모델, 사회적 가치 등을 고려하여 코칭 방향 설정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "상호 성장의 코호트러닝",
+        "참여팀의 상호 학습으로 교육 효과를 극대화 하는 코호트러닝 교육방식"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "중반"
+        },
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DE&I Conference ... 2024 10",
+        "Year-end Networking ... 2024 12",
+        "Gathering Day ... 2025 2",
+        "Demoday ... 2025 4"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "IR덱",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "경쟁력 있는 사업계획서를 도출하고",
+        "최종 데모데이 IR Deck 보완",
+        "사회적 가치 성과 지표 도출",
+        "임팩트 보고서(사회적 가치 평가 보고서)를 제공"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "우수팀 혜택 오사카 방문",
+            "amountKrw": 3000000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "우수팀 혜택: 일본 오사카에 등장하는 까르띠에 ‘CWI 2025 어워즈’ 엑스포 우먼 파빌리온을 방문하여 CWI 수상자와 현지에서 네트워킹 기회를 제공",
+        "우수팀 혜택 오사카 방문 1,000,000 3명 1회 3,000,000"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "언더독스 창업전문 코치진",
+        "분야별 연사",
+        "프로젝트 운영총괄 사업 운영 총괄 PM",
+        "프로젝트 운영매니저 사업 운영 매니저"
+      ]
+    },
+    "venue": {
+      "value": [
+        "고정교육장",
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "까르띠에 메종 청담",
+        "1:1 코칭 (온라인)"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "출석 관리",
+        "주차별 과제 관리"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "후속보육",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "투자 지원 및 검토",
+        "BEYOND EDU 창업 지원 컨설팅 서비스",
+        "ESG 보고서 사회적 가치 전문 평가"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "자체 개발 프로그램 '사회혁신 창업방법론'을 중심으로 주간 강의를 전달하고",
+      "분야별 특강, 1:1 코칭",
+      "전문 컨설팅, 1:1 코칭, 데모데이"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2024-25 언더우먼 4기 for EMPOWERMENT"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn67ud0001kovc1ebr63gb",
+  "projectId": "A.25.0004",
+  "projectName": "언더우먼 임팩트 커뮤니티 4기",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 26,
+    "basis": "weeks: durationMonths(6) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 16762,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:43:06.086Z"
+  }
+}

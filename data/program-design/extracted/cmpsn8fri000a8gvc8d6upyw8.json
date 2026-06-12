@@ -1,0 +1,431 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어유",
+      "confidence": 0.9,
+      "evidence": [
+        "전남창경 예비창업패키지 합격자 27팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경 예비창업패키지 합격자 27팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경 예비창업패키지 합격자 27팀"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "2025 전남창경 MVP 고도화 및 시장성 분석 교육 제안서"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "2025 전남창경 MVP 고도화 및 시장성 분석 교육 제안서"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경 예비창업패키지 합격자 27팀"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": [
+        "PEST",
+        "STP",
+        "4P",
+        "AARRR",
+        "5 Why",
+        "AIDA"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "PEST, STP, 4P, AARRR 등 체계적인 시장 분석",
+        "근본 원인 분석(5 Why 기법)을 통해 표면적 문제가 아닌 진짜 해결해야 할 원인 도출",
+        "4P, AIDA, AARRR 프레임워크를 활용하여 고객 획득부터 성장까지의 전략적 로드맵을 완성"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "이론 중심의 일방향 강의를 탈피하고, 참여자가 직접 템플릿을 작성하고 실습하는 워크숍 중심 교육"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1박2일 압축 교육을 통한 성과 창출"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 12,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박2일 압축 교육을 통한 성과 창출",
+        "Day 1: MVP 고도화 보고서 완성 (13:00~20:10)",
+        "Day 2: 시장성 분석 보고서 완성 (09:00~16:00)"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": 1,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "Day 1: MVP 고도화 보고서 완성 (13:00~20:10)",
+        "Day 2: 시장성 분석 보고서 완성 (09:00~16:00)"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "전현직 창업가 출신 코치 1:1 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전현직 창업 전문가들의 실시간 1:1 코칭",
+        "전현직 창업가 출신 코치 1:1 매칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "전남창경 예비창업패키지 합격자 27팀"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "1박2일 동안 MVP 고도화 보고서와 시장성 분석 보고서 완성 및 제출"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1박2일 동안 MVP 고도화 보고서와 시장성 분석 보고서 완성 및 제출"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 5,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "투입 인력",
+        "임재성",
+        "유승준",
+        "하지수",
+        "김경희",
+        "윤은영"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.7,
+      "evidence": [
+        "1박2일 압축 교육"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1박2일 동안 MVP 고도화 보고서와 시장성 분석 보고서 완성 및 제출"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "duration": null
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "교육 이후에도 스스로 작은 실행을 계획하고 반복할 수 있는 자립적 실행력 배양"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "이론 중심의 일방향 강의를 탈피하고, 참여자가 직접 템플릿을 작성하고 실습하는 워크숍 중심 교육",
+      "생성형 AI를 활용한 리서치, 글쓰기, 고도화 진행"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "OT",
+        "hours": 0.17,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "1교시: 문제 명확화",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "2교시: 고객 명확화",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "3교시: 핵심가치 명확화",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "4교시: 솔루션 명확화",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "5교시: MVP 계획 수립",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "6교시: 최종 정리 및 제출",
+        "hours": 1,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "OT (2일차)",
+        "hours": 0.17,
+        "format": "기타",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "1교시: PEST/TSS",
+        "hours": 0.83,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "2교시: STP",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "3교시: 벤치마킹/4P",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "4교시: AIDA",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 13,
+        "title": "5교시: AARRR",
+        "hours": 1,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 14,
+        "title": "6교시: 최종 정리 및 제출 (2일차)",
+        "hours": 1,
+        "format": "워크숍/코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "3) 회차별 세부 교육 내용",
+      "1일차 (13:00~20:10)",
+      "2일차 (09:00~16:00)"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025 전남창경 MVP 고도화 및 시장성 분석 교육 제안서"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsn8fri000a8gvc8d6upyw8",
+  "projectId": "A.25.0038",
+  "projectName": "\"2025년 예비창업패키지\" JN Build-Up Camp 기획·운영",
+  "intensity": {
+    "totalEducationHours": 12.17,
+    "totalWeeks": null,
+    "basis": "hours: sessions[14] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 9752,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:47:11.197Z"
+  }
+}

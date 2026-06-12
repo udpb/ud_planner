@@ -1,0 +1,521 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "예비 및 3년 이내 초기 창업자",
+        "국내 만18세~39세 청년 예비 창업자 및 창업 3년 이내 기업"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "청년"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "국내 만18세~39세 청년 예비 창업자"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "식품/농업",
+        "문화/예술",
+        "IT/TECH",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "기술창업 : 지역특화사업 및 사회문제 해결 영역 - 세부항목 : ESG, 식품, 홀로그램, ICT, 쥬얼리 등"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 1,
+      "evidence": [
+        "With LOCAL Start-up",
+        "익산시의 지역 현안을 도출하고",
+        "지역연계형 비즈니스 미션"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 1,
+      "evidence": [
+        "민·관이 함께 하는 “익산형 청년창업 일자리 지원 사업”"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 1,
+      "evidence": [
+        "익산시"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 1000000000,
+        "participants": 40,
+        "durationMonths": 12
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업예산 10억원 (익산시 8.5억, 전북ES 1.5억)",
+        "40명의 창업가 육성",
+        "’22 1월, 본 사업 개시(~12월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "언더독스 사회혁신 창업방법론",
+        "ud 창업 4단계 방법론"
+      ],
+      "confidence": 1,
+      "evidence": [
+        "언더독스의 사회혁신 창업방법론 활용",
+        "ud 창업 4단계 방법론"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업가 성향 진단 /워크샵 운영"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온/오프라인 통합",
+        "온라인교육플랫폼사용"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 12,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "주1회 비즈니스 추진현황 점검",
+        "1단계 교육 세부 커리큘럼"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 30,
+        "practicePct": 70,
+        "basis": "명시"
+      },
+      "confidence": 1,
+      "evidence": [
+        "강의와 워크샵 비중을 3:7로 나누어 운영"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": "전문가 매칭"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1:1코칭을 통한 관리와 전문가 멘토링을 진행하고자 함",
+        "창업교육(입문/성장) 팀 전담 코치",
+        "분야별 필요 전문영역 점검 전문가 매칭"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": 2,
+        "tracks": 1,
+        "peerDevices": [
+          "네트워킹",
+          "기타"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "’22년 3월 창업팀 1기를 출범하여",
+        "기술창업 20팀",
+        "40명의 창업가 육성",
+        "피어 피드백"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "중간공유회",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "중간발표",
+        "축제 기반 성과공유회"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "PT",
+          "면접"
+        ],
+        "competitionRatio": "2.5:1",
+        "midDropGate": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "서류심사 PT심사&심층면접",
+        "40-50팀 지원 -> 20팀 선발"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "스토리보드 (사용자시나리오)",
+        "MVP",
+        "비즈니스 모델",
+        "사업계획서 작성"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "시제품비",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "팀당 지원규모",
+            "amountKrw": 40000000
+          }
+        ]
+      },
+      "confidence": 1,
+      "evidence": [
+        "팀당 지원규모 : 0.4억원 (시제품 개발비 등)",
+        "주거비 지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가",
+          "연사"
+        ],
+        "headcount": 7,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "창업교육(입문/성장) 팀 전담 코치",
+        "전문가 코칭 및 특강",
+        "특강연사",
+        "사업 실무 운영 총괄 기획/관리자"
+      ]
+    },
+    "venue": {
+      "value": [
+        "지역거점",
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "청년창업일자리 지원센터",
+        "온라인교육플랫폼사용"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "후속지원으로 변경 (행안부 정책 연계, 향후 각 팀 신청)",
+        "후속사업 검토"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "실전창업강의",
+      "Workshop",
+      "현장 조사",
+      "피드백",
+      "Casestudy",
+      "실전 툴킷",
+      "1단계 관점도출",
+      "아이템 구체화",
+      "아이템 고도화",
+      "사업화"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "고객 문제 정의",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "페르소나 분석(고객/사용자 분석)",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "기존 솔루션 분석 한계점 도출)",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "관점도출",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "리서치 방법론(데스크리서치,설문조사, 인터뷰) - 1",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 6,
+        "title": "리서치 방법론(데스크리서치,설문조사, 인터뷰) - 2",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 7,
+        "title": "스토리보드 (사용자시나리오)",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 8,
+        "title": "제품소개서,메뉴판 작성 및 벤치마킹",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 9,
+        "title": "MVP 및 MVPCaseStudy",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 10,
+        "title": "시장분석, 경쟁사 분석, 비즈니스 모델, 가격설정",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 11,
+        "title": "KPI",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 12,
+        "title": "대시보드 작성 및 사업계획서 작성",
+        "hours": null,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "첨부3. 1단계 교육 세부 커리큘럼과 특징"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "창업팀의 아이디어를 지역과 고객관점에서 구체화하고, 지속적인 시장에서의 고객검증을 통해 지속가능한 비즈니스 모델로 고도화화 할 수 있는 교육 프로그램을 진행하고자 함"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "창업팀 육성",
+        "targetValue": 20,
+        "unit": "개",
+        "raw": "20개의 창업팀 육성"
+      },
+      {
+        "metric": "창업가 육성",
+        "targetValue": 40,
+        "unit": "명",
+        "raw": "40명의 창업가 육성"
+      },
+      {
+        "metric": "법인 유치율",
+        "targetValue": 50,
+        "unit": "%",
+        "raw": "육성된 창업팀의 50% 법인 유치"
+      },
+      {
+        "metric": "창업가 이주율",
+        "targetValue": 20,
+        "unit": "%",
+        "raw": "육성된 창업가의 20% 이주"
+      },
+      {
+        "metric": "후속 지원사업 진입률",
+        "targetValue": 20,
+        "unit": "%",
+        "raw": "수료팀 中 20%는 향후 지원사업 진입"
+      },
+      {
+        "metric": "신규채용",
+        "targetValue": 5,
+        "unit": "명",
+        "raw": "최대 5명의 신규채용 달성"
+      },
+      {
+        "metric": "연내 매출 발생률",
+        "targetValue": 80,
+        "unit": "%",
+        "raw": "참가팀의 80% 이상이 연내매출 발생"
+      }
+    ],
+    "confidence": 1,
+    "evidence": [
+      "20개의 창업팀 육성",
+      "40명의 창업가 육성",
+      "육성된 창업팀의 50% 법인 유치",
+      "육성된 창업가의 20% 이주",
+      "수료팀 中 20%는 향후 지원사업 진입",
+      "최대 5명의 신규채용 달성",
+      "참가팀의 80% 이상이 연내매출 발생"
+    ]
+  },
+  "docId": "cmpsnyt4g000adgvcykeg4upg",
+  "projectId": "A.22.0004",
+  "projectName": "위드로컬 지원사업",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 12,
+    "basis": "weeks: totalSessions(12) ÷ rhythm(주1회)"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 12246,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:33:49.215Z"
+  }
+}

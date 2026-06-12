@@ -1,0 +1,410 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "1년이내점포창업을목표로하는 예비창업자타겟팅한선발",
+        "상권내성장의지가있는 기존대상상권창업자선발"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "일반소상공인",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "1년이내점포창업을목표로하는 예비창업자타겟팅한선발",
+        "상권에 기여할 브랜드 자산을 지닌 소상공인"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "전통적노포분야를넘어빵집과카페, 공방등체험형공간확대·확산",
+        "생활용품(가구,문구, 식가구,패션, 디자인제품등)으로확산되는상황"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "서울로컬브랜드상권사업의활성화를위해요구되는창조적소상공인의역할과기대역량"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "서울시(신용보증재단)",
+        "자치구(상권육성기구)"
+      ]
+    },
+    "clientTier": {
+      "value": "지자체",
+      "confidence": 0.9,
+      "evidence": [
+        "서울시(신용보증재단)",
+        "자치구(상권육성기구)"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 7
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "6월 ~ 7월 7월 8월 ~ 11월 최종 결과보고 12월"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "디자인씽킹",
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "5 Dimension 창업팀 전문 진단 수행",
+        "Dogs 워크숍",
+        "고객인터뷰진행/분석(린고객개발)",
+        "디자인씽킹,디자인역량강화등",
+        "브랜드 골든서클을 활용해 WHY-WHAT-HOW를 정리해 봄"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "LMS_VOD",
+          "사전진단"
+        ],
+        "diagnostics": [
+          "DOGS",
+          "5D",
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 VOD",
+        "사전 자가진단과 코치의 방문진단",
+        "총 13강의 로컬 창업 VOD 제공"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "온/오프라인 교육, 1:1 코칭, 참여자 간 네트워킹",
+        "온라인 VOD",
+        "가게 방문형 오프라인 1:1 코칭 교육 및 상권별 워크숍"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "주1회",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "7월4주~9월2주(주1회,총8강)",
+        "주 1회 오프라인 교육 및 워크숍 제공"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "팀전담"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "진단 유형별 맞춤 코치의 방문 코칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "로컬브랜드창조적소상공인 특화1:1코칭/커리큘럼",
+        "진단 유형별 맞춤 코치의 방문 코칭",
+        "4가지 유형별 전담 및 총괄 코치 배정"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": null,
+        "teamSize": null,
+        "tracks": 2,
+        "peerDevices": [
+          "커뮤니티",
+          "네트워킹",
+          "동료리뷰"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "창업현안을전현직창업가와 나누고코호트러닝할수있는 창업가커뮤니티연계",
+        "커뮤니케이션 채널 통한 피어피드백",
+        "로컬인서울 과정",
+        "브랜딩 액션러닝 과정"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "해커톤",
+          "timing": "종반"
+        },
+        {
+          "type": "네트워킹",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "브랜드 해커톤 11월 4주",
+        "동네서울 위크 11월 2주~ 11월 4주",
+        "로컬인서울, 액션러닝 네트워킹 디너 12월 1주"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": "5:1이상",
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서류심사",
+        "대면심사",
+        "로컬인서울 모집경쟁률5:1이상"
+      ]
+    },
+    "actionWeek": {
+      "value": {
+        "count": null,
+        "placement": "교육 종료 후 11월 중 진행"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "동네서울 위크 11월 2주~ 11월 4주",
+        "각 구분별 1주일간 프로그램을 운영"
+      ]
+    },
+    "deliverables": {
+      "value": [
+        "사업계획서",
+        "MVP",
+        "브랜드",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "점포 창업을 위한 사업 계획서",
+        "MVP(시제품) 제작 및 고객 검증",
+        "점포별 브랜드 스토리/가이드"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "후속연계"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사업화 지원금 지급 우수팀 선발 계획",
+        "우수기업패스트트랙투자검토연계"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": true
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "261명의액션코치, 400명의분야별전문가pool",
+        "로컬스몰브랜드 특화육성 및운영에최적화된 내부 전담인력 투입"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "고정교육장",
+        "현장방문"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "온라인 VOD",
+        "신용보증재단 또는 제안사 공간",
+        "가게 방문형 1:1 코칭"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "출석률",
+          "과제",
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": 85
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "교육및코칭 출석률85%달성",
+        "출석률 / 과제 수행 성실성 / 피어피드백 수",
+        "브랜드 해커톤 사업 발표 평가"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "투자연계",
+          "후속보육",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "우수기업패스트트랙투자검토연계",
+        "무료법인전환서비스",
+        "자금지원프로그램"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "사례·경험",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강연형 컨퍼런스형 로컬 이해 및 창업가 정신 교육",
+      "Dogs 워크숍",
+      "가게 방문형 오프라인 1:1 코칭 교육",
+      "브랜드 기초 개론",
+      "로컬 창업 사례 학습을 통한 인사이트 도출",
+      "챗GPT를 활용한 워크숍형태의 실습",
+      "로컬 비즈니스 마인드셋",
+      "상품 고도화 과정",
+      "현장형 창업 실전 과정"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "로컬상권의브랜드와분위기를주도할예비점포및기존점포를대상으로 상권별·참여팀현황별로컬브랜드특화육성교육"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "출석률",
+        "targetValue": 85,
+        "unit": "%",
+        "raw": "교육및코칭 출석률85%달성"
+      },
+      {
+        "metric": "만족도",
+        "targetValue": 4.5,
+        "unit": "점",
+        "raw": "전체만족도평균 4.5/5.0달성"
+      },
+      {
+        "metric": "매출 향상",
+        "targetValue": 20,
+        "unit": "%",
+        "raw": "교육후 매출20%향상"
+      },
+      {
+        "metric": "점포 창업률",
+        "targetValue": 50,
+        "unit": "%",
+        "raw": "점포창업 50%달성"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "교육및코칭 출석률85%달성",
+      "전체만족도평균 4.5/5.0달성",
+      "교육후 매출20%향상",
+      "점포창업 50%달성"
+    ]
+  },
+  "docId": "cmpsnd16f001y8gvcg0l76wpv",
+  "projectId": "A.24.0020",
+  "projectName": "로컬브랜드 상권 창조적 소상공인 육성사업",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 30,
+    "basis": "weeks: durationMonths(7) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 55217,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:36:46.704Z"
+  }
+}

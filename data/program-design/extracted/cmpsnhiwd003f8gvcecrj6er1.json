@@ -1,0 +1,296 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "서경대 캠퍼스타운 입주기업 간의 문화예술창업 밸리 구축을 위한 엑셀러레이팅 필요"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화예술 창업팀들의 사회 공헌 프로젝트 배리어프리 공연예술 관련 및 관심 기업 대상 데모데이를"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "문화/예술"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화예술 창업팀들의 사회 공헌 프로젝트 배리어프리 공연예술 관련 및 관심 기업 대상 데모데이를"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.8,
+      "evidence": [
+        "서울시 캠퍼스타운 종합형",
+        "서울 창작 연극 지원센터 개관(성북구 소재)과 연계하여"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "서울시 캠퍼스타운 종합형 4개년 사업(2022 ~2025)에 관한 협약"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "서경대학교 캠퍼스타운 기술 융합 컬처 창업 타운 조성 사업"
+      ]
+    },
+    "scale": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "methodologySignals": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "연극 과 영화 라는 매개체를 바탕으로 온 오프라인 형식의 운영을 통해"
+      ]
+    },
+    "cadence": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "서경대 캠퍼스타운 프로그램으로 진행된 결과물 및 콘텐츠의 창제작 유통 활성화를 위한 24년도 멘토링 지원"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": null,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "대면 토크 콘서트 형식으로 진행"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "데모데이",
+          "timing": "종반"
+        },
+        {
+          "type": "IR",
+          "timing": "종반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "문화예술 창업팀들의 사회 공헌 프로젝트 배리어프리 공연예술 관련 및 관심 기업 대상 데모데이를, IR 개최하여",
+        "성과 공유회적 성격의 IR"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": 2,
+        "methods": [
+          "서류",
+          "면접"
+        ],
+        "competitionRatio": null,
+        "midDropGate": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "입주기업 대상 작품 선정을 위한 심사회의(서면) ∙ 인터뷰 운영"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "서경대 캠퍼스타운 프로그램으로 진행된 결과물 및 콘텐츠의 창제작 유통 활성화를"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "후속연계",
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "사회공헌 공연예술 창업 “IR”에 선정된 예술단체 대상으로 크라우드 펀딩 ‘와디즈’ 등 진행",
+        "향후 객석 나눔 및 홍보지원"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "기타"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "심사위원 구성 : 공연예술 관련 평론가, 전문가, 실무자 등 (예술경영지원센터 협력 요청)"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "장 소 : 공연장 또는 MOU 예정 공간 등",
+        "온 오프라인 형식의 운영을 통해"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "후속보육",
+          "기타"
+        ],
+        "duration": "24년도"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "선정단체 대상 크라우드 펀딩(와디즈 등) 진행 및 워크숍 (24년 1~2월 중)",
+        "결과물 및 콘텐츠의 창제작 유통 활성화를 위한 24년도 멘토링 지원"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "기타"
+      ],
+      "contentTypes": [
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "대면 토크 콘서트 형식으로 진행",
+      "배리어프리 문화예술 또는 상영회 GV",
+      "크라우드 펀딩(와디즈 등) 진행 및 워크숍"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "제 1회로 기획되어 지속적인 배리어프리 공연예술제로 기획 예정"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "입주기업 펀딩 수",
+        "targetValue": 2,
+        "unit": "개",
+        "raw": "입주기업 펀딩 수 : 공연예술팀 2팀 이상"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "입주기업 펀딩 수 : 공연예술팀 2팀 이상"
+    ]
+  },
+  "docId": "cmpsnhiwd003f8gvcecrj6er1",
+  "projectId": "A.23.0054",
+  "projectName": "서경대학교 사회공헌 공연예술 창업 IR",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 2189,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:22:56.989Z"
+  }
+}

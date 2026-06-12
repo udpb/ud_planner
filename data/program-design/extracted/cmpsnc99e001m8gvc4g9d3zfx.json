@@ -1,0 +1,285 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.7,
+      "evidence": [
+        "초기 스타트업 팀빌딩에 도움이 되는 조직문화 워크샵",
+        "예비, 초기 창업가들에게 필요한 온라인 창업교육 콘텐츠를 제공하여"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DB손해보험 교통환경 챌린지 5기에 참여했던 5팀 (마들렌메모리, 빅모빌리티, 어메스, 에이랩스, 포그)"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "DB손해보험 교통환경챌린지 5기 후속지원"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.7,
+      "evidence": [
+        "비 수도권팀들의 경우 팀이 온라인 진행을 원하는 경우 온라인으로 진행"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.8,
+      "evidence": [
+        "DB손해보험 교통환경챌린지 5기 후속지원"
+      ]
+    },
+    "clientTier": {
+      "value": "대기업",
+      "confidence": 0.9,
+      "evidence": [
+        "DB손해보험 교통환경챌린지 5기"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "기간 2024년 1월~3월(3개월)"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS 업무 성향진단",
+        "혁신창업가방법론"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DOGS 업무 성향진단",
+        "혁신창업가방법론 Lv.1 (창업가의 관점)"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "모든 참여팀을 바탕으로 1 차 수요조사, 2 차 비즈니스 진단을 통해 팀들에게 맞는 세부 후속프로그램을 제공합니다."
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "혼합"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온·오프라인 기본 제공",
+        "온라인 기본 제공",
+        "오프라인 선택"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": null,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "후속지원 기간 동안 월 1 회 씩 팀 코칭을 통한 현황파악 및 방향성 설정",
+        "온라인 콘텐츠 제공 상시",
+        "HR/조직문화 워크샵 오프라인 선택 팀당 1 회"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": "1:1",
+        "pairing": "전문가 매칭"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1:1 코칭 온·오프라인 기본 제공 팀당 월 1 회",
+        "회계/재무전문분야 멘토와 연결",
+        "사회적 가치 지표 개발 및 측정 전문가 매칭을 통해"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "DB손해보험 교통환경 챌린지 5기에 참여했던 5팀",
+        "5 개 기업 일괄제공되는 기본서비스"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "지원 팀에 한해 임팩트측정을 통한 보고서 작성",
+        "팀별로 기간 내 일대일 진단 컨설팅을 통한 기업경영보고 리포트 자료 지원",
+        "비즈니스 현황 진단을 통한 마케팅 전략 및 브랜드 구축 진행"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": null,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코칭 & 외부 전문가 멘토링 & 홍보·마케팅 지원 등을 통해",
+        "회계/재무전문분야 멘토와 연결"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인",
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "온·오프라인 기본 제공",
+        "비 수도권팀들의 경우 팀이 온라인 진행을 원하는 경우 온라인으로 진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "실무·도구",
+        "이론·개념",
+        "기타"
+      ],
+      "difficultyArc": null
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "1:1 코칭",
+      "온라인 창업교육 콘텐츠 제공",
+      "HR/조직문화 워크샵"
+    ]
+  },
+  "sessions": {
+    "value": [],
+    "confidence": 0,
+    "evidence": [
+      "위 프로그램의 내용 및 진행방식은 팀들의 진행상황에 따라 변동될 수 있음."
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "스타트업 대상의 1:1 코칭, 전문가 멘토링, 온라인 교육 및 워크숍으로 구성된 전형적인 후속지원 프로그램 구조임"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "언더독스 코칭 & 외부 전문가 멘토링 & 홍보·마케팅 지원 등을 통해 팀의 비즈니스가 지속될 수 있도록 지원"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnc99e001m8gvc4g9d3zfx",
+  "projectId": "A.24.0004",
+  "projectName": "DB손해보험 교통환경 챌린지 5기 후속지원 용역",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": 13,
+    "basis": "weeks: durationMonths(3) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 6046,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:03:34.468Z"
+  }
+}

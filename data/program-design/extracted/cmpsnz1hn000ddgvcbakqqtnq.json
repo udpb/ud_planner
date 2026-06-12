@@ -1,0 +1,330 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "대상 \t: \t대구경북 \t소재 \t예비~7년차 \t18개 \t창업팀"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "대상 \t: \t대구경북 \t소재 \t예비~7년차 \t18개 \t창업팀"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "ALL"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        "대상 \t: \t대구경북 \t소재 \t예비~7년차 \t18개 \t창업팀"
+      ]
+    },
+    "geography": {
+      "value": "로컬",
+      "confidence": 0.9,
+      "evidence": [
+        "대상 \t: \t대구경북 \t소재 \t예비~7년차 \t18개 \t창업팀"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.7,
+      "evidence": [
+        "대구경북 \t스타트업 \t기업진단 \t및 \tIR컨설팅"
+      ]
+    },
+    "clientTier": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": null,
+        "durationMonths": 2
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대상 \t: \t대구경북 \t소재 \t예비~7년차 \t18개 \t창업팀",
+        "IR \t컨설팅 \t11월~12월 \t팀별 \t1시간 \t내외 \t팀별 \t3회"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "사전진단"
+        ],
+        "diagnostics": [
+          "기타"
+        ],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "비즈니스 \t자가진단툴을 \t활용한 \t팀별 \t현황 \t파악"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "온라인",
+        "onlineRatio": 100,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "장소 \t: \tZoom \t온라인 \t진행",
+        "팀별 \t1:1 \t줌 \t온라인 \t코칭 \t진행"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 5,
+        "rhythm": "혼합",
+        "campDays": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "진행방법 \t: \t온라인 \t공통교육 \t1회, \t팀별 \t비즈니스 \t진단 \t1회, \t팀별 \t컨설팅 \t3회"
+      ]
+    },
+    "sessionLength": {
+      "value": null,
+      "confidence": 0,
+      "evidence": [
+        "공통교육 \t사전 \t협의 \t2시간 \t공통 \t1회",
+        "비즈니스진단 \t11월 \t중 \t팀별 \t1시간 \t내외 \t팀별 \t1회",
+        "IR \t컨설팅 \t11월~12월 \t팀별 \t1시간 \t내외 \t팀별 \t3회"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": {
+        "lecturePct": 33,
+        "practicePct": 67,
+        "basis": "추정"
+      },
+      "confidence": 0.7,
+      "evidence": [
+        "공통교육 \t사전 \t협의 \t2시간 \t공통 \t1회",
+        "비즈니스진단 \t11월 \t중 \t팀별 \t1시간 \t내외 \t팀별 \t1회",
+        "IR \t컨설팅 \t11월~12월 \t팀별 \t1시간 \t내외 \t팀별 \t3회"
+      ]
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "1:1"
+        ],
+        "totalRounds": 3,
+        "hoursPerRound": 1,
+        "coachToTeamRatio": "1:1",
+        "pairing": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "팀별 \t1:1 \t줌 \t온라인 \t코칭 \t진행",
+        "IR \t컨설팅 \t11월~12월 \t팀별 \t1시간 \t내외 \t팀별 \t3회"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": []
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "대상 \t: \t대구경북 \t소재 \t예비~7년차 \t18개 \t창업팀",
+        "진행방법 \t: \t온라인 \t공통교육 \t1회, \t팀별 \t비즈니스 \t진단 \t1회, \t팀별 \t컨설팅 \t3회"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "IR덱"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "IR \tDeck \t보완 \t및 \t발표 \t역량 \t강화",
+        "IR \tDeck/피칭 \t전략"
+      ]
+    },
+    "incentives": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 4,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "박병룡 \t코치",
+        "김대홍 \t코치",
+        "유연성 \t코치",
+        "이해준 \t코치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "온라인"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "장소 \t: \tZoom \t온라인 \t진행"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구"
+      ],
+      "difficultyArc": "혼합"
+    },
+    "confidence": 0.7,
+    "evidence": [
+      "진행방법 \t: \t온라인 \t공통교육 \t1회, \t팀별 \t비즈니스 \t진단 \t1회, \t팀별 \t컨설팅 \t3회",
+      "비즈니스 \t자가진단툴을 \t활용한 \t팀별 \t현황 \t파악",
+      "IR \tDeck \t보완 \t및 \t발표 \t역량 \t강화"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "공통교육 (투자 유치 전략)",
+        "hours": 2,
+        "format": "강의",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "비즈니스진단",
+        "hours": 1,
+        "format": "진단",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "IR 컨설팅 1회차",
+        "hours": 1,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "IR 컨설팅 2회차",
+        "hours": 1,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "IR 컨설팅 3회차",
+        "hours": 1,
+        "format": "코칭",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": false
+      }
+    ],
+    "confidence": 0.8,
+    "evidence": [
+      "공통교육 \t사전 \t협의 \t2시간 \t공통 \t1회",
+      "비즈니스진단 \t11월 \t중 \t팀별 \t1시간 \t내외 \t팀별 \t1회",
+      "IR \t컨설팅 \t11월~12월 \t팀별 \t1시간 \t내외 \t팀별 \t3회"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": "온라인 공통교육과 1:1 비즈니스 진단 및 IR 컨설팅으로 구성된 표준적인 스타트업 지원 프로그램 구조임"
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "진행방법 \t: \t온라인 \t공통교육 \t1회, \t팀별 \t비즈니스 \t진단 \t1회, \t팀별 \t컨설팅 \t3회"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnz1hn000ddgvcbakqqtnq",
+  "projectId": "A.22.0043",
+  "projectName": "대경지역대학공동기술지주 2022년 서핑(Surfing)534 IR DECK 고도화 컨설팅 및 교육",
+  "intensity": {
+    "totalEducationHours": 6,
+    "totalWeeks": 9,
+    "basis": "hours: sessions[5] hours 합산 · weeks: durationMonths(2) × 4.33"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 1565,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T09:34:26.480Z"
+  }
+}

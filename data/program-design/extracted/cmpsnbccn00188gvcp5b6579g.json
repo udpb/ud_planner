@@ -1,0 +1,324 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "기타",
+      "confidence": 0.9,
+      "evidence": [
+        "아세안교육부관계자, 아세안대학연합, 아세안사무국 관계자및컨퍼런스연사자등20명내외",
+        "동 행사 국제회의 참가자 외 국내외 유관기관 종사자 및 KERIS 관계자 등 50명 내외"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "아세안교육부관계자, 아세안대학연합, 아세안사무국 관계자및컨퍼런스연사자등20명내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "국내외 우수 이러닝 콘텐츠 다국어 서비스를 통한 아세안 권역 內 이러닝 활용을 확산"
+      ]
+    },
+    "geography": {
+      "value": "글로벌_한국인바운드",
+      "confidence": 0.9,
+      "evidence": [
+        "해외 참가자의 불참 상황을 대비한 차선책 준비",
+        "인천공항 서울호텔간주요교통편안내"
+      ]
+    },
+    "channel": {
+      "value": "B2G",
+      "confidence": 0.9,
+      "evidence": [
+        "아세안교육부관계자",
+        "KERIS 관계자"
+      ]
+    },
+    "clientTier": {
+      "value": "공공기관",
+      "confidence": 0.9,
+      "evidence": [
+        "KERIS 관계자 등 50명 내외"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": null,
+        "participants": 70,
+        "durationMonths": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "관계자및컨퍼런스연사자등20명내외",
+        "KERIS 관계자 등 50명 내외",
+        "2025년 9월 17일 (수) - 19일 (금), 2박 3일"
+      ]
+    },
+    "methodologySignals": {
+      "value": [],
+      "confidence": 0,
+      "evidence": []
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "하이브리드",
+        "onlineRatio": null,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "온라인으로의 행사 확장을 통한 참가자 유입 도모 온라인 생중계 운영방안",
+        "해외 참가자의 불참 상황을 대비한 차선책 준비 화상회의 시스템 운영 방안"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 3,
+        "rhythm": "기타",
+        "campDays": 3
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "2025년 9월 17일 (수) - 19일 (금), 2박 3일"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "등록 12:00-14:00",
+        "리셉션 18:00-20:00",
+        "Farewell Reception 18:30-20:30"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "cohortStructure": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "초반"
+        },
+        {
+          "type": "기타",
+          "timing": "중반"
+        },
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "1일차 국제회의",
+        "2일차 국제컨퍼런스",
+        "3일차 외부 프로그램 제안"
+      ]
+    },
+    "selectionFunnel": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "결과보고서 - 수행업무에 대한 진행사항과 현장 운영사항 작성 후 전달",
+        "사후 속기록 - 전문 수록을 기반으로 한 사후 속기록 정리 제공",
+        "영상 및 사진 - 행사진행, 기록관리를 위한 사진, 영상 전문인력 배치"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "amounts": []
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "에이전시를통한실시간항공스케쥴및합리적가격의티켓확보",
+        "숙박 운영 프로세스 및 장소 제안",
+        "취객선비 3인방 변색 잔세트",
+        "고요한 아침의 나라 전통차 티백 세트"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "외부전문가",
+          "연사",
+          "기타"
+        ],
+        "headcount": 32,
+        "dedicatedPm": true
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "대행사 운영인력 포함 32명 전문 운영인력 투입",
+        "기획 총괄 PM 백인천 본부장",
+        "운영 총괄 PM 이광민 실장"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "서울 시내 호텔 (미정)",
+        "3일차 외부 프로그램 제안 국립중앙박물관"
+      ]
+    },
+    "assessment": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "감사 서한 발송",
+        "영상 및 사진 자료 전달",
+        "사후 산출내역서 작성 및 최종 보고"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "기타"
+      ],
+      "contentTypes": [
+        "사례·경험",
+        "트렌드·인사이트",
+        "기타"
+      ],
+      "difficultyArc": "단일"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "Featured Presentation",
+      "Topic Presentation",
+      "Discussion & Wrap-up",
+      "AACA Meeting (Open Discussion)",
+      "ACU Project 홍보 및 성과 공유를 위한 컨퍼런스 추진"
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "1일차 국제회의 (AACA Meeting)",
+        "hours": 8,
+        "format": "회의 및 리셉션",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 2,
+        "title": "2일차 국제컨퍼런스 (ACU Conference)",
+        "hours": 8.5,
+        "format": "컨퍼런스 및 리셉션",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      },
+      {
+        "no": 3,
+        "title": "3일차 외부 프로그램 (산업시찰)",
+        "hours": null,
+        "format": "산업시찰",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1일차 국제회의",
+      "2일차 컨퍼런스",
+      "3일차 외부 프로그램 제안"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025년 ACU 프로젝트 국제회의 및 컨퍼런스 운영"
+    ]
+  },
+  "kpiTargets": {
+    "value": [],
+    "confidence": 0,
+    "evidence": []
+  },
+  "docId": "cmpsnbccn00188gvcp5b6579g",
+  "projectId": "D.25.0048",
+  "projectName": "2025 ACU 프로젝트 국제회의 및 컨퍼런스 운영",
+  "intensity": {
+    "totalEducationHours": null,
+    "totalWeeks": null,
+    "basis": null
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 31930,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:59:04.553Z"
+  }
+}

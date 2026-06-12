@@ -1,0 +1,392 @@
+{
+  "profileSnapshot": {
+    "targetStage": {
+      "value": "예비창업_아이디어무",
+      "confidence": 0.8,
+      "evidence": [
+        "쇼핑몰 창업에 관심 있는 재학생 20명 내외"
+      ]
+    },
+    "demographic": {
+      "value": [
+        "대학생"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "쇼핑몰 창업에 관심 있는 재학생 20명 내외"
+      ]
+    },
+    "businessDomain": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "쇼핑몰 창업에 관심 있는 재학생",
+        "라이브커머스 캠프"
+      ]
+    },
+    "geography": {
+      "value": "일반",
+      "confidence": 0.8,
+      "evidence": [
+        "2025 마산대학교 라이브커머스 캠프"
+      ]
+    },
+    "channel": {
+      "value": "B2B",
+      "confidence": 0.7,
+      "evidence": [
+        "2025 마산대학교 라이브커머스 캠프"
+      ]
+    },
+    "clientTier": {
+      "value": "대학",
+      "confidence": 0.9,
+      "evidence": [
+        "2025 마산대학교 라이브커머스 캠프"
+      ]
+    },
+    "scale": {
+      "value": {
+        "budgetKrw": 10000000,
+        "participants": 20,
+        "durationMonths": null
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "프로그램 예산 : 총 10,000,000원 내외(VAT 포함)",
+        "프로그램 대상 : 쇼핑몰 창업에 관심 있는 재학생 20명 내외"
+      ]
+    },
+    "methodologySignals": {
+      "value": [
+        "DOGS"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "DOGS(창업가 성향 검사) 워크샵을 활용해 팀빌딩을 하고"
+      ]
+    }
+  },
+  "operatingFormat": {
+    "preLearning": {
+      "value": {
+        "types": [
+          "없음"
+        ],
+        "diagnostics": [],
+        "hours": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1일차 프로그램 일정표",
+        "10:00 11:30 90 행사장 이동",
+        "11:30 12:00 30 프로그램 소개 및 팀빌딩 OT"
+      ]
+    },
+    "deliveryMode": {
+      "value": {
+        "mode": "오프라인",
+        "onlineRatio": 0,
+        "syncType": "실시간"
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "교육 형태 : 팀 프로젝트 중심의 오프라인 실습형 캠프"
+      ]
+    },
+    "cadence": {
+      "value": {
+        "totalSessions": 2,
+        "rhythm": "집중캠프",
+        "campDays": 2
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "1박 2일 동안 팀 단위로 기획, 콘텐츠 제작, 라이브커머스 실행까지 전 과정을 실습하는 몰입형 교육",
+        "프로그램 일정 : 2025년 6월 23일(월)부터 ~ 24일(화)까지 2일간"
+      ]
+    },
+    "sessionLength": {
+      "value": {
+        "hoursPerSession": null,
+        "timeOfDay": "종일"
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "1일차 프로그램 일정표",
+        "10:00 11:30 90 행사장 이동",
+        "21:00 21:20 20 Q&A 및 2일차 프로그램 안내"
+      ]
+    },
+    "theoryPracticeRatio": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "coaching": {
+      "value": {
+        "types": [
+          "팀전담",
+          "기타"
+        ],
+        "totalRounds": null,
+        "hoursPerRound": null,
+        "coachToTeamRatio": null,
+        "pairing": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "언더독스 코치진이 팀별 기획 및 촬영 실습을 밀착 코칭하고",
+        "참가자 멘토링 및 실습 지원"
+      ]
+    },
+    "cohortStructure": {
+      "value": {
+        "isCohort": true,
+        "teamBased": true,
+        "teamSize": null,
+        "tracks": null,
+        "peerDevices": [
+          "네트워킹"
+        ]
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀 프로젝트 중심의 오프라인 실습형 캠프",
+        "DOGS(창업가 성향 검사) 워크샵을 활용해 팀빌딩을 하고"
+      ]
+    },
+    "milestoneEvents": {
+      "value": [
+        {
+          "type": "기타",
+          "timing": "종반"
+        }
+      ],
+      "confidence": 0.8,
+      "evidence": [
+        "우수 성과자 시상",
+        "수료 및 우수팀 시상"
+      ]
+    },
+    "selectionFunnel": {
+      "value": {
+        "stages": null,
+        "methods": [],
+        "competitionRatio": null,
+        "midDropGate": false
+      },
+      "confidence": 0.5,
+      "evidence": [
+        "프로그램 대상 : 쇼핑몰 창업에 관심 있는 재학생 20명 내외"
+      ]
+    },
+    "actionWeek": {
+      "value": null,
+      "confidence": 0,
+      "evidence": []
+    },
+    "deliverables": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "성과 목표 및 결과물 : 5명 이상 사업자 등록, 실습 콘텐츠 영상, 결과보고서"
+      ]
+    },
+    "incentives": {
+      "value": {
+        "types": [
+          "사업화지원금",
+          "상금",
+          "기타"
+        ],
+        "amounts": [
+          {
+            "label": "사업자 등록 관련 비용 지원(면허세 등)",
+            "amountKrw": 500000
+          }
+        ]
+      },
+      "confidence": 0.9,
+      "evidence": [
+        "사업자 등록 관련 비용 지원(면허세 등) 100,000 5 1 100% 500,000",
+        "시상은 소정의 상품 또는 상장 형태로 진행"
+      ]
+    },
+    "faculty": {
+      "value": {
+        "types": [
+          "전담코치",
+          "외부전문가"
+        ],
+        "headcount": 2,
+        "dedicatedPm": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "교육 코치 1) 민준호 코치 2) 이혜미 코치"
+      ]
+    },
+    "venue": {
+      "value": [
+        "기타"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        "교육 장소 : 미정"
+      ]
+    },
+    "assessment": {
+      "value": {
+        "completionCriteria": [
+          "발표",
+          "기타"
+        ],
+        "attendanceThreshold": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "팀별 발표 및 라이브커머스 실습 결과를 바탕으로 우수팀을 선정하여 시상하며"
+      ]
+    },
+    "aftercare": {
+      "value": {
+        "types": [
+          "온라인코칭",
+          "기타"
+        ],
+        "duration": null
+      },
+      "confidence": 0.8,
+      "evidence": [
+        "후속관리 온라인 창업교육 제공"
+      ]
+    }
+  },
+  "contentMix": {
+    "value": {
+      "deliveryFormats": [
+        "강연",
+        "워크숍·실습",
+        "기타"
+      ],
+      "contentTypes": [
+        "이론·개념",
+        "실무·도구",
+        "사례·경험"
+      ],
+      "difficultyArc": "상승"
+    },
+    "confidence": 0.8,
+    "evidence": [
+      "강의-실습-실행의 흐름으로 구성된 프로그램을 통해 학습 효과를 극대화함."
+    ]
+  },
+  "sessions": {
+    "value": [
+      {
+        "no": 1,
+        "title": "프로그램 소개 및 팀빌딩 OT",
+        "hours": 0.5,
+        "format": "워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 2,
+        "title": "라이브커머스 이해 강의+워크숍",
+        "hours": 1.5,
+        "format": "강의/워크숍",
+        "isTheory": true,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 3,
+        "title": "라이브커머스 기획(1) 강의+워크숍",
+        "hours": 2.5,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 4,
+        "title": "라이브 커머스 기획(2) 강의+워크숍",
+        "hours": 2,
+        "format": "강의/워크숍",
+        "isTheory": false,
+        "isCoaching": false,
+        "isEvent": false
+      },
+      {
+        "no": 5,
+        "title": "라이브커머스 방송 및 시상식 실습 및 피드백",
+        "hours": 2,
+        "format": "실습/피드백",
+        "isTheory": false,
+        "isCoaching": true,
+        "isEvent": true
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "1일차 프로그램 일정표",
+      "2일차 프로그램 일정표"
+    ]
+  },
+  "validity": {
+    "value": {
+      "status": "상시유효",
+      "reason": null
+    },
+    "confidence": 0.9,
+    "evidence": [
+      "2025 마산대학교 라이브커머스 캠프"
+    ]
+  },
+  "kpiTargets": {
+    "value": [
+      {
+        "metric": "사업자 등록",
+        "targetValue": 5,
+        "unit": "명",
+        "raw": "5명 이상 사업자 등록"
+      },
+      {
+        "metric": "참가 인원",
+        "targetValue": 20,
+        "unit": "명",
+        "raw": "재학생 20명 내외"
+      }
+    ],
+    "confidence": 0.9,
+    "evidence": [
+      "성과 목표 및 결과물 : 5명 이상 사업자 등록",
+      "프로그램 대상 : 쇼핑몰 창업에 관심 있는 재학생 20명 내외"
+    ]
+  },
+  "docId": "cmpsnbnb5001c8gvckvt5dvtu",
+  "projectId": "F.25.0016",
+  "projectName": "라이브커머스 해커톤",
+  "intensity": {
+    "totalEducationHours": 8.5,
+    "totalWeeks": null,
+    "basis": "hours: sessions[5] hours 합산"
+  },
+  "extractionMeta": {
+    "model": "gemini-3.5-flash",
+    "charCount": 5018,
+    "parseBy": "pdf-parse",
+    "lowText": false,
+    "unsupported": false,
+    "truncated": false,
+    "fallback": false,
+    "extractedAt": "2026-06-12T08:59:47.769Z"
+  }
+}
