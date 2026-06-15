@@ -1,0 +1,361 @@
+{
+  "version": "0.1-draft",
+  "source": "docs/UD-Brain-CurriculumDesignLogic-v1.2.html (2026-06-12) + data/program-design/_aggregate.json (n=147)",
+  "generatedAt": "2026-06-15",
+  "note": "메인 세션이 v1.2 에서 큐레이션한 DesignRule 시드. 모든 규칙은 status=draft → /admin/design-rules 에서 사람이 승인해야 BR-3 생성기가 소비. isDefault 항상 true (제0원칙). 스키마 = ADR-028 추록 3 동결.",
+  "rules": [
+    {
+      "id": "Z-zeroth-principle",
+      "ruleType": "Z_meta",
+      "title": "제0원칙 — 모든 규칙은 기본값, 클라이언트 목표가 이긴다",
+      "condition": { "dimension": "always" },
+      "recommend": {
+        "kind": "value",
+        "target": "_meta.objectiveFunction",
+        "value": "클라이언트 목표 달성도 ÷ 투입 인풋 (참여자 시간·운영 인력·예산). 인풋을 줄이고 임팩트를 키우는 선택만 살아남는다."
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "임팩트창업방법론·코칭은 수단이지 목적이 아니다. 아래 모든 문법은 default 이며 클라이언트 목표(D0)와 충돌하면 무시되고 사람에게 표시된다.",
+      "evidence": { "source": "v1.2:§00", "stat": "제0원칙" },
+      "confidence": 1.0,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "Z-precedent-intent-priority",
+      "ruleType": "Z_meta",
+      "title": "선례·담당자 운영 의도가 토대 — 브레인은 빈칸을 채운다",
+      "condition": { "dimension": "always" },
+      "recommend": {
+        "kind": "value",
+        "target": "_resolutionPriority",
+        "value": "① 담당자 운영 의도 + 이전 진행(선례) → ② 클라이언트 목표(D0)·RFP 명시 → ③ DesignRule 기본값. 위가 정한 것을 아래가 덮지 않는다."
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "암묵지(담당자가 원하는 운영 방식 + 작년엔 어떻게 했는지)를 먼저 캐치하고 그 기반 위에 브레인이 근거와 함께 빈칸을 채운다. 선례 출처: 결과보고서·과거 제안서 자동 검색 + 담당자 공급. 캐치 로직은 BR-3 인테이크.",
+      "evidence": { "source": "user:2026-06-15", "stat": "사용자 핵심 요구 — 암묵지 토대 위에 생성" },
+      "confidence": 1.0,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "A-d1-operating-type-discriminator",
+      "ruleType": "A_operatingType",
+      "title": "D1 운영 유형 선택 — 회차표보다 먼저 (T1~T5)",
+      "condition": { "dimension": "always" },
+      "recommend": {
+        "kind": "discriminator",
+        "target": "operatingType",
+        "value": {
+          "decisionTree": [
+            { "ask": "교육이 본체인가, 행사가 본체인가?", "if": "행사 본체 (경진대회·박람회·공모전 운영 대행, 교육 회차 매우 적음)", "then": "T5", "note": "회차표 강요 금지" },
+            { "ask": "팀(코호트)인가, 개별 사업체 단위인가?", "if": "개별 사업체 (소상공인·재창업·후속 보육, 정기 모임 부적합)", "then": "T4", "note": "주차별 회차표 없는 게 정답" },
+            { "ask": "기간이 압축(2~3개월)인가, 동행(7개월+)인가?", "if": "양봉 — 중간(4~6개월)은 골짜기", "then": "압축→T1/T2, 동행→T3" },
+            { "ask": "대상이 시간을 통으로 낼 수 있는가?", "if": "가능 (청년·청소년)", "then": "T2 몰입캠프", "else": "T1 정규강좌 / T3 장기여정" }
+          ]
+        }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "운영 유형이 회차표·코칭·팀구조·예산 배분을 함께 결정하는 첫 분기. RFP 신호가 명백하면 자동 선택+통보, 모호할 때만 사람에게 게이트로 표면화 (턴 기반).",
+      "evidence": { "source": "v1.2:§04+§03-1", "n": 116, "stat": "운영유형 5개로 수렴 · 캠프는 청년·청소년 전용(소상공인·임직원 0건) · 회차 분포 양봉(1~3 vs 9~15)" },
+      "confidence": 0.8,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "B-T1-regular-course-profile",
+      "ruleType": "B_typeProfile",
+      "title": "T1 정규 강좌형 기본 프로파일",
+      "condition": { "dimension": "operatingType", "match": "T1" },
+      "recommend": {
+        "kind": "profile",
+        "target": "operatingFormat",
+        "value": { "durationMonths": 2, "participants": 25, "sessions": 8, "hoursPerSession": 3.2, "coachingRounds": 5, "teamCohort": 0.91, "budgetKrwApprox": "0.2억" }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "저예산·교육 중심·매주 만나 실행 습관을 만드는 압축 과정. RFP 명시값(인원·기간)이 있으면 그것이 우선.",
+      "evidence": { "source": "v1.2:§04", "n": 23, "stat": "중앙값 프로파일" },
+      "confidence": 0.7,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "B-T2-immersion-camp-profile",
+      "ruleType": "B_typeProfile",
+      "title": "T2 몰입 캠프형 기본 프로파일",
+      "condition": { "dimension": "operatingType", "match": "T2" },
+      "recommend": {
+        "kind": "profile",
+        "target": "operatingFormat",
+        "value": { "durationMonths": 3, "participants": 30, "sessions": 7.5, "hoursPerSession": 8, "format": "종일·합숙", "coachingRounds": 2, "teamCohort": 0.91, "budgetKrwApprox": "0.4억", "audienceLimit": "청년·청소년 (시간 통으로 가능)" }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "단기 몰입으로 결과물까지. 시간을 통으로 낼 수 있는 대상 전용 — 소상공인·임직원에는 부적합.",
+      "evidence": { "source": "v1.2:§04+§03-1", "n": 22, "stat": "캠프 청년·청소년 14+2건, 소상공인·임직원 0건" },
+      "confidence": 0.75,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "B-T3-long-journey-profile",
+      "ruleType": "B_typeProfile",
+      "title": "T3 장기 여정형 기본 프로파일 (지향 모델과 가장 닮음)",
+      "condition": { "dimension": "operatingType", "match": "T3" },
+      "recommend": {
+        "kind": "profile",
+        "target": "operatingFormat",
+        "value": { "durationMonths": 5, "participants": 20, "sessions": 10, "hoursPerSession": 3, "coachingRounds": 4, "teamCohort": 0.90, "budgetKrwApprox": "1.3억", "structure": "킥오프 + 퀘스트 정기 + 발표 행사 조합" }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "고예산 대형 사업. 킥오프·퀘스트·발표를 단계별로 섞는 여정 — 지향 운영 모델의 실측 전형.",
+      "evidence": { "source": "v1.2:§04+§07(GS리테일·창업씨앗공방)", "n": 20, "stat": "중앙값 프로파일" },
+      "confidence": 0.75,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "B-T4-individual-intensive-profile",
+      "ruleType": "B_typeProfile",
+      "title": "T4 개별 밀착형 기본 프로파일 — 정기 회차표 없음",
+      "condition": { "dimension": "operatingType", "match": "T4" },
+      "recommend": {
+        "kind": "profile",
+        "target": "operatingFormat",
+        "value": { "durationMonths": 8.5, "participants": 28, "sessions": "개별 일정 (정기 회차표 미생성)", "coachingRounds": 6, "teamCohort": 0.23, "structure": "현장 진단 + 공통 접점 2회 + 개별 컨설팅 + AI코치 상시", "audience": "소상공인·재창업·후속 보육" }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "팀이 아니라 개별 사업체 단위. 코호트러닝 문법이 적용되지 않음 — 주차별 회차표를 만들면 인풋 낭비. 시나리오 B 형태.",
+      "evidence": { "source": "v1.2:§04+§09-B", "n": 24, "stat": "팀 코호트 0.23 · 코호트 약함 기각" },
+      "confidence": 0.6,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "B-T5-event-running-profile",
+      "ruleType": "B_typeProfile",
+      "title": "T5 행사 운영형 기본 프로파일 — 교육 회차 최소",
+      "condition": { "dimension": "operatingType", "match": "T5" },
+      "recommend": {
+        "kind": "profile",
+        "target": "operatingFormat",
+        "value": { "durationMonths": 5, "participants": "52명+", "sessions": 2, "coachingRounds": 1, "teamCohort": 0.57, "structure": "행사 설계가 본체 (경진대회·박람회·공모전 운영 대행)" }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "본체가 커리큘럼이 아니라 행사 설계. 회차표를 강요하면 현실과 어긋남.",
+      "evidence": { "source": "v1.2:§04", "n": 18, "stat": "교육 회차 중앙 2" },
+      "confidence": 0.6,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "C-flow-mindset-front",
+      "ruleType": "C_flowGrammar",
+      "title": "마인드셋·이론 → 전반 배치",
+      "condition": { "dimension": "operatingType", "match": ["T1", "T2", "T3"] },
+      "recommend": { "kind": "placement", "target": "마인드셋·이론", "value": { "relativePosition": 0.41, "rule": "전반(<0.34)에 40% · 1회차 이론 62%" } },
+      "decisionPolicy": "auto",
+      "rationale": "관점·동기부여는 앞에 — 킥오프를 길게 잡는 지향 모델과 정합.",
+      "evidence": { "source": "v1.2:§05", "n": 77, "stat": "상대위치 중앙 0.41" },
+      "confidence": 0.85,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "C-flow-coaching-back",
+      "ruleType": "C_flowGrammar",
+      "title": "코칭 → 후반 배치 (실행이 시작된 뒤)",
+      "condition": { "dimension": "operatingType", "match": ["T1", "T2", "T3"] },
+      "recommend": { "kind": "placement", "target": "코칭", "value": { "relativePosition": 0.70, "rule": "후반(>0.66)에 56% — 몰입이 흔들리는 구간을 받친다" } },
+      "decisionPolicy": "auto",
+      "rationale": "코칭은 산출물이 아니라 몰입 유지 장치. 실행이 시작된 뒤 배치 (기존 R-004 의 정량 근거).",
+      "evidence": { "source": "v1.2:§05", "n": 77, "stat": "상대위치 중앙 0.70" },
+      "confidence": 0.85,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "C-flow-showcase-end",
+      "ruleType": "C_flowGrammar",
+      "title": "발표·행사 → 종반 / 중간발표 50% / 최종발표 마지막 (결정론)",
+      "condition": { "dimension": "always" },
+      "recommend": { "kind": "placement", "target": "발표·행사", "value": { "showcaseRelativePosition": 0.89, "midPresentation": "50% 지점 (중반 27/28)", "finalPresentation": "마지막 회차 (종반 33/34)", "networking": "자유 — 결속용이면 킥오프, 확장용이면 끝" } },
+      "decisionPolicy": "auto",
+      "rationale": "공유·심사는 끝으로 수렴. 중간/최종 발표 위치는 사실상 예외 없음.",
+      "evidence": { "source": "v1.2:§05", "n": 77, "stat": "발표 0.89 · 중간 중반 27/28 · 최종 종반 33/34" },
+      "confidence": 0.9,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "D-session-cap-10",
+      "ruleType": "D_budgetStructure",
+      "title": "교육 회차 상한 = 10회 기본값 (예산이 늘어도 회차 아님)",
+      "condition": { "dimension": "budgetBand", "match": ">=0.5억" },
+      "recommend": { "kind": "value", "target": "cadence.totalSessions", "value": { "softCap": 10, "rule": "0.5억 이상에서 회차 10 포화 (0.5~1.5억=10 → 4억+도 10)" } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "참여자 시간(인풋)에 상한이 있다. 돈이 늘면 모임을 늘리는 게 아니라 밀착도를 늘린다. 목표가 정당화하면 초과 가능.",
+      "evidence": { "source": "v1.2:§02④+§03-2", "n": 59, "stat": "회차 10 포화 · 예산 커져도 회차 증가 제안은 코퍼스에 없음" },
+      "confidence": 0.75,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "D-coaching-ratio-0.6",
+      "ruleType": "D_budgetStructure",
+      "title": "코칭 기본 강도 = 교육 회차 × 0.6",
+      "condition": { "dimension": "always" },
+      "recommend": { "kind": "value", "target": "coaching.totalRounds", "value": { "ratioToSessions": 0.6, "rule": "교육 10회면 코칭 ~6회. 단 AI코치 push 가 흡수하는 만큼 줄여도 됨 (인풋↓)" } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "코칭/회차 비 중앙 0.6. 코칭은 몰입 유지 장치이므로 AI코치로 사람 인풋 절약 가능.",
+      "evidence": { "source": "v1.2:§02⑥", "n": 33, "stat": "코칭/회차 비 중앙 0.6" },
+      "confidence": 0.7,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "D-budget-buys-coaching",
+      "ruleType": "D_budgetStructure",
+      "title": "예산은 회차가 아니라 코칭(밀착도)·인원·행사를 산다",
+      "condition": { "dimension": "budgetBand", "match": ">=1.5억" },
+      "recommend": { "kind": "value", "target": "_budgetAllocation", "value": { "rule": "1.5~4억 → 코칭 대폭 증설(실측 23.5회, 개별 보육 결합) · 4억+ → 인원 규모·행사 확장. 회차는 그대로 10." } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "추가 예산은 깊이(코칭)나 폭(인원·행사)을 사는 게 언더독스 패턴.",
+      "evidence": { "source": "v1.2:§03-2", "n": 20, "stat": "1.5~4억 코칭 23.5회 / 4억+ 인원 36명+·행사 2개" },
+      "confidence": 0.7,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "E-immersion-vs-diffusion-gate",
+      "ruleType": "E_immersionSet",
+      "title": "몰입 육성 vs 확산 교육 — 깊이 결정 게이트 (세트로 따라온다)",
+      "condition": { "dimension": "goalType" },
+      "recommend": {
+        "kind": "set",
+        "target": "_immersionMode",
+        "value": {
+          "immersion": { "trigger": "클라이언트 목표가 깊이·전환", "set": { "participants": 24.5, "durationMonths": 6, "teamCohort": 0.93, "coachingRounds": 5, "preLearning": "사전진단(DOGS 등)", "components": "진단 → 팀빌딩 → 밀착 지원이 한 묶음" } },
+          "diffusion": { "trigger": "클라이언트 목표가 확산·다수 도달", "set": { "participants": 40, "durationMonths": 3.5, "teamCohort": 0.54, "coachingRounds": 2, "preLearning": "없음/최소", "note": "T5 행사 운영형과 자주 겹침" } }
+        }
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "'진단 넣을까, 코칭 몇 회'는 따로 묻는 질문이 아니다 — 깊게 갈지부터 정하면 나머지가 세트로 따라온다. 목표가 명백히 깊이/확산이면 자동, 애매할 때만 사람이 결정 (제0원칙).",
+      "evidence": { "source": "v1.2:§06", "stat": "몰입 45건 vs 확산 98건 — 두 군집이 세트로 분리" },
+      "confidence": 0.8,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "F-youth-default",
+      "ruleType": "F_audienceDefault",
+      "title": "청년·대학생 검증된 기본값 (신뢰 높음)",
+      "condition": { "dimension": "demographic", "match": ["청년", "대학생"] },
+      "recommend": { "kind": "value", "target": "_audienceDefault", "value": { "coaching": "1:1 밀착(30건)", "teamCohort": 0.84, "deliveryMode": "온오프 혼합 우세", "operatingTypeSplit": "몰입캠프(14) ↔ 정규강좌(14) 정확히 양분 — 학사 일정이 변수", "topEvent": "경진대회(17)" } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "n=49 신뢰 높음. '매주 만나는 장기형' 단일 가설은 캠프/정규 양분으로 교정됨.",
+      "evidence": { "source": "v1.2:§10", "n": 49, "stat": "1:1 30건 · 팀 0.84 · 캠프14/정규14" },
+      "confidence": 0.8,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "F-smallbiz-default",
+      "ruleType": "F_audienceDefault",
+      "title": "소상공인·상인 검증된 기본값 (방향성)",
+      "condition": { "dimension": "demographic", "match": ["소상공인", "상인"] },
+      "recommend": { "kind": "value", "target": "_audienceDefault", "value": { "operatingType": "T4 개별 밀착형 적합", "coaching": "1:1 컨설팅형(7/9)", "venue": "현장 방문 + 지역 거점", "deliveryMode": "하이브리드(7/9)", "rejected": "'오프라인 중심' 기각 · '코호트 약함' 기각(0.78) · 몰입캠프 0건(생업 이탈 불가) · 코칭 횟수는 오히려 적음(중앙 2) — 횟수보다 개별 밀착의 질" } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "n=9 방향성만. 회차보다 개별 밀착의 질이 핵심.",
+      "evidence": { "source": "v1.2:§10+§09-B", "n": 9, "stat": "1:1 7/9 · 혼합 7/9 · 코호트 0.78 기각" },
+      "confidence": 0.5,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "F-employee-default",
+      "ruleType": "F_audienceDefault",
+      "title": "임직원 검증된 기본값",
+      "condition": { "dimension": "demographic", "match": ["임직원"] },
+      "recommend": { "kind": "value", "target": "_audienceDefault", "value": { "cadence": "짧고 굵게 — 회차 중앙 2.5회", "format": "종일 워크숍", "teamCohort": 0.79, "absent": "캠프·장기여정 0건 (업무시간 제약)", "rejected": "'VOD 사전학습 필수' 기각(2/14 — 사전진단이 더 흔함) · '그룹 코칭 중심'은 1:1과 혼재", "finale": "발표가 아니라 경영진 보고회 형태일 수 있음 (목표가 형식 결정)" } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "n=14. 인풋 최소화가 B2B 수주 조건. 시나리오 C 형태.",
+      "evidence": { "source": "v1.2:§10+§09-C", "n": 14, "stat": "회차 중앙 2.5 · 팀 0.79 · 캠프/여정 0건" },
+      "confidence": 0.65,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "F-teen-default",
+      "ruleType": "F_audienceDefault",
+      "title": "청소년 기본값 (참고)",
+      "condition": { "dimension": "demographic", "match": ["청소년"] },
+      "recommend": { "kind": "value", "target": "_audienceDefault", "value": { "deliveryMode": "오프라인", "operatingType": "캠프형 (방학 캠프 패턴)", "topEvent": "경진대회" } },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "n=6 참고 수준. 가설 방향과 일치.",
+      "evidence": { "source": "v1.2:§10", "n": 6, "stat": "오프라인·캠프·경진대회" },
+      "confidence": 0.4,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "F-senior-restart-datagap",
+      "ruleType": "F_audienceDefault",
+      "title": "시니어·재창업 — 데이터 부족, 규칙 보류 (추측 금지)",
+      "condition": { "dimension": "demographic", "match": ["시니어", "재창업"] },
+      "recommend": { "kind": "value", "target": "_audienceDefault", "value": { "status": "판정 불가 — 표본 부족(시니어 n=2) + 어휘 한계(재창업 식별 0건). 규칙을 만들지 않고 사람에게 위임." } },
+      "decisionPolicy": "ask_human",
+      "rationale": "데이터가 없으므로 기본값을 추측하지 않는다 (추출 원칙과 동일). 어휘 보강 + 운영 실적 데이터 수급 후 재집계.",
+      "evidence": { "source": "v1.2:§10+§11", "n": 2, "stat": "시니어 2건 / 재창업 0건" },
+      "confidence": 0.0,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
+      "id": "G-online-ratio-gate",
+      "ruleType": "G_inputGate",
+      "title": "온/오프 비율 — RFP에 있으면 자동, 없으면 물음",
+      "condition": { "dimension": "operatingType", "match": ["T1", "T2", "T3"] },
+      "recommend": { "kind": "value", "target": "deliveryMode.onlineRatio", "value": { "default": "하이브리드 = 대면 위주(온라인 비율 낮음, 실측 중앙 0%)", "gate": "RFP/담당자가 비율을 정했으면 그대로, 안 정했으면 사람에게 질문" } },
+      "decisionPolicy": "ask_human",
+      "rationale": "하이브리드일 때 온라인 몇 %인지는 RFP에 있는 경우도 없는 경우도 있다. 위(선례·의도·RFP)에서 정해졌으면 자동 해소, 비어 있으면 게이트.",
+      "evidence": { "source": "aggregate@2026-06-12", "stat": "onlineRatio 중앙 0% — 강한 기본값 없음" },
+      "confidence": 0.4,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "G-prelearning-form-gate",
+      "ruleType": "G_inputGate",
+      "title": "사전학습 형태 — LMS VOD / 사전진단 / 사전과제",
+      "condition": { "dimension": "always" },
+      "recommend": { "kind": "value", "target": "preLearning.types", "value": { "options": ["LMS_VOD", "사전진단(DOGS/ACTT/5D)", "사전과제", "없음"], "tieToImmersion": "몰입 모드면 사전진단 결합(과정 평가 선발), 확산이면 LMS VOD 또는 없음", "gate": "목표·선례·의도에서 안 풀리면 사람에게 질문" } },
+      "decisionPolicy": "ask_human",
+      "rationale": "사전학습 형태는 몰입/확산 결정과 묶이고 클라이언트 사정(대상의 디지털 부담 등)에 좌우된다. 상위에서 풀리면 자동, 아니면 게이트.",
+      "evidence": { "source": "v1.2:§01+§10", "stat": "사전진단 46 · 없음 26 · LMS_VOD — 단일 우세 없음, 임직원 VOD필수 기각" },
+      "confidence": 0.45,
+      "isDefault": true,
+      "status": "draft"
+    },
+    {
+      "id": "G-budget-band-gate",
+      "ruleType": "G_inputGate",
+      "title": "예산 미명시 시 예산대 추정",
+      "condition": { "dimension": "budgetBand", "match": "미명시" },
+      "recommend": { "kind": "value", "target": "_budgetBand", "value": { "gate": "RFP에 예산 없으면, 대상·인원·기간으로 예산대를 추정 제시하고 사람이 확정 (예산대가 회차 상한·코칭 증설을 좌우하므로)" } },
+      "decisionPolicy": "ask_human",
+      "rationale": "예산대가 D 규칙(회차 10 상한·코칭 증설)을 발동시키는 입력인데 RFP에 빠진 경우가 많다. 추정값을 제시하되 사람이 확정.",
+      "evidence": { "source": "v1.2:§03-2", "stat": "예산 명시 59/147 — 절반 이상 미명시" },
+      "confidence": 0.4,
+      "isDefault": true,
+      "status": "draft"
+    }
+  ]
+}

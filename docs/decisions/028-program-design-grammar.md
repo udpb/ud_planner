@@ -117,6 +117,59 @@
 ### 추록 2 — 제안서 = 실행 구조로 간주 + 결과보고서 보강 (사용자 결정, 2026-06-12)
 "약속 vs 실현 갭" 학습은 불필요 — **약속은 다 이행한다고 본다** (제안서의 운영 구조 = 실제 운영 구조). 보강 축은 결과보고서: 실행된 구조 + 실측 성과(수료율·만족도·산출)를 담으므로 동일 16축 스키마로 추출하되 `extractionMeta.docType='result-report'` 로 구분하고, kpiTargets 는 "목표"가 아니라 "실적"으로 해석한다. 주요 유형별 결과보고서 중심 증분 학습.
 
+### 추록 3 — DesignRule 스키마 동결 (P4, 사용자 승인 2026-06-15)
+
+P4(DesignRule draft 발행 + 검수 UI)를 착수하며 **규칙 레코드의 키 구조를 동결**한다. 규칙 *내용*(값·enum·신뢰도)은 가변 데이터, *구조*는 본 추록으로 안정 계약.
+
+**큐레이션 정본 = `docs/UD-Brain-CurriculumDesignLogic-v1.2.html`** (2026-06-12). DesignRule 은 raw `_aggregate.json` 에서 규칙을 재유도하지 않는다 — **v1.2 가 이미 데이터를 큐레이션한 설계 로직(제0원칙·D0~D8·운영유형 T1~T5·흐름 문법)을 인코딩**하고, `_aggregate.json` 은 각 규칙의 **근거(evidence)** 로 첨부된다.
+
+**사용자 핵심 원칙 (2026-06-15)**: 규칙은 *강제하는 하드코딩 값이 아니라* 각 사업에 맞게 유연하게 적용되는 **기본값**이다. 모호하거나 선택이 필요한 지점은 **사람에게 위임 → 선택 결정 → 다음 턴 진행**(턴 기반 결정 게이트). 대상은 **제안서가 아니라 프로그램 기획**.
+
+#### 동결 스키마 — `data/program-design/design-rules.json` (JSON-first, ADR-028 Option B 일관)
+```
+DesignRuleSet { version, source, generatedAt, rules: DesignRule[] }
+
+DesignRule {
+  id:        string                  // 예: "A-d1-discriminator"
+  ruleType:  "A_operatingType" | "B_typeProfile" | "C_flowGrammar" | "D_budgetStructure"
+           | "E_immersionSet" | "F_audienceDefault" | "G_inputGate" | "Z_meta"
+  title:     string
+  condition: { dimension: "always"|"operatingType"|"channel"|"targetStage"
+                        |"demographic"|"budgetBand"|"goalType",
+               match?: string | string[] }      // 규칙 발동 조건
+  recommend: { kind: "value"|"range"|"profile"|"placement"|"discriminator"|"set",
+               target: string,                  // 축 경로 또는 결정 대상
+               value: unknown }                 // 단일값/범위/프로파일객체/결정트리/세트
+  decisionPolicy: "auto" | "ask_human" | "auto_unless_conflict"
+  //  auto              = 신뢰 높은 구조 기본값, 조용히 적용 (예: 흐름 문법)
+  //  ask_human         = 항상 사람에게 선택 표시 (턴 기반 게이트, 예: 운영유형·몰입vs확산)
+  //  auto_unless_conflict = 적용하되 RFP/클라이언트 목표와 충돌하면 양보 + 사람에게 표시
+  rationale: string                  // v1.2 로직 한 줄
+  evidence:  { source: string, n?: number, stat?: string }   // 근거(분포/사례)
+  confidence: number                 // 0~1
+  isDefault: true                    // ⭐ 항상 true — 제0원칙: 모든 규칙은 기본값, 목표가 이긴다
+  status:    "draft" | "approved" | "rejected"               // approved 만 생성기가 소비
+  reviewerNote?: string
+}
+```
+
+**불변식**:
+1. `isDefault` 는 **항상 true** — 강제 규칙은 존재하지 않는다 (제0원칙의 스키마 구현).
+2. 생성기(BR-3)는 `status==="approved"` 규칙만 읽는다. `ask_human` 정책 규칙은 자동 채우지 않고 **결정 게이트로 표면화**한다.
+3. 근거 없는 규칙 금지 — `evidence.source` 필수 (v1.2 섹션 또는 aggregate).
+4. 데이터 부족 축(시니어·재창업 등)은 규칙을 **만들지 않거나** `confidence:0 + decisionPolicy:"ask_human"` 으로 "보류" 명시 (추측 채움 금지 — 추출 원칙과 동일).
+5. 키 이름 변경은 본 추록 supersede 필요 (enum 값 추가는 자유).
+
+#### 해소 우선순위 + 자동/물음 원칙 (사용자, 2026-06-15)
+생성기(BR-3)가 각 축을 채우는 순서 — **브레인은 덮어쓰지 않고 빈칸을 근거와 함께 채운다**:
+1. **담당자 운영 의도 + 이전 진행(선례)** — 명시되면 최우선 토대. 선례 출처: 결과보고서·과거 제안서 자동 검색(ⓐ) + 담당자 공급(ⓑ).
+2. **클라이언트 목표(D0) · RFP 명시 제약** — 제0원칙.
+3. **DesignRule 기본값** — 위(1·2)가 비어 있는 빈칸만 채운다.
+
+`decisionPolicy` 는 *기본 성향 표시*일 뿐 — 실제로는 **신호가 명확하면 `auto` 로 해소, 모호할 때만 `ask_human` 으로 멈춘다**(턴 기반, 한 번에 하나·의존 순서). `ask_human` 규칙도 상위(1·2)에서 정해지면 자동 해소된다. `auto` 결정도 1차안에 근거와 함께 **보인다**(멈추지 않을 뿐 숨기지 않음). 암묵지 캐치 로직(인테이크/D0)·게이트 시퀀싱은 **BR-3 책임**.
+
+**검수 워크플로**: 시드는 메인이 v1.2 에서 큐레이션해 `draft` 로 발행 → `/admin/design-rules` 에서 규칙 단위 승인/수정/반려 → JSON 되기록 → `approved` 만 BR-3 소비. 검수 비용을 *제안서마다*가 아니라 *문법에 한 번* 지불 (v1.2 §08 D8).
+
 ## References
 - 관련 ADR: ADR-008 (Value Chain) · ADR-009 (Asset Registry) · ADR-019 (Workstream) · ADR-022 (모델 정책)
 - 관련 문서: [docs/UD-Brain-ProgramDesignGrammar-v0.2.html](../UD-Brain-ProgramDesignGrammar-v0.2.html) (설계안) · 강의 분류 가이드 v5.4 (사용자 공급, `C:\Users\USER\Downloads\lecture_classification_v5_4.html`)
