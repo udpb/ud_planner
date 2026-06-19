@@ -89,65 +89,124 @@ function isPlainObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v)
 }
 
-function formatScalar(v: unknown): string {
-  if (v === null) return 'null'
-  if (typeof v === 'string') return v
-  if (typeof v === 'number' || typeof v === 'boolean') return String(v)
-  return JSON.stringify(v)
+function isScalar(v: unknown): boolean {
+  return v === null || ['string', 'number', 'boolean'].includes(typeof v)
 }
 
-/** recommend.value 를 key: value 행으로 펼친다 (1단계 + 중첩은 JSON pretty). */
+function scalarText(v: unknown): string {
+  return v === null ? 'null' : String(v)
+}
+
+/**
+ * recommend.value 를 재귀적으로 읽기 좋게 렌더.
+ *  - 스칼라 → 텍스트
+ *  - 스칼라 배열 → 칩 나열
+ *  - 객체/혼합 배열(예: decisionTree) → 번호 매긴 블록, 각 항목 재귀
+ *  - 객체 → key/value 행, 값은 재귀 (중첩 깊이에 따라 배경 교차)
+ * JSON.stringify 덤프 제거 — 깊은 중첩도 사람이 읽도록.
+ */
+function ValueNode({ value, depth = 0 }: { value: unknown; depth?: number }) {
+  if (isScalar(value)) {
+    return (
+      <span
+        style={{
+          color: value === null ? 'var(--muted)' : 'var(--soft-ink)',
+          fontSize: 12,
+          lineHeight: 1.6,
+          wordBreak: 'keep-all',
+        }}
+      >
+        {scalarText(value)}
+      </span>
+    )
+  }
+
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return <span style={{ color: 'var(--muted)', fontSize: 12 }}>—</span>
+    }
+    if (value.every(isScalar)) {
+      return (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {value.map((v, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: 11,
+                color: 'var(--soft-ink)',
+                background: 'var(--neutral-60)',
+                padding: '2px 6px',
+                wordBreak: 'keep-all',
+              }}
+            >
+              {scalarText(v)}
+            </span>
+          ))}
+        </div>
+      )
+    }
+    return (
+      <div style={{ display: 'grid', gap: 6 }}>
+        {value.map((v, i) => (
+          <div
+            key={i}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'max-content 1fr',
+              gap: 8,
+              borderLeft: '2px solid var(--accent-40)',
+              paddingLeft: 8,
+              alignItems: 'start',
+            }}
+          >
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--muted)' }}>{i + 1}</span>
+            <ValueNode value={v} depth={depth + 1} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (isPlainObject(value)) {
+    return (
+      <div style={{ display: 'grid', gap: 2 }}>
+        {Object.entries(value).map(([k, v]) => (
+          <div
+            key={k}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'minmax(110px, max-content) 1fr',
+              gap: 8,
+              background: depth % 2 === 0 ? 'var(--neutral-90)' : 'var(--paper)',
+              padding: '4px 8px',
+              alignItems: 'start',
+            }}
+          >
+            <span
+              style={{
+                color: 'var(--muted)',
+                fontSize: 12,
+                fontWeight: 600,
+                wordBreak: 'keep-all',
+              }}
+            >
+              {k}
+            </span>
+            <ValueNode value={v} depth={depth + 1} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  return <span style={{ color: 'var(--soft-ink)', fontSize: 12 }}>{String(value)}</span>
+}
+
 function RecommendValue({ value }: { value: unknown }) {
   if (value === undefined) {
     return <span style={{ color: 'var(--muted)' }}>—</span>
   }
-  if (!isPlainObject(value)) {
-    return <span style={{ color: 'var(--soft-ink)' }}>{formatScalar(value)}</span>
-  }
-  const entries = Object.entries(value)
-  return (
-    <div style={{ display: 'grid', gap: 2 }}>
-      {entries.map(([k, v]) => (
-        <div
-          key={k}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(120px, max-content) 1fr',
-            gap: 8,
-            background: 'var(--neutral-90)',
-            padding: '4px 8px',
-          }}
-        >
-          <span
-            style={{
-              color: 'var(--muted)',
-              fontSize: 12,
-              fontWeight: 600,
-              wordBreak: 'keep-all',
-            }}
-          >
-            {k}
-          </span>
-          <span style={{ color: 'var(--soft-ink)', fontSize: 12, lineHeight: 1.6 }}>
-            {isPlainObject(v) || Array.isArray(v) ? (
-              <pre
-                style={{
-                  margin: 0,
-                  whiteSpace: 'pre-wrap',
-                  fontFamily: 'inherit',
-                  fontSize: 12,
-                }}
-              >
-                {JSON.stringify(v, null, 2)}
-              </pre>
-            ) : (
-              formatScalar(v)
-            )}
-          </span>
-        </div>
-      ))}
-    </div>
-  )
+  return <ValueNode value={value} />
 }
 
 // ─────────────────────────────────────────────────────────────────

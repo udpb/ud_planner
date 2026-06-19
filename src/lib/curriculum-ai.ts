@@ -136,18 +136,6 @@ function parseJsonStrict<T>(raw: string, label: string): T {
   }
 }
 
-/** Claude 응답의 첫 텍스트 블록 추출 (any 회피) */
-function extractClaudeText(content: unknown): string {
-  if (!Array.isArray(content) || content.length === 0) {
-    throw new Error('[curriculum-ai] Claude 응답에 content 블록이 없습니다')
-  }
-  const first = content[0] as { type?: string; text?: string }
-  if (typeof first?.text !== 'string') {
-    throw new Error('[curriculum-ai] Claude 응답 첫 블록에 text 필드가 없습니다')
-  }
-  return first.text.trim()
-}
-
 // ─────────────────────────────────────────
 // 프롬프트 직렬화 블록
 // ─────────────────────────────────────────
