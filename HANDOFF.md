@@ -1,75 +1,67 @@
 # HANDOFF — 세션 핸드오버 (라이브 문서)
 
 > 매 세션 끝 메인이 **전체 덮어쓰기**. 새 세션 읽는 순서: **HANDOFF → [HISTORY](docs/HISTORY.md) → [glossary](docs/glossary.md) → [decisions/README](docs/decisions/README.md) → 활성 브리프**.
-> 최종 정리: 2026-06-01 (덱 출력 구조 전환 아크 — DECK-3까지).
+> 최종 정리: **2026-06-16** (스코프 축소 — 제안서 고도화 → **프로그램 기획 고도화**. DesignRule 브레인 + D0~D8 엔진 가동).
 
 ---
 
-## 📍 현재 상태 (2026-06-01)
+## 🔴 지금 가장 중요한 것 — 방향 전환 (2026-06-16)
 
-- **브랜치:** `feat/alpha-test-prep` (HEAD `141abc9`). auto-push 훅으로 origin 동기. ⚠️ **production은 `master`에서 배포 — 이 브랜치는 master보다 ~61커밋 앞서며 미머지. 즉 엔진·덱 작업 전부 아직 production(ud-planner) 미반영(정상 — 배선·검증 후 머지 예정).**
-- **무엇을 만들었나 (직전 아크 = 덱 출력 구조 전환):** 사용자 피드백 "PPTX가 당선 덱의 20-30%" → 구조적 천장 진단(8패턴 추상 어휘·손코딩 OOXML 기질·산문→슬라이드 슬라이싱) → **ADR-025 덱-우선 HTML 렌더 기질 전환**. DECK-1(HTML→고해상 PDF 렌더) · DECK-2(당선 밀도·디테일 컴포넌트 11종 + proof) · DECK-3(**JSON DeckSpec↔렌더 계약** + 덱-우선 저작 파이프라인). **모두 메인 육안+측정 검증 통과.**
-- **그 이전 아크 = 생성 엔진:** 운영 인프라 → 과업 레이어 → 검색 계약 → 단일 생성 엔진 → 검증 레이어 → Gemini 단일화 → 도식 PPTX(OOXML, ADR-024 → 025에서 보조 강등).
-- **일하는 방식:** 위임+검증+투명보고 (ADR-020). 메인=구조/문서, 기능 코드=자급자족 브리프 위임.
+**스코프 축소 (사용자 결정):** 제안서 전체 고도화 → **"좋은 프로그램 기획"에만 집중.**
+- **북극성:** 대상이 바뀌면 프로그램 설계(사전학습·온/오프·회차·코칭·코호트·발표)가 어떻게 바뀌는가를 데이터+규칙으로 만들어, 브레인이 **구체적·탄탄한 1차 설계**를 내고 사람이 검수한다.
+- **정본 = `docs/UD-Brain-CurriculumDesignLogic-v1.2.html`** — 제0원칙 + D0~D8 + 운영유형 T1~T5 + 흐름문법 + §09 출력형태. (사용자가 큐레이션한 설계 로직)
+- **사용자 핵심 원칙:** 규칙은 **강제값이 아니라 유연한 기본값**. 모호한 선택은 **사람에게 위임 → 결정 → 다음 턴**(턴 기반). 대상은 **제안서가 아니라 프로그램 기획.**
+- **자연스러운 흐름 4단계 (합의):** ①토대잡기(목표 미리채움 + **선례·담당자 의도** 캐치) → ②큰 갈림길만(명백하면 자동, 모호하면 멈춤) → ③자동조립+근거 → ④1차안(§09 결정로그+구조)+검수. = 기존 Express 패러다임과 동형(Express=그릇, 브레인=내용물).
+- **해소 우선순위(암묵지 토대):** ① 담당자 의도+이전 진행(선례) → ② 목표·RFP → ③ DesignRule 기본값. 브레인은 덮어쓰지 않고 빈칸을 근거와 함께 채운다.
 
-## ✅ 완료·작동 (검증됨)
+## 📍 현재 상태 (브랜치·배포)
+- **브랜치:** `feat/alpha-test-prep`. auto-push 훅으로 origin 동기.
+- ⚠️ **production(ud-planner.vercel.app)은 `master`에서 배포** — 이 브랜치 미머지. **그래서 `/admin/design-rules` 등 신규 화면은 production 404. 로컬 dev(`localhost:3000`)에서만 보임.** 머지·배포는 엔진·UI 검증 끝낸 뒤.
+- **일하는 방식:** 위임+검증+투명보고(ADR-020). 메인=구조/문서/기획·규칙 큐레이션, 기능 코드=자급자족 브리프로 서브 위임.
+
+## ✅ 완료·작동 (이번 아크 — 검증됨)
 | 영역 | 상태 |
 |---|---|
-| 운영 인프라 (ADR-020) | playbook·glossary·HANDOFF·HISTORY·brief 시스템. stale 8건 archive. |
-| 과업 레이어 (ADR-019) | Prisma 8모델(42→50) + migration **DB 적용 완료** + workstream types/adapter. |
-| 단일 검색 계약 (RET-1) | `src/lib/retrieval/` — Contextual·hybrid·RRF·Flash rerank·recall eval. |
-| **단일 생성 엔진 (EX-1, ADR-021)** | `src/lib/express/engine/` — gather→assemble(과업 투영)→win-theme→compliance→verify→self-score→정제. `POST /api/projects/[id]/assemble`. **E2E 7섹션 1차본 생성.** |
-| 검증 레이어 (EX-2) | proof 강제 win-theme·compliance matrix·결정론 faithfulness gate. |
-| 정직한 측정 (EVAL-1) | judge가 win-theme/compliance/인용 입력으로 봄·다중샘플 n=3·**단조 refine(역행 0)**. |
-| Gemini 단일화 (ADR-023) | `@google/genai 2.7.0`, Claude 제거, intra-Gemini 폴백. SDK 마이그레이션 완료. |
-| 모델 2-tier (ADR-022) | **하이브리드** — 기본 3.5 Flash, **Pro 3키**(`engine.section.core`·`engine.self-score`·`engine.wintheme`). 폴백 3.1Pro→2.5Pro→3.5Flash. |
-| 품질 sharpening (QUAL-1·2) | evidence/differentiation grounding·ghosting·named 컨셉 + §3 주차 커리큘럼표·전체 타임라인·실행계획 + **slideSpecs→도식 PPTX(22슬라이드)**. |
-| **덱 HTML 렌더 기질 (DECK-1, ADR-025)** | `src/lib/deck/render-html.ts` — React 슬라이드→`renderToStaticMarkup`→headless chromium(playwright) **고해상 PDF**(16:9, 한글 폰트 임베드). 표지·KPI 슬라이드 당선덱급. |
-| **당선 밀도 컴포넌트 (DECK-2)** | `src/components/express/slides/rich/*` 11종(코치 약력+정량배지·24주 주차×단계 매트릭스·KPI+산출논리·전략 캔버스·근거 밴드 등). 본문 평균 **12.9 블록·dead-space 1.5%**(당선 평균 12.5). |
-| **스펙↔렌더 계약 + 저작 (DECK-3)** | `src/lib/deck/{spec.ts,render-spec.tsx}` — **JSON DeckSpec → 렌더가 DECK-2와 픽셀 동등**. `author.ts` 덱-우선 저작(architectStoryline→authorSlide→authorDeck, invokeAi 단일). ⚠️ author는 **env-gated**(LLM/DB 필요 — 실행 검증 미완). |
+| **브레인 추출 (BR-1, ADR-028)** | WinningProposalDoc 147건 → 운영 16축 JSON(`data/program-design/extracted/`) + `_aggregate.json` + P3 가설판정. |
+| **DesignRule 스키마 (ADR-028 추록 3)** | JSON-first `data/program-design/design-rules.json`. `decisionPolicy`(auto/ask_human/auto_unless_conflict)·`isDefault` 항상 true(제0원칙)·ruleType A~G+Z. |
+| **DesignRule 시드 23규칙** | 메인이 v1.2에서 큐레이션. 전부 `status:draft`. ask_human 4건(시니어·재창업·온오프·사전학습·예산대). |
+| **검수 UI (BR-2)** | `/admin/design-rules` — 8그룹 카드(근거·신뢰도·decisionPolicy), 승인/반려/메모 → JSON 되기록. `design-rule.ts`(zod·loadDesignRules·saveRuleStatus). ADMIN/DIRECTOR 가드. |
+| **D0~D8 엔진 (BR-3a)** ⭐ | `src/lib/program-design/{plan-types,resolve-rules,generate-plan}.ts`. 운영유형 T1~T5 **우선분기**, **T4/T5 회차표 미생성**, 수치 하드코딩 0(전부 규칙/입력), 결정마다 근거. approved 0건 graceful. 검증: typecheck·결정론 18/18·**LLM E2E 19/19(실 Gemini Pro — A→T3 sessions / B→T4 individual / C→T5 event)**. |
+| 데드코드 정리 | `budget-rules.ts`·`curriculum/session-count.ts`·`analyze-lost-patterns.ts`·`extractClaudeText` 제거(−724줄). |
+| (기존 인프라, 그대로) | 단일 생성 엔진(EX-1)·검색 계약(RET-1)·Gemini 단일화(ADR-023)·모델 2-tier(ADR-022)·예산 자동편성. |
 
-## 📊 정직한 품질 현황
-- 엔진은 **유능한 멀티 과업 1차본**을 만든다(과업 분리·named 컨셉·주차 커리큘럼·타임라인·리스크 레지스터·도식 PPTX). 샘플: **`docs/samples/sample-draft-B2G-v2.{md,pptx}`** (사용자 검증용).
-- 외부 패널 점수는 **~52~66(보완필요/미흡)에서 plateau** — fixture RFP + 얕은 매칭 코퍼스 기준. self-score(74~78)는 자가 judge가 부풀린 값(외부 패널과 괴리).
-- ⚠️ **합성 튜닝(EX-2·EVAL-1·QUAL-1·2)은 수확 체감 도달.** 최약 렌즈 = **evidence·differentiation**, 이는 **실 자산 grounding(DATA-2)·실 RFP**에 의존 — 생성 튜닝 아닌 **데이터** 문제.
-- ⚠️ 측정 한계: 패널 프롬프트가 섹션을 900자로 잘라 채점 → 주차 표가 잘려 과소평가. (실 §3엔 온전. `_gen-sample.ts` PANEL slice 상향 필요.)
+## 🔲 진행/대기
+- **BR-3b (턴 기반 인테이크 UI)** — 브리프 작성 완료(`.claude/agent-briefs/BR-3b-program-plan-intake-ui.md`), **위임 대기.** 엔진 위에 4단계 흐름 UI + 게이트 응답 되먹임 루프.
+- **UI-2 (컴포넌트 토큰 정리)** — P3 기술부채(시각 변화 0). 백그라운드 진행 중일 수 있음(브리프 `UI-2-component-token-cleanup.md`).
+- **규칙 검수 (사용자)** — 23규칙 승인. **승인할수록 엔진이 게이트 대신 자동으로 원칙 수치를 채움.** 로컬 `/admin/design-rules`.
+- **BR-3a 열린질문:** approved 0일 때 T3 세션 세부수치를 LLM이 제안(게이트 아님) — 미해결 수치축도 게이트화할지 BR-3b에서 결정.
 
-## 🎯 다음 진짜 레버 (우선순위)
-1. **DECK-3b** — `author.ts` 실 LLM 실행 검증(DB/env 필요) + **API 라우트**(`/api/projects/[id]/deck` = authorDeck→renderDeckToPdf) + **앱 UI**(미리보기·PDF 다운로드). **이게 덱을 ud-planner에서 보이게 만드는 단계.** 이후 master 머지 → Vercel 배포.
-2. **DECK-4** — 슬라이드별 비평 루프(디자인+설득 critic, 멀티 에이전트) — 자동 생성물의 밀도·근거·so-what 게이트.
-3. **DATA-2** — pgvector + **실 코퍼스/실 자산 grounding**(`learn-winning-fulltext`+`embed-winning-chunks` 운영화) → 덱 evidence·§7 실적 수치 *진실화*(현재 fixture는 예시). 배선은 됨(gather→retrieve→winning chunks), 데이터 적재·임베딩이 미완. author의 grounding 소스.
-4. **실 RFP + 실 연결 자산으로 검증** (fixture 아님).
-5. **headless 렌더 서버리스 인프라** — Vercel은 chromium 미포함 → `@sparticuz/chromium`+puppeteer-core 또는 별 렌더 워커(Cloud Run). 렌더 시간·콜드스타트·번들 50MB. DECK-3b 전 결정 필요.
-6. async 라우트(생성 장시간 > Vercel 타임아웃) · 레거시 3엔진 제거 · AI-2(트레이싱)·BR-batch · WinningPattern 벡터 재임베딩.
+## ⏸ 동결 (Parked — 삭제 안 함, 재개 시까지 손 안 댐)
+- **덱/PPT 출력 모듈** (ADR-025/026, ADR-027 대기) — `src/lib/deck/**`·`render-worker/`·`src/lib/diagrams/pptx-builder.ts`·`scripts/learn-slide-patterns.ts`·DECK-5. **제안서 출력 레이어라 "프로그램 기획" 범위 밖.** 깨끗한 하류 leaf(express→deck 역의존 0 검증) → 재추가 비용 0. 렌더 기질은 작동하니 자산으로 보존.
+
+## 🟡 스코프 확인 대상 (작동하는 기능 — 죽은 코드 아님, 유지/은퇴 미정)
+- **Brain 개념그래프/inference** — `src/lib/inference/**`(13 추출기) + `/projects/[id]/brain` + `/api/v1/inference/*` + 개념진화 cron + ~10 배치 스크립트. 작동 중. "프로그램 기획" 집중과의 관계는 사용자 확인 필요.
+- **`/admin/interview-ingest`** — 인터뷰 자료 처리 admin 기능(페이지+API+컴포넌트). 작동. 유지 여부 미정.
 
 ## 🔑 모델·인프라 핵심
-- **Gemini 단일** (`@google/genai`). Pro=`gemini-3.1-pro-preview`(품질·RPD **250/일**), Flash=`gemini-3.5-flash`(plumbing·RPD 10K). Tier 2는 ~30일 뒤(빌링). Flash-우세라 평소 Pro 소진 적음.
-- ⚠️ `.env.local` GEMINI_MODEL 핀 **제거됨**(과거 구형 flash 둔갑 버그 해소). 모델은 `ai/config.ts` MODEL_ROUTING(가변)이 제어.
-- DB: 로컬 migration 동기(24개). 운영(Neon)은 `migrate deploy` 시 add_workstream_layer 적용 필요.
+- **Gemini 단일** (`@google/genai`). Pro=`gemini-3.1-pro-preview`(품질), Flash=`gemini-3.5-flash`(plumbing). 라우팅 = `ai/config.ts`. **AI 단일 진입점** `src/lib/ai-fallback.ts invokeAi`(eslint 강제).
+- DB: 로컬 docker `localhost:5432`. ⚠️ **로컬 migration 보류(drift)** — 그래서 DesignRule·ProgramDesignPattern 은 **JSON-first**(Prisma 모델 안 만듦).
+- 키: GEMINI_API_KEY = `.env`. 스크립트가 dotenv 미로드면: `node --env-file=.env` 또는 `npx tsx -e "import 'dotenv/config'; import './scripts/x.ts'"`.
 
-## ⚠️ 함정 / 하지 말 것 (검증된 교훈)
-- **planning-agent 통째 삭제 금지** — `lib/ai/config.ts`·`modules/_types.ts`·`api/agent/*` 라이브 import.
-- **브랜치 일괄 삭제 금지** (건별 `--merged` 확인). **회귀 스크립트 선삭제 금지**(vitest 커버 후).
-- **stale worktree 2개 실재** — `.claude/worktrees/{amazing-khorana,blissful-goodall}-*` (사용자 확인 후 삭제).
-- **서브 에이전트가 측정 run을 자기 백그라운드로 띄우면 결과 미수집** — 측정은 메인이 직접 완주(EVAL-AB·QUAL 교훈).
+## ⚠️ 함정 / 하지 말 것
+- **DesignRule·엔진은 JSON-first** — Prisma 스키마 건드리지 마라(migration 보류).
+- **엔진(BR-3a) 계약 동결** — `PlanInput`/`ProgramPlan` 대로 소비. 엔진 수정은 메인 검수.
+- **수치 하드코딩 금지** — 회차·코칭·AW 전부 규칙/입력에서. 없으면 게이트(추측 금지).
+- **기존 `curriculum-ai.ts`는 보존**(Deep 트랙 back-compat) — BR-3 신규 모듈이 대체. 강제 패턴(L213·L433 등) 복붙 금지.
+- **planning-agent 통째 삭제 금지** — `api/agent/*` 라이브 import.
+- **서브가 측정/LLM E2E를 자기 백그라운드로 띄우면 결과 유실** — LLM/DB 검증은 메인이 직접.
+- Next 16 ≠ 익숙한 Next — `node_modules/next/dist/docs/` 읽고 코딩.
 
-## 🗂 transient (무시 — gitignore)
-- `eval-results-ab-*/`·`*.log`·`docs/samples/snaps*/` (전부 gitignore). `scripts/_gen-sample.ts` = 엔진 샘플 재생성기.
-- **덱 렌더 검증(결정론적·LLM/DB 없음):** `npx tsx scripts/_render-deck.ts`(DECK-2 손코딩 fixture) · `npx tsx scripts/_render-spec.ts`(DECK-3 JSON DeckSpec). → `docs/samples/sample-deck-v3.pdf`·`sample-deckspec-v3.pdf`.
-- `docs/samples/` = **샘플(스펙 아님)**. 스펙은 `docs/UD-Engine-*` + ADR-024/025.
-
-## 보안/위생 follow-up
-- express `turn`·`init` auth = ✅ 닫음(FIX-2). lint baseline 4 에러 = 무관 .tsx(setState-in-effect·children-prop) 잔존.
+## 🗂 핵심 파일·문서
+- 정본: `docs/UD-Brain-CurriculumDesignLogic-v1.2.html`(설계 로직) · `docs/decisions/028-program-design-grammar.md`(추록 3 = DesignRule 계약).
+- 엔진: `src/lib/program-design/{plan-types,resolve-rules,generate-plan,design-rule,operating-format}.ts` · 시드 `data/program-design/design-rules.json`.
+- 검증: `npx tsx scripts/_test-program-plan.ts`(결정론) · `FULL_LLM=true ... `(E2E) · `npx tsx scripts/_check-design-rules.ts`(시드).
+- 활성 브리프: `.claude/agent-briefs/BR-3b-*`(위임 대기) · `UI-2-*`(진행).
 
 ## 🏁 다음 진입 한 줄
-**덱 파이프라인 전체 배선·검증 완료(DECK-1~3b-2).** 실 데이터 E2E 확인됨 — 실 프로젝트(계원예술대 세대융합)→gather 실코퍼스(148docs/2048청크)→authorDeck→8장 당선 덱(이 RFP 특화: 6주·해커톤). 렌더 워커(`render-worker/`)·API 라우트(`/api/projects/[id]/deck`·`/deck/pdf`)·미리보기/다운로드 UI(`DeckPanel`) 전부 작동.
-**✅ 라이브 E2E 완주 (chrome, 2026-06-07)**: ud-planner 로컬에서 프로젝트 "덱 생성"→실 grounding 10장 덱 + 브라우저 미리보기 + **"PDF 다운로드"→`계원예술대학교_세대융합창업_프로그램_운영.pdf`(182KB·10p·16:9) 실제 다운로드 성공.** 전 체인 작동.
-- **핵심 발견·해결**: Next 16 App Router 는 앱 번들에 `react-dom/server` import **하드 차단** → 렌더를 **워커로 이관**(DECK-3b-3): 라우트가 DeckSpec(JSON)→워커 `/render-deck`(esbuild deck-render 번들로 React→HTML→chromium→PDF). `render-worker/{deck-render.bundle.mjs,build-deck-render.mjs}` + server.mjs `/render-deck`.
-- **운영 주의**: 로컬 dev 에서 라우트 수정 후 **stale `.next` 로 404** 날 수 있음 → 해당 라우트 재컴파일/`.next` 삭제로 해소(코드 문제 아님). 워커 로컬 기동: `DECK_ASSETS_DIR=<repo>/public DECK_REPO_ROOT=<repo> PORT=8080 node render-worker/server.mjs`. deck 컴포넌트/React 변경 시 `npm run build:deck-render` 재실행.
-- ③ DECK-4 밀도 비평(✅ 코치 2→4) + ④ gather throttle(✅ 429 버스트 0).
-**나머지**: ① 로컬/배포 클릭 E2E ② master 머지 + Cloud Run 워커 배포 → ud-planner 가시화 ⑤ DeckSpec 영속화(스키마 마이그레이션, DATA) ⑥ DATA-2(코치 실명·실수치 — 코퍼스 적재됨).
-
-### ⭐ 품질 목표 (사용자 피드백 2026-06-04 — plan 반영)
-- **슬라이드를 훨씬 빡빡하게** — 현재 셀 중앙 여백·보수적 항목수(코치 2명 등) 개선. 밀도 비평 루프가 sparse 슬라이드를 densify(항목·코치·셀 채움). DECK-4 핵심.
-- **이미지 placeholder 존** — 실 이미지가 못 들어가도 "이미지 들어갈 자리"(라벨된 영역)가 보이게. 컴포넌트에 image-zone 추가 + author/storyline이 적절한 슬라이드에 배치. (DECK-4 포함 또는 후속 — 당장 필수는 아님, plan 항목.)
-⚠️ Gemini 키 `ud_planner`(끝 …lFYrIw): 선결제 소진→2026-06-04 충전 완료. 멀티 프로젝트 키 주의(소진 시 그 프로젝트 결제 확인). (author 실측: `scripts/_smoke-deck-e2e.ts` [projectId].)
+**프로그램 기획 브레인 가동 국면.** 추출(BR-1)→규칙 발행(BR-2)→엔진(BR-3a)까지 완료·검증. **다음 = (1) 규칙 검수(사용자, 로컬 `/admin/design-rules`) → (2) BR-3b 위임(턴 기반 UI) → (3) 검증 후 master 머지·배포.** 덱은 동결, Express 연결·DesignRule DB 이관은 그 다음.
