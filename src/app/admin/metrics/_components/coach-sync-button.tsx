@@ -58,7 +58,7 @@ export function CoachSyncButton() {
       type="button"
       onClick={handle}
       disabled={busy}
-      className="flex items-center gap-1 rounded-md border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+      className="flex items-center gap-1 border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground hover:border-brand/40 hover:text-brand disabled:opacity-50"
       title="Supabase coaches_directory (coach-finder 와 동일) → ud-ops 로컬 Coach 테이블 동기화"
     >
       {busy ? (

@@ -44,7 +44,7 @@ export function NorthStarBar({
       <div className="flex flex-wrap items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 sm:py-2.5">
         {/* 북극성 메시지 — 모바일에선 RFP→1차본 만 (시간 hide) */}
         <div className="flex items-center gap-1.5 text-xs sm:gap-2 sm:text-sm">
-          <Sparkles className="h-3.5 w-3.5 text-primary sm:h-4 sm:w-4" />
+          <Sparkles className="h-3.5 w-3.5 text-brand sm:h-4 sm:w-4" />
           <span className="font-medium text-foreground">RFP → 1차본</span>
           <span className="hidden text-muted-foreground sm:inline">· 30~45분</span>
         </div>
@@ -65,11 +65,11 @@ export function NorthStarBar({
                 >
                   <div
                     className={cn(
-                      'h-2 w-2 rounded-full transition-all sm:h-2.5 sm:w-2.5',
+                      'h-2 w-2 transition-all sm:h-2.5 sm:w-2.5',
                       done
                         ? 'bg-primary'
                         : active
-                          ? 'bg-primary/40 ring-2 ring-primary/20'
+                          ? 'bg-brand/40 ring-2 ring-primary/20'
                           : 'bg-muted',
                     )}
                   />
@@ -77,7 +77,7 @@ export function NorthStarBar({
                     className={cn(
                       'hidden text-[10px] tabular-nums sm:block',
                       done
-                        ? 'font-semibold text-primary'
+                        ? 'font-semibold text-brand'
                         : active
                           ? 'text-foreground'
                           : 'text-muted-foreground',
@@ -86,7 +86,7 @@ export function NorthStarBar({
                     {stage.label}
                   </span>
                   {/* Hover tooltip (CSS-only) — 데스크탑 hover 만 */}
-                  <div className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 hidden -translate-x-1/2 whitespace-nowrap rounded-md border bg-popover px-2 py-1 text-[10px] text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100 sm:block">
+                  <div className="pointer-events-none absolute top-full left-1/2 z-30 mt-1 hidden -translate-x-1/2 whitespace-nowrap border bg-popover px-2 py-1 text-[10px] text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100 sm:block">
                     <div className="font-medium">
                       {stage.label} · {stage.pct}%
                     </div>
@@ -113,7 +113,7 @@ export function NorthStarBar({
         {/* 전체 % — 모바일에선 라벨 hide */}
         <div className="text-right">
           <div className="hidden text-xs text-muted-foreground sm:block">전체</div>
-          <div className="text-sm font-bold tabular-nums text-primary sm:text-base">
+          <div className="text-sm font-bold tabular-nums text-brand sm:text-base">
             {progress.overall}%
           </div>
         </div>
@@ -145,7 +145,7 @@ export function NorthStarBar({
 
         {/* 1차본 완성 status — 클릭 가능한 CTA 는 NowBar 로 이관 (Wave U / U1) */}
         {isCompleted && (
-          <div className="rounded-md bg-[var(--green)]/15 px-2 py-1 text-xs font-medium text-[color:var(--green)] sm:px-3">
+          <div className=" bg-[var(--green)]/15 px-2 py-1 text-xs font-medium text-[color:var(--green)] sm:px-3">
             1차본 완성 ✓
           </div>
         )}

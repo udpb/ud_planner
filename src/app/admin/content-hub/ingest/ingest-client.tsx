@@ -330,7 +330,7 @@ export function IngestClient() {
                     href={singleResult.page.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground hover:text-primary"
+                    className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground hover:text-brand"
                   >
                     원본 페이지 <ExternalLink className="h-2.5 w-2.5" />
                   </a>
@@ -500,7 +500,7 @@ export function IngestClient() {
                   />
                 </div>
               </div>
-              <div className="rounded-md border border-amber-200 bg-amber-50/50 p-2 text-[11px] text-amber-900">
+              <div className=" border border-amber-200 bg-amber-50/50 p-2 text-[11px] text-amber-900">
                 <strong>주의:</strong> 일괄 모드는 모든 url 을{' '}
                 <code>status=developing</code> 으로 저장. 저장 후
                 /admin/content-hub 에서 검토 후 stable 로 승격.
@@ -529,7 +529,7 @@ export function IngestClient() {
                     ✗ errors {bulkSummary.errors}
                   </span>
                 </div>
-                <div className="max-h-80 overflow-y-auto rounded-md border">
+                <div className="max-h-80 overflow-y-auto border">
                   <table className="w-full text-[11px]">
                     <thead className="sticky top-0 bg-muted/40">
                       <tr>
@@ -546,7 +546,7 @@ export function IngestClient() {
                               href={r.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="truncate text-muted-foreground hover:text-primary"
+                              className="truncate text-muted-foreground hover:text-brand"
                               title={r.url}
                             >
                               {r.url.length > 50 ? r.url.slice(0, 50) + '…' : r.url}
@@ -570,7 +570,7 @@ export function IngestClient() {
                             {r.savedId ? (
                               <a
                                 href={`/admin/content-hub/${r.savedId}`}
-                                className="text-primary hover:underline"
+                                className="text-brand hover:underline"
                               >
                                 {r.assetName}
                               </a>
@@ -699,7 +699,7 @@ export function IngestClient() {
                   {fileResult.proposals.map((p, i) => (
                     <div
                       key={i}
-                      className="rounded border bg-muted/20 p-1.5 text-[11px]"
+                      className=" border bg-muted/20 p-1.5 text-[11px]"
                     >
                       <div className="flex flex-wrap items-center gap-1">
                         <span className="font-medium">{p.name}</span>
@@ -712,7 +712,7 @@ export function IngestClient() {
                         {fileResult.savedIds[i] && (
                           <a
                             href={`/admin/content-hub/${fileResult.savedIds[i]}/edit`}
-                            className="ml-auto text-[10px] text-primary hover:underline"
+                            className="ml-auto text-[10px] text-brand hover:underline"
                           >
                             편집 →
                           </a>

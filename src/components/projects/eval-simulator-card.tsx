@@ -97,7 +97,7 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="flex items-center gap-1.5 text-sm">
-          <TrendingUp className="h-4 w-4 text-primary" />
+          <TrendingUp className="h-4 w-4 text-brand" />
           평가배점 시뮬
           <Badge variant="outline" className="ml-1 h-4 px-1 text-[10px]">
             B2G
@@ -106,7 +106,7 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
         <button
           onClick={fetchSimulation}
           disabled={loading}
-          className="text-[10px] text-muted-foreground hover:text-primary disabled:opacity-50"
+          className="text-[10px] text-muted-foreground hover:text-brand disabled:opacity-50"
           title="현재 sections 으로 다시 계산"
         >
           {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
@@ -119,7 +119,7 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
         {simulation && (
           <>
             {/* 총점 바 */}
-            <div className="rounded-md border bg-muted/20 p-2">
+            <div className=" border bg-muted/20 p-2">
               <div className="flex items-baseline justify-between gap-2">
                 <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
                   예상 점수
@@ -129,14 +129,14 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
                   <span className="ml-0.5 text-[10px] text-muted-foreground">
                     / {simulation.totalMax}
                   </span>
-                  <span className={cn('ml-1.5 text-[10px] font-semibold', barColor === 'bg-primary' ? 'text-primary' : 'text-amber-700')}>
+                  <span className={cn('ml-1.5 text-[10px] font-semibold', barColor === 'bg-primary' ? 'text-brand' : 'text-amber-700')}>
                     ({pct}%)
                   </span>
                 </span>
               </div>
-              <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+              <div className="mt-1.5 h-1.5 w-full overflow-hidden bg-muted">
                 <div
-                  className={cn('h-full rounded-full transition-all', barColor)}
+                  className={cn('h-full transition-all', barColor)}
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -144,7 +144,7 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
 
             {/* 손실 큰 상위 3 (실제 가이드) */}
             {simulation.worstItems.length > 0 && (
-              <div className="rounded-md border border-amber-200 bg-amber-50/50 p-2">
+              <div className=" border border-amber-200 bg-amber-50/50 p-2">
                 <div className="mb-1 flex items-center gap-1 text-[11px] font-medium text-amber-900">
                   <AlertCircle className="h-3 w-3" />
                   점수 손실 큰 항목
@@ -153,7 +153,7 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
                   {simulation.worstItems.map((item, i) => {
                     const loss = Math.round(item.maxPoints * (1 - item.completeness))
                     return (
-                      <li key={i} className="rounded bg-white/60 p-1.5">
+                      <li key={i} className=" bg-white/60 p-1.5">
                         <div className="flex items-center justify-between gap-2">
                           <span className="line-clamp-1 font-medium">{item.criteriaName}</span>
                           <span className="shrink-0 tabular-nums text-amber-800">+{loss}점 가능</span>
@@ -178,7 +178,7 @@ export function EvalSimulatorCard({ projectId, autoFetch = true }: Props) {
                   {simulation.items.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5"
+                      className="flex items-center justify-between gap-2 px-1.5 py-0.5"
                     >
                       <span className="line-clamp-1">{item.criteriaName}</span>
                       <span className="shrink-0 tabular-nums text-muted-foreground">

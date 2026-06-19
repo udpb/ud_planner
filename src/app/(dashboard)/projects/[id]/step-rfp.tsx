@@ -366,9 +366,9 @@ export function StepRfp({
     <div className="flex flex-col gap-4">
       {/* 상단 안내 배너 — 이미 확정된 경우 */}
       {confirmed && (
-        <div className="border-brand-left rounded-md bg-muted/40 p-3">
+        <div className="border-brand-left bg-muted/40 p-3">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-primary" />
+            <CheckCircle2 className="h-4 w-4 text-brand" />
             <span className="text-sm font-medium">Step 1 확정됨</span>
             <span className="text-xs text-muted-foreground">
               — 기획 방향이 저장되어 다음 스텝에 반영됩니다.
@@ -392,7 +392,7 @@ export function StepRfp({
               }}
             >
               <span
-                className="inline-block h-2 w-2 rounded-full"
+                className="inline-block h-2 w-2"
                 style={{ backgroundColor: VALUE_CHAIN_STAGES.impact.colorHex }}
               />
               {VALUE_CHAIN_STAGES.impact.numberedLabel} 의도
@@ -405,7 +405,7 @@ export function StepRfp({
               }}
             >
               <span
-                className="inline-block h-2 w-2 rounded-full"
+                className="inline-block h-2 w-2"
                 style={{ backgroundColor: VALUE_CHAIN_STAGES.input.colorHex }}
               />
               {VALUE_CHAIN_STAGES.input.numberedLabel} 자산
@@ -418,7 +418,7 @@ export function StepRfp({
               }}
             >
               <span
-                className="inline-block h-2 w-2 rounded-full"
+                className="inline-block h-2 w-2"
                 style={{ backgroundColor: VALUE_CHAIN_STAGES.output.colorHex }}
               />
               {VALUE_CHAIN_STAGES.output.numberedLabel} RFP
@@ -540,7 +540,7 @@ interface TabIntroProps {
 function TabIntro({ stageColor, title, description }: TabIntroProps) {
   return (
     <div
-      className="rounded-md border-l-4 bg-muted/30 p-3"
+      className=" border-l-4 bg-muted/30 p-3"
       style={{ borderLeftColor: stageColor }}
     >
       <p className="text-sm font-semibold" style={{ color: stageColor }}>
@@ -562,7 +562,7 @@ interface EmptyTabStateProps {
 
 function EmptyTabState({ icon: Icon, message }: EmptyTabStateProps) {
   return (
-    <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed p-6 text-sm text-muted-foreground">
+    <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 border-2 border-dashed p-6 text-sm text-muted-foreground">
       <Icon className="h-8 w-8 opacity-40" />
       <p className="max-w-md text-center">{message}</p>
     </div>
@@ -636,7 +636,7 @@ function LeftPanel({ projectId, parsed, questions, completeness, onParsed }: Lef
         {completeness && (
           <span
             className={cn(
-              'rounded px-2 py-0.5 text-xs font-medium',
+              ' px-2 py-0.5 text-xs font-medium',
               completeness.score >= 80
                 ? 'bg-green-100 text-green-800'
                 : completeness.score >= 50
@@ -716,7 +716,7 @@ function LeftPanel({ projectId, parsed, questions, completeness, onParsed }: Lef
                 <ul className="space-y-0.5">
                   {parsed.objectives.map((o, i) => (
                     <li key={i} className="flex gap-2 text-xs">
-                      <span className="mt-0.5 shrink-0 text-primary">·</span>
+                      <span className="mt-0.5 shrink-0 text-brand">·</span>
                       {o}
                     </li>
                   ))}
@@ -731,7 +731,7 @@ function LeftPanel({ projectId, parsed, questions, completeness, onParsed }: Lef
                   {parsed.evalCriteria.map((c, i) => (
                     <div key={i} className="flex items-center justify-between text-xs">
                       <span className="truncate pr-2">{c.item}</span>
-                      <span className="shrink-0 font-mono font-medium text-primary">
+                      <span className="shrink-0 font-mono font-medium text-brand">
                         {c.score}점
                       </span>
                     </div>
@@ -767,7 +767,7 @@ function LeftPanel({ projectId, parsed, questions, completeness, onParsed }: Lef
               <div
                 key={i}
                 className={cn(
-                  'rounded-md border px-3 py-2 text-xs',
+                  ' border px-3 py-2 text-xs',
                   q.severity === 'missing' && 'border-red-200 bg-red-50',
                   q.severity === 'weak' && 'border-yellow-200 bg-yellow-50',
                   q.severity === 'tip' && 'border-blue-200 bg-blue-50',
@@ -859,7 +859,7 @@ function MiddlePanel(props: MiddlePanelProps) {
       </div>
 
       {!parsed && (
-        <div className="flex h-80 flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed text-sm text-muted-foreground">
+        <div className="flex h-80 flex-col items-center justify-center gap-3 border-2 border-dashed text-sm text-muted-foreground">
           <Compass className="h-8 w-8 opacity-40" />
           <p>RFP 파싱을 완료하면 기획 방향을 생성할 수 있습니다.</p>
         </div>
@@ -868,7 +868,7 @@ function MiddlePanel(props: MiddlePanelProps) {
       {parsed && !hasDirection && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center gap-3 p-8 text-center">
-            <Sparkles className="h-8 w-8 text-primary" />
+            <Sparkles className="h-8 w-8 text-brand" />
             <div>
               <p className="text-sm font-medium">
                 제안배경·컨셉 후보·핵심 포인트를 한 번에 생성합니다.
@@ -901,7 +901,7 @@ function MiddlePanel(props: MiddlePanelProps) {
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center justify-between text-sm font-semibold">
                 <span className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-primary" />
+                  <FileText className="h-4 w-4 text-brand" />
                   제안배경 초안
                 </span>
                 <span className="text-[10px] font-normal text-muted-foreground">
@@ -925,7 +925,7 @@ function MiddlePanel(props: MiddlePanelProps) {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Sparkles className="h-4 w-4 text-primary" />
+                  <Sparkles className="h-4 w-4 text-brand" />
                   제안 컨셉 후보
                   <span className="text-[10px] font-normal text-muted-foreground">
                     3개 중 1개 선택 후 편집
@@ -943,17 +943,17 @@ function MiddlePanel(props: MiddlePanelProps) {
                         onClick={() => onSelectConcept(i, c)}
                         aria-pressed={isSelected}
                         className={cn(
-                          'flex h-full flex-col gap-2 rounded-md border p-3 text-left transition-colors',
-                          'hover:border-primary/60 hover:bg-primary/5',
+                          'flex h-full flex-col gap-2 border p-3 text-left transition-colors',
+                          'hover:border-brand/60 hover:bg-brand/5',
                           isSelected
-                            ? 'border-primary bg-primary/5 ring-2 ring-primary/30'
+                            ? 'border-brand bg-brand/5 ring-2 ring-primary/30'
                             : 'border-border bg-background',
                         )}
                       >
                         <div className="flex items-start justify-between gap-2">
                           <p className="text-sm font-semibold leading-tight">{c.title}</p>
                           {isSelected && (
-                            <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
+                            <CheckCircle2 className="h-4 w-4 shrink-0 text-brand" />
                           )}
                         </div>
                         <p className="text-xs leading-relaxed text-foreground/80">
@@ -994,7 +994,7 @@ function MiddlePanel(props: MiddlePanelProps) {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Sparkles className="h-4 w-4 text-primary" />
+                  <Sparkles className="h-4 w-4 text-brand" />
                   제안 컨셉 (저장됨)
                 </CardTitle>
               </CardHeader>
@@ -1015,7 +1015,7 @@ function MiddlePanel(props: MiddlePanelProps) {
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                <Target className="h-4 w-4 text-primary" />
+                <Target className="h-4 w-4 text-brand" />
                 핵심 기획 포인트
                 <span className="text-[10px] font-normal text-muted-foreground">
                   각 1문장 · 평가배점 상위 2 항목 직접 대응 권장
@@ -1025,7 +1025,7 @@ function MiddlePanel(props: MiddlePanelProps) {
             <CardContent className="space-y-2 pt-0">
               {editedPoints.map((p, i) => (
                 <div key={i} className="flex items-start gap-2">
-                  <div className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-bold text-primary">
+                  <div className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center bg-brand/10 text-[11px] font-bold text-brand">
                     {i + 1}
                   </div>
                   <Input
@@ -1110,7 +1110,7 @@ function RightPanel({
       </p>
 
       {!parsed && (
-        <div className="flex h-48 flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed text-sm text-muted-foreground">
+        <div className="flex h-48 flex-col items-center justify-center gap-2 border-2 border-dashed text-sm text-muted-foreground">
           <Target className="h-6 w-6 opacity-40" />
           <p className="text-xs">파싱 후 가이드가 표시됩니다.</p>
         </div>
@@ -1120,10 +1120,10 @@ function RightPanel({
         <>
           {/* 카드 1: 평가 전략 요약 */}
           {evalStrategy && evalStrategy.topItems.length > 0 && (
-            <Card className="border-primary/20">
+            <Card className="border-brand/20">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-1.5 text-xs font-semibold">
-                  <Trophy className="h-4 w-4 text-primary" />
+                  <Trophy className="h-4 w-4 text-brand" />
                   평가 전략 Top 3
                 </CardTitle>
               </CardHeader>
@@ -1131,7 +1131,7 @@ function RightPanel({
                 {evalStrategy.topItems.map((item, i) => (
                   <div
                     key={`${item.name}-${i}`}
-                    className="rounded-md border bg-background p-2"
+                    className=" border bg-background p-2"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <p className="text-xs font-medium leading-tight">{item.name}</p>
@@ -1168,7 +1168,7 @@ function RightPanel({
                           key={i}
                           className="flex gap-1.5 text-[11px] leading-relaxed text-muted-foreground"
                         >
-                          <span className="mt-0.5 shrink-0 text-primary">·</span>
+                          <span className="mt-0.5 shrink-0 text-brand">·</span>
                           {g}
                         </li>
                       ))}
@@ -1183,7 +1183,7 @@ function RightPanel({
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-1.5 text-xs font-semibold">
-                <FileText className="h-4 w-4 text-primary" />
+                <FileText className="h-4 w-4 text-brand" />
                 유사 프로젝트
                 {similarLoading && <Loader2 className="h-3 w-3 animate-spin" />}
               </CardTitle>
@@ -1197,7 +1197,7 @@ function RightPanel({
               {similar.slice(0, 3).map((p) => (
                 <div
                   key={p.projectId}
-                  className="rounded-md border bg-background p-2 text-xs"
+                  className=" border bg-background p-2 text-xs"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-medium leading-tight">{p.name}</p>

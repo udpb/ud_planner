@@ -194,7 +194,7 @@ export function InspectorReportCard({
       <CardContent className="space-y-3">
         {/* 본문 미완성 컨텍스트 배너 — 50% 미만에서만 표시 */}
         {draftIncomplete && (
-          <div className="rounded-md border border-amber-300 bg-amber-50/70 p-2 text-[11px] text-amber-900">
+          <div className=" border border-amber-300 bg-amber-50/70 p-2 text-[11px] text-amber-900">
             <div className="flex items-start gap-1.5">
               <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0 text-amber-600" />
               <div>
@@ -209,7 +209,7 @@ export function InspectorReportCard({
         )}
 
         {/* 총점 막대 */}
-        <div className="rounded-md border bg-muted/20 p-2.5">
+        <div className=" border bg-muted/20 p-2.5">
           <div className="flex items-baseline justify-between gap-2">
             <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
               종합 점수
@@ -219,9 +219,9 @@ export function InspectorReportCard({
               <span className="ml-0.5 text-xs text-muted-foreground">/ 100</span>
             </span>
           </div>
-          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
+          <div className="mt-2 h-2 w-full overflow-hidden bg-muted">
             <div
-              className={cn('h-full rounded-full transition-all', barColor)}
+              className={cn('h-full transition-all', barColor)}
               style={{ width: `${score}%` }}
             />
           </div>
@@ -243,7 +243,7 @@ export function InspectorReportCard({
                     <span className="w-20 shrink-0 truncate text-muted-foreground">
                       {LENS_LABEL[lens]}
                     </span>
-                    <div className="flex-1 h-1.5 overflow-hidden rounded-full bg-muted">
+                    <div className="flex-1 h-1.5 overflow-hidden bg-muted">
                       <div
                         className={cn('h-full transition-all', color)}
                         style={{ width: `${v}%` }}
@@ -270,7 +270,7 @@ export function InspectorReportCard({
                 <li
                   key={i}
                   className={cn(
-                    'rounded-md border p-1.5 text-[11px]',
+                    ' border p-1.5 text-[11px]',
                     SEVERITY_BG[iss.severity],
                   )}
                 >
@@ -282,7 +282,7 @@ export function InspectorReportCard({
                     {iss.sectionKey && iss.sectionKey !== 'overall' && (
                       <button
                         onClick={() => onJumpToSection?.(iss.sectionKey!)}
-                        className="ml-auto rounded bg-white/60 px-1 text-[9px] hover:bg-white"
+                        className="ml-auto bg-white/60 px-1 text-[9px] hover:bg-white"
                         title="섹션으로 이동"
                       >
                         섹션 {iss.sectionKey} →
@@ -290,7 +290,7 @@ export function InspectorReportCard({
                     )}
                   </div>
                   <div className="mt-0.5 leading-relaxed">{iss.issue}</div>
-                  <div className="mt-0.5 text-[10px] leading-relaxed text-primary">
+                  <div className="mt-0.5 text-[10px] leading-relaxed text-brand">
                     💡 {iss.suggestion}
                   </div>
                 </li>
@@ -301,7 +301,7 @@ export function InspectorReportCard({
 
         {/* 강점 1~3 */}
         {(report.strengths?.length ?? 0) > 0 && (
-          <div className="rounded-md border border-green-200 bg-green-50/40 p-2">
+          <div className=" border border-green-200 bg-green-50/40 p-2">
             <div className="mb-1 flex items-center gap-1 text-[10px] font-medium text-green-800">
               <Sparkles className="h-2.5 w-2.5" />
               잘 된 점
@@ -316,8 +316,8 @@ export function InspectorReportCard({
 
         {/* Wave U / U6 — 약점 lens 별 자산 추천 (inline diff, hover dropdown 폐지) */}
         {recommendations && recommendations.length > 0 && (
-          <div className="rounded-md border border-primary/30 bg-primary/5 p-2">
-            <div className="mb-1.5 flex items-center gap-1 text-[10px] font-medium text-primary">
+          <div className=" border border-brand/30 bg-brand/5 p-2">
+            <div className="mb-1.5 flex items-center gap-1 text-[10px] font-medium text-brand">
               <BookMarked className="h-2.5 w-2.5" />
               이 자산을 인용해 보강하세요 ({recommendations.length})
             </div>
@@ -335,8 +335,8 @@ export function InspectorReportCard({
 
         {/* 다음 액션 */}
         {report.nextAction && (
-          <div className="rounded-md border border-primary/40 bg-primary/5 p-2 text-[11px]">
-            <span className="font-medium text-primary">👉 다음 액션: </span>
+          <div className=" border border-brand/40 bg-brand/5 p-2 text-[11px]">
+            <span className="font-medium text-brand">👉 다음 액션: </span>
             {report.nextAction}
           </div>
         )}
@@ -376,7 +376,7 @@ function RecommendationItem({
   )
 
   return (
-    <li className="rounded border bg-white/70 p-1.5 text-[11px]">
+    <li className=" border bg-white/70 p-1.5 text-[11px]">
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1">
@@ -394,12 +394,12 @@ function RecommendationItem({
             >
               {rec.evidenceType} · {rec.category}
             </Badge>
-            <span className={cn('rounded px-1 py-0 text-[9px] font-medium', matchColor)}>
+            <span className={cn(' px-1 py-0 text-[9px] font-medium', matchColor)}>
               {matchPct}%
             </span>
           </div>
           {(primaryReason || secondaryReason) && (
-            <div className="mt-0.5 text-[10px] text-primary/80">
+            <div className="mt-0.5 text-[10px] text-brand/80">
               ✓ {[primaryReason, secondaryReason].filter(Boolean).join(' · ')}
             </div>
           )}
@@ -411,7 +411,7 @@ function RecommendationItem({
               {rec.keyNumbers.slice(0, 3).map((n, i) => (
                 <span
                   key={i}
-                  className="rounded bg-primary/10 px-1 py-0 text-[9px] text-primary"
+                  className=" bg-brand/10 px-1 py-0 text-[9px] text-brand"
                 >
                   {n}
                 </span>
@@ -423,7 +423,7 @@ function RecommendationItem({
           <div className="flex shrink-0 flex-col items-end gap-0.5">
             <button
               onClick={() => onInsert(rec, rec.suggestedSectionKey)}
-              className="flex items-center gap-1 rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
+              className="flex items-center gap-1 border border-brand/40 bg-brand/10 px-1.5 py-0.5 text-[10px] font-medium text-brand hover:bg-brand/20"
               title={`섹션 ${rec.suggestedSectionKey} (${SECTION_LABEL[rec.suggestedSectionKey]}) 에 자동 추가`}
             >
               <Plus className="h-2.5 w-2.5" />
@@ -432,7 +432,7 @@ function RecommendationItem({
             <button
               type="button"
               onClick={() => setExpanded((e) => !e)}
-              className="flex items-center gap-0.5 text-[9px] text-muted-foreground hover:text-primary"
+              className="flex items-center gap-0.5 text-[9px] text-muted-foreground hover:text-brand"
               aria-expanded={expanded}
             >
               {expanded ? (
@@ -451,7 +451,7 @@ function RecommendationItem({
 
       {/* Wave U / U6 — inline expand 패널: 모든 섹션 선택 + 미리보기 */}
       {expanded && onInsert && (
-        <div className="mt-2 rounded border border-dashed border-primary/30 bg-primary/5 p-1.5 space-y-1.5">
+        <div className="mt-2 border border-dashed border-brand/30 bg-brand/5 p-1.5 space-y-1.5">
           <div className="text-[9px] uppercase tracking-wider text-muted-foreground">
             추가할 섹션
           </div>
@@ -466,10 +466,10 @@ function RecommendationItem({
                     setExpanded(false)
                   }}
                   className={cn(
-                    'rounded border px-1.5 py-0.5 text-[10px]',
+                    ' border px-1.5 py-0.5 text-[10px]',
                     isRecommended
-                      ? 'border-primary/50 bg-primary/15 font-medium text-primary'
-                      : 'border-muted bg-white text-muted-foreground hover:border-primary/40 hover:text-primary',
+                      ? 'border-brand/50 bg-brand/15 font-medium text-brand'
+                      : 'border-muted bg-white text-muted-foreground hover:border-brand/40 hover:text-brand',
                   )}
                   title={`섹션 ${s} (${SECTION_LABEL[s]}) 에 narrativeSnippet 추가`}
                 >
@@ -483,7 +483,7 @@ function RecommendationItem({
                 onInsert(rec, 'chat')
                 setExpanded(false)
               }}
-              className="rounded border border-[color:var(--cyan)]/40 bg-[color:var(--cyan)]/10 px-1.5 py-0.5 text-[10px] text-[color:var(--cyan)] hover:bg-[color:var(--cyan)]/20"
+              className=" border border-[color:var(--cyan)]/40 bg-[color:var(--cyan)]/10 px-1.5 py-0.5 text-[10px] text-[color:var(--cyan)] hover:bg-[color:var(--cyan)]/20"
               title="섹션이 아닌 챗봇 입력창에 박기 — PM 이 다듬어 전송"
             >
               <MessageSquare className="-mt-0.5 mr-0.5 inline h-2.5 w-2.5" />
@@ -493,7 +493,7 @@ function RecommendationItem({
           <div className="text-[9px] uppercase tracking-wider text-muted-foreground">
             추가될 내용 미리보기
           </div>
-          <div className="rounded border bg-white p-1.5 text-[10px] leading-snug text-foreground/90">
+          <div className=" border bg-white p-1.5 text-[10px] leading-snug text-foreground/90">
             [{rec.name}] {rec.narrativeSnippet}
           </div>
         </div>

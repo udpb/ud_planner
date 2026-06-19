@@ -54,7 +54,7 @@ export function SubHeader({
             style={{ color: 'var(--primary-orange)' }}
           >
             <span
-              className="h-1.5 w-1.5 flex-shrink-0 rounded-full"
+              className="h-1.5 w-1.5 flex-shrink-0"
               style={{ background: 'var(--primary-orange)' }}
             />
             {status}

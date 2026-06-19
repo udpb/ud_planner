@@ -43,7 +43,7 @@ export function StageS4({
       {/* ① 커리큘럼 */}
       <section>
         <SectionHeader
-          icon={<Calendar className="h-4 w-4 text-primary" />}
+          icon={<Calendar className="h-4 w-4 text-brand" />}
           title="① 커리큘럼 설계"
           description="회차별 주제·이론/실습·Action Week 구성"
         />
@@ -55,7 +55,7 @@ export function StageS4({
       {/* ② 코치 배정 */}
       <section>
         <SectionHeader
-          icon={<Users className="h-4 w-4 text-primary" />}
+          icon={<Users className="h-4 w-4 text-brand" />}
           title="② 코치 배정"
           description="역할·사례비 설정 + 코치 확정"
           extra={
@@ -92,7 +92,7 @@ export function StageS4({
       {/* ③ 예산 */}
       <section>
         <SectionHeader
-          icon={<Wallet className="h-4 w-4 text-primary" />}
+          icon={<Wallet className="h-4 w-4 text-brand" />}
           title="③ 예산 설계"
           description="AC/PC 항목 + 마진율 + 발주처 템플릿"
         />
@@ -104,7 +104,7 @@ export function StageS4({
       {/* ④ 제안서 */}
       <section>
         <SectionHeader
-          icon={<FileText className="h-4 w-4 text-primary" />}
+          icon={<FileText className="h-4 w-4 text-brand" />}
           title="④ 제안서 (7섹션)"
           description="Express 1차본 시드 위에 정밀 편집"
         />

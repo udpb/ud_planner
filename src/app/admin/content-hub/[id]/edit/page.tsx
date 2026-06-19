@@ -85,7 +85,7 @@ export default async function EditAssetPage({ params }: Params) {
             목록으로
           </Link>
           {asset.children.length > 0 && (
-            <p className="mt-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-[11px] text-amber-900 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-200">
+            <p className="mt-2 border border-amber-300 bg-amber-50 px-3 py-2 text-[11px] text-amber-900 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-200">
               이 자산은 {asset.children.length}개의 하위 자산을 가지고 있어 다른 자산의 하위(child)로 이동할 수 없습니다.
               아카이브 시 하위 자산은 유지됩니다.
             </p>
@@ -101,7 +101,7 @@ export default async function EditAssetPage({ params }: Params) {
             </div>
           )}
           {isPendingReview && !canReview && asset.submitterNote && (
-            <div className="mt-3 rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] p-3 text-xs">
+            <div className="mt-3 border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] p-3 text-xs">
               <div className="font-medium text-[color:var(--cyan)]">💬 제안자 메모</div>
               <p className="mt-0.5 text-[color:var(--body-text)]">{asset.submitterNote}</p>
               <p className="mt-1 text-[10px] text-muted-foreground">

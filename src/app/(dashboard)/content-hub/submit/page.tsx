@@ -32,8 +32,8 @@ export default async function SubmitAssetPage() {
             대시보드
           </Link>
 
-          <div className="rounded-md border border-primary/30 bg-primary/5 p-3 text-xs">
-            <p className="font-medium text-primary">📚 자산 제안 흐름</p>
+          <div className=" border border-brand/30 bg-brand/5 p-3 text-xs">
+            <p className="font-medium text-brand">📚 자산 제안 흐름</p>
             <p className="mt-1 text-muted-foreground">
               제출하신 자산은 <strong>status=developing</strong> 상태로
               검수 대기 큐에 등록됩니다. Admin/Director 가 검토 후 승인하면

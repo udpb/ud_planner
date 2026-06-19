@@ -142,7 +142,7 @@ export function AutoRecommendedPool({
           {[0, 1, 2].map((i) => (
             <div
               key={i}
-              className="h-[120px] rounded-md border border-border bg-muted/30 animate-pulse"
+              className="h-[120px] border border-border bg-muted/30 animate-pulse"
             />
           ))}
         </div>
@@ -155,7 +155,7 @@ export function AutoRecommendedPool({
     return (
       <div
         className={cn(
-          'rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800',
+          ' border border-red-200 bg-red-50 p-3 text-sm text-red-800',
           className,
         )}
       >
@@ -183,7 +183,7 @@ export function AutoRecommendedPool({
               <button
                 type="button"
                 onClick={retry}
-                className="inline-flex items-center gap-1 rounded-md border border-red-300 bg-white px-2 py-1 text-xs font-medium text-red-800 hover:bg-red-100 cursor-pointer"
+                className="inline-flex items-center gap-1 border border-red-300 bg-white px-2 py-1 text-xs font-medium text-red-800 hover:bg-red-100 cursor-pointer"
               >
                 <RefreshCw className="h-3 w-3" />
                 다시 시도
@@ -202,7 +202,7 @@ export function AutoRecommendedPool({
     return (
       <div
         className={cn(
-          'rounded-md border border-border bg-muted/30 p-4 text-sm text-muted-foreground',
+          ' border border-border bg-muted/30 p-4 text-sm text-muted-foreground',
           className,
         )}
       >
@@ -227,7 +227,7 @@ export function AutoRecommendedPool({
         <button
           type="button"
           onClick={() => setRationaleOpen((v) => !v)}
-          className="inline-flex items-center gap-1 rounded-md border border-border bg-white px-2 py-1 text-xs text-muted-foreground hover:border-primary/40 hover:text-foreground cursor-pointer"
+          className="inline-flex items-center gap-1 border border-border bg-white px-2 py-1 text-xs text-muted-foreground hover:border-brand/40 hover:text-foreground cursor-pointer"
         >
           왜 {data.requiredN}명?
           {rationaleOpen ? (
@@ -240,7 +240,7 @@ export function AutoRecommendedPool({
 
       {/* rationale */}
       {rationaleOpen && data.rationale.length > 0 && (
-        <ul className="rounded-md border border-border bg-muted/30 p-3 text-xs text-muted-foreground space-y-1 list-disc list-inside">
+        <ul className=" border border-border bg-muted/30 p-3 text-xs text-muted-foreground space-y-1 list-disc list-inside">
           {data.rationale.map((r, i) => (
             <li key={i}>{r}</li>
           ))}
@@ -299,10 +299,10 @@ function RecommendationCard({ recommendation: r, assigned, onClick }: CardProps)
         }
       }}
       className={cn(
-        'relative flex gap-3 rounded-md border border-border bg-white p-3 text-left transition-all',
+        'relative flex gap-3 border border-border bg-white p-3 text-left transition-all',
         assigned
           ? 'opacity-50 cursor-not-allowed'
-          : 'cursor-pointer hover:border-primary/40 hover:shadow-sm hover:ring-2 hover:ring-primary/30',
+          : 'cursor-pointer hover:border-brand/40 hover:shadow-sm hover:ring-2 hover:ring-primary/30',
       )}
     >
       {/* 좌측: 사진 / 이니셜 */}
@@ -312,10 +312,10 @@ function RecommendationCard({ recommendation: r, assigned, onClick }: CardProps)
           <img
             src={r.photoUrl}
             alt={r.name}
-            className="h-10 w-10 rounded-full object-cover border border-border"
+            className="h-10 w-10 object-cover border border-border"
           />
         ) : (
-          <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-semibold text-muted-foreground">
+          <div className="h-10 w-10 bg-muted flex items-center justify-center text-sm font-semibold text-muted-foreground">
             {initial}
           </div>
         )}
@@ -328,7 +328,7 @@ function RecommendationCard({ recommendation: r, assigned, onClick }: CardProps)
           <span className="font-semibold text-sm truncate">{r.name}</span>
           <span
             className={cn(
-              'inline-flex h-4 items-center rounded-md border px-1 text-[9px] font-semibold shrink-0',
+              'inline-flex h-4 items-center border px-1 text-[9px] font-semibold shrink-0',
               tierTone,
             )}
           >
@@ -376,8 +376,8 @@ function RecommendationCard({ recommendation: r, assigned, onClick }: CardProps)
 
       {/* 이미 배정됨 overlay */}
       {assigned && (
-        <div className="absolute inset-0 flex items-center justify-center rounded-md bg-white/40 pointer-events-none">
-          <span className="rounded-md border border-border bg-white px-2 py-0.5 text-[10px] font-medium text-muted-foreground shadow-sm">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/40 pointer-events-none">
+          <span className=" border border-border bg-white px-2 py-0.5 text-[10px] font-medium text-muted-foreground shadow-sm">
             이미 배정됨
           </span>
         </div>

@@ -34,7 +34,7 @@ export function DeckSlidePreview({ element }: { element: ReactElement }) {
   return (
     <div
       ref={wrapRef}
-      className="overflow-hidden rounded-md border bg-white shadow-sm"
+      className="overflow-hidden border bg-white shadow-sm"
       style={{ width: '100%', height: BASE_H * scale }}
     >
       <div

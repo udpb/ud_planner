@@ -230,7 +230,7 @@ export default async function ProjectDetailPage({
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b px-6 py-2.5">
           <span
             className={cn(
-              'rounded-full border px-2.5 py-0.5 text-xs font-medium',
+              ' border px-2.5 py-0.5 text-xs font-medium',
               STATUS_COLOR[project.status],
             )}
           >
@@ -245,7 +245,7 @@ export default async function ProjectDetailPage({
             {!v3 && (
               <Link
                 href={`/projects/${project.id}/express`}
-                className="flex items-center gap-1.5 rounded-md border border-primary/40 bg-primary/5 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/10"
+                className="flex items-center gap-1.5 border border-brand/40 bg-brand/5 px-2.5 py-1 text-xs font-medium text-brand hover:bg-brand/10"
                 title="Express 1차본 화면 — RFP→1차본 30~45분"
               >
                 <Sparkles className="h-3 w-3" />
@@ -255,7 +255,7 @@ export default async function ProjectDetailPage({
             {/* W31 (Phase E): Brain 4+1 통합 — matchTuple → 5초 통합 답변 */}
             <Link
               href={`/projects/${project.id}/brain`}
-              className="flex items-center gap-1.5 rounded-md border border-purple-400/40 bg-purple-500/5 px-2.5 py-1 text-xs font-medium text-purple-700 hover:bg-purple-500/10"
+              className="flex items-center gap-1.5 border border-purple-400/40 bg-purple-500/5 px-2.5 py-1 text-xs font-medium text-purple-700 hover:bg-purple-500/10"
               title="Brain 4+1 — 유사 사업·자산·Concept 통합 매칭"
             >
               🧠 Brain
@@ -263,7 +263,7 @@ export default async function ProjectDetailPage({
             {/* ADR-018 UX v2 미리보기 — Adaptive Stage Layout (PR #2~5 진행 중) */}
             <Link
               href={`/projects/${project.id}/v2`}
-              className="flex items-center gap-1 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100"
+              className="flex items-center gap-1 border border-amber-400/40 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100"
               title="UX v2 미리보기 (ADR-018 Adaptive Stage Layout)"
             >
               ✨ v2
@@ -668,7 +668,7 @@ export default async function ProjectDetailPage({
                           <td colSpan={5} className="px-4 py-2.5 text-right text-sm font-medium text-muted-foreground">
                             합계
                           </td>
-                          <td className="px-4 py-2.5 text-right tabular-nums font-bold text-primary">
+                          <td className="px-4 py-2.5 text-right tabular-nums font-bold text-brand">
                             {totalCoachFee.toLocaleString()}원
                           </td>
                           <td />

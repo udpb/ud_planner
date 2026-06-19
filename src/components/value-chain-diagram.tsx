@@ -48,7 +48,7 @@ export function ValueChainDiagram({
   return (
     <div
       className={cn(
-        'rounded-md border border-border bg-background p-3',
+        ' border border-border bg-background p-3',
         className,
       )}
       aria-label="Impact Value Chain 5단계 진행 상태"
@@ -58,7 +58,7 @@ export function ValueChainDiagram({
           Impact Value Chain
         </p>
         {hasSroi && (
-          <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
+          <span className=" bg-brand/10 px-1.5 py-0.5 text-[9px] font-semibold text-brand">
             SROI 수렴 · 루프 활성
           </span>
         )}
@@ -100,7 +100,7 @@ export function ValueChainDiagram({
         <span
           className={cn(
             'text-[9px] font-medium',
-            hasSroi ? 'text-primary' : 'text-muted-foreground',
+            hasSroi ? 'text-brand' : 'text-muted-foreground',
           )}
         >
           루프: ⑤ → ①·②·④ 얼라인
@@ -141,7 +141,7 @@ function StageBox({
   return (
     <div
       className={cn(
-        'flex min-w-0 flex-1 flex-col items-center justify-center rounded px-1 py-1.5 transition-colors',
+        'flex min-w-0 flex-1 flex-col items-center justify-center px-1 py-1.5 transition-colors',
         isCurrent && 'ring-2 ring-offset-0',
       )}
       style={
@@ -198,7 +198,7 @@ function FlowArrow({ active }: { active: boolean }) {
     <div
       className={cn(
         'flex items-center px-0.5',
-        active ? 'text-primary' : 'text-muted-foreground/40',
+        active ? 'text-brand' : 'text-muted-foreground/40',
       )}
       aria-hidden
     >

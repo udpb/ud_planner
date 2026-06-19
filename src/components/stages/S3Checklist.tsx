@@ -189,7 +189,7 @@ export function S3Checklist({
             border: '1px solid rgba(232,84,26,.3)',
           }}
         >
-          <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <span className="inline-block h-4 w-4 animate-spin border-2 border-current border-t-transparent" />
           AI 검수 진행 중 · 약 30~60초 소요 · 점수 갱신 대기 중
         </div>
       )}
@@ -292,7 +292,7 @@ export function S3Checklist({
             style={{ color: 'var(--action-orange)' }}
           >
             <span
-              className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              className="mr-1.5 inline-block h-1.5 w-1.5 align-middle"
               style={{ background: 'var(--action-orange)' }}
             />
             Inspector · 11 Lens · Auto Review
@@ -334,7 +334,7 @@ export function S3Checklist({
         style={{ color: 'var(--primary-orange)' }}
       >
         <span
-          className="h-1.5 w-1.5 rounded-full"
+          className="h-1.5 w-1.5"
           style={{ background: 'var(--primary-orange)' }}
         />
         Inspector · 11 Lens · Detail
@@ -417,7 +417,7 @@ export function S3Checklist({
             style={{ color: 'var(--action-orange)' }}
           >
             <span
-              className="h-1.5 w-1.5 rounded-full"
+              className="h-1.5 w-1.5"
               style={{ background: 'var(--action-orange)' }}
             />
             Inline Diff · 선택 자산 {selected.size}건 추가 시

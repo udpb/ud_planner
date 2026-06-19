@@ -73,7 +73,7 @@ export function LoopAlignmentCards({
 
   return (
     <section
-      className={cn('space-y-3 rounded-lg border border-border bg-background p-4', className)}
+      className={cn('space-y-3 border border-border bg-background p-4', className)}
       aria-label="SROI 루프 얼라인 체크"
     >
       {/* 섹션 헤더 */}
@@ -83,7 +83,7 @@ export function LoopAlignmentCards({
         </h4>
         <span
           className={cn(
-            'rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
+            ' px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
             STATUS_BADGE_CLASS[overallStatus],
           )}
         >
@@ -93,7 +93,7 @@ export function LoopAlignmentCards({
 
       {/* 전체 OK 안내 */}
       {overallStatus === 'ok' && (
-        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+        <p className=" border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
           ✓ 모든 방향 얼라인 완료 — Impact · Input · Activity 가 SROI 축과 정합적입니다.
         </p>
       )}
@@ -125,13 +125,13 @@ function DirectionCard({ check, projectId }: DirectionCardProps) {
   return (
     <article
       className={cn(
-        'flex items-stretch gap-3 rounded-md border p-3',
+        'flex items-stretch gap-3 border p-3',
         STATUS_CARD_CLASS[status],
       )}
     >
       {/* 좌측: 방향 뱃지 */}
       <div
-        className="flex w-24 shrink-0 flex-col items-center justify-center rounded px-2 py-1.5 text-center"
+        className="flex w-24 shrink-0 flex-col items-center justify-center px-2 py-1.5 text-center"
         style={{
           backgroundColor: `${stageSpec.colorHex}1A`, // 10% opacity
           borderLeft: `3px solid ${stageSpec.colorHex}`,
@@ -154,7 +154,7 @@ function DirectionCard({ check, projectId }: DirectionCardProps) {
           </span>
           <span
             className={cn(
-              'rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
+              ' px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
               STATUS_BADGE_CLASS[status],
             )}
           >
@@ -171,7 +171,7 @@ function DirectionCard({ check, projectId }: DirectionCardProps) {
           <div className="mt-1">
             <Link
               href={`/projects/${projectId}?step=${returnTo}`}
-              className="inline-flex items-center gap-1 rounded border border-foreground/20 bg-background px-2 py-1 text-[11px] font-medium text-foreground hover:bg-foreground/5"
+              className="inline-flex items-center gap-1 border border-foreground/20 bg-background px-2 py-1 text-[11px] font-medium text-foreground hover:bg-foreground/5"
             >
               Step {returnTo} 로 돌아가기 →
             </Link>

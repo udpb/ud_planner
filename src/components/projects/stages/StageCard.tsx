@@ -76,7 +76,7 @@ export function StageCard({
   const stateIcon = done ? (
     <CheckCircle2 className="h-4 w-4 text-green-600" />
   ) : active ? (
-    <CircleDot className="h-4 w-4 text-primary" />
+    <CircleDot className="h-4 w-4 text-brand" />
   ) : (
     <Circle className="h-4 w-4 text-muted-foreground/60" />
   )
@@ -87,7 +87,7 @@ export function StageCard({
         'transition-all',
         expanded
           ? active
-            ? 'border-primary/40 shadow-sm'
+            ? 'border-brand/40 shadow-sm'
             : 'border-border'
           : 'border-border bg-muted/30',
       )}
@@ -109,7 +109,7 @@ export function StageCard({
         {/* Stage 번호 + state 아이콘 */}
         <span
           className={cn(
-            'flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold',
+            'flex h-7 w-7 shrink-0 items-center justify-center text-xs font-bold',
             done
               ? 'bg-green-500 text-white'
               : active
@@ -134,7 +134,7 @@ export function StageCard({
               {label}
             </span>
             {active && !expanded && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+              <span className=" bg-brand/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand">
                 현재 단계
               </span>
             )}

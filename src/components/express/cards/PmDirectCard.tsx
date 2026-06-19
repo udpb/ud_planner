@@ -62,7 +62,7 @@ export function PmDirectCard({ topic, checklistItems, onSubmit }: Props) {
                 <div className="flex items-center gap-1.5 text-xs font-medium text-red-700">
                   <AlertCircle className="h-3.5 w-3.5" />
                   꼭 물어보세요
-                  <span className="rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums">
+                  <span className=" bg-red-100 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums">
                     must · {mustItems.length}
                   </span>
                 </div>
@@ -73,7 +73,7 @@ export function PmDirectCard({ topic, checklistItems, onSubmit }: Props) {
                       className="flex items-start gap-2"
                       title={it.reason ?? undefined}
                     >
-                      <span className="mt-0.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
+                      <span className="mt-0.5 flex h-1.5 w-1.5 shrink-0 bg-red-500" />
                       <span className="flex-1">{it.item}</span>
                     </li>
                   ))}
@@ -95,7 +95,7 @@ export function PmDirectCard({ topic, checklistItems, onSubmit }: Props) {
                     <ChevronRight className="h-3.5 w-3.5" />
                   )}
                   여유되면
-                  <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums">
+                  <span className=" bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums">
                     nice · {niceItems.length}
                   </span>
                 </button>
@@ -107,7 +107,7 @@ export function PmDirectCard({ topic, checklistItems, onSubmit }: Props) {
                         className="flex items-start gap-2 text-muted-foreground"
                         title={it.reason ?? undefined}
                       >
-                        <span className="mt-0.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                        <span className="mt-0.5 flex h-1.5 w-1.5 shrink-0 bg-amber-400" />
                         <span className="flex-1">{it.item}</span>
                       </li>
                     ))}

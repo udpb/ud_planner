@@ -231,9 +231,9 @@ export function PmInputsEditor({ projectId, initial, onSaved }: Props) {
   return (
     <div className="space-y-3">
       {/* Header summary */}
-      <div className="rounded-md border border-primary/30 bg-primary/5 p-3 text-xs">
+      <div className=" border border-brand/30 bg-brand/5 p-3 text-xs">
         <div className="flex items-start gap-2">
-          <StickyNote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+          <StickyNote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
           <div className="flex-1 leading-relaxed">
             <p className="font-semibold text-foreground">PM 외부 reality 입력</p>
             <p className="mt-0.5 text-muted-foreground">
@@ -266,7 +266,7 @@ export function PmInputsEditor({ projectId, initial, onSaved }: Props) {
           {(pmInputs.callNotes ?? []).map((cn, i) => (
             <div
               key={i}
-              className="space-y-1.5 rounded border border-border/60 bg-card p-2.5 text-xs"
+              className="space-y-1.5 border border-border/60 bg-card p-2.5 text-xs"
             >
               <div className="flex gap-1.5">
                 <Input
@@ -319,7 +319,7 @@ export function PmInputsEditor({ projectId, initial, onSaved }: Props) {
       >
         <div className="space-y-2">
           {(pmInputs.assignedCoaches ?? []).map((coach, i) => (
-            <div key={i} className="space-y-1.5 rounded border border-border/60 bg-card p-2.5 text-xs">
+            <div key={i} className="space-y-1.5 border border-border/60 bg-card p-2.5 text-xs">
               <div className="flex gap-1.5">
                 <Input
                   placeholder="이름"
@@ -330,7 +330,7 @@ export function PmInputsEditor({ projectId, initial, onSaved }: Props) {
                 <select
                   value={coach.role ?? ''}
                   onChange={(e) => updateCoach(i, { role: e.target.value || undefined })}
-                  className="h-7 rounded border border-input bg-background px-2 text-xs"
+                  className="h-7 border border-input bg-background px-2 text-xs"
                 >
                   <option value="">역할</option>
                   <option value="lead">lead (총괄)</option>
@@ -371,11 +371,11 @@ export function PmInputsEditor({ projectId, initial, onSaved }: Props) {
         count={counts.evaluators}
       >
         <div className="space-y-2">
-          <p className="rounded bg-amber-50 px-2 py-1 text-[10px] text-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
+          <p className=" bg-amber-50 px-2 py-1 text-[10px] text-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
             ⚠ 본문에 실명 노출 X — LLM 이 관심사·KPI 톤만 반영
           </p>
           {(pmInputs.evaluators ?? []).map((ev, i) => (
-            <div key={i} className="space-y-1.5 rounded border border-border/60 bg-card p-2.5 text-xs">
+            <div key={i} className="space-y-1.5 border border-border/60 bg-card p-2.5 text-xs">
               <div className="flex gap-1.5">
                 <Input
                   placeholder='이름 또는 "평가위원 A"'
@@ -469,17 +469,17 @@ function CollapsibleSection({
 }) {
   const Icon = config.icon
   return (
-    <div className="rounded-md border border-border bg-card">
+    <div className=" border border-border bg-card">
       <button
         type="button"
         onClick={onToggle}
         className="flex w-full items-center justify-between px-3 py-2 text-left"
       >
         <div className="flex items-center gap-2">
-          <Icon className="h-3.5 w-3.5 text-primary" />
+          <Icon className="h-3.5 w-3.5 text-brand" />
           <span className="text-xs font-semibold">{config.label}</span>
           {count > 0 && (
-            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+            <span className=" bg-brand/10 px-1.5 py-0.5 text-[10px] font-medium text-brand">
               {count}
             </span>
           )}

@@ -69,7 +69,7 @@ export function PpProposalSlides({
   return (
     <div className="flex flex-col gap-4">
       {slides.map((s, i) => (
-        <div key={i} className="rounded border border-border bg-muted/10 overflow-hidden">
+        <div key={i} className=" border border-border bg-muted/10 overflow-hidden">
           {s}
         </div>
       ))}

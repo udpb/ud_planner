@@ -184,10 +184,10 @@ function StartForm({
                   type="button"
                   onClick={() => setChannel(value as ChannelType)}
                   className={cn(
-                    'flex-1 flex items-center justify-center gap-2 rounded-md border-2 px-4 py-3 text-sm transition-colors',
+                    'flex-1 flex items-center justify-center gap-2 border-2 px-4 py-3 text-sm transition-colors',
                     channel === value
-                      ? 'border-primary bg-primary/10 text-primary font-semibold'
-                      : 'border-muted hover:border-primary/50',
+                      ? 'border-brand bg-brand/10 text-brand font-semibold'
+                      : 'border-muted hover:border-brand/50',
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -451,7 +451,7 @@ export function AgentChatUI() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* 헤더 */}
         <div className="border-b px-6 py-3 flex items-center gap-3 bg-background">
-          <MessageSquare className="h-5 w-5 text-primary" />
+          <MessageSquare className="h-5 w-5 text-brand" />
           <div className="flex-1">
             <div className="text-sm font-semibold">Planning Agent</div>
             <div className="text-[11px] text-muted-foreground">
@@ -478,7 +478,7 @@ export function AgentChatUI() {
             >
               <div
                 className={cn(
-                  'max-w-[80%] rounded-lg px-4 py-3 text-sm whitespace-pre-wrap',
+                  'max-w-[80%] px-4 py-3 text-sm whitespace-pre-wrap',
                   msg.role === 'user'
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-card border',
@@ -490,7 +490,7 @@ export function AgentChatUI() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-card border rounded-lg px-4 py-3">
+              <div className="bg-card border px-4 py-3">
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
               </div>
             </div>
@@ -580,10 +580,10 @@ export function AgentChatUI() {
                 <span className="text-muted-foreground">완전성</span>
                 <span className="font-bold">{completeness}/100</span>
               </div>
-              <div className="h-2 rounded-full bg-muted overflow-hidden">
+              <div className="h-2 bg-muted overflow-hidden">
                 <div
                   className={cn(
-                    'h-full rounded-full transition-all',
+                    'h-full transition-all',
                     completeness >= 80 ? 'bg-green-500' :
                       completeness >= 50 ? 'bg-amber-400' : 'bg-red-400',
                   )}
@@ -620,7 +620,7 @@ export function AgentChatUI() {
                 <div
                   key={slot}
                   className={cn(
-                    'rounded-md border p-2 text-xs',
+                    ' border p-2 text-xs',
                     isFilled ? 'border-green-200 bg-green-50/50' : 'border-muted bg-muted/30',
                   )}
                 >
@@ -700,7 +700,7 @@ export function AgentChatUI() {
                         <p className="text-[11px]">{finalIntent.derivedStrategy.rfpAnalysis.evalCriteriaStrategy}</p>
                       ) : (
                         finalIntent.derivedStrategy.rfpAnalysis.evalCriteriaStrategy.map((e: any, i: number) => (
-                          <div key={i} className="rounded border p-1.5 mt-1 bg-muted/30">
+                          <div key={i} className=" border p-1.5 mt-1 bg-muted/30">
                             <p className="text-[11px] font-medium">{e.item} {e.score ? `(${e.score}점)` : ''} → {e.pageAllocation}</p>
                             <p className="text-[10px] text-muted-foreground">{e.emphasis}</p>
                           </div>
@@ -720,7 +720,7 @@ export function AgentChatUI() {
                   <p className="text-[11px]">{finalIntent.derivedStrategy.curriculumDirection.designPrinciple}</p>
                   {finalIntent.derivedStrategy.curriculumDirection.weeklyOutline?.map((w: any, i: number) => (
                     <div key={i} className="text-[11px] flex gap-1">
-                      <span className="font-medium text-primary shrink-0">[{w.week}]</span>
+                      <span className="font-medium text-brand shrink-0">[{w.week}]</span>
                       <span>{w.focus} — {w.keyActivity}</span>
                     </div>
                   ))}
@@ -750,7 +750,7 @@ export function AgentChatUI() {
                 <CardContent className="p-3 text-xs space-y-1">
                   <p className="font-medium text-[10px] uppercase text-muted-foreground">리스크 매트릭스</p>
                   {finalIntent.derivedStrategy.riskMatrix.map((r: any, i: number) => (
-                    <div key={i} className="rounded border p-1.5 mt-1 bg-muted/30">
+                    <div key={i} className=" border p-1.5 mt-1 bg-muted/30">
                       <div className="flex items-center gap-1 mb-0.5">
                         <Badge variant="outline" className="text-[9px] h-4">{r.probability}/{r.impact}</Badge>
                         <span className="text-[11px] font-medium">{r.risk}</span>

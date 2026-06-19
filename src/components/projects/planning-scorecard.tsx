@@ -64,10 +64,10 @@ export function PlanningScorecard({ score }: Props) {
 
         {/* 프로그레스 바 */}
         <div className="flex-1 max-w-[200px]">
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+          <div className="h-1.5 w-full overflow-hidden bg-muted">
             <div
               className={cn(
-                'h-full rounded-full transition-all',
+                'h-full transition-all',
                 pct >= 70 ? 'bg-green-500' : pct >= 40 ? 'bg-amber-400' : 'bg-red-400',
               )}
               style={{ width: `${pct}%` }}
@@ -150,13 +150,13 @@ export function PlanningScorecard({ score }: Props) {
             )
 
             const baseClass = cn(
-              'block rounded-lg border p-3 transition-all',
+              'block border p-3 transition-all',
               cat.status === 'good' ? 'border-green-200 bg-green-50/50' :
                 cat.status === 'warn' ? 'border-amber-200 bg-amber-50/50' :
                   'border-red-200 bg-red-50/50',
               // 점수 부족한 카드만 클릭 가능 강조 (good 은 호버 효과 작게)
               href && needsAction
-                ? 'group cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-primary/40'
+                ? 'group cursor-pointer hover:shadow-md hover:scale-[1.02] hover:border-brand/40'
                 : href
                   ? 'group cursor-pointer hover:shadow-sm'
                   : '',

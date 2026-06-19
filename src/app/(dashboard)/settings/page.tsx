@@ -114,7 +114,7 @@ export default function SettingsPage() {
                   type="checkbox"
                   checked={importDryRun}
                   onChange={(e) => setImportDryRun(e.target.checked)}
-                  className="rounded"
+                  className=""
                 />
                 드라이런 (저장 안 함, 파싱 결과만 확인)
               </label>
@@ -126,7 +126,7 @@ export default function SettingsPage() {
               </Button>
             </div>
             {importResult && (
-              <div className="rounded-md bg-muted p-3 text-sm font-mono whitespace-pre-wrap">
+              <div className=" bg-muted p-3 text-sm font-mono whitespace-pre-wrap">
                 {JSON.stringify(importResult, null, 2)}
               </div>
             )}

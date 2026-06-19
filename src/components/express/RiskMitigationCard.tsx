@@ -168,7 +168,7 @@ export function RiskMitigationCard({ projectId, risks, onChange }: Props) {
       </CardHeader>
       <CardContent className="space-y-2 pt-0">
         {risks.length === 0 && !addOpen && (
-          <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+          <div className=" border border-dashed p-3 text-xs text-muted-foreground">
             평가위원이 의심할 수 있는 위험을 PM 이 능동적으로 답변합니다.
             <br />
             예: "신규 프로그램 운영 경험 부족 → 검증된 6개 협력 코치 풀 + 운영 매뉴얼 v2 보유"
@@ -180,12 +180,12 @@ export function RiskMitigationCard({ projectId, risks, onChange }: Props) {
           return (
             <div
               key={i}
-              className={cn('rounded-md border p-2.5 text-xs', meta.bg, meta.border)}
+              className={cn(' border p-2.5 text-xs', meta.bg, meta.border)}
             >
               <div className="flex items-start gap-2">
                 <span
                   className={cn(
-                    'inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-medium',
+                    'inline-flex shrink-0 items-center gap-1 border px-1.5 py-0.5 text-[10px] font-medium',
                     meta.tone,
                     meta.border,
                   )}
@@ -208,7 +208,7 @@ export function RiskMitigationCard({ projectId, risks, onChange }: Props) {
                         <button
                           type="button"
                           onClick={() => updateRisk(i, { acceptedByPm: true })}
-                          className="ml-1 rounded border border-[color:var(--green)]/40 px-1 text-[10px] text-[color:var(--green)] hover:bg-[color:var(--green)]/10"
+                          className="ml-1 border border-[color:var(--green)]/40 px-1 text-[10px] text-[color:var(--green)] hover:bg-[color:var(--green)]/10"
                         >
                           <Check className="h-2.5 w-2.5" /> 수락
                         </button>
@@ -273,7 +273,7 @@ function AddRiskForm({
   }
 
   return (
-    <div className="rounded-md border border-dashed bg-background p-2.5 text-xs space-y-2">
+    <div className=" border border-dashed bg-background p-2.5 text-xs space-y-2">
       <div>
         <label className="block text-[10px] font-medium text-muted-foreground">
           평가위원 의심 포인트 (한 문장)
@@ -305,7 +305,7 @@ function AddRiskForm({
           onChange={(e) =>
             setSeverity(e.target.value as RiskMitigation['severity'])
           }
-          className="rounded border bg-background px-2 py-1 text-xs"
+          className=" border bg-background px-2 py-1 text-xs"
         >
           <option value="critical">Critical (사업 자체 흔드는)</option>
           <option value="major">Major (수행 품질 저하)</option>

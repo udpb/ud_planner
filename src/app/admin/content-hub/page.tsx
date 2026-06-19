@@ -117,7 +117,7 @@ export default async function ContentHubPage({
         {pendingCount > 0 && !isReviewMode && (
           <Link
             href="/admin/content-hub?status=pending-review"
-            className="mb-3 flex items-center gap-2 rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] px-3 py-2 text-xs hover:bg-[color:var(--cyan)]/10"
+            className="mb-3 flex items-center gap-2 border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] px-3 py-2 text-xs hover:bg-[color:var(--cyan)]/10"
           >
             <span className="text-base">🔵</span>
             <span>
@@ -127,7 +127,7 @@ export default async function ContentHubPage({
           </Link>
         )}
         {isReviewMode && (
-          <div className="mb-3 rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] px-3 py-2 text-xs text-[color:var(--body-text)]">
+          <div className="mb-3 border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] px-3 py-2 text-xs text-[color:var(--body-text)]">
             🔵 <strong>PM 제안 검수 모드</strong> · 자산 카드의 [편집] → 페이지
             하단에서 승인/반려 가능. 또는 직접 편집 후 status 를 stable 로
             변경하면 추천 풀에 합류됩니다.
@@ -241,7 +241,7 @@ export default async function ContentHubPage({
                             )}
                             {/* PM 제안 검수 모드: submitterNote 노출 */}
                             {a.submitterNote && (
-                              <div className="mt-1 rounded border border-[color:var(--cyan)]/30 bg-[color:var(--light-beige)] px-1.5 py-0.5 text-[10px] text-[color:var(--body-text)]">
+                              <div className="mt-1 border border-[color:var(--cyan)]/30 bg-[color:var(--light-beige)] px-1.5 py-0.5 text-[10px] text-[color:var(--body-text)]">
                                 💬 {a.submitterNote}
                               </div>
                             )}
@@ -257,7 +257,7 @@ export default async function ContentHubPage({
                             {stageSpec ? (
                               <span className="inline-flex items-center gap-1.5">
                                 <span
-                                  className="inline-block h-2 w-2 rounded-full"
+                                  className="inline-block h-2 w-2"
                                   style={{ backgroundColor: stageSpec.colorHex }}
                                 />
                                 <span className="text-xs">

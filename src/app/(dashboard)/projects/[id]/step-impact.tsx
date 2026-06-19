@@ -377,7 +377,7 @@ export function StepImpact({
       {impactForecast ? (
         <div
           className={cn(
-            'rounded-md border px-4 py-3',
+            ' border px-4 py-3',
             impactForecast.isStale
               ? 'border-amber-300 bg-amber-50/40'
               : 'border-violet-200 bg-violet-50/40',
@@ -395,11 +395,11 @@ export function StepImpact({
                   📊 사전 임팩트 리포트
                 </span>
                 {impactForecast.isStale && (
-                  <span className="rounded bg-amber-200/60 px-1.5 py-0.5 text-[10px] text-amber-900">
+                  <span className=" bg-amber-200/60 px-1.5 py-0.5 text-[10px] text-amber-900">
                     재계산 필요
                   </span>
                 )}
-                <span className="rounded bg-white/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                <span className=" bg-white/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                   {impactForecast.calibration === 'auto-conservative'
                     ? '🤖 AI 보수'
                     : impactForecast.calibration === 'pm-locked'
@@ -441,7 +441,7 @@ export function StepImpact({
             <Link
               href={`/projects/${projectId}/impact-forecast`}
               className={cn(
-                'shrink-0 rounded border bg-white px-2.5 py-1 text-[11px] font-medium',
+                'shrink-0 border bg-white px-2.5 py-1 text-[11px] font-medium',
                 impactForecast.isStale
                   ? 'border-amber-400 text-amber-700 hover:bg-amber-100'
                   : 'border-violet-400 text-violet-700 hover:bg-violet-100',
@@ -452,7 +452,7 @@ export function StepImpact({
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-between gap-3 rounded-md border border-violet-200 bg-violet-50/40 px-4 py-2">
+        <div className="flex items-center justify-between gap-3 border border-violet-200 bg-violet-50/40 px-4 py-2">
           <div className="text-xs">
             <span className="font-semibold text-violet-900">
               📊 사전 임팩트 리포트 (SROI Forecast)
@@ -464,7 +464,7 @@ export function StepImpact({
           </div>
           <Link
             href={`/projects/${projectId}/impact-forecast`}
-            className="shrink-0 rounded border border-violet-400 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
+            className="shrink-0 border border-violet-400 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
           >
             생성하기 →
           </Link>
@@ -480,8 +480,8 @@ export function StepImpact({
 
       {/* 자동 추출 알림 — Activity/Input 이 이미 확정돼 있으면 표시 */}
       {showAutoExtractedBanner && (
-        <div className="rounded-md border border-primary/30 bg-primary/10 p-3 text-sm">
-          <span className="font-medium text-primary">자동 추출됨:</span>{' '}
+        <div className=" border border-brand/30 bg-brand/10 p-3 text-sm">
+          <span className="font-medium text-brand">자동 추출됨:</span>{' '}
           이 Logic Model 의
           {autoExtracted?.activities && ' Activity 는 Step 2 커리큘럼 세션에서,'}
           {autoExtracted?.inputs && ' Input 은 Step 3 코치 + Step 4 예산에서'}
@@ -495,7 +495,7 @@ export function StepImpact({
       )}
 
       {error && (
-        <p className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2 text-sm text-destructive">{error}</p>
+        <p className=" border border-destructive/30 bg-destructive/5 px-4 py-2 text-sm text-destructive">{error}</p>
       )}
 
       {/* ============ Phase 1: Goal Selection ============ */}
@@ -515,7 +515,7 @@ export function StepImpact({
           </div>
 
           {!rfpParsed && (
-            <div className="flex h-40 flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed text-sm text-muted-foreground">
+            <div className="flex h-40 flex-col items-center justify-center gap-2 border-2 border-dashed text-sm text-muted-foreground">
               <Target className="h-8 w-8 opacity-20" />
               <p>RFP 분석이 먼저 필요합니다</p>
             </div>
@@ -532,9 +532,9 @@ export function StepImpact({
                     key={i}
                     onClick={() => { setSelectedIdx(i); setCustomGoal('') }}
                     className={cn(
-                      'rounded-xl border-2 p-4 text-left transition-all',
-                      isSelected ? FOCUS_SELECTED[c.focus] ?? 'border-primary ring-2 ring-primary/20'
-                        : FOCUS_COLORS[c.focus] ?? 'border-muted hover:border-primary/50',
+                      ' border-2 p-4 text-left transition-all',
+                      isSelected ? FOCUS_SELECTED[c.focus] ?? 'border-brand ring-2 ring-primary/20'
+                        : FOCUS_COLORS[c.focus] ?? 'border-muted hover:border-brand/50',
                     )}
                   >
                     <div className="flex items-center gap-2">
@@ -555,7 +555,7 @@ export function StepImpact({
 
           {/* AI 질문 */}
           {clarifyingQs.length > 0 && (
-            <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-3">
+            <div className=" border border-blue-200 bg-blue-50/50 p-3">
               <p className="flex items-center gap-1.5 text-xs font-medium text-blue-800">
                 <HelpCircle className="h-3.5 w-3.5" /> AI 확인 요청
               </p>
@@ -636,8 +636,8 @@ export function StepImpact({
           <ResearchPanel projectId={projectId} />
 
           {/* Confirmed goal banner */}
-          <div className="rounded-lg border-l-4 border-primary bg-primary/5 p-4">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-primary/70">확정된 Impact Goal</p>
+          <div className=" border-l-4 border-brand bg-brand/5 p-4">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-brand/70">확정된 Impact Goal</p>
             <p className="mt-1 text-base font-semibold">{confirmedGoal}</p>
           </div>
 
@@ -646,7 +646,7 @@ export function StepImpact({
               {/* Logic chain — editable */}
               <div className="grid grid-cols-5 gap-3">
                 {CHAIN_KEYS.map((key) => (
-                  <div key={key} className={cn('rounded-lg border p-3', CHAIN_COLORS[key])}>
+                  <div key={key} className={cn(' border p-3', CHAIN_COLORS[key])}>
                     <div className="mb-2 flex items-center justify-between">
                       <p className={cn('text-[11px] font-bold uppercase tracking-wide', CHAIN_TEXT[key])}>{CHAIN_LABELS[key]}</p>
                       <span className="text-[10px] text-muted-foreground">{logicModel[key]?.length ?? 0}</span>
@@ -668,10 +668,10 @@ export function StepImpact({
                             ) : (
                               <div className="flex items-start gap-1">
                                 <span className="mt-0.5 shrink-0 text-muted-foreground">·</span>
-                                <div className="flex-1 cursor-pointer rounded px-0.5 hover:bg-white/60" onClick={() => startEdit(key, i, item)}>
+                                <div className="flex-1 cursor-pointer px-0.5 hover:bg-white/60" onClick={() => startEdit(key, i, item)}>
                                   {itemId && <span className="mr-1 font-mono text-[9px] text-muted-foreground">{itemId}</span>}
                                   <span>{text}</span>
-                                  {sroiHint && <span className="ml-1 text-[9px] text-primary/60">({sroiHint})</span>}
+                                  {sroiHint && <span className="ml-1 text-[9px] text-brand/60">({sroiHint})</span>}
                                 </div>
                                 <button onClick={() => removeItem(key, i)} className="shrink-0 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive"><X className="h-2.5 w-2.5" /></button>
                               </div>
@@ -687,13 +687,13 @@ export function StepImpact({
 
               {/* 외부 인사이트 (LLM이 제안한 트렌드/벤치마크/팁) */}
               {logicModel.externalInsights?.length > 0 && (
-                <div className="rounded-lg border border-cyan-200 bg-cyan-50/30 p-3 space-y-1.5">
+                <div className=" border border-cyan-200 bg-cyan-50/30 p-3 space-y-1.5">
                   <p className="flex items-center gap-1.5 text-xs font-medium text-cyan-800">
                     <Sparkles className="h-3.5 w-3.5" /> 외부 인사이트 &amp; 트렌드
                   </p>
                   {logicModel.externalInsights.map((insight: any, i: number) => (
                     <div key={i} className="text-xs text-cyan-700">
-                      <span className="mr-1 rounded bg-cyan-100 px-1 py-0.5 text-[9px] font-medium uppercase">
+                      <span className="mr-1 bg-cyan-100 px-1 py-0.5 text-[9px] font-medium uppercase">
                         {insight.type}
                       </span>
                       {insight.message}
@@ -708,7 +708,7 @@ export function StepImpact({
               {/* 미저장 알림 */}
               {isDirty && (
                 <p className="text-xs text-amber-600 flex items-center gap-1">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+                  <span className="inline-block h-1.5 w-1.5 bg-amber-500" />
                   수정사항이 저장되지 않았습니다
                 </p>
               )}
@@ -743,7 +743,7 @@ export function StepImpact({
               </div>
             </>
           ) : (
-            <div className="flex h-40 flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed text-sm text-muted-foreground">
+            <div className="flex h-40 flex-col items-center justify-center gap-3 border-2 border-dashed text-sm text-muted-foreground">
               <Brain className="h-10 w-10 opacity-20" />
               <p>위 버튼을 눌러 Logic Model을 생성하세요</p>
             </div>

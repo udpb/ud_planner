@@ -801,7 +801,7 @@ export function ExpressShell(props: Props) {
           <div className="flex items-center justify-end gap-2 border-t border-dashed bg-muted/20 px-6 py-1.5">
             <span
               className={cn(
-                'rounded-md px-2 py-0.5 text-xs',
+                ' px-2 py-0.5 text-xs',
                 inspectorReport.passed
                   ? 'bg-green-100 text-green-800'
                   : 'bg-amber-100 text-amber-800',
@@ -920,7 +920,7 @@ export function ExpressShell(props: Props) {
             </span>
             <span
               className={cn(
-                'rounded px-1.5 py-0.5 text-[10px]',
+                ' px-1.5 py-0.5 text-[10px]',
                 impactForecast.isStale
                   ? 'bg-amber-100 text-amber-800'
                   : 'bg-[color:var(--cyan)]/15 text-[color:var(--cyan)]',
@@ -942,7 +942,7 @@ export function ExpressShell(props: Props) {
             <Link
               href={`/projects/${props.projectId}/impact-forecast`}
               className={cn(
-                'rounded-md border bg-background px-3 py-1 text-xs',
+                ' border bg-background px-3 py-1 text-xs',
                 impactForecast.isStale
                   ? 'border-amber-400 text-amber-700 hover:bg-amber-100'
                   : 'border-[color:var(--cyan)]/40 text-[color:var(--cyan)] hover:bg-[color:var(--cyan)]/10',
@@ -973,9 +973,9 @@ export function ExpressShell(props: Props) {
 
       {/* 1차본 완료 시 정밀화 추천 패널 */}
       {deepSuggestions.length > 0 && (
-        <div className="border-b border-primary/30 bg-orange-50/40 px-6 py-3">
+        <div className="border-b border-brand/30 bg-orange-50/40 px-6 py-3">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-semibold text-primary">
+            <span className="text-sm font-semibold text-brand">
               🎯 1차본 완성! 정밀화 권장 영역
             </span>
             {deepSuggestions.map((s, i) => (
@@ -984,7 +984,7 @@ export function ExpressShell(props: Props) {
                 type="button"
                 onClick={() => handoffToDeep(s.targetStep)}
                 disabled={handingOff}
-                className="flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs text-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+                className="flex items-center gap-1.5 border bg-background px-2.5 py-1 text-xs text-foreground hover:border-brand/40 hover:text-brand disabled:opacity-50"
                 title={s.reason}
               >
                 Step {s.targetStep} →
@@ -1009,7 +1009,7 @@ export function ExpressShell(props: Props) {
           className={cn(
             'flex-1 py-2 text-xs font-medium transition-colors',
             mobileView === 'chat'
-              ? 'border-b-2 border-primary text-primary'
+              ? 'border-b-2 border-brand text-brand'
               : 'text-muted-foreground hover:text-foreground',
           )}
         >
@@ -1021,7 +1021,7 @@ export function ExpressShell(props: Props) {
           className={cn(
             'flex-1 py-2 text-xs font-medium transition-colors',
             mobileView === 'preview'
-              ? 'border-b-2 border-primary text-primary'
+              ? 'border-b-2 border-brand text-brand'
               : 'text-muted-foreground hover:text-foreground',
           )}
         >
@@ -1033,14 +1033,14 @@ export function ExpressShell(props: Props) {
           className={cn(
             'relative flex-1 py-2 text-xs font-medium transition-colors',
             mobileView === 'sidebar'
-              ? 'border-b-2 border-primary text-primary'
+              ? 'border-b-2 border-brand text-brand'
               : 'text-muted-foreground hover:text-foreground',
           )}
         >
           🤖 진단
           {!draft.meta.autoDiagnosis?.channel && (
             <span
-              className="absolute right-2 top-1.5 h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
+              className="absolute right-2 top-1.5 h-1.5 w-1.5 bg-primary animate-pulse"
               title="진단 실행 권장"
             />
           )}
@@ -1112,7 +1112,7 @@ export function ExpressShell(props: Props) {
                     </span>
                     {!draft.meta.autoDiagnosis?.channel && (
                       <span
-                        className="absolute -top-0.5 right-1 h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
+                        className="absolute -top-0.5 right-1 h-1.5 w-1.5 bg-primary animate-pulse"
                         title="진단 실행 권장"
                       />
                     )}
@@ -1130,7 +1130,7 @@ export function ExpressShell(props: Props) {
                     {draft.meta.autoDiagnosis?.channel &&
                       !draft.meta.autoDiagnosis.channel.confirmedByPm && (
                         <span
-                          className="absolute -top-0.5 right-1 h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"
+                          className="absolute -top-0.5 right-1 h-1.5 w-1.5 bg-amber-500 animate-pulse"
                           title="채널 컨펌 필요"
                         />
                       )}
@@ -1147,7 +1147,7 @@ export function ExpressShell(props: Props) {
                     </span>
                     {props.initialClientDoc && (
                       <span
-                        className="ml-1 h-1.5 w-1.5 rounded-full bg-[color:var(--green)]"
+                        className="ml-1 h-1.5 w-1.5 bg-[color:var(--green)]"
                         title="문서 추출됨"
                       />
                     )}
@@ -1169,7 +1169,7 @@ export function ExpressShell(props: Props) {
                         (pi?.assignedCoaches?.length ?? 0) +
                         (pi?.evaluators?.length ?? 0)
                       return n > 0 ? (
-                        <span className="ml-1 h-1.5 w-1.5 rounded-full bg-[color:var(--green)]" title={`${n}건 입력됨`} />
+                        <span className="ml-1 h-1.5 w-1.5 bg-[color:var(--green)]" title={`${n}건 입력됨`} />
                       ) : null
                     })()}
                   </TabsTrigger>
@@ -1228,7 +1228,7 @@ export function ExpressShell(props: Props) {
                       <RenewalSeedCard projectId={props.projectId} />
                     )}
                   {!draft.meta.autoDiagnosis?.channel && (
-                    <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+                    <div className=" border border-dashed p-3 text-xs text-muted-foreground">
                       먼저 [AI 진단] 탭에서 진단을 실행하면 채널이 자동 감지됩니다.
                     </div>
                   )}

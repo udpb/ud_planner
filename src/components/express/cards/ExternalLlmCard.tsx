@@ -45,7 +45,7 @@ export function ExternalLlmCard({ topic, generatedPrompt, onPaste }: Props) {
           <div className="text-xs text-muted-foreground">
             아래 프롬프트를 복사해서 ChatGPT/Claude 등에 붙여넣고, 답을 다시 여기 붙여넣으세요.
           </div>
-          <div className="rounded-md border bg-background p-2.5 text-xs text-foreground/85 whitespace-pre-wrap">
+          <div className=" border bg-background p-2.5 text-xs text-foreground/85 whitespace-pre-wrap">
             {generatedPrompt}
           </div>
           <Button size="sm" variant="outline" onClick={handleCopy} className="text-xs">

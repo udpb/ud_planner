@@ -28,7 +28,7 @@ export function BookmarkletClient() {
       </p>
       <a
         href={code}
-        className="inline-block rounded-md border-2 border-dashed border-primary/60 bg-primary/5 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10"
+        className="inline-block border-2 border-dashed border-brand/60 bg-brand/5 px-4 py-2 text-sm font-medium text-brand hover:bg-brand/10"
         onClick={(e) => e.preventDefault()}
       >
         ★ UD 자산 수집
@@ -37,7 +37,7 @@ export function BookmarkletClient() {
         <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
           ▶ 원본 코드 보기 (수동 복사용)
         </summary>
-        <pre className="mt-2 overflow-x-auto rounded-md border bg-muted/30 p-2 text-[10px]">
+        <pre className="mt-2 overflow-x-auto border bg-muted/30 p-2 text-[10px]">
           {code}
         </pre>
       </details>

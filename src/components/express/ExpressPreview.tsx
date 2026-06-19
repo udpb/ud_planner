@@ -78,12 +78,12 @@ export function ExpressPreview({
             {draft.beforeAfter?.before && draft.beforeAfter?.after && (
               <>
                 <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
-                  <div className="rounded-md border bg-background p-2">
+                  <div className=" border bg-background p-2">
                     <div className="font-medium text-muted-foreground">Before</div>
                     <div className="mt-0.5 line-clamp-3">{draft.beforeAfter.before}</div>
                   </div>
-                  <div className="rounded-md border bg-background p-2">
-                    <div className="font-medium text-primary">After</div>
+                  <div className=" border bg-background p-2">
+                    <div className="font-medium text-brand">After</div>
                     <div className="mt-0.5 line-clamp-3">{draft.beforeAfter.after}</div>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ export function ExpressPreview({
                     {isFilled ? (
                       <CheckCircle2 className="h-4 w-4 text-green-600" />
                     ) : isPartial || isActive ? (
-                      <Circle className="h-4 w-4 text-primary" />
+                      <Circle className="h-4 w-4 text-brand" />
                     ) : (
                       <Circle className="h-4 w-4 text-muted-foreground" />
                     )}
@@ -181,9 +181,9 @@ export function ExpressPreview({
                   <div
                     key={ref.assetId}
                     className={cn(
-                      'flex items-start gap-3 rounded-md border p-3 text-sm transition-all',
+                      'flex items-start gap-3 border p-3 text-sm transition-all',
                       ref.acceptedByPm
-                        ? 'border-primary/30 bg-orange-50/50'
+                        ? 'border-brand/30 bg-orange-50/50'
                         : 'border-muted bg-muted/20',
                     )}
                   >
@@ -275,7 +275,7 @@ function SmartChecklist({
         : 'text-muted-foreground'
 
   return (
-    <div className="mt-3 rounded-md border bg-background/60 p-2">
+    <div className="mt-3 border bg-background/60 p-2">
       <div className="mb-1.5 flex items-center justify-between">
         <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           SMART 체크
@@ -290,7 +290,7 @@ function SmartChecklist({
             key={s.axis}
             title={s.hint}
             className={cn(
-              'inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-medium leading-tight cursor-help',
+              'inline-flex items-center gap-1 border px-1.5 py-0.5 text-[10px] font-medium leading-tight cursor-help',
               s.passed
                 ? 'border-[color:var(--green)]/40 bg-[color:var(--green)]/10 text-[color:var(--green)]'
                 : 'border-muted bg-muted/40 text-muted-foreground',
@@ -348,14 +348,14 @@ function CitationLine({
         <span className="text-muted-foreground [&>svg]:h-3.5 [&>svg]:w-3.5">{icon}</span>
         <span className="flex-1">{c.oneLiner}</span>
         <span
-          className={cn('rounded-md px-1.5 py-0.5 text-[10px] tabular-nums', confColor)}
+          className={cn(' px-1.5 py-0.5 text-[10px] tabular-nums', confColor)}
           title={`신뢰도 ${(conf * 100).toFixed(0)}% — ${c.rationale}`}
         >
           {confLabel} {(conf * 100).toFixed(0)}
         </span>
         <a
           href={`/projects/${projectId}${c.deepLink}`}
-          className="flex items-center gap-1 text-xs text-primary hover:underline"
+          className="flex items-center gap-1 text-xs text-brand hover:underline"
         >
           Deep <ExternalLink className="h-3 w-3" />
         </a>
@@ -367,7 +367,7 @@ function CitationLine({
           {c.citedAssets?.map((a) => (
             <span
               key={a.id}
-              className="rounded-full bg-orange-50 px-2 py-0.5 text-[10px] text-primary border border-primary/20"
+              className=" bg-orange-50 px-2 py-0.5 text-[10px] text-brand border border-brand/20"
               title={a.id}
             >
               📎 {a.name.length > 22 ? a.name.slice(0, 22) + '…' : a.name}
@@ -377,7 +377,7 @@ function CitationLine({
             <button
               type="button"
               onClick={handleCopyPrompt}
-              className="rounded-md border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary"
+              className=" border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground hover:border-brand/40 hover:text-brand"
               title="외부 LLM 또는 coach-finder 에 붙여넣을 프롬프트 복사"
             >
               📋 외부 프롬프트 복사

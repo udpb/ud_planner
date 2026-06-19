@@ -56,7 +56,7 @@ function ProgressBar({ pct, color = 'primary' }: { pct: number; color?: 'primary
           ? 'bg-red-500'
           : 'bg-primary'
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+    <div className="h-2 w-full overflow-hidden bg-muted">
       <div
         className={cn('h-full transition-all', colorClass)}
         style={{ width: `${Math.min(100, Math.max(0, pct))}%` }}

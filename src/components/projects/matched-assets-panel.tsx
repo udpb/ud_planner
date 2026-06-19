@@ -191,7 +191,7 @@ export function MatchedAssetsPanel({
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between gap-3">
           <span className="flex items-center gap-2 text-sm font-semibold">
-            <Sparkles className="h-4 w-4 text-primary" />
+            <Sparkles className="h-4 w-4 text-brand" />
             이 RFP 에 매칭된 UD 자산 {uniqueAssetIds.size}개
           </span>
           <Badge variant="outline" className="shrink-0 font-mono text-[11px]">
@@ -432,10 +432,10 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
   return (
     <div
       className={cn(
-        'rounded-md border p-3 transition-colors',
+        ' border p-3 transition-colors',
         isChild ? 'bg-muted/40 p-2.5' : '',
         accepted
-          ? 'border-primary/50 bg-primary/[0.03]'
+          ? 'border-brand/50 bg-brand/[0.03]'
           : 'border-border bg-background hover:border-border/80',
       )}
     >
@@ -451,7 +451,7 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
         </div>
         <div
           className={cn(
-            'shrink-0 rounded-md border px-2 py-0.5 text-[11px] font-mono font-semibold',
+            'shrink-0 border px-2 py-0.5 text-[11px] font-mono font-semibold',
             scoreClass,
           )}
           title={`매칭 점수 ${matchScore.toFixed(2)} (${band})`}
@@ -463,7 +463,7 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
       {/* 뱃지 라인: Value Chain 단계 + 증거 유형 */}
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         <span
-          className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium"
+          className="inline-flex items-center gap-1 border px-2 py-0.5 text-[10px] font-medium"
           style={{
             borderColor: stage.colorHex,
             color: stage.colorHex,
@@ -472,7 +472,7 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
           title={stage.description}
         >
           <span
-            className="inline-block h-1.5 w-1.5 rounded-full"
+            className="inline-block h-1.5 w-1.5"
             style={{ backgroundColor: stage.colorHex }}
           />
           {stage.numberedLabel}
@@ -496,7 +496,7 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
               key={i}
               className="flex gap-1.5 text-[11px] leading-relaxed text-muted-foreground"
             >
-              <span className="mt-0.5 shrink-0 text-primary">•</span>
+              <span className="mt-0.5 shrink-0 text-brand">•</span>
               <span>{r}</span>
             </li>
           ))}
@@ -516,7 +516,7 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
             {expanded ? '초안 접기' : '초안 보기'}
           </Button>
           {expanded && (
-            <div className="mt-1 rounded-md border border-dashed bg-muted/30 p-2">
+            <div className="mt-1 border border-dashed bg-muted/30 p-2">
               <p className="text-[11px] leading-relaxed text-foreground/80">
                 {asset.narrativeSnippet}
               </p>
@@ -534,7 +534,7 @@ function AssetCard({ match, accepted, disabled, onToggle, isChild = false }: Ass
           htmlFor={`toggle-${asset.id}-${match.section}`}
           className={cn(
             'flex cursor-pointer items-center gap-2 text-xs font-medium',
-            accepted ? 'text-primary' : 'text-muted-foreground',
+            accepted ? 'text-brand' : 'text-muted-foreground',
             disabled && 'cursor-wait opacity-60',
           )}
         >

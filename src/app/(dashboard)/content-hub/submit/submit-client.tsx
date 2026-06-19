@@ -285,8 +285,8 @@ export function SubmitAssetClient() {
               onClick={() => fileInputRef.current?.click()}
               className={`cursor-pointer border-2 border-dashed p-6 text-center transition-colors ${
                 uploadDragOver
-                  ? 'border-primary bg-primary/5'
-                  : 'border-muted-foreground/30 hover:border-primary/50'
+                  ? 'border-brand bg-brand/5'
+                  : 'border-muted-foreground/30 hover:border-brand/50'
               }`}
             >
               <input
@@ -516,7 +516,7 @@ export function SubmitAssetClient() {
                 <select
                   value={manualCategory}
                   onChange={(e) => setManualCategory(e.target.value)}
-                  className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm"
+                  className="mt-1 w-full border bg-background px-2 py-1.5 text-sm"
                 >
                   {CATEGORIES.map((c) => (
                     <option key={c.value} value={c.value}>
@@ -530,7 +530,7 @@ export function SubmitAssetClient() {
                 <select
                   value={manualEvidence}
                   onChange={(e) => setManualEvidence(e.target.value)}
-                  className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm"
+                  className="mt-1 w-full border bg-background px-2 py-1.5 text-sm"
                 >
                   {EVIDENCE.map((c) => (
                     <option key={c.value} value={c.value}>
@@ -544,7 +544,7 @@ export function SubmitAssetClient() {
                 <select
                   value={manualStage}
                   onChange={(e) => setManualStage(e.target.value)}
-                  className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm"
+                  className="mt-1 w-full border bg-background px-2 py-1.5 text-sm"
                 >
                   {STAGES.map((c) => (
                     <option key={c.value} value={c.value}>
@@ -574,8 +574,8 @@ export function SubmitAssetClient() {
                       }
                       className={
                         active
-                          ? 'rounded-md bg-primary px-2 py-0.5 text-xs text-primary-foreground'
-                          : 'rounded-md border px-2 py-0.5 text-xs hover:border-primary/40'
+                          ? ' bg-primary px-2 py-0.5 text-xs text-primary-foreground'
+                          : ' border px-2 py-0.5 text-xs hover:border-brand/40'
                       }
                     >
                       {s.label}

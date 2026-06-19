@@ -134,15 +134,15 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
               {result.targetStage?.map((s) => <Badge key={s} variant="secondary" className="text-xs">{s}</Badge>)}
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="rounded-md bg-muted p-2">
+              <div className=" bg-muted p-2">
                 <p className="text-muted-foreground">예산(VAT포함)</p>
                 <p className="font-medium">{result.totalBudgetVat ? `${(result.totalBudgetVat / 1e8).toFixed(2)}억` : '—'}</p>
               </div>
-              <div className="rounded-md bg-muted p-2">
+              <div className=" bg-muted p-2">
                 <p className="text-muted-foreground">참여인원</p>
                 <p className="font-medium">{result.targetCount ? `${result.targetCount}명` : '—'}</p>
               </div>
-              <div className="rounded-md bg-muted p-2">
+              <div className=" bg-muted p-2">
                 <p className="text-muted-foreground">평가항목</p>
                 <p className="font-medium">{result.evalCriteria?.length ?? 0}개</p>
               </div>
@@ -155,16 +155,16 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
       {expanded && (
         <CardContent className="space-y-3 pt-0">
           {/* 모드 전환 */}
-          <div className="flex rounded-md border p-0.5 text-xs">
+          <div className="flex border p-0.5 text-xs">
             <button
               onClick={() => setMode('pdf')}
-              className={`flex-1 rounded py-1 transition-colors ${mode === 'pdf' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`flex-1 py-1 transition-colors ${mode === 'pdf' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
             >
               PDF 업로드
             </button>
             <button
               onClick={() => setMode('text')}
-              className={`flex-1 rounded py-1 transition-colors ${mode === 'text' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`flex-1 py-1 transition-colors ${mode === 'text' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
             >
               텍스트 붙여넣기
             </button>
@@ -178,7 +178,7 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
                   onDrop={handleDrop}
                   onDragOver={(e) => e.preventDefault()}
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/30 p-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/30"
+                  className="flex cursor-pointer flex-col items-center justify-center gap-2 border-2 border-dashed border-muted-foreground/30 p-6 text-center transition-colors hover:border-brand/50 hover:bg-muted/30"
                 >
                   <Upload className="h-8 w-8 text-muted-foreground/50" />
                   <p className="text-sm font-medium">PDF를 여기에 드래그하거나 클릭</p>
@@ -192,8 +192,8 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
                   />
                 </div>
               ) : (
-                <div className="flex items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2">
-                  <FileText className="h-4 w-4 text-primary shrink-0" />
+                <div className="flex items-center gap-2 border bg-muted/40 px-3 py-2">
+                  <FileText className="h-4 w-4 text-brand shrink-0" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-medium">{file.name}</p>
                     <p className="text-[10px] text-muted-foreground">{(file.size / 1024).toFixed(0)} KB</p>
@@ -221,10 +221,10 @@ export function RfpParser({ projectId, initialParsed, onParsed }: Props) {
           <button
             onClick={handleParse}
             disabled={loading || !canSubmit}
-            className={`w-full rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            className={`w-full px-3 py-2 text-sm font-medium transition-colors ${
               loading || !canSubmit
                 ? 'cursor-not-allowed bg-muted text-muted-foreground'
-                : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                : 'bg-primary text-primary-foreground hover:bg-brand/90'
             }`}
           >
             {loading ? (

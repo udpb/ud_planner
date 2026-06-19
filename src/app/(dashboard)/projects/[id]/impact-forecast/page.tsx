@@ -71,7 +71,7 @@ export default async function ImpactForecastPage({ params }: Params) {
           </Link>
 
           {!configured && (
-            <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+            <div className=" border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
               <strong>IMPACT_MEASUREMENT_DATABASE_URL 미설정</strong> — Vercel
               환경변수에 read-only Supabase 자격증명을 추가하면 사전 임팩트
               계산이 자동으로 시작됩니다. (시스템 관리자에게 요청)
@@ -79,7 +79,7 @@ export default async function ImpactForecastPage({ params }: Params) {
           )}
 
           {!forecast && configured && (
-            <div className="rounded-md border bg-muted/30 p-4 text-sm">
+            <div className=" border bg-muted/30 p-4 text-sm">
               <p className="font-medium">아직 사전 임팩트 리포트가 없습니다.</p>
               <p className="mt-1 text-muted-foreground">
                 Express 에서 1차본을 승인하면 자동으로 생성됩니다. 또는 아래

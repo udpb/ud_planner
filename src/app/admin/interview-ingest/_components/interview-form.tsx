@@ -114,7 +114,7 @@ export function InterviewForm() {
           id="outcome"
           value={outcome}
           onChange={(e) => setOutcome(e.target.value as 'won' | 'lost' | 'cancelled')}
-          className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+          className="h-9 w-full border bg-background px-3 text-sm"
           disabled={busy}
         >
           <option value="won">🏆 수주</option>

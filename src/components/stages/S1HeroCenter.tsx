@@ -68,7 +68,7 @@ export function S1HeroCenter({
           style={{ color: 'var(--primary-orange)' }}
         >
           <span
-            className="h-1.5 w-1.5 rounded-full"
+            className="h-1.5 w-1.5"
             style={{ background: 'var(--primary-orange)' }}
           />
           Stage 01 · RFP Analysis · 완료
@@ -98,7 +98,7 @@ export function S1HeroCenter({
             style={{ color: 'var(--primary-orange)' }}
           >
             <span
-              className="h-1.5 w-1.5 rounded-full"
+              className="h-1.5 w-1.5"
               style={{ background: 'var(--primary-orange)' }}
             />
             Extracted · Automatic
@@ -207,7 +207,7 @@ export function S1HeroCenter({
         style={{ color: 'var(--primary-orange)' }}
       >
         <span
-          className="h-1.5 w-1.5 rounded-full"
+          className="h-1.5 w-1.5"
           style={{ background: 'var(--primary-orange)' }}
         />
         Stage 01 · RFP Analysis
@@ -266,7 +266,7 @@ export function S1HeroCenter({
               style={{ background: 'var(--primary-orange)' }}
             >
               {pending ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent" />
               ) : (
                 <svg
                   width="20"
@@ -483,7 +483,7 @@ export function S1HeroCenter({
           style={{ color: 'var(--action-orange)' }}
         >
           <span
-            className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            className="mr-1.5 inline-block h-1.5 w-1.5 align-middle"
             style={{ background: 'var(--action-orange)' }}
           />
           After Analysis · Automatic

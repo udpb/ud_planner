@@ -193,13 +193,13 @@ export default async function BrainPage({
           <div className="flex gap-2 text-[11px]">
             <Link
               href={`/projects/${project.id}/express`}
-              className="rounded border bg-blue-50 px-2.5 py-1 hover:bg-blue-100"
+              className=" border bg-blue-50 px-2.5 py-1 hover:bg-blue-100"
             >
               ← Express
             </Link>
             <Link
               href={`/projects/${project.id}`}
-              className="rounded border bg-gray-50 px-2.5 py-1 hover:bg-gray-100"
+              className=" border bg-gray-50 px-2.5 py-1 hover:bg-gray-100"
             >
               ← Project
             </Link>
@@ -218,7 +218,7 @@ export default async function BrainPage({
               </p>
               <Link
                 href={`/projects/${project.id}/express`}
-                className="mt-3 inline-block rounded border bg-primary px-3 py-1 text-xs text-white hover:bg-primary/90"
+                className="mt-3 inline-block border bg-primary px-3 py-1 text-xs text-white hover:bg-brand/90"
               >
                 Express 로 이동
               </Link>

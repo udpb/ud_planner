@@ -26,7 +26,7 @@ export function DataFlowBanner({ fromStep, toStep, items, className }: DataFlowB
 
   return (
     <div className={cn(
-      'rounded-lg border px-4 py-3',
+      ' border px-4 py-3',
       allMatched ? 'border-green-200 bg-green-50/50' : 'border-amber-200 bg-amber-50/50',
       className,
     )}>
@@ -53,7 +53,7 @@ export function DataFlowBanner({ fromStep, toStep, items, className }: DataFlowB
           <div
             key={i}
             className={cn(
-              'group relative inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px]',
+              'group relative inline-flex items-center gap-1 border px-2.5 py-0.5 text-[11px]',
               item.matched
                 ? 'border-green-200 bg-green-100 text-green-800'
                 : 'border-amber-200 bg-amber-100 text-amber-800',

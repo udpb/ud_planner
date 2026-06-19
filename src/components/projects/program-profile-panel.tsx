@@ -349,7 +349,7 @@ export function ProgramProfilePanel({
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex-1 min-w-[280px]">
             <CardTitle className="flex items-center gap-2 text-base font-semibold">
-              <span className="inline-block h-4 w-1 rounded-sm bg-primary" />
+              <span className="inline-block h-4 w-1 bg-primary" />
               사업 프로파일 (ProgramProfile)
               <Badge variant="outline" className="text-[10px]">
                 v1.1
@@ -471,15 +471,15 @@ function IssueCard({ issue }: { issue: ProfileIssue }) {
   return (
     <div
       className={cn(
-        'rounded-md border p-3 text-xs',
+        ' border p-3 text-xs',
         isBlock
-          ? 'border-2 border-primary bg-primary/5'
+          ? 'border-2 border-brand bg-brand/5'
           : 'border-border bg-muted/30',
       )}
     >
       <div className="flex items-start gap-2">
         {isBlock ? (
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
         ) : (
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
         )}
@@ -498,20 +498,20 @@ function IssueCard({ issue }: { issue: ProfileIssue }) {
           </div>
           <p className="leading-relaxed text-foreground/90">{ui.body}</p>
           {ui.scoringImpact && (
-            <p className="rounded bg-background/80 p-1.5 text-[11px] leading-relaxed text-muted-foreground">
+            <p className=" bg-background/80 p-1.5 text-[11px] leading-relaxed text-muted-foreground">
               <span className="font-semibold text-foreground/80">배점 영향 · </span>
               {ui.scoringImpact}
             </p>
           )}
           {ui.differentiationLoss && (
-            <p className="rounded bg-background/80 p-1.5 text-[11px] leading-relaxed text-muted-foreground">
+            <p className=" bg-background/80 p-1.5 text-[11px] leading-relaxed text-muted-foreground">
               <span className="font-semibold text-foreground/80">차별화 손실 · </span>
               {ui.differentiationLoss}
             </p>
           )}
           {ui.fixHint && (
-            <p className="flex gap-1.5 rounded bg-background/80 p-1.5 text-[11px] leading-relaxed text-muted-foreground">
-              <Lightbulb className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
+            <p className="flex gap-1.5 bg-background/80 p-1.5 text-[11px] leading-relaxed text-muted-foreground">
+              <Lightbulb className="mt-0.5 h-3 w-3 shrink-0 text-brand" />
               <span>
                 <span className="font-semibold text-foreground/80">해결 경로 · </span>
                 {ui.fixHint}
@@ -581,10 +581,10 @@ function ChipGroup<T extends string>({ values, selected, onChange, max }: ChipGr
             type="button"
             onClick={() => toggle(v)}
             className={cn(
-              'rounded-full border px-2.5 py-1 text-[11px] transition-colors',
+              ' border px-2.5 py-1 text-[11px] transition-colors',
               active
-                ? 'border-primary bg-primary/10 text-primary font-medium'
-                : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground',
+                ? 'border-brand bg-brand/10 text-brand font-medium'
+                : 'border-border bg-background text-muted-foreground hover:border-brand/40 hover:text-foreground',
             )}
           >
             {v}
@@ -623,7 +623,7 @@ function TagInput({ value, onChange, placeholder, minCount }: TagInputProps) {
         {value.map((v) => (
           <span
             key={v}
-            className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] text-primary"
+            className="inline-flex items-center gap-1 bg-brand/10 px-2 py-0.5 text-[11px] text-brand"
           >
             {v}
             <button
@@ -741,7 +741,7 @@ function ChannelAxis({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 rounded-md bg-muted/40 px-2.5 py-2">
+      <div className="flex items-center gap-2 bg-muted/40 px-2.5 py-2">
         <Switch
           checked={profile.channel.isRenewal}
           onCheckedChange={(v) => onRenewalToggle(v)}
@@ -800,8 +800,8 @@ function RenewalContextEditor({
   }
 
   return (
-    <div className="rounded-md border border-primary/30 bg-primary/5 p-3 space-y-3">
-      <p className="text-[11px] font-semibold text-primary">
+    <div className=" border border-brand/30 bg-brand/5 p-3 space-y-3">
+      <p className="text-[11px] font-semibold text-brand">
         연속사업 컨텍스트 — 작년 데이터가 있어야 재계약 심사가 통과합니다
       </p>
 
@@ -1053,10 +1053,10 @@ function TasksAxis({ profile, onProfileChange }: AxisProps) {
             <label
               key={opt.value}
               className={cn(
-                'flex cursor-pointer items-start gap-2 rounded-md border p-2 text-xs transition-colors',
+                'flex cursor-pointer items-start gap-2 border p-2 text-xs transition-colors',
                 active
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border bg-background hover:border-primary/40',
+                  ? 'border-brand bg-brand/5'
+                  : 'border-border bg-background hover:border-brand/40',
               )}
             >
               <Checkbox
@@ -1068,7 +1068,7 @@ function TasksAxis({ profile, onProfileChange }: AxisProps) {
                 <p
                   className={cn(
                     'text-sm font-medium leading-tight',
-                    active ? 'text-primary' : 'text-foreground',
+                    active ? 'text-brand' : 'text-foreground',
                   )}
                 >
                   {opt.label}
@@ -1210,10 +1210,10 @@ function ImpactModuleChips({ options, selected, onChange }: ImpactModuleChipsPro
             title={tooltip}
             onClick={() => toggle(opt.moduleCode)}
             className={cn(
-              'rounded-full border px-2.5 py-1 text-[11px] transition-colors',
+              ' border px-2.5 py-1 text-[11px] transition-colors',
               active
-                ? 'border-primary bg-primary/10 text-primary font-medium'
-                : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground',
+                ? 'border-brand bg-brand/10 text-brand font-medium'
+                : 'border-border bg-background text-muted-foreground hover:border-brand/40 hover:text-foreground',
             )}
           >
             {opt.moduleCode}
@@ -1456,7 +1456,7 @@ function BusinessDomainAxis({ profile, onProfileChange }: AxisProps) {
                     },
                   }))
                 }
-                className="rounded-full border border-dashed border-primary/40 bg-background px-2 py-0.5 text-[11px] text-primary/80 hover:bg-primary/5"
+                className=" border border-dashed border-brand/40 bg-background px-2 py-0.5 text-[11px] text-brand/80 hover:bg-brand/5"
               >
                 + {d}
               </button>
@@ -1541,7 +1541,7 @@ function DeliveryAxis({ profile, onProfileChange }: AxisProps) {
           }
         />
         <Label className="text-xs">
-          LMS 사용 <span className="text-[10px] text-primary">· 권장 ON</span>
+          LMS 사용 <span className="text-[10px] text-brand">· 권장 ON</span>
         </Label>
       </div>
 
@@ -1703,8 +1703,8 @@ function SupportStructureAxis({ profile, onProfileChange }: AxisProps) {
       )}
 
       {showNonStartup && (
-        <div className="rounded-md border border-primary/30 bg-primary/5 p-3 space-y-3">
-          <p className="text-[11px] font-semibold text-primary">
+        <div className=" border border-brand/30 bg-brand/5 p-3 space-y-3">
+          <p className="text-[11px] font-semibold text-brand">
             비창업 사업용 지원 구조 — 창업교육과 다른 평가 축이 작동합니다
           </p>
 

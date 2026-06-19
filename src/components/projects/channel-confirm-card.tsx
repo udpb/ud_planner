@@ -121,7 +121,7 @@ export function ChannelConfirmCard({
     <Card>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-1.5 text-sm">
-          <Compass className="h-4 w-4 text-primary" />
+          <Compass className="h-4 w-4 text-brand" />
           채널 컨펌
           {isConfirmed && !detectedChanged && (
             <Badge className="ml-auto h-5 gap-1 bg-green-100 text-[10px] text-green-800">
@@ -132,7 +132,7 @@ export function ChannelConfirmCard({
       </CardHeader>
       <CardContent className="space-y-3">
         {/* AI 추론 결과 */}
-        <div className="rounded-md border border-dashed bg-muted/30 p-2 text-[11px] leading-relaxed">
+        <div className=" border border-dashed bg-muted/30 p-2 text-[11px] leading-relaxed">
           <div className="mb-1 flex items-center gap-1.5">
             <span className="font-medium">AI 추론:</span>
             <Badge variant="outline" className="h-4 px-1 text-[10px]">
@@ -158,10 +158,10 @@ export function ChannelConfirmCard({
             <label
               key={opt.value}
               className={cn(
-                'flex cursor-pointer items-start gap-2 rounded-md border p-2 text-xs transition-colors',
+                'flex cursor-pointer items-start gap-2 border p-2 text-xs transition-colors',
                 selectedChannel === opt.value
-                  ? 'border-primary/50 bg-orange-50/50'
-                  : 'border-muted hover:border-primary/30 hover:bg-muted/40',
+                  ? 'border-brand/50 bg-orange-50/50'
+                  : 'border-muted hover:border-brand/30 hover:bg-muted/40',
               )}
             >
               <input
@@ -190,10 +190,10 @@ export function ChannelConfirmCard({
               <label
                 key={opt.value}
                 className={cn(
-                  'flex cursor-pointer items-start gap-2 rounded-md border p-1.5 text-xs transition-colors',
+                  'flex cursor-pointer items-start gap-2 border p-1.5 text-xs transition-colors',
                   selectedDept === opt.value
-                    ? 'border-primary/50 bg-orange-50/50'
-                    : 'border-muted hover:border-primary/30 hover:bg-muted/40',
+                    ? 'border-brand/50 bg-orange-50/50'
+                    : 'border-muted hover:border-brand/30 hover:bg-muted/40',
                 )}
               >
                 <input

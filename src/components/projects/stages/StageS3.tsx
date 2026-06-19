@@ -32,8 +32,8 @@ export function StageS3({
   return (
     <div className="space-y-3">
       {/* 안내 */}
-      <div className="flex items-start gap-3 rounded-md border bg-muted/30 p-3">
-        <Search className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+      <div className="flex items-start gap-3 border bg-muted/30 p-3">
+        <Search className="h-4 w-4 text-brand mt-0.5 shrink-0" />
         <div className="space-y-1 text-sm">
           <div className="font-medium">평가위원 시각 7 렌즈 검수</div>
           <p className="text-xs text-muted-foreground leading-relaxed">
@@ -59,7 +59,7 @@ export function StageS3({
           </span>
         </div>
       ) : (
-        <div className="flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50/60 p-2.5 text-xs text-amber-800">
+        <div className="flex items-start gap-2 border border-amber-300 bg-amber-50/60 p-2.5 text-xs text-amber-800">
           <CircleAlert className="h-3.5 w-3.5 mt-0.5 shrink-0" />
           <span>
             검수는 1차본 50% 이상이어야 의미가 있습니다. Stage 2 에서 챗봇으로

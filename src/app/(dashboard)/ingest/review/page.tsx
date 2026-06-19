@@ -94,7 +94,7 @@ export default async function IngestReviewPage() {
       <Header title="자산 추출 검토" />
       <div className="flex-1 overflow-y-auto p-6">
         {/* 안내 배너 */}
-        <div className="mb-5 rounded-md border-l-4 border-primary bg-primary/5 px-4 py-3">
+        <div className="mb-5 border-l-4 border-brand bg-brand/5 px-4 py-3">
           <p className="text-sm font-medium">
             AI가 제안서에서 추출한 당선 패턴 후보를 검토합니다.
           </p>

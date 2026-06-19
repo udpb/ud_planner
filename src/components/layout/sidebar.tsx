@@ -53,9 +53,9 @@ export function Sidebar() {
       {/* 로고 */}
       <div className="flex h-14 items-center border-b border-sidebar-border px-4">
         <span className="text-lg font-extrabold tracking-tight text-sidebar-foreground">
-          UD<span className="text-primary">·</span>Ops
+          UD<span className="text-brand">·</span>Ops
         </span>
-        <span className="ml-2 rounded bg-primary px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground uppercase tracking-wider">
+        <span className="ml-2 bg-primary px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground uppercase tracking-wider">
           Workspace
         </span>
       </div>
@@ -74,7 +74,7 @@ export function Sidebar() {
                 <Link
                   href={href}
                   className={cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    'flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors',
                     active
                       ? 'bg-primary text-primary-foreground'
                       : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
@@ -93,7 +93,7 @@ export function Sidebar() {
                           <Link
                             href={c.href}
                             className={cn(
-                              'flex items-center rounded-md px-3 py-1 text-[11px] transition-colors',
+                              'flex items-center px-3 py-1 text-[11px] transition-colors',
                               cActive
                                 ? 'bg-accent text-accent-foreground font-medium'
                                 : 'text-muted-foreground/80 hover:bg-accent hover:text-accent-foreground',

@@ -130,11 +130,11 @@ export function ResearchPanel({ projectId, onResearchUpdate }: Props) {
   const totalCount = prompts.length
 
   return (
-    <div className="rounded-lg border border-cyan-200 bg-cyan-50/20">
+    <div className=" border border-cyan-200 bg-cyan-50/20">
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between p-3 text-left hover:bg-cyan-50/40 transition-colors rounded-t-lg"
+        className="flex w-full items-center justify-between p-3 text-left hover:bg-cyan-50/40 transition-colors"
       >
         <div className="flex items-center gap-2">
           <Search className="h-4 w-4 text-cyan-700" />
@@ -174,7 +174,7 @@ export function ResearchPanel({ projectId, onResearchUpdate }: Props) {
                   <div
                     key={p.id}
                     className={cn(
-                      'rounded-md border p-2.5 transition-all',
+                      ' border p-2.5 transition-all',
                       hasSaved
                         ? 'border-green-200 bg-green-50/50'
                         : 'border-cyan-100 bg-white/60',
@@ -232,7 +232,7 @@ export function ResearchPanel({ projectId, onResearchUpdate }: Props) {
 
                     {/* Saved content preview */}
                     {hasSaved && !isActive && savedItem && (
-                      <div className="mt-1.5 rounded bg-green-50 p-1.5 text-[10px] text-green-800 line-clamp-2">
+                      <div className="mt-1.5 bg-green-50 p-1.5 text-[10px] text-green-800 line-clamp-2">
                         {savedItem.content.slice(0, 150)}...
                       </div>
                     )}

@@ -205,7 +205,7 @@ export function BudgetDashboard({
       </div>
 
       {budget?.marginWarning && (
-        <div className="flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2.5 text-sm text-destructive">
+        <div className="flex items-center gap-2 border border-destructive/30 bg-destructive/5 px-4 py-2.5 text-sm text-destructive">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           마진율이 10% 미만입니다. 코치 배정 또는 직접비 항목을 조정해보세요.
         </div>

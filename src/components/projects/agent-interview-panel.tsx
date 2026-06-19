@@ -230,11 +230,11 @@ export function AgentInterviewPanel({ projectId, rfpText, onComplete }: Props) {
   const completeness = state?.intent?.metadata?.completeness ?? 0
 
   return (
-    <div className="rounded-lg border border-violet-200 bg-violet-50/20">
+    <div className=" border border-violet-200 bg-violet-50/20">
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between p-3 text-left hover:bg-violet-50/40 transition-colors rounded-t-lg"
+        className="flex w-full items-center justify-between p-3 text-left hover:bg-violet-50/40 transition-colors"
       >
         <div className="flex items-center gap-2">
           <MessageSquare className="h-4 w-4 text-violet-700" />
@@ -297,17 +297,17 @@ export function AgentInterviewPanel({ projectId, rfpText, onComplete }: Props) {
                   <div
                     key={msg.id}
                     className={cn(
-                      'rounded-lg px-3 py-2 text-xs leading-relaxed',
+                      ' px-3 py-2 text-xs leading-relaxed',
                       msg.role === 'agent'
                         ? 'bg-violet-50 text-violet-900 mr-8'
-                        : 'bg-primary/10 text-foreground ml-8',
+                        : 'bg-brand/10 text-foreground ml-8',
                     )}
                   >
                     {msg.content}
                   </div>
                 ))}
                 {loading && (
-                  <div className="bg-violet-50 rounded-lg px-3 py-2 text-xs text-violet-600 mr-8 flex items-center gap-1.5">
+                  <div className="bg-violet-50 px-3 py-2 text-xs text-violet-600 mr-8 flex items-center gap-1.5">
                     <Loader2 className="h-3 w-3 animate-spin" /> 분석 중...
                   </div>
                 )}

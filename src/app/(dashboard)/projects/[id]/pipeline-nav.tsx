@@ -34,15 +34,15 @@ export function PipelineNav({ steps, current }: PipelineNavProps) {
             <button
               onClick={() => router.push(`${pathname}?step=${step.key}`)}
               className={cn(
-                'flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-all',
+                'flex items-center gap-2.5 px-3 py-2 text-sm transition-all',
                 isActive
-                  ? 'bg-primary/10 text-primary font-semibold'
+                  ? 'bg-brand/10 text-brand font-semibold'
                   : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
               )}
             >
               <span
                 className={cn(
-                  'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all',
+                  'flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold transition-all',
                   step.done
                     ? 'bg-green-500 text-white'
                     : isActive
@@ -58,7 +58,7 @@ export function PipelineNav({ steps, current }: PipelineNavProps) {
                   {/* B3 — RFP/Express 자동 시드 뱃지 */}
                   {step.autoSeeded && (
                     <span
-                      className="rounded border border-[color:var(--cyan)]/40 bg-[color:var(--cyan)]/10 px-1 py-0 text-[8px] font-semibold uppercase tracking-wider text-[color:var(--cyan)]"
+                      className=" border border-[color:var(--cyan)]/40 bg-[color:var(--cyan)]/10 px-1 py-0 text-[8px] font-semibold uppercase tracking-wider text-[color:var(--cyan)]"
                       title={step.autoSeedSource ?? '자동 시드됨'}
                     >
                       자동
@@ -69,7 +69,7 @@ export function PipelineNav({ steps, current }: PipelineNavProps) {
                   <div
                     className={cn(
                       'mt-0.5 text-[11px] leading-tight',
-                      isActive ? 'text-primary/70' : 'text-muted-foreground',
+                      isActive ? 'text-brand/70' : 'text-muted-foreground',
                     )}
                   >
                     {step.sublabel}

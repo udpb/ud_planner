@@ -331,7 +331,7 @@ export default async function ConceptGraphPage() {
         <div className="mt-4 flex gap-3 text-[11px]">
           <Link
             href="/admin/brain"
-            className="rounded border bg-blue-50 px-3 py-1.5 hover:bg-blue-100"
+            className=" border bg-blue-50 px-3 py-1.5 hover:bg-blue-100"
           >
             ← Brain Dashboard
           </Link>

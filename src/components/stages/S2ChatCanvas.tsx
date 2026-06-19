@@ -206,7 +206,7 @@ export function S2ChatCanvas({
                   color: 'var(--subtitle-text)',
                 }}
               >
-                <span className="inline-block h-2 w-2 animate-pulse rounded-full" style={{ background: 'var(--primary-orange)' }} />
+                <span className="inline-block h-2 w-2 animate-pulse" style={{ background: 'var(--primary-orange)' }} />
                 AI 응답 생성 중...
               </div>
             </div>
@@ -331,7 +331,7 @@ function PanelHead({
         style={{ color: accentColor }}
       >
         <span
-          className="h-1.5 w-1.5 rounded-full"
+          className="h-1.5 w-1.5"
           style={{ background: accentColor }}
         />
         <span

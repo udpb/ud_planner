@@ -31,7 +31,7 @@ export function AutoExtractCard({ topic, autoNote, onAcknowledge }: Props) {
         </div>
         <p className="text-xs text-foreground/85">{autoNote}</p>
         {isAssetMatch && (
-          <p className="flex items-center gap-1 rounded bg-white/60 px-2 py-1 text-[11px] text-muted-foreground">
+          <p className="flex items-center gap-1 bg-white/60 px-2 py-1 text-[11px] text-muted-foreground">
             <ArrowRight className="h-3 w-3" />
             오른쪽 미리보기의 <span className="font-medium">차별화 자산</span> 카드에서 자산을 토글하세요.
           </p>

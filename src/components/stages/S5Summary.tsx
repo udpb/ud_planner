@@ -296,7 +296,7 @@ export function S5Summary({
           style={{ color: 'var(--green)' }}
         >
           <span
-            className="h-2 w-2 rounded-full"
+            className="h-2 w-2"
             style={{ background: 'var(--green)' }}
           />
           Verification · {passedCount === checklist.length ? 'Passed' : 'Partial'}

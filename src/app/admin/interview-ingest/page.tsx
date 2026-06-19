@@ -65,7 +65,7 @@ export default async function InterviewIngestPage() {
           {/* 안내 */}
           <Card className="border-orange-200 bg-orange-50/40">
             <CardContent className="p-4 text-sm">
-              <div className="font-semibold text-primary mb-1">
+              <div className="font-semibold text-brand mb-1">
                 📝 수주 후 PM 인터뷰 자동 자산화 (PoC)
               </div>
               <p className="text-muted-foreground leading-relaxed">
@@ -111,7 +111,7 @@ export default async function InterviewIngestPage() {
                       <a
                         key={job.id}
                         href={`/admin/interview-ingest/${job.id}`}
-                        className="block rounded-md border bg-background p-3 text-sm hover:border-primary/40 hover:bg-muted/30 transition-colors"
+                        className="block border bg-background p-3 text-sm hover:border-brand/40 hover:bg-muted/30 transition-colors"
                       >
                         <div className="flex flex-wrap items-baseline gap-3">
                           <span className="font-semibold">
@@ -144,7 +144,7 @@ export default async function InterviewIngestPage() {
                           )}
                         </div>
                         {job.error && (
-                          <div className="mt-2 rounded bg-red-50 px-2 py-1 text-xs text-red-700">
+                          <div className="mt-2 bg-red-50 px-2 py-1 text-xs text-red-700">
                             에러: {job.error}
                           </div>
                         )}

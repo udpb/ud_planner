@@ -91,10 +91,10 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
 
   if (!diagnosis || (!channelDiag && !framingDiag && !logicDiag && !factDiag)) {
     return (
-      <Card className="border-primary/40 bg-orange-50/40 ring-2 ring-primary/20">
+      <Card className="border-brand/40 bg-orange-50/40 ring-2 ring-primary/20">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-1.5 text-sm">
-            <Bot className="h-4 w-4 text-primary" />
+            <Bot className="h-4 w-4 text-brand" />
             AI 자동 진단
             <Badge className="ml-auto h-4 gap-0.5 bg-primary px-1.5 text-[10px] text-primary-foreground">
               <Sparkles className="h-2.5 w-2.5" />
@@ -136,7 +136,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
     <Card>
       <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-1.5 text-sm">
-          <Bot className="h-4 w-4 text-primary" />
+          <Bot className="h-4 w-4 text-brand" />
           AI 자동 진단
         </CardTitle>
         <button
@@ -144,7 +144,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
             ? ['channel', 'framing', 'logic-chain', 'fact-check']
             : ['channel', 'framing'])}
           disabled={busy}
-          className="text-[10px] text-muted-foreground hover:text-primary disabled:opacity-50"
+          className="text-[10px] text-muted-foreground hover:text-brand disabled:opacity-50"
         >
           {busy ? '진단 중...' : '↻ 다시'}
         </button>
@@ -154,7 +154,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
         {channelDiag && (
           <div
             className={cn(
-              'rounded-md border p-2',
+              ' border p-2',
               channelDiag.confirmedByPm
                 ? 'border-green-200 bg-green-50/50'
                 : 'border-amber-200 bg-amber-50/50',
@@ -188,7 +188,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
         {framingDiag && (
           <div
             className={cn(
-              'rounded-md border p-2',
+              ' border p-2',
               framingDiag.match
                 ? 'border-green-200 bg-green-50/50'
                 : 'border-red-200 bg-red-50/50',
@@ -225,8 +225,8 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
               </details>
             )}
             {framingDiag.suggestion && (
-              <div className="mt-1.5 rounded bg-white/60 p-1.5 text-[10px] leading-snug">
-                <span className="font-medium text-primary">💡 수정 제안:</span>{' '}
+              <div className="mt-1.5 bg-white/60 p-1.5 text-[10px] leading-snug">
+                <span className="font-medium text-brand">💡 수정 제안:</span>{' '}
                 {framingDiag.suggestion}
               </div>
             )}
@@ -237,7 +237,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
         {logicDiag ? (
           <div
             className={cn(
-              'rounded-md border p-2',
+              ' border p-2',
               logicDiag.passed
                 ? 'border-green-200 bg-green-50/50'
                 : 'border-amber-200 bg-amber-50/50',
@@ -268,7 +268,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
                   {logicDiag.breakpoints.slice(0, 4).map((bp, i) => (
                     <li
                       key={i}
-                      className="rounded bg-white/60 p-1.5"
+                      className=" bg-white/60 p-1.5"
                       title={bp.reason}
                     >
                       <div className="font-medium text-amber-900">
@@ -282,7 +282,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
                       <div className="mt-0.5 text-muted-foreground line-clamp-2">
                         {bp.reason}
                       </div>
-                      <div className="mt-0.5 text-primary">💡 {bp.suggestion}</div>
+                      <div className="mt-0.5 text-brand">💡 {bp.suggestion}</div>
                     </li>
                   ))}
                 </ul>
@@ -293,13 +293,13 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
           <button
             onClick={() => runDiagnose(['logic-chain'])}
             disabled={busy}
-            className="flex w-full items-center justify-between gap-1.5 rounded-md border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+            className="flex w-full items-center justify-between gap-1.5 border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground hover:border-brand/40 hover:text-brand disabled:opacity-50"
           >
             <span className="flex items-center gap-1.5">
               <GitBranch className="h-3 w-3" />
               논리 흐름 — 1차본 sections 채운 후 클릭
             </span>
-            <span className="text-primary">진단 →</span>
+            <span className="text-brand">진단 →</span>
           </button>
         )}
 
@@ -307,7 +307,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
         {factDiag ? (
           <div
             className={cn(
-              'rounded-md border p-2',
+              ' border p-2',
               factDiag.byStatus.suspicious === 0 && factDiag.byStatus['needs-source'] <= 2
                 ? 'border-green-200 bg-green-50/50'
                 : factDiag.byStatus.suspicious > 0
@@ -317,7 +317,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
           >
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5 text-xs">
-                <FileSearch className="h-3 w-3 text-primary" />
+                <FileSearch className="h-3 w-3 text-brand" />
                 <span className="font-medium">팩트체크</span>
                 <Badge variant="outline" className="h-4 px-1 text-[10px]">
                   {factDiag.totalFacts} 건
@@ -347,7 +347,7 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
                       <li
                         key={i}
                         className={cn(
-                          'rounded p-1',
+                          ' p-1',
                           f.status === 'suspicious' ? 'bg-red-50' : 'bg-amber-50',
                         )}
                         title={f.note ?? f.excerpt}
@@ -371,13 +371,13 @@ export function AutoDiagnosisPanel({ projectId, diagnosis, onRefresh, onDiagnose
           <button
             onClick={() => runDiagnose(['fact-check'])}
             disabled={busy}
-            className="flex w-full items-center justify-between gap-1.5 rounded-md border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground hover:border-primary/40 hover:text-primary disabled:opacity-50"
+            className="flex w-full items-center justify-between gap-1.5 border border-dashed border-muted-foreground/30 p-2 text-[10px] text-muted-foreground hover:border-brand/40 hover:text-brand disabled:opacity-50"
           >
             <span className="flex items-center gap-1.5">
               <FileSearch className="h-3 w-3" />
               팩트체크 — 정량 수치·인용 추출 후 검증
             </span>
-            <span className="text-primary">진단 →</span>
+            <span className="text-brand">진단 →</span>
           </button>
         )}
       </CardContent>
@@ -403,7 +403,7 @@ function FactStatusChip({
   return (
     <div
       className={cn(
-        'rounded px-1 py-0.5 text-center tabular-nums',
+        ' px-1 py-0.5 text-center tabular-nums',
         n === 0 ? 'bg-muted/30 text-muted-foreground' : colorClass,
       )}
     >

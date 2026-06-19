@@ -152,10 +152,10 @@ export function NewProjectForm() {
     <form action={handleSubmit} className="space-y-4">
       {/* RFP 업로드 카드 */}
       {!skipRfp && (
-        <Card className="border-primary/30 bg-orange-50/30">
+        <Card className="border-brand/30 bg-orange-50/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="flex items-center gap-2 text-base">
-              <Sparkles className="h-4 w-4 text-primary" />
+              <Sparkles className="h-4 w-4 text-brand" />
               RFP 부터 — 자동으로 사업 정보를 채워드려요
             </CardTitle>
           </CardHeader>
@@ -252,12 +252,12 @@ export function NewProjectForm() {
 
       {/* 수동 시작 토글 (접힌 상태) */}
       {skipRfp && (
-        <div className="flex items-center justify-between rounded-md border border-dashed bg-muted/20 px-4 py-2">
+        <div className="flex items-center justify-between border border-dashed bg-muted/20 px-4 py-2">
           <div className="text-sm text-muted-foreground">RFP 없이 수동 시작 모드 (실험·연습용)</div>
           <button
             type="button"
             onClick={() => setSkipRfp(false)}
-            className="flex items-center gap-1 text-xs text-primary hover:underline"
+            className="flex items-center gap-1 text-xs text-brand hover:underline"
           >
             <ChevronUp className="h-3 w-3" />
             RFP 업로드로 돌아가기
@@ -334,7 +334,7 @@ export function NewProjectForm() {
               id="projectType"
               value={form.projectType}
               onChange={(e) => setField('projectType', e.target.value as 'B2G' | 'B2B')}
-              className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+              className="h-9 w-full border bg-background px-3 text-sm"
             >
               <option value="B2G">B2G (정부/공공)</option>
               <option value="B2B">B2B (기업)</option>

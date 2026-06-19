@@ -192,7 +192,7 @@ export function EvaluatorScoreBar({
           className="group flex items-center gap-2 hover:opacity-80"
           title="자세한 점수 분석 보기"
         >
-          <TrendingUp className="h-3.5 w-3.5 text-primary" />
+          <TrendingUp className="h-3.5 w-3.5 text-brand" />
           <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
             {scoreData.source === 'B2G' ? '예상 평가 점수' : '1차본 품질'}
           </span>
@@ -211,7 +211,7 @@ export function EvaluatorScoreBar({
         </button>
 
         {/* 진행 바 */}
-        <div className="hidden h-1.5 flex-1 overflow-hidden rounded-full bg-muted/40 sm:block">
+        <div className="hidden h-1.5 flex-1 overflow-hidden bg-muted/40 sm:block">
           <div
             className={cn('h-full transition-all', barColor(scoreData.percent))}
             style={{ width: `${Math.min(100, scoreData.percent)}%` }}
@@ -228,7 +228,7 @@ export function EvaluatorScoreBar({
                 type="button"
                 onClick={() => w.sectionKey && onJumpToSection?.(w.sectionKey)}
                 className={cn(
-                  'rounded border bg-white px-1.5 py-0.5 text-[10px] hover:border-primary/40 hover:text-primary',
+                  ' border bg-white px-1.5 py-0.5 text-[10px] hover:border-brand/40 hover:text-brand',
                   w.sectionKey && 'cursor-pointer',
                 )}
                 title={w.sectionKey ? `${w.label} 섹션으로 이동` : w.label}

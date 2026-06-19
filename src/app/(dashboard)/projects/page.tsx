@@ -30,7 +30,7 @@ function PipelineDots({ rfp, impact, curriculum, coaches, budget, proposal }: {
         <div
           key={s.key}
           title={s.label}
-          className={`h-2 w-2 rounded-full ${done[i] ? 'bg-green-500' : 'bg-gray-200'}`}
+          className={`h-2 w-2 ${done[i] ? 'bg-green-500' : 'bg-gray-200'}`}
         />
       ))}
       <span className="ml-1 text-xs text-muted-foreground tabular-nums">{completedCount}/6</span>

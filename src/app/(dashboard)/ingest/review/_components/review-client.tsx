@@ -177,7 +177,7 @@ export function ReviewClient({ items }: ReviewClientProps) {
                   onClick={() => onSelectItem(item.id)}
                   className={`w-full px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
                     selectedId === item.id
-                      ? 'bg-primary/5 border-l-2 border-primary'
+                      ? 'bg-brand/5 border-l-2 border-brand'
                       : ''
                   }`}
                 >
@@ -263,7 +263,7 @@ export function ReviewClient({ items }: ReviewClientProps) {
                   rows={4}
                 />
               ) : (
-                <p className="mt-1 whitespace-pre-wrap rounded-md bg-muted/30 p-3 text-sm">
+                <p className="mt-1 whitespace-pre-wrap bg-muted/30 p-3 text-sm">
                   {selectedItem.snippet}
                 </p>
               )}
@@ -282,7 +282,7 @@ export function ReviewClient({ items }: ReviewClientProps) {
                   rows={3}
                 />
               ) : (
-                <p className="mt-1 whitespace-pre-wrap rounded-md bg-muted/30 p-3 text-sm">
+                <p className="mt-1 whitespace-pre-wrap bg-muted/30 p-3 text-sm">
                   {selectedItem.whyItWorks}
                 </p>
               )}

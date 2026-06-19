@@ -173,7 +173,7 @@ export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function Express
         <div className="mt-0.5 text-sm font-medium">
           {currentSlot ? (
             <>
-              <span className="text-primary">●</span> {slotLabel}
+              <span className="text-brand">●</span> {slotLabel}
             </>
           ) : (
             <span className="text-muted-foreground">
@@ -190,7 +190,7 @@ export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function Express
           <Card className="border-orange-200 bg-orange-50/50">
             <CardContent className="space-y-3 p-4">
               <div className="flex items-center gap-2 text-sm font-semibold">
-                <FileQuestion className="h-4 w-4 text-primary" />
+                <FileQuestion className="h-4 w-4 text-brand" />
                 RFP 부터 시작해 주세요
               </div>
               <p className="text-sm text-muted-foreground">
@@ -258,7 +258,7 @@ export const ExpressChat = forwardRef<ExpressChatHandle, Props>(function Express
                   <button
                     key={i}
                     onClick={() => handlePickQuickReply(reply)}
-                    className="rounded-full border border-primary/40 bg-background px-3 py-1.5 text-xs text-primary hover:bg-primary/10 transition-colors"
+                    className=" border border-brand/40 bg-background px-3 py-1.5 text-xs text-brand hover:bg-brand/10 transition-colors"
                     title="클릭하면 입력란에 채워져요. 그대로 또는 수정 후 Cmd/Ctrl+Enter 로 전송."
                     disabled={pendingTurn}
                   >
@@ -365,7 +365,7 @@ function TurnBubble({
       <div className={cn('flex w-full', isAi ? 'justify-start' : 'justify-end')}>
         <div
           className={cn(
-            'max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap',
+            'max-w-[85%] px-4 py-2.5 text-sm whitespace-pre-wrap',
             isAi
               ? 'bg-muted text-foreground'
               : 'bg-primary text-primary-foreground',
@@ -373,7 +373,7 @@ function TurnBubble({
         >
           <div>{displayText}</div>
           {isCardTurnActive && (
-            <div className="mt-1 text-[11px] text-primary">▼ 아래 카드를 먼저 처리해 주세요</div>
+            <div className="mt-1 text-[11px] text-brand">▼ 아래 카드를 먼저 처리해 주세요</div>
           )}
           {isAi && turn.targetSlot && (
             <div className="mt-1 text-[10px] uppercase tracking-wider opacity-60">

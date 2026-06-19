@@ -127,8 +127,8 @@ function SessionCard({
 
   return (
     <div ref={setNodeRef} style={style} className={cn(
-      'group relative rounded-lg border bg-card transition-colors',
-      item.isActionWeek ? 'border-primary/40 bg-primary/5' :
+      'group relative border bg-card transition-colors',
+      item.isActionWeek ? 'border-brand/40 bg-brand/5' :
         item.isCoaching1on1 ? 'border-blue-300/50 bg-blue-50/30' :
           item.isLocked ? 'border-muted-foreground/20 bg-muted/30' : '',
       consecutiveTheoryWarning && 'border-amber-300 bg-amber-50/30',
@@ -186,13 +186,13 @@ function SessionCard({
           {/* 시간 구성 바 */}
           {!item.isActionWeek && !item.isCoaching1on1 && (
             <div className="space-y-1">
-              <div className="flex h-1.5 overflow-hidden rounded-full bg-muted">
+              <div className="flex h-1.5 overflow-hidden bg-muted">
                 <div className="bg-amber-400" style={{ width: `${lectureRatio}%` }} />
-                <div className="bg-primary/60" style={{ width: `${100 - lectureRatio}%` }} />
+                <div className="bg-brand/60" style={{ width: `${100 - lectureRatio}%` }} />
               </div>
               <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400" />
+                  <span className="inline-block h-1.5 w-1.5 bg-amber-400" />
                   강의
                   <Input type="number" className="h-5 w-10 px-1 text-[10px] border-0 bg-transparent focus:bg-muted"
                     value={item.lectureMinutes} min={0}
@@ -200,7 +200,7 @@ function SessionCard({
                     onClick={(e) => e.stopPropagation()} />분
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary/60" />
+                  <span className="inline-block h-1.5 w-1.5 bg-brand/60" />
                   실습
                   <Input type="number" className="h-5 w-10 px-1 text-[10px] border-0 bg-transparent focus:bg-muted"
                     value={item.practiceMinutes} min={0}
@@ -222,8 +222,8 @@ function SessionCard({
 
         {/* 락 버튼 */}
         <button
-          className={`shrink-0 p-1 rounded transition-colors ${
-            item.isLocked ? 'text-primary' : 'text-muted-foreground/30 hover:text-muted-foreground opacity-0 group-hover:opacity-100'
+          className={`shrink-0 p-1 transition-colors ${
+            item.isLocked ? 'text-brand' : 'text-muted-foreground/30 hover:text-muted-foreground opacity-0 group-hover:opacity-100'
           }`}
           onClick={() => onLockToggle(item.id)}
         >
@@ -237,7 +237,7 @@ function SessionCard({
 const INSIGHT_ICON = {
   info: <Info className="h-3.5 w-3.5 shrink-0 text-blue-500" />,
   tip: <Lightbulb className="h-3.5 w-3.5 shrink-0 text-amber-500" />,
-  asset: <Sparkles className="h-3.5 w-3.5 shrink-0 text-primary" />,
+  asset: <Sparkles className="h-3.5 w-3.5 shrink-0 text-brand" />,
   // F2 (Wave V) — 진단 IP 자동 회차 안내용
   diagnostic: <Sparkles className="h-3.5 w-3.5 shrink-0 text-[color:var(--primary-orange)]" />,
 }
@@ -481,7 +481,7 @@ export function CurriculumBoard({
         <div className="space-y-1.5">
           {ruleResult.violations.map((v, i) => (
             <div key={i} className={cn(
-              'flex items-start gap-2 rounded-md px-3 py-2 text-xs',
+              'flex items-start gap-2 px-3 py-2 text-xs',
               v.action === 'BLOCK' ? 'bg-red-50 text-red-800 border border-red-200' :
                 v.action === 'WARN' ? 'bg-amber-50 text-amber-800' :
                   'bg-blue-50 text-blue-800',
@@ -505,14 +505,14 @@ export function CurriculumBoard({
           <button
             onClick={handleGenerateCurriculum}
             disabled={generating}
-            className="flex items-center gap-1 rounded px-2 py-0.5 text-xs text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1 px-2 py-0.5 text-xs text-brand hover:bg-brand/10 transition-colors disabled:opacity-50"
           >
             {generating ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
             재생성
           </button>
         )}
         <span className="flex items-center gap-1">
-          <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+          <span className="inline-block h-2 w-2 bg-primary" />
           AW {actionWeekCount}
         </span>
         <span className="flex items-center gap-1">
@@ -531,7 +531,7 @@ export function CurriculumBoard({
 
         {/* 비용 미리보기 */}
         {estimatedCoachCost > 0 && (
-          <span className="ml-auto flex items-center gap-1.5 rounded-md bg-muted px-2 py-0.5">
+          <span className="ml-auto flex items-center gap-1.5 bg-muted px-2 py-0.5">
             <TrendingUp className="h-3 w-3" />
             <span>예상 코치비 <strong>{(estimatedCoachCost / 10000).toFixed(0)}만</strong></span>
             {estimatedMarginImpact && (
@@ -556,9 +556,9 @@ export function CurriculumBoard({
       {insights.length > 0 && (
         <div className="space-y-1.5">
           {insights.map((insight, i) => (
-            <div key={i} className={`flex items-start gap-2 rounded-md px-3 py-2 text-xs ${
+            <div key={i} className={`flex items-start gap-2 px-3 py-2 text-xs ${
               insight.type === 'tip' ? 'bg-amber-50 text-amber-800' :
-                insight.type === 'asset' ? 'bg-primary/5 text-primary' :
+                insight.type === 'asset' ? 'bg-brand/5 text-brand' :
                   'bg-muted text-muted-foreground'
             }`}>
               {INSIGHT_ICON[insight.type]}
@@ -570,8 +570,8 @@ export function CurriculumBoard({
 
       {/* AI 커리큘럼 생성 CTA */}
       {items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/20 py-16 px-8">
-          <Sparkles className="h-10 w-10 text-primary/40 mb-4" />
+        <div className="flex flex-col items-center justify-center border-2 border-dashed border-muted-foreground/20 py-16 px-8">
+          <Sparkles className="h-10 w-10 text-brand/40 mb-4" />
           <h3 className="text-lg font-semibold mb-2">커리큘럼 설계</h3>
           <p className="text-sm text-muted-foreground text-center max-w-md mb-1">
             Step 1 에서 확정한 제안 컨셉과 핵심 기획 포인트를 반영하여
@@ -581,12 +581,12 @@ export function CurriculumBoard({
             Action Week · IMPACT 모듈 매핑 · 이론/실습 비율이 자동 설계됩니다.
           </p>
           {genError && (
-            <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-2 text-xs text-red-700">
+            <div className="mb-4 bg-red-50 border border-red-200 px-4 py-2 text-xs text-red-700">
               {genError}
             </div>
           )}
           {generating && genProgress && (
-            <div className="mb-4 rounded-md bg-orange-50 border border-orange-200 px-4 py-2 text-xs text-primary">
+            <div className="mb-4 bg-orange-50 border border-orange-200 px-4 py-2 text-xs text-brand">
               {genProgress}
             </div>
           )}
@@ -594,10 +594,10 @@ export function CurriculumBoard({
             onClick={handleGenerateCurriculum}
             disabled={generating}
             className={cn(
-              'flex items-center gap-2 rounded-md px-6 py-3 text-sm font-medium text-white transition-colors',
+              'flex items-center gap-2 px-6 py-3 text-sm font-medium text-white transition-colors',
               generating
-                ? 'bg-primary/50 cursor-not-allowed'
-                : 'bg-primary hover:bg-primary/90',
+                ? 'bg-brand/50 cursor-not-allowed'
+                : 'bg-primary hover:bg-brand/90',
             )}
           >
             {generating ? (

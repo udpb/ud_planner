@@ -274,7 +274,7 @@ export default async function BrainDashboardPage() {
         {/* Top Stats */}
         <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
           <StatCard
-            icon={<Layers className="h-4 w-4 text-primary" />}
+            icon={<Layers className="h-4 w-4 text-brand" />}
             label="ContentAsset"
             value={data.summary.contentAsset}
             sub={`stable ${data.summary.contentAssetStable} · developing ${data.summary.contentAssetDeveloping}`}
@@ -344,7 +344,7 @@ export default async function BrainDashboardPage() {
                 {data.topConcepts.map((c) => (
                   <li
                     key={c.id}
-                    className="flex items-center justify-between gap-2 rounded border bg-blue-50/30 p-1.5"
+                    className="flex items-center justify-between gap-2 border bg-blue-50/30 p-1.5"
                   >
                     <span className="min-w-0 flex-1 truncate">{c.name}</span>
                     <Badge variant="outline" className="h-3.5 px-1 text-[9px]">
@@ -378,7 +378,7 @@ export default async function BrainDashboardPage() {
                   {data.channelImbalance.map((c) => (
                     <li
                       key={c.conceptName}
-                      className="flex items-center justify-between gap-2 rounded border bg-amber-50/30 p-1.5"
+                      className="flex items-center justify-between gap-2 border bg-amber-50/30 p-1.5"
                     >
                       <span className="min-w-0 flex-1 truncate">{c.conceptName}</span>
                       <Badge variant="outline" className="h-3.5 px-1 text-[9px]">
@@ -417,7 +417,7 @@ export default async function BrainDashboardPage() {
                   {data.difficulty.map((d) => (
                     <li
                       key={d.conceptName}
-                      className="flex items-center justify-between gap-2 rounded border bg-red-50/30 p-1.5"
+                      className="flex items-center justify-between gap-2 border bg-red-50/30 p-1.5"
                     >
                       <span className="min-w-0 flex-1 truncate">{d.conceptName}</span>
                       <Badge variant="outline" className="h-3.5 px-1 text-[9px]">
@@ -449,11 +449,11 @@ export default async function BrainDashboardPage() {
                 {data.recent.map((r) => (
                   <li
                     key={r.id}
-                    className="flex items-center justify-between gap-2 rounded border bg-orange-50/30 p-1.5"
+                    className="flex items-center justify-between gap-2 border bg-orange-50/30 p-1.5"
                   >
                     <Link
                       href={`/admin/content-hub/${r.id}/edit`}
-                      className="min-w-0 flex-1 truncate hover:text-primary"
+                      className="min-w-0 flex-1 truncate hover:text-brand"
                     >
                       {r.name}
                     </Link>
@@ -494,19 +494,19 @@ export default async function BrainDashboardPage() {
         <div className="mt-4 flex gap-3 text-[11px]">
           <Link
             href="/admin/brain/graph"
-            className="rounded border bg-purple-50 px-3 py-1.5 hover:bg-purple-100"
+            className=" border bg-purple-50 px-3 py-1.5 hover:bg-purple-100"
           >
             → Concept Graph 시각화 (W26)
           </Link>
           <Link
             href="/admin/asset-insights"
-            className="rounded border bg-gray-50 px-3 py-1.5 hover:bg-gray-100"
+            className=" border bg-gray-50 px-3 py-1.5 hover:bg-gray-100"
           >
             → 자산 인사이트 (Wave N5)
           </Link>
           <Link
             href="/admin/content-hub"
-            className="rounded border bg-gray-50 px-3 py-1.5 hover:bg-gray-100"
+            className=" border bg-gray-50 px-3 py-1.5 hover:bg-gray-100"
           >
             → Content Hub
           </Link>
@@ -536,7 +536,7 @@ function StatCard({
         ? 'bg-green-50/40 border-green-200'
         : 'bg-card'
   return (
-    <div className={`flex flex-col gap-1 rounded-lg border ${bg} p-3`}>
+    <div className={`flex flex-col gap-1 border ${bg} p-3`}>
       <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
         {icon}
         <span>{label}</span>

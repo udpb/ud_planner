@@ -201,7 +201,7 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90"
+        className="inline-flex h-8 items-center gap-1.5 bg-primary px-3 text-xs font-medium text-primary-foreground shadow hover:bg-brand/90"
       >
         <UserPlus className="h-3.5 w-3.5" />
         코치 배정
@@ -265,10 +265,10 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
                 <button
                   key={e}
                   onClick={() => toggleExpertise(e)}
-                  className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
+                  className={` border px-2.5 py-1 text-xs transition-colors ${
                     selectedExpertise.includes(e)
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-muted-foreground/30 text-muted-foreground hover:border-primary'
+                      ? 'border-brand bg-primary text-primary-foreground'
+                      : 'border-muted-foreground/30 text-muted-foreground hover:border-brand'
                   }`}
                 >
                   {e.split('(')[0].trim()}
@@ -289,7 +289,7 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
                   </p>
                   <p>
                     조건 (지역·전문성) 을 줄여보거나, 관리자가{' '}
-                    <a href="/admin/metrics" className="text-primary underline" target="_blank" rel="noopener">
+                    <a href="/admin/metrics" className="text-brand underline" target="_blank" rel="noopener">
                       /admin/metrics
                     </a>{' '}
                     의 <span className="font-mono">[Sync]</span> 버튼으로 코치 DB 를 동기화해야 합니다.
@@ -301,24 +301,24 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
                   key={c.id}
                   onClick={() => pickCoach(c)}
                   disabled={assignedCoachIds.includes(c.id)}
-                  className={`w-full rounded-lg border p-3 text-left transition-colors ${
+                  className={`w-full border p-3 text-left transition-colors ${
                     picked?.id === c.id
-                      ? 'border-primary bg-primary/5'
+                      ? 'border-brand bg-brand/5'
                       : 'border-border hover:bg-muted/50'
                   } ${assignedCoachIds.includes(c.id) ? 'opacity-40' : ''}`}
                 >
                   <div className="flex items-start gap-2">
                     {c.photoUrl ? (
-                      <img src={c.photoUrl} alt={c.name} className="h-9 w-9 rounded-full object-cover" />
+                      <img src={c.photoUrl} alt={c.name} className="h-9 w-9 object-cover" />
                     ) : (
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-bold">
+                      <div className="flex h-9 w-9 items-center justify-center bg-muted text-xs font-bold">
                         {c.name[0]}
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5">
                         <span className="font-medium text-sm">{c.name}</span>
-                        <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${TIER_COLOR[c.tier]}`}>
+                        <span className={` px-1.5 py-0.5 text-[10px] font-medium ${TIER_COLOR[c.tier]}`}>
                           {TIER_LABEL[c.tier]}
                         </span>
                         {assignedCoachIds.includes(c.id) && (
@@ -330,7 +330,7 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
                       </p>
                       <div className="mt-1 flex flex-wrap gap-1">
                         {c.expertise.slice(0, 3).map((e) => (
-                          <span key={e} className="rounded bg-muted px-1 py-0.5 text-[10px] text-muted-foreground">
+                          <span key={e} className=" bg-muted px-1 py-0.5 text-[10px] text-muted-foreground">
                             {e.split('(')[0].trim()}
                           </span>
                         ))}
@@ -354,7 +354,7 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
               href={COACH_FINDER_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs text-primary hover:underline"
+              className="flex items-center gap-1 text-xs text-brand hover:underline"
             >
               <ExternalLink className="h-3 w-3" />
               코치파인더에서 상세 검색
@@ -413,7 +413,7 @@ export function CoachAssign({ projectId, assignedCoachIds, enableAutoPool = true
                 </div>
 
                 {totalFeePreview > 0 && (
-                  <div className="rounded-md bg-muted p-2 text-xs">
+                  <div className=" bg-muted p-2 text-xs">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">총 시간</span>
                       <span>{Number(assignForm.sessions) * Number(assignForm.hoursPerSession)}h</span>

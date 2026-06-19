@@ -112,7 +112,7 @@ export function StrategyPanel({ projectId }: Props) {
   const filledCount = FIELDS.filter((f) => (notes[f.key] as string)?.trim()).length
 
   return (
-    <div className="rounded-lg border border-orange-200 bg-orange-50/20">
+    <div className=" border border-orange-200 bg-orange-50/20">
       {/* 버그 수정 2026-04-21: <button> 안에 <Button> 이 들어가서 HTML invalid + hydration error.
           div + onClick 으로 전환 + 저장 버튼은 stopPropagation 으로 토글 방지. */}
       <div
@@ -125,7 +125,7 @@ export function StrategyPanel({ projectId }: Props) {
             setExpanded(!expanded)
           }
         }}
-        className="flex w-full cursor-pointer items-center justify-between p-3 text-left hover:bg-orange-50/40 transition-colors rounded-t-lg select-none"
+        className="flex w-full cursor-pointer items-center justify-between p-3 text-left hover:bg-orange-50/40 transition-colors select-none"
       >
         <div className="flex items-center gap-2">
           <Shield className="h-4 w-4 text-orange-700" />
@@ -165,7 +165,7 @@ export function StrategyPanel({ projectId }: Props) {
                 const Icon = field.icon
                 const value = (notes[field.key] as string) ?? ''
                 return (
-                  <div key={field.key} className={cn('rounded-md border p-2.5', field.color)}>
+                  <div key={field.key} className={cn(' border p-2.5', field.color)}>
                     <div className="flex items-center gap-1.5 mb-1">
                       <Icon className="h-3.5 w-3.5" />
                       <span className="text-xs font-medium">{field.label}</span>

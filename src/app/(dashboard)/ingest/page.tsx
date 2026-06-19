@@ -53,7 +53,7 @@ export default async function IngestPage() {
       <Header title="자료 업로드 (Ingestion)" />
       <div className="flex-1 overflow-y-auto p-6">
         {/* 안내 배너 */}
-        <div className="mb-5 rounded-md border-l-4 border-primary bg-primary/5 px-4 py-3">
+        <div className="mb-5 border-l-4 border-brand bg-brand/5 px-4 py-3">
           <p className="text-sm font-medium">
             자료를 드롭하면 다음 기획부터 그 자료의 노하우가 자동 주입됩니다.
           </p>

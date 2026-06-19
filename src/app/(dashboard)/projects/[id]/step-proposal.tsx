@@ -479,7 +479,7 @@ export function StepProposal({
       </div>
 
       {error && (
-        <p className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2 text-sm text-destructive">{error}</p>
+        <p className=" border border-destructive/30 bg-destructive/5 px-4 py-2 text-sm text-destructive">{error}</p>
       )}
 
       <Progress value={progress} className="h-1.5" />
@@ -505,7 +505,7 @@ export function StepProposal({
           <CardContent className="space-y-3 pt-0">
             <div className="space-y-1.5">
               {simulation.items.map((item, i) => (
-                <div key={i} className="rounded-md border bg-white px-3 py-2">
+                <div key={i} className=" border bg-white px-3 py-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-medium">{item.criteria}</span>
                     <span className={cn(
@@ -524,7 +524,7 @@ export function StepProposal({
               ))}
             </div>
 
-            <div className="rounded-md bg-white border p-3">
+            <div className=" bg-white border p-3">
               <p className="text-xs text-muted-foreground">{simulation.overallFeedback}</p>
               <p className="mt-2 flex items-center gap-1 text-xs font-medium text-red-700">
                 <TrendingUp className="h-3 w-3" />
@@ -630,7 +630,7 @@ export function StepProposal({
                         onClick={() => toggleApproval(done)}
                         title={done.isApproved ? '승인 취소' : '승인'}
                         className={cn(
-                          'h-7 px-1.5 rounded text-xs hover:bg-muted',
+                          'h-7 px-1.5 text-xs hover:bg-muted',
                           done.isApproved ? 'text-green-600' : 'text-muted-foreground hover:text-foreground',
                         )}
                       >
@@ -641,7 +641,7 @@ export function StepProposal({
                     {done && !isEditing && (
                       <button onClick={() => startEdit(done)}
                         title="직접 편집"
-                        className="h-7 px-1.5 rounded text-xs text-muted-foreground hover:text-foreground hover:bg-muted">
+                        className="h-7 px-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted">
                         <Pencil className="h-3 w-3" />
                       </button>
                     )}
@@ -651,7 +651,7 @@ export function StepProposal({
                         onClick={() => improveSection(s.no, simItem.improvement)}
                         disabled={isImproving}
                         title="AI 피드백 반영 개선"
-                        className="h-7 px-1.5 rounded text-xs text-amber-600 hover:text-amber-700 hover:bg-amber-50 disabled:opacity-50">
+                        className="h-7 px-1.5 text-xs text-amber-600 hover:text-amber-700 hover:bg-amber-50 disabled:opacity-50">
                         {isImproving
                           ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
                           : <Wand2 className="h-3.5 w-3.5" />}

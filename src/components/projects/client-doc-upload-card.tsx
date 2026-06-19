@@ -115,7 +115,7 @@ export function ClientDocUploadCard({ projectId, current }: Props) {
     <Card>
       <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-1.5 text-sm">
-          <Library className="h-4 w-4 text-primary" />
+          <Library className="h-4 w-4 text-brand" />
           발주처 공식 문서
           {hasData && (
             <Badge variant="outline" className="ml-1 h-4 px-1 text-[10px]">
@@ -126,7 +126,7 @@ export function ClientDocUploadCard({ projectId, current }: Props) {
         {hasData && (
           <button
             onClick={() => setPasteMode(false)}
-            className="text-[10px] text-muted-foreground hover:text-primary"
+            className="text-[10px] text-muted-foreground hover:text-brand"
             title="새 문서 업로드"
             disabled={busy}
           >
@@ -164,7 +164,7 @@ export function ClientDocUploadCard({ projectId, current }: Props) {
             <button
               type="button"
               onClick={() => setPasteMode(true)}
-              className="w-full text-center text-[10px] text-muted-foreground hover:text-primary"
+              className="w-full text-center text-[10px] text-muted-foreground hover:text-brand"
             >
               또는 텍스트로 붙여넣기
             </button>
@@ -176,7 +176,7 @@ export function ClientDocUploadCard({ projectId, current }: Props) {
             <input
               type="text"
               placeholder="출처 표기 (예: 연세대 중장기 계획서 2026)"
-              className="w-full rounded-md border bg-background px-2 py-1 text-xs"
+              className="w-full border bg-background px-2 py-1 text-xs"
               value={pasteLabel}
               onChange={(e) => setPasteLabel(e.target.value)}
             />
@@ -219,7 +219,7 @@ export function ClientDocUploadCard({ projectId, current }: Props) {
 
         {hasData && (
           <>
-            <div className="rounded-md border bg-muted/20 p-2 text-[10px]">
+            <div className=" border bg-muted/20 p-2 text-[10px]">
               <div className="font-medium">출처</div>
               <div className="mt-0.5 truncate text-muted-foreground">
                 {localData!.sourceLabel ?? '(미표기)'}

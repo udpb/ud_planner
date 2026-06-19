@@ -22,16 +22,16 @@ export function LoginForm({ hasGoogle }: Props) {
         {/* 로고 */}
         <div className="text-center">
           <h1 className="text-3xl font-extrabold tracking-tight">
-            UD<span className="text-primary">·</span>Ops
+            UD<span className="text-brand">·</span>Ops
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             언더독스 교육 기획 자동화 플랫폼
           </p>
         </div>
 
-        <div className="rounded-lg border bg-card p-6 shadow-sm space-y-4">
+        <div className=" border bg-card p-6 shadow-sm space-y-4">
           {error && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+            <div className=" bg-destructive/10 p-3 text-sm text-destructive">
               로그인에 실패했습니다. 다시 시도해주세요.
             </div>
           )}
@@ -45,7 +45,7 @@ export function LoginForm({ hasGoogle }: Props) {
                   signIn('google', { callbackUrl })
                 }}
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-3 rounded-md border bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-3 border bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-50"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path
@@ -86,7 +86,7 @@ export function LoginForm({ hasGoogle }: Props) {
               value={devEmail}
               onChange={(e) => setDevEmail(e.target.value)}
               placeholder="이메일 (@udimpact.ai / @underdogs.co.kr)"
-              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button
               onClick={() => {
@@ -94,7 +94,7 @@ export function LoginForm({ hasGoogle }: Props) {
                 signIn('credentials', { email: devEmail, callbackUrl })
               }}
               disabled={loading}
-              className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+              className="w-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-brand/90 disabled:opacity-50"
             >
               {loading ? '로그인 중...' : '이메일로 로그인'}
             </button>

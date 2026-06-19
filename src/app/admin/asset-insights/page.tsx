@@ -207,11 +207,11 @@ export default async function AssetInsightsPage() {
                   {data.stale.slice(0, 30).map((a) => (
                     <li
                       key={a.id}
-                      className="flex items-center justify-between gap-2 rounded border bg-red-50/30 p-1.5"
+                      className="flex items-center justify-between gap-2 border bg-red-50/30 p-1.5"
                     >
                       <Link
                         href={`/admin/content-hub/${a.id}/edit`}
-                        className="min-w-0 flex-1 truncate hover:text-primary"
+                        className="min-w-0 flex-1 truncate hover:text-brand"
                       >
                         {a.name}
                       </Link>
@@ -250,11 +250,11 @@ export default async function AssetInsightsPage() {
                   {data.aging.slice(0, 30).map((a) => (
                     <li
                       key={a.id}
-                      className="flex items-center justify-between gap-2 rounded border bg-amber-50/30 p-1.5"
+                      className="flex items-center justify-between gap-2 border bg-amber-50/30 p-1.5"
                     >
                       <Link
                         href={`/admin/content-hub/${a.id}/edit`}
-                        className="min-w-0 flex-1 truncate hover:text-primary"
+                        className="min-w-0 flex-1 truncate hover:text-brand"
                       >
                         {a.name}
                       </Link>
@@ -273,7 +273,7 @@ export default async function AssetInsightsPage() {
         <Card className="mt-4">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-1.5 text-sm">
-              <TrendingUp className="h-3.5 w-3.5 text-primary" />
+              <TrendingUp className="h-3.5 w-3.5 text-brand" />
               자산 사용 + 수주 성과 ({data.usage.length})
             </CardTitle>
             <p className="text-[10px] text-muted-foreground">
@@ -288,7 +288,7 @@ export default async function AssetInsightsPage() {
                 기록 시작.
               </p>
             ) : (
-              <div className="max-h-96 overflow-y-auto rounded-md border">
+              <div className="max-h-96 overflow-y-auto border">
                 <table className="w-full text-[11px]">
                   <thead className="sticky top-0 bg-muted/40">
                     <tr>
@@ -309,7 +309,7 @@ export default async function AssetInsightsPage() {
                         <td className="px-2 py-1">
                           <Link
                             href={`/admin/content-hub/${u.assetId}/edit`}
-                            className="hover:text-primary"
+                            className="hover:text-brand"
                           >
                             {u.name}
                           </Link>

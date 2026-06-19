@@ -310,7 +310,7 @@ export function AssetForm({ mode, initial, parents }: AssetFormProps) {
       </div>
 
       {/* ───────── 필수 5 필드 ───────── */}
-      <section className="space-y-5 rounded-lg border bg-card p-5">
+      <section className="space-y-5 border bg-card p-5">
         <h2 className="text-sm font-semibold text-foreground">필수 필드</h2>
 
         {/* 1. 이름 */}
@@ -375,7 +375,7 @@ export function AssetForm({ mode, initial, parents }: AssetFormProps) {
               return (
                 <label
                   key={o.value}
-                  className="group flex cursor-pointer items-center gap-2 rounded-md border bg-background px-2.5 py-1.5 text-xs hover:bg-muted/30"
+                  className="group flex cursor-pointer items-center gap-2 border bg-background px-2.5 py-1.5 text-xs hover:bg-muted/30"
                 >
                   <Checkbox
                     checked={checked}
@@ -402,11 +402,11 @@ export function AssetForm({ mode, initial, parents }: AssetFormProps) {
             {VALUE_CHAIN_STAGES_ORDERED.map((s) => (
               <label
                 key={s.key}
-                className="flex cursor-pointer items-center gap-2 rounded-md border bg-background px-2.5 py-2 text-xs hover:bg-muted/30"
+                className="flex cursor-pointer items-center gap-2 border bg-background px-2.5 py-2 text-xs hover:bg-muted/30"
               >
                 <RadioGroupItem value={s.key} />
                 <span
-                  className="inline-block h-2 w-2 rounded-full"
+                  className="inline-block h-2 w-2"
                   style={{ backgroundColor: s.colorHex }}
                 />
                 <span className="font-medium">{s.numberedLabel}</span>
@@ -418,7 +418,7 @@ export function AssetForm({ mode, initial, parents }: AssetFormProps) {
       </section>
 
       {/* ───────── 선택 필드 (Accordion) ───────── */}
-      <details className="group rounded-lg border bg-card">
+      <details className="group border bg-card">
         <summary className="flex cursor-pointer select-none items-center justify-between p-5 text-sm font-semibold">
           선택 필드 (계층·태그·버전·검토일)
           <span className="text-xs text-muted-foreground group-open:hidden">
@@ -686,17 +686,17 @@ function TagInputField({
   return (
     <div className="space-y-1.5">
       <Label className="text-xs">{label}</Label>
-      <div className="flex flex-wrap items-center gap-1.5 rounded-md border bg-background p-1.5">
+      <div className="flex flex-wrap items-center gap-1.5 border bg-background p-1.5">
         {values.map((v) => (
           <span
             key={v}
-            className="inline-flex items-center gap-1 rounded-md bg-muted px-1.5 py-0.5 text-xs"
+            className="inline-flex items-center gap-1 bg-muted px-1.5 py-0.5 text-xs"
           >
             {v}
             <button
               type="button"
               onClick={() => remove(v)}
-              className="rounded-sm p-0.5 hover:bg-background"
+              className=" p-0.5 hover:bg-background"
               aria-label={`${v} 제거`}
             >
               <X className="h-3 w-3" />

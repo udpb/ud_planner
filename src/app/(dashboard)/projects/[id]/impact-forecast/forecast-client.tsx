@@ -245,7 +245,7 @@ export function ImpactForecastClient({
             </div>
           </div>
           {forecast.calibrationNote && (
-            <p className="mt-3 rounded border bg-white/60 p-2 text-[11px] text-muted-foreground">
+            <p className="mt-3 border bg-white/60 p-2 text-[11px] text-muted-foreground">
               <strong>분석 메모:</strong> {forecast.calibrationNote}
             </p>
           )}
@@ -318,7 +318,7 @@ export function ImpactForecastClient({
                       </span>
                     </span>
                   </div>
-                  <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-muted">
+                  <div className="mt-0.5 h-1 w-full overflow-hidden bg-muted">
                     <div
                       className="h-full bg-[color:var(--cyan)]"
                       style={{ width: `${pct}%` }}
@@ -336,11 +336,11 @@ export function ImpactForecastClient({
         <CardHeader className="pb-2">
           <CardTitle className="text-sm">입력 항목 (신뢰도별)</CardTitle>
           <p className="text-[10px] text-muted-foreground">
-            <span className="rounded bg-green-100 px-1 text-green-800">명시</span>{' '}
+            <span className=" bg-green-100 px-1 text-green-800">명시</span>{' '}
             RFP/1차본 명시 ·{' '}
-            <span className="rounded bg-amber-100 px-1 text-amber-800">도출</span>{' '}
+            <span className=" bg-amber-100 px-1 text-amber-800">도출</span>{' '}
             curriculum 도출 ·{' '}
-            <span className="rounded bg-red-100 px-1 text-red-800">추정</span> AI 추정
+            <span className=" bg-red-100 px-1 text-red-800">추정</span> AI 추정
             (0.7 보수 인수 적용됨)
           </p>
         </CardHeader>
@@ -349,7 +349,7 @@ export function ImpactForecastClient({
             {editing.map((item, idx) => {
               const cat = categoryMap.get(item.categoryId)
               return (
-                <div key={idx} className="rounded border bg-muted/20 p-2 text-[11px]">
+                <div key={idx} className=" border bg-muted/20 p-2 text-[11px]">
                   <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
                     <Badge
                       variant="outline"

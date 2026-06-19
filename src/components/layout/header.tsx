@@ -34,7 +34,7 @@ export function Header({ title }: HeaderProps) {
         </Button>
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="h-8 w-8 rounded-full">
+          <DropdownMenuTrigger className="h-8 w-8">
             <Avatar className="h-8 w-8">
               <AvatarImage src={user?.image ?? ''} />
               <AvatarFallback className="text-xs">{initials}</AvatarFallback>

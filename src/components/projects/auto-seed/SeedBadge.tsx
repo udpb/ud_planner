@@ -69,7 +69,7 @@ export function SeedBadge({ source, label, confidence, className }: Props) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-medium',
+        'inline-flex items-center gap-1 border px-1.5 py-0.5 text-[10px] font-medium',
         meta.tone,
         className,
       )}

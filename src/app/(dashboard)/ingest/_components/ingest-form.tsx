@@ -150,9 +150,9 @@ export function IngestForm({ uploaderId: _uploaderId }: IngestFormProps) {
               {INGESTION_KINDS.map((k) => (
                 <label
                   key={k}
-                  className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm transition-colors ${
+                  className={`flex cursor-pointer items-center gap-2 border px-3 py-2 text-sm transition-colors ${
                     kind === k
-                      ? 'border-primary bg-primary/5 font-medium'
+                      ? 'border-brand bg-brand/5 font-medium'
                       : 'border-input hover:bg-muted/40'
                   }`}
                 >
@@ -200,7 +200,7 @@ export function IngestForm({ uploaderId: _uploaderId }: IngestFormProps) {
                   id="isWon"
                   value={isWon}
                   onChange={(e) => setIsWon(e.target.value as 'won' | 'lost' | '')}
-                  className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  className="h-9 w-full border border-input bg-background px-3 text-sm"
                 >
                   <option value="">선택 안함</option>
                   <option value="won">수주</option>
@@ -301,7 +301,7 @@ export function IngestForm({ uploaderId: _uploaderId }: IngestFormProps) {
           )}
 
           {/* 파일 / URL */}
-          <div className="space-y-3 rounded-md border border-dashed border-input p-4">
+          <div className="space-y-3 border border-dashed border-input p-4">
             <div className="space-y-1.5">
               <Label htmlFor="file" className="flex items-center gap-1.5">
                 <Upload className="h-3.5 w-3.5" />

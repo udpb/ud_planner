@@ -42,7 +42,7 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
         {impactForecast && (
           <Badge variant="outline" className="text-xs">
             사회적 가치 forecast{' '}
-            <strong className="ml-1 text-primary">
+            <strong className="ml-1 text-brand">
               {(impactForecast.totalSocialValue / 100_000_000).toFixed(2)}억원
             </strong>
           </Badge>
@@ -54,8 +54,8 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
         <div
           className={
             impactForecast.isStale
-              ? 'rounded-md border border-amber-300 bg-amber-50/40 p-3'
-              : 'rounded-md border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] p-3'
+              ? ' border border-amber-300 bg-amber-50/40 p-3'
+              : ' border border-[color:var(--cyan)]/40 bg-[color:var(--light-beige)] p-3'
           }
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -73,7 +73,7 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
             </div>
             <Link
               href={`/projects/${projectId}/impact-forecast`}
-              className="rounded-md border bg-background px-3 py-1 text-xs hover:border-primary/40 hover:text-primary"
+              className=" border bg-background px-3 py-1 text-xs hover:border-brand/40 hover:text-brand"
             >
               {impactForecast.isStale ? '재계산 →' : '상세·보정 →'}
             </Link>
@@ -91,7 +91,7 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
           <a
             href={`/api/projects/${projectId}/export-budget-template`}
             download
-            className="flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs hover:border-primary/40 hover:text-primary"
+            className="flex items-center gap-1.5 border bg-background px-3 py-1.5 text-xs hover:border-brand/40 hover:text-brand"
             title="발주처 제출용 budget-template 양식 (1-1-1 주관부서 + 1-2 외부용)"
           >
             <ClipboardList className="h-3.5 w-3.5" />
@@ -100,7 +100,7 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
           <a
             href={`/api/projects/${projectId}/export-markdown`}
             download
-            className="flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs hover:border-primary/40 hover:text-primary"
+            className="flex items-center gap-1.5 border bg-background px-3 py-1.5 text-xs hover:border-brand/40 hover:text-brand"
             title="1차본 전체 → Markdown (PPT/HWP 변환은 PM 후처리)"
           >
             <FileText className="h-3.5 w-3.5" />
@@ -109,7 +109,7 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
           <a
             href={`/api/projects/${projectId}/export-excel`}
             download
-            className="flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs hover:border-primary/40 hover:text-primary"
+            className="flex items-center gap-1.5 border bg-background px-3 py-1.5 text-xs hover:border-brand/40 hover:text-brand"
             title="내부 검토용 5 시트 엑셀 (요약·커리큘럼·코치·예산·SROI)"
           >
             <FileSpreadsheet className="h-3.5 w-3.5" />

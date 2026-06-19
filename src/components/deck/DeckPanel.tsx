@@ -116,7 +116,7 @@ export function DeckPanel({
       <CardContent className="space-y-4 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Presentation className="h-5 w-5 text-primary" />
+            <Presentation className="h-5 w-5 text-brand" />
             <div>
               <h2 className="text-lg font-semibold">제안 덱 (HTML→PDF)</h2>
               <p className="text-xs text-muted-foreground">
@@ -164,7 +164,7 @@ export function DeckPanel({
         )}
 
         {warnings.length > 0 && (
-          <div className="rounded-md border border-amber-300 bg-amber-50/60 px-3 py-2 space-y-1">
+          <div className=" border border-amber-300 bg-amber-50/60 px-3 py-2 space-y-1">
             <p className="flex items-center gap-1.5 text-xs font-medium text-amber-800">
               <AlertTriangle className="h-3.5 w-3.5" />
               기획 미작성 단계 — 아래 슬라이드는 가안/생략입니다 (해당 스텝을 먼저 채우면 실데이터 반영)

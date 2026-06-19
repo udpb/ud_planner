@@ -28,13 +28,13 @@ export default function BookmarkletPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-1.5">
-                <BookMarked className="h-4 w-4 text-primary" />한 클릭 자산
+                <BookMarked className="h-4 w-4 text-brand" />한 클릭 자산
                 수집 북마크릿
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <BookmarkletClient />
-              <div className="rounded-md border bg-muted/20 p-3 text-xs">
+              <div className=" border bg-muted/20 p-3 text-xs">
                 <p className="font-medium">설치 방법</p>
                 <ol className="ml-4 mt-1 list-decimal space-y-0.5 text-muted-foreground">
                   <li>위 &ldquo;UD 자산 수집&rdquo; 링크를 브라우저 북마크바로 드래그</li>

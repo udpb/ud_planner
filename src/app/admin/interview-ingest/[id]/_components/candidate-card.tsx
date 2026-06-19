@@ -96,7 +96,7 @@ export function CandidateCard({
   return (
     <div
       className={cn(
-        'rounded-md border p-3',
+        ' border p-3',
         status === 'approved' && 'border-green-300 bg-green-50/30',
         status === 'rejected' && 'border-red-300 bg-red-50/30 opacity-60',
         status === 'edited' && 'border-amber-300 bg-amber-50/30',
@@ -141,7 +141,7 @@ export function CandidateCard({
       )}
 
       {evidence && (
-        <div className="mt-2 rounded bg-muted/50 px-2 py-1 text-[11px] italic text-muted-foreground">
+        <div className="mt-2 bg-muted/50 px-2 py-1 text-[11px] italic text-muted-foreground">
           📎 “{evidence}”
         </div>
       )}

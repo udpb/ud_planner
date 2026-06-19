@@ -114,7 +114,7 @@ export function ProjectEditForm({ project }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-xs font-medium shadow-sm hover:bg-accent hover:text-accent-foreground"
+        className="inline-flex h-8 items-center gap-1.5 border border-input bg-background px-3 text-xs font-medium shadow-sm hover:bg-accent hover:text-accent-foreground"
       >
         <Pencil className="h-3.5 w-3.5" />
         편집

@@ -206,7 +206,7 @@ function CitationChip({
           type="button"
           onClick={() => setOpen((o) => !o)}
           className={cn(
-            'inline-flex items-center gap-1 align-baseline rounded-full border px-2 py-0.5 text-[11px] font-medium leading-tight',
+            'inline-flex items-center gap-1 align-baseline border px-2 py-0.5 text-[11px] font-medium leading-tight',
             'border-[color:var(--primary-orange)]/30 bg-[color:var(--primary-orange)]/10',
             'text-[color:var(--primary-orange)] hover:bg-[color:var(--primary-orange)]/20',
           )}
@@ -224,7 +224,7 @@ function CitationChip({
         )}
         {open && (
           <span
-            className="block rounded-md border bg-popover p-2 text-[11px] shadow-md"
+            className="block border bg-popover p-2 text-[11px] shadow-md"
             style={{ marginTop: 4 }}
           >
             <span className="block font-semibold">{label}</span>
@@ -271,7 +271,7 @@ function CitationChip({
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              'inline-flex items-center gap-1 align-baseline rounded-full border px-2 py-0.5 text-[11px] font-medium leading-tight',
+              'inline-flex items-center gap-1 align-baseline border px-2 py-0.5 text-[11px] font-medium leading-tight',
               'border-[color:var(--cyan)]/30 bg-[color:var(--cyan)]/10',
               'text-[color:var(--cyan)] hover:bg-[color:var(--cyan)]/20',
             )}
@@ -283,7 +283,7 @@ function CitationChip({
         ) : (
           <span
             className={cn(
-              'inline-flex items-center gap-1 align-baseline rounded-full border px-2 py-0.5 text-[11px] font-medium leading-tight',
+              'inline-flex items-center gap-1 align-baseline border px-2 py-0.5 text-[11px] font-medium leading-tight',
               'border-[color:var(--cyan)]/30 bg-[color:var(--cyan)]/10 text-[color:var(--cyan)]',
             )}
             title="외부 근거"
@@ -300,7 +300,7 @@ function CitationChip({
     <span className="inline-block">
       <span
         className={cn(
-          'inline-flex items-center gap-1 align-baseline rounded-full border px-2 py-0.5 text-[11px] font-medium leading-tight',
+          'inline-flex items-center gap-1 align-baseline border px-2 py-0.5 text-[11px] font-medium leading-tight',
           'border-[color:var(--primary-orange)]/30 bg-[color:var(--primary-orange)]/10 text-[color:var(--primary-orange)]',
         )}
         title={`Inspector 추천 자산 — ${data.name}`}

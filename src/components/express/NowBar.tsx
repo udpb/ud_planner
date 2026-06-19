@@ -250,8 +250,8 @@ export function NowBar(props: Props) {
             disabled={cta.disabled}
             title={cta.tooltip}
             className={cn(
-              'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm',
-              'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+              'flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm',
+              'bg-primary text-primary-foreground hover:bg-brand/90 shadow-sm',
               cta.disabled && 'cursor-not-allowed opacity-50',
             )}
           >
@@ -263,13 +263,13 @@ export function NowBar(props: Props) {
         <button
           type="button"
           onClick={props.onOpenPalette}
-          className="ml-auto flex items-center gap-1 rounded-md border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          className="ml-auto flex items-center gap-1 border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-brand/40 hover:text-brand"
           title={`다른 산출물 · 점프 명령 (${cmdKLabel})`}
           aria-haspopup="dialog"
         >
           More
           <ChevronDown className="h-3 w-3" />
-          <kbd className="ml-1 hidden rounded border bg-muted/40 px-1 py-px font-mono text-[10px] text-muted-foreground sm:inline">
+          <kbd className="ml-1 hidden border bg-muted/40 px-1 py-px font-mono text-[10px] text-muted-foreground sm:inline">
             {cmdKLabel}
           </kbd>
         </button>

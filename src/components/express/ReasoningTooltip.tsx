@@ -45,7 +45,7 @@ export function ReasoningTooltip({ trace, size = 'sm', className = '' }: Reasoni
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`inline-flex ${iconSize} cursor-pointer items-center justify-center rounded-full border text-[8px] font-bold transition-colors hover:bg-primary/10`}
+        className={`inline-flex ${iconSize} cursor-pointer items-center justify-center border text-[8px] font-bold transition-colors hover:bg-brand/10`}
         style={{
           borderColor: 'var(--primary-orange)',
           color: 'var(--primary-orange)',

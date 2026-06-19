@@ -165,7 +165,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
             <div className="text-xs text-muted-foreground">
               데이터 센터 캐시 + 웹 검색으로 정량 자료를 찾아드릴게요.
             </div>
-            <ol className="space-y-1 rounded-md border bg-background/60 p-2.5 text-xs text-foreground/85">
+            <ol className="space-y-1 border bg-background/60 p-2.5 text-xs text-foreground/85">
               <li>1. 데이터 센터 11건 통계 우선 매칭</li>
               <li>2. 캐시 부족 시 Gemini Google Search 자동 호출</li>
             </ol>
@@ -191,7 +191,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
 
         {state === 'loading' && (
           <div className="space-y-3">
-            <div className="flex items-center gap-2 rounded-md border bg-background/60 px-3 py-2 text-xs text-foreground/85">
+            <div className="flex items-center gap-2 border bg-background/60 px-3 py-2 text-xs text-foreground/85">
               <Loader2 className="h-4 w-4 animate-spin text-[color:var(--primary-orange)]" />
               {attempt === 1
                 ? '데이터 센터 우선 매칭 중...'
@@ -220,7 +220,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
               {result.tier === 'fallback' && (
                 <span
                   className={cn(
-                    'inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-medium',
+                    'inline-flex items-center gap-1 border px-1.5 py-0.5 text-[10px] font-medium',
                     'bg-red-100 text-red-800 border-red-200',
                   )}
                 >
@@ -235,7 +235,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
 
             {/* fallback 상태 — 빨강 박스 */}
             {isFallback && (
-              <div className="space-y-2 rounded-md border border-red-200 bg-red-50 p-3 text-xs text-red-800">
+              <div className="space-y-2 border border-red-200 bg-red-50 p-3 text-xs text-red-800">
                 <div className="font-medium">
                   데이터 센터·웹 모두 결과 없음. PM 이 직접 확인하시겠어요?
                 </div>
@@ -255,7 +255,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
                 {result.hits.map((hit, idx) => (
                   <li
                     key={`${hit.source}-${hit.year}-${idx}`}
-                    className="rounded-md border bg-background p-2.5 text-xs"
+                    className=" border bg-background p-2.5 text-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1 space-y-1">
@@ -273,7 +273,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
                         <div className="flex flex-wrap items-center gap-2 pt-1">
                           <span
                             className={cn(
-                              'inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-medium',
+                              'inline-flex items-center border px-1.5 py-0.5 text-[10px] font-medium',
                               CONFIDENCE_TONE[hit.confidence],
                             )}
                           >
@@ -354,7 +354,7 @@ export function AutoResearchCard(props: Props): JSX.Element {
         )}
 
         {error && (
-          <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+          <div className=" border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
             <AlertCircle className="mr-1 inline h-3 w-3" />
             {error}
           </div>

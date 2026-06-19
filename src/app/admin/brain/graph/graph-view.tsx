@@ -195,7 +195,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
   return (
     <div className="space-y-3">
       {/* 컨트롤 */}
-      <div className="rounded-lg border bg-card p-3">
+      <div className=" border bg-card p-3">
         <div className="grid gap-3 md:grid-cols-3">
           {/* 검색 */}
           <div>
@@ -207,7 +207,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="DOGS, ACTT, IMPACT, 5D ..."
-              className="w-full rounded border border-input bg-background px-2.5 py-1.5 text-xs"
+              className="w-full border border-input bg-background px-2.5 py-1.5 text-xs"
             />
           </div>
 
@@ -259,13 +259,13 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
                   else next.add(type)
                   setEnabledTypes(next)
                 }}
-                className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10px] transition ${
+                className={`inline-flex items-center gap-1 border px-1.5 py-0.5 text-[10px] transition ${
                   enabled ? 'bg-white' : 'bg-gray-100 opacity-40'
                 }`}
                 title={enabled ? '클릭하면 숨김' : '클릭하면 표시'}
               >
                 <span
-                  className="h-2.5 w-2.5 rounded-full"
+                  className="h-2.5 w-2.5"
                   style={{ background: color }}
                 />
                 <span className="font-medium">{TYPE_LABEL[type] || type}</span>
@@ -282,7 +282,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
               setPinnedNode(null)
               setSearch('')
             }}
-            className="ml-auto rounded border bg-gray-50 px-2 py-0.5 text-[10px] hover:bg-gray-100"
+            className="ml-auto border bg-gray-50 px-2 py-0.5 text-[10px] hover:bg-gray-100"
           >
             🔄 리셋
           </button>
@@ -290,7 +290,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
       </div>
 
       {/* SVG */}
-      <div className="relative overflow-hidden rounded-lg border bg-white">
+      <div className="relative overflow-hidden border bg-white">
         <svg
           ref={svgRef}
           width="100%"
@@ -428,10 +428,10 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
 
         {/* 노드 디테일 패널 (우상단) */}
         {focusNode && (
-          <div className="absolute right-3 top-3 w-64 rounded-lg border bg-white p-3 shadow-lg">
+          <div className="absolute right-3 top-3 w-64 border bg-white p-3 shadow-lg">
             <div className="mb-1.5 flex items-center gap-1.5">
               <span
-                className="h-3 w-3 rounded-full"
+                className="h-3 w-3"
                 style={{ background: TYPE_COLORS[focusNode.type] || '#9CA3AF' }}
               />
               <span className="text-xs font-medium">
@@ -478,7 +478,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
                       <button
                         key={n.id}
                         onClick={() => setPinnedNode(n)}
-                        className="rounded border px-1.5 py-0.5 text-[10px] hover:bg-gray-50"
+                        className=" border px-1.5 py-0.5 text-[10px] hover:bg-gray-50"
                         style={{
                           borderColor: TYPE_COLORS[n.type] || '#D1D5DB',
                         }}
@@ -498,7 +498,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
         )}
 
         {/* zoom 표시 (좌하단) */}
-        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded border bg-white/95 px-2 py-1 text-[10px] shadow">
+        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 border bg-white/95 px-2 py-1 text-[10px] shadow">
           <button
             onClick={() => setZoom((z) => Math.min(3, z * 1.2))}
             className="px-1 hover:bg-gray-100"
@@ -524,7 +524,7 @@ export function GraphView({ initialData }: { initialData: GraphData }) {
         </div>
 
         {/* hint (우하단) */}
-        <div className="absolute bottom-3 right-3 rounded border bg-white/95 px-2 py-1 text-[10px] text-muted-foreground shadow">
+        <div className="absolute bottom-3 right-3 border bg-white/95 px-2 py-1 text-[10px] text-muted-foreground shadow">
           🖱 drag = pan · scroll = zoom · hover = highlight
         </div>
       </div>

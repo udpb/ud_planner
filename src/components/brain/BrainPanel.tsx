@@ -144,7 +144,7 @@ export function BrainPanel(props: BrainPanelProps) {
   return (
     <div className="space-y-4">
       {/* 헤더 — meta */}
-      <div className="rounded-lg border bg-card p-3">
+      <div className=" border bg-card p-3">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-xs">
             <Badge variant="outline" className="text-[10px]">
@@ -157,7 +157,7 @@ export function BrainPanel(props: BrainPanelProps) {
           </div>
           <Link
             href="/admin/brain"
-            className="text-[11px] text-primary hover:underline"
+            className="text-[11px] text-brand hover:underline"
           >
             Brain Dashboard →
           </Link>
@@ -190,7 +190,7 @@ export function BrainPanel(props: BrainPanelProps) {
         </CardHeader>
         <CardContent>
           {props.matchedConcepts.length === 0 ? (
-            <div className="rounded border border-amber-200 bg-amber-50/40 p-3 text-[11px]">
+            <div className=" border border-amber-200 bg-amber-50/40 p-3 text-[11px]">
               ⚠ Brain 이 RFP 키워드와 매칭되는 Concept 을 찾지 못함. 신규 도메인 가능성.
             </div>
           ) : (
@@ -229,7 +229,7 @@ export function BrainPanel(props: BrainPanelProps) {
               {props.messages.slice(0, 5).map((m) => (
                 <div
                   key={m.patternId}
-                  className="rounded border bg-blue-50/30 p-2.5"
+                  className=" border bg-blue-50/30 p-2.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
@@ -337,7 +337,7 @@ export function BrainPanel(props: BrainPanelProps) {
               {props.conceptAssets.slice(0, 5).map((a) => (
                 <div
                   key={a.assetId}
-                  className="rounded border bg-purple-50/30 p-2.5"
+                  className=" border bg-purple-50/30 p-2.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
@@ -415,7 +415,7 @@ function AssetSection({
             {assets.slice(0, 5).map((a) => (
               <div
                 key={a.assetId}
-                className="rounded border bg-card p-2.5"
+                className=" border bg-card p-2.5"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
@@ -469,7 +469,7 @@ function CiteButton({
 }) {
   if (cited) {
     return (
-      <span className="inline-flex items-center gap-0.5 rounded border border-green-300 bg-green-50 px-1.5 py-0.5 text-[9px] text-green-700">
+      <span className="inline-flex items-center gap-0.5 border border-green-300 bg-green-50 px-1.5 py-0.5 text-[9px] text-green-700">
         <CheckCircle2 className="h-3 w-3" />
         인용됨
       </span>
@@ -479,7 +479,7 @@ function CiteButton({
     <button
       onClick={onClick}
       disabled={pending}
-      className="inline-flex items-center gap-0.5 rounded border border-orange-300 bg-orange-50 px-1.5 py-0.5 text-[9px] text-orange-700 transition hover:bg-orange-100 disabled:opacity-50"
+      className="inline-flex items-center gap-0.5 border border-orange-300 bg-orange-50 px-1.5 py-0.5 text-[9px] text-orange-700 transition hover:bg-orange-100 disabled:opacity-50"
     >
       <Quote className="h-3 w-3" />
       {pending ? '...' : '인용'}

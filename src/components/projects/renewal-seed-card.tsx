@@ -118,7 +118,7 @@ export function RenewalSeedCard({ projectId }: Props) {
     <Card>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-1.5 text-sm">
-          <History className="h-4 w-4 text-primary" />
+          <History className="h-4 w-4 text-brand" />
           연속 사업 자동 시드
           <Badge variant="outline" className="ml-1 h-4 px-1 text-[10px]">
             renewal
@@ -134,7 +134,7 @@ export function RenewalSeedCard({ projectId }: Props) {
         )}
 
         {!loading && prior && (
-          <div className="rounded-md border bg-muted/20 p-2 text-[10px]">
+          <div className=" border bg-muted/20 p-2 text-[10px]">
             <div className="font-medium">직전 사업</div>
             <div className="mt-0.5 text-muted-foreground">
               {prior.name} · {prior.client}
@@ -154,7 +154,7 @@ export function RenewalSeedCard({ projectId }: Props) {
             <ul className="space-y-0.5 text-[10px]">
               {proposedKeys.map((k) => (
                 <li key={k} className="flex items-center gap-1">
-                  <Sparkles className="h-2.5 w-2.5 text-primary" />
+                  <Sparkles className="h-2.5 w-2.5 text-brand" />
                   {k}
                 </li>
               ))}
@@ -167,7 +167,7 @@ export function RenewalSeedCard({ projectId }: Props) {
 
             {/* intent 미리보기 */}
             {proposal.proposedFields.intent && (
-              <details className="rounded-md border bg-background p-1.5">
+              <details className=" border bg-background p-1.5">
                 <summary className="cursor-pointer text-[10px] font-medium">
                   intent 미리보기
                 </summary>
@@ -190,13 +190,13 @@ export function RenewalSeedCard({ projectId }: Props) {
         )}
 
         {!loading && proposal && proposedKeys.length === 0 && !appliedDone && (
-          <div className="rounded-md border border-dashed p-2 text-[10px] text-muted-foreground">
+          <div className=" border border-dashed p-2 text-[10px] text-muted-foreground">
             모든 필드가 이미 작성됨 — 시드 불필요
           </div>
         )}
 
         {appliedDone && (
-          <div className="flex items-center gap-1.5 rounded-md border border-green-200 bg-green-50/50 p-2 text-[10px] text-green-800">
+          <div className="flex items-center gap-1.5 border border-green-200 bg-green-50/50 p-2 text-[10px] text-green-800">
             <CheckCircle2 className="h-3 w-3" />
             시드 완료 — 미리보기 자동 갱신
           </div>
