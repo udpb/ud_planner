@@ -41,6 +41,24 @@
     },
 
     {
+      "id": "Z-sroi-is-lens-not-target",
+      "ruleType": "Z_meta",
+      "title": "SROI는 렌즈이지 타깃이 아니다 — 높을수록 좋은 게 아님",
+      "condition": { "dimension": "always" },
+      "recommend": {
+        "kind": "value",
+        "target": "_meta.sroiRole",
+        "value": "SROI(사회가치÷예산)는 설계를 줄세우거나 최대화하는 목적함수가 아니다. 카테고리별 분해 + 가정(불확실성) + 타당성 플래그로 '왜 이 임팩트가 나오는가'를 검증·설명하는 렌즈. 어떤 임팩트가 중요한지는 클라이언트 목표가 정한다."
+      },
+      "decisionPolicy": "auto_unless_conflict",
+      "rationale": "SROI=비율이라 싼 사업에 투자유치 하나만 얹어도 폭등하나 절대임팩트 미미 — 비율 최대화는 기획을 망친다. 예측은 라이브 proxy(impact-measurement) 호출로 계산하되 D8 검증의 보조선으로만. 결과변수(고용·투자·창업전환)는 목표/PM입력에서만 — 추측 생성 금지.",
+      "evidence": { "source": "user:2026-06-20", "stat": "사용자 핵심 — SROI 높을수록 좋은 게 아님" },
+      "confidence": 1.0,
+      "isDefault": true,
+      "status": "draft"
+    },
+
+    {
       "id": "A-d1-operating-type-discriminator",
       "ruleType": "A_operatingType",
       "title": "D1 운영 유형 선택 — 회차표보다 먼저 (T1~T5)",
