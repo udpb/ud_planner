@@ -1,35 +1,37 @@
 'use client'
 
 /**
- * 턴 기반 프로그램 기획 인테이크 (Client Component) — BR-3b
+ * 프로그램 설계 캔버스 (Client Component) — BR-3c (재디자인, BR-3b 턴 루프 보존)
  *
- * 4단계 (v1.2 §01·§09):
+ * BR-3b 의 4단계 흐름을 **설계 캔버스**로 재디자인 (목업 design_stage_auto_intelligence):
  *   ① 토대잡기 — RFP 미리채움 + 목표 확인/수정 · 선례 · 담당자 의도 → "기획 시작"
- *   ② 갈림길  — openGates 를 카드로. 고른 값 → decisions[axis] 누적 → 재호출(턴)
- *   ③ 자동조립 — decisionLog 를 D0~D8 순서로 (decision·rationale·evidence·source 배지·conflictNote)
- *   ④ 1차안   — openGates 0건일 때 결정로그 + 구조.
- *               structure.kind==='sessions'(T1~T3) → 회차표 / 'individual'·'event'(T4/T5) → 단계 리스트.
- *               LLM 제안 수치는 인라인 편집 가능(빈칸 채우기 아님 — 확인/수정).
+ *   ② 갈림길  — openGates 카드. 운영 유형은 이름+설명+실측(GateCard), 응답 → 턴 재호출.
+ *   ③ 자동조립 — decisionLog 시각화(D0~D8 + source 배지) + 기획요소 칩.
+ *   ④ 1차안   — 회차 타임라인(T1~T3) / 단계 리스트(T4/T5) + 코치풀 + 자산 인용.
  *
- * 엔진은 읽기만 — 이 컴포넌트는 POST /api/projects/[id]/program-design 로 ProgramPlan 을 소비.
- * 디자인킷: radius 0, accent 면 최소(ask_human·핵심 라벨만), 킷 토큰만, rule-board.tsx 톤.
+ * ⚠️ 턴 루프(게이트 응답→재호출)·structure 분기는 BR-3b 그대로 보존 — **UI만 교체**.
+ *    엔진은 호출만 (POST /api/projects/[id]/program-design). 새 엔진·추천 로직 0.
+ *    코치풀(AutoRecommendedPool)·자산(MatchedAssetsPanel)·운영유형 메타(design-rules)
+ *    는 전부 재사용/호출.
+ *
+ * 디자인킷 260529: radius 0, accent 면 최소, 킷 토큰만(--accent/--ink/--paper/--muted/--line).
  */
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import type {
-  DecisionLogEntry,
-  DecisionSource,
-  DecisionStep,
-  NonSessionStage,
-  PlanGate,
-  PlanSession,
-  PlanStructure,
-  ProgramPlan,
-} from '@/lib/program-design/plan-types'
+import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
+import { MatchedAssetsPanel } from '@/components/projects/matched-assets-panel'
+import type { AssetMatch } from '@/lib/asset-registry-types'
+import type { PlanStructure, ProgramPlan } from '@/lib/program-design/plan-types'
+
+import { DecisionLog } from './decision-log'
+import { GateCard } from './gate-card'
+import { PlanningElements } from './planning-elements'
+import { StructureView } from './structure-view'
+import type { OperatingTypeMeta } from './operating-type-meta'
 
 // ─────────────────────────────────────────────────────────────────
 // 미리채움 타입 (서버 컴포넌트가 RfpParsed 에서 추출)
@@ -47,532 +49,16 @@ export interface RfpPreview {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// 라벨 (UI 표시용 — 코드 enum 은 그대로)
+// 운영 유형 메타 lookup — name (이름 표시용, 데이터에서)
 // ─────────────────────────────────────────────────────────────────
 
-const STEP_LABEL: Record<DecisionStep, string> = {
-  D0: 'D0 목표',
-  D1: 'D1 운영 유형',
-  D2: 'D2 사전학습·선발',
-  D3: 'D3 킥오프',
-  D4: 'D4 본체',
-  D5: 'D5 코칭',
-  D6: 'D6 특강·옵션',
-  D7: 'D7 발표·행사',
-  D8: 'D8 검수',
-}
-
-const STEP_ORDER: DecisionStep[] = ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8']
-
-const SOURCE_LABEL: Record<DecisionSource, string> = {
-  precedent: '선례',
-  intent: '담당자 의도',
-  goal: '목표',
-  rfp: 'RFP',
-  human: '사람 결정',
-  rule: '규칙',
-}
-
-// source 배지 — accent 는 사람/의도/선례(=토대 우선순위) 강조에만, 규칙/RFP 는 중립.
-const SOURCE_STYLE: Record<DecisionSource, { bg: string; fg: string; border: string }> = {
-  precedent: { bg: 'var(--accent-88)', fg: 'var(--accent)', border: 'var(--accent)' },
-  intent: { bg: 'var(--accent-88)', fg: 'var(--accent)', border: 'var(--accent)' },
-  human: { bg: 'var(--accent-88)', fg: 'var(--accent)', border: 'var(--accent)' },
-  goal: { bg: 'var(--neutral-60)', fg: 'var(--soft-ink)', border: 'var(--line)' },
-  rfp: { bg: 'var(--neutral-60)', fg: 'var(--soft-ink)', border: 'var(--line)' },
-  rule: { bg: 'var(--neutral-60)', fg: 'var(--muted)', border: 'var(--line)' },
-}
-
-const GATE_REASON_LABEL: Record<PlanGate['reason'], string> = {
-  ask_human: '사람 결정',
-  no_approved_rule: '규칙 없음',
-  ambiguous_signal: '신호 모호',
-  conflict: '충돌',
-}
-
-const SESSION_KIND_LABEL: Record<PlanSession['kind'], string> = {
-  theory: '이론',
-  workshop: '워크숍',
-  coaching: '코칭',
-  event: '행사',
-  milestone: '마일스톤',
-  prelearning: '사전학습',
-}
+const OPERATING_TYPE_NAME = (
+  meta: OperatingTypeMeta[],
+  type: string | undefined,
+): string | undefined => meta.find((m) => m.type === type)?.name
 
 // ─────────────────────────────────────────────────────────────────
-// 값 표시 헬퍼
-// ─────────────────────────────────────────────────────────────────
-
-function optionLabel(opt: unknown): string {
-  if (opt === null || opt === undefined) return ''
-  if (typeof opt === 'string' || typeof opt === 'number' || typeof opt === 'boolean') {
-    return String(opt)
-  }
-  if (typeof opt === 'object') {
-    const o = opt as Record<string, unknown>
-    const label = o.label ?? o.title ?? o.name ?? o.type ?? o.value
-    if (label !== undefined) return String(label)
-  }
-  try {
-    return JSON.stringify(opt)
-  } catch {
-    return '(값)'
-  }
-}
-
-/** 게이트 옵션 → decisions 에 저장할 값 (type/value 우선, 없으면 옵션 자체). */
-function optionValue(opt: unknown): unknown {
-  if (opt && typeof opt === 'object') {
-    const o = opt as Record<string, unknown>
-    if (o.type !== undefined) return o.type
-    if (o.value !== undefined) return o.value
-  }
-  return opt
-}
-
-function shortText(v: unknown): string {
-  if (v === null || v === undefined) return '—'
-  if (typeof v === 'string') return v
-  if (typeof v === 'number' || typeof v === 'boolean') return String(v)
-  try {
-    return JSON.stringify(v)
-  } catch {
-    return '(값)'
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────
-// 게이트 카드
-// ─────────────────────────────────────────────────────────────────
-
-function GateCard({
-  gate,
-  pending,
-  disabled,
-  onAnswer,
-}: {
-  gate: PlanGate
-  pending: unknown
-  disabled: boolean
-  onAnswer: (axis: string, value: unknown) => void
-}) {
-  const [freeText, setFreeText] = useState('')
-  const options = Array.isArray(gate.options) ? gate.options : []
-  const isAskHuman = gate.reason === 'ask_human'
-
-  return (
-    <div
-      style={{
-        background: 'var(--paper)',
-        border: '1px solid var(--line)',
-        borderLeft: isAskHuman ? '3px solid var(--accent)' : '1px solid var(--line)',
-        padding: 16,
-        display: 'grid',
-        gap: 12,
-      }}
-    >
-      {/* 헤더: step + reason */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--muted)' }}>
-          {STEP_LABEL[gate.step]} · <span style={{ color: 'var(--soft-ink)' }}>{gate.axis}</span>
-        </span>
-        <span
-          style={{
-            flexShrink: 0,
-            fontSize: 11,
-            fontWeight: 700,
-            padding: '3px 8px',
-            border: `1px solid ${isAskHuman ? 'var(--accent)' : 'var(--line)'}`,
-            background: isAskHuman ? 'var(--accent-88)' : 'transparent',
-            color: isAskHuman ? 'var(--accent)' : 'var(--muted)',
-          }}
-        >
-          {GATE_REASON_LABEL[gate.reason]}
-        </span>
-      </div>
-
-      {/* 질문 */}
-      <h3
-        style={{
-          fontSize: 15,
-          fontWeight: 800,
-          color: 'var(--ink)',
-          lineHeight: 1.4,
-          wordBreak: 'keep-all',
-        }}
-      >
-        {gate.question}
-      </h3>
-
-      {/* why */}
-      <p style={{ fontSize: 12, color: 'var(--soft-ink)', lineHeight: 1.7, wordBreak: 'keep-all' }}>
-        {gate.why}
-      </p>
-
-      {/* recommended 배지 */}
-      {gate.recommended !== undefined && gate.recommended !== null && (
-        <div
-          style={{
-            fontSize: 11,
-            color: 'var(--soft-ink)',
-            background: 'var(--neutral-90)',
-            padding: '6px 8px',
-            wordBreak: 'keep-all',
-          }}
-        >
-          <span style={{ color: 'var(--accent)', fontWeight: 700 }}>추천</span>{' '}
-          {shortText(gate.recommended)}
-        </div>
-      )}
-
-      {/* 선택지 */}
-      {options.length > 0 ? (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          {options.map((opt, i) => {
-            const val = optionValue(opt)
-            const label = optionLabel(opt)
-            const isRecommended =
-              gate.recommended !== undefined &&
-              shortText(optionValue(gate.recommended)) === shortText(val)
-            const isSelected = pending !== undefined && shortText(pending) === shortText(val)
-            return (
-              <button
-                key={i}
-                type="button"
-                disabled={disabled}
-                onClick={() => onAnswer(gate.axis, val)}
-                style={{
-                  fontSize: 12,
-                  fontWeight: 700,
-                  padding: '6px 12px',
-                  cursor: disabled ? 'default' : 'pointer',
-                  border: `1px solid ${isSelected ? 'var(--accent)' : 'var(--line)'}`,
-                  background: isSelected ? 'var(--accent-88)' : 'var(--paper)',
-                  color: isSelected ? 'var(--accent)' : 'var(--ink)',
-                  wordBreak: 'keep-all',
-                  opacity: disabled ? 0.6 : 1,
-                }}
-              >
-                {label || `옵션 ${i + 1}`}
-                {isRecommended && (
-                  <span style={{ marginLeft: 6, fontSize: 10, color: 'var(--accent)' }}>· 추천</span>
-                )}
-              </button>
-            )
-          })}
-        </div>
-      ) : (
-        // 선택지 없으면 자유 텍스트 응답.
-        <div style={{ display: 'grid', gap: 6 }}>
-          <Textarea
-            value={freeText}
-            onChange={(e) => setFreeText(e.target.value)}
-            placeholder="여기에 결정 내용을 적어주세요 (예: 운영 유형 코드 또는 방향)"
-            rows={2}
-            disabled={disabled}
-            style={{ fontSize: 13 }}
-          />
-          <div>
-            <Button
-              type="button"
-              size="sm"
-              disabled={disabled || freeText.trim().length === 0}
-              onClick={() => onAnswer(gate.axis, freeText.trim())}
-            >
-              이 결정으로 진행
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────────
-// 결정 로그 (③ 자동조립 / ④ 1차안 상단)
-// ─────────────────────────────────────────────────────────────────
-
-function DecisionLogList({ log }: { log: DecisionLogEntry[] }) {
-  // D0~D8 순서로 정렬.
-  const sorted = useMemo(() => {
-    const idx = (s: DecisionStep) => STEP_ORDER.indexOf(s)
-    return [...log].sort((a, b) => idx(a.step) - idx(b.step))
-  }, [log])
-
-  if (sorted.length === 0) {
-    return (
-      <p style={{ fontSize: 12, color: 'var(--muted)' }}>
-        아직 자동 해소된 결정이 없습니다 (승인된 규칙이 적거나 RFP 신호가 약함).
-      </p>
-    )
-  }
-
-  return (
-    <div style={{ display: 'grid', gap: 2, border: '1px solid var(--line)' }}>
-      {sorted.map((d, i) => {
-        const s = SOURCE_STYLE[d.source]
-        return (
-          <div
-            key={`${d.axis}-${i}`}
-            style={{
-              background: i % 2 === 0 ? 'var(--paper)' : 'var(--neutral-90)',
-              padding: '10px 14px',
-              display: 'grid',
-              gap: 6,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--muted)', minWidth: 64 }}>
-                {STEP_LABEL[d.step]}
-              </span>
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  padding: '2px 6px',
-                  background: s.bg,
-                  color: s.fg,
-                  border: `1px solid ${s.border}`,
-                }}
-              >
-                {SOURCE_LABEL[d.source]}
-              </span>
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: 'var(--ink)',
-                  wordBreak: 'keep-all',
-                }}
-              >
-                {d.decision}
-              </span>
-            </div>
-            <p style={{ fontSize: 12, color: 'var(--soft-ink)', lineHeight: 1.6, wordBreak: 'keep-all' }}>
-              {d.rationale}
-            </p>
-            <div style={{ fontSize: 11, color: 'var(--muted)', display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              <span>
-                근거: <strong style={{ color: 'var(--soft-ink)' }}>{d.evidence.source}</strong>
-              </span>
-              {typeof d.evidence.n === 'number' && <span>n = {d.evidence.n}</span>}
-              {d.evidence.stat && <span style={{ wordBreak: 'keep-all' }}>{d.evidence.stat}</span>}
-            </div>
-            {d.conflictNote && (
-              <div
-                style={{
-                  fontSize: 11,
-                  color: 'var(--soft-ink)',
-                  borderLeft: '2px solid var(--accent)',
-                  paddingLeft: 8,
-                  wordBreak: 'keep-all',
-                }}
-              >
-                <span style={{ color: 'var(--accent)', fontWeight: 700 }}>충돌 양보: </span>
-                {d.conflictNote}
-              </div>
-            )}
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────────
-// 구조 (④ 1차안) — 회차표(T1~T3) vs 단계 리스트(T4/T5). 인라인 편집.
-// ─────────────────────────────────────────────────────────────────
-
-/** 인라인 편집 셀 — AI 제안 값을 사람이 확인/수정. */
-function EditableCell({
-  value,
-  onChange,
-  width,
-  placeholder,
-}: {
-  value: string
-  onChange: (v: string) => void
-  width?: number | string
-  placeholder?: string
-}) {
-  return (
-    <input
-      type="text"
-      value={value}
-      placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
-      style={{
-        width: width ?? '100%',
-        fontSize: 12,
-        color: 'var(--ink)',
-        background: 'transparent',
-        border: 'none',
-        borderBottom: '1px dashed var(--line)',
-        padding: '2px 0',
-        outline: 'none',
-        fontFamily: 'inherit',
-      }}
-    />
-  )
-}
-
-function SessionTableView({
-  sessions,
-  onEdit,
-}: {
-  sessions: PlanSession[]
-  onEdit: (index: number, patch: Partial<PlanSession>) => void
-}) {
-  return (
-    <div style={{ display: 'grid', gap: 2, border: '1px solid var(--line)' }}>
-      {/* 헤더 */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '60px 1fr 70px 110px 80px',
-          gap: 8,
-          background: 'var(--ink)',
-          color: 'var(--paper)',
-          padding: '8px 12px',
-          fontSize: 11,
-          fontWeight: 700,
-        }}
-      >
-        <span>회차</span>
-        <span>제목</span>
-        <span>시간(h)</span>
-        <span>형식</span>
-        <span>종류</span>
-      </div>
-      {sessions.map((s, i) => (
-        <div key={i} style={{ display: 'grid', gap: 4, background: i % 2 === 0 ? 'var(--paper)' : 'var(--neutral-90)', padding: '8px 12px' }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '60px 1fr 70px 110px 80px',
-              gap: 8,
-              alignItems: 'center',
-            }}
-          >
-            <EditableCell value={s.no} onChange={(v) => onEdit(i, { no: v })} />
-            <EditableCell value={s.title} onChange={(v) => onEdit(i, { title: v })} />
-            <EditableCell
-              value={s.hours === null ? '' : String(s.hours)}
-              placeholder="—"
-              onChange={(v) => {
-                const n = v.trim() === '' ? null : Number(v)
-                onEdit(i, { hours: n !== null && Number.isFinite(n) ? n : null })
-              }}
-            />
-            <EditableCell value={s.format} onChange={(v) => onEdit(i, { format: v })} />
-            <span style={{ fontSize: 11, color: 'var(--muted)' }}>
-              {SESSION_KIND_LABEL[s.kind] ?? s.kind}
-            </span>
-          </div>
-          {s.rationale && (
-            <p style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.5, wordBreak: 'keep-all' }}>
-              {s.rationale}
-            </p>
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function StageListView({
-  stages,
-  kind,
-  onEdit,
-}: {
-  stages: NonSessionStage[]
-  kind: 'individual' | 'event'
-  onEdit: (index: number, patch: Partial<NonSessionStage>) => void
-}) {
-  return (
-    <div style={{ display: 'grid', gap: 8 }}>
-      <p style={{ fontSize: 11, color: 'var(--muted)' }}>
-        {kind === 'individual'
-          ? '개별 밀착형(T4) — 회차표가 아닌 단계 구조입니다.'
-          : '행사 운영형(T5) — 회차표가 아닌 행사 설계 단계입니다.'}
-      </p>
-      <div style={{ display: 'grid', gap: 2, border: '1px solid var(--line)' }}>
-        {stages.map((st, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'max-content 1fr',
-              gap: 12,
-              background: i % 2 === 0 ? 'var(--paper)' : 'var(--neutral-90)',
-              padding: '10px 14px',
-              alignItems: 'start',
-            }}
-          >
-            <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)', minWidth: 24 }}>
-              {i + 1}
-            </span>
-            <div style={{ display: 'grid', gap: 6 }}>
-              <EditableCell value={st.label} onChange={(v) => onEdit(i, { label: v })} />
-              <Textarea
-                value={st.content}
-                onChange={(e) => onEdit(i, { content: e.target.value })}
-                rows={2}
-                style={{ fontSize: 12 }}
-              />
-              {st.rationale && (
-                <p style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.5, wordBreak: 'keep-all' }}>
-                  {st.rationale}
-                </p>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function StructureView({
-  structure,
-  onStructureChange,
-}: {
-  structure: PlanStructure
-  onStructureChange: (next: PlanStructure) => void
-}) {
-  if (structure.kind === 'pending') {
-    return (
-      <p style={{ fontSize: 12, color: 'var(--muted)', wordBreak: 'keep-all' }}>{structure.note}</p>
-    )
-  }
-
-  if (structure.kind === 'sessions') {
-    return (
-      <SessionTableView
-        sessions={structure.sessions}
-        onEdit={(index, patch) => {
-          const next = structure.sessions.map((s, i) => (i === index ? { ...s, ...patch } : s))
-          onStructureChange({ kind: 'sessions', sessions: next })
-        }}
-      />
-    )
-  }
-
-  // individual | event
-  return (
-    <StageListView
-      stages={structure.stages}
-      kind={structure.kind}
-      onEdit={(index, patch) => {
-        const next = structure.stages.map((st, i) => (i === index ? { ...st, ...patch } : st))
-        onStructureChange({ kind: structure.kind, stages: next })
-      }}
-    />
-  )
-}
-
-// ─────────────────────────────────────────────────────────────────
-// 섹션 헤더
+// 섹션 헤더 (kicker + title)
 // ─────────────────────────────────────────────────────────────────
 
 function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
@@ -602,16 +88,45 @@ function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
   )
 }
 
+/** 보조 패널 헤더 (코치풀·자산 — 작은 라벨). */
+function PanelLabel({ kicker, title }: { kicker: string; title: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+      <span
+        style={{
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: 'var(--accent)',
+        }}
+      >
+        {kicker}
+      </span>
+      <h3 style={{ fontSize: 13, fontWeight: 800, color: 'var(--ink)' }}>{title}</h3>
+    </div>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────
-// 메인 — 턴 루프
+// 메인 — 턴 루프 (BR-3b 보존)
 // ─────────────────────────────────────────────────────────────────
 
 export function ProgramDesignFlow({
   projectId,
   rfpPreview,
+  operatingTypeMeta,
+  assetMatches,
+  initialAcceptedAssetIds,
 }: {
   projectId: string
   rfpPreview: RfpPreview
+  /** design-rules.json B 프로파일 → 운영 유형 이름·설명·실측 (서버에서 로드). */
+  operatingTypeMeta: OperatingTypeMeta[]
+  /** matchAssetsToRfp() 결과 — 자산 인용 패널 (서버에서 계산). */
+  assetMatches: AssetMatch[]
+  /** Project.acceptedAssetIds — 자산 토글 초기값. */
+  initialAcceptedAssetIds: string[]
 }) {
   // ① 토대잡기 입력
   const [goalText, setGoalText] = useState(rfpPreview.objectives.join('\n'))
@@ -619,13 +134,12 @@ export function ProgramDesignFlow({
   const [intent, setIntent] = useState('')
   const [started, setStarted] = useState(false)
 
-  // 턴 상태
+  // 턴 상태 (BR-3b 그대로)
   const [decisions, setDecisions] = useState<Record<string, unknown>>({})
   const [pendingAnswers, setPendingAnswers] = useState<Record<string, unknown>>({})
   const [plan, setPlan] = useState<ProgramPlan | null>(null)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
-  // ④ 구조 인라인 편집 오버레이 (서버 plan 위에 사람 수정).
   const [structureOverride, setStructureOverride] = useState<PlanStructure | null>(null)
 
   const callEngine = useCallback(
@@ -638,8 +152,6 @@ export function ProgramDesignFlow({
           body: JSON.stringify({
             intent: intent.trim() ? { summary: intent.trim() } : undefined,
             precedent: precedent.trim() ? { summary: precedent.trim() } : undefined,
-            // 목표 확인/수정 텍스트는 의도와 분리해 decisions['goalNote'] 로 함께 전달
-            // (엔진은 모르는 축이면 무시 — 게이트 응답만 해소에 쓰임).
             decisions: nextDecisions,
           }),
         })
@@ -668,7 +180,6 @@ export function ProgramDesignFlow({
 
   const handleStart = useCallback(() => {
     setStarted(true)
-    // 목표 확인/수정 텍스트를 goalNote 로 동봉 (엔진이 모르면 무시 — 잡음 0).
     const seed: Record<string, unknown> = {}
     if (goalText.trim()) seed.goalNote = goalText.trim()
     setDecisions(seed)
@@ -677,7 +188,6 @@ export function ProgramDesignFlow({
 
   const handleAnswer = useCallback(
     (axis: string, value: unknown) => {
-      // 선택 즉시 pending 표시 후 누적 재호출 (턴 진행).
       setPendingAnswers((p) => ({ ...p, [axis]: value }))
       const next = { ...decisions, [axis]: value }
       setDecisions(next)
@@ -690,8 +200,6 @@ export function ProgramDesignFlow({
     if (!plan || plan.openGates.length > 0) return
     setSaving(true)
     try {
-      // 인라인 편집이 있으면 그 구조로 저장 (서버는 plan 을 다시 만들지만,
-      // 저장 payload 는 사람이 본 최종안 — 여기선 단순화: 서버 재호출 후 저장).
       const res = await fetch(`/api/projects/${projectId}/program-design`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -716,11 +224,12 @@ export function ProgramDesignFlow({
   const effectiveStructure = structureOverride ?? plan?.structure ?? null
   const hasGates = !!plan && plan.openGates.length > 0
   const isDraftReady = !!plan && plan.openGates.length === 0
+  const operatingTypeName = OPERATING_TYPE_NAME(operatingTypeMeta, plan?.operatingType)
 
   // ── ① 토대잡기 (시작 전) ──
   if (!started) {
     return (
-      <div style={{ display: 'grid', gap: 24, maxWidth: 880 }}>
+      <div style={{ display: 'grid', gap: 24, maxWidth: 920 }}>
         <section style={{ display: 'grid', gap: 12 }}>
           <SectionTitle kicker="STEP 1" title="토대잡기 — RFP 위에서 시작" />
 
@@ -817,9 +326,9 @@ export function ProgramDesignFlow({
     )
   }
 
-  // ── ②③④ 턴 진행 ──
+  // ── ②③④ 턴 진행 (설계 캔버스) ──
   return (
-    <div style={{ display: 'grid', gap: 28, maxWidth: 880 }}>
+    <div style={{ display: 'grid', gap: 28, maxWidth: 920 }}>
       {/* 진행 헤더 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
         <Button type="button" variant="ghost" size="sm" disabled={loading} onClick={() => setStarted(false)}>
@@ -827,7 +336,10 @@ export function ProgramDesignFlow({
         </Button>
         {plan?.operatingType && (
           <span style={{ fontSize: 12, color: 'var(--soft-ink)' }}>
-            운영 유형: <strong style={{ fontWeight: 700 }}>{plan.operatingType}</strong>
+            운영 유형:{' '}
+            <strong style={{ fontWeight: 700 }}>
+              {operatingTypeName ? `${operatingTypeName} (${plan.operatingType})` : plan.operatingType}
+            </strong>
           </span>
         )}
         {plan && (
@@ -853,6 +365,7 @@ export function ProgramDesignFlow({
                 gate={gate}
                 pending={pendingAnswers[gate.axis]}
                 disabled={loading}
+                operatingTypeMeta={operatingTypeMeta}
                 onAnswer={handleAnswer}
               />
             ))}
@@ -860,14 +373,16 @@ export function ProgramDesignFlow({
         </section>
       )}
 
-      {/* ③ 자동조립 — 결정 로그 (게이트 진행 중에도 누적분 표시) */}
+      {/* ③ 자동조립 — 결정 로그 + 기획요소 칩 */}
       {plan && plan.decisionLog.length > 0 && (
         <section style={{ display: 'grid', gap: 12 }}>
           <SectionTitle
             kicker={isDraftReady ? 'STEP 4 · 결정 로그' : 'STEP 3'}
             title={isDraftReady ? '확정된 설계 결정' : '자동으로 정한 결정 (안 물어본 것 + 이유)'}
           />
-          <DecisionLogList log={plan.decisionLog} />
+          {/* 기획요소 칩 (선발·사전진단·사후연계 — 있으면) */}
+          <PlanningElements log={plan.decisionLog} />
+          <DecisionLog log={plan.decisionLog} />
         </section>
       )}
 
@@ -893,6 +408,29 @@ export function ProgramDesignFlow({
             >
               구조 다시 생성
             </Button>
+          </div>
+        </section>
+      )}
+
+      {/* ④-보조 — 코치풀 + 자산 인용 (1차안 준비되면 동반 표시) */}
+      {isDraftReady && (
+        <section style={{ display: 'grid', gap: 20 }}>
+          <SectionTitle kicker="STEP 4 · 자동 투입" title="코치풀 · 근거 자산 (자동 추천)" />
+
+          {/* 코치풀 — recommend-coaches 자동추천 (컴포넌트 재사용) */}
+          <div style={{ display: 'grid', gap: 8 }}>
+            <PanelLabel kicker="coach-finder" title="추천 코치 풀" />
+            <AutoRecommendedPool projectId={projectId} mode="inline" assignedCoachIds={[]} />
+          </div>
+
+          {/* 자산 인용 — matchAssetsToRfp 매칭 (컴포넌트 재사용) */}
+          <div style={{ display: 'grid', gap: 8 }}>
+            <PanelLabel kicker="asset registry" title="근거 자산" />
+            <MatchedAssetsPanel
+              projectId={projectId}
+              matches={assetMatches}
+              initialAcceptedIds={initialAcceptedAssetIds}
+            />
           </div>
         </section>
       )}

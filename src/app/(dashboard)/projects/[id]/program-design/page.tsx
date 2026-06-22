@@ -18,8 +18,12 @@ import { Header } from '@/components/layout/header'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
+import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
+import type { ProgramProfile } from '@/lib/program-profile'
+import { loadDesignRules } from '@/lib/program-design/design-rule'
 
 import { ProgramDesignFlow, type RfpPreview } from './_components/program-design-flow'
+import { buildOperatingTypeMeta, type OperatingTypeMeta } from './_components/operating-type-meta'
 
 export const dynamic = 'force-dynamic'
 
@@ -62,13 +66,41 @@ export default async function ProgramDesignPage({
 
   const project = await prisma.project.findUnique({
     where: { id },
-    select: { id: true, name: true, client: true, rfpParsed: true },
+    select: {
+      id: true,
+      name: true,
+      client: true,
+      rfpParsed: true,
+      programProfile: true,
+      acceptedAssetIds: true,
+    },
   })
 
   if (!project) notFound()
 
   const rfp = (project.rfpParsed as unknown as RfpParsed | null) ?? null
   const rfpPreview = toRfpPreview(rfp)
+
+  // 운영 유형 이름·설명·실측 — design-rules.json B 프로파일에서 (하드코딩 0).
+  // 시드 읽기만 — 엔진(resolve/generate)은 건드리지 않음. 실패해도 화면은 뜬다(빈 메타).
+  let operatingTypeMeta: OperatingTypeMeta[] = []
+  try {
+    const ruleSet = await loadDesignRules()
+    operatingTypeMeta = buildOperatingTypeMeta(ruleSet.rules)
+  } catch {
+    operatingTypeMeta = []
+  }
+
+  // 근거 자산 — matchAssetsToRfp (프로젝트 페이지와 동일 패턴). RFP 있을 때만.
+  const assetMatches: AssetMatch[] = rfp
+    ? await matchAssetsToRfp({
+        rfp,
+        profile: (project.programProfile as unknown as ProgramProfile) ?? undefined,
+      }).catch(() => [])
+    : []
+  const initialAcceptedAssetIds: string[] = Array.isArray(project.acceptedAssetIds)
+    ? (project.acceptedAssetIds as string[]).filter((v) => typeof v === 'string')
+    : []
 
   return (
     <div className="flex flex-col overflow-hidden">
@@ -126,7 +158,13 @@ export default async function ProgramDesignPage({
             </div>
           </div>
         ) : (
-          <ProgramDesignFlow projectId={project.id} rfpPreview={rfpPreview} />
+          <ProgramDesignFlow
+            projectId={project.id}
+            rfpPreview={rfpPreview}
+            operatingTypeMeta={operatingTypeMeta}
+            assetMatches={assetMatches}
+            initialAcceptedAssetIds={initialAcceptedAssetIds}
+          />
         )}
       </div>
     </div>
