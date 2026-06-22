@@ -20,6 +20,8 @@ import { ProjectEditForm } from './project-edit-form'
 import type { RenewalContext } from '@/lib/program-profile'
 import { loadWorkspace } from '@/lib/projects/load-workspace'
 import { ProgramWorkspace } from '@/components/projects/workspace/ProgramWorkspace'
+import type { DesignIntentContext } from './program-design/_components/program-design-flow'
+import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 import {
   computeWorkspaceCurrentStage,
   computeWorkspaceDoneFlags,
@@ -48,6 +50,30 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params
   const project = await prisma.project.findUnique({ where: { id }, select: { name: true } })
   return { title: project?.name ?? '프로젝트' }
+}
+
+/**
+ * BR-WS-4 Task4 — ②기획의도(PlanningIntentDraft) → 설계 캔버스 맥락(맥락 띠 + 토대잡기 prefill).
+ *   - bands : 값이 있는 카드만 읽기 전용 요약 (목표해석·작년대비·차별점·전략).
+ *   - precedentPrefill : 작년 대비(yearOverYear) → 선례 textarea (선례 = 작년 운영 맥락).
+ *   - intentPrefill : 전략(winStrategy) ?? 목표해석(goalInterpretation) → 담당자 의도 textarea.
+ * 빈 강요 X — 값 없으면 빈 문자열/빈 배열 (PM 이 직접 채울 수 있음).
+ */
+function buildDesignIntentContext(
+  draft: PlanningIntentDraft,
+): DesignIntentContext {
+  const bandDefs: { label: string; value: string }[] = [
+    { label: '목표 해석', value: draft.goalInterpretation.value.trim() },
+    { label: '작년 대비', value: draft.yearOverYear.value.trim() },
+    { label: '차별점', value: draft.differentiation.value.trim() },
+    { label: '메인 전략', value: draft.winStrategy.value.trim() },
+  ]
+  return {
+    bands: bandDefs.filter((b) => b.value),
+    precedentPrefill: draft.yearOverYear.value.trim(),
+    intentPrefill:
+      draft.winStrategy.value.trim() || draft.goalInterpretation.value.trim(),
+  }
 }
 
 export default async function ProjectWorkspacePage({
@@ -163,6 +189,9 @@ export default async function ProjectWorkspacePage({
                 operatingTypeMeta: data.operatingTypeMeta,
                 assetMatches: data.assetMatches,
                 initialAcceptedAssetIds: data.acceptedAssetIds,
+                // BR-WS-4: 저장된 1차안 복원(결함2) + ②기획의도 소비(중복 제거)
+                initialPlan: data.savedPlan,
+                intentContext: buildDesignIntentContext(data.planningIntentDraft),
               }
             : null
         }

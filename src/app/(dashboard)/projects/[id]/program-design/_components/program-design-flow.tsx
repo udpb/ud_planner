@@ -49,6 +49,22 @@ export interface RfpPreview {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// ②기획의도 맥락 (BR-WS-4 Task4 — strategicNotes 유래, 중복 입력 제거)
+// ─────────────────────────────────────────────────────────────────
+
+/**
+ * ②기획의도(strategicNotes)에서 파생한 설계 맥락.
+ *   - bands : 캔버스 상단 "이 설계가 선 기획의도" 읽기 전용 요약 (재설계 §3 원칙1).
+ *   - precedentPrefill / intentPrefill : 토대잡기 textarea prefill (PM 이 더 고칠 수 있음, 빈 강요 X).
+ * load-workspace/page.tsx 가 PlanningIntentDraft → 이 형태로 매핑.
+ */
+export interface DesignIntentContext {
+  bands: { label: string; value: string }[]
+  precedentPrefill: string
+  intentPrefill: string
+}
+
+// ─────────────────────────────────────────────────────────────────
 // 운영 유형 메타 lookup — name (이름 표시용, 데이터에서)
 // ─────────────────────────────────────────────────────────────────
 
@@ -108,6 +124,47 @@ function PanelLabel({ kicker, title }: { kicker: string; title: string }) {
   )
 }
 
+/**
+ * ②기획의도 맥락 띠 (BR-WS-4 Task4) — 읽기 전용 요약 (재설계 §3 원칙1: 맥락은 항상 보인다).
+ * strategicNotes 유래 카드를 캔버스 상단에 얹어, 이 설계가 어떤 '왜' 위에 섰는지 늘 보이게.
+ */
+function IntentBand({ bands }: { bands: { label: string; value: string }[] }) {
+  if (!bands.length) return null
+  return (
+    <div
+      style={{
+        border: '1px solid var(--line)',
+        borderLeft: '3px solid var(--accent)',
+        background: 'var(--neutral-90)',
+        padding: '10px 14px',
+        display: 'grid',
+        gap: 6,
+      }}
+    >
+      <span
+        style={{
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: 'var(--accent)',
+        }}
+      >
+        이 설계가 선 기획의도
+      </span>
+      <div style={{ display: 'grid', gap: 4 }}>
+        {bands.map((b) => (
+          <div key={b.label} style={{ fontSize: 12, color: 'var(--soft-ink)', lineHeight: 1.5, wordBreak: 'keep-all' }}>
+            <strong style={{ fontWeight: 700, color: 'var(--ink)' }}>{b.label}</strong>
+            {' · '}
+            {b.value}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────
 // 메인 — 턴 루프 (BR-3b 보존)
 // ─────────────────────────────────────────────────────────────────
@@ -118,6 +175,8 @@ export function ProgramDesignFlow({
   operatingTypeMeta,
   assetMatches,
   initialAcceptedAssetIds,
+  initialPlan,
+  intentContext,
 }: {
   projectId: string
   rfpPreview: RfpPreview
@@ -127,17 +186,22 @@ export function ProgramDesignFlow({
   assetMatches: AssetMatch[]
   /** Project.acceptedAssetIds — 자산 토글 초기값. */
   initialAcceptedAssetIds: string[]
+  /** BR-WS-4 결함2: 저장된 1차안(파일 복원). 있으면 턴 스킵하고 바로 편집 가능. */
+  initialPlan?: ProgramPlan | null
+  /** BR-WS-4 Task4: ②기획의도 유래 맥락(맥락 띠 + 토대잡기 prefill). */
+  intentContext?: DesignIntentContext | null
 }) {
-  // ① 토대잡기 입력
+  // ① 토대잡기 입력 — intentContext(②기획의도) prefill (PM 이 더 고칠 수 있게, 빈 강요 X)
   const [goalText, setGoalText] = useState(rfpPreview.objectives.join('\n'))
-  const [precedent, setPrecedent] = useState('')
-  const [intent, setIntent] = useState('')
-  const [started, setStarted] = useState(false)
+  const [precedent, setPrecedent] = useState(intentContext?.precedentPrefill ?? '')
+  const [intent, setIntent] = useState(intentContext?.intentPrefill ?? '')
+  // 저장된 1차안이 있으면 토대잡기 스킵하고 바로 편집 화면으로(결함2).
+  const [started, setStarted] = useState(!!initialPlan)
 
-  // 턴 상태 (BR-3b 그대로)
+  // 턴 상태 (BR-3b 그대로). initialPlan 있으면 plan 시드 → 구조 바로 편집.
   const [decisions, setDecisions] = useState<Record<string, unknown>>({})
   const [pendingAnswers, setPendingAnswers] = useState<Record<string, unknown>>({})
-  const [plan, setPlan] = useState<ProgramPlan | null>(null)
+  const [plan, setPlan] = useState<ProgramPlan | null>(initialPlan ?? null)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [structureOverride, setStructureOverride] = useState<PlanStructure | null>(null)
@@ -196,6 +260,8 @@ export function ProgramDesignFlow({
     [decisions, callEngine],
   )
 
+  const effectiveStructure = structureOverride ?? plan?.structure ?? null
+
   const handleSave = useCallback(async () => {
     if (!plan || plan.openGates.length > 0) return
     setSaving(true)
@@ -208,10 +274,17 @@ export function ProgramDesignFlow({
           precedent: precedent.trim() ? { summary: precedent.trim() } : undefined,
           decisions,
           save: true,
+          // 결함1: PM 편집 구조를 권위값으로 전송 — 서버가 엔진 재생성 결과를 이걸로 덮는다.
+          editedStructure: effectiveStructure ?? undefined,
         }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data?.message ?? data?.error ?? `HTTP ${res.status}`)
+      // 저장 후: 서버가 받은 plan(편집 구조 반영) 으로 로컬 동기화 — 다음 편집의 기준선 일치.
+      if (data?.plan) {
+        setPlan(data.plan as ProgramPlan)
+        setStructureOverride(null)
+      }
       toast.success('1차안을 저장했습니다.')
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err)
@@ -219,9 +292,7 @@ export function ProgramDesignFlow({
     } finally {
       setSaving(false)
     }
-  }, [plan, projectId, intent, precedent, decisions])
-
-  const effectiveStructure = structureOverride ?? plan?.structure ?? null
+  }, [plan, projectId, intent, precedent, decisions, effectiveStructure])
   const hasGates = !!plan && plan.openGates.length > 0
   const isDraftReady = !!plan && plan.openGates.length === 0
   const operatingTypeName = OPERATING_TYPE_NAME(operatingTypeMeta, plan?.operatingType)
@@ -232,6 +303,9 @@ export function ProgramDesignFlow({
       <div style={{ display: 'grid', gap: 24, maxWidth: 920 }}>
         <section style={{ display: 'grid', gap: 12 }}>
           <SectionTitle kicker="STEP 1" title="토대잡기 — RFP 위에서 시작" />
+
+          {/* ②기획의도 맥락 띠 (읽기 전용) — 토대잡기에도 '왜'를 보인다 */}
+          {intentContext?.bands.length ? <IntentBand bands={intentContext.bands} /> : null}
 
           {/* RFP 미리채움 (틴트박스 그리드) */}
           <div
@@ -286,11 +360,15 @@ export function ProgramDesignFlow({
             />
           </div>
 
-          {/* 선례 */}
+          {/* 선례 — ②기획의도(작년 대비)에서 prefill 됨 */}
           <div style={{ display: 'grid', gap: 6 }}>
             <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
               선례{' '}
-              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(이전에 비슷한 거 했으면 — 어떻게 운영했는지)</span>
+              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>
+                {intentContext?.precedentPrefill
+                  ? '(②기획의도에서 가져옴 — 필요 시 고치세요)'
+                  : '(이전에 비슷한 거 했으면 — 어떻게 운영했는지)'}
+              </span>
             </label>
             <Textarea
               value={precedent}
@@ -301,11 +379,15 @@ export function ProgramDesignFlow({
             />
           </div>
 
-          {/* 담당자 의도 */}
+          {/* 담당자 의도 — ②기획의도(전략·목표해석)에서 prefill 됨 */}
           <div style={{ display: 'grid', gap: 6 }}>
             <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
               담당자 운영 의도{' '}
-              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(꼭 지키고 싶은 운영 방식 — 있으면)</span>
+              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>
+                {intentContext?.intentPrefill
+                  ? '(②기획의도에서 가져옴 — 필요 시 고치세요)'
+                  : '(꼭 지키고 싶은 운영 방식 — 있으면)'}
+              </span>
             </label>
             <Textarea
               value={intent}
@@ -351,6 +433,9 @@ export function ProgramDesignFlow({
         {loading && <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 700 }}>처리 중…</span>}
       </div>
 
+      {/* ②기획의도 맥락 띠 (읽기 전용 — 설계가 선 '왜') */}
+      {intentContext?.bands.length ? <IntentBand bands={intentContext.bands} /> : null}
+
       {/* ② 갈림길 (게이트) */}
       {hasGates && (
         <section style={{ display: 'grid', gap: 12 }}>
@@ -389,9 +474,10 @@ export function ProgramDesignFlow({
       {/* ④ 1차안 — 구조 (게이트 0건일 때만) */}
       {isDraftReady && effectiveStructure && (
         <section style={{ display: 'grid', gap: 12 }}>
-          <SectionTitle kicker="STEP 4 · 구조" title="프로그램 구조 (수치 수정 가능)" />
+          <SectionTitle kicker="STEP 4 · 구조" title="프로그램 구조 (PM 이 직접 재배치)" />
           <p style={{ fontSize: 11, color: 'var(--muted)', wordBreak: 'keep-all' }}>
-            AI 가 제안한 값입니다 — 빈칸을 채우는 게 아니라 확인·수정하세요 (밑줄 셀 클릭).
+            AI 초안입니다 — 셀 클릭으로 수정, ↑↓ 로 순서변경, 종류 드롭다운·추가·삭제로 직접 재배치하세요.
+            저장하면 PM 편집이 그대로 보존됩니다(엔진이 덮지 않음).
             {plan?.meta.model ? ` · 모델: ${plan.meta.model}` : ''}
           </p>
           <StructureView structure={effectiveStructure} onStructureChange={setStructureOverride} />

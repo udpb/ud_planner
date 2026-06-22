@@ -25,6 +25,8 @@ import {
 } from '@/lib/program-design/planning-intent'
 import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
 import { loadDesignRules } from '@/lib/program-design/design-rule'
+import { readSavedPlan } from '@/lib/program-design/saved-plan'
+import type { ProgramPlan } from '@/lib/program-design/plan-types'
 import {
   buildOperatingTypeMeta,
   type OperatingTypeMeta,
@@ -95,6 +97,8 @@ export interface WorkspaceData {
   // ── ② 설계 ──
   rfpPreview: RfpPreview | null
   operatingTypeMeta: OperatingTypeMeta[]
+  /** BR-WS-4: 저장된 1차안(파일) — 있으면 재진입 시 복원(결함2). 없으면 null. */
+  savedPlan: ProgramPlan | null
 
   // ── ③ 임팩트 ──
   sroiCountry: string
@@ -212,6 +216,9 @@ export async function loadWorkspace(
     operatingTypeMeta = []
   }
 
+  // ② 설계 — 저장된 1차안 복원 (BR-WS-4 결함2). 파일 없거나 깨졌으면 null(헬퍼가 graceful).
+  const savedPlan = await readSavedPlan(projectId).catch(() => null)
+
   // ③ 임팩트 — impact-forecast/page.tsx 의 로드 패턴 복제
   const impactConfigured = isImpactDbConfigured()
   const impactHandoffConfigured = isHandoffConfigured()
@@ -248,8 +255,8 @@ export async function loadWorkspace(
     : null
 
   const hasRfp = !!rfpParsed
-  // 설계 진행 신호: programProfile 확정 또는 acceptedAssetIds 채움 (플랜은 외부 파일).
-  const hasDesign = !!programProfile || acceptedAssetIds.length > 0
+  // 설계 진행 신호: programProfile 확정 또는 acceptedAssetIds 채움 또는 저장된 1차안 존재(BR-WS-4).
+  const hasDesign = !!programProfile || acceptedAssetIds.length > 0 || !!savedPlan
   const hasImpact = !!impactForecast
 
   return {
@@ -282,6 +289,7 @@ export async function loadWorkspace(
     hasSavedIntent,
     rfpPreview,
     operatingTypeMeta,
+    savedPlan,
     sroiCountry: project.sroiCountry,
     impactConfigured,
     impactHandoffConfigured,

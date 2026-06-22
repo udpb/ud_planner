@@ -26,7 +26,7 @@ import {
   PlanInputRfpMissingError,
 } from '@/lib/program-design/plan-input'
 import { planProgram } from '@/lib/program-design/generate-plan'
-import type { ProgramPlan } from '@/lib/program-design/plan-types'
+import type { ProgramPlan, PlanStructure } from '@/lib/program-design/plan-types'
 
 export const maxDuration = 300
 export const dynamic = 'force-dynamic'
@@ -41,6 +41,38 @@ const SideInputSchema = z
   })
   .optional()
 
+// ── PM 편집 구조 (결함1: editedStructure) ──
+// plan-types.ts `PlanStructure` 계약을 zod 로 미러 (계약 파일은 수정 0 — 여기서 검증만).
+//   sessions(T1~T3) | individual/event(T4/T5) | pending. 필드는 PlanSession/NonSessionStage 와 일치.
+const PlanSessionSchema = z.object({
+  no: z.string(),
+  title: z.string(),
+  hours: z.number().nullable(),
+  format: z.string(),
+  kind: z.enum([
+    'theory',
+    'workshop',
+    'coaching',
+    'event',
+    'milestone',
+    'prelearning',
+  ]),
+  rationale: z.string(),
+})
+const NonSessionStageSchema = z.object({
+  label: z.string(),
+  content: z.string(),
+  rationale: z.string(),
+})
+const EditedStructureSchema = z.union([
+  z.object({ kind: z.literal('sessions'), sessions: z.array(PlanSessionSchema) }),
+  z.object({
+    kind: z.union([z.literal('individual'), z.literal('event')]),
+    stages: z.array(NonSessionStageSchema),
+  }),
+  z.object({ kind: z.literal('pending'), note: z.string() }),
+])
+
 const BodySchema = z.object({
   precedent: SideInputSchema,
   intent: SideInputSchema,
@@ -48,6 +80,11 @@ const BodySchema = z.object({
   decisions: z.record(z.string(), z.unknown()).optional(),
   /** true 면 최종안 저장 (openGates 0건일 때만 의미). */
   save: z.boolean().optional(),
+  /**
+   * PM 이 캔버스에서 편집한 구조 (결함1) — save:true 일 때 엔진 재생성 결과를
+   * **이 값으로 덮어** 저장한다(PM 편집이 진실). 없으면 기존 동작(엔진 산출 저장).
+   */
+  editedStructure: EditedStructureSchema.optional(),
 })
 
 const PLANS_DIR = path.join(process.cwd(), 'data', 'program-design', 'plans')
@@ -107,6 +144,11 @@ export async function POST(req: NextRequest, { params }: Params) {
           },
           { status: 409 },
         )
+      }
+      // 결함1: PM 편집이 진실 — editedStructure 가 오면 엔진 재생성 구조를 덮는다.
+      //   (decisionLog/meta 는 엔진 최신값 유지, structure 만 PM 권위값.)
+      if (parsed.data.editedStructure) {
+        plan.structure = parsed.data.editedStructure as PlanStructure
       }
       savedPath = await savePlan(id, plan)
     }
