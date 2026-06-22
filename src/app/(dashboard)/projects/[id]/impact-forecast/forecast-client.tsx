@@ -17,7 +17,16 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Loader2, RefreshCw, Save, Lock, TrendingUp } from 'lucide-react'
+import {
+  Loader2,
+  RefreshCw,
+  Save,
+  Lock,
+  TrendingUp,
+  FileText,
+  ExternalLink,
+  Info,
+} from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -78,6 +87,26 @@ interface Props {
   initialForecast: ForecastSummary | null
   categories: Category[]
   configured: boolean
+  /** 공식 리포트 핸드오프(impact-measurement 쓰기) 연동 여부 — 미설정 시 안내. */
+  handoffConfigured: boolean
+}
+
+/** 공식 리포트 핸드오프 결과 — API 성공 시. */
+interface OfficialReport {
+  sroi: number | null
+  reportUrl: string
+  shareToken: string
+}
+
+/**
+ * SROI 정상범위 라벨. ⭐ 렌즈 — 높을수록 좋은 게 아니다. 비율을 줄세우지 않는다.
+ *   1:1 미만 = 사회가치 < 투입 / 1:1~1:10 = 통상 범위 / 1:10 초과 = 가정 점검 권장.
+ */
+function sroiRangeLabel(ratio: number | null): string {
+  if (ratio === null) return '예산 미상 — 비율 산출 보류(분해만 본다)'
+  if (ratio < 1) return '1:1 미만 — 사회가치가 투입보다 작게 추정됨(가정 점검)'
+  if (ratio <= 10) return '1:1~1:10 통상 범위 안'
+  return '1:10 초과 — 추정 가정·계수 점검 권장(높다고 더 좋은 게 아님)'
 }
 
 const CONF_LABEL: Record<ForecastItem['confidence'], { label: string; color: string }> = {
@@ -108,6 +137,7 @@ export function ImpactForecastClient({
   initialForecast,
   categories,
   configured,
+  handoffConfigured,
 }: Props) {
   const router = useRouter()
   // forecast 는 서버 source-of-truth 라 state 안 씀 (prop 직접 사용 → router.refresh 후 자동 갱신)
@@ -121,8 +151,34 @@ export function ImpactForecastClient({
   }, [initialForecast])
   const [regenerating, setRegenerating] = useState(false)
   const [saving, setSaving] = useState(false)
+  // 공식 리포트 핸드오프 — impact-measurement 쓰기 → /view/{shareToken} 임베드
+  const [reporting, setReporting] = useState(false)
+  const [official, setOfficial] = useState<OfficialReport | null>(null)
 
   const categoryMap = new Map(categories.map((c) => [c.id, c]))
+
+  const handleGenerateReport = async () => {
+    setReporting(true)
+    try {
+      const r = await fetch(`/api/projects/${projectId}/impact-report`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const data = await r.json()
+      if (!r.ok) throw new Error(data.error ?? '공식 리포트 생성 실패')
+      setOfficial({
+        sroi: data.sroi ?? null,
+        reportUrl: data.reportUrl,
+        shareToken: data.shareToken,
+      })
+      toast.success('공식 리포트 생성 완료 — 아래에 임베드됨')
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      toast.error(msg.slice(0, 160))
+    } finally {
+      setReporting(false)
+    }
+  }
 
   const handleRegenerate = async () => {
     setRegenerating(true)
@@ -228,7 +284,7 @@ export function ImpactForecastClient({
             </div>
             <div>
               <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                예산 대비 SROI
+                예산 대비 SROI <span className="normal-case">(렌즈)</span>
               </div>
               <div className="mt-1 text-2xl font-bold tabular-nums">
                 {ratio === null ? (
@@ -243,6 +299,16 @@ export function ImpactForecastClient({
                 </div>
               )}
             </div>
+          </div>
+
+          {/* ⭐ SROI 렌즈 프레이밍 — 높을수록 좋은 게 아니다. 정상범위 + 가정. */}
+          <div className="mt-3 flex items-start gap-1.5 border bg-white/60 p-2 text-[11px] text-muted-foreground">
+            <Info className="mt-0.5 h-3 w-3 shrink-0" />
+            <span>
+              <strong>SROI는 비율(렌즈)이지 목표가 아닙니다.</strong> 높을수록 좋은
+              게 아니라 분해와 가정을 함께 봅니다. 통상 범위는 1:1~1:10 —{' '}
+              <span className="text-foreground">{sroiRangeLabel(ratio)}</span>.
+            </span>
           </div>
           {forecast.calibrationNote && (
             <p className="mt-3 border bg-white/60 p-2 text-[11px] text-muted-foreground">
@@ -328,6 +394,77 @@ export function ImpactForecastClient({
               )
             })}
           </div>
+        </CardContent>
+      </Card>
+
+      {/* 공식 임팩트 리포트 — impact-measurement 핸드오프 + 임베드 */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-1.5 text-sm">
+            <FileText className="h-3.5 w-3.5" />
+            공식 임팩트 리포트
+          </CardTitle>
+          <p className="text-[10px] text-muted-foreground">
+            위 forecast(렌즈 미리보기)를 impact-measurement 에 기록해 공개 리포트를
+            만들고 이 화면 안에서 바로 봅니다. 두 앱을 오갈 필요 없음.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {!handoffConfigured ? (
+            <div className="border border-amber-300 bg-amber-50 p-3 text-[11px] text-amber-900">
+              <strong>연동 미설정</strong> — 공식 리포트 쓰기 토큰
+              (SERVICE_API_TOKEN) 이 없습니다. Vercel 환경변수에 SERVICE_API_TOKEN
+              (+필요 시 SROI_SERVICE_URL) 을 추가하면 활성화됩니다. (미리보기는
+              위에서 계속 사용 가능)
+            </div>
+          ) : (
+            <>
+              <Button
+                size="sm"
+                onClick={handleGenerateReport}
+                disabled={reporting}
+                className="gap-1.5"
+              >
+                {reporting ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <FileText className="h-3.5 w-3.5" />
+                )}
+                {official ? '공식 리포트 다시 생성' : '공식 리포트 생성'}
+              </Button>
+
+              {official && (
+                <div className="space-y-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                    <span className="text-muted-foreground">
+                      공식 리포트 생성됨{' '}
+                      {official.sroi !== null && (
+                        <>
+                          · SROI(렌즈) 1:{official.sroi.toFixed(2)} —{' '}
+                          {sroiRangeLabel(official.sroi)}
+                        </>
+                      )}
+                    </span>
+                    <a
+                      href={official.reportUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[color:var(--accent)] hover:underline"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      새 탭 / PDF·공유
+                    </a>
+                  </div>
+                  <iframe
+                    src={official.reportUrl}
+                    title="공식 임팩트 리포트"
+                    className="h-[640px] w-full border bg-white"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+            </>
+          )}
         </CardContent>
       </Card>
 

@@ -14,6 +14,7 @@ import { Header } from '@/components/layout/header'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/lib/auth'
 import { isImpactDbConfigured, listActiveCategories } from '@/lib/impact/db'
+import { isHandoffConfigured } from '@/lib/impact/handoff'
 import { ImpactForecastClient } from './forecast-client'
 import type { ForecastItemWithMeta, BreakdownEntry } from '@/lib/impact/types'
 
@@ -44,6 +45,7 @@ export default async function ImpactForecastPage({ params }: Params) {
   if (!project) notFound()
 
   const configured = isImpactDbConfigured()
+  const handoffConfigured = isHandoffConfigured()
   let categories: Awaited<ReturnType<typeof listActiveCategories>> = []
   if (configured) {
     try {
@@ -114,6 +116,7 @@ export default async function ImpactForecastPage({ params }: Params) {
               formulaVariables: c.formulaVariables,
             }))}
             configured={configured}
+            handoffConfigured={handoffConfigured}
           />
         </div>
       </div>
