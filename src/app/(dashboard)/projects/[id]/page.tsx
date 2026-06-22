@@ -1,42 +1,33 @@
+/**
+ * /projects/[id] — 단일 정본 워크스페이스 (ADR-029, BR-WS-1)
+ *
+ * 3단계 진입점 1개. 패러다임 플래그 없음 — 이게 제품이다.
+ *   ① RFP 분석   = StageS1 (StepRfp)
+ *   ② 프로그램 설계 = ProgramDesignFlow (P2 설계 캔버스) ⭐ spine
+ *   ③ 임팩트     = ImpactForecastClient (P1 볼트인)
+ *
+ * 옛 분기(Deep `?step=` 6스텝 · v3 StageShell 5단계 · isExpressParadigmV3 ·
+ * PipelineNav)는 ADR-029 가 대체 — 제거. 서버로드는 loadWorkspace 한 함수로 조립.
+ * 엔진·각 단계 컴포넌트 재구현 0 — 조립/임베드만.
+ */
+
+import { notFound } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { prisma } from '@/lib/prisma'
-import { notFound } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { ProjectEditForm } from './project-edit-form'
-import { CoachAssign } from './coach-assign'
-import { BudgetDashboard } from './budget-dashboard'
-import { CurriculumBoard } from './curriculum-board'
-import { PipelineNav, type PipelineStep } from './pipeline-nav'
-import { StepRfp } from './step-rfp'
-import { StepImpact } from './step-impact'
-import { StepProposal } from './step-proposal'
-import { PlanningScorecard } from '@/components/projects/planning-scorecard'
-import { ScoreBar } from '@/modules/predicted-score/score-bar'
-import { DataFlowBanner } from '@/components/projects/data-flow-banner'
-import { calculatePlanningScore } from '@/lib/planning-score'
-import { buildPipelineContext } from '@/lib/pipeline-context'
-import { PmGuidePanel } from '@/modules/pm-guide/panel'
-import { resolvePmGuide } from '@/modules/pm-guide/resolve'
-import type { StepKey } from '@/modules/pm-guide/types'
 import { cn } from '@/lib/utils'
-import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
-import type { RfpParsed } from '@/lib/ai/parse-rfp'
-import type { ProgramProfile } from '@/lib/program-profile'
-import Link from 'next/link'
-import { Sparkles } from 'lucide-react'
-// Wave V / F0 (ADR-015) — Feature flag + 5 Stage 통합 페이지
-import { isExpressParadigmV3 } from '@/lib/feature-flags'
-import { loadExpressInitialProps } from '@/lib/express/load-express-props'
-import { StageShell } from '@/components/projects/stages/StageShell'
-// 2026-05-22 fix: computeCurrentStage / computeStageDoneFlags 는 stage-mapping.ts
-// (pure) 에서 직접 import. StageShell ('use client') 에서 import 하면 Next.js 가
-// 같이 client-only 로 격리해 server component 에서 호출 시 런타임 에러.
+import { ProjectEditForm } from './project-edit-form'
+import type { RenewalContext } from '@/lib/program-profile'
+import { loadWorkspace } from '@/lib/projects/load-workspace'
+import { ProgramWorkspace } from '@/components/projects/workspace/ProgramWorkspace'
 import {
-  mapStepQueryToStage,
-  computeCurrentStage,
-  computeStageDoneFlags,
-} from '@/components/projects/stages/stage-mapping'
+  computeWorkspaceCurrentStage,
+  computeWorkspaceDoneFlags,
+  mapQueryToWorkspaceStage,
+  workspaceStageSummary,
+  WORKSPACE_STAGE_IDS,
+  type WorkspaceStageId,
+} from '@/components/projects/workspace/workspace-stages'
 
 export const dynamic = 'force-dynamic'
 
@@ -52,37 +43,6 @@ const STATUS_COLOR: Record<string, string> = {
   COMPLETED: 'bg-gray-100 text-gray-700 border-gray-200',
   LOST: 'bg-red-100 text-red-700 border-red-200',
 }
-const ROLE_LABEL: Record<string, string> = {
-  MAIN_COACH: '메인 코치', SUB_COACH: '보조 코치', LECTURER: '강사(메인)',
-  SUB_LECTURER: '강사(보조)', SPECIAL_LECTURER: '특강 연사', JUDGE: '심사위원', PM_OPS: '운영 PM',
-}
-
-async function getProject(id: string) {
-  return prisma.project.findUnique({
-    where: { id },
-    include: {
-      pm: { select: { name: true, email: true } },
-      budget: { include: { items: { orderBy: { wbsCode: 'asc' } } } },
-      coachAssignments: {
-        include: { coach: { select: { id: true, name: true, tier: true, organization: true } } },
-      },
-      curriculum: { orderBy: { order: 'asc' } },
-      // 2026-05-03 ADR-012: Task 모델 제거됨 — tasks include 제거
-      proposalSections: { orderBy: { sectionNo: 'asc' } },
-      // C-8 — 사전 임팩트 forecast (Step 5 인라인 카드)
-      impactForecast: {
-        select: {
-          id: true,
-          totalSocialValue: true,
-          beneficiaryCount: true,
-          calibration: true,
-          generatedAt: true,
-        },
-      },
-      _count: { select: { participants: true } },
-    },
-  })
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -90,147 +50,51 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return { title: project?.name ?? '프로젝트' }
 }
 
-export default async function ProjectDetailPage({
+export default async function ProjectWorkspacePage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ step?: string }>
+  searchParams: Promise<{ stage?: string; step?: string }>
 }) {
   const { id } = await params
-  const { step = 'rfp' } = await searchParams
+  const { stage, step } = await searchParams
 
-  // Wave V / F0 (ADR-015) — Feature flag 분기.
-  // flag ON: 5 Stage 통합 페이지. ExpressShell 초기 props 도 함께 로드.
-  // flag OFF: 기존 step 분기 그대로 — 회귀 0.
-  const v3 = isExpressParadigmV3()
+  const data = await loadWorkspace(id)
+  if (!data) notFound()
 
-  const [project, context, expressProps] = await Promise.all([
-    getProject(id),
-    buildPipelineContext(id).catch(() => null),
-    v3 ? loadExpressInitialProps(id) : Promise.resolve(null),
-  ])
-  if (!project) notFound()
+  const { project } = data
 
-  const totalCoachFee = project.coachAssignments.reduce((s, a) => s + (a.totalFee ?? 0), 0)
-  const marginRate = project.budget?.marginRate ?? 0
+  const currentStage = computeWorkspaceCurrentStage(data)
+  const doneFlags = computeWorkspaceDoneFlags(data)
+  const initialOverrideStage = mapQueryToWorkspaceStage(stage ?? step)
 
-  // PM 가이드 콘텐츠 resolve (2026-04-20: rfp 포함 — 티키타카 리서치 카드 때문)
-  const PM_GUIDE_STEPS: StepKey[] = [
-    'rfp',
-    'curriculum',
-    'coaches',
-    'budget',
-    'impact',
-    'proposal',
-  ]
-  const pmGuide = context && PM_GUIDE_STEPS.includes(step as StepKey)
-    ? await resolvePmGuide(step as StepKey, context).catch(() => null)
-    : null
-
-  // Phase G Wave 5 (ADR-009) + Phase H Wave H2 (ADR-010):
-  // 매칭 자산 계산 — RFP 파싱이 있을 때만. Phase H 이후 DB 조회이므로 await.
-  const assetMatches: AssetMatch[] = project.rfpParsed
-    ? await matchAssetsToRfp({
-        rfp: project.rfpParsed as unknown as RfpParsed,
-        profile: (project.programProfile as unknown as ProgramProfile) ?? undefined,
+  // 3 stage 1줄 요약 (server 판정)
+  const socialValueEok = data.impactForecast
+    ? data.impactForecast.totalSocialValue / 100_000_000
+    : undefined
+  const summaries = WORKSPACE_STAGE_IDS.reduce(
+    (acc, sid) => {
+      acc[sid] = workspaceStageSummary(sid, {
+        rfpParsed: data.rfpParsed,
+        hasDesign: data.hasDesign,
+        socialValueEok,
       })
-    : []
-  const initialAcceptedAssetIds: string[] = Array.isArray(project.acceptedAssetIds)
-    ? (project.acceptedAssetIds as string[]).filter((v) => typeof v === 'string')
-    : []
-
-  // 기획 품질 스코어 계산
-  const planningScore = calculatePlanningScore({
-    rfpParsed: project.rfpParsed,
-    logicModel: project.logicModel,
-    curriculumCount: project.curriculum.length,
-    curriculumItems: project.curriculum.map((c) => ({
-      isTheory: c.isTheory,
-      isActionWeek: c.isActionWeek,
-    })),
-    coachAssignmentCount: project.coachAssignments.length,
-    budget: project.budget ? { marginRate: project.budget.marginRate } : null,
-    proposalSectionCount: project.proposalSections.length,
-  })
-
-  // ADR-001: 스텝 순서 = rfp → curriculum → coaches → budget → impact → proposal
-  // ADR-008 (2026-04-23): Step 4·5 의미 레이어 재정렬 — budget=② Input, impact=⑤ Outcome+SROI
-  //
-  // B3 (2026-05-19) — autoSeeded 플래그:
-  //   - rfp: 파싱 완료 = 항상 자동
-  //   - impact: logicModel 이 RFP→AI 자동 생성된 케이스 (Phase E 이상)
-  //   - proposal: Express handoff 로 ProposalSection 시드된 케이스
-  //   - curriculum/coaches/budget 는 PM 이 직접 — 자동 X
-  const hasExpressHandoff = project.proposalSections.length > 0 && !!project.expressDraft
-  const steps: PipelineStep[] = [
-    {
-      key: 'rfp',
-      label: 'RFP 분석',
-      sublabel: project.rfpParsed ? '완료' : '미완료',
-      done: !!project.rfpParsed,
-      autoSeeded: !!project.rfpParsed,
-      autoSeedSource: 'RFP 업로드 시 AI 파싱 자동 완료 (사업명·발주처·예산·평가배점·키워드)',
+      return acc
     },
-    {
-      key: 'curriculum',
-      label: '커리큘럼',
-      sublabel: project.curriculum.length > 0 ? `${project.curriculum.length}회차` : '미작성',
-      done: project.curriculum.length > 0,
-    },
-    {
-      key: 'coaches',
-      label: '코치 배정',
-      sublabel: project.coachAssignments.length > 0 ? `${project.coachAssignments.length}명` : '미배정',
-      done: project.coachAssignments.length > 0,
-    },
-    {
-      key: 'budget',
-      label: '예산 설계',
-      sublabel: project.budget
-        ? `마진 ${marginRate.toFixed(1)}%`
-        : '미작성',
-      done: !!project.budget,
-    },
-    {
-      key: 'impact',
-      label: '임팩트 + SROI',
-      sublabel: project.logicModel
-        ? project.sroiForecast
-          ? 'Logic Model + SROI'
-          : 'Logic Model ✓ · SROI 미산정'
-        : '미완료',
-      done: !!project.logicModel && !!project.sroiForecast,
-      autoSeeded: !!project.logicModel,
-      autoSeedSource: project.logicModel
-        ? 'Logic Model 은 RFP→AI 자동 생성 (impact-goal·outcome 체인). SROI 는 PM 보정.'
-        : undefined,
-    },
-    {
-      key: 'proposal',
-      label: '제안서',
-      sublabel: project.proposalSections.length > 0
-        ? `${project.proposalSections.length}/7 섹션`
-        : '미생성',
-      done: project.proposalSections.length >= 7,
-      autoSeeded: hasExpressHandoff,
-      autoSeedSource: hasExpressHandoff
-        ? `Express 1차본 → ProposalSection ${project.proposalSections.length}건 자동 시드. Step 안에서 정밀 편집.`
-        : undefined,
-    },
-  ]
+    {} as Record<WorkspaceStageId, string>,
+  )
 
   return (
     <div className="flex flex-col overflow-hidden">
       <Header title={project.name} />
 
-      {/* Sticky top bar: project meta + pipeline */}
+      {/* Sticky 메타 strip */}
       <div className="sticky top-0 z-20 border-b bg-background">
-        {/* Project meta strip */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b px-6 py-2.5">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-6 py-2.5">
           <span
             className={cn(
-              ' border px-2.5 py-0.5 text-xs font-medium',
+              'border px-2.5 py-0.5 text-xs font-medium',
               STATUS_COLOR[project.status],
             )}
           >
@@ -240,64 +104,12 @@ export default async function ProjectDetailPage({
           <span className="text-sm text-muted-foreground">{project.client}</span>
 
           <div className="ml-auto flex items-center gap-5">
-            {/* Phase L (ADR-011): Express 화면으로 이동.
-                Wave V / F0: flag ON 일 땐 통합 페이지라 별도 Express 링크 불필요 → hide. */}
-            {!v3 && (
-              <Link
-                href={`/projects/${project.id}/express`}
-                className="flex items-center gap-1.5 border border-brand/40 bg-brand/5 px-2.5 py-1 text-xs font-medium text-brand hover:bg-brand/10"
-                title="Express 1차본 화면 — RFP→1차본 30~45분"
-              >
-                <Sparkles className="h-3 w-3" />
-                Express
-              </Link>
-            )}
-            {/* W31 (Phase E): Brain 4+1 통합 — matchTuple → 5초 통합 답변 */}
-            <Link
-              href={`/projects/${project.id}/brain`}
-              className="flex items-center gap-1.5 border border-purple-400/40 bg-purple-500/5 px-2.5 py-1 text-xs font-medium text-purple-700 hover:bg-purple-500/10"
-              title="Brain 4+1 — 유사 사업·자산·Concept 통합 매칭"
-            >
-              🧠 Brain
-            </Link>
-            {/* ADR-018 UX v2 미리보기 — Adaptive Stage Layout (PR #2~5 진행 중) */}
-            <Link
-              href={`/projects/${project.id}/v2`}
-              className="flex items-center gap-1 border border-amber-400/40 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100"
-              title="UX v2 미리보기 (ADR-018 Adaptive Stage Layout)"
-            >
-              ✨ v2
-            </Link>
             <div className="text-sm">
               <span className="text-muted-foreground">총 예산 </span>
               <span className="font-semibold">
                 {project.totalBudgetVat ? `${(project.totalBudgetVat / 1e8).toFixed(2)}억` : '—'}
               </span>
             </div>
-            <div className="text-sm">
-              <span className="text-muted-foreground">코치 </span>
-              <span className="font-semibold">
-                {totalCoachFee > 0 ? `${(totalCoachFee / 10000).toFixed(0)}만원` : '—'}
-              </span>
-            </div>
-            <div className="text-sm">
-              <span className="text-muted-foreground">마진 </span>
-              <span
-                className={cn(
-                  'font-semibold',
-                  marginRate > 0 && marginRate < 10
-                    ? 'text-red-600'
-                    : marginRate >= 10
-                      ? 'text-green-600'
-                      : '',
-                )}
-              >
-                {marginRate > 0 ? `${marginRate.toFixed(1)}%` : '—'}
-              </span>
-            </div>
-            {/* E2 (2026-05-19) — Decimal serialization 우회. ProjectEditForm 에
-                전체 prisma project 객체를 넘기면 impactForecast.totalSocialValue
-                (Decimal) 가 Server→Client 직렬화 실패. 필요한 필드만 plain 전달. */}
             <ProjectEditForm
               project={{
                 id: project.id,
@@ -318,488 +130,52 @@ export default async function ProjectDetailPage({
             />
           </div>
         </div>
-
-        {/* Pipeline stepper */}
-        <div className="px-6">
-          <PipelineNav steps={steps} current={step} />
-        </div>
       </div>
 
-      {/* Predicted score bar (evalStrategy 기반 예상 점수) */}
-      <ScoreBar projectId={project.id} />
-
-      {/* Planning quality scorecard */}
-      <PlanningScorecard score={planningScore} />
-
-      {/* Step content — Wave V / F0 분기 */}
-      {v3 && expressProps ? (
-        <StageShell
-          projectId={project.id}
-          initialStage={computeCurrentStage({
-            hasRfp: !!project.rfpParsed,
-            isExpressCompleted:
-              expressProps.initialDraft.meta.isCompleted === true,
-            inspectorPassed: undefined, // F0: server 가 모름
-            proposalSectionsCount: project.proposalSections.length,
-            projectStatus: project.status,
-          })}
-          initialOverrideStage={mapStepQueryToStage(step)}
-          summaryInput={{
-            rfpParsed: (project.rfpParsed as RfpParsed | null) ?? null,
-            draftProgressOverall: expressProps.initialProgress.overall,
-            curriculumCount: project.curriculum.length,
-            coachAssignmentCount: project.coachAssignments.length,
-            budgetMarginRate: project.budget?.marginRate ?? null,
-            proposalSectionsCount: project.proposalSections.length,
-            socialValueEok: expressProps.initialImpactForecast
-              ? expressProps.initialImpactForecast.totalSocialValue / 100_000_000
-              : undefined,
-          }}
-          doneFlags={computeStageDoneFlags({
-            hasRfp: !!project.rfpParsed,
-            isExpressCompleted:
-              expressProps.initialDraft.meta.isCompleted === true,
-            inspectorPassed: undefined,
-            proposalSectionsCount: project.proposalSections.length,
-          })}
-          stepRfpProps={{
-            projectId: project.id,
-            initialParsed: project.rfpParsed as unknown as RfpParsed | null,
-            initialRfpSlice: {
-              proposalBackground: project.proposalBackground,
-              proposalConcept: project.proposalConcept,
-              keyPlanningPoints: Array.isArray(project.keyPlanningPoints)
-                ? (project.keyPlanningPoints as string[])
+      <ProgramWorkspace
+        projectId={project.id}
+        currentStage={currentStage}
+        initialOverrideStage={initialOverrideStage}
+        doneFlags={doneFlags}
+        summaries={summaries}
+        stepRfpProps={{
+          projectId: project.id,
+          initialParsed: data.rfpParsed,
+          initialRfpSlice: {
+            proposalBackground: data.proposalBackground,
+            proposalConcept: data.proposalConcept,
+            keyPlanningPoints: data.keyPlanningPoints,
+            confirmedAt:
+              data.proposalBackground || data.proposalConcept
+                ? project.updatedAt.toISOString()
                 : null,
-              confirmedAt:
-                project.proposalBackground || project.proposalConcept
-                  ? project.updatedAt.toISOString()
-                  : null,
-            },
-            initialProfile: (project.programProfile as unknown as ProgramProfile) ?? null,
-            initialRenewalContext: (project.renewalContext as any) ?? null,
-            assetMatches,
-            initialAcceptedAssetIds,
-          }}
-          expressShellProps={expressProps}
-          curriculumProps={{
-            projectId: project.id,
-            initialItems: project.curriculum.map((c) => ({
-              id: c.id,
-              sessionNo: c.sessionNo,
-              title: c.title,
-              durationHours: c.durationHours,
-              lectureMinutes: (c as any).lectureMinutes ?? 15,
-              practiceMinutes: (c as any).practiceMinutes ?? 35,
-              isTheory: c.isTheory,
-              isActionWeek: c.isActionWeek,
-              isCoaching1on1: (c as any).isCoaching1on1 ?? false,
-              isLocked: (c as any).isLocked ?? false,
-              date: c.date,
-              venue: c.venue,
-              isOnline: c.isOnline,
-              notes: c.notes,
-              order: c.order,
-            })),
-            rfpKeywords: (project.rfpParsed as any)?.keywords ?? [],
-            rfpObjectives: (project.rfpParsed as any)?.objectives ?? [],
-            logicModelActivities: (project.logicModel as any)?.activity ?? [],
-            supplyPrice: project.supplyPrice ?? 0,
-            coachAssignmentCount: project.coachAssignments.length,
-            rfpSlice: context?.rfp,
-            strategySlice: context?.strategy,
-          }}
-          coachAssignProps={{
-            projectId: project.id,
-            assignedCoachIds: project.coachAssignments.map((a) => a.coach.id),
-          }}
-          budgetProps={{
-            projectId: project.id,
-            initialBudget: project.budget
-              ? {
-                  pcTotal: project.budget.pcTotal,
-                  acTotal: project.budget.acTotal,
-                  margin: project.budget.margin,
-                  marginRate: project.budget.marginRate,
-                  marginWarning: project.budget.marginRate < 10,
-                  supplyPrice: project.supplyPrice ?? 0,
-                  totalBudgetVat: project.totalBudgetVat ?? 0,
-                }
-              : null,
-            initialPcItems: [],
-            initialAcItems:
-              project.budget?.items
-                .filter((i) => i.type === 'AC')
-                .map((i) => ({
-                  id: i.id,
-                  wbsCode: i.wbsCode,
-                  category: i.category,
-                  name: i.name,
-                  unit: i.unit ?? '',
-                  unitPrice: i.unitPrice,
-                  quantity: i.quantity,
-                  amount: i.amount,
-                  isEstimated: i.notes?.includes('추정') ?? false,
-                })) ?? [],
-            curriculumSlice: context?.curriculum,
-            coachesSlice: context?.coaches,
-          }}
-          proposalProps={{
-            projectId: project.id,
-            hasLogicModel: !!project.logicModel,
-            initialSections: project.proposalSections as any,
-            evalCriteria: (project.rfpParsed as any)?.evalCriteria ?? [],
-            pipelineContext: context ?? undefined,
-            projectName: project.name,
-            hasRfp: !!project.rfpParsed,
-          }}
-          coachSummary={{
-            count: project.coachAssignments.length,
-            totalFee: totalCoachFee,
-          }}
-          impactForecast={
-            project.impactForecast
-              ? {
-                  id: project.impactForecast.id,
-                  totalSocialValue: Number(project.impactForecast.totalSocialValue),
-                  beneficiaryCount: project.impactForecast.beneficiaryCount,
-                  calibration: project.impactForecast.calibration,
-                  isStale: (() => {
-                    const genAt = project.impactForecast.generatedAt.getTime()
-                    const budgetAt = project.budget?.updatedAt?.getTime() ?? 0
-                    const curLatest = Math.max(
-                      0,
-                      ...project.curriculum.map((c) => c.updatedAt?.getTime() ?? 0),
-                    )
-                    return budgetAt > genAt || curLatest > genAt
-                  })(),
-                }
-              : null
-          }
-          proposalReady={project.proposalSections.length >= 7}
-          draftProgressOverall={expressProps.initialProgress.overall}
-          isExpressCompleted={expressProps.initialDraft.meta.isCompleted === true}
-        />
-      ) : (
-      <div className="flex-1 overflow-y-auto p-6">
-
-        {/* ── Step 1: RFP 분석 + 기획 방향 ── */}
-        {step === 'rfp' && (
-          <div className="space-y-4">
-            <StepRfp
-              projectId={project.id}
-              initialParsed={project.rfpParsed as any}
-              initialRfpSlice={{
-                proposalBackground: project.proposalBackground,
-                proposalConcept: project.proposalConcept,
-                keyPlanningPoints: Array.isArray(project.keyPlanningPoints)
-                  ? (project.keyPlanningPoints as string[])
-                  : null,
-                confirmedAt:
-                  project.proposalBackground || project.proposalConcept
-                    ? project.updatedAt.toISOString()
-                    : null,
-              }}
-              initialProfile={(project.programProfile as any) ?? null}
-              initialRenewalContext={(project.renewalContext as any) ?? null}
-              assetMatches={assetMatches}
-              initialAcceptedAssetIds={initialAcceptedAssetIds}
-            />
-            {/*
-              Step 1 은 3컬럼 내부 구조라 우측 사이드바 대신 하단 전폭에
-              PM 가이드(리서치 요청 카드 중심) 를 렌더한다.
-            */}
-            {pmGuide && (
-              <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_320px]">
-                <div className="hidden xl:block" />
-                <PmGuidePanel
-                  content={pmGuide}
-                  projectId={project.id}
-                  stepKey="rfp"
-                />
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ── Step 2: 커리큘럼 ── */}
-        {step === 'curriculum' && (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
-            <CurriculumBoard
-              projectId={project.id}
-              initialItems={project.curriculum.map((c) => ({
-                id: c.id,
-                sessionNo: c.sessionNo,
-                title: c.title,
-                durationHours: c.durationHours,
-                lectureMinutes: (c as any).lectureMinutes ?? 15,
-                practiceMinutes: (c as any).practiceMinutes ?? 35,
-                isTheory: c.isTheory,
-                isActionWeek: c.isActionWeek,
-                isCoaching1on1: (c as any).isCoaching1on1 ?? false,
-                isLocked: (c as any).isLocked ?? false,
-                date: c.date,
-                venue: c.venue,
-                isOnline: c.isOnline,
-                notes: c.notes,
-                order: c.order,
-              }))}
-              rfpKeywords={(project.rfpParsed as any)?.keywords ?? []}
-              rfpObjectives={(project.rfpParsed as any)?.objectives ?? []}
-              logicModelActivities={(project.logicModel as any)?.activity ?? []}
-              supplyPrice={project.supplyPrice ?? 0}
-              coachAssignmentCount={project.coachAssignments.length}
-              rfpSlice={context?.rfp}
-              strategySlice={context?.strategy}
-            />
-            {pmGuide && (
-              <PmGuidePanel
-                content={pmGuide}
-                projectId={project.id}
-                stepKey="curriculum"
-              />
-            )}
-          </div>
-        )}
-
-        {/* ── Step 3: 코치 배정 ── */}
-        {step === 'coaches' && (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
-            <div className="space-y-4">
-              {/* 이전 스텝 요약 배너 (Step 1·2 → Step 3) */}
-              <DataFlowBanner
-                fromStep="Step 1·2"
-                toStep="Step 3 코치 배정"
-                items={(() => {
-                  const rfp = context?.rfp
-                  const curri = context?.curriculum
-                  const sessionCount = curri?.sessions.length ?? 0
-                  const actionWeekCount = curri?.sessions.filter((s) => s.isActionWeek).length ?? 0
-                  const coachingCount = curri?.sessions.filter((s) => s.isCoaching1on1).length ?? 0
-                  return [
-                    {
-                      label: '제안 컨셉',
-                      value: rfp?.proposalConcept ?? '미확정',
-                      matched: !!rfp?.proposalConcept,
-                      detail: rfp?.proposalConcept
-                        ? undefined
-                        : 'Step 1 에서 컨셉을 확정하세요',
-                    },
-                    {
-                      label: '총 세션 수',
-                      value: sessionCount > 0 ? `${sessionCount}회차` : '미작성',
-                      matched: sessionCount > 0,
-                      detail: sessionCount > 0 ? undefined : 'Step 2 커리큘럼 먼저 확정',
-                    },
-                    {
-                      label: 'Action Week',
-                      value: sessionCount > 0 ? `${actionWeekCount}회` : '—',
-                      matched: actionWeekCount > 0,
-                      detail:
-                        sessionCount > 0 && actionWeekCount === 0
-                          ? '실행 중심 교육 — Action Week 1회 이상 권장'
-                          : undefined,
-                    },
-                    {
-                      label: '1:1 코칭',
-                      value: sessionCount > 0 ? `${coachingCount}회` : '—',
-                      matched: coachingCount > 0,
-                    },
-                  ]
-                })()}
-              />
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-semibold">코치 배정</h3>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    역할과 사례비를 설정하고 코치를 확정합니다.
-                  </p>
-                </div>
-                <CoachAssign
-                  projectId={project.id}
-                  assignedCoachIds={project.coachAssignments.map((a) => a.coach.id)}
-                />
-              </div>
-
-              <Card>
-                <CardContent className="p-0">
-                  {project.coachAssignments.length === 0 ? (
-                    <div className="flex h-40 flex-col items-center justify-center gap-2 text-sm text-muted-foreground">
-                      <p>배정된 코치가 없습니다.</p>
-                      <p className="text-xs">위 버튼으로 코치를 추가하세요.</p>
-                    </div>
-                  ) : (
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b bg-muted/40">
-                          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">코치</th>
-                          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">소속</th>
-                          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">역할</th>
-                          <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">세션수</th>
-                          <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">단가(시간)</th>
-                          <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">총 사례비</th>
-                          <th className="px-4 py-2.5 text-center font-medium text-muted-foreground">확정</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {project.coachAssignments.map((a) => (
-                          <tr key={a.id} className="border-b last:border-0 hover:bg-muted/30">
-                            <td className="px-4 py-3 font-medium">{a.coach.name}</td>
-                            <td className="px-4 py-3 text-muted-foreground text-xs">{a.coach.organization ?? '—'}</td>
-                            <td className="px-4 py-3">
-                              <Badge variant="outline" className="text-xs">{ROLE_LABEL[a.role]}</Badge>
-                            </td>
-                            <td className="px-4 py-3 text-right tabular-nums">{a.sessions}회</td>
-                            <td className="px-4 py-3 text-right tabular-nums text-xs">
-                              {a.agreedRate ? `${a.agreedRate.toLocaleString()}원` : '—'}
-                            </td>
-                            <td className="px-4 py-3 text-right tabular-nums font-semibold">
-                              {a.totalFee ? `${a.totalFee.toLocaleString()}원` : '—'}
-                            </td>
-                            <td className="px-4 py-3 text-center text-base">
-                              {a.confirmed ? '✅' : '⏳'}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                      <tfoot>
-                        <tr className="border-t bg-muted/20">
-                          <td colSpan={5} className="px-4 py-2.5 text-right text-sm font-medium text-muted-foreground">
-                            합계
-                          </td>
-                          <td className="px-4 py-2.5 text-right tabular-nums font-bold text-brand">
-                            {totalCoachFee.toLocaleString()}원
-                          </td>
-                          <td />
-                        </tr>
-                      </tfoot>
-                    </table>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-            {pmGuide && (
-              <PmGuidePanel
-                content={pmGuide}
-                projectId={project.id}
-                stepKey="coaches"
-              />
-            )}
-          </div>
-        )}
-
-        {/* ── Step 4: 예산 설계 (② Input · ADR-008) ── */}
-        {step === 'budget' && (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
-            <BudgetDashboard
-              projectId={project.id}
-              initialBudget={project.budget ? {
-                pcTotal: project.budget.pcTotal,
-                acTotal: project.budget.acTotal,
-                margin: project.budget.margin,
-                marginRate: project.budget.marginRate,
-                marginWarning: project.budget.marginRate < 10,
-                supplyPrice: project.supplyPrice ?? 0,
-                totalBudgetVat: project.totalBudgetVat ?? 0,
-              } : null}
-              initialPcItems={[]}
-              initialAcItems={project.budget?.items.filter((i) => i.type === 'AC').map((i) => ({
-                id: i.id,
-                wbsCode: i.wbsCode,
-                category: i.category,
-                name: i.name,
-                unit: i.unit ?? '',
-                unitPrice: i.unitPrice,
-                quantity: i.quantity,
-                amount: i.amount,
-                isEstimated: i.notes?.includes('추정') ?? false,
-              })) ?? []}
-              curriculumSlice={context?.curriculum}
-              coachesSlice={context?.coaches}
-            />
-            {pmGuide && (
-              <PmGuidePanel
-                content={pmGuide}
-                projectId={project.id}
-                stepKey="budget"
-              />
-            )}
-          </div>
-        )}
-
-        {/* ── Step 5: 임팩트 + SROI Forecast (⑤ Outcome 수렴 · ADR-008) ── */}
-        {step === 'impact' && (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
-            <StepImpact
-              projectId={project.id}
-              rfpParsed={project.rfpParsed as any}
-              initialLogicModel={project.logicModel as any}
-              curriculumSlice={context?.curriculum}
-              coachesSlice={context?.coaches}
-              budgetSlice={context?.budget}
-              autoExtracted={context?.impact?.autoExtracted}
-              context={context ?? undefined}
-              impactForecast={
-                project.impactForecast
-                  ? {
-                      id: project.impactForecast.id,
-                      totalSocialValue: Number(project.impactForecast.totalSocialValue),
-                      beneficiaryCount: project.impactForecast.beneficiaryCount,
-                      calibration: project.impactForecast.calibration,
-                      isStale: (() => {
-                        const genAt = project.impactForecast.generatedAt.getTime()
-                        const budgetAt = project.budget?.updatedAt?.getTime() ?? 0
-                        const curLatest = Math.max(
-                          0,
-                          ...project.curriculum.map((c) =>
-                            c.updatedAt?.getTime() ?? 0,
-                          ),
-                        )
-                        return budgetAt > genAt || curLatest > genAt
-                      })(),
-                    }
-                  : null
+          },
+          initialProfile: data.programProfile,
+          initialRenewalContext: (data.renewalContext as RenewalContext | null) ?? null,
+          assetMatches: data.assetMatches,
+          initialAcceptedAssetIds: data.acceptedAssetIds,
+        }}
+        designProps={
+          data.rfpPreview
+            ? {
+                projectId: project.id,
+                rfpPreview: data.rfpPreview,
+                operatingTypeMeta: data.operatingTypeMeta,
+                assetMatches: data.assetMatches,
+                initialAcceptedAssetIds: data.acceptedAssetIds,
               }
-              totalBudgetVat={project.totalBudgetVat}
-            />
-            {pmGuide && (
-              <PmGuidePanel
-                content={pmGuide}
-                projectId={project.id}
-                stepKey="impact"
-              />
-            )}
-          </div>
-        )}
-
-        {/* ── Step 6: 제안서 ── */}
-        {step === 'proposal' && (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
-            <StepProposal
-              projectId={project.id}
-              hasLogicModel={!!project.logicModel}
-              initialSections={project.proposalSections as any}
-              evalCriteria={(project.rfpParsed as any)?.evalCriteria ?? []}
-              pipelineContext={context}
-              projectName={project.name}
-              hasRfp={!!project.rfpParsed}
-            />
-            {pmGuide && (
-              <PmGuidePanel
-                content={pmGuide}
-                projectId={project.id}
-                stepKey="proposal"
-              />
-            )}
-          </div>
-        )}
-
-      </div>
-      )}
-
-      {/* DECK-5 (ADR-026): 덱 생성은 흐름의 끝(제안서 스텝 StepProposal)으로 이동.
-          독립 패널 제거 — 덱은 누적 기획을 소비하는 최종 산출물. */}
+            : null
+        }
+        impactProps={{
+          projectId: project.id,
+          country: data.sroiCountry,
+          totalBudgetVat: project.totalBudgetVat,
+          initialForecast: data.impactForecast,
+          categories: data.impactCategories,
+          configured: data.impactConfigured,
+          handoffConfigured: data.impactHandoffConfigured,
+        }}
+      />
     </div>
   )
 }
