@@ -18,6 +18,11 @@
 import { prisma } from '@/lib/prisma'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
+import type { StrategicNotes } from '@/lib/ai/strategic-notes'
+import {
+  fromStrategicNotes,
+  type PlanningIntentDraft,
+} from '@/lib/program-design/planning-intent'
 import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
 import { loadDesignRules } from '@/lib/program-design/design-rule'
 import {
@@ -80,6 +85,12 @@ export interface WorkspaceData {
   keyPlanningPoints: string[] | null
   assetMatches: AssetMatch[]
   acceptedAssetIds: string[]
+
+  // ── ② 기획의도 (BR-WS-3) ──
+  /** strategicNotes → 시드한 4카드 초안 (없으면 빈 초안). */
+  planningIntentDraft: PlanningIntentDraft
+  /** 저장된 기획의도가 이미 있는지 — false 면 컴포넌트가 자동 초안 1회. */
+  hasSavedIntent: boolean
 
   // ── ② 설계 ──
   rfpPreview: RfpPreview | null
@@ -148,6 +159,8 @@ export async function loadWorkspace(
       proposalConcept: true,
       keyPlanningPoints: true,
       acceptedAssetIds: true,
+      // ② 기획의도 (BR-WS-3)
+      strategicNotes: true,
       // ③ 임팩트
       sroiCountry: true,
       impactForecast: true,
@@ -174,6 +187,20 @@ export async function loadWorkspace(
   )
     ? (project.keyPlanningPoints as string[])
     : null
+
+  // ② 기획의도 — strategicNotes 시드 (BR-WS-3). 4카드 매핑 필드가 하나라도 있으면 저장됨으로 판정.
+  const strategicNotes =
+    (project.strategicNotes as unknown as StrategicNotes | null) ?? null
+  const planningIntentDraft = fromStrategicNotes(strategicNotes)
+  const hasSavedIntent = !!(
+    strategicNotes &&
+    (strategicNotes.clientHiddenWants ||
+      strategicNotes.pastSimilarProjects ||
+      strategicNotes.competitorWeakness ||
+      strategicNotes.winStrategy ||
+      strategicNotes.mustNotFail ||
+      (Array.isArray(strategicNotes.riskFactors) && strategicNotes.riskFactors.length))
+  )
 
   // ② 설계 — 운영 유형 메타 (design-rules.json B 프로파일). 실패해도 빈 메타로 진행.
   const rfpPreview = toRfpPreview(rfpParsed)
@@ -251,6 +278,8 @@ export async function loadWorkspace(
     keyPlanningPoints,
     assetMatches,
     acceptedAssetIds,
+    planningIntentDraft,
+    hasSavedIntent,
     rfpPreview,
     operatingTypeMeta,
     sroiCountry: project.sroiCountry,

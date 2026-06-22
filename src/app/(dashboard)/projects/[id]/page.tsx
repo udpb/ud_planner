@@ -166,6 +166,11 @@ export default async function ProjectWorkspacePage({
               }
             : null
         }
+        intentProps={{
+          initialDraft: data.planningIntentDraft,
+          hasSavedIntent: data.hasSavedIntent,
+          hasRfp: data.hasRfp,
+        }}
         impactProps={{
           projectId: project.id,
           country: data.sroiCountry,

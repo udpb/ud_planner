@@ -31,6 +31,8 @@ import {
 import { StageS1 } from '@/components/projects/stages/StageS1'
 import { ProgramDesignFlow } from '@/app/(dashboard)/projects/[id]/program-design/_components/program-design-flow'
 import { ImpactForecastClient } from '@/app/(dashboard)/projects/[id]/impact-forecast/forecast-client'
+import { PlanningIntent } from './PlanningIntent'
+import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 
 import {
   WORKSPACE_STAGE_IDS,
@@ -216,6 +218,12 @@ interface Props {
   stepRfpProps: ComponentProps<typeof StageS1>['stepRfpProps']
   /** ② 설계 — ProgramDesignFlow props (rfpPreview 없으면 안내 표시) */
   designProps: ComponentProps<typeof ProgramDesignFlow> | null
+  /** ② 기획의도 — PlanningIntent props (BR-WS-3, design stage 상단에 얹음) */
+  intentProps: {
+    initialDraft: PlanningIntentDraft
+    hasSavedIntent: boolean
+    hasRfp: boolean
+  }
   /** ③ 임팩트 — ImpactForecastClient props */
   impactProps: ComponentProps<typeof ImpactForecastClient>
 }
@@ -228,6 +236,7 @@ export function ProgramWorkspace({
   summaries,
   stepRfpProps,
   designProps,
+  intentProps,
   impactProps,
 }: Props) {
   const [overrides, setOverrides] = useState<OverridesMap>(() => {
@@ -253,29 +262,40 @@ export function ProgramWorkspace({
   const content: Record<WorkspaceStageId, ReactNode> = useMemo(
     () => ({
       rfp: <StageS1 stepRfpProps={stepRfpProps} />,
-      design: designProps ? (
-        <ProgramDesignFlow {...designProps} />
-      ) : (
-        <div
-          style={{
-            border: '1px solid var(--line)',
-            borderLeft: '3px solid var(--accent)',
-            background: 'var(--neutral-90)',
-            padding: 16,
-            maxWidth: 880,
-            fontSize: 13,
-            color: 'var(--soft-ink)',
-            lineHeight: 1.6,
-          }}
-        >
-          <strong style={{ fontWeight: 700 }}>RFP 분석이 먼저 필요합니다.</strong>
-          {'  '}프로그램 설계는 RFP 핵심(목표·대상·기간·예산) 위에서 시작합니다 — 위
-          ① RFP 분석 단계에서 RFP 를 먼저 업로드·분석한 뒤 진행하세요.
-        </div>
+      design: (
+        <>
+          {/* ② 기획의도 (BR-WS-3) — 설계 캔버스 위에 얹음(additive). 풀 6섹션 분리는 BR-WS-5. */}
+          <PlanningIntent
+            projectId={projectId}
+            hasRfp={intentProps.hasRfp}
+            initialDraft={intentProps.initialDraft}
+            hasSavedIntent={intentProps.hasSavedIntent}
+          />
+          {designProps ? (
+            <ProgramDesignFlow {...designProps} />
+          ) : (
+            <div
+              style={{
+                border: '1px solid var(--line)',
+                borderLeft: '3px solid var(--accent)',
+                background: 'var(--neutral-90)',
+                padding: 16,
+                maxWidth: 880,
+                fontSize: 13,
+                color: 'var(--soft-ink)',
+                lineHeight: 1.6,
+              }}
+            >
+              <strong style={{ fontWeight: 700 }}>RFP 분석이 먼저 필요합니다.</strong>
+              {'  '}프로그램 설계는 RFP 핵심(목표·대상·기간·예산) 위에서 시작합니다 — 위
+              ① RFP 분석 단계에서 RFP 를 먼저 업로드·분석한 뒤 진행하세요.
+            </div>
+          )}
+        </>
       ),
       impact: <ImpactForecastClient {...impactProps} />,
     }),
-    [stepRfpProps, designProps, impactProps],
+    [projectId, stepRfpProps, designProps, intentProps, impactProps],
   )
 
   const stageList = useMemo(
