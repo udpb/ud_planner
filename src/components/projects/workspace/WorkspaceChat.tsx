@@ -22,6 +22,8 @@ import { Send, Sparkles, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
+import type { PlanSession } from '@/lib/program-design/plan-types'
+import type { SessionOp } from '@/lib/program-design/session-ops'
 import {
   WORKSPACE_STAGE_LABELS,
   type WorkspaceStageId,
@@ -39,6 +41,16 @@ interface Props {
   stage: WorkspaceStageId
   /** 현재 단계 1줄 요약(서버 판정) — 대화 맥락으로 전달. */
   contextSummary?: string
+  /**
+   * BR-WS-6: design 단계 현재 회차 목록(no·title·kind 만 전송 — 매칭 근거). 없으면 null.
+   * design 외 단계에서는 전달 X(전송 body 에서 생략).
+   */
+  sessions?: PlanSession[] | null
+  /**
+   * BR-WS-6: assistant 가 design 단계에서 ops 를 반환하면 호출(상위가 캔버스에 적용).
+   * design 단계에서만 주입됨.
+   */
+  onOps?: (ops: SessionOp[]) => void
 }
 
 const WELCOME: ChatMessage = {
@@ -49,7 +61,13 @@ const WELCOME: ChatMessage = {
     '궁금한 점이나 방향을 적어 주세요. (이번 버전은 안내·해석 위주 — 캔버스 직접 변경은 곧 추가됩니다.)',
 }
 
-export function WorkspaceChat({ projectId, stage, contextSummary }: Props) {
+export function WorkspaceChat({
+  projectId,
+  stage,
+  contextSummary,
+  sessions,
+  onOps,
+}: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
@@ -82,6 +100,16 @@ export function WorkspaceChat({ projectId, stage, contextSummary }: Props) {
           message: text,
           stage,
           contextSummary: contextSummary ?? '',
+          // BR-WS-6: design 단계만 현재 회차 목록(no·title·kind) 동봉 — 매칭 근거.
+          ...(stage === 'design' && sessions
+            ? {
+                sessions: sessions.map((s) => ({
+                  no: s.no,
+                  title: s.title,
+                  kind: s.kind,
+                })),
+              }
+            : {}),
         }),
       })
 
@@ -97,14 +125,28 @@ export function WorkspaceChat({ projectId, stage, contextSummary }: Props) {
         throw new Error(msg)
       }
 
-      const data = (await res.json()) as { reply?: string; action?: unknown }
+      const data = (await res.json()) as {
+        reply?: string
+        action?: unknown
+        ops?: SessionOp[] | null
+      }
       const reply = (data.reply ?? '').trim()
+
+      // BR-WS-6: design 단계 응답에 ops 가 있으면 상위로 전달(캔버스 적용) + 보조줄 표시.
+      const ops = Array.isArray(data.ops) ? data.ops : null
+      const appliedCount = ops?.length ?? 0
+      if (onOps && appliedCount > 0) {
+        onOps(ops!)
+      }
+      const applyNote =
+        appliedCount > 0 ? `\n\n✓ ${appliedCount}개 변경을 캔버스에 적용했어요.` : ''
+
       setMessages((prev) => [
         ...prev,
         {
           id: `a-${Date.now()}`,
           role: 'assistant',
-          text: reply || '(응답이 비어 있습니다.)',
+          text: (reply || '(응답이 비어 있습니다.)') + applyNote,
         },
       ])
     } catch (err) {
@@ -114,7 +156,7 @@ export function WorkspaceChat({ projectId, stage, contextSummary }: Props) {
     } finally {
       setSending(false)
     }
-  }, [input, sending, projectId, stage, contextSummary])
+  }, [input, sending, projectId, stage, contextSummary, sessions, onOps])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

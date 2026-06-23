@@ -25,7 +25,7 @@
  * 디자인킷 260529: accent #F05519 1개, radius 0, NanumHuman/Poppins.
  */
 
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useRef, useState, type ReactNode } from 'react'
 
 import { StageS1 } from '@/components/projects/stages/StageS1'
 import { ProgramDesignFlow } from '@/app/(dashboard)/projects/[id]/program-design/_components/program-design-flow'
@@ -35,6 +35,8 @@ import { PlanningIntent } from './PlanningIntent'
 import { WorkspacePipeline } from './WorkspacePipeline'
 import { WorkspaceChat } from './WorkspaceChat'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
+import type { PlanSession } from '@/lib/program-design/plan-types'
+import type { SessionOp } from '@/lib/program-design/session-ops'
 
 import {
   WORKSPACE_STAGE_DESCRIPTIONS,
@@ -100,6 +102,17 @@ export function ProgramWorkspace({
     initialOverrideStage ?? currentStage,
   )
 
+  // ── BR-WS-6 배선: 대화 ↔ 커리큘럼 캔버스 (design 단계 한정) ──
+  // ProgramDesignFlow 가 보고한 현재 회차 목록(대화 매칭 근거).
+  const [designSessions, setDesignSessions] = useState<PlanSession[] | null>(null)
+  // 대화가 해석한 ops 를 ProgramDesignFlow 로 전달 — id 는 단조 증가 카운터(Date.now 금지).
+  const [incomingOps, setIncomingOps] = useState<{ id: string; ops: SessionOp[] } | null>(null)
+  const opsSeq = useRef(0)
+  const handleOps = (ops: SessionOp[]) => {
+    opsSeq.current += 1
+    setIncomingOps({ id: `ops-${opsSeq.current}`, ops })
+  }
+
   // 단계별 우 캔버스 — 전부 기존 컴포넌트 조립/임베드만(내부 재구현 0).
   const canvas: Record<WorkspaceStageId, ReactNode> = useMemo(
     () => ({
@@ -116,8 +129,13 @@ export function ProgramWorkspace({
         </div>
       ),
       // 프로그램 기획 = ProgramDesignFlow (rfpPreview 없으면 안내)
+      // BR-WS-6: 회차 목록 보고(onSessionsChange) + 대화 ops 수신(incomingOps) 인렛 배선.
       design: designProps ? (
-        <ProgramDesignFlow {...designProps} />
+        <ProgramDesignFlow
+          {...designProps}
+          onSessionsChange={setDesignSessions}
+          incomingOps={incomingOps}
+        />
       ) : (
         <div
           style={{
@@ -169,7 +187,7 @@ export function ProgramWorkspace({
       // SROI 예측 = ImpactForecastClient
       sroi: <ImpactForecastClient {...impactProps} />,
     }),
-    [projectId, stepRfpProps, designProps, intentProps, impactProps],
+    [projectId, stepRfpProps, designProps, intentProps, impactProps, incomingOps],
   )
 
   return (
@@ -189,6 +207,9 @@ export function ProgramWorkspace({
             projectId={projectId}
             stage={stage}
             contextSummary={summaries[stage]}
+            // BR-WS-6: design 단계일 때만 현재 회차 목록 동봉 + ops 수신.
+            sessions={stage === 'design' ? designSessions : null}
+            onOps={stage === 'design' ? handleOps : undefined}
           />
         </div>
 

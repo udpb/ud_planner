@@ -17,7 +17,7 @@
  * 디자인킷 260529: radius 0, accent 면 최소, 킷 토큰만(--accent/--ink/--paper/--muted/--line).
  */
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -25,7 +25,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
 import { MatchedAssetsPanel } from '@/components/projects/matched-assets-panel'
 import type { AssetMatch } from '@/lib/asset-registry-types'
-import type { PlanStructure, ProgramPlan } from '@/lib/program-design/plan-types'
+import type { PlanSession, PlanStructure, ProgramPlan } from '@/lib/program-design/plan-types'
+import { applySessionOps, type SessionOp } from '@/lib/program-design/session-ops'
 
 import { DecisionLog } from './decision-log'
 import { GateCard } from './gate-card'
@@ -139,6 +140,8 @@ export function ProgramDesignFlow({
   initialAcceptedAssetIds,
   initialPlan,
   intentContext,
+  onSessionsChange,
+  incomingOps,
 }: {
   projectId: string
   rfpPreview: RfpPreview
@@ -152,6 +155,16 @@ export function ProgramDesignFlow({
   initialPlan?: ProgramPlan | null
   /** BR-WS-4 Task4: ②기획의도 유래 맥락(맥락 띠 + 토대잡기 prefill). */
   intentContext?: DesignIntentContext | null
+  /**
+   * BR-WS-6 (additive 인렛 ①): effectiveStructure 변경 시 현재 회차 목록 보고.
+   * sessions 구조가 아니거나 구조가 없으면 null. 셸(ProgramWorkspace)이 대화에 동봉.
+   */
+  onSessionsChange?: (sessions: PlanSession[] | null) => void
+  /**
+   * BR-WS-6 (additive 인렛 ②): 대화가 해석한 세션 액션. id 가 바뀔 때 1회 적용
+   * (= PM 이 손으로 편집한 것과 동일한 structureOverride). 기획 시작 전 구조 없으면 무시.
+   */
+  incomingOps?: { id: string; ops: SessionOp[] } | null
 }) {
   // ① 토대잡기 입력 — 목표 확인만 PM 이 직접 (선례·의도는 ②기획의도가 소유 → BR-WS-4s 중복 제거)
   const [goalText, setGoalText] = useState(rfpPreview.objectives.join('\n'))
@@ -224,6 +237,29 @@ export function ProgramDesignFlow({
   )
 
   const effectiveStructure = structureOverride ?? plan?.structure ?? null
+
+  // ── BR-WS-6 인렛 ① : 현재 회차 목록을 셸로 보고(대화 매칭 근거) ──
+  // effectiveStructure 가 sessions 면 sessions, 아니면 null. 셸이 WorkspaceChat 에 동봉.
+  useEffect(() => {
+    if (!onSessionsChange) return
+    onSessionsChange(
+      effectiveStructure && effectiveStructure.kind === 'sessions'
+        ? effectiveStructure.sessions
+        : null,
+    )
+  }, [effectiveStructure, onSessionsChange])
+
+  // ── BR-WS-6 인렛 ② : 대화가 보낸 ops 를 1회 적용(structureOverride 갱신) ──
+  // id 가 바뀔 때만 적용(중복 방지). 구조 없으면(기획 시작 전) 무시. 저장은 기존 editedStructure 경로 그대로.
+  const appliedOpsId = useRef<string | null>(null)
+  useEffect(() => {
+    if (!incomingOps) return
+    if (appliedOpsId.current === incomingOps.id) return
+    appliedOpsId.current = incomingOps.id
+    if (incomingOps.ops.length === 0) return
+    if (!effectiveStructure || effectiveStructure.kind !== 'sessions') return
+    setStructureOverride(applySessionOps(effectiveStructure, incomingOps.ops))
+  }, [incomingOps, effectiveStructure])
 
   const handleSave = useCallback(async () => {
     if (!plan || plan.openGates.length > 0) return
