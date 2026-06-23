@@ -4,7 +4,7 @@
  * 프로그램 설계 캔버스 (Client Component) — BR-3c (재디자인, BR-3b 턴 루프 보존)
  *
  * BR-3b 의 4단계 흐름을 **설계 캔버스**로 재디자인 (목업 design_stage_auto_intelligence):
- *   ① 토대잡기 — RFP 미리채움 + 목표 확인/수정 · 선례 · 담당자 의도 → "기획 시작"
+ *   ① 토대잡기 — RFP 미리채움 + 목표 확인/수정 → "기획 시작" (선례·의도는 ②기획의도에서 자동 반영, BR-WS-4s)
  *   ② 갈림길  — openGates 카드. 운영 유형은 이름+설명+실측(GateCard), 응답 → 턴 재호출.
  *   ③ 자동조립 — decisionLog 시각화(D0~D8 + source 배지) + 기획요소 칩.
  *   ④ 1차안   — 회차 타임라인(T1~T3) / 단계 리스트(T4/T5) + 코치풀 + 자산 인용.
@@ -55,7 +55,7 @@ export interface RfpPreview {
 /**
  * ②기획의도(strategicNotes)에서 파생한 설계 맥락.
  *   - bands : 캔버스 상단 "이 설계가 선 기획의도" 읽기 전용 요약 (재설계 §3 원칙1).
- *   - precedentPrefill / intentPrefill : 토대잡기 textarea prefill (PM 이 더 고칠 수 있음, 빈 강요 X).
+ *   - precedentPrefill / intentPrefill : 엔진 호출에 silently 전달(BR-WS-4s — 토대잡기 중복 textarea 제거, ②가 소유).
  * load-workspace/page.tsx 가 PlanningIntentDraft → 이 형태로 매핑.
  */
 export interface DesignIntentContext {
@@ -153,10 +153,11 @@ export function ProgramDesignFlow({
   /** BR-WS-4 Task4: ②기획의도 유래 맥락(맥락 띠 + 토대잡기 prefill). */
   intentContext?: DesignIntentContext | null
 }) {
-  // ① 토대잡기 입력 — intentContext(②기획의도) prefill (PM 이 더 고칠 수 있게, 빈 강요 X)
+  // ① 토대잡기 입력 — 목표 확인만 PM 이 직접 (선례·의도는 ②기획의도가 소유 → BR-WS-4s 중복 제거)
   const [goalText, setGoalText] = useState(rfpPreview.objectives.join('\n'))
-  const [precedent, setPrecedent] = useState(intentContext?.precedentPrefill ?? '')
-  const [intent, setIntent] = useState(intentContext?.intentPrefill ?? '')
+  // 선례·담당자 의도는 textarea 제거 — ②기획의도(intentContext) 값을 엔진 호출에 silently 전달.
+  const precedentSummary = intentContext?.precedentPrefill?.trim() ?? ''
+  const intentSummary = intentContext?.intentPrefill?.trim() ?? ''
   // 저장된 1차안이 있으면 토대잡기 스킵하고 바로 편집 화면으로(결함2).
   const [started, setStarted] = useState(!!initialPlan)
 
@@ -176,8 +177,8 @@ export function ProgramDesignFlow({
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
-            intent: intent.trim() ? { summary: intent.trim() } : undefined,
-            precedent: precedent.trim() ? { summary: precedent.trim() } : undefined,
+            intent: intentSummary ? { summary: intentSummary } : undefined,
+            precedent: precedentSummary ? { summary: precedentSummary } : undefined,
             decisions: nextDecisions,
           }),
         })
@@ -201,7 +202,7 @@ export function ProgramDesignFlow({
         setLoading(false)
       }
     },
-    [projectId, intent, precedent],
+    [projectId, intentSummary, precedentSummary],
   )
 
   const handleStart = useCallback(() => {
@@ -232,8 +233,8 @@ export function ProgramDesignFlow({
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          intent: intent.trim() ? { summary: intent.trim() } : undefined,
-          precedent: precedent.trim() ? { summary: precedent.trim() } : undefined,
+          intent: intentSummary ? { summary: intentSummary } : undefined,
+          precedent: precedentSummary ? { summary: precedentSummary } : undefined,
           decisions,
           save: true,
           // 결함1: PM 편집 구조를 권위값으로 전송 — 서버가 엔진 재생성 결과를 이걸로 덮는다.
@@ -254,7 +255,7 @@ export function ProgramDesignFlow({
     } finally {
       setSaving(false)
     }
-  }, [plan, projectId, intent, precedent, decisions, effectiveStructure])
+  }, [plan, projectId, intentSummary, precedentSummary, decisions, effectiveStructure])
   const hasGates = !!plan && plan.openGates.length > 0
   const isDraftReady = !!plan && plan.openGates.length === 0
   const operatingTypeName = OPERATING_TYPE_NAME(operatingTypeMeta, plan?.operatingType)
@@ -307,6 +308,13 @@ export function ProgramDesignFlow({
             ))}
           </div>
 
+          {/* 선례·담당자 의도는 ②기획의도에서 가져옵니다 (한 흐름, 재설계 §9 원칙1 — 중복 입력 제거) */}
+          {(precedentSummary || intentSummary) && (
+            <p style={{ fontSize: 11, color: 'var(--muted)', wordBreak: 'keep-all', lineHeight: 1.5 }}>
+              선례·담당자 운영 의도는 ②기획의도에서 자동으로 가져와 반영합니다 — 고치려면 ②기획의도에서 수정하세요.
+            </p>
+          )}
+
           {/* 목표 확인/수정 */}
           <div style={{ display: 'grid', gap: 6 }}>
             <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
@@ -318,44 +326,6 @@ export function ProgramDesignFlow({
               onChange={(e) => setGoalText(e.target.value)}
               rows={3}
               placeholder="이 프로그램이 달성해야 할 목표"
-              style={{ fontSize: 13 }}
-            />
-          </div>
-
-          {/* 선례 — ②기획의도(작년 대비)에서 prefill 됨 */}
-          <div style={{ display: 'grid', gap: 6 }}>
-            <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
-              선례{' '}
-              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>
-                {intentContext?.precedentPrefill
-                  ? '(②기획의도에서 가져옴 — 필요 시 고치세요)'
-                  : '(이전에 비슷한 거 했으면 — 어떻게 운영했는지)'}
-              </span>
-            </label>
-            <Textarea
-              value={precedent}
-              onChange={(e) => setPrecedent(e.target.value)}
-              rows={2}
-              placeholder="작년/지난번에는 어떻게 진행했는지 (있으면)"
-              style={{ fontSize: 13 }}
-            />
-          </div>
-
-          {/* 담당자 의도 — ②기획의도(전략·목표해석)에서 prefill 됨 */}
-          <div style={{ display: 'grid', gap: 6 }}>
-            <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
-              담당자 운영 의도{' '}
-              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>
-                {intentContext?.intentPrefill
-                  ? '(②기획의도에서 가져옴 — 필요 시 고치세요)'
-                  : '(꼭 지키고 싶은 운영 방식 — 있으면)'}
-              </span>
-            </label>
-            <Textarea
-              value={intent}
-              onChange={(e) => setIntent(e.target.value)}
-              rows={2}
-              placeholder="예: 킥오프는 길게, 코칭은 후반에 몰아서"
               style={{ fontSize: 13 }}
             />
           </div>
