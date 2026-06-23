@@ -124,46 +124,8 @@ function PanelLabel({ kicker, title }: { kicker: string; title: string }) {
   )
 }
 
-/**
- * ②기획의도 맥락 띠 (BR-WS-4 Task4) — 읽기 전용 요약 (재설계 §3 원칙1: 맥락은 항상 보인다).
- * strategicNotes 유래 카드를 캔버스 상단에 얹어, 이 설계가 어떤 '왜' 위에 섰는지 늘 보이게.
- */
-function IntentBand({ bands }: { bands: { label: string; value: string }[] }) {
-  if (!bands.length) return null
-  return (
-    <div
-      style={{
-        border: '1px solid var(--line)',
-        borderLeft: '3px solid var(--accent)',
-        background: 'var(--neutral-90)',
-        padding: '10px 14px',
-        display: 'grid',
-        gap: 6,
-      }}
-    >
-      <span
-        style={{
-          fontSize: 10,
-          fontWeight: 700,
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          color: 'var(--accent)',
-        }}
-      >
-        이 설계가 선 기획의도
-      </span>
-      <div style={{ display: 'grid', gap: 4 }}>
-        {bands.map((b) => (
-          <div key={b.label} style={{ fontSize: 12, color: 'var(--soft-ink)', lineHeight: 1.5, wordBreak: 'keep-all' }}>
-            <strong style={{ fontWeight: 700, color: 'var(--ink)' }}>{b.label}</strong>
-            {' · '}
-            {b.value}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+// (IntentBand 제거 — BR-WS-3s §9: ②기획의도(PlanningIntent)가 의도를 소유하므로
+//  설계 캔버스의 중복 의도 띠는 삭제. intentContext 의 prefill·엔진 호출은 유지.)
 
 // ─────────────────────────────────────────────────────────────────
 // 메인 — 턴 루프 (BR-3b 보존)
@@ -304,8 +266,8 @@ export function ProgramDesignFlow({
         <section style={{ display: 'grid', gap: 12 }}>
           <SectionTitle kicker="STEP 1" title="토대잡기 — RFP 위에서 시작" />
 
-          {/* ②기획의도 맥락 띠 (읽기 전용) — 토대잡기에도 '왜'를 보인다 */}
-          {intentContext?.bands.length ? <IntentBand bands={intentContext.bands} /> : null}
+          {/* ②기획의도 맥락 띠 제거(BR-WS-3s §9): ②(PlanningIntent)가 의도를 소유 — 중복 표시 X.
+              prefill·엔진 호출(intentContext)은 그대로 유지. */}
 
           {/* RFP 미리채움 (틴트박스 그리드) */}
           <div
@@ -433,8 +395,8 @@ export function ProgramDesignFlow({
         {loading && <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 700 }}>처리 중…</span>}
       </div>
 
-      {/* ②기획의도 맥락 띠 (읽기 전용 — 설계가 선 '왜') */}
-      {intentContext?.bands.length ? <IntentBand bands={intentContext.bands} /> : null}
+      {/* ②기획의도 맥락 띠 제거(BR-WS-3s §9): 중복 표시 X — ②가 의도 소유.
+          prefill·엔진 호출은 그대로. */}
 
       {/* ② 갈림길 (게이트) */}
       {hasGates && (

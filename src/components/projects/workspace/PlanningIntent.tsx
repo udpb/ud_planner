@@ -1,17 +1,25 @@
 'use client'
 
 /**
- * ②기획의도 (PlanningIntent) — 하이브리드 카드 (BR-WS-3, 재설계 v1 §5 ②)
+ * ②기획의도 (PlanningIntent) — 클린 통합 표면 (BR-WS-3s, 재설계 §9.2)
  *
  * "맥락의 못": RFP→바로 커리큘럼으로 가서 딱딱하게 떨어지던 문제(진단1)의 해결.
  * 하이브리드:
  *   1. AI 가 4카드 초안(목표해석·작년대비·차별점·리스크)을 깐다 — 각 confidence.
- *   2. confidence=low(또는 빈) 카드 = "?" 핀 → PM 이 **대화**로 채운다.
+ *   2. confidence=low(또는 빈) 카드 = "?" → PM 이 **대화**로 채운다.
  *   3. PM 은 카드를 직접 편집해도 된다(§3 원칙2 — AI 는 깔고 PM 이 결정).
  *   4. "확정 → 커리큘럼 반영" → PUT 저장(strategicNotes) → ③의 '왜'로 내려감.
  *
- * 디자인킷 260529: accent #F05519 1개 · radius 0 · 틴트/보더 박스 · NanumHuman/Poppins.
+ * §9.2 표면(BR-WS-3s, 2026-06-23): 보더 박스 4개("폼 벽") → **틴트 그리드 한 덩어리**
+ *   (paper↔neutral 교차, gap 1px). 대화 입력은 **한 번에 1개만**(openKey 단일 상태,
+ *   기본 닫힘) — 마운트 즉시 textarea 4개가 펼쳐지던 폼 벽 제거.
+ *   확정 카드 = success 체크 + 한 줄 값 + 작은 고치기 링크.
+ *   미확정 카드 = accent ? + 라벨 + 한 줄 hint + 대화로 채우기(accent 링크).
+ *
+ * 디자인킷 260529: accent #F05519 1개 · radius 0 · 틴트 그리드 · NanumHuman/Poppins.
  * 점수·게이트 없음(진단3). 강제값 0 — 전부 default.
+ * **로직(generateDraft·handleEdit·handleChat·handleConfirm·자동초안 useEffect·setField·
+ *   fetch 3종)은 BR-WS-3 그대로 — 바꾸는 건 렌더와 대화 열림 위치뿐.**
  *
  * 마운트: ProgramWorkspace 의 'design' stage content 최상단(additive, ProgramDesignFlow 위).
  * 이 컴포넌트는 server-only planning-intent.ts 에서 **타입만** import(런타임 미포함).
@@ -81,144 +89,205 @@ const WIN_STRATEGY_META: CardMeta = {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// 토큰 헬퍼 (인라인 스타일 — program-design-flow 톤)
+// 토큰 헬퍼
 // ─────────────────────────────────────────────────────────────────
 
-const box = (accent: boolean): React.CSSProperties => ({
+/** RFP 미선행 안내 박스(가벼운 stroke). */
+const noticeBox: React.CSSProperties = {
   border: '1px solid var(--line)',
-  borderLeft: accent ? '3px solid var(--accent)' : '3px solid var(--line)',
+  borderLeft: '3px solid var(--accent)',
   background: 'var(--paper, #fff)',
   padding: 14,
-})
+}
+
+/** 작은 액션 링크(고치기·대화로 채우기). accent 강조 1포인트, 밑줄 없음. */
+const actionLink: React.CSSProperties = {
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  fontSize: 11,
+  fontWeight: 700,
+  color: 'var(--accent)',
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+}
+
+/** 작은 muted 링크(고치기 — 확정 카드용). */
+const mutedLink: React.CSSProperties = {
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  fontSize: 11,
+  fontWeight: 600,
+  color: 'var(--muted, #888)',
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+}
 
 // ─────────────────────────────────────────────────────────────────
-// 단일 카드
+// 단일 카드 행 (§9.2 틴트 그리드 셀 — 차분한 한 줄)
 // ─────────────────────────────────────────────────────────────────
 
-function IntentCardView({
+function IntentCardRow({
   meta,
   card,
   busy,
+  tint,
+  chatOpen,
+  onToggleChat,
   onEdit,
   onChat,
 }: {
   meta: CardMeta
   card: IntentCard
   busy: boolean
+  /** 틴트 그리드 교차 배경 (true = neutral 면). */
+  tint: boolean
+  /** 이 카드의 대화 입력이 열려 있는가 (부모 단일 상태). */
+  chatOpen: boolean
+  onToggleChat: () => void
   onEdit: (value: string) => void
   onChat: (message: string) => void
 }) {
   const isLow = card.confidence === 'low' || !card.value.trim()
-  const [chatOpen, setChatOpen] = useState(isLow)
   const [chatText, setChatText] = useState('')
   // editText === null → 비편집. 문자열 → 편집 중(열 때 card.value 로 시드).
   const [editText, setEditText] = useState<string | null>(null)
   const editing = editText !== null
 
   return (
-    <div style={box(!isLow)}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 6 }}>
+    <div
+      style={{
+        background: tint ? 'var(--neutral-90)' : 'var(--paper, #fff)',
+        padding: '12px 14px',
+      }}
+    >
+      {/* 행: [상태아이콘] [라벨] [값/안내] … [액션] */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+        {/* 상태 아이콘 — 확정=success 체크 / 미확정=accent ? */}
+        <span
+          aria-label={isLow ? '미확정 — 대화로 채우기' : '확정'}
+          style={{
+            flex: '0 0 auto',
+            width: 14,
+            fontSize: 13,
+            fontWeight: 800,
+            lineHeight: 1.4,
+            color: isLow ? 'var(--accent)' : '#1a7f37',
+          }}
+        >
+          {isLow ? '?' : '✓'}
+        </span>
+
+        {/* 라벨(kicker) */}
         <span
           style={{
+            flex: '0 0 auto',
+            minWidth: 64,
             fontSize: 10,
             fontWeight: 700,
-            letterSpacing: '0.1em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: isLow ? 'var(--soft-ink, #777)' : 'var(--accent)',
+            color: isLow ? 'var(--muted, #999)' : 'var(--soft-ink, #555)',
+            paddingTop: 1,
           }}
         >
           {meta.kicker}
         </span>
-        <h3 style={{ fontSize: 13, fontWeight: 800, color: 'var(--ink)' }}>{meta.title}</h3>
-        <span
-          style={{
-            marginLeft: 'auto',
-            fontSize: 11,
-            fontWeight: 700,
-            color: isLow ? 'var(--soft-ink, #999)' : '#1a7f37',
-          }}
-          aria-label={isLow ? '대화로 채우기' : '확정'}
-        >
-          {isLow ? '? 대화로' : '✓ 확정'}
-        </span>
-      </div>
 
-      <p style={{ fontSize: 11, color: 'var(--soft-ink, #888)', marginBottom: 8 }}>{meta.hint}</p>
-
-      {/* 값 — 표시 / 인라인 편집 */}
-      {editing ? (
-        <div style={{ marginBottom: 8 }}>
-          <Textarea
-            value={editText ?? ''}
-            onChange={(e) => setEditText(e.target.value)}
-            rows={3}
-            style={{ fontSize: 13 }}
-          />
-          <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
-            <Button
-              size="sm"
-              onClick={() => {
-                onEdit((editText ?? '').trim())
-                setEditText(null)
+        {/* 값(확정) 또는 hint(미확정) — 한 줄, 편집 중이면 인라인 입력 */}
+        <div style={{ flex: '1 1 auto', minWidth: 0 }}>
+          {editing ? (
+            <div style={{ display: 'grid', gap: 6 }}>
+              <Textarea
+                value={editText ?? ''}
+                onChange={(e) => setEditText(e.target.value)}
+                rows={2}
+                style={{ fontSize: 13 }}
+              />
+              <div style={{ display: 'flex', gap: 6 }}>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    onEdit((editText ?? '').trim())
+                    setEditText(null)
+                  }}
+                >
+                  저장
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => setEditText(null)}>
+                  취소
+                </Button>
+              </div>
+            </div>
+          ) : card.value.trim() ? (
+            <span
+              style={{
+                fontSize: 13,
+                color: 'var(--ink)',
+                lineHeight: 1.5,
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'keep-all',
               }}
             >
-              저장
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => setEditText(null)}>
-              취소
-            </Button>
-          </div>
+              {card.value.trim()}
+            </span>
+          ) : (
+            <span
+              style={{
+                fontSize: 12,
+                color: 'var(--muted, #999)',
+                lineHeight: 1.5,
+                wordBreak: 'keep-all',
+              }}
+            >
+              {meta.hint}
+            </span>
+          )}
         </div>
-      ) : (
+
+        {/* 우측 액션 — 확정=고치기(muted) / 미확정=대화로 채우기(accent) */}
+        {!editing && (
+          <div style={{ flex: '0 0 auto', display: 'flex', gap: 10, alignItems: 'baseline' }}>
+            {isLow ? (
+              <button type="button" onClick={onToggleChat} style={actionLink}>
+                {chatOpen ? '닫기' : '대화로 채우기'}
+              </button>
+            ) : (
+              <>
+                <button type="button" onClick={onToggleChat} style={mutedLink}>
+                  대화
+                </button>
+                <button type="button" onClick={() => setEditText(card.value)} style={mutedLink}>
+                  고치기
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 대화 입력 — 한 번에 1개만(부모 openKey), 행 아래 인라인 1줄 + accent → */}
+      {chatOpen && !editing && (
         <div
           style={{
-            fontSize: 13,
-            color: card.value.trim() ? 'var(--ink)' : 'var(--soft-ink, #999)',
-            lineHeight: 1.55,
-            whiteSpace: 'pre-wrap',
-            marginBottom: 8,
-            minHeight: 20,
+            marginTop: 8,
+            marginLeft: 24,
+            display: 'grid',
+            gap: 6,
+            borderTop: '1px solid var(--line)',
+            paddingTop: 8,
           }}
         >
-          {card.value.trim() || '— (아직 비어 있음 — AI 초안이 없거나 PM 입력 대기)'}
-        </div>
-      )}
-
-      {/* 액션 바 */}
-      {!editing && (
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => setEditText(card.value)}
-            style={linkBtn}
-          >
-            직접 편집
-          </button>
-          <button
-            type="button"
-            onClick={() => setChatOpen((v) => !v)}
-            style={linkBtn}
-          >
-            {chatOpen ? '대화 닫기' : '대화로 채우기'}
-          </button>
-        </div>
-      )}
-
-      {/* 대화 입력 — confidence low 카드의 "?" 핀 흐름 */}
-      {chatOpen && !editing && (
-        <div style={{ marginTop: 8, borderTop: '1px dashed var(--line)', paddingTop: 8 }}>
-          <div style={{ fontSize: 11, color: 'var(--soft-ink, #888)', marginBottom: 4 }}>
-            🤖 {meta.prompt}
-          </div>
           <Textarea
             value={chatText}
             onChange={(e) => setChatText(e.target.value)}
-            placeholder="여기에 답하면 AI 가 카드 문장으로 다듬어 채웁니다…"
+            placeholder={meta.prompt}
             rows={2}
             disabled={busy}
             style={{ fontSize: 13 }}
           />
-          <div style={{ marginTop: 6 }}>
+          <div>
             <Button
               size="sm"
               disabled={busy || !chatText.trim()}
@@ -227,24 +296,13 @@ function IntentCardView({
                 setChatText('')
               }}
             >
-              {busy ? '정제 중…' : '채우기'}
+              {busy ? '정제 중…' : '→ 채우기'}
             </Button>
           </div>
         </div>
       )}
     </div>
   )
-}
-
-const linkBtn: React.CSSProperties = {
-  background: 'none',
-  border: 'none',
-  padding: 0,
-  fontSize: 11,
-  fontWeight: 600,
-  color: 'var(--accent)',
-  cursor: 'pointer',
-  textDecoration: 'underline',
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -272,6 +330,8 @@ export function PlanningIntent({
   const [busyField, setBusyField] = useState<IntentFieldKey | null>(null)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  // 대화 입력 열림 — 한 번에 1개만(§9.2 폼 벽 제거). 기본 닫힘.
+  const [openKey, setOpenKey] = useState<IntentFieldKey | null>(null)
   // 자동 초안 1회 가드 (저장된 의도 없을 때만)
   const autoTried = useRef(false)
 
@@ -373,19 +433,27 @@ export function PlanningIntent({
     }
   }, [projectId, draft])
 
+  // 대화 입력 토글 — 한 번에 1개만(이미 열린 키 다시 누르면 닫기).
+  const toggleChat = useCallback((key: IntentFieldKey) => {
+    setOpenKey((prev) => (prev === key ? null : key))
+  }, [])
+
   // RFP 없으면 안내만.
   if (!hasRfp) {
     return (
-      <div style={{ ...box(true), maxWidth: 880, marginBottom: 16 }}>
+      <div style={{ ...noticeBox, maxWidth: 880, marginBottom: 16 }}>
         <strong style={{ fontWeight: 700 }}>기획의도는 RFP 분석 위에서 시작합니다.</strong>{' '}
         위 ① RFP 분석을 먼저 마친 뒤, AI 가 의도 초안을 깔아드립니다.
       </div>
     )
   }
 
+  // 카드 메타 순서 = CARD_META 4 + winStrategy (틴트 교차 인덱스 산정용)
+  const rows = [...CARD_META, WIN_STRATEGY_META]
+
   return (
     <section style={{ maxWidth: 880, marginBottom: 20 }}>
-      {/* 헤더 */}
+      {/* 헤더 — kicker + 한 줄 부제 + 작은 AI 초안 다시 */}
       <div
         style={{
           display: 'flex',
@@ -393,7 +461,7 @@ export function PlanningIntent({
           gap: 10,
           borderBottom: '2px solid var(--ink)',
           paddingBottom: 6,
-          marginBottom: 12,
+          marginBottom: 10,
         }}
       >
         <span
@@ -405,43 +473,38 @@ export function PlanningIntent({
             color: 'var(--accent)',
           }}
         >
-          ② 기획의도
+          기획의도
         </span>
         <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)' }}>왜 이렇게 가는가</h2>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
-          <Button size="sm" variant="outline" disabled={loadingDraft} onClick={generateDraft}>
+        <div style={{ marginLeft: 'auto' }}>
+          <Button size="sm" variant="ghost" disabled={loadingDraft} onClick={generateDraft}>
             {loadingDraft ? 'AI 초안 깔는 중…' : 'AI 초안 다시'}
           </Button>
         </div>
       </div>
 
-      <p style={{ fontSize: 12, color: 'var(--soft-ink, #777)', marginBottom: 12, lineHeight: 1.6 }}>
-        AI 가 의도 초안을 깔고, 확신 낮은(<strong>?</strong>) 카드는 PM 이 대화로 채웁니다. 직접
-        편집해도 됩니다 — 결정과 변형은 PM 의 몫입니다. 채워진 의도가 ③ 커리큘럼·제안서의 &quot;왜&quot;로
-        내려갑니다.
-      </p>
-
-      {/* 4 카드 */}
-      <div style={{ display: 'grid', gap: 10 }}>
-        {CARD_META.map((meta) => (
-          <IntentCardView
+      {/* 틴트 그리드 — 보더 박스 4개 → 한 덩어리 (gap 1px, paper↔neutral 교차) */}
+      <div
+        style={{
+          display: 'grid',
+          gap: 1,
+          background: 'var(--line)',
+          border: '1px solid var(--line)',
+        }}
+      >
+        {rows.map((meta, i) => (
+          <IntentCardRow
             key={meta.key}
             meta={meta}
             card={draft[meta.key]}
             busy={busyField === meta.key}
+            tint={i % 2 === 1}
+            chatOpen={openKey === meta.key}
+            onToggleChat={() => toggleChat(meta.key)}
             onEdit={(value) => handleEdit(meta.key, value)}
             onChat={(message) => handleChat(meta.key, message)}
           />
         ))}
-
-        {/* 선택 — 메인 전략 */}
-        <IntentCardView
-          meta={WIN_STRATEGY_META}
-          card={draft.winStrategy}
-          busy={busyField === 'winStrategy'}
-          onEdit={(value) => handleEdit('winStrategy', value)}
-          onChat={(message) => handleChat('winStrategy', message)}
-        />
       </div>
 
       {/* 확정 바 */}

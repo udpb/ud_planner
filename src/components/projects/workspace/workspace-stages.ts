@@ -30,7 +30,7 @@ export const WORKSPACE_STAGE_LABELS: Record<WorkspaceStageId, string> = {
 /** Stage 별 한 줄 설명 (펼침 시 헤더 보조 텍스트) */
 export const WORKSPACE_STAGE_DESCRIPTIONS: Record<WorkspaceStageId, string> = {
   rfp: 'RFP 업로드 + AI 자동 분석 (사업명·발주·예산·평가배점·키워드) · Brain 매칭 · 자산 자동매칭',
-  design: '운영유형·회차·코칭·흐름 결정 + 기획요소 조립 (D0~D8 게이트·코치풀·자산 인용)',
+  design: '왜 이렇게 가는가 → 무엇을 하는가, 한 흐름으로 (기획의도 + 커리큘럼)',
   impact: 'forecast 렌즈 + 공식 임팩트 리포트 (impact-measurement 핸드오프)',
 }
 
