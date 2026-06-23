@@ -1,0 +1,209 @@
+'use client'
+
+/**
+ * WorkspaceChat — 좌 대화 pane (BR-WS-5)
+ *
+ * 브레인 주도 채팅. 단계가 바뀌어도 **하나로 이어진다**(메시지 리스트는 stage 와
+ * 독립). 전송 → `/api/projects/[id]/assistant` POST {message, stage, contextSummary}
+ * → reply 추가.
+ *
+ * ⚠️ 이번 범위(BR-WS-5) = **대화 응답까지**. 브레인 응답이 우 캔버스를 직접 바꾸는
+ * 연결은 BR-WS-6. assistant 응답의 action 자리는 비어 있음(`null`) — 후속 호환.
+ *
+ * ⚠️ 메시지는 **client state** 다. 이번엔 영속 X — 새로고침하면 리셋된다(서버 저장은
+ * 다음 브리프 범위). 스키마 변경 0.
+ *
+ * 디자인킷 260529: accent #F05519 1개(브레인 아이콘·전송), radius 0, NanumHuman/Poppins.
+ */
+
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
+import { Send, Sparkles, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils'
+import {
+  WORKSPACE_STAGE_LABELS,
+  type WorkspaceStageId,
+} from './workspace-stages'
+
+interface ChatMessage {
+  id: string
+  role: 'assistant' | 'user'
+  text: string
+}
+
+interface Props {
+  projectId: string
+  /** 현재 단계 — 응답을 단계 인지로 만들기 위해 전송에 포함. */
+  stage: WorkspaceStageId
+  /** 현재 단계 1줄 요약(서버 판정) — 대화 맥락으로 전달. */
+  contextSummary?: string
+}
+
+const WELCOME: ChatMessage = {
+  id: 'welcome',
+  role: 'assistant',
+  text:
+    '안녕하세요. 언더독스 기획 보조입니다. 현재 단계의 산출물을 같이 디벨롭해 봅시다. ' +
+    '궁금한 점이나 방향을 적어 주세요. (이번 버전은 안내·해석 위주 — 캔버스 직접 변경은 곧 추가됩니다.)',
+}
+
+export function WorkspaceChat({ projectId, stage, contextSummary }: Props) {
+  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
+  const [input, setInput] = useState('')
+  const [sending, setSending] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // 새 메시지마다 하단으로 스크롤(pane 내부 스크롤).
+  useEffect(() => {
+    const el = scrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [messages])
+
+  const handleSend = useCallback(async () => {
+    const text = input.trim()
+    if (!text || sending) return
+
+    const userMsg: ChatMessage = {
+      id: `u-${Date.now()}`,
+      role: 'user',
+      text,
+    }
+    setMessages((prev) => [...prev, userMsg])
+    setInput('')
+    setSending(true)
+
+    try {
+      const res = await fetch(`/api/projects/${projectId}/assistant`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          stage,
+          contextSummary: contextSummary ?? '',
+        }),
+      })
+
+      if (!res.ok) {
+        // HTML(세션 만료) 등은 json 파싱 실패 → 일반 에러로
+        let msg = '응답을 받지 못했습니다.'
+        try {
+          const err = (await res.json()) as { error?: string }
+          if (err?.error) msg = err.error
+        } catch {
+          /* non-json */
+        }
+        throw new Error(msg)
+      }
+
+      const data = (await res.json()) as { reply?: string; action?: unknown }
+      const reply = (data.reply ?? '').trim()
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `a-${Date.now()}`,
+          role: 'assistant',
+          text: reply || '(응답이 비어 있습니다.)',
+        },
+      ])
+    } catch (err) {
+      const msg =
+        err instanceof Error ? err.message : '대화 응답 중 오류가 발생했습니다.'
+      toast.error(msg)
+    } finally {
+      setSending(false)
+    }
+  }, [input, sending, projectId, stage, contextSummary])
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      // Enter 전송 / Shift+Enter 줄바꿈
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        void handleSend()
+      }
+    },
+    [handleSend],
+  )
+
+  return (
+    <div className="flex h-full min-h-0 flex-col border-r bg-background">
+      {/* 헤더 */}
+      <div className="flex shrink-0 items-center gap-2 border-b px-4 py-3">
+        <Sparkles className="h-4 w-4 text-brand" aria-hidden />
+        <span className="text-sm font-semibold">기획 대화</span>
+        <span className="ml-auto truncate text-xs text-muted-foreground">
+          {WORKSPACE_STAGE_LABELS[stage]}
+        </span>
+      </div>
+
+      {/* 메시지 리스트 — 내부 스크롤 */}
+      <div ref={scrollRef} className="flex-1 min-h-0 space-y-3 overflow-y-auto p-4">
+        {messages.map((m) => (
+          <div
+            key={m.id}
+            className={cn(
+              'flex gap-2',
+              m.role === 'user' ? 'justify-end' : 'justify-start',
+            )}
+          >
+            {m.role === 'assistant' && (
+              <span
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center bg-brand/10"
+                aria-hidden
+              >
+                <Sparkles className="h-3.5 w-3.5 text-brand" />
+              </span>
+            )}
+            <div
+              className={cn(
+                'max-w-[80%] whitespace-pre-wrap px-3 py-2 text-sm leading-relaxed',
+                m.role === 'user'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-foreground',
+              )}
+            >
+              {m.text}
+            </div>
+          </div>
+        ))}
+        {sending && (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            응답 생성 중…
+          </div>
+        )}
+      </div>
+
+      {/* 입력 */}
+      <div className="shrink-0 border-t p-3">
+        <div className="flex items-end gap-2">
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="이 단계 기획을 어떻게 디벨롭할까요? (Enter 전송 · Shift+Enter 줄바꿈)"
+            rows={2}
+            className="min-h-0 flex-1 resize-none text-sm"
+            disabled={sending}
+          />
+          <Button
+            type="button"
+            onClick={() => void handleSend()}
+            disabled={sending || !input.trim()}
+            size="icon"
+            className="h-9 w-9 shrink-0"
+            aria-label="전송"
+          >
+            {sending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}

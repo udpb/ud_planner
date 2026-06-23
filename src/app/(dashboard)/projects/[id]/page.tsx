@@ -91,11 +91,21 @@ export default async function ProjectWorkspacePage({
 
   const { project } = data
 
-  const currentStage = computeWorkspaceCurrentStage(data)
-  const doneFlags = computeWorkspaceDoneFlags(data)
+  // BR-WS-5: 5단계 stage 판정. coach/budget 진행 신호는 load-workspace 가 아직
+  // 조립하지 않으므로(스코프 밖) false 기본 — 자동 current 는 "다음 미완료"에서
+  // 멈추고, PM 은 스텝퍼 클릭으로 앞 단계도 열 수 있다.
+  const stageInput = {
+    hasRfp: data.hasRfp,
+    hasDesign: data.hasDesign,
+    hasCoach: false,
+    hasBudget: false,
+    hasImpact: data.hasImpact,
+  }
+  const currentStage = computeWorkspaceCurrentStage(stageInput)
+  const doneFlags = computeWorkspaceDoneFlags(stageInput)
   const initialOverrideStage = mapQueryToWorkspaceStage(stage ?? step)
 
-  // 3 stage 1줄 요약 (server 판정)
+  // 5 stage 1줄 요약 (server 판정)
   const socialValueEok = data.impactForecast
     ? data.impactForecast.totalSocialValue / 100_000_000
     : undefined
@@ -104,6 +114,8 @@ export default async function ProjectWorkspacePage({
       acc[sid] = workspaceStageSummary(sid, {
         rfpParsed: data.rfpParsed,
         hasDesign: data.hasDesign,
+        hasCoach: false,
+        hasBudget: false,
         socialValueEok,
       })
       return acc
@@ -112,11 +124,11 @@ export default async function ProjectWorkspacePage({
   )
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-1 flex-col overflow-hidden min-h-0">
       <Header title={project.name} />
 
-      {/* Sticky 메타 strip */}
-      <div className="sticky top-0 z-20 border-b bg-background">
+      {/* 메타 strip (풀높이 셸에서 상단 고정 행) */}
+      <div className="shrink-0 border-b bg-background">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-6 py-2.5">
           <span
             className={cn(

@@ -1,231 +1,87 @@
 'use client'
 
 /**
- * ProgramWorkspace — 정본 3단계 워크스페이스 셸 (ADR-029, BR-WS-1)
+ * ProgramWorkspace — 전폭 2-pane 워크스페이스 셸 (ADR-029, BR-WS-5)
  *
- * `/projects/[id]` 단일 진입점. 3단계 아코디언(점진 공개):
- *   ① RFP 분석   = StageS1 (StepRfp 래핑)
- *   ② 프로그램 설계 = ProgramDesignFlow (P2 설계 캔버스) ⭐ spine
- *   ③ 임팩트     = ImpactForecastClient (P1 볼트인)
+ * `/projects/[id]` 단일 진입점. 옛 3단계 세로 아코디언을 **전폭 2-pane + 상단 고정
+ * 파이프라인 스텝퍼**로 교체(사용자 확정 목업 `fullwidth_chat_canvas_workspace`):
  *
- * StageLayout/StageShell(ADR-015, S1~S5 하드코딩) 의 **패턴을 차용**하되, 3단계
- * 라벨이 달라 StageCard(StageId=S1~S5 키 고정)를 직접 못 쓰므로 동일 톤의 경량
- * 카드를 인라인으로 둔다. manualOverride localStorage 영속 + currentStage 자동
- * 펼침 + ?stage=/?step= 1회 펼침은 StageLayout 동작을 그대로 복제.
+ *   ┌─ 상단: WorkspacePipeline (5단계 고정 스텝퍼) ──────────────────────┐
+ *   │ RFP 분석 → 프로그램 기획 → 코치 매칭 → 예산 자동화 → SROI 예측        │
+ *   ├──────────────────┬────────────────────────────────────────────────┤
+ *   │ 좌(~40%): 대화     │ 우(~60%): 현재 단계 캔버스                        │
+ *   │ WorkspaceChat     │ (StageS1+PlanningIntent / ProgramDesignFlow /   │
+ *   │ (단계 넘어 이어짐)  │  AutoRecommendedPool / budget placeholder /     │
+ *   │ 내부 스크롤        │  ImpactForecastClient) — 내부 스크롤            │
+ *   └──────────────────┴────────────────────────────────────────────────┘
  *
- * 엔진·각 단계 컴포넌트 재구현 0 — 전부 조립/임베드만.
- * 디자인: shadcn Card + ud-design-system 토큰. Action Orange 는 활성 stage 만.
+ * 풀 높이(페이지 스크롤 X, 각 pane 내부 스크롤). 스텝 클릭 → 우 캔버스만 전환,
+ * 좌 대화는 유지. currentStage 는 client state(server 자동 판정으로 초기화 +
+ * ?stage=/?step= 1회 선택 호환).
+ *
+ * ⚠️ 단계 컴포넌트·엔진 내부 재구현 0 — 임베드·배치만. 대화는 이번엔 **응답까지**
+ * (캔버스 직접 변경은 BR-WS-6). 점수판·게이트 stepper 신설 없음.
+ *
+ * 디자인킷 260529: accent #F05519 1개, radius 0, NanumHuman/Poppins.
  */
 
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
-import { cn } from '@/lib/utils'
-import { Card } from '@/components/ui/card'
-import {
-  ChevronDown,
-  ChevronUp,
-  CircleDot,
-  CheckCircle2,
-  Circle,
-} from 'lucide-react'
+import { useMemo, useState, type ReactNode } from 'react'
 
 import { StageS1 } from '@/components/projects/stages/StageS1'
 import { ProgramDesignFlow } from '@/app/(dashboard)/projects/[id]/program-design/_components/program-design-flow'
 import { ImpactForecastClient } from '@/app/(dashboard)/projects/[id]/impact-forecast/forecast-client'
+import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
 import { PlanningIntent } from './PlanningIntent'
+import { WorkspacePipeline } from './WorkspacePipeline'
+import { WorkspaceChat } from './WorkspaceChat'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 
 import {
-  WORKSPACE_STAGE_IDS,
-  WORKSPACE_STAGE_LABELS,
   WORKSPACE_STAGE_DESCRIPTIONS,
+  WORKSPACE_STAGE_LABELS,
   type WorkspaceStageId,
 } from './workspace-stages'
 
 import type { ComponentProps } from 'react'
 
-type StageExpandState = 'expanded' | 'collapsed' | null
-type OverridesMap = Partial<Record<WorkspaceStageId, StageExpandState>>
-
-const LS_KEY_PREFIX = 'ud-workspace-stages-'
-
-// ─────────────────────────────────────────────────────────────────
-// localStorage 영속 (StageLayout 와 동일 로직)
-// ─────────────────────────────────────────────────────────────────
-
-function loadOverrides(projectId: string): OverridesMap {
-  if (typeof window === 'undefined') return {}
-  try {
-    const raw = window.localStorage.getItem(LS_KEY_PREFIX + projectId)
-    if (!raw) return {}
-    const parsed = JSON.parse(raw) as unknown
-    if (!parsed || typeof parsed !== 'object') return {}
-    const result: OverridesMap = {}
-    for (const id of WORKSPACE_STAGE_IDS) {
-      const v = (parsed as Record<string, unknown>)[id]
-      if (v === 'expanded' || v === 'collapsed' || v === null) {
-        result[id] = v
-      }
-    }
-    return result
-  } catch {
-    return {}
-  }
-}
-
-function saveOverrides(projectId: string, overrides: OverridesMap) {
-  if (typeof window === 'undefined') return
-  try {
-    window.localStorage.setItem(
-      LS_KEY_PREFIX + projectId,
-      JSON.stringify(overrides),
-    )
-  } catch {
-    // quota 초과 등 — 무시
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────
-// 단일 stage 카드 (StageCard 톤 복제 — 3 stage 라벨)
-// ─────────────────────────────────────────────────────────────────
-
-function WorkspaceStageCard({
-  id,
-  index,
-  active,
-  done,
-  manualOverride,
-  summary,
-  children,
-  onToggle,
-}: {
-  id: WorkspaceStageId
-  index: number
-  active: boolean
-  done: boolean
-  manualOverride: StageExpandState
-  summary: string
-  children: ReactNode
-  onToggle: (next: StageExpandState) => void
-}) {
-  const expanded =
-    manualOverride === 'expanded'
-      ? true
-      : manualOverride === 'collapsed'
-        ? false
-        : active
-
-  const label = WORKSPACE_STAGE_LABELS[id]
-  const description = WORKSPACE_STAGE_DESCRIPTIONS[id]
-
-  const stateIcon = done ? (
-    <CheckCircle2 className="h-4 w-4 text-green-600" />
-  ) : active ? (
-    <CircleDot className="h-4 w-4 text-brand" />
-  ) : (
-    <Circle className="h-4 w-4 text-muted-foreground/60" />
-  )
-
-  return (
-    <Card
-      className={cn(
-        'transition-all',
-        expanded
-          ? active
-            ? 'border-brand/40 shadow-sm'
-            : 'border-border'
-          : 'border-border bg-muted/30',
-      )}
-      data-stage-id={id}
-      data-stage-active={active ? 'true' : 'false'}
-      data-stage-expanded={expanded ? 'true' : 'false'}
-    >
-      <button
-        type="button"
-        onClick={() => onToggle(expanded ? 'collapsed' : 'expanded')}
-        aria-expanded={expanded}
-        className={cn(
-          'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors',
-          'hover:bg-muted/50',
-          expanded && 'border-b',
-        )}
-      >
-        <span
-          className={cn(
-            'flex h-7 w-7 shrink-0 items-center justify-center text-xs font-bold',
-            done
-              ? 'bg-green-500 text-white'
-              : active
-                ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/30'
-                : 'border border-border bg-muted text-muted-foreground',
-          )}
-          aria-hidden
-        >
-          {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : index}
-        </span>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span
-              className={cn(
-                'text-sm font-semibold',
-                expanded || active ? 'text-foreground' : 'text-muted-foreground',
-              )}
-            >
-              {label}
-            </span>
-            {active && !expanded && (
-              <span className="bg-brand/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand">
-                현재 단계
-              </span>
-            )}
-          </div>
-          <div className="mt-0.5 truncate text-xs text-muted-foreground">
-            {expanded ? description : summary}
-          </div>
-        </div>
-
-        <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
-          {stateIcon}
-          {expanded ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
-          )}
-        </span>
-      </button>
-
-      {expanded && <div className="p-4">{children}</div>}
-    </Card>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────────
-// ProgramWorkspace
-// ─────────────────────────────────────────────────────────────────
-
 interface Props {
   projectId: string
-  /** 자동 활성 stage (server 판정) */
+  /** 자동 활성 stage (server 판정) — client state 초기값. */
   currentStage: WorkspaceStageId
-  /** ?stage=/?step= 진입 시 1회 펼칠 stage */
+  /** ?stage=/?step= 진입 시 1회 선택할 stage (있으면 currentStage 보다 우선). */
   initialOverrideStage: WorkspaceStageId | null
-  /** 3 stage 의 done 여부 (server 판정) */
+  /** 5 stage 의 done 여부 (server 판정) — 스텝퍼 체크 표시. */
   doneFlags: Record<WorkspaceStageId, boolean>
-  /** 3 stage 의 1줄 sticky 요약 (server 판정) */
+  /** 5 stage 의 1줄 요약 (server 판정) — 대화 맥락 + 캔버스 헤더 보조. */
   summaries: Record<WorkspaceStageId, string>
 
-  /** ① RFP — StageS1(StepRfp) props */
+  /** RFP 분석 — StageS1(StepRfp) props */
   stepRfpProps: ComponentProps<typeof StageS1>['stepRfpProps']
-  /** ② 설계 — ProgramDesignFlow props (rfpPreview 없으면 안내 표시) */
+  /** 프로그램 기획 — ProgramDesignFlow props (rfpPreview 없으면 안내 표시) */
   designProps: ComponentProps<typeof ProgramDesignFlow> | null
-  /** ② 기획의도 — PlanningIntent props (BR-WS-3, design stage 상단에 얹음) */
+  /** RFP 분석(발주처 의도) — PlanningIntent props */
   intentProps: {
     initialDraft: PlanningIntentDraft
     hasSavedIntent: boolean
     hasRfp: boolean
   }
-  /** ③ 임팩트 — ImpactForecastClient props */
+  /** SROI 예측 — ImpactForecastClient props */
   impactProps: ComponentProps<typeof ImpactForecastClient>
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 캔버스 헤더 (단계 라벨 + 1줄 설명) — 차분한 띠 1개. 점수·게이트 없음.
+// ─────────────────────────────────────────────────────────────────
+
+function CanvasHeader({ stage }: { stage: WorkspaceStageId }) {
+  return (
+    <div className="shrink-0 border-b px-6 py-3">
+      <h2 className="text-sm font-bold">{WORKSPACE_STAGE_LABELS[stage]}</h2>
+      <p className="mt-0.5 text-xs text-muted-foreground">
+        {WORKSPACE_STAGE_DESCRIPTIONS[stage]}
+      </p>
+    </div>
+  )
 }
 
 export function ProgramWorkspace({
@@ -239,96 +95,110 @@ export function ProgramWorkspace({
   intentProps,
   impactProps,
 }: Props) {
-  const [overrides, setOverrides] = useState<OverridesMap>(() => {
-    if (typeof window === 'undefined') return {}
-    const loaded = loadOverrides(projectId)
-    if (initialOverrideStage) {
-      loaded[initialOverrideStage] = 'expanded'
-    }
-    return loaded
-  })
-
-  const handleToggle = useCallback(
-    (id: WorkspaceStageId, next: StageExpandState) => {
-      setOverrides((prev) => {
-        const updated: OverridesMap = { ...prev, [id]: next }
-        saveOverrides(projectId, updated)
-        return updated
-      })
-    },
-    [projectId],
+  // 활성 stage = client state. server 자동 판정 + ?stage= 1회 선택으로 초기화.
+  const [stage, setStage] = useState<WorkspaceStageId>(
+    initialOverrideStage ?? currentStage,
   )
 
-  const content: Record<WorkspaceStageId, ReactNode> = useMemo(
+  // 단계별 우 캔버스 — 전부 기존 컴포넌트 조립/임베드만(내부 재구현 0).
+  const canvas: Record<WorkspaceStageId, ReactNode> = useMemo(
     () => ({
-      rfp: <StageS1 stepRfpProps={stepRfpProps} />,
-      design: (
-        <>
-          {/* ② 기획의도 (BR-WS-3) — 설계 캔버스 위에 얹음(additive). 풀 6섹션 분리는 BR-WS-5. */}
+      // RFP 분석 = StageS1(RFP 분석 화면) + PlanningIntent(발주처 의도=기획의도)
+      rfp: (
+        <div className="space-y-6">
+          <StageS1 stepRfpProps={stepRfpProps} />
           <PlanningIntent
             projectId={projectId}
             hasRfp={intentProps.hasRfp}
             initialDraft={intentProps.initialDraft}
             hasSavedIntent={intentProps.hasSavedIntent}
           />
-          {designProps ? (
-            <ProgramDesignFlow {...designProps} />
-          ) : (
-            <div
-              style={{
-                border: '1px solid var(--line)',
-                borderLeft: '3px solid var(--accent)',
-                background: 'var(--neutral-90)',
-                padding: 16,
-                maxWidth: 880,
-                fontSize: 13,
-                color: 'var(--soft-ink)',
-                lineHeight: 1.6,
-              }}
-            >
-              <strong style={{ fontWeight: 700 }}>RFP 분석이 먼저 필요합니다.</strong>
-              {'  '}프로그램 설계는 RFP 핵심(목표·대상·기간·예산) 위에서 시작합니다 — 위
-              ① RFP 분석 단계에서 RFP 를 먼저 업로드·분석한 뒤 진행하세요.
-            </div>
-          )}
-        </>
+        </div>
       ),
-      impact: <ImpactForecastClient {...impactProps} />,
+      // 프로그램 기획 = ProgramDesignFlow (rfpPreview 없으면 안내)
+      design: designProps ? (
+        <ProgramDesignFlow {...designProps} />
+      ) : (
+        <div
+          style={{
+            border: '1px solid var(--line)',
+            borderLeft: '3px solid var(--accent)',
+            background: 'var(--neutral-90)',
+            padding: 16,
+            maxWidth: 880,
+            fontSize: 13,
+            color: 'var(--soft-ink)',
+            lineHeight: 1.6,
+          }}
+        >
+          <strong style={{ fontWeight: 700 }}>RFP 분석이 먼저 필요합니다.</strong>
+          {'  '}프로그램 기획은 RFP 핵심(목표·대상·기간·예산) 위에서 시작합니다 — 위{' '}
+          <strong>RFP 분석</strong> 단계에서 RFP 를 먼저 업로드·분석한 뒤 진행하세요.
+        </div>
+      ),
+      // 코치 매칭 = AutoRecommendedPool (inline 모드, 자체 CTA)
+      coach: (
+        <AutoRecommendedPool
+          projectId={projectId}
+          mode="inline"
+          assignedCoachIds={[]}
+        />
+      ),
+      // 예산 자동화 — 캔버스 컴포넌트 미연결(budget-dashboard 는 server-assembled
+      // PC/AC 데이터 필요, load-workspace 무변경 범위 밖). 클린 placeholder + 보고.
+      budget: (
+        <div
+          style={{
+            border: '1px solid var(--line)',
+            borderLeft: '3px solid var(--accent)',
+            background: 'var(--neutral-90)',
+            padding: 16,
+            maxWidth: 880,
+            fontSize: 13,
+            color: 'var(--soft-ink)',
+            lineHeight: 1.6,
+          }}
+        >
+          <strong style={{ fontWeight: 700 }}>예산 자동화 — 자동 적산 (준비 중)</strong>
+          <p style={{ marginTop: 8 }}>
+            커리큘럼 + 코치 위에서 강사·운영·자산·기획비를 자동 적산해 총사업비·마진을
+            산출하는 단계입니다. 이 단계의 캔버스 연결은 후속 브리프에서 추가됩니다.
+          </p>
+        </div>
+      ),
+      // SROI 예측 = ImpactForecastClient
+      sroi: <ImpactForecastClient {...impactProps} />,
     }),
     [projectId, stepRfpProps, designProps, intentProps, impactProps],
   )
 
-  const stageList = useMemo(
-    () =>
-      WORKSPACE_STAGE_IDS.map((id, idx) => ({
-        id,
-        index: idx + 1,
-        active: id === currentStage,
-        done: doneFlags[id],
-        summary: summaries[id],
-        manualOverride: overrides[id] ?? null,
-        content: content[id],
-      })),
-    [currentStage, doneFlags, summaries, overrides, content],
-  )
-
   return (
-    <div className="flex-1 overflow-y-auto p-6">
-      <div className="space-y-3">
-        {stageList.map((s) => (
-          <WorkspaceStageCard
-            key={s.id}
-            id={s.id}
-            index={s.index}
-            active={s.active}
-            done={s.done}
-            manualOverride={s.manualOverride}
-            summary={s.summary}
-            onToggle={(next) => handleToggle(s.id, next)}
-          >
-            {s.content}
-          </WorkspaceStageCard>
-        ))}
+    <div className="flex flex-1 flex-col overflow-hidden min-h-0">
+      {/* 상단 고정 파이프라인 스텝퍼 */}
+      <WorkspacePipeline
+        currentStage={stage}
+        doneFlags={doneFlags}
+        onSelect={setStage}
+      />
+
+      {/* 본문 = 전폭 2-pane, 풀 높이 (페이지 스크롤 X, 각 pane 내부 스크롤) */}
+      <div className="flex flex-1 overflow-hidden min-h-0">
+        {/* 좌 ~40% : 대화 (단계 넘어 이어짐) */}
+        <div className="hidden w-2/5 max-w-[520px] shrink-0 md:block">
+          <WorkspaceChat
+            projectId={projectId}
+            stage={stage}
+            contextSummary={summaries[stage]}
+          />
+        </div>
+
+        {/* 우 ~60% : 현재 단계 캔버스 (내부 스크롤) */}
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <CanvasHeader stage={stage} />
+          <div className="flex-1 min-h-0 overflow-y-auto p-6">
+            {canvas[stage]}
+          </div>
+        </div>
       </div>
     </div>
   )
