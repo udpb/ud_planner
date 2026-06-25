@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "title": "UD 예산 적산 규칙 v1 — 29개 실예산 워크북 분석 도출",
+    "source": "drive-download-20260625 예산 계획/검토 시트 29건 (2026-06-25 분석)",
+    "method": "exceljs 전탭 파싱 → 워터폴 비율·실비 항목 단가 집계 + 4-x 기준단가 탭(공식 단가표) 추출. 비표준 3건 아웃라이어 제외.",
+    "clean": 26,
+    "outliers": [
+      { "file": "(언더독스) 예산검토_JDC 앙트러프러너챌린지 1기", "reason": "워터폴 비율 비표준 구조" },
+      { "file": "2025 NH애그테크_예산관리시트", "reason": "워터폴 비율 비표준(관리시트형)" },
+      { "file": "수익률 검토_대구대학교 2023창업중심대학", "reason": "수익률 검토 전용 포맷(산출내역 없음)" }
+    ],
+    "status": "draft",
+    "relatedEngine": "src/lib/express/infer-budget.ts (기존 top-down 비율) → 본 규칙으로 bottom-up 적산 고도화 대상(SI-budget-calc)"
+  },
+
+  "waterfall": {
+    "_desc": "UD 표준 재무 워터폴 (고정 규칙 — 29건 중 편차 0에 수렴). R=총예산, R'=공급가(=R−VAT), DR=사업예산.",
+    "vatRate": 0.10,
+    "icRate": 0.15,
+    "idcRate": 0.015,
+    "drRate": 0.835,
+    "_formula": "VAT=R×0.1/1.1 · R'=R−VAT · IC=R'×0.15 · IDC=R'×0.015 · DR=R'−IC−IDC(=R'×0.835) · DR=PC(인건비)+AC(실비)+OR(영업이익)",
+    "drSplitObserved": {
+      "_desc": "DR을 PC/AC/OR로 나눈 관측 분포(중앙값·범위) — 사업 성격별 가변. 적산은 AC를 bottom-up으로 쌓고 PC를 인력으로 산출, OR=잔여.",
+      "pcRate": { "median": 0.083, "range": [0.019, 0.251] },
+      "acRate": { "median": 0.604, "range": [0.129, 0.838] },
+      "orRate": { "median": 0.159, "range": [0.009, 0.768], "recommendedTarget": 0.10, "_note": "영업이익 권장 ~10%. 관측 중앙 15.9%는 고마진 건 포함. 적산 검증 시 OR<5%면 경고, >20%면 재검토." }
+    }
+  },
+
+  "personnelRates": {
+    "_desc": "4-2 인건비 기준 단가 — PC(투입인력) 산출용. 채널별 단가 상이. 1개월 투입비율: B2G 5~50%, B2B 5~100%.",
+    "B2G": {
+      "_source": "기획재정부 학술연구용역인건비 기준단가 2024 (정부/지자체/공기업/준공기관)",
+      "grades": [
+        { "role": "CEO·이사·본부장 (책임연구원)", "hourly": 37059, "monthly": 7411808 },
+        { "role": "팀장·SD·PM·Director (연구원)", "hourly": 28416, "monthly": 5683276 },
+        { "role": "Manager (연구보조원)", "hourly": 18995, "monthly": 3799078 },
+        { "role": "Intern (보조원)", "hourly": 14247, "monthly": 2849404 }
+      ]
+    },
+    "B2B": {
+      "_source": "언더독스 인건비 기준단가 2024 (민간)",
+      "grades": [
+        { "role": "대표", "hourly": 75000, "monthly": 15000000 },
+        { "role": "이사·본부장", "hourly": 50000, "monthly": 10000000 },
+        { "role": "팀장·SD", "hourly": 40000, "monthly": 8000000 },
+        { "role": "사업PM·디렉터", "hourly": 30000, "monthly": 6000000 },
+        { "role": "매니저", "hourly": 20000, "monthly": 4000000 }
+      ]
+    }
+  },
+
+  "externalRates": {
+    "_desc": "4-1 기준 단가 — 견적·소명 없이 승인 가능한 최대 실비(AC) 단가. 적산의 핵심 단가표.",
+    "특강연사비": [
+      { "grade": "S급", "unit": "hour", "price": 400000 },
+      { "grade": "A급", "unit": "hour", "price": 300000 },
+      { "grade": "B급", "unit": "hour", "price": 250000 },
+      { "grade": "C급", "unit": "hour", "price": 150000 }
+    ],
+    "심사비": { "unit": "hour", "price": 100000, "dailyMax": 300000 },
+    "액션코치_8주교육": {
+      "CM": [ { "grade": "A급", "unit": "hour", "price": 87500 }, { "grade": "B급", "unit": "hour", "price": 75000 } ],
+      "일반": [ { "grade": "A급", "unit": "hour", "price": 62500 }, { "grade": "B급", "unit": "hour", "price": 50000 } ],
+      "_note": "일 4시간 초과 시 시간당 5만원"
+    },
+    "액션코치_해커톤": {
+      "CM": [ { "grade": "A급", "unit": "hour", "price": 75000 }, { "grade": "B급", "unit": "hour", "price": 62500 } ],
+      "일반": [ { "grade": "A급", "unit": "hour", "price": 50000 }, { "grade": "B급", "unit": "hour", "price": 37500 } ]
+    },
+    "운영프리랜서_파트너PM": [
+      { "grade": "D1", "unit": "month", "price": 4000000 },
+      { "grade": "M3", "unit": "month", "price": 3400000 },
+      { "grade": "M2", "unit": "month", "price": 3000000 }
+    ],
+    "운영스태프": { "unit": "hour", "price": 12000, "dailyMax": 120000 },
+    "사회자": [ { "unit": "0.5day", "price": 500000 }, { "unit": "1day", "price": 800000 } ],
+    "홍보_매체광고": { "unit": "모객 1인당", "price": 100000 },
+    "홈페이지_풀패키지": { "unit": "식", "price": 2500000 },
+    "디자인_키비주얼_풀패키지": { "unit": "식", "price": 2500000 },
+    "교통비기준": { "100_200km": 50000, "over_200km": 100000 }
+  },
+
+  "serviceRates": {
+    "_desc": "4-3 언더독스 서비스 단가 — 제품화 서비스 인용용(단체 20인+ 40%DC 등 할인 별도).",
+    "DOGS": [
+      { "lv": "LV.0", "name": "DOGS 업무성향 진단", "price1p": 150000 },
+      { "lv": "LV.1", "name": "DOGS 팀빌딩 워크숍", "price1p": 350000 }
+    ],
+    "VOD패키지": [
+      { "name": "창업시리즈 패키지", "price1p": 173600 },
+      { "name": "기초 스타트업 A to Z", "price1p": 163800 },
+      { "name": "창업시리즈 기초편(용어정리)", "price1p": 25200 }
+    ],
+    "비욘드에듀": [
+      { "name": "마케팅 전략 패키지", "price": 2500000, "note": "사업비 50%는 실비 책정" },
+      { "name": "브랜드 구축 패키지", "price": 5000000 },
+      { "name": "비즈니스 부스팅 패키지", "price": 10000000 }
+    ],
+    "SV임팩트정량화": [
+      { "name": "SV 지표 설정", "price": 2500000, "note": "임팩트/SROI 단계 연계 — ③임팩트와 결합" },
+      { "name": "데이터 분석·성과 도출", "price": 5000000 },
+      { "name": "임팩트 리포트 제작", "price": 10000000 }
+    ]
+  },
+
+  "acItemPatterns": {
+    "_desc": "실비 항목 적산 패턴 — 26개 정상 파일 549개 실비 라인 집계(구분/항목별 중앙 단가). bottom-up 적산 시 항목 기본값.",
+    "items": [
+      { "item": "인건비(투입인력)", "n": 74, "medianUnitPrice": 3713664 },
+      { "item": "교육 운영비", "n": 47, "medianUnitPrice": 500000 },
+      { "item": "박람회 운영비", "n": 16, "medianUnitPrice": 10000000 },
+      { "item": "최종성과공유회", "n": 13, "medianUnitPrice": 2000000 },
+      { "item": "데모데이 운영비", "n": 11, "medianUnitPrice": 1200000 },
+      { "item": "공모전 운영비", "n": 10, "medianUnitPrice": 2000000 },
+      { "item": "공간 세팅비", "n": 10, "medianUnitPrice": 200000 },
+      { "item": "프로그램 운영비", "n": 17, "medianUnitPrice": 300000 },
+      { "item": "홍보마케팅", "n": 8, "medianUnitPrice": 2000000 },
+      { "item": "참여자 모집·선발", "n": 5, "medianUnitPrice": 800000 }
+    ]
+  }
+}
