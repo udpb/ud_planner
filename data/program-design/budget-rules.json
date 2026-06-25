@@ -132,5 +132,23 @@
       { "item": "참여자 모집·선발", "n": 5, "median": 800000 },
       { "item": "홍보마케팅", "n": 8, "median": 2000000 }
     ]
+  },
+
+  "costingDefaults": {
+    "_desc": "ADR-030 — 적산 수량 기본값(가변·데이터화). 단가는 위 섹션(coachRates2026·designPrintPhoto2026·personnelRatesB2GB2B·acItemPatterns)이 SSoT, 여기는 투입률/수량만. 코드 매직넘버 이관(OPS_FTE·PC_RATE 등). 없으면 코드가 graceful fallback.",
+    "opsFte": {
+      "_desc": "운영비(AC) 투입률(FTE) — 기간 비례. months >= shortMonths 이면 longFte, 미만이면 shortFte. 단기 집약형(해커톤 등)은 낮게, 장기 운영은 0.5.",
+      "shortMonths": 3,
+      "shortFte": 0.3,
+      "longFte": 0.5,
+      "minFte": 0.3
+    },
+    "pmInputRate": {
+      "_desc": "PC PM 투입률 — B2G 5~50% 범위 내 보수적 기본. 기존 코드값 0.3 보존.",
+      "default": 0.3
+    },
+    "coachingRatio": 1.0,
+    "lectureRatio": 1.0,
+    "eventCountMultiplier": 1
   }
 }

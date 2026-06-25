@@ -53,6 +53,29 @@ interface PersonnelGrade {
   monthly: number
 }
 
+/** drSplitObserved 의 한 축 (median + range). */
+interface DrSplitAxis {
+  median: number
+  range?: [number, number]
+}
+
+/**
+ * 적산 수량 기본값 (ADR-030 — costingDefaults). 전부 optional — 없으면 코드가
+ * graceful fallback(기존 매직넘버값). 단가는 여기 없다(위 섹션이 SSoT).
+ */
+interface CostingDefaults {
+  opsFte?: {
+    shortMonths?: number
+    shortFte?: number
+    longFte?: number
+    minFte?: number
+  }
+  pmInputRate?: { default?: number }
+  coachingRatio?: number
+  lectureRatio?: number
+  eventCountMultiplier?: number
+}
+
 /** budget-rules.json 의 우리가 읽는 부분 (나머지 키는 무시 — passthrough). */
 export interface BudgetRules {
   waterfall: {
@@ -60,7 +83,15 @@ export interface BudgetRules {
     icRate: number
     idcRate: number
     drRate: number
+    /** 26개 실예산 관찰 DR 분할 (ADR-030 가드 앵커 — 읽기 전용). */
+    drSplitObserved?: {
+      pcRate?: DrSplitAxis
+      acRate?: DrSplitAxis
+      orRate?: DrSplitAxis & { recommendedTarget?: number; guard?: string }
+    }
   }
+  /** ADR-030 — 적산 수량 기본값(가변·데이터화). 없으면 코드 fallback. */
+  costingDefaults?: CostingDefaults
   coachRates2026: {
     코칭?: Record<string, CoachRateGrade>
     강의?: Record<string, CoachRateGrade>
@@ -134,6 +165,18 @@ export interface BudgetResult {
   or: number
   /** marginRate = OR / R'. */
   marginRate: number
+  /**
+   * ADR-030 — 산출된 DR 분할 (각/DR). drSplitObserved 와 비교용. DR<=0 이면 0.
+   * **재분배 아님** — bottom-up 결과를 관찰값과 견주는 진단 지표일 뿐.
+   */
+  split: {
+    /** PC / DR. */
+    pcRate: number
+    /** AC / DR. */
+    acRate: number
+    /** OR / DR. */
+    orRate: number
+  }
   /** 경고 (적자/마진 부족/재검토). */
   warnings: string[]
   /** 근거 출처 표기. */
@@ -169,6 +212,46 @@ function pmMonthly(rules: BudgetRules, channel: BudgetChannel): number {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// costingDefaults (ADR-030) — 수량/투입률 데이터. 매직넘버 fallback 보존.
+// ─────────────────────────────────────────────────────────────────
+
+/** 매직넘버 fallback (costingDefaults 부재 시 기존 코드값 그대로 — 절대 던지지 않음). */
+const COSTING_FALLBACK = {
+  opsShortMonths: 3,
+  opsShortFte: 0.5,
+  opsLongFte: 0.5,
+  opsMinFte: 0,
+  pmInputRate: 0.3,
+  coachingRatio: 1,
+  lectureRatio: 1,
+  eventCountMultiplier: 1,
+} as const
+
+/** 유한·음수 아닌 number 만 통과(NaN·undefined·음수 → fallback). */
+function safeNum(v: unknown, fallback: number): number {
+  return typeof v === 'number' && Number.isFinite(v) && v >= 0 ? v : fallback
+}
+
+/** costingDefaults 를 안전 정규화. 부재·부분 부재 모두 graceful — 던지지 않는다. */
+function resolveCostingDefaults(rules: BudgetRules) {
+  const cd = rules.costingDefaults
+  const ops = cd?.opsFte
+  return {
+    opsShortMonths: safeNum(ops?.shortMonths, COSTING_FALLBACK.opsShortMonths),
+    opsShortFte: safeNum(ops?.shortFte, COSTING_FALLBACK.opsShortFte),
+    opsLongFte: safeNum(ops?.longFte, COSTING_FALLBACK.opsLongFte),
+    opsMinFte: safeNum(ops?.minFte, COSTING_FALLBACK.opsMinFte),
+    pmInputRate: safeNum(cd?.pmInputRate?.default, COSTING_FALLBACK.pmInputRate),
+    coachingRatio: safeNum(cd?.coachingRatio, COSTING_FALLBACK.coachingRatio),
+    lectureRatio: safeNum(cd?.lectureRatio, COSTING_FALLBACK.lectureRatio),
+    eventCountMultiplier: safeNum(
+      cd?.eventCountMultiplier,
+      COSTING_FALLBACK.eventCountMultiplier,
+    ),
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
 // 메인 적산 (순수 결정론 — AI 없음)
 // ─────────────────────────────────────────────────────────────────
 
@@ -197,6 +280,14 @@ export function calcBudget(
   // 적산에 쓸 안전한 수치 (음수·NaN 방지).
   const coaches = Math.max(1, Math.round(coachCount || 1))
   const months = Math.max(0, durationMonths || 0)
+
+  // ── 수량/투입률 기본값 (ADR-030 — costingDefaults, 매직넘버 제거) ──
+  const cd = resolveCostingDefaults(rules)
+  // 운영 FTE: 기간 비례(짧으면 shortFte, 길면 longFte), 단 minFte 하한.
+  const opsFte = Math.max(
+    cd.opsMinFte,
+    months >= cd.opsShortMonths ? cd.opsLongFte : cd.opsShortFte,
+  )
 
   // ── AC(실비) bottom-up 초안 ──
   const acLines: BudgetLine[] = []
@@ -242,10 +333,11 @@ export function calcBudget(
           label = `행사·성과공유회 운영비 (${title || '성과공유회'})`
         }
         const median = acItemMedian(rules, needles, 0)
+        const eventAmount = round(median * cd.eventCountMultiplier)
         eventLines.push({
           label,
-          amount: median,
-          basis: `2026 acItemPatterns 중앙단가 ${median.toLocaleString()}원 × 1식`,
+          amount: eventAmount,
+          basis: `2026 acItemPatterns 중앙단가 ${median.toLocaleString()}원 × ${cd.eventCountMultiplier}식`,
         })
         break
       }
@@ -256,37 +348,36 @@ export function calcBudget(
     }
   }
 
-  // 코칭료: 코칭 세션 × 메인 코치 perDay × 코치 수.
+  // 코칭료: 코칭 세션 × 메인 코치 perDay × 코치 수 × 투입비율(costingDefaults).
   if (coachingCount > 0 && coachingMain > 0) {
-    const amount = coachingMain * coachingCount * coaches
+    const amount = round(coachingMain * coachingCount * coaches * cd.coachingRatio)
     acLines.push({
       label: `코칭료 (메인 ${coaches}코치 × ${coachingCount}회)`,
       amount,
-      basis: `2026 단가표 코칭.메인 perDay ${coachingMain.toLocaleString()}원 × ${coachingCount}회 × ${coaches}코치`,
+      basis: `2026 단가표 코칭.메인 perDay ${coachingMain.toLocaleString()}원 × ${coachingCount}회 × ${coaches}코치 × ${cd.coachingRatio} 비율`,
     })
   }
 
-  // 강의료: 강의/워크숍 세션 × 메인 강의 perDay.
+  // 강의료: 강의/워크숍 세션 × 메인 강의 perDay × 투입비율(costingDefaults).
   if (lectureCount > 0 && lectureMain > 0) {
-    const amount = lectureMain * lectureCount
+    const amount = round(lectureMain * lectureCount * cd.lectureRatio)
     acLines.push({
       label: `강의료 (메인 × ${lectureCount}회)`,
       amount,
-      basis: `2026 단가표 강의.메인 perDay ${lectureMain.toLocaleString()}원 × ${lectureCount}회`,
+      basis: `2026 단가표 강의.메인 perDay ${lectureMain.toLocaleString()}원 × ${lectureCount}회 × ${cd.lectureRatio} 비율`,
     })
   }
 
   // 행사비 (세션에서 추출).
   acLines.push(...eventLines)
 
-  // 운영비 = 기간(개월) × 운영.메인 perMonth × 0.5 FTE(기본).
-  const OPS_FTE = 0.5
+  // 운영비 = 기간(개월) × 운영.메인 perMonth × FTE(기간 비례, costingDefaults).
   if (months > 0 && opsMain > 0) {
-    const amount = round(months * opsMain * OPS_FTE)
+    const amount = round(months * opsMain * opsFte)
     acLines.push({
-      label: `운영비 (${months}개월 × ${OPS_FTE} FTE)`,
+      label: `운영비 (${months}개월 × ${opsFte} FTE)`,
       amount,
-      basis: `2026 단가표 운영.메인 perMonth ${opsMain.toLocaleString()}원 × ${months}개월 × ${OPS_FTE} FTE`,
+      basis: `2026 단가표 운영.메인 perMonth ${opsMain.toLocaleString()}원 × ${months}개월 × ${opsFte} FTE (기간 비례)`,
     })
   }
 
@@ -311,23 +402,31 @@ export function calcBudget(
 
   const ac = acLines.reduce((sum, l) => sum + l.amount, 0)
 
-  // ── PC(인건비) 초안 = 기간 × 채널 PM급 monthly × 0.3 투입률 ──
-  const PC_RATE = 0.3
+  // ── PC(인건비) 초안 = 기간 × 채널 PM급 monthly × PM 투입률(costingDefaults) ──
+  const pcRate = cd.pmInputRate
   const pcLines: BudgetLine[] = []
   const pmRate = pmMonthly(rules, channel)
   if (months > 0 && pmRate > 0) {
-    const amount = round(months * pmRate * PC_RATE)
+    const amount = round(months * pmRate * pcRate)
     pcLines.push({
-      label: `사업 PM 인건비 (${months}개월 × ${PC_RATE * 100}% 투입)`,
+      label: `사업 PM 인건비 (${months}개월 × ${round(pcRate * 100)}% 투입)`,
       amount,
-      basis: `2026 personnelRatesB2GB2B.${channel} PM급 monthly ${pmRate.toLocaleString()}원 × ${months}개월 × ${PC_RATE}`,
+      basis: `2026 personnelRatesB2GB2B.${channel} PM급 monthly ${pmRate.toLocaleString()}원 × ${months}개월 × ${pcRate}`,
     })
   }
   const pc = pcLines.reduce((sum, l) => sum + l.amount, 0)
 
   // ── OR(영업이익) + 마진율 ──
+  // ⚠️ ADR-030 — OR 은 잔차 그대로. 재분배·target 마진 끼워맞춤 없음.
   const or = DR - pc - ac
   const marginRate = Rprime > 0 ? or / Rprime : 0
+
+  // ── DR 분할 지표 (각/DR) — 관찰값 비교용. 재분배 아님(진단만). ──
+  const split = {
+    pcRate: DR > 0 ? pc / DR : 0,
+    acRate: DR > 0 ? ac / DR : 0,
+    orRate: DR > 0 ? or / DR : 0,
+  }
 
   // ── 경고 ──
   const warnings: string[] = []
@@ -349,6 +448,28 @@ export function calcBudget(
     )
   }
 
+  // ── drSplitObserved 가드 진단 (ADR-030, 신규) ──
+  // OR 이 관찰 range 밖(또는 >0.20)이면 "왜"를 짚는다. **재분배 없음 — 진단만.**
+  const observed = rules.waterfall.drSplitObserved
+  if (DR > 0 && observed?.orRate) {
+    const obsOr = observed.orRate
+    const obsAc = observed.acRate
+    const orRange = obsOr.range
+    const outOfRange =
+      (orRange ? split.orRate < orRange[0] || split.orRate > orRange[1] : false) ||
+      split.orRate > 0.2
+    if (outOfRange) {
+      const pct = (n: number) => (n * 100).toFixed(1)
+      const obsAcStr =
+        obsAc && typeof obsAc.median === 'number'
+          ? ` AC 계산 ${pct(split.acRate)}% vs 관찰 중앙 ${pct(obsAc.median)}% —`
+          : ` AC 계산 ${pct(split.acRate)}% —`
+      warnings.push(
+        `마진 ${pct(split.orRate)}% (DR 기준) — 관찰 중앙 ${pct(obsOr.median)}% 밖.${obsAcStr} 운영비/행사/회차/코치등급/투입률 점검. (강제 보정 없음 — 직접 조정)`,
+      )
+    }
+  }
+
   return {
     waterfall,
     acLines,
@@ -357,6 +478,7 @@ export function calcBudget(
     pc,
     or,
     marginRate,
+    split,
     warnings,
     source: '2026 단가표 + 유사 29건',
   }

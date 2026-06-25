@@ -189,8 +189,35 @@ export function BudgetCalcCanvas() {
     } else if (waterfall.Rprime > 0 && marginRate > 0.2) {
       warnings.push(`마진율 ${(marginRate * 100).toFixed(1)}% — 권장 상한(20%) 초과.`)
     }
-    return { ac, pc, or, marginRate, warnings }
-  }, [base, acLines, pcLines, totalBudget])
+    // DR 분할(각/DR) — 관찰값 비교용. 재분배 아님(진단만, ADR-030).
+    const split = {
+      pcRate: waterfall.DR > 0 ? pc / waterfall.DR : 0,
+      acRate: waterfall.DR > 0 ? ac / waterfall.DR : 0,
+      orRate: waterfall.DR > 0 ? or / waterfall.DR : 0,
+    }
+    // drSplitObserved 가드 진단 (편집 반영) — OR 이 관찰 range 밖이면 "왜"를 짚는다.
+    const observed = budgetRules?.waterfall?.drSplitObserved
+    if (waterfall.DR > 0 && observed?.orRate) {
+      const obsOr = observed.orRate
+      const obsAc = observed.acRate
+      const orRange = obsOr.range
+      const outOfRange =
+        (orRange
+          ? split.orRate < orRange[0] || split.orRate > orRange[1]
+          : false) || split.orRate > 0.2
+      if (outOfRange) {
+        const pct = (n: number) => (n * 100).toFixed(1)
+        const obsAcStr =
+          obsAc && typeof obsAc.median === 'number'
+            ? ` AC 계산 ${pct(split.acRate)}% vs 관찰 중앙 ${pct(obsAc.median)}% —`
+            : ` AC 계산 ${pct(split.acRate)}% —`
+        warnings.push(
+          `마진 ${pct(split.orRate)}% (DR 기준) — 관찰 중앙 ${pct(obsOr.median)}% 밖.${obsAcStr} 운영비/행사/회차/코치등급/투입률 점검. (강제 보정 없음 — 직접 조정)`,
+        )
+      }
+    }
+    return { ac, pc, or, marginRate, split, warnings }
+  }, [base, acLines, pcLines, totalBudget, budgetRules])
 
   // 단가표 미주입(server 로드 실패) — 적산 불가 안내.
   if (!base || !recomputed) {
@@ -216,6 +243,12 @@ export function BudgetCalcCanvas() {
     { label: 'IDC', value: waterfall.IDC, sub: "R' × 1.5%" },
     { label: '사업예산 DR', value: waterfall.DR, sub: "R' − IC − IDC" },
   ]
+
+  // 관찰 분할 참조 (drSplitObserved median, DR 기준) — PM 현실 기준 인지용.
+  const observed = budgetRules?.waterfall?.drSplitObserved
+  const obsPct = (n: number | undefined) =>
+    typeof n === 'number' ? `${(n * 100).toFixed(0)}%` : '—'
+  const calcPct = (n: number) => `${(n * 100).toFixed(0)}%`
 
   const marginPct = recomputed.marginRate * 100
   const marginColor =
@@ -355,6 +388,48 @@ export function BudgetCalcCanvas() {
           </div>
         </div>
       </section>
+
+      {/* ── 관찰 분할 참조 (drSplitObserved) — 현실 기준 vs 계산값 ── */}
+      {observed && (
+        <section>
+          <h3
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              marginBottom: 4,
+            }}
+          >
+            실예산 관찰 분할 (참조 · DR 기준)
+          </h3>
+          <div style={tintBox}>
+            <p style={{ margin: 0 }}>
+              26개 실예산 관찰 중앙:{' '}
+              <strong style={{ fontWeight: 700 }}>
+                인건비 {obsPct(observed.pcRate?.median)} · 실비{' '}
+                {obsPct(observed.acRate?.median)} · 마진{' '}
+                {obsPct(observed.orRate?.median)}
+              </strong>{' '}
+              (DR 기준).
+            </p>
+            <p style={{ margin: '6px 0 0' }}>
+              현재 적산:{' '}
+              <strong
+                style={{
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                인건비 {calcPct(recomputed.split.pcRate)} · 실비{' '}
+                {calcPct(recomputed.split.acRate)} · 마진{' '}
+                {calcPct(recomputed.split.orRate)}
+              </strong>
+              . 관찰값은 현실 기준 참조일 뿐 — 강제 보정 없음(저비용 프로그램이면 그대로
+              낮게 나옵니다).
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* ── OR · 마진 ── */}
       <section
