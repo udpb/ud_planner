@@ -16,12 +16,15 @@
 - **단계 라이브 연동** (BR-WS-15): 커리큘럼 회차 → 코치 필요수(estimateRequiredCoaches) → 예산 적산, **실시간**.
 - **서비스 개선 백로그 9/10** — [docs/architecture/service-improvements-backlog.md](docs/architecture/service-improvements-backlog.md). #10(T4/T5 대화 편집)만 🔲.
 - **예산 지식화** ⭐ — 29개 실예산+2026 단가표 → [data/program-design/budget-rules.json](data/program-design/budget-rules.json)(권위, coach-finder 정합) → 적산 엔진(BR-WS-14: 워터폴+단가 JSON출처+마진 경고).
+- **레이아웃 폴리시** (BR-WS-16) — 대화 pane 360px(캔버스 넓게) + 사이드바 접기 토글(localStorage). PC 전용. 시각 확인 ✓.
+- **대화 공동기획자화** ⭐⭐ (BR-WS-17) — design 단계 채팅: ① 대화 history 전송(맥락 유지) ② 행동우선 프롬프트(되묻기 X) ③ **choices 카드 → 클릭 시 캔버스 즉시 반영**. 라이브 검증: "6회차로 줄여줘"→3안 카드→클릭→8→6회차. (그동안 "멍청한 채팅" 해결.)
 
 ### 🔲 다음 (다음 세션)
-1. **#10 SI-nonsession-chat** — 대화→캔버스를 T4 단계·T5 행사(NonSessionStructure)로 확장(StageOp). 6파일(WorkspacePlanContext 포함). BR-WS-6 패턴 미러.
-2. **예산 적산 매핑 정교화** (ADR 후보) — 현재 회차당 보수적(2회씩)이라 마진 과대(77.7%). 회차별 수량·코치 등급(보조/특별)·FTE·투입률 차등화.
-3. (피드백 ④) impact-measurement 배포 + SERVICE_API_TOKEN — SROI 라이브.
-4. BR-WS-2 경쟁 라우트 제거(express·v2·brain) — 옛 셸 정리.
+1. **카드 UX 다른 단계 확장** — 현재 choices 카드는 design(커리큘럼)만. 코치 교체·예산 항목·기획의도 채우기에도 카드. (BR-WS-17 패턴 미러.)
+2. **#10 SI-nonsession-chat** — 대화→캔버스를 T4 단계·T5 행사(NonSessionStructure)로 확장(StageOp). BR-WS-6 패턴 미러.
+3. **예산 적산 매핑 정교화** (ADR 후보) — 회차당 보수적(2회씩)이라 마진 과대(77.7%). 회차별 수량·코치 등급(보조/특별)·FTE·투입률 차등화 (단가는 budget-rules.json).
+4. **대화 영속** — 메시지 client state라 새로고침 리셋. 서버 저장(스키마 검토).
+5. (피드백 ④) impact-measurement 배포 + SERVICE_API_TOKEN — SROI 라이브. · BR-WS-2 경쟁 라우트 제거(express·v2·brain).
 
 ### ⚠️ 검수 루프 (확립됨 — 06-25)
 - **Vercel 프리뷰 + Claude in Chrome** 으로 메인이 직접 시각 검수(로컬 docker DB 올리면 더 정확). 로그인=`pm@underdogs.co.kr`(Credentials). 프리뷰 URL=`ud-planner-git-feat-sroi-integration-…vercel.app` (Source=feat/sroi-integration 인 것).
