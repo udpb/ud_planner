@@ -26,9 +26,10 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { normalizeExpertise } from '@/lib/coaches/expertise-task-map'
 import { RecommendationBadge } from './RecommendationBadge'
-import type {
-  CoachRecommendation,
-  RecommendCoachesResponse,
+import {
+  POOL_MULTIPLIER,
+  type CoachRecommendation,
+  type RecommendCoachesResponse,
 } from '@/lib/coaches/types'
 
 interface Props {
@@ -41,6 +42,13 @@ interface Props {
   onPick?: (recommendation: CoachRecommendation) => void
   /** mode='inline' 일 때 "검색 모달 열기" CTA 클릭 시 호출 (선택) */
   onOpenAssignModal?: (preselectRecommendation?: CoachRecommendation) => void
+  /**
+   * BR-WS-15 (additive): 워크스페이스 Live Plan 이 파생한 필요 코치 수 N.
+   * 주어지면 헤더의 "필요 N명 × 5 = poolSize"·"왜 N명?" 카운트를 이 값으로 표시한다
+   * (커리큘럼 회차 변경에 즉시 정합). **추천 풀 fetch·카드 그리드는 그대로** — 카운트
+   * 표기만 ctx 와 맞춘다. 없으면 기존 동작(API 응답 requiredN 사용).
+   */
+  requiredCountOverride?: number
   className?: string
 }
 
@@ -61,6 +69,7 @@ export function AutoRecommendedPool({
   assignedCoachIds,
   onPick,
   onOpenAssignModal,
+  requiredCountOverride,
   className,
 }: Props): JSX.Element {
   const [state, setState] = useState<FetchState>({ kind: 'loading' })
@@ -198,6 +207,16 @@ export function AutoRecommendedPool({
   // ─── ready ───
   const { data } = state
 
+  // BR-WS-15: override 있으면 표시 카운트만 Live Plan 값으로 정합(추천 카드 그리드는 그대로).
+  const displayRequiredN =
+    requiredCountOverride != null && requiredCountOverride > 0
+      ? requiredCountOverride
+      : data.requiredN
+  const displayPoolSize =
+    requiredCountOverride != null && requiredCountOverride > 0
+      ? requiredCountOverride * POOL_MULTIPLIER
+      : data.poolSize
+
   if (data.recommendations.length === 0) {
     return (
       <div
@@ -221,7 +240,7 @@ export function AutoRecommendedPool({
         <div className="flex items-center gap-2 text-sm font-medium">
           <Sparkles className="h-4 w-4" style={{ color: 'var(--primary-orange)' }} />
           <span>
-            AI 추천 풀 · 필요 {data.requiredN}명 × 5 = {data.poolSize}명
+            AI 추천 풀 · 필요 {displayRequiredN}명 × 5 = {displayPoolSize}명
           </span>
         </div>
         <button
@@ -229,7 +248,7 @@ export function AutoRecommendedPool({
           onClick={() => setRationaleOpen((v) => !v)}
           className="inline-flex items-center gap-1 border border-border bg-white px-2 py-1 text-xs text-muted-foreground hover:border-brand/40 hover:text-foreground cursor-pointer"
         >
-          왜 {data.requiredN}명?
+          왜 {displayRequiredN}명?
           {rationaleOpen ? (
             <ChevronUp className="h-3 w-3" />
           ) : (

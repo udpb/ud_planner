@@ -32,12 +32,21 @@ import { ProgramDesignFlow } from '@/app/(dashboard)/projects/[id]/program-desig
 import { ImpactForecastClient } from '@/app/(dashboard)/projects/[id]/impact-forecast/forecast-client'
 import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
 import { BudgetCalcCanvas } from './BudgetCalcCanvas'
+import {
+  WorkspacePlanProvider,
+  useWorkspacePlan,
+} from './WorkspacePlanContext'
 import { PlanningIntent } from './PlanningIntent'
 import { WorkspacePipeline } from './WorkspacePipeline'
 import { WorkspaceChat } from './WorkspaceChat'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
+import type { RfpParsed } from '@/lib/ai/parse-rfp'
+import type {
+  BudgetChannel,
+  BudgetRules,
+} from '@/lib/program-design/budget-calc'
 
 import {
   WORKSPACE_STAGE_DESCRIPTIONS,
@@ -70,6 +79,25 @@ interface Props {
   }
   /** SROI 예측 — ImpactForecastClient props */
   impactProps: ComponentProps<typeof ImpactForecastClient>
+
+  /**
+   * BR-WS-15: 단계 간 라이브 연동 초기값 (server 조립). WorkspacePlanProvider 가
+   * 받아 Live Plan 을 시드 — 커리큘럼 회차 변경 → 코치수·예산 적산 실시간 재계산.
+   */
+  planContext: {
+    /** 저장된 1차안 회차표(있으면) — Live Plan 초기 sessions. */
+    initialSessions: PlanSession[] | null
+    /** RFP 파싱(있으면) — 코치수 휴리스틱·예산 채널 추정 토대. */
+    rfp: RfpParsed | null
+    /** 총예산 R(VAT 포함). 없으면 0. */
+    totalBudget: number
+    /** 적산 채널(B2G/B2B) — projectType 파생(server). */
+    channel: BudgetChannel
+    /** 교육 기간(개월) — eduStartDate~eduEndDate 파생(server). */
+    durationMonths: number
+    /** 단가표(budget-rules.json) — server 로드(client live calcBudget 용). */
+    budgetRules: BudgetRules | null
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -87,7 +115,27 @@ function CanvasHeader({ stage }: { stage: WorkspaceStageId }) {
   )
 }
 
-export function ProgramWorkspace({
+/**
+ * 외곽 = Provider 설치(BR-WS-15). Live Plan 시드(planContext)를 받아 감싼 뒤,
+ * 실제 셸은 useWorkspacePlan 을 쓰는 WorkspaceInner 가 그린다.
+ */
+export function ProgramWorkspace(props: Props) {
+  const { planContext } = props
+  return (
+    <WorkspacePlanProvider
+      initialSessions={planContext.initialSessions}
+      rfp={planContext.rfp}
+      totalBudget={planContext.totalBudget}
+      channel={planContext.channel}
+      durationMonths={planContext.durationMonths}
+      budgetRules={planContext.budgetRules}
+    >
+      <WorkspaceInner {...props} />
+    </WorkspacePlanProvider>
+  )
+}
+
+function WorkspaceInner({
   projectId,
   currentStage,
   initialOverrideStage,
@@ -98,14 +146,15 @@ export function ProgramWorkspace({
   intentProps,
   impactProps,
 }: Props) {
+  // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
+  const { sessions, setSessions, coachCount } = useWorkspacePlan()
+
   // 활성 stage = client state. server 자동 판정 + ?stage= 1회 선택으로 초기화.
   const [stage, setStage] = useState<WorkspaceStageId>(
     initialOverrideStage ?? currentStage,
   )
 
   // ── BR-WS-6 배선: 대화 ↔ 커리큘럼 캔버스 (design 단계 한정) ──
-  // ProgramDesignFlow 가 보고한 현재 회차 목록(대화 매칭 근거).
-  const [designSessions, setDesignSessions] = useState<PlanSession[] | null>(null)
   // 대화가 해석한 ops 를 ProgramDesignFlow 로 전달 — id 는 단조 증가 카운터(Date.now 금지).
   const [incomingOps, setIncomingOps] = useState<{ id: string; ops: SessionOp[] } | null>(null)
   const opsSeq = useRef(0)
@@ -131,10 +180,11 @@ export function ProgramWorkspace({
       ),
       // 프로그램 기획 = ProgramDesignFlow (rfpPreview 없으면 안내)
       // BR-WS-6: 회차 목록 보고(onSessionsChange) + 대화 ops 수신(incomingOps) 인렛 배선.
+      // BR-WS-15: onSessionsChange → ctx.setSessions (Live Plan) → coachCount·예산 파생.
       design: designProps ? (
         <ProgramDesignFlow
           {...designProps}
-          onSessionsChange={setDesignSessions}
+          onSessionsChange={setSessions}
           incomingOps={incomingOps}
         />
       ) : (
@@ -156,20 +206,31 @@ export function ProgramWorkspace({
         </div>
       ),
       // 코치 매칭 = AutoRecommendedPool (inline 모드, 자체 CTA)
+      // BR-WS-15: requiredCountOverride=ctx.coachCount — 커리큘럼 회차 변경 즉시 반영.
       coach: (
         <AutoRecommendedPool
           projectId={projectId}
           mode="inline"
           assignedCoachIds={[]}
+          requiredCountOverride={coachCount}
         />
       ),
-      // 예산 자동화 — BR-WS-14: placeholder → 진짜 적산(budget-rules.json bottom-up).
-      // 마운트 시 /api/projects/[id]/budget-calc 호출 → 워터폴·AC·PC·OR·마진·경고.
-      budget: <BudgetCalcCanvas projectId={projectId} />,
+      // 예산 자동화 — BR-WS-15: ctx(sessions·coachCount·예산·채널·기간·단가표)로 client
+      // live calcBudget. 회차 변경 → 적산·마진 실시간 재계산(API fetch 제거).
+      budget: <BudgetCalcCanvas />,
       // SROI 예측 = ImpactForecastClient
       sroi: <ImpactForecastClient {...impactProps} />,
     }),
-    [projectId, stepRfpProps, designProps, intentProps, impactProps, incomingOps],
+    [
+      projectId,
+      stepRfpProps,
+      designProps,
+      intentProps,
+      impactProps,
+      incomingOps,
+      setSessions,
+      coachCount,
+    ],
   )
 
   return (
@@ -190,7 +251,8 @@ export function ProgramWorkspace({
             stage={stage}
             contextSummary={summaries[stage]}
             // BR-WS-6: design 단계일 때만 현재 회차 목록 동봉 + ops 수신.
-            sessions={stage === 'design' ? designSessions : null}
+            // BR-WS-15: 회차 목록은 Live Plan(ctx.sessions) 단일 소스.
+            sessions={stage === 'design' ? sessions : null}
             onOps={stage === 'design' ? handleOps : undefined}
           />
         </div>

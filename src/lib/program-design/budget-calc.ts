@@ -18,25 +18,20 @@
  * ⚠️ budget-rules.json 은 읽기 전용 — 절대 수정 금지. infer-budget.ts(top-down 비율,
  *    AI) 와는 별개 엔진 — 건드리지 않는다(향후 교차검증).
  *
- * Source: .claude/agent-briefs/BR-WS-14-budget-calc.md ·
+ * ⚠️ **client-safe (BR-WS-15)**: 이 파일은 순수 `calcBudget` + 타입만 둔다 — `fs`/
+ *    `path` import 없음. budget-rules.json 의 fs 로드는 `budget-rules-loader.ts`
+ *    (server-only)로 분리했다 → BudgetCalcCanvas(client)가 calcBudget 을 직접
+ *    import 해도 번들에 node:fs 가 끌려오지 않는다. **계산 로직은 분리 전후 동일.**
+ *
+ * Source: .claude/agent-briefs/BR-WS-14-budget-calc.md · BR-WS-15-stage-thread.md ·
  *         data/program-design/budget-rules.json
  */
-
-import { promises as fs } from 'node:fs'
-import path from 'node:path'
 
 import type { PlanSession } from './plan-types'
 
 // ─────────────────────────────────────────────────────────────────
-// 파일 경로 + budget-rules.json 부분 타입 (읽는 키만 — 전체 미러 아님)
+// budget-rules.json 부분 타입 (읽는 키만 — 전체 미러 아님)
 // ─────────────────────────────────────────────────────────────────
-
-export const BUDGET_RULES_PATH = path.join(
-  process.cwd(),
-  'data',
-  'program-design',
-  'budget-rules.json',
-)
 
 interface CoachRateGrade {
   first1h?: number
@@ -143,40 +138,6 @@ export interface BudgetResult {
   warnings: string[]
   /** 근거 출처 표기. */
   source: string
-}
-
-// ─────────────────────────────────────────────────────────────────
-// 로더 (캐시 — 단가표는 빌드 중 불변)
-// ─────────────────────────────────────────────────────────────────
-
-let _cache: BudgetRules | null = null
-
-/**
- * budget-rules.json 을 읽어 파싱한다 (읽기 전용). 프로세스 내 1회 캐시.
- * 실패 시 경로를 담은 명확한 에러를 던진다.
- */
-export async function loadBudgetRules(): Promise<BudgetRules> {
-  if (_cache) return _cache
-  let raw: string
-  try {
-    raw = await fs.readFile(BUDGET_RULES_PATH, 'utf8')
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err)
-    throw new Error(
-      `[budget-calc] 단가 규칙 파일을 읽지 못했습니다 (${BUDGET_RULES_PATH}): ${msg}`,
-    )
-  }
-  let json: unknown
-  try {
-    json = JSON.parse(raw)
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err)
-    throw new Error(
-      `[budget-calc] 단가 규칙 JSON 파싱 실패 (${BUDGET_RULES_PATH}): ${msg}`,
-    )
-  }
-  _cache = json as BudgetRules
-  return _cache
 }
 
 // ─────────────────────────────────────────────────────────────────

@@ -27,6 +27,8 @@ import { matchAssetsToRfp, type AssetMatch } from '@/lib/asset-registry'
 import { loadDesignRules } from '@/lib/program-design/design-rule'
 import { readSavedPlan } from '@/lib/program-design/saved-plan'
 import type { ProgramPlan } from '@/lib/program-design/plan-types'
+import { loadBudgetRules } from '@/lib/program-design/budget-rules-loader'
+import type { BudgetRules } from '@/lib/program-design/budget-calc'
 import {
   buildOperatingTypeMeta,
   type OperatingTypeMeta,
@@ -106,6 +108,10 @@ export interface WorkspaceData {
   impactHandoffConfigured: boolean
   impactCategories: WorkspaceImpactCategory[]
   impactForecast: WorkspaceForecastSummary | null
+
+  // ── BR-WS-15: 단계 간 라이브 연동 ──
+  /** 2026 단가표(budget-rules.json) — client live calcBudget 용. 로드 실패 시 null. */
+  budgetRules: BudgetRules | null
 
   // ── done 판정용 파생 ──
   hasRfp: boolean
@@ -226,6 +232,9 @@ export async function loadWorkspace(
   // ② 설계 — 저장된 1차안 복원 (BR-WS-4 결함2). 파일 없거나 깨졌으면 null(헬퍼가 graceful).
   const savedPlan = await readSavedPlan(projectId).catch(() => null)
 
+  // BR-WS-15 — 단가표(budget-rules.json) server 로드. 실패해도 워크스페이스는 떠야 함(null).
+  const budgetRules = await loadBudgetRules().catch(() => null)
+
   // ③ 임팩트 — impact-forecast/page.tsx 의 로드 패턴 복제
   const impactConfigured = isImpactDbConfigured()
   const impactHandoffConfigured = isHandoffConfigured()
@@ -305,6 +314,7 @@ export async function loadWorkspace(
     impactHandoffConfigured,
     impactCategories,
     impactForecast,
+    budgetRules,
     hasRfp,
     hasDesign,
     hasCoach,

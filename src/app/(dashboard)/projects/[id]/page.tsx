@@ -22,6 +22,8 @@ import { loadWorkspace } from '@/lib/projects/load-workspace'
 import { ProgramWorkspace } from '@/components/projects/workspace/ProgramWorkspace'
 import type { DesignIntentContext } from './program-design/_components/program-design-flow'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
+import type { PlanSession } from '@/lib/program-design/plan-types'
+import type { BudgetChannel } from '@/lib/program-design/budget-calc'
 import {
   computeWorkspaceCurrentStage,
   computeWorkspaceDoneFlags,
@@ -76,6 +78,24 @@ function buildDesignIntentContext(
   }
 }
 
+/**
+ * BR-WS-15 — 예산 적산 입력 파생(server). budget-calc/route.ts 와 동일 규칙
+ * (eduStartDate~eduEndDate → 개월 / projectType → 채널) — 라이브 연동에 동일한
+ * 입력을 client Live Plan 으로 흘려보내기 위해 동일 헬퍼를 둔다(route 무변경).
+ */
+function durationMonths(start: Date | null, end: Date | null): number {
+  if (!start || !end) return 0
+  const ms = end.getTime() - start.getTime()
+  if (ms <= 0) return 0
+  const months = ms / (1000 * 60 * 60 * 24 * (365.25 / 12))
+  return Math.max(0, Math.round(months))
+}
+
+/** projectType → 적산 채널. B2B 명시 외 전부 B2G(보수적 기본) — route 와 동일. */
+function toBudgetChannel(projectType: string | null | undefined): BudgetChannel {
+  return projectType?.toUpperCase().includes('B2B') ? 'B2B' : 'B2G'
+}
+
 export default async function ProjectWorkspacePage({
   params,
   searchParams,
@@ -121,6 +141,21 @@ export default async function ProjectWorkspacePage({
     },
     {} as Record<WorkspaceStageId, string>,
   )
+
+  // BR-WS-15 — 단계 간 라이브 연동 초기값 조립(server). 저장된 1차안 회차표 →
+  // Live Plan 초기 sessions, RFP·예산·채널·기간·단가표 → coachCount/예산 파생 토대.
+  const initialSessions: PlanSession[] | null =
+    data.savedPlan && data.savedPlan.structure.kind === 'sessions'
+      ? data.savedPlan.structure.sessions
+      : null
+  const planContext = {
+    initialSessions,
+    rfp: data.rfpParsed,
+    totalBudget: project.totalBudgetVat ?? 0,
+    channel: toBudgetChannel(project.projectType),
+    durationMonths: durationMonths(project.eduStartDate, project.eduEndDate),
+    budgetRules: data.budgetRules,
+  }
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden min-h-0">
@@ -220,6 +255,7 @@ export default async function ProjectWorkspacePage({
           configured: data.impactConfigured,
           handoffConfigured: data.impactHandoffConfigured,
         }}
+        planContext={planContext}
       />
     </div>
   )

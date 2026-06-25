@@ -17,10 +17,10 @@ import { log } from '@/lib/logger'
 import { readSavedPlan } from '@/lib/program-design/saved-plan'
 import {
   calcBudget,
-  loadBudgetRules,
   type BudgetCalcInput,
   type BudgetChannel,
 } from '@/lib/program-design/budget-calc'
+import { loadBudgetRules } from '@/lib/program-design/budget-rules-loader'
 
 export const dynamic = 'force-dynamic'
 

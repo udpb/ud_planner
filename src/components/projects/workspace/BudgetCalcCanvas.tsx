@@ -1,44 +1,37 @@
 'use client'
 
 /**
- * BudgetCalcCanvas — 예산 자동화 캔버스 (BR-WS-14 / SI-budget-calc)
+ * BudgetCalcCanvas — 예산 자동화 캔버스 (BR-WS-14 / BR-WS-15 live 연동)
  *
- * 워크스페이스 "예산 자동화" 단계의 진짜 적산 표시. 마운트 시
- * `POST /api/projects/[id]/budget-calc` 를 호출 → 결정론 적산(budget-rules.json
- * 기반) 결과를 표시한다. **단가·비율은 전부 서버(budget-rules.json) 출처** — 이
- * 컴포넌트는 표시·편집만(하드코딩 0).
+ * 워크스페이스 "예산 자동화" 단계의 진짜 적산 표시. **BR-WS-15: 단계 간 라이브 연동** —
+ * 더 이상 마운트 시 API 를 fetch 하지 않고, 공유 Live Plan(WorkspacePlanContext)의
+ * 회차(sessions)·필요 코치 수(coachCount)·총예산·채널·기간 + 서버가 주입한 단가표
+ * (budgetRules)로 **client 에서 calcBudget 을 즉시 호출**(useMemo)한다. 커리큘럼 회차를
+ * 바꾸면 코칭료·강의료·코치 수가 즉시 따라오고 마진율이 실시간 재계산된다.
+ *
+ * **단가·비율은 전부 서버(budget-rules.json) 출처** — 이 컴포넌트는 표시·편집만
+ * (하드코딩 0). calcBudget 은 순수 함수(client-safe, BR-WS-15 분리) — node:fs 번들 X.
  *
  * 구성:
  *   1. 워터폴 요약 (R → VAT → R' → IC/IDC → DR).
  *   2. AC(실비) / PC(인건비) 라인 — 금액 **인라인 편집**(client state 만, 이번엔 미저장).
  *   3. OR(영업이익) · 마진율 — 편집값 반영해 재계산.
  *   4. 경고 배지 (적자/마진 부족/재검토).
- *   세션·코치 없으면 "커리큘럼·코치 먼저" 안내.
+ *   세션·코치 없으면 "커리큘럼·코치 먼저" 안내. budgetRules 미주입이면 안내(server 로드 실패).
  *
  * 디자인킷 260529: accent #F05519 1개 · radius 0 · 틴트 박스(neutral-90 + accent border).
  * 편집은 client state — 저장은 이번 범위 밖(향후 Budget 레코드 연계, ADR 후보).
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import type { BudgetLine, BudgetResult } from '@/lib/program-design/budget-calc'
+import {
+  calcBudget,
+  type BudgetCalcInput,
+  type BudgetLine,
+} from '@/lib/program-design/budget-calc'
 
-interface BudgetInputEcho {
-  channel: 'B2G' | 'B2B'
-  sessionCount: number
-  coachCount: number
-  durationMonths: number
-  hasBudget: boolean
-}
-
-interface ApiResponse {
-  result: BudgetResult
-  input: BudgetInputEcho
-}
-
-interface Props {
-  projectId: string
-}
+import { useWorkspacePlan } from './WorkspacePlanContext'
 
 // ─────────────────────────────────────────────────────────────────
 // 포맷 헬퍼
@@ -123,74 +116,69 @@ function LineRow({
 // 메인
 // ─────────────────────────────────────────────────────────────────
 
-export function BudgetCalcCanvas({ projectId }: Props) {
-  const [data, setData] = useState<ApiResponse | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+export function BudgetCalcCanvas() {
+  // BR-WS-15: 공유 Live Plan 구독 — 회차/코치수/예산/채널/기간/단가표.
+  const {
+    sessions,
+    coachCount,
+    totalBudget,
+    channel,
+    durationMonths,
+    budgetRules,
+  } = useWorkspacePlan()
 
-  // PM 편집값 (라인 amount override) — index 키. 미저장(client state 만).
-  const [acEdits, setAcEdits] = useState<Record<number, number>>({})
-  const [pcEdits, setPcEdits] = useState<Record<number, number>>({})
+  // PM 편집값 (라인 amount override) — **라벨 키**(BR-WS-15). 라이브 재적산으로 라인
+  // 구성이 바뀌어도(회차 변경) index 어긋남 없이: 살아남은 라벨의 편집만 적용되고
+  // 사라진 라벨의 편집은 자연히 무시된다(별도 리셋 불필요). 미저장(client state 만).
+  const [acEdits, setAcEdits] = useState<Record<string, number>>({})
+  const [pcEdits, setPcEdits] = useState<Record<string, number>>({})
 
-  useEffect(() => {
-    // projectId 당 1회 마운트 적산 — 초기 state(loading=true·error=null)면 충분해
-    // 동기 setState 리셋을 두지 않는다(불필요한 cascading render 방지).
-    let alive = true
-    fetch(`/api/projects/${projectId}/budget-calc`, { method: 'POST' })
-      .then(async (res) => {
-        if (!res.ok) {
-          const body = (await res.json().catch(() => ({}))) as {
-            message?: string
-          }
-          throw new Error(body.message ?? `적산 실패 (${res.status})`)
-        }
-        return (await res.json()) as ApiResponse
-      })
-      .then((json) => {
-        if (!alive) return
-        setData(json)
-        setAcEdits({})
-        setPcEdits({})
-      })
-      .catch((e: unknown) => {
-        if (!alive) return
-        setError(e instanceof Error ? e.message : '적산 실패')
-      })
-      .finally(() => {
-        if (alive) setLoading(false)
-      })
-    return () => {
-      alive = false
-    }
-  }, [projectId])
+  // ── 라이브 적산: 단가표 + Live Plan 입력으로 client 에서 calcBudget(useMemo) ──
+  // 회차(sessions)·코치수·예산·채널·기간이 변하면 즉시 재계산. node:fs 번들 X(순수).
+  const base = useMemo(() => {
+    if (!budgetRules) return null
+    const calcSessions: BudgetCalcInput['sessions'] = (sessions ?? []).map(
+      (s) => ({ kind: s.kind, hours: s.hours, title: s.title }),
+    )
+    return calcBudget(budgetRules, {
+      totalBudget,
+      channel,
+      sessions: calcSessions,
+      coachCount,
+      durationMonths,
+    })
+  }, [budgetRules, sessions, totalBudget, channel, coachCount, durationMonths])
 
-  // PM 편집 반영한 라인 (amount override).
+  // 적산 입력 에코(안내·근거 표기용).
+  const sessionCount = sessions?.length ?? 0
+
+  // PM 편집 반영한 라인 (라벨 키 amount override).
   const acLines = useMemo<BudgetLine[]>(
     () =>
-      (data?.result.acLines ?? []).map((l, i) =>
-        i in acEdits ? { ...l, amount: acEdits[i] } : l,
+      (base?.acLines ?? []).map((l) =>
+        l.label in acEdits ? { ...l, amount: acEdits[l.label] } : l,
       ),
-    [data, acEdits],
+    [base, acEdits],
   )
   const pcLines = useMemo<BudgetLine[]>(
     () =>
-      (data?.result.pcLines ?? []).map((l, i) =>
-        i in pcEdits ? { ...l, amount: pcEdits[i] } : l,
+      (base?.pcLines ?? []).map((l) =>
+        l.label in pcEdits ? { ...l, amount: pcEdits[l.label] } : l,
       ),
-    [data, pcEdits],
+    [base, pcEdits],
   )
 
-  // 편집값으로 AC/PC/OR/마진 재계산 (워터폴 DR/R' 은 서버값 고정).
+  // 편집값으로 AC/PC/OR/마진 재계산 (워터폴 DR/R' 은 적산값 고정).
   const recomputed = useMemo(() => {
-    if (!data) return null
-    const { waterfall } = data.result
+    if (!base) return null
+    const { waterfall } = base
     const ac = acLines.reduce((s, l) => s + l.amount, 0)
     const pc = pcLines.reduce((s, l) => s + l.amount, 0)
     const or = waterfall.DR - pc - ac
     const marginRate = waterfall.Rprime > 0 ? or / waterfall.Rprime : 0
     // 경고 재산출 (편집 반영).
     const warnings: string[] = []
-    if (!data.input.hasBudget) {
+    if (!(totalBudget > 0)) {
       warnings.push('총예산(R)이 없습니다 — RFP 분석에서 총 예산을 먼저 입력하세요.')
     }
     if (ac + pc > waterfall.DR) {
@@ -202,31 +190,23 @@ export function BudgetCalcCanvas({ projectId }: Props) {
       warnings.push(`마진율 ${(marginRate * 100).toFixed(1)}% — 권장 상한(20%) 초과.`)
     }
     return { ac, pc, or, marginRate, warnings }
-  }, [data, acLines, pcLines])
+  }, [base, acLines, pcLines, totalBudget])
 
-  if (loading) {
+  // 단가표 미주입(server 로드 실패) — 적산 불가 안내.
+  if (!base || !recomputed) {
     return (
       <div style={{ ...tintBox, maxWidth: 880 }}>
-        <strong style={{ fontWeight: 700 }}>예산 적산 중…</strong>
+        <strong style={{ fontWeight: 700 }}>예산 단가표를 불러오지 못했습니다.</strong>
         <p style={{ marginTop: 8 }}>
-          2026 단가표 + 워터폴로 커리큘럼·코치 기반 bottom-up 적산을 계산합니다.
+          2026 단가표(budget-rules.json) 로드에 실패해 적산을 계산할 수 없습니다.
+          운영자에게 문의하거나 페이지를 새로고침하세요.
         </p>
       </div>
     )
   }
 
-  if (error || !data || !recomputed) {
-    return (
-      <div style={{ ...tintBox, maxWidth: 880 }}>
-        <strong style={{ fontWeight: 700 }}>예산 적산을 불러오지 못했습니다.</strong>
-        <p style={{ marginTop: 8 }}>{error ?? '알 수 없는 오류'}</p>
-      </div>
-    )
-  }
-
-  const { waterfall } = data.result
-  const { input } = data
-  const noInputs = input.sessionCount === 0 && input.coachCount === 0
+  const { waterfall } = base
+  const noInputs = sessionCount === 0 && coachCount === 0
 
   const waterfallCells: { label: string; value: number; sub?: string }[] = [
     { label: '총예산 R (VAT 포함)', value: waterfall.R },
@@ -317,7 +297,7 @@ export function BudgetCalcCanvas({ projectId }: Props) {
               <LineRow
                 key={`ac-${i}`}
                 line={l}
-                onAmount={(v) => setAcEdits((p) => ({ ...p, [i]: v }))}
+                onAmount={(v) => setAcEdits((p) => ({ ...p, [l.label]: v }))}
               />
             ))
           )}
@@ -354,7 +334,7 @@ export function BudgetCalcCanvas({ projectId }: Props) {
               <LineRow
                 key={`pc-${i}`}
                 line={l}
-                onAmount={(v) => setPcEdits((p) => ({ ...p, [i]: v }))}
+                onAmount={(v) => setPcEdits((p) => ({ ...p, [l.label]: v }))}
               />
             ))
           )}
@@ -438,12 +418,12 @@ export function BudgetCalcCanvas({ projectId }: Props) {
         </section>
       )}
 
-      {/* 근거 + 편집 안내 */}
+      {/* 근거 + 편집 안내 (라이브: 커리큘럼 회차·코치수 변경 즉시 반영) */}
       <p style={{ fontSize: 11, color: 'var(--muted)', lineHeight: 1.6 }}>
-        근거: {data.result.source} · 채널 {input.channel} · {input.sessionCount}회차 ·
-        코치 {input.coachCount}명 · {input.durationMonths}개월. 금액은 PM 편집 초안입니다
-        (수정값은 OR·마진에 즉시 반영, 단가·비율은 2026 단가표 출처). 이번 단계에서는
-        편집값이 저장되지 않습니다.
+        근거: {base.source} · 채널 {channel} · {sessionCount}회차 · 코치 {coachCount}명 ·{' '}
+        {durationMonths}개월. 커리큘럼 회차를 바꾸면 코치 수·적산이 즉시 따라옵니다.
+        금액은 PM 편집 초안입니다 (수정값은 OR·마진에 즉시 반영, 단가·비율은 2026 단가표
+        출처). 이번 단계에서는 편집값이 저장되지 않습니다.
       </p>
     </div>
   )
