@@ -15,6 +15,11 @@
 - **대화 영속** (BR-WS-20, `c41b5a9`) — WorkspaceChat 메시지 서버 저장·복원. `Project.expressTurnsCache` 재사용(**스키마 변경 0**, 마이그레이션 보류 회피). 신규 PUT `/workspace-chat` + load 복원 + autosave(dirty 가드).
 - **카드 UX·기획의도 채우기** (BR-WS-21, `b811f12`) — "대화로 채우기"→AI 후보 2~3개 카드→클릭=즉시 입력. planning-intent route 신규 'suggest'.
 - **카드 UX·예산 항목** (BR-WS-22, `e3d9d7f`) — 예산 단계 대화→조정안 카드→클릭 시 적산 라인 즉시 반영(신규 `budget-ops.ts`, 라인 override만, 엔진 무변경). design 채널과 분리(회귀 방지).
+- **코치 단계 완성** ⭐ (BR-WS-23 `b0e43de` + BR-WS-24 `f999dd5`) — **라이브 검증 완료**. Phase 1=선발팀 배선(기존 `CoachAssignment` 재사용, 신규 GET 로스터 + `SelectedTeamPanel` 패널·역할·단가·제거·n/N, `assignedCoachIds` 하드코딩 제거, **스키마 변경 0**). Phase 2=`handleCoach` + 교체/추가 카드(신규 `coach-ops.ts`, 서버 영속 POST/DELETE→로스터 재fetch, knownIds 환각 필터). 검증: "2명 추천해서 넣어줘"→선발팀 0/3→2/3(메인·보조)·풀 "이미 배정됨". 코치 채널 분리(design/budget 회귀 0).
+
+### ✅ 2026-06-26 라이브 시각 검수 완료 (Vercel 프리뷰 + Chrome, 직접 클릭·DOM)
+BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영속 저장/복원(Vercel DB expressTurnsCache 컬럼 존재 확인) · 예산 관찰분할 참조·진단·가드 · 예산 카드→마진 재계산 · #10 비회차 단계 추가 · design 카드 회귀 0(15→10회차) · 코치 선발팀+카드 배정. 크래시 0.
+⚠️ 검수 중 테스트 흔적: 안산(cmpcgyyx7)에 T3 회차표·코치 2명 배정, 카카오(cmopf5xqv…tzw7dei)에 T4 구조·채팅 probe 남음(원하면 정리).
 
 워크스페이스 재설계가 **빌드+프리뷰 라이브 검증**까지 끝났고, 서비스 개선 백로그도 10/10 완료. 검수 루프 확립(아래 ⚠️).
 
@@ -35,9 +40,10 @@
    - BR-WS-20 영속: 대화 → 새로고침 → 메시지 복원 (⚠️ Vercel DB에 expressTurnsCache 컬럼 존재 가정 — 첫 저장 실동작 확인)
    - BR-WS-21 기획의도: "대화로 채우기" → 후보 카드 → 클릭 → 항목 채워짐
    - BR-WS-22 예산 카드: budget 단계 "마진 낮춰줘" → 카드 → 클릭 → 라인·마진 변화 (design 카드 회귀 없는지)
-1. **카드 UX·코치 교체** (보류 중) — 추천 풀에 **"선발팀" 상태 모델 신설** 선행(단순 미러 아님, ADR 후보). 그 위에 교체 카드.
-2. **예산 적산 매핑 후속** (ADR-030 Negative) — costingDefaults 근사값을 추가 실예산 학습으로 프로그램별 정합. diagnostic 로직 엔진/canvas 이중화 단일화.
-3. (피드백 ④) impact-measurement 배포 + SERVICE_API_TOKEN — SROI 라이브. · BR-WS-2 경쟁 라우트 제거(express·v2·brain).
+1. ⭐ **SROI 라이브 연동** (이 브랜치 본래 목표 · 피드백 ④) — **사용자 액션 선행**: impact-measurement 앱 배포 + `SERVICE_API_TOKEN`(양쪽 env). 되면 핸드오프 배선(coefficients 읽기 + predict 호출 + 공식 리포트 임베드).
+2. **예산 적산 매핑 후속** (ADR-030 Negative) — costingDefaults 근사값을 추가 실예산 학습으로 프로그램별 정합. diagnostic 엔진/canvas 이중화 단일화.
+3. **BR-WS-2 경쟁 라우트 제거** (express·v2·brain·program-design) — ADR-029 정리 마무리, 단일 워크스페이스만.
+4. (선택) 코치 카드 후속 — `CoachAssign onAssigned` 정식 콜백(현재 window focus 재fetch 우회) · swap 부분실패 UX.
 
 ### ⚠️ 검수 루프 (확립됨 — 06-25)
 - **Vercel 프리뷰 + Claude in Chrome** 으로 메인이 직접 시각 검수(로컬 docker DB 올리면 더 정확). 로그인=`pm@underdogs.co.kr`(Credentials). 프리뷰 URL=`ud-planner-git-feat-sroi-integration-…vercel.app` (Source=feat/sroi-integration 인 것).
