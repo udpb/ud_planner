@@ -25,8 +25,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
 import { MatchedAssetsPanel } from '@/components/projects/matched-assets-panel'
 import type { AssetMatch } from '@/lib/asset-registry-types'
-import type { PlanSession, PlanStructure, ProgramPlan } from '@/lib/program-design/plan-types'
+import type {
+  NonSessionStage,
+  PlanSession,
+  PlanStructure,
+  ProgramPlan,
+} from '@/lib/program-design/plan-types'
 import { applySessionOps, type SessionOp } from '@/lib/program-design/session-ops'
+import { applyStageOps, type StageOp } from '@/lib/program-design/stage-ops'
 
 import { DecisionLog } from './decision-log'
 import { GateCard } from './gate-card'
@@ -141,6 +147,7 @@ export function ProgramDesignFlow({
   initialPlan,
   intentContext,
   onSessionsChange,
+  onStagesChange,
   incomingOps,
 }: {
   projectId: string
@@ -161,10 +168,16 @@ export function ProgramDesignFlow({
    */
   onSessionsChange?: (sessions: PlanSession[] | null) => void
   /**
-   * BR-WS-6 (additive 인렛 ②): 대화가 해석한 세션 액션. id 가 바뀔 때 1회 적용
-   * (= PM 이 손으로 편집한 것과 동일한 structureOverride). 기획 시작 전 구조 없으면 무시.
+   * BR-WS-19 (additive 인렛 ①-b): effectiveStructure 가 비회차(T4/T5)면 현재 단계 목록 보고.
+   * sessions 구조거나 구조가 없으면 null. 셸(ProgramWorkspace)이 대화에 동봉.
    */
-  incomingOps?: { id: string; ops: SessionOp[] } | null
+  onStagesChange?: (stages: NonSessionStage[] | null) => void
+  /**
+   * BR-WS-6/19 (additive 인렛 ②): 대화가 해석한 액션. id 가 바뀔 때 1회 적용
+   * (= PM 이 손으로 편집한 것과 동일한 structureOverride). 기획 시작 전 구조 없으면 무시.
+   * sessions 구조면 SessionOp[], 비회차 구조면 StageOp[] (effectiveStructure.kind 로 분기).
+   */
+  incomingOps?: { id: string; ops: (SessionOp | StageOp)[] } | null
 }) {
   // ① 토대잡기 입력 — 목표 확인만 PM 이 직접 (선례·의도는 ②기획의도가 소유 → BR-WS-4s 중복 제거)
   const [goalText, setGoalText] = useState(rfpPreview.objectives.join('\n'))
@@ -249,16 +262,41 @@ export function ProgramDesignFlow({
     )
   }, [effectiveStructure, onSessionsChange])
 
-  // ── BR-WS-6 인렛 ② : 대화가 보낸 ops 를 1회 적용(structureOverride 갱신) ──
+  // ── BR-WS-19 인렛 ①-b : 현재 비회차 단계 목록을 셸로 보고(대화 매칭 근거) ──
+  // effectiveStructure 가 비회차(individual/event)면 stages, 아니면 null.
+  useEffect(() => {
+    if (!onStagesChange) return
+    onStagesChange(
+      effectiveStructure &&
+        (effectiveStructure.kind === 'individual' || effectiveStructure.kind === 'event')
+        ? effectiveStructure.stages
+        : null,
+    )
+  }, [effectiveStructure, onStagesChange])
+
+  // ── BR-WS-6/19 인렛 ② : 대화가 보낸 ops 를 1회 적용(structureOverride 갱신) ──
   // id 가 바뀔 때만 적용(중복 방지). 구조 없으면(기획 시작 전) 무시. 저장은 기존 editedStructure 경로 그대로.
+  // kind 분기: sessions → applySessionOps(SessionOp[]) / individual·event → applyStageOps(StageOp[]).
+  // 두 apply 함수 모두 자기 구조가 아니면 무시하므로 잘못 라우팅돼도 캔버스를 망치지 않는다.
   const appliedOpsId = useRef<string | null>(null)
   useEffect(() => {
     if (!incomingOps) return
     if (appliedOpsId.current === incomingOps.id) return
     appliedOpsId.current = incomingOps.id
     if (incomingOps.ops.length === 0) return
-    if (!effectiveStructure || effectiveStructure.kind !== 'sessions') return
-    setStructureOverride(applySessionOps(effectiveStructure, incomingOps.ops))
+    if (!effectiveStructure) return
+    if (effectiveStructure.kind === 'sessions') {
+      setStructureOverride(
+        applySessionOps(effectiveStructure, incomingOps.ops as SessionOp[]),
+      )
+    } else if (
+      effectiveStructure.kind === 'individual' ||
+      effectiveStructure.kind === 'event'
+    ) {
+      setStructureOverride(
+        applyStageOps(effectiveStructure, incomingOps.ops as StageOp[]),
+      )
+    }
   }, [incomingOps, effectiveStructure])
 
   const handleSave = useCallback(async () => {

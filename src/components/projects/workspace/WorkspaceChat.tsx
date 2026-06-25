@@ -22,18 +22,22 @@ import { Send, Sparkles, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import type { PlanSession } from '@/lib/program-design/plan-types'
+import type { NonSessionStage, PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
+import type { StageOp } from '@/lib/program-design/stage-ops'
 import {
   WORKSPACE_STAGE_LABELS,
   type WorkspaceStageId,
 } from './workspace-stages'
 
-/** BR-WS-17: assistant 카드 선택지 1개 — 클릭 시 ops 를 캔버스에 즉시 적용. */
+/** BR-WS-19: design 단계 액션 ops — 회차표(SessionOp) | 비회차 단계(StageOp). 카드 렌더는 제네릭. */
+type DesignOp = SessionOp | StageOp
+
+/** BR-WS-17/19: assistant 카드 선택지 1개 — 클릭 시 ops 를 캔버스에 즉시 적용. */
 interface ChatChoice {
   label: string
   sub?: string
-  ops: SessionOp[]
+  ops: DesignOp[]
 }
 
 interface ChatMessage {
@@ -58,10 +62,20 @@ interface Props {
    */
   sessions?: PlanSession[] | null
   /**
-   * BR-WS-6: assistant 가 design 단계에서 ops 를 반환하면 호출(상위가 캔버스에 적용).
-   * design 단계에서만 주입됨.
+   * BR-WS-19: design 단계 비회차(T4/T5) 단계 목록(label·content 전송 — 매칭 근거). 없으면 null.
+   * sessions 와 동시에 값을 갖지 않음(구조는 둘 중 하나).
    */
-  onOps?: (ops: SessionOp[]) => void
+  stages?: NonSessionStage[] | null
+  /**
+   * BR-WS-19: 현재 design 구조 종류 — 'sessions'(회차표) | 'nonsession'(단계). 기본 'sessions'.
+   * route 가 이 값으로 SessionOp/StageOp 프롬프트를 분기한다.
+   */
+  structureKind?: 'sessions' | 'nonsession'
+  /**
+   * BR-WS-6/19: assistant 가 design 단계에서 ops 를 반환하면 호출(상위가 캔버스에 적용).
+   * design 단계에서만 주입됨. sessions 구조면 SessionOp[], 비회차면 StageOp[].
+   */
+  onOps?: (ops: DesignOp[]) => void
 }
 
 /**
@@ -86,6 +100,8 @@ export function WorkspaceChat({
   stage,
   contextSummary,
   sessions,
+  stages,
+  structureKind = 'sessions',
   onOps,
 }: Props) {
   // 마운트 시점 stage 로 1회 시드(lazy init). 이후 stage 변경 시 인사 재발급 안 함 — history 유지.
@@ -136,13 +152,24 @@ export function WorkspaceChat({
           contextSummary: contextSummary ?? '',
           // BR-WS-17: 직전 대화 맥락(모든 단계 동봉 무방 — design 만 활용).
           history,
-          // BR-WS-6: design 단계만 현재 회차 목록(no·title·kind) 동봉 — 매칭 근거.
-          ...(stage === 'design' && sessions
+          // BR-WS-19: design 단계만 현재 구조 종류 동봉 — route 가 SessionOp/StageOp 분기.
+          ...(stage === 'design' ? { structureKind } : {}),
+          // BR-WS-6: 회차표 구조 — 현재 회차 목록(no·title·kind) 동봉(매칭 근거).
+          ...(stage === 'design' && structureKind === 'sessions' && sessions
             ? {
                 sessions: sessions.map((s) => ({
                   no: s.no,
                   title: s.title,
                   kind: s.kind,
+                })),
+              }
+            : {}),
+          // BR-WS-19: 비회차 구조 — 현재 단계 목록(label·content) 동봉(매칭 근거).
+          ...(stage === 'design' && structureKind === 'nonsession' && stages
+            ? {
+                stages: stages.map((s) => ({
+                  label: s.label,
+                  content: s.content,
                 })),
               }
             : {}),
@@ -164,7 +191,7 @@ export function WorkspaceChat({
       const data = (await res.json()) as {
         reply?: string
         action?: unknown
-        ops?: SessionOp[] | null
+        ops?: DesignOp[] | null
         choices?: ChatChoice[] | null
       }
       const reply = (data.reply ?? '').trim()
@@ -208,7 +235,7 @@ export function WorkspaceChat({
       sendingRef.current = false
       setSending(false)
     }
-  }, [input, projectId, stage, contextSummary, sessions, onOps])
+  }, [input, projectId, stage, contextSummary, sessions, stages, structureKind, onOps])
 
   /**
    * BR-WS-17: 카드 클릭 → 그 카드의 ops 를 캔버스에 즉시 적용(서버 재호출 X).

@@ -42,6 +42,7 @@ import { WorkspaceChat } from './WorkspaceChat'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
+import type { StageOp } from '@/lib/program-design/stage-ops'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
   BudgetChannel,
@@ -147,18 +148,24 @@ function WorkspaceInner({
   impactProps,
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
-  const { sessions, setSessions, coachCount } = useWorkspacePlan()
+  // BR-WS-19: 비회차(T4/T5) 단계(stages)도 동일 소스에서 — 대화 동봉 근거.
+  const { sessions, setSessions, stages, setStages, coachCount } =
+    useWorkspacePlan()
 
   // 활성 stage = client state. server 자동 판정 + ?stage= 1회 선택으로 초기화.
   const [stage, setStage] = useState<WorkspaceStageId>(
     initialOverrideStage ?? currentStage,
   )
 
-  // ── BR-WS-6 배선: 대화 ↔ 커리큘럼 캔버스 (design 단계 한정) ──
+  // ── BR-WS-6/19 배선: 대화 ↔ 기획 캔버스 (design 단계 한정) ──
   // 대화가 해석한 ops 를 ProgramDesignFlow 로 전달 — id 는 단조 증가 카운터(Date.now 금지).
-  const [incomingOps, setIncomingOps] = useState<{ id: string; ops: SessionOp[] } | null>(null)
+  // sessions 구조면 SessionOp[], 비회차 구조면 StageOp[] (flow 가 effectiveStructure.kind 로 분기).
+  const [incomingOps, setIncomingOps] = useState<{
+    id: string
+    ops: (SessionOp | StageOp)[]
+  } | null>(null)
   const opsSeq = useRef(0)
-  const handleOps = (ops: SessionOp[]) => {
+  const handleOps = (ops: (SessionOp | StageOp)[]) => {
     opsSeq.current += 1
     setIncomingOps({ id: `ops-${opsSeq.current}`, ops })
   }
@@ -185,6 +192,7 @@ function WorkspaceInner({
         <ProgramDesignFlow
           {...designProps}
           onSessionsChange={setSessions}
+          onStagesChange={setStages}
           incomingOps={incomingOps}
         />
       ) : (
@@ -229,6 +237,7 @@ function WorkspaceInner({
       impactProps,
       incomingOps,
       setSessions,
+      setStages,
       coachCount,
     ],
   )
@@ -253,6 +262,10 @@ function WorkspaceInner({
             // BR-WS-6: design 단계일 때만 현재 회차 목록 동봉 + ops 수신.
             // BR-WS-15: 회차 목록은 Live Plan(ctx.sessions) 단일 소스.
             sessions={stage === 'design' ? sessions : null}
+            // BR-WS-19: 비회차(T4/T5) 구조면 stages 동봉 — structureKind 로 분기.
+            // sessions·stages 는 동시에 값을 갖지 않음(flow 가 kind 로 하나만 보고).
+            stages={stage === 'design' ? stages : null}
+            structureKind={stage === 'design' && stages ? 'nonsession' : 'sessions'}
             onOps={stage === 'design' ? handleOps : undefined}
           />
         </div>

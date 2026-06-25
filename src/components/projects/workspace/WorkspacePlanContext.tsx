@@ -27,7 +27,7 @@ import {
 } from 'react'
 
 import { estimateRequiredCoaches } from '@/lib/coaches/required-count'
-import type { PlanSession } from '@/lib/program-design/plan-types'
+import type { NonSessionStage, PlanSession } from '@/lib/program-design/plan-types'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
   BudgetChannel,
@@ -67,6 +67,14 @@ export interface WorkspacePlanContextValue {
   sessions: PlanSession[] | null
   /** ② 설계 캔버스의 onSessionsChange 가 호출 — Live Plan 갱신. */
   setSessions: (sessions: PlanSession[] | null) => void
+
+  /**
+   * BR-WS-19: 현재 비회차(T4/T5) 단계 목록(설계 캔버스 보고분). 비회차 구조 아니면 null.
+   * (코치수·예산 파생에는 미사용 — 대화 동봉 근거 전용. sessions 와 동시에 null/값이 갈린다.)
+   */
+  stages: NonSessionStage[] | null
+  /** ② 설계 캔버스의 onStagesChange 가 호출 — 비회차 단계 목록 갱신. */
+  setStages: (stages: NonSessionStage[] | null) => void
 
   /** RFP 파싱 결과(있으면) — coachCount 휴리스틱·예산 채널 추정 토대. */
   rfp: RfpParsed | null
@@ -116,6 +124,9 @@ export function WorkspacePlanProvider({
   const [sessions, setSessions] = useState<PlanSession[] | null>(
     initialSessions,
   )
+  // BR-WS-19: 비회차(T4/T5) 단계 목록. 초기엔 null(저장된 1차안은 sessions 시드만 받음 —
+  // 비회차 구조는 캔버스 마운트 후 onStagesChange 가 채운다). 파생(coachCount 등)에는 미사용.
+  const [stages, setStages] = useState<NonSessionStage[] | null>(null)
 
   // 파생: 필요 코치 수 N (sessions/rfp 기반). rfp 없으면 코치수 산정 불가 → 1.
   const { coachCount, coachRationale } = useMemo(() => {
@@ -131,6 +142,8 @@ export function WorkspacePlanProvider({
     () => ({
       sessions,
       setSessions,
+      stages,
+      setStages,
       rfp,
       totalBudget,
       channel,
@@ -141,6 +154,7 @@ export function WorkspacePlanProvider({
     }),
     [
       sessions,
+      stages,
       rfp,
       totalBudget,
       channel,

@@ -26,6 +26,7 @@ import {
   validateSessionOps,
   type SessionOp,
 } from '@/lib/program-design/session-ops'
+import { validateStageOps, type StageOp } from '@/lib/program-design/stage-ops'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -46,12 +47,27 @@ interface SessionRef {
   kind: string
 }
 
+/** BR-WS-19: 비회차(T4/T5) 분기 입력 — 현재 캔버스 단계 목록(label·content 만). 위치는 1-based 순서. */
+interface StageRef {
+  /** 1-based 위치(StageList 화면 번호와 동일). */
+  at: number
+  label: string
+  content: string
+}
+
 interface AssistantBody {
   message?: unknown
   stage?: unknown
   contextSummary?: unknown
-  /** design 단계: 현재 캔버스 세션 목록(매칭 근거). */
+  /**
+   * BR-WS-19: 현재 구조 종류 — 'sessions'(T1~T3 회차표) | 'nonsession'(T4/T5 단계).
+   * 없으면 'sessions' 가정(기존 호환).
+   */
+  structureKind?: unknown
+  /** design 단계: 현재 캔버스 세션 목록(매칭 근거, sessions 구조). */
   sessions?: unknown
+  /** BR-WS-19: 현재 캔버스 단계 목록(비회차 구조). */
+  stages?: unknown
   /** BR-WS-17: 직전 대화 history(맥락 유지) — {role, text}[] 최근 N턴. */
   history?: unknown
 }
@@ -98,6 +114,25 @@ function parseSessionRefs(v: unknown): SessionRef[] {
   return out
 }
 
+/**
+ * body.stages(unknown) → 신뢰 가능한 StageRef[] (label·content 만 추림).
+ * 위치(at)는 배열 순서로 1-based 부여 — 클라가 보내는 at 은 신뢰하지 않고 순서로 재계산.
+ */
+function parseStageRefs(v: unknown): StageRef[] {
+  if (!Array.isArray(v)) return []
+  const out: StageRef[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    out.push({
+      at: out.length + 1,
+      label: typeof o.label === 'string' ? o.label : '',
+      content: typeof o.content === 'string' ? o.content : '',
+    })
+  }
+  return out
+}
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -122,8 +157,18 @@ export async function POST(
   const contextSummary =
     typeof body.contextSummary === 'string' ? body.contextSummary.trim() : ''
 
-  // ── BR-WS-6/17: 프로그램 기획(design) 단계 — 자연어 → 세션 액션(ops) / 카드(choices) ──
+  // ── BR-WS-6/17/19: 프로그램 기획(design) 단계 — 자연어 → 액션(ops) / 카드(choices) ──
+  // 구조 종류로 분기: sessions(T1~T3 회차표) → SessionOp / nonsession(T4/T5 단계) → StageOp.
   if (stageId === 'design') {
+    const structureKind = body.structureKind === 'nonsession' ? 'nonsession' : 'sessions'
+    if (structureKind === 'nonsession') {
+      return handleDesignStages(
+        message,
+        contextSummary,
+        parseStageRefs(body.stages),
+        parseHistory(body.history),
+      )
+    }
     return handleDesign(
       message,
       contextSummary,
@@ -334,6 +379,165 @@ ${message}
   const safeChoices = safeOps.length > 0 ? [] : validateChoices(parsed.choices, knownNos)
 
   // 검증 후 적용할 op 가 하나도 없으면 ops=null(대화만) — 빈 배열로 캔버스 헛갱신 방지.
+  return NextResponse.json({
+    reply,
+    ops: safeOps.length > 0 ? safeOps : null,
+    choices: safeChoices.length > 0 ? safeChoices : null,
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────
+// BR-WS-19 — design 단계(비회차 T4/T5): 자연어 → {reply, ops, choices}
+//   handleDesign(회차표)의 미러. 참조는 1-based 위치 `at`(stage 엔 id 없음).
+// ─────────────────────────────────────────────────────────────────
+
+/** PM 에게 보일 선택 카드 1개(비회차 — ops 는 StageOp[], 최소 1건 보장). */
+interface StageChoice {
+  label: string
+  sub?: string
+  ops: StageOp[]
+}
+
+/**
+ * 검증된 StageOp 중 현재 단계 수(stageCount) 안의 at 만 통과(환각 방지).
+ *   - add 는 파괴적이지 않으므로 통과(afterAt 가 범위 밖이면 라벨만 비워 끝 추가로 폴백).
+ *   - remove/edit/reorder 는 at ∈ [1, stageCount] 인 것만.
+ */
+function filterKnownStageOps(ops: StageOp[], stageCount: number): StageOp[] {
+  return ops.filter((op) => {
+    if (op.op === 'add') {
+      if (op.afterAt !== undefined && (op.afterAt < 1 || op.afterAt > stageCount)) {
+        delete (op as { afterAt?: number }).afterAt
+      }
+      return true
+    }
+    return op.at >= 1 && op.at <= stageCount
+  })
+}
+
+/**
+ * AI 가 낸 choices(unknown) → 검증된 StageChoice[].
+ *   - label 문자열 필수.
+ *   - 각 ops 는 validateStageOps + 범위 밖 at drop(filterKnownStageOps)로 거른다.
+ *   - 적용할 op 이 0건이 된 choice 는 drop(빈 카드 금지). 최대 3개.
+ */
+function validateStageChoices(v: unknown, stageCount: number): StageChoice[] {
+  if (!Array.isArray(v)) return []
+  const out: StageChoice[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    if (typeof o.label !== 'string' || !o.label.trim()) continue
+    const ops = filterKnownStageOps(validateStageOps(o.ops), stageCount)
+    if (ops.length === 0) continue
+    const choice: StageChoice = { label: o.label.trim(), ops }
+    if (typeof o.sub === 'string' && o.sub.trim()) choice.sub = o.sub.trim()
+    out.push(choice)
+    if (out.length >= 3) break
+  }
+  return out
+}
+
+/**
+ * 비회차(T4/T5) 프로그램 기획 단계 응답(handleDesign 미러, 행동 우선).
+ *   - 단계 없음(구조 생성 전) → ops/choices=null + 안내(강제 변경 금지).
+ *   - 있음 → invokeAi(Flash)로 분류 → 명확하면 ops(즉시), 결정/추천이면 choices(카드).
+ *     둘 다 검증된 것만 반환(범위 밖 at drop). 정말 불가능할 때만 reply 로 1회 되물음.
+ *   - history 로 직전 맥락 유지.
+ */
+async function handleDesignStages(
+  message: string,
+  contextSummary: string,
+  stages: StageRef[],
+  history: HistoryTurn[],
+): Promise<NextResponse> {
+  // 단계가 없으면(구조 생성 전) — 강제 생성 금지, 안내만.
+  if (stages.length === 0) {
+    return NextResponse.json({
+      reply:
+        "먼저 우측 캔버스에서 '기획 시작'으로 단계 구조를 생성해 주세요. 단계가 만들어지면 대화로 바로 바꿀 수 있어요.",
+      ops: null,
+      choices: null,
+    })
+  }
+
+  const stageList = stages
+    .map((s) => `- ${s.at}. ${s.label || '(제목 없음)'}${s.content ? ` — ${s.content}` : ''}`)
+    .join('\n')
+
+  // BR-WS-17: 직전 대화를 프롬프트에 넣어 맥락 유지(되묻기 루프 방지).
+  const historyBlock =
+    history.length > 0
+      ? `이전 대화 (오래된→최신, 맥락 유지에 사용):\n${history
+          .map((t) => `${t.role === 'user' ? 'PM' : '보조'}: ${t.text}`)
+          .join('\n')}\n\n`
+      : ''
+
+  const prompt = `너는 언더독스(Underdogs) 교육 기획 **공동기획자**다. PM 이 **비회차(개별 밀착·행사 운영) 프로그램 단계 캔버스**를 대화로 편집하도록, 되묻지 말고 **구체적으로 행동**해서 돕는다. 이 구조는 회차표가 아니라 **순서가 있는 단계(stage) 목록**이다.
+
+${historyBlock}현재 단계 목록 (번호 · 라벨 — 내용):
+${stageList}
+${contextSummary ? `\n현재 단계 요약: ${contextSummary}\n` : ''}
+== 출력 형식 (JSON 객체 하나만, 그 외 텍스트 금지) ==
+{
+  "reply": "PM 에게 보일 한국어 1~2문장",
+  "ops": StageOp[] | null,        // 명확한 직접 지시 → 즉시 적용
+  "choices": [ { "label": string, "sub"?: string, "ops": StageOp[] } ] | null  // 결정/추천 필요 → 카드 2~3개
+}
+
+StageOp 종류 (정확히 이 형태만 — 단계 참조는 위 목록의 **번호(1-based 위치 at)**):
+- { "op": "add", "label"?: string, "content"?: string, "afterAt"?: number }   // afterAt 번호 뒤에(없으면 끝에) 새 단계
+- { "op": "remove", "at": number }                                            // 단계 삭제
+- { "op": "edit", "at": number, "patch": { "label"?: string, "content"?: string, "rationale"?: string } }
+- { "op": "reorder", "at": number, "direction": "up" | "down" }               // 한 칸 위/아래
+
+행동 우선 규칙 (가장 중요):
+- PM 이 변경·추천을 원하면 **반드시 구체적으로 행동**한다 — ops(직접) 또는 choices(2~3안). "잘 짜여 있다" 같은 회피, 요청과 무관한 추천 **금지**. **요청한 작업 그 자체**에 답하라.
+- **명확한 직접 지시**("2번 단계 내용 이렇게 바꿔줘", "마지막에 성과공유회 추가") → ops 로 즉시.
+- **"N단계로 줄여줘"** → 통합/제외할 **구체 안 2~3개**를 choices 로(각 ops 는 목표 개수에 도달하도록 remove/edit 조합).
+- **"늘려줘"** → add 조합 안.
+- **"너가 추천해줘 / 추천안 줘"** → 직전 대화 맥락의 작업에 대한 **구체 추천**: 최선 1안이면 ops, 비교 필요하면 choices 2~3개. **절대 되묻지 마라.**
+- 정말 어떤 행동도 불가능할 때만 ops·choices 둘 다 null 로 두고 reply 로 **딱 1회** 되묻는다.
+
+기타 규칙:
+- "at" 은 **반드시 위 목록에 있는 번호**만(1부터 ${stages.length}까지). 없는 단계 지어내지 마라.
+- 점수·합격/불합격 판정 금지. SROI 는 높을수록 좋은 게 아니라 가정을 비추는 렌즈다 — 단정하지 마라.
+- reply 는 무엇을 했는지(또는 카드 중 골라달라는 안내) 짧게. 군더더기 없이 한국어.
+
+PM 메시지:
+${message}
+
+위 형식의 JSON 객체 하나만 출력하라.`
+
+  let parsed: DesignClassification
+  try {
+    const result = await invokeAi({
+      prompt,
+      maxTokens: AI_TOKENS.STANDARD,
+      temperature: 0.3,
+      model: FLASH_MODEL,
+      label: 'workspace-assistant-design-stages',
+    })
+    parsed = safeParseJson<DesignClassification>(result.raw, 'workspace-assistant-design-stages')
+  } catch (err) {
+    console.error('[assistant:design-stages] invokeAi/parse 실패:', err)
+    return NextResponse.json(
+      { error: '대화 응답 생성에 실패했습니다. 잠시 후 다시 시도해주세요.' },
+      { status: 502 },
+    )
+  }
+
+  const reply =
+    typeof parsed.reply === 'string' && parsed.reply.trim()
+      ? parsed.reply.trim()
+      : '요청을 이해하지 못했어요. 어느 단계를 어떻게 바꿀지 조금 더 구체적으로 알려 주세요.'
+
+  // ops 검증 — 허용 op·필드 타입 + 범위 안 at 만(환각 방지).
+  const safeOps = filterKnownStageOps(validateStageOps(parsed.ops), stages.length)
+
+  // choices 검증 — 각 카드 ops 를 동일 게이트로(불량/빈 카드 drop). ops 가 있으면 카드는 무시(중복 방지).
+  const safeChoices = safeOps.length > 0 ? [] : validateStageChoices(parsed.choices, stages.length)
+
   return NextResponse.json({
     reply,
     ops: safeOps.length > 0 ? safeOps : null,
