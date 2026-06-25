@@ -53,12 +53,21 @@ interface Props {
   onOps?: (ops: SessionOp[]) => void
 }
 
-const WELCOME: ChatMessage = {
-  id: 'welcome',
-  role: 'assistant',
-  text:
-    '안녕하세요. 언더독스 기획 보조입니다. 현재 단계의 산출물을 같이 디벨롭해 봅시다. ' +
-    '궁금한 점이나 방향을 적어 주세요. (이번 버전은 안내·해석 위주 — 캔버스 직접 변경은 곧 추가됩니다.)',
+/**
+ * 단계 인지 첫 인사(BR-WS-9 / SI-greeting). 대화는 단계를 넘어 하나로 이어지므로
+ * 마운트 시 1회만 시드한다(stage 가 바뀌어도 재발급 X — history 유지).
+ *
+ * - `design`(프로그램 기획): 대화로 회차를 바꿀 수 있음을 명시(BR-WS-6 실제 동작 반영).
+ * - 그 외 단계: 안내·해석 중심. 옛 "캔버스 직접 변경은 곧 추가됩니다" 거짓 문구 제거.
+ */
+function welcomeFor(stage: WorkspaceStageId): ChatMessage {
+  const text =
+    stage === 'design'
+      ? '안녕하세요. 언더독스 기획 보조입니다. 이 단계에선 ‘회차를 추가·변경·재배치해줘’처럼 ' +
+        '말하면 오른쪽 커리큘럼이 바로 바뀝니다. 예: ‘마지막에 성과 발표회 추가해줘’.'
+      : '안녕하세요. 언더독스 기획 보조입니다. 현재 단계의 산출물을 같이 디벨롭해 봅시다. ' +
+        '궁금한 점이나 방향을 적어 주세요. (이 단계는 안내·해석 중심이에요.)'
+  return { id: 'welcome', role: 'assistant', text }
 }
 
 export function WorkspaceChat({
@@ -68,7 +77,8 @@ export function WorkspaceChat({
   sessions,
   onOps,
 }: Props) {
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
+  // 마운트 시점 stage 로 1회 시드(lazy init). 이후 stage 변경 시 인사 재발급 안 함 — history 유지.
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [welcomeFor(stage)])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)

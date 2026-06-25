@@ -354,8 +354,10 @@ export function ProgramDesignFlow({
           {/* 목표 확인/수정 */}
           <div style={{ display: 'grid', gap: 6 }}>
             <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
-              목표 확인 · 수정{' '}
-              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(RFP 에서 읽은 목표 — 필요 시 고치세요)</span>
+              기획 시작 목표{' '}
+              <span style={{ color: 'var(--muted)', fontWeight: 400 }}>
+                (이 목표로 커리큘럼을 생성합니다 — RFP 원문 기준 엔진 입력값. ②기획의도의 ‘목표 해석’과는 별개)
+              </span>
             </label>
             <Textarea
               value={goalText}
