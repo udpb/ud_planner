@@ -244,8 +244,8 @@ function WorkspaceInner({
 
       {/* 본문 = 전폭 2-pane, 풀 높이 (페이지 스크롤 X, 각 pane 내부 스크롤) */}
       <div className="flex flex-1 overflow-hidden min-h-0">
-        {/* 좌 ~40% : 대화 (단계 넘어 이어짐) */}
-        <div className="hidden w-2/5 max-w-[520px] shrink-0 md:block">
+        {/* 좌 360px 고정 : 대화 (단계 넘어 이어짐) — 캔버스 flex-1 넓게 (BR-WS-16) */}
+        <div className="hidden w-[360px] shrink-0 md:block">
           <WorkspaceChat
             projectId={projectId}
             stage={stage}
