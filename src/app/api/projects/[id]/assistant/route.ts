@@ -27,6 +27,11 @@ import {
   type SessionOp,
 } from '@/lib/program-design/session-ops'
 import { validateStageOps, type StageOp } from '@/lib/program-design/stage-ops'
+import {
+  validateBudgetOps,
+  type BudgetLineRef,
+  type BudgetOp,
+} from '@/lib/program-design/budget-ops'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -68,6 +73,10 @@ interface AssistantBody {
   sessions?: unknown
   /** BR-WS-19: 현재 캔버스 단계 목록(비회차 구조). */
   stages?: unknown
+  /** BR-WS-22: 예산 단계 — 현재 적산 라인(매칭 근거·환각 방지). {section,label,amount}[]. */
+  budgetLines?: unknown
+  /** BR-WS-22: 예산 단계 — 현재 마진율(0~1, OR/R'). 근거 문구용(단정·강제 금지). */
+  marginRate?: unknown
   /** BR-WS-17: 직전 대화 history(맥락 유지) — {role, text}[] 최근 N턴. */
   history?: unknown
 }
@@ -133,6 +142,29 @@ function parseStageRefs(v: unknown): StageRef[] {
   return out
 }
 
+/**
+ * body.budgetLines(unknown) → 신뢰 가능한 BudgetLineRef[] (section·label·amount 만 추림).
+ * label 없거나 section 이 AC/PC 아니면 drop. amount 는 유한 number 아니면 0.
+ */
+function parseBudgetLineRefs(v: unknown): BudgetLineRef[] {
+  if (!Array.isArray(v)) return []
+  const out: BudgetLineRef[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    const section = o.section === 'AC' || o.section === 'PC' ? o.section : null
+    if (!section) continue
+    if (typeof o.label !== 'string' || !o.label.trim()) continue
+    out.push({
+      section,
+      label: o.label.trim(),
+      amount:
+        typeof o.amount === 'number' && Number.isFinite(o.amount) ? o.amount : 0,
+    })
+  }
+  return out
+}
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -173,6 +205,22 @@ export async function POST(
       message,
       contextSummary,
       parseSessionRefs(body.sessions),
+      parseHistory(body.history),
+    )
+  }
+
+  // ── BR-WS-22: 예산 자동화(budget) 단계 — 자연어 → 라인 override(ops) / 조정안 카드(choices) ──
+  // design 미러: 현재 적산 라인 동봉 → knownLabels 필터로 환각 차단. ops 있으면 choices 무시.
+  if (stageId === 'budget') {
+    const marginRate =
+      typeof body.marginRate === 'number' && Number.isFinite(body.marginRate)
+        ? body.marginRate
+        : null
+    return handleBudget(
+      message,
+      contextSummary,
+      parseBudgetLineRefs(body.budgetLines),
+      marginRate,
       parseHistory(body.history),
     )
   }
@@ -537,6 +585,177 @@ ${message}
 
   // choices 검증 — 각 카드 ops 를 동일 게이트로(불량/빈 카드 drop). ops 가 있으면 카드는 무시(중복 방지).
   const safeChoices = safeOps.length > 0 ? [] : validateStageChoices(parsed.choices, stages.length)
+
+  return NextResponse.json({
+    reply,
+    ops: safeOps.length > 0 ? safeOps : null,
+    choices: safeChoices.length > 0 ? safeChoices : null,
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────
+// BR-WS-22 — 예산 자동화(budget) 단계: 자연어 → {reply, ops, choices}
+//   handleDesign 의 미러. 참조는 라인 라벨(section+label). 라인 override 만 —
+//   적산 엔진·단가표 무변경(BudgetCalcCanvas 가 합으로 OR/마진 재계산).
+// ─────────────────────────────────────────────────────────────────
+
+/** PM 에게 보일 예산 조정 카드 1개(ops 는 BudgetOp[], 최소 1건 보장). */
+interface BudgetChoice {
+  label: string
+  sub?: string
+  ops: BudgetOp[]
+}
+
+/** section+label 키 정규화(knownLabels 셋·필터 동일 규칙). */
+function lineKey(section: 'AC' | 'PC', label: string): string {
+  return `${section}::${label}`
+}
+
+/**
+ * 검증된 BudgetOp 중 현재 라인에 실제 존재하는 (section,label) 만 통과(환각 방지).
+ *   - filterKnownOps(design) 미러. setLine·resetLine 모두 라벨이 현재 라인에 있어야 통과.
+ *   - 없는 라벨을 가리키는 op 는 drop(엔진이 안 만든 라인을 지어내지 못하게).
+ */
+function filterKnownBudgetOps(ops: BudgetOp[], knownLabels: Set<string>): BudgetOp[] {
+  return ops.filter((op) => knownLabels.has(lineKey(op.section, op.label)))
+}
+
+/**
+ * AI 가 낸 choices(unknown) → 검증된 BudgetChoice[].
+ *   - label 문자열 필수.
+ *   - 각 ops 는 validateBudgetOps + knownLabels 필터로 거른다(불량/환각 op drop).
+ *   - 적용할 op 이 0건이 된 choice 는 drop(빈 카드 금지). 최대 3개.
+ */
+function validateBudgetChoices(v: unknown, knownLabels: Set<string>): BudgetChoice[] {
+  if (!Array.isArray(v)) return []
+  const out: BudgetChoice[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    if (typeof o.label !== 'string' || !o.label.trim()) continue
+    const ops = filterKnownBudgetOps(validateBudgetOps(o.ops), knownLabels)
+    if (ops.length === 0) continue // 적용할 게 없는 카드는 버린다.
+    const choice: BudgetChoice = { label: o.label.trim(), ops }
+    if (typeof o.sub === 'string' && o.sub.trim()) choice.sub = o.sub.trim()
+    out.push(choice)
+    if (out.length >= 3) break // 카드는 최대 3개.
+  }
+  return out
+}
+
+/**
+ * 예산 자동화 단계 응답(handleDesign 미러, 행동 우선).
+ *   - 라인 없음(적산 전) → ops/choices=null + 안내(강제 변경 금지).
+ *   - 있음 → invokeAi(Flash)로 분류 → 명확하면 ops(즉시 적용), 조정안이면 choices(카드 2~3개).
+ *     둘 다 검증 + knownLabels 필터(환각 라벨 drop). ops 있으면 choices 무시(중복 방지).
+ *   - ADR-030 관찰 분할(AC≈60%·PC≈8%·OR≈16% of DR)은 **근거 문구**로만(단정·강제 금지).
+ *   - history 로 직전 맥락 유지("운영비 줄여줘" → "너가 추천해줘" 연결).
+ */
+async function handleBudget(
+  message: string,
+  contextSummary: string,
+  budgetLines: BudgetLineRef[],
+  marginRate: number | null,
+  history: HistoryTurn[],
+): Promise<NextResponse> {
+  // 라인이 없으면(적산 전 — 회차·코치 미입력) 강제 생성 금지, 안내만.
+  if (budgetLines.length === 0) {
+    return NextResponse.json({
+      reply:
+        '아직 적산된 예산 라인이 없어요. 프로그램 기획(회차)·코치 매칭을 먼저 진행하면 코칭료·운영비 등 라인이 채워지고, 그때 대화로 바로 조정할 수 있어요.',
+      ops: null,
+      choices: null,
+    })
+  }
+
+  const acList = budgetLines.filter((l) => l.section === 'AC')
+  const pcList = budgetLines.filter((l) => l.section === 'PC')
+  const fmtLine = (l: BudgetLineRef) =>
+    `- [${l.section}] ${l.label} = ${Math.round(l.amount).toLocaleString()}원`
+  const lineBlock = [...acList, ...pcList].map(fmtLine).join('\n')
+
+  const marginBlock =
+    marginRate !== null
+      ? `\n현재 마진율(OR/R'): ${(marginRate * 100).toFixed(1)}%`
+      : ''
+
+  // BR-WS-17: 직전 대화를 프롬프트에 넣어 맥락 유지(되묻기 루프 방지).
+  const historyBlock =
+    history.length > 0
+      ? `이전 대화 (오래된→최신, 맥락 유지에 사용):\n${history
+          .map((t) => `${t.role === 'user' ? 'PM' : '보조'}: ${t.text}`)
+          .join('\n')}\n\n`
+      : ''
+
+  const prompt = `너는 언더독스(Underdogs) 교육 기획 **공동기획자**다. PM 이 **예산 자동화(적산) 캔버스**를 대화로 조정하도록, 되묻지 말고 **구체적인 조정안**으로 행동해서 돕는다.
+
+조정은 **적산 라인의 금액 override** 만 가능하다(단가표·워터폴·OR 공식은 못 바꾼다 — 라인 금액만). 캔버스가 라인 합으로 OR=DR−PC−AC·마진을 다시 계산한다.
+
+${historyBlock}현재 적산 라인 (섹션 · 라벨 = 금액):
+${lineBlock}${marginBlock}
+${contextSummary ? `\n현재 단계 요약: ${contextSummary}\n` : ''}
+참고(ADR-030, 26개 실예산 관찰 중앙 — DR 기준, **근거일 뿐 강제 아님**): 실비(AC)≈60% · 인건비(PC)≈8% · 마진(OR)≈16%. 저비용 프로그램이면 그대로 낮게 나올 수 있다 — 관찰값에 억지로 맞추지 마라.
+
+== 출력 형식 (JSON 객체 하나만, 그 외 텍스트 금지) ==
+{
+  "reply": "PM 에게 보일 한국어 1~2문장",
+  "ops": BudgetOp[] | null,        // 명확한 직접 지시(특정 라인을 얼마로) → 즉시 적용
+  "choices": [ { "label": string, "sub"?: string, "ops": BudgetOp[] } ] | null  // 조정 방향만 → 카드 2~3개
+}
+
+BudgetOp 종류 (정확히 이 형태만 — section 은 "AC"(실비) | "PC"(인건비), label 은 **위 목록의 정확한 라벨**):
+- { "op": "setLine", "section": "AC"|"PC", "label": string, "amount": number }   // 그 라인 금액을 amount(원)로 override
+- { "op": "resetLine", "section": "AC"|"PC", "label": string }                   // override 해제(기본 적산값 복귀)
+
+행동 우선 규칙 (가장 중요):
+- PM 이 조정을 원하면 **반드시 구체적 금액으로 행동**한다 — ops(직접) 또는 choices(2~3안). "적절해 보인다" 같은 회피 **금지**. 요청한 그 항목에 답하라.
+- **"운영비 -20%" "마진을 16%로" 같은 명확한 지시** → 해당 라인의 새 금액을 계산해 setLine ops 로 즉시. (예: 운영비 5,000,000 → "20% 줄여" → setLine amount 4,000,000.)
+- **"마진 너무 높아/낮아 줄여/늘려줘"** → AC/PC 라인을 조정해 목표 방향에 도달하는 **구체 안 2~3개**를 choices 로(각 ops 는 setLine 조합, label 은 어떤 라인을 얼마로 바꾸는지 한 줄, sub 에 그 결과 마진 변화 방향).
+- **"너가 추천해줘 / 조정안 줘"** → 직전 맥락의 작업에 대한 **구체 추천**: 최선 1안이면 ops, 비교 필요하면 choices 2~3개. **절대 되묻지 마라.**
+- 정말 어떤 조정도 불가능할 때(라인·맥락만으로 도저히 못 정함)만 ops·choices 둘 다 null 로 두고 reply 로 **딱 1회** 되묻는다.
+
+기타 규칙:
+- "label" 은 **반드시 위 목록에 있는 정확한 라벨**만. 목록에 없는 라인 지어내지 마라(없는 항목 추가 불가 — override 만).
+- amount 는 0 이상 정수(원). 음수·퍼센트 문자열 금지 — 반드시 절대 금액으로 환산해라.
+- 점수·합격/불합격 판정 금지. 마진은 높을수록 좋은 게 아니다 — 관찰 중앙은 참조일 뿐, 강제 보정하지 마라.
+- reply 는 무엇을 했는지(또는 카드 중 골라달라는 안내) 짧게. 군더더기 없이 한국어.
+
+PM 메시지:
+${message}
+
+위 형식의 JSON 객체 하나만 출력하라.`
+
+  let parsed: DesignClassification
+  try {
+    const result = await invokeAi({
+      prompt,
+      maxTokens: AI_TOKENS.STANDARD,
+      temperature: 0.3,
+      model: FLASH_MODEL,
+      label: 'workspace-assistant-budget',
+    })
+    parsed = safeParseJson<DesignClassification>(result.raw, 'workspace-assistant-budget')
+  } catch (err) {
+    console.error('[assistant:budget] invokeAi/parse 실패:', err)
+    return NextResponse.json(
+      { error: '대화 응답 생성에 실패했습니다. 잠시 후 다시 시도해주세요.' },
+      { status: 502 },
+    )
+  }
+
+  const reply =
+    typeof parsed.reply === 'string' && parsed.reply.trim()
+      ? parsed.reply.trim()
+      : '요청을 이해하지 못했어요. 어느 라인을 얼마로 조정할지 조금 더 구체적으로 알려 주세요.'
+
+  // 현재 라인 라벨 셋(환각 방지 — 적산 엔진이 만든 라인만 통과).
+  const knownLabels = new Set(budgetLines.map((l) => lineKey(l.section, l.label)))
+
+  // ops 검증 — 허용 op·section·금액 타입 + 존재하는 라벨만(환각 방지).
+  const safeOps = filterKnownBudgetOps(validateBudgetOps(parsed.ops), knownLabels)
+
+  // choices 검증 — 각 카드 ops 를 동일 게이트로(불량/빈 카드 drop). ops 가 있으면 카드는 무시(중복 방지).
+  const safeChoices = safeOps.length > 0 ? [] : validateBudgetChoices(parsed.choices, knownLabels)
 
   return NextResponse.json({
     reply,

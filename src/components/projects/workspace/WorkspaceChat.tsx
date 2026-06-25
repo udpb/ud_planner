@@ -27,19 +27,23 @@ import { cn } from '@/lib/utils'
 import type { NonSessionStage, PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
+import type { BudgetLineRef, BudgetOp } from '@/lib/program-design/budget-ops'
 import {
   WORKSPACE_STAGE_LABELS,
   type WorkspaceStageId,
 } from './workspace-stages'
 
-/** BR-WS-19: design 단계 액션 ops — 회차표(SessionOp) | 비회차 단계(StageOp). 카드 렌더는 제네릭. */
-type DesignOp = SessionOp | StageOp
+/**
+ * 캔버스 액션 ops — design 회차표(SessionOp) | design 비회차 단계(StageOp) |
+ * BR-WS-22 예산 라인 override(BudgetOp). 카드 렌더·전달은 op 타입 무관 제네릭(forward).
+ */
+type ChatOp = SessionOp | StageOp | BudgetOp
 
 /** BR-WS-17/19: assistant 카드 선택지 1개 — 클릭 시 ops 를 캔버스에 즉시 적용. */
 interface ChatChoice {
   label: string
   sub?: string
-  ops: DesignOp[]
+  ops: ChatOp[]
 }
 
 interface ChatMessage {
@@ -108,10 +112,19 @@ interface Props {
    */
   structureKind?: 'sessions' | 'nonsession'
   /**
-   * BR-WS-6/19: assistant 가 design 단계에서 ops 를 반환하면 호출(상위가 캔버스에 적용).
-   * design 단계에서만 주입됨. sessions 구조면 SessionOp[], 비회차면 StageOp[].
+   * BR-WS-22: 예산 단계 현재 적산 라인(section·label·amount 전송 — 매칭 근거·환각 방지). 없으면 null.
+   * budget 외 단계에서는 전달 X(전송 body 에서 생략).
    */
-  onOps?: (ops: DesignOp[]) => void
+  budgetLines?: BudgetLineRef[] | null
+  /**
+   * BR-WS-22: 예산 단계 현재 마진율(0~1) — 근거 문구용(단정·강제 금지). 없으면 null.
+   */
+  marginRate?: number | null
+  /**
+   * BR-WS-6/19/22: assistant 가 ops 를 반환하면 호출(상위가 캔버스에 적용). design/budget
+   * 단계에서만 주입됨. design.sessions=SessionOp[], design.비회차=StageOp[], budget=BudgetOp[].
+   */
+  onOps?: (ops: ChatOp[]) => void
   /**
    * BR-WS-20: 서버 복원 메시지(loadWorkspace 가 expressTurnsCache 에서 가드 통과분).
    * 마운트 1회 시드에만 사용 — 있으면 welcome 대신 이 history 로 시작한다.
@@ -144,6 +157,8 @@ export function WorkspaceChat({
   sessions,
   stages,
   structureKind = 'sessions',
+  budgetLines,
+  marginRate,
   onOps,
   initialMessages,
 }: Props) {
@@ -251,6 +266,18 @@ export function WorkspaceChat({
                 })),
               }
             : {}),
+          // BR-WS-22: 예산 단계 — 현재 적산 라인(section·label·amount) + 마진율 동봉.
+          // route 가 knownLabels 필터로 환각 차단 + 마진을 근거 문구로 사용.
+          ...(stage === 'budget' && budgetLines && budgetLines.length > 0
+            ? {
+                budgetLines: budgetLines.map((l) => ({
+                  section: l.section,
+                  label: l.label,
+                  amount: l.amount,
+                })),
+                ...(typeof marginRate === 'number' ? { marginRate } : {}),
+              }
+            : {}),
         }),
       })
 
@@ -269,7 +296,7 @@ export function WorkspaceChat({
       const data = (await res.json()) as {
         reply?: string
         action?: unknown
-        ops?: DesignOp[] | null
+        ops?: ChatOp[] | null
         choices?: ChatChoice[] | null
       }
       const reply = (data.reply ?? '').trim()
@@ -313,7 +340,18 @@ export function WorkspaceChat({
       sendingRef.current = false
       setSending(false)
     }
-  }, [input, projectId, stage, contextSummary, sessions, stages, structureKind, onOps])
+  }, [
+    input,
+    projectId,
+    stage,
+    contextSummary,
+    sessions,
+    stages,
+    structureKind,
+    budgetLines,
+    marginRate,
+    onOps,
+  ])
 
   /**
    * BR-WS-17: 카드 클릭 → 그 카드의 ops 를 캔버스에 즉시 적용(서버 재호출 X).

@@ -23,15 +23,30 @@
  * 편집은 client state — 저장은 이번 범위 밖(향후 Budget 레코드 연계, ADR 후보).
  */
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   calcBudget,
   type BudgetCalcInput,
   type BudgetLine,
 } from '@/lib/program-design/budget-calc'
+import {
+  applyBudgetOps,
+  type BudgetLineRef,
+  type BudgetOp,
+} from '@/lib/program-design/budget-ops'
 
 import { useWorkspacePlan } from './WorkspacePlanContext'
+
+/**
+ * BR-WS-22: 대화가 해석한 예산 조정 ops(라인 override). ProgramWorkspace 가
+ * 단조 증가 id 와 함께 주입 — 같은 객체를 두 번 적용하지 않게 useEffect 에서 id 가드.
+ * (design 의 incomingOps 미러 — 별도 채널이라 design ops 와 섞이지 않음.)
+ */
+interface IncomingBudgetOps {
+  id: string
+  ops: BudgetOp[]
+}
 
 // ─────────────────────────────────────────────────────────────────
 // 포맷 헬퍼
@@ -116,8 +131,14 @@ function LineRow({
 // 메인
 // ─────────────────────────────────────────────────────────────────
 
-export function BudgetCalcCanvas() {
+export function BudgetCalcCanvas({
+  incomingOps,
+}: {
+  /** BR-WS-22: 대화 → 라인 override ops(단조 id). 없으면 대화 연동 없음(기존 동작). */
+  incomingOps?: IncomingBudgetOps | null
+} = {}) {
   // BR-WS-15: 공유 Live Plan 구독 — 회차/코치수/예산/채널/기간/단가표.
+  // BR-WS-22: setBudgetLines 로 현재 라인을 context 에 보고(대화가 구독).
   const {
     sessions,
     coachCount,
@@ -125,6 +146,7 @@ export function BudgetCalcCanvas() {
     channel,
     durationMonths,
     budgetRules,
+    setBudgetLines,
   } = useWorkspacePlan()
 
   // PM 편집값 (라인 amount override) — **라벨 키**(BR-WS-15). 라이브 재적산으로 라인
@@ -132,6 +154,31 @@ export function BudgetCalcCanvas() {
   // 사라진 라벨의 편집은 자연히 무시된다(별도 리셋 불필요). 미저장(client state 만).
   const [acEdits, setAcEdits] = useState<Record<string, number>>({})
   const [pcEdits, setPcEdits] = useState<Record<string, number>>({})
+
+  // ── BR-WS-22: 대화 → 라인 override 수신(design 의 incomingOps 미러) ──
+  // 단조 id 가드: 같은 incomingOps 객체를 두 번 적용하지 않게 마지막 처리한 id 를 기억.
+  // applyBudgetOps 는 순수 — 현재 ac/pcEdits 맵에 setLine(설정)/resetLine(삭제)만 반영.
+  const lastOpsIdRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!incomingOps) return
+    if (lastOpsIdRef.current === incomingOps.id) return // 이미 적용한 ops — 이중 적용 방지.
+    lastOpsIdRef.current = incomingOps.id
+    const ops = incomingOps.ops
+    if (ops.length === 0) return
+    let cancelled = false
+    // setState 는 microtask 경계 이후에만 호출 — react-hooks/set-state-in-effect 규칙 회피
+    // (AutoRecommendedPool 패턴: 동기 setState 금지). id-guard 가 이미 이중 적용 방지.
+    // applyBudgetOps 는 {ac,pc} 통합 맵 순수 변환 — AC/PC 각각 functional 업데이트로 반영
+    // (자기 섹션 op 만 그 맵에 쓰므로 섹션별 분리 적용 결과는 동일).
+    void Promise.resolve().then(() => {
+      if (cancelled) return
+      setAcEdits((prevAc) => applyBudgetOps({ ac: prevAc, pc: {} }, ops).ac)
+      setPcEdits((prevPc) => applyBudgetOps({ ac: {}, pc: prevPc }, ops).pc)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [incomingOps])
 
   // ── 라이브 적산: 단가표 + Live Plan 입력으로 client 에서 calcBudget(useMemo) ──
   // 회차(sessions)·코치수·예산·채널·기간이 변하면 즉시 재계산. node:fs 번들 X(순수).
@@ -218,6 +265,24 @@ export function BudgetCalcCanvas() {
     }
     return { ac, pc, or, marginRate, split, warnings }
   }, [base, acLines, pcLines, totalBudget, budgetRules])
+
+  // ── BR-WS-22: 현재 라인을 context 로 보고(대화 동봉 근거) — sessions 의 onSessionsChange 미러 ──
+  // acLines/pcLines(편집 반영분)를 BudgetLineRef[] 로 평탄화해 setBudgetLines. 직렬화 가드로
+  // 동일 내용이면 setState skip(무한 갱신 방지). marginRate 는 라인에 안 싣고 chat 이 별도 전송.
+  const reportedLines = useMemo<BudgetLineRef[]>(
+    () => [
+      ...acLines.map((l) => ({ section: 'AC' as const, label: l.label, amount: l.amount })),
+      ...pcLines.map((l) => ({ section: 'PC' as const, label: l.label, amount: l.amount })),
+    ],
+    [acLines, pcLines],
+  )
+  const reportSig = JSON.stringify(reportedLines)
+  const lastReportSigRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (lastReportSigRef.current === reportSig) return // 동일 라인 — 보고 skip.
+    lastReportSigRef.current = reportSig
+    setBudgetLines(reportedLines)
+  }, [reportSig, reportedLines, setBudgetLines])
 
   // 단가표 미주입(server 로드 실패) — 적산 불가 안내.
   if (!base || !recomputed) {

@@ -28,6 +28,7 @@ import {
 
 import { estimateRequiredCoaches } from '@/lib/coaches/required-count'
 import type { NonSessionStage, PlanSession } from '@/lib/program-design/plan-types'
+import type { BudgetLineRef } from '@/lib/program-design/budget-ops'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
   BudgetChannel,
@@ -75,6 +76,15 @@ export interface WorkspacePlanContextValue {
   stages: NonSessionStage[] | null
   /** ② 설계 캔버스의 onStagesChange 가 호출 — 비회차 단계 목록 갱신. */
   setStages: (stages: NonSessionStage[] | null) => void
+
+  /**
+   * BR-WS-22: 현재 예산 적산 라인(예산 캔버스 보고분 — section·label·amount). 예산 단계
+   * 진입 전엔 빈 배열. **대화(WorkspaceChat) 동봉 근거 전용** — 코치수·예산 파생엔 미사용.
+   * 예산 캔버스가 onLinesChange 로 보고(sessions 의 onSessionsChange 미러).
+   */
+  budgetLines: BudgetLineRef[]
+  /** ⑤ 예산 캔버스의 보고 콜백 — 현재 적산 라인 갱신(대화가 구독). */
+  setBudgetLines: (lines: BudgetLineRef[]) => void
 
   /** RFP 파싱 결과(있으면) — coachCount 휴리스틱·예산 채널 추정 토대. */
   rfp: RfpParsed | null
@@ -128,6 +138,10 @@ export function WorkspacePlanProvider({
   // 비회차 구조는 캔버스 마운트 후 onStagesChange 가 채운다). 파생(coachCount 등)에는 미사용.
   const [stages, setStages] = useState<NonSessionStage[] | null>(null)
 
+  // BR-WS-22: 예산 적산 라인(예산 캔버스 보고분). 초기엔 빈 배열(캔버스 마운트 후 보고가 채움).
+  // 코치수·예산 파생엔 미사용 — 대화 동봉 근거 전용. sessions 의 보고/구독 패턴 미러.
+  const [budgetLines, setBudgetLines] = useState<BudgetLineRef[]>([])
+
   // 파생: 필요 코치 수 N (sessions/rfp 기반). rfp 없으면 코치수 산정 불가 → 1.
   const { coachCount, coachRationale } = useMemo(() => {
     if (!rfp) return { coachCount: 1, coachRationale: [] as string[] }
@@ -144,6 +158,8 @@ export function WorkspacePlanProvider({
       setSessions,
       stages,
       setStages,
+      budgetLines,
+      setBudgetLines,
       rfp,
       totalBudget,
       channel,
@@ -155,6 +171,7 @@ export function WorkspacePlanProvider({
     [
       sessions,
       stages,
+      budgetLines,
       rfp,
       totalBudget,
       channel,

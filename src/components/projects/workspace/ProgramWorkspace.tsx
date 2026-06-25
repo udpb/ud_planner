@@ -44,6 +44,7 @@ import type { WorkspaceChatMessage } from '@/lib/projects/load-workspace'
 import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
+import type { BudgetOp } from '@/lib/program-design/budget-ops'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
   BudgetChannel,
@@ -157,7 +158,7 @@ function WorkspaceInner({
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
   // BR-WS-19: 비회차(T4/T5) 단계(stages)도 동일 소스에서 — 대화 동봉 근거.
-  const { sessions, setSessions, stages, setStages, coachCount } =
+  const { sessions, setSessions, stages, setStages, coachCount, budgetLines } =
     useWorkspacePlan()
 
   // 활성 stage = client state. server 자동 판정 + ?stage= 1회 선택으로 초기화.
@@ -176,6 +177,18 @@ function WorkspaceInner({
   const handleOps = (ops: (SessionOp | StageOp)[]) => {
     opsSeq.current += 1
     setIncomingOps({ id: `ops-${opsSeq.current}`, ops })
+  }
+
+  // ── BR-WS-22 배선: 대화 ↔ 예산 캔버스 (budget 단계 한정) — design 과 **별도 채널** ──
+  // 서로 안 섞이게 incomingOps(design)와 분리된 budgetIncomingOps 를 둔다. id 단조 증가.
+  const [budgetIncomingOps, setBudgetIncomingOps] = useState<{
+    id: string
+    ops: BudgetOp[]
+  } | null>(null)
+  const budgetOpsSeq = useRef(0)
+  const handleBudgetOps = (ops: BudgetOp[]) => {
+    budgetOpsSeq.current += 1
+    setBudgetIncomingOps({ id: `budget-ops-${budgetOpsSeq.current}`, ops })
   }
 
   // 단계별 우 캔버스 — 전부 기존 컴포넌트 조립/임베드만(내부 재구현 0).
@@ -233,7 +246,8 @@ function WorkspaceInner({
       ),
       // 예산 자동화 — BR-WS-15: ctx(sessions·coachCount·예산·채널·기간·단가표)로 client
       // live calcBudget. 회차 변경 → 적산·마진 실시간 재계산(API fetch 제거).
-      budget: <BudgetCalcCanvas />,
+      // BR-WS-22: 대화 → 라인 override(budgetIncomingOps) 수신 인렛. design 채널과 분리.
+      budget: <BudgetCalcCanvas incomingOps={budgetIncomingOps} />,
       // SROI 예측 = ImpactForecastClient
       sroi: <ImpactForecastClient {...impactProps} />,
     }),
@@ -244,6 +258,7 @@ function WorkspaceInner({
       intentProps,
       impactProps,
       incomingOps,
+      budgetIncomingOps,
       setSessions,
       setStages,
       coachCount,
@@ -274,7 +289,17 @@ function WorkspaceInner({
             // sessions·stages 는 동시에 값을 갖지 않음(flow 가 kind 로 하나만 보고).
             stages={stage === 'design' ? stages : null}
             structureKind={stage === 'design' && stages ? 'nonsession' : 'sessions'}
-            onOps={stage === 'design' ? handleOps : undefined}
+            // BR-WS-22: budget 단계일 때만 현재 적산 라인 동봉(context 단일 소스).
+            budgetLines={stage === 'budget' ? budgetLines : null}
+            // BR-WS-22: design ↔ budget 별도 ops 채널. 서로 안 섞임. 단계가 runtime 타입을
+            // 보장(design→Session/Stage, budget→Budget)하므로 forward 클로저로 좁혀 전달.
+            onOps={
+              stage === 'design'
+                ? (ops) => handleOps(ops as (SessionOp | StageOp)[])
+                : stage === 'budget'
+                  ? (ops) => handleBudgetOps(ops as BudgetOp[])
+                  : undefined
+            }
             // BR-WS-20: 서버 복원 대화(마운트 1회 시드). 없으면 welcome 시작.
             initialMessages={initialChatMessages}
           />
