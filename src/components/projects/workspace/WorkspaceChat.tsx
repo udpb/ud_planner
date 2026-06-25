@@ -28,6 +28,7 @@ import type { NonSessionStage, PlanSession } from '@/lib/program-design/plan-typ
 import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
 import type { BudgetLineRef, BudgetOp } from '@/lib/program-design/budget-ops'
+import type { CoachOp, CoachPoolRef, CoachTeamRef } from '@/lib/coaches/coach-ops'
 import {
   WORKSPACE_STAGE_LABELS,
   type WorkspaceStageId,
@@ -35,9 +36,10 @@ import {
 
 /**
  * 캔버스 액션 ops — design 회차표(SessionOp) | design 비회차 단계(StageOp) |
- * BR-WS-22 예산 라인 override(BudgetOp). 카드 렌더·전달은 op 타입 무관 제네릭(forward).
+ * BR-WS-22 예산 라인 override(BudgetOp) | BR-WS-24 코치 배정/교체/제거(CoachOp).
+ * 카드 렌더·전달은 op 타입 무관 제네릭(forward). 코치 op 의 apply 만 서버 영속(상위가 처리).
  */
-type ChatOp = SessionOp | StageOp | BudgetOp
+type ChatOp = SessionOp | StageOp | BudgetOp | CoachOp
 
 /** BR-WS-17/19: assistant 카드 선택지 1개 — 클릭 시 ops 를 캔버스에 즉시 적용. */
 interface ChatChoice {
@@ -121,8 +123,22 @@ interface Props {
    */
   marginRate?: number | null
   /**
-   * BR-WS-6/19/22: assistant 가 ops 를 반환하면 호출(상위가 캔버스에 적용). design/budget
-   * 단계에서만 주입됨. design.sessions=SessionOp[], design.비회차=StageOp[], budget=BudgetOp[].
+   * BR-WS-24: 코치 단계 현재 추천 풀(coachId·name·단가·강점·점수 전송 — 매칭 근거·환각 방지). 없으면 null.
+   * coach 외 단계에서는 전달 X(전송 body 에서 생략).
+   */
+  coachPool?: CoachPoolRef[] | null
+  /**
+   * BR-WS-24: 코치 단계 현재 선발팀(assignmentId·coachId·coachName·role 전송 — 매칭 근거·환각 방지). 없으면 null.
+   */
+  coachTeam?: CoachTeamRef[] | null
+  /**
+   * BR-WS-24: 코치 단계 필요 코치 수 N(Live Plan) — 근거 문구용(단정·강제 금지). 없으면 null.
+   */
+  requiredN?: number | null
+  /**
+   * BR-WS-6/19/22/24: assistant 가 ops 를 반환하면 호출(상위가 캔버스/서버에 적용). design/budget/coach
+   * 단계에서만 주입됨. design.sessions=SessionOp[], design.비회차=StageOp[], budget=BudgetOp[],
+   * coach=CoachOp[](상위가 coach-assignments API 로 영속 후 로스터 재fetch).
    */
   onOps?: (ops: ChatOp[]) => void
   /**
@@ -159,6 +175,9 @@ export function WorkspaceChat({
   structureKind = 'sessions',
   budgetLines,
   marginRate,
+  coachPool,
+  coachTeam,
+  requiredN,
   onOps,
   initialMessages,
 }: Props) {
@@ -278,6 +297,27 @@ export function WorkspaceChat({
                 ...(typeof marginRate === 'number' ? { marginRate } : {}),
               }
             : {}),
+          // BR-WS-24: 코치 단계 — 추천 풀 + 선발팀 + 필요 코치 수 동봉(매칭 근거·환각 방지).
+          // route 가 knownIds 필터로 환각 coachId/assignmentId 차단. 둘 중 하나만 있어도 전송.
+          ...(stage === 'coach' &&
+          ((coachPool && coachPool.length > 0) || (coachTeam && coachTeam.length > 0))
+            ? {
+                coachPool: (coachPool ?? []).map((c) => ({
+                  coachId: c.coachId,
+                  name: c.name,
+                  coachRateMain: c.coachRateMain,
+                  strengthOneLiner: c.strengthOneLiner,
+                  matchScore: c.matchScore,
+                })),
+                coachTeam: (coachTeam ?? []).map((m) => ({
+                  assignmentId: m.assignmentId,
+                  coachId: m.coachId,
+                  coachName: m.coachName,
+                  role: m.role,
+                })),
+                ...(typeof requiredN === 'number' ? { requiredN } : {}),
+              }
+            : {}),
         }),
       })
 
@@ -350,6 +390,9 @@ export function WorkspaceChat({
     structureKind,
     budgetLines,
     marginRate,
+    coachPool,
+    coachTeam,
+    requiredN,
     onOps,
   ])
 

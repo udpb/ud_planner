@@ -17,7 +17,7 @@
  * 디자인킷 260529: accent #F05519 1개, radius 0, 틴트 박스. 제거는 절제(텍스트 버튼).
  */
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { JSX } from 'react'
 import { Loader2, Trash2, CheckCircle2, Users } from 'lucide-react'
 import type { CoachTeamMember } from '@/lib/projects/load-workspace'
@@ -40,6 +40,30 @@ interface Props {
    * 최신 coachId 배열을 넘긴다.
    */
   onChange?: (coachIds: string[]) => void
+  /**
+   * BR-WS-24: 로스터 변동 시(초기 마운트·제거·재fetch) 호출 — 부모가 Live Plan(ctx.setCoachTeam)에
+   * 보고해 대화(WorkspaceChat)가 remove/swap 근거로 쓴다. assignmentId·coachId·coachName·role 만.
+   * onChange(coachIds)와 달리 **선발팀 전체 메타**를 넘긴다.
+   */
+  onTeamChange?: (team: CoachTeamRef[]) => void
+}
+
+/** BR-WS-24: 대화 동봉용 선발팀 1건(coach-ops 의 CoachTeamRef 와 동형 — 순환 import 회피로 로컬 정의). */
+interface CoachTeamRef {
+  assignmentId: string
+  coachId: string
+  coachName: string
+  role: string
+}
+
+/** CoachTeamMember[] → 대화 동봉용 CoachTeamRef[] (assignmentId·coachId·coachName·role 만). */
+function toTeamRefs(team: CoachTeamMember[]): CoachTeamRef[] {
+  return team.map((m) => ({
+    assignmentId: m.assignmentId,
+    coachId: m.coachId,
+    coachName: m.coach.name,
+    role: m.role,
+  }))
 }
 
 const ROLE_LABEL: Record<string, string> = {
@@ -64,11 +88,27 @@ export function SelectedTeamPanel({
   requiredCount,
   refreshSignal = 0,
   onChange,
+  onTeamChange,
 }: Props): JSX.Element {
   const [team, setTeam] = useState<CoachTeamMember[]>(initialTeam)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [removingId, setRemovingId] = useState<string | null>(null)
+
+  // BR-WS-24: 부모 콜백은 매 렌더 새 함수일 수 있어 effect/콜백 deps 에 넣지 않고 ref 로 최신 참조 유지.
+  const onTeamChangeRef = useRef(onTeamChange)
+  onTeamChangeRef.current = onTeamChange
+
+  // 초기 마운트 1회 — SSR hydrate 한 initialTeam 을 Live Plan 에 보고(대화 동봉 근거 시드).
+  // 이후 변동은 refetch 가 보고. mount-once 가드(초기 1회만).
+  const didReportMountRef = useRef(false)
+  useEffect(() => {
+    if (didReportMountRef.current) return
+    didReportMountRef.current = true
+    onTeamChangeRef.current?.(toTeamRefs(initialTeam))
+    // initialTeam 은 SSR 고정값 — 마운트 1회만 보고(이후 권위 소스는 GET refetch).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // 부모가 넘기는 onChange 는 effect 의존성에 넣지 않는다(매 렌더 새 함수 가능).
   // 최신 참조를 ref 없이 안전하게 쓰려고 refetch 안에서만 호출.
@@ -92,6 +132,7 @@ export function SelectedTeamPanel({
       const next = Array.isArray(data.team) ? data.team : []
       setTeam(next)
       onChange?.(next.map((m) => m.coachId))
+      onTeamChangeRef.current?.(toTeamRefs(next))
     } catch {
       setError('선발팀 로드 실패')
     } finally {

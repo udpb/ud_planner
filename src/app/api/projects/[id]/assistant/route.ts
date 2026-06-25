@@ -32,6 +32,13 @@ import {
   type BudgetLineRef,
   type BudgetOp,
 } from '@/lib/program-design/budget-ops'
+import {
+  ASSIGNMENT_ROLES,
+  validateCoachOps,
+  type CoachOp,
+  type CoachPoolRef,
+  type CoachTeamRef,
+} from '@/lib/coaches/coach-ops'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -77,6 +84,12 @@ interface AssistantBody {
   budgetLines?: unknown
   /** BR-WS-22: 예산 단계 — 현재 마진율(0~1, OR/R'). 근거 문구용(단정·강제 금지). */
   marginRate?: unknown
+  /** BR-WS-24: 코치 단계 — 현재 추천 풀(coachId·name·단가·강점·점수). assign/swap 근거·환각 방지. */
+  coachPool?: unknown
+  /** BR-WS-24: 코치 단계 — 현재 선발팀(assignmentId·coachId·coachName·role). remove/swap 근거·환각 방지. */
+  coachTeam?: unknown
+  /** BR-WS-24: 코치 단계 — 필요 코치 수 N(Live Plan). 근거 문구용(단정·강제 금지). */
+  requiredN?: unknown
   /** BR-WS-17: 직전 대화 history(맥락 유지) — {role, text}[] 최근 N턴. */
   history?: unknown
 }
@@ -165,6 +178,53 @@ function parseBudgetLineRefs(v: unknown): BudgetLineRef[] {
   return out
 }
 
+/**
+ * body.coachPool(unknown) → 신뢰 가능한 CoachPoolRef[] (coachId·name·단가·강점·점수 추림).
+ * coachId 없으면 drop. coachRateMain 은 유한 양수 number 아니면 null. matchScore 는 number 아니면 0.
+ */
+function parseCoachPoolRefs(v: unknown): CoachPoolRef[] {
+  if (!Array.isArray(v)) return []
+  const out: CoachPoolRef[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    if (typeof o.coachId !== 'string' || !o.coachId.trim()) continue
+    out.push({
+      coachId: o.coachId.trim(),
+      name: typeof o.name === 'string' ? o.name : '',
+      coachRateMain:
+        typeof o.coachRateMain === 'number' && Number.isFinite(o.coachRateMain) && o.coachRateMain > 0
+          ? o.coachRateMain
+          : null,
+      strengthOneLiner: typeof o.strengthOneLiner === 'string' ? o.strengthOneLiner : '',
+      matchScore:
+        typeof o.matchScore === 'number' && Number.isFinite(o.matchScore) ? o.matchScore : 0,
+    })
+  }
+  return out
+}
+
+/**
+ * body.coachTeam(unknown) → 신뢰 가능한 CoachTeamRef[] (assignmentId·coachId·coachName·role 추림).
+ * assignmentId 없으면 drop.
+ */
+function parseCoachTeamRefs(v: unknown): CoachTeamRef[] {
+  if (!Array.isArray(v)) return []
+  const out: CoachTeamRef[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    if (typeof o.assignmentId !== 'string' || !o.assignmentId.trim()) continue
+    out.push({
+      assignmentId: o.assignmentId.trim(),
+      coachId: typeof o.coachId === 'string' ? o.coachId : '',
+      coachName: typeof o.coachName === 'string' ? o.coachName : '',
+      role: typeof o.role === 'string' ? o.role : '',
+    })
+  }
+  return out
+}
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -221,6 +281,24 @@ export async function POST(
       contextSummary,
       parseBudgetLineRefs(body.budgetLines),
       marginRate,
+      parseHistory(body.history),
+    )
+  }
+
+  // ── BR-WS-24: 코치 매칭(coach) 단계 — 자연어 → 배정/교체/제거(ops) / 후보 카드(choices) ──
+  // budget 미러: 추천 풀·선발팀 동봉 → knownIds 필터로 환각 차단. apply 는 ProgramWorkspace 가
+  // 기존 coach-assignments POST/DELETE 로(서버 영속) — route 는 검증된 CoachOp 만 반환.
+  if (stageId === 'coach') {
+    const requiredN =
+      typeof body.requiredN === 'number' && Number.isFinite(body.requiredN) && body.requiredN > 0
+        ? Math.round(body.requiredN)
+        : null
+    return handleCoach(
+      message,
+      contextSummary,
+      parseCoachPoolRefs(body.coachPool),
+      parseCoachTeamRefs(body.coachTeam),
+      requiredN,
       parseHistory(body.history),
     )
   }
@@ -756,6 +834,215 @@ ${message}
 
   // choices 검증 — 각 카드 ops 를 동일 게이트로(불량/빈 카드 drop). ops 가 있으면 카드는 무시(중복 방지).
   const safeChoices = safeOps.length > 0 ? [] : validateBudgetChoices(parsed.choices, knownLabels)
+
+  return NextResponse.json({
+    reply,
+    ops: safeOps.length > 0 ? safeOps : null,
+    choices: safeChoices.length > 0 ? safeChoices : null,
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────
+// BR-WS-24 — 코치 매칭(coach) 단계: 자연어 → {reply, ops, choices}
+//   handleBudget 의 미러. 참조는 추천 풀 coachId + 선발팀 assignmentId.
+//   ⚠️ apply 는 client override 가 아니라 **서버 영속**(POST/DELETE coach-assignments) —
+//      route 는 검증된 CoachOp 만 반환하고, ProgramWorkspace 가 op 별 fetch 후 로스터 재fetch.
+// ─────────────────────────────────────────────────────────────────
+
+/** PM 에게 보일 코치 후보 카드 1개(ops 는 CoachOp[], 최소 1건 보장). */
+interface CoachChoice {
+  label: string
+  sub?: string
+  ops: CoachOp[]
+}
+
+/**
+ * 검증된 CoachOp 중 현재 풀·팀에 실제 존재하는 id 만 통과(환각 방지 — budget 의 knownLabels 미러).
+ *   - assign : coachId ∈ poolIds.
+ *   - remove : assignmentId ∈ teamIds.
+ *   - swap   : addCoachId ∈ poolIds **그리고** removeAssignmentId ∈ teamIds.
+ * 어느 하나라도 모르는 id 면 drop(엔진이 안 만든 코치/배정을 지어내지 못하게).
+ */
+function filterKnownCoachOps(
+  ops: CoachOp[],
+  poolIds: Set<string>,
+  teamIds: Set<string>,
+): CoachOp[] {
+  return ops.filter((op) => {
+    if (op.op === 'assign') return poolIds.has(op.coachId)
+    if (op.op === 'remove') return teamIds.has(op.assignmentId)
+    // swap — 양쪽 다 존재해야 통과.
+    return poolIds.has(op.addCoachId) && teamIds.has(op.removeAssignmentId)
+  })
+}
+
+/**
+ * AI 가 낸 choices(unknown) → 검증된 CoachChoice[].
+ *   - label 문자열 필수.
+ *   - 각 ops 는 validateCoachOps + knownIds 필터로 거른다(불량/환각 op drop).
+ *   - 적용할 op 이 0건이 된 choice 는 drop(빈 카드 금지). 최대 3개.
+ */
+function validateCoachChoices(
+  v: unknown,
+  poolIds: Set<string>,
+  teamIds: Set<string>,
+): CoachChoice[] {
+  if (!Array.isArray(v)) return []
+  const out: CoachChoice[] = []
+  for (const item of v) {
+    if (!item || typeof item !== 'object') continue
+    const o = item as Record<string, unknown>
+    if (typeof o.label !== 'string' || !o.label.trim()) continue
+    const ops = filterKnownCoachOps(validateCoachOps(o.ops), poolIds, teamIds)
+    if (ops.length === 0) continue // 적용할 게 없는 카드는 버린다.
+    const choice: CoachChoice = { label: o.label.trim(), ops }
+    if (typeof o.sub === 'string' && o.sub.trim()) choice.sub = o.sub.trim()
+    out.push(choice)
+    if (out.length >= 3) break // 카드는 최대 3개.
+  }
+  return out
+}
+
+/**
+ * 코치 매칭 단계 응답(handleBudget 미러, 행동 우선).
+ *   - 추천 풀·선발팀 둘 다 없음 → ops/choices=null + 안내(RFP 분석 먼저).
+ *   - 있음 → invokeAi(Flash)로 분류 → "추천/추가" → assign 카드(풀 상위), "교체/대신" → swap,
+ *     "빼줘" → remove. 명확하면 ops(즉시), 비교 필요하면 choices(카드 2~3개).
+ *     둘 다 검증 + knownIds 필터(환각 coachId/assignmentId drop). ops 있으면 choices 무시.
+ *   - role 기본 추론: 선발팀이 비면 첫 배정 = MAIN_COACH, 이미 있으면 추가 = SUB_COACH.
+ *   - agreedRate 기본 = 풀의 coachRateMain(프롬프트가 안내, route 가 사후 보정).
+ *   - 점수·합격 판정 0. SROI/단가 우열 단정 금지.
+ *   - history 로 직전 맥락 유지("디지털 전문가 추가" → "너가 추천해줘" 연결).
+ */
+async function handleCoach(
+  message: string,
+  contextSummary: string,
+  coachPool: CoachPoolRef[],
+  coachTeam: CoachTeamRef[],
+  requiredN: number | null,
+  history: HistoryTurn[],
+): Promise<NextResponse> {
+  // 추천 풀·선발팀 둘 다 비면(추천 전 — RFP 분석 미완) 강제 배정 금지, 안내만.
+  if (coachPool.length === 0 && coachTeam.length === 0) {
+    return NextResponse.json({
+      reply:
+        '아직 추천 풀과 선발팀이 비어 있어요. RFP 분석을 먼저 진행하면 우측에 AI 추천 풀이 채워지고, 그때 대화로 바로 배정·교체할 수 있어요.',
+      ops: null,
+      choices: null,
+    })
+  }
+
+  // 첫 배정 기본 역할(팀이 비면 메인, 있으면 보조) — 프롬프트 안내·route 폴백 근거.
+  const defaultRole = coachTeam.length === 0 ? 'MAIN_COACH' : 'SUB_COACH'
+
+  const poolList = coachPool
+    .slice(0, 15)
+    .map(
+      (c) =>
+        `- coachId=${c.coachId} · ${c.name || '(이름 없음)'} · 매칭 ${(c.matchScore * 100).toFixed(0)}%` +
+        `${c.coachRateMain != null ? ` · 단가 ${Math.round(c.coachRateMain / 10000)}만원` : ''}` +
+        `${c.strengthOneLiner ? ` · ${c.strengthOneLiner}` : ''}`,
+    )
+    .join('\n')
+
+  const teamList =
+    coachTeam.length > 0
+      ? coachTeam
+          .map(
+            (m) =>
+              `- assignmentId=${m.assignmentId} · ${m.coachName || '(이름 없음)'} · 역할 ${m.role}`,
+          )
+          .join('\n')
+      : '(아직 선발된 코치 없음)'
+
+  // BR-WS-17: 직전 대화를 프롬프트에 넣어 맥락 유지(되묻기 루프 방지).
+  const historyBlock =
+    history.length > 0
+      ? `이전 대화 (오래된→최신, 맥락 유지에 사용):\n${history
+          .map((t) => `${t.role === 'user' ? 'PM' : '보조'}: ${t.text}`)
+          .join('\n')}\n\n`
+      : ''
+
+  const requiredBlock =
+    requiredN != null ? `\n필요 코치 수(참고): ${requiredN}명 (현재 선발 ${coachTeam.length}명)` : ''
+
+  const prompt = `너는 언더독스(Underdogs) 교육 기획 **공동기획자**다. PM 이 **코치 매칭**을 대화로 진행하도록, 되묻지 말고 **구체적인 후보**로 행동해서 돕는다.
+
+배정/교체/제거는 **추천 풀의 코치(coachId)**·**선발팀의 배정(assignmentId)**만 다룰 수 있다(새 코치를 지어내지 않는다). apply 는 서버에 영속된다.
+
+${historyBlock}현재 추천 풀 (coachId · 이름 · 매칭 · 단가 · 강점):
+${poolList || '(추천 풀 비어 있음)'}
+
+현재 선발팀 (assignmentId · 이름 · 역할):
+${teamList}${requiredBlock}
+${contextSummary ? `\n현재 단계 요약: ${contextSummary}\n` : ''}
+== 출력 형식 (JSON 객체 하나만, 그 외 텍스트 금지) ==
+{
+  "reply": "PM 에게 보일 한국어 1~2문장",
+  "ops": CoachOp[] | null,        // 명확한 직접 지시(이 코치를 배정/이 배정을 제거/이 코치로 교체) → 즉시 적용
+  "choices": [ { "label": string, "sub"?: string, "ops": CoachOp[] } ] | null  // 후보 비교 필요 → 카드 2~3개
+}
+
+CoachOp 종류 (정확히 이 형태만):
+- { "op": "assign", "coachId": string, "coachName": string, "role": AssignmentRole, "agreedRate"?: number }   // 추천 풀에서 배정
+- { "op": "remove", "assignmentId": string, "coachName": string }                                             // 선발팀에서 제거
+- { "op": "swap", "removeAssignmentId": string, "addCoachId": string, "addCoachName": string, "role": AssignmentRole, "agreedRate"?: number }  // 교체
+
+AssignmentRole = ${ASSIGNMENT_ROLES.map((r) => `"${r}"`).join(' | ')}
+- coachId 는 **반드시 위 추천 풀 목록의 coachId**, assignmentId 는 **반드시 위 선발팀 목록의 assignmentId**. 없는 id 지어내지 마라.
+- role 기본값: 선발팀이 비어 있으면 첫 배정은 "MAIN_COACH", 이미 멤버가 있으면 추가는 "SUB_COACH"(현재 기본은 "${defaultRole}"). 강사/심사 등 명시 요청이 있으면 그 역할로.
+- agreedRate 는 가능하면 그 코치의 풀 단가(위 "단가")를 원 단위로 넣어라(예: 단가 60만원 → 600000). 모르면 생략.
+
+행동 우선 규칙 (가장 중요):
+- PM 이 배정/교체/제거를 원하면 **반드시 구체적으로 행동**한다 — ops(직접) 또는 choices(2~3안). "적합한 분이 많아요" 같은 회피 **금지**. 요청한 작업 그 자체에 답하라.
+- **"추천해줘 / 디지털 전문가 추가해줘 / 한 명 더"** → 추천 풀 상위 적합자 2~3명을 assign **choices** 로(각 카드 ops 는 그 코치 1명 assign, label=이름·강점, sub=매칭/단가). 최적 1명이 분명하면 ops 로 즉시.
+- **"1번 코치 대신 / ~를 다른 사람으로 / 교체"** → 빠질 배정(assignmentId)과 들어올 풀 코치(coachId)를 짝지어 swap. 후보가 여럿이면 choices 2~3개.
+- **"~ 빼줘 / 제거"** → 해당 선발팀 멤버 remove(ops 즉시 또는 1카드).
+- **"너가 추천해줘 / 골라줘"** → 직전 맥락의 작업에 대한 구체 추천. **절대 되묻지 마라.**
+- 정말 어떤 행동도 불가능할 때(풀·팀·맥락만으로 도저히 못 정함)만 ops·choices 둘 다 null 로 두고 reply 로 **딱 1회** 되묻는다.
+
+기타 규칙:
+- 점수·합격/불합격 판정 금지. 단가·매칭 점수는 참조일 뿐, 우열을 단정하지 마라. SROI 는 높을수록 좋은 게 아니다.
+- reply 는 무엇을 했는지(또는 카드 중 골라달라는 안내) 짧게. 군더더기 없이 한국어.
+
+PM 메시지:
+${message}
+
+위 형식의 JSON 객체 하나만 출력하라.`
+
+  let parsed: DesignClassification
+  try {
+    const result = await invokeAi({
+      prompt,
+      maxTokens: AI_TOKENS.STANDARD,
+      temperature: 0.3,
+      model: FLASH_MODEL,
+      label: 'workspace-assistant-coach',
+    })
+    parsed = safeParseJson<DesignClassification>(result.raw, 'workspace-assistant-coach')
+  } catch (err) {
+    console.error('[assistant:coach] invokeAi/parse 실패:', err)
+    return NextResponse.json(
+      { error: '대화 응답 생성에 실패했습니다. 잠시 후 다시 시도해주세요.' },
+      { status: 502 },
+    )
+  }
+
+  const reply =
+    typeof parsed.reply === 'string' && parsed.reply.trim()
+      ? parsed.reply.trim()
+      : '요청을 이해하지 못했어요. 어떤 코치를 배정·교체·제거할지 조금 더 구체적으로 알려 주세요.'
+
+  // 환각 방지 — 추천 풀 coachId·선발팀 assignmentId 셋(엔진/로스터가 실제 만든 것만 통과).
+  const poolIds = new Set(coachPool.map((c) => c.coachId))
+  const teamIds = new Set(coachTeam.map((m) => m.assignmentId))
+
+  // ops 검증 — 허용 op·role enum·id 타입 + 존재하는 id 만(환각 방지).
+  const safeOps = filterKnownCoachOps(validateCoachOps(parsed.ops), poolIds, teamIds)
+
+  // choices 검증 — 각 카드 ops 를 동일 게이트로(불량/빈 카드 drop). ops 가 있으면 카드는 무시(중복 방지).
+  const safeChoices =
+    safeOps.length > 0 ? [] : validateCoachChoices(parsed.choices, poolIds, teamIds)
 
   return NextResponse.json({
     reply,

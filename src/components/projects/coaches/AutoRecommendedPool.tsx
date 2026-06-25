@@ -11,7 +11,7 @@
  *   - 에러 케이스: HTML 세션만료, 400 RFP 없음, 503 Supabase, 네트워크 — 분기 메시지
  */
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { JSX } from 'react'
 import {
   AlertCircle,
@@ -49,6 +49,12 @@ interface Props {
    * 표기만 ctx 와 맞춘다. 없으면 기존 동작(API 응답 requiredN 사용).
    */
   requiredCountOverride?: number
+  /**
+   * BR-WS-24 (props only): 추천 풀 fetch 완료 시(state.kind==='ready') 호출 — 부모가
+   * Live Plan(ctx.setCoachPool)에 보고해 대화(WorkspaceChat)가 assign/swap 근거로 쓴다.
+   * 추천 fetch·카드 그리드·내부 로직은 **무변경** — 보고 콜백만 추가.
+   */
+  onPoolLoaded?: (pool: CoachRecommendation[]) => void
   className?: string
 }
 
@@ -70,11 +76,24 @@ export function AutoRecommendedPool({
   onPick,
   onOpenAssignModal,
   requiredCountOverride,
+  onPoolLoaded,
   className,
 }: Props): JSX.Element {
   const [state, setState] = useState<FetchState>({ kind: 'loading' })
   const [rationaleOpen, setRationaleOpen] = useState(false)
   const [refetchTick, setRefetchTick] = useState(0)
+
+  // BR-WS-24: 추천 풀이 ready 되면 부모에 보고(대화 동봉 근거). 콜백은 deps 에서 제외
+  // (매 렌더 새 함수일 수 있음) — ref 로 최신 참조를 유지하되 effect 안에서만 갱신/호출
+  // (렌더 중 ref 접근 금지 규칙 준수). ready 데이터가 변할 때만 발화.
+  const onPoolLoadedRef = useRef(onPoolLoaded)
+  useEffect(() => {
+    onPoolLoadedRef.current = onPoolLoaded
+  }, [onPoolLoaded])
+  const ready = state.kind === 'ready' ? state.data.recommendations : null
+  useEffect(() => {
+    if (ready) onPoolLoadedRef.current?.(ready)
+  }, [ready])
 
   // useEffect 안에서 직접 fetch 수행 — react-hooks/set-state-in-effect 규칙 회피.
   // setState 는 await 이후에만 호출되고, cleanup flag 로 unmount race 방지.

@@ -29,6 +29,7 @@ import {
 import { estimateRequiredCoaches } from '@/lib/coaches/required-count'
 import type { NonSessionStage, PlanSession } from '@/lib/program-design/plan-types'
 import type { BudgetLineRef } from '@/lib/program-design/budget-ops'
+import type { CoachPoolRef, CoachTeamRef } from '@/lib/coaches/coach-ops'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
   BudgetChannel,
@@ -86,6 +87,23 @@ export interface WorkspacePlanContextValue {
   /** ⑤ 예산 캔버스의 보고 콜백 — 현재 적산 라인 갱신(대화가 구독). */
   setBudgetLines: (lines: BudgetLineRef[]) => void
 
+  /**
+   * BR-WS-24: 현재 코치 추천 풀(AutoRecommendedPool 보고분 — coachId·name·단가·강점·점수).
+   * 추천 fetch 전엔 빈 배열. **대화(WorkspaceChat) 동봉 근거 전용**(assign/swap 환각 방지).
+   * AutoRecommendedPool 이 onPoolLoaded 로 보고(budgetLines 의 보고/구독 패턴 미러).
+   */
+  coachPool: CoachPoolRef[]
+  /** ④ 추천 풀의 보고 콜백 — 현재 추천 풀 갱신(대화가 구독). */
+  setCoachPool: (pool: CoachPoolRef[]) => void
+
+  /**
+   * BR-WS-24: 현재 코치 선발팀(SelectedTeamPanel 보고분 — assignmentId·coachId·coachName·role).
+   * 배정 전엔 빈 배열. **대화 동봉 근거 전용**(remove/swap 환각 방지). 패널이 onTeamChange 로 보고.
+   */
+  coachTeam: CoachTeamRef[]
+  /** ④ 선발팀 패널의 보고 콜백 — 현재 선발팀 갱신(대화가 구독). */
+  setCoachTeam: (team: CoachTeamRef[]) => void
+
   /** RFP 파싱 결과(있으면) — coachCount 휴리스틱·예산 채널 추정 토대. */
   rfp: RfpParsed | null
   /** 총예산 R(VAT 포함). 없으면 0(예산 캔버스가 안내). */
@@ -142,6 +160,11 @@ export function WorkspacePlanProvider({
   // 코치수·예산 파생엔 미사용 — 대화 동봉 근거 전용. sessions 의 보고/구독 패턴 미러.
   const [budgetLines, setBudgetLines] = useState<BudgetLineRef[]>([])
 
+  // BR-WS-24: 코치 추천 풀·선발팀(코치 캔버스 보고분). 초기엔 빈 배열(마운트 후 보고가 채움).
+  // 대화(WorkspaceChat) 동봉 근거 전용(assign/swap·remove/swap 환각 방지) — 파생엔 미사용.
+  const [coachPool, setCoachPool] = useState<CoachPoolRef[]>([])
+  const [coachTeam, setCoachTeam] = useState<CoachTeamRef[]>([])
+
   // 파생: 필요 코치 수 N (sessions/rfp 기반). rfp 없으면 코치수 산정 불가 → 1.
   const { coachCount, coachRationale } = useMemo(() => {
     if (!rfp) return { coachCount: 1, coachRationale: [] as string[] }
@@ -160,6 +183,10 @@ export function WorkspacePlanProvider({
       setStages,
       budgetLines,
       setBudgetLines,
+      coachPool,
+      setCoachPool,
+      coachTeam,
+      setCoachTeam,
       rfp,
       totalBudget,
       channel,
@@ -172,6 +199,8 @@ export function WorkspacePlanProvider({
       sessions,
       stages,
       budgetLines,
+      coachPool,
+      coachTeam,
       rfp,
       totalBudget,
       channel,

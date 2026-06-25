@@ -50,6 +50,8 @@ import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
 import type { BudgetOp } from '@/lib/program-design/budget-ops'
+import type { CoachOp } from '@/lib/coaches/coach-ops'
+import { toast } from 'sonner'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
   BudgetChannel,
@@ -170,8 +172,18 @@ function WorkspaceInner({
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
   // BR-WS-19: 비회차(T4/T5) 단계(stages)도 동일 소스에서 — 대화 동봉 근거.
-  const { sessions, setSessions, stages, setStages, coachCount, budgetLines } =
-    useWorkspacePlan()
+  const {
+    sessions,
+    setSessions,
+    stages,
+    setStages,
+    coachCount,
+    budgetLines,
+    coachPool,
+    setCoachPool,
+    coachTeam: coachTeamRefs,
+    setCoachTeam,
+  } = useWorkspacePlan()
 
   // 활성 stage = client state. server 자동 판정 + ?stage= 1회 선택으로 초기화.
   const [stage, setStage] = useState<WorkspaceStageId>(
@@ -220,6 +232,86 @@ function WorkspaceInner({
     window.addEventListener('focus', onFocus)
     return () => window.removeEventListener('focus', onFocus)
   }, [stage])
+
+  // ── BR-WS-24 배선: 대화 → 코치 배정/교체/제거 (coach 단계 한정) — **서버 영속** ──
+  // design/budget 의 client override 와 달리, 코치 op 는 기존 coach-assignments API 로 영속한다:
+  //   assign → POST · remove → DELETE · swap → DELETE 후 POST. 각 op 후 모아서 1회 로스터 재fetch.
+  // route 가 이미 knownIds 로 환각 coachId/assignmentId 를 걸러 보내므로, 여기선 fetch 만.
+  // 이중적용 가드: 진행 중이면(coachApplyingRef) 추가 클릭 무시. 실패는 토스트(롤백 불필요 — 서버가 진실).
+  const coachApplyingRef = useRef(false)
+  const handleCoachOps = (ops: CoachOp[]) => {
+    if (ops.length === 0) return
+    if (coachApplyingRef.current) return // 진행 중 — 이중 클릭/연속 적용 차단.
+    coachApplyingRef.current = true
+    void (async () => {
+      let okCount = 0
+      let failCount = 0
+      // 풀의 coachRateMain 으로 agreedRate 기본 보정(op 에 없으면). 양수만 전송(POST schema positive).
+      const rateOf = (coachId: string): number | undefined => {
+        const m = coachPool.find((c) => c.coachId === coachId)
+        return m && m.coachRateMain != null && m.coachRateMain > 0 ? m.coachRateMain : undefined
+      }
+      const postAssign = async (
+        coachId: string,
+        role: string,
+        agreedRate: number | undefined,
+      ): Promise<boolean> => {
+        const rate = agreedRate ?? rateOf(coachId)
+        const r = await fetch('/api/coach-assignments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            projectId,
+            coachId,
+            role,
+            ...(typeof rate === 'number' && rate > 0 ? { agreedRate: rate } : {}),
+          }),
+        })
+        return r.ok
+      }
+      const deleteAssignment = async (assignmentId: string): Promise<boolean> => {
+        const r = await fetch(`/api/coach-assignments?id=${assignmentId}`, {
+          method: 'DELETE',
+        })
+        return r.ok
+      }
+
+      for (const op of ops) {
+        try {
+          if (op.op === 'assign') {
+            if (await postAssign(op.coachId, op.role, op.agreedRate)) okCount++
+            else failCount++
+          } else if (op.op === 'remove') {
+            if (await deleteAssignment(op.assignmentId)) okCount++
+            else failCount++
+          } else {
+            // swap — 먼저 제거, 성공 시 배정. 제거 실패면 배정 시도 안 함(부분 적용 최소화).
+            const removed = await deleteAssignment(op.removeAssignmentId)
+            if (!removed) {
+              failCount++
+              continue
+            }
+            if (await postAssign(op.addCoachId, op.role, op.agreedRate)) okCount++
+            else failCount++
+          }
+        } catch {
+          failCount++
+        }
+      }
+
+      // 모은 변경을 1회 로스터 재fetch 로 반영(SelectedTeamPanel → onChange/onTeamChange 로 동기화).
+      bumpCoachRefresh()
+      coachApplyingRef.current = false
+
+      if (okCount > 0 && failCount === 0) {
+        toast.success(`코치 ${okCount}건 반영했어요.`)
+      } else if (okCount > 0 && failCount > 0) {
+        toast.warning(`${okCount}건 반영, ${failCount}건 실패. 선발팀을 확인해 주세요.`)
+      } else {
+        toast.error('코치 배정 반영에 실패했습니다. 잠시 후 다시 시도해주세요.')
+      }
+    })()
+  }
 
   // 단계별 우 캔버스 — 전부 기존 컴포넌트 조립/임베드만(내부 재구현 0).
   const canvas: Record<WorkspaceStageId, ReactNode> = useMemo(
@@ -276,6 +368,8 @@ function WorkspaceInner({
             requiredCount={coachCount}
             refreshSignal={coachRefreshSignal}
             onChange={setAssignedCoachIds}
+            // BR-WS-24: 선발팀 전체 메타를 Live Plan 에 보고 — 대화가 remove/swap 근거로 사용.
+            onTeamChange={setCoachTeam}
           />
 
           {/* 코치 배정 모달(자체 트리거 버튼 + 검색·추천 풀 내장). 닫힌 뒤 window focus →
@@ -291,11 +385,23 @@ function WorkspaceInner({
           </div>
 
           {/* AI 추천 풀 — 실 assignedCoachIds 전달(배정된 코치 회색처리). */}
+          {/* BR-WS-24: 추천 풀 ready 시 Live Plan 에 보고 — 대화가 assign/swap 근거로 사용. */}
           <AutoRecommendedPool
             projectId={projectId}
             mode="inline"
             assignedCoachIds={assignedCoachIds}
             requiredCountOverride={coachCount}
+            onPoolLoaded={(pool) =>
+              setCoachPool(
+                pool.map((c) => ({
+                  coachId: c.coachId,
+                  name: c.name,
+                  coachRateMain: c.coachRateMain,
+                  strengthOneLiner: c.strengthOneLiner,
+                  matchScore: c.matchScore,
+                })),
+              )
+            }
           />
         </div>
       ),
@@ -316,6 +422,8 @@ function WorkspaceInner({
       budgetIncomingOps,
       setSessions,
       setStages,
+      setCoachPool,
+      setCoachTeam,
       coachCount,
       coachTeam,
       assignedCoachIds,
@@ -349,14 +457,20 @@ function WorkspaceInner({
             structureKind={stage === 'design' && stages ? 'nonsession' : 'sessions'}
             // BR-WS-22: budget 단계일 때만 현재 적산 라인 동봉(context 단일 소스).
             budgetLines={stage === 'budget' ? budgetLines : null}
-            // BR-WS-22: design ↔ budget 별도 ops 채널. 서로 안 섞임. 단계가 runtime 타입을
-            // 보장(design→Session/Stage, budget→Budget)하므로 forward 클로저로 좁혀 전달.
+            // BR-WS-24: coach 단계일 때만 추천 풀·선발팀·필요수 동봉(context 단일 소스 — 환각 방지).
+            coachPool={stage === 'coach' ? coachPool : null}
+            coachTeam={stage === 'coach' ? coachTeamRefs : null}
+            requiredN={stage === 'coach' ? coachCount : null}
+            // BR-WS-22/24: design ↔ budget ↔ coach 별도 ops 채널. 서로 안 섞임. 단계가 runtime
+            // 타입을 보장(design→Session/Stage, budget→Budget, coach→Coach)하므로 forward 클로저로 좁혀 전달.
             onOps={
               stage === 'design'
                 ? (ops) => handleOps(ops as (SessionOp | StageOp)[])
                 : stage === 'budget'
                   ? (ops) => handleBudgetOps(ops as BudgetOp[])
-                  : undefined
+                  : stage === 'coach'
+                    ? (ops) => handleCoachOps(ops as CoachOp[])
+                    : undefined
             }
             // BR-WS-20: 서버 복원 대화(마운트 1회 시드). 없으면 welcome 시작.
             initialMessages={initialChatMessages}
