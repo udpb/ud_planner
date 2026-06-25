@@ -91,14 +91,13 @@ export default async function ProjectWorkspacePage({
 
   const { project } = data
 
-  // BR-WS-5: 5단계 stage 판정. coach/budget 진행 신호는 load-workspace 가 아직
-  // 조립하지 않으므로(스코프 밖) false 기본 — 자동 current 는 "다음 미완료"에서
-  // 멈추고, PM 은 스텝퍼 클릭으로 앞 단계도 열 수 있다.
+  // BR-WS-5/7: 5단계 stage 판정. coach/budget 진행 신호는 load-workspace 가
+  // 서버에서 판정(코치 배정 수>0 / Budget 레코드 존재) — 스텝퍼 체크·자동 current 반영.
   const stageInput = {
     hasRfp: data.hasRfp,
     hasDesign: data.hasDesign,
-    hasCoach: false,
-    hasBudget: false,
+    hasCoach: data.hasCoach,
+    hasBudget: data.hasBudget,
     hasImpact: data.hasImpact,
   }
   const currentStage = computeWorkspaceCurrentStage(stageInput)
@@ -114,8 +113,8 @@ export default async function ProjectWorkspacePage({
       acc[sid] = workspaceStageSummary(sid, {
         rfpParsed: data.rfpParsed,
         hasDesign: data.hasDesign,
-        hasCoach: false,
-        hasBudget: false,
+        hasCoach: data.hasCoach,
+        hasBudget: data.hasBudget,
         socialValueEok,
       })
       return acc
@@ -176,6 +175,10 @@ export default async function ProjectWorkspacePage({
         initialOverrideStage={initialOverrideStage}
         doneFlags={doneFlags}
         summaries={summaries}
+        budgetSummary={{
+          totalBudgetVat: project.totalBudgetVat,
+          supplyPrice: project.supplyPrice,
+        }}
         stepRfpProps={{
           projectId: project.id,
           initialParsed: data.rfpParsed,

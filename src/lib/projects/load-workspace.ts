@@ -110,6 +110,10 @@ export interface WorkspaceData {
   // ── done 판정용 파생 ──
   hasRfp: boolean
   hasDesign: boolean
+  /** 코치 배정 1명 이상 (coachAssignments count>0). */
+  hasCoach: boolean
+  /** 예산 산정됨 — Budget 레코드 존재 기준(자동 적산 산출물 = 명확한 단일 신호). */
+  hasBudget: boolean
   hasImpact: boolean
 }
 
@@ -168,6 +172,9 @@ export async function loadWorkspace(
       // ③ 임팩트
       sroiCountry: true,
       impactForecast: true,
+      // done 신호(BR-WS-7) — 가벼운 조회만: 코치 배정 수 + 예산 레코드 존재.
+      _count: { select: { coachAssignments: true } },
+      budget: { select: { id: true } },
     },
   })
   if (!project) return null
@@ -257,6 +264,9 @@ export async function loadWorkspace(
   const hasRfp = !!rfpParsed
   // 설계 진행 신호: programProfile 확정 또는 acceptedAssetIds 채움 또는 저장된 1차안 존재(BR-WS-4).
   const hasDesign = !!programProfile || acceptedAssetIds.length > 0 || !!savedPlan
+  // 코치 배정 1명 이상 / 예산 레코드 존재(BR-WS-7).
+  const hasCoach = (project._count?.coachAssignments ?? 0) > 0
+  const hasBudget = !!project.budget
   const hasImpact = !!impactForecast
 
   return {
@@ -297,6 +307,8 @@ export async function loadWorkspace(
     impactForecast,
     hasRfp,
     hasDesign,
+    hasCoach,
+    hasBudget,
     hasImpact,
   }
 }

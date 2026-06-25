@@ -56,6 +56,11 @@ interface Props {
   doneFlags: Record<WorkspaceStageId, boolean>
   /** 5 stage 의 1줄 요약 (server 판정) — 대화 맥락 + 캔버스 헤더 보조. */
   summaries: Record<WorkspaceStageId, string>
+  /** 예산 단계 캔버스 요약값 (이미 로드된 project 값 — 새 조립 0). */
+  budgetSummary: {
+    totalBudgetVat: number | null
+    supplyPrice: number | null
+  }
 
   /** RFP 분석 — StageS1(StepRfp) props */
   stepRfpProps: ComponentProps<typeof StageS1>['stepRfpProps']
@@ -86,12 +91,113 @@ function CanvasHeader({ stage }: { stage: WorkspaceStageId }) {
   )
 }
 
+// ─────────────────────────────────────────────────────────────────
+// 예산 자동화 캔버스 (BR-WS-7) — placeholder → 실 예산 요약.
+// 이미 로드된 project 값(totalBudgetVat·supplyPrice)만 사용 — 새 조립·API 0.
+// 디자인킷 260529: 틴트 박스(neutral-90 + accent border-left), radius 0.
+// ─────────────────────────────────────────────────────────────────
+
+/** 원 → "n.nn억" (8자리 미만은 백만 단위). null 은 '—'. */
+function formatWon(v: number | null): string {
+  if (v == null) return '—'
+  if (v >= 1e8) return `${(v / 1e8).toFixed(2)}억`
+  if (v >= 1e6) return `${Math.round(v / 1e6).toLocaleString()}백만`
+  return `${v.toLocaleString()}원`
+}
+
+function BudgetSummaryCanvas({
+  totalBudgetVat,
+  supplyPrice,
+}: {
+  totalBudgetVat: number | null
+  supplyPrice: number | null
+}) {
+  const hasAny = totalBudgetVat != null || supplyPrice != null
+  // 마진 = 총 예산(VAT 포함) - 공급가. 두 값 모두 있을 때만 계산.
+  const margin =
+    totalBudgetVat != null && supplyPrice != null
+      ? totalBudgetVat - supplyPrice
+      : null
+  const marginRate =
+    margin != null && totalBudgetVat != null && totalBudgetVat > 0
+      ? (margin / totalBudgetVat) * 100
+      : null
+
+  const tint: React.CSSProperties = {
+    border: '1px solid var(--line)',
+    borderLeft: '3px solid var(--accent)',
+    background: 'var(--neutral-90)',
+    padding: 16,
+    maxWidth: 880,
+    fontSize: 13,
+    color: 'var(--soft-ink)',
+    lineHeight: 1.6,
+  }
+
+  if (!hasAny) {
+    return (
+      <div style={tint}>
+        <strong style={{ fontWeight: 700 }}>예산 정보 없음</strong>
+        <p style={{ marginTop: 8 }}>
+          RFP 분석에서 총 예산·공급가가 채워지면 이곳에 요약이 표시됩니다. 위{' '}
+          <strong>RFP 분석</strong> 단계에서 예산 정보를 먼저 입력·분석하세요.
+        </p>
+      </div>
+    )
+  }
+
+  const rows: { label: string; value: string }[] = [
+    { label: '총 예산 (VAT 포함)', value: formatWon(totalBudgetVat) },
+    { label: '공급가', value: formatWon(supplyPrice) },
+    {
+      label: '마진',
+      value:
+        margin != null
+          ? `${formatWon(margin)}${marginRate != null ? ` (${marginRate.toFixed(1)}%)` : ''}`
+          : '—',
+    },
+  ]
+
+  return (
+    <div style={{ maxWidth: 880 }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 12,
+        }}
+      >
+        {rows.map((r) => (
+          <div
+            key={r.label}
+            style={{
+              border: '1px solid var(--line)',
+              borderTop: '3px solid var(--accent)',
+              background: 'var(--neutral-90)',
+              padding: 16,
+            }}
+          >
+            <div style={{ fontSize: 12, color: 'var(--soft-ink)' }}>{r.label}</div>
+            <div style={{ marginTop: 6, fontSize: 20, fontWeight: 700 }}>
+              {r.value}
+            </div>
+          </div>
+        ))}
+      </div>
+      <p style={{ marginTop: 12, fontSize: 12, color: 'var(--soft-ink)' }}>
+        강사·운영·자산·기획비 항목별 상세 적산은 후속 단계에서 자동화됩니다.
+      </p>
+    </div>
+  )
+}
+
 export function ProgramWorkspace({
   projectId,
   currentStage,
   initialOverrideStage,
   doneFlags,
   summaries,
+  budgetSummary,
   stepRfpProps,
   designProps,
   intentProps,
@@ -162,32 +268,13 @@ export function ProgramWorkspace({
           assignedCoachIds={[]}
         />
       ),
-      // 예산 자동화 — 캔버스 컴포넌트 미연결(budget-dashboard 는 server-assembled
-      // PC/AC 데이터 필요, load-workspace 무변경 범위 밖). 클린 placeholder + 보고.
-      budget: (
-        <div
-          style={{
-            border: '1px solid var(--line)',
-            borderLeft: '3px solid var(--accent)',
-            background: 'var(--neutral-90)',
-            padding: 16,
-            maxWidth: 880,
-            fontSize: 13,
-            color: 'var(--soft-ink)',
-            lineHeight: 1.6,
-          }}
-        >
-          <strong style={{ fontWeight: 700 }}>예산 자동화 — 자동 적산 (준비 중)</strong>
-          <p style={{ marginTop: 8 }}>
-            커리큘럼 + 코치 위에서 강사·운영·자산·기획비를 자동 적산해 총사업비·마진을
-            산출하는 단계입니다. 이 단계의 캔버스 연결은 후속 브리프에서 추가됩니다.
-          </p>
-        </div>
-      ),
+      // 예산 자동화 — BR-WS-7: placeholder → 실 예산 요약(총 예산·공급가·마진).
+      // 이미 로드된 project 값만 사용(새 조립·API 0). 항목별 상세 적산은 후속.
+      budget: <BudgetSummaryCanvas {...budgetSummary} />,
       // SROI 예측 = ImpactForecastClient
       sroi: <ImpactForecastClient {...impactProps} />,
     }),
-    [projectId, stepRfpProps, designProps, intentProps, impactProps, incomingOps],
+    [projectId, stepRfpProps, designProps, intentProps, impactProps, incomingOps, budgetSummary],
   )
 
   return (

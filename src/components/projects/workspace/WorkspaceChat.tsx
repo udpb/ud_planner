@@ -72,6 +72,9 @@ export function WorkspaceChat({
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  // 이중 전송 가드(BR-WS-7): `sending` state 는 비동기 갱신이라 같은 tick 에 Enter+클릭이
+  // 겹치면 둘 다 false 를 본다. ref 는 동기 — 전송 시작 즉시 잠그고 finally 에서 푼다.
+  const sendingRef = useRef(false)
 
   // 새 메시지마다 하단으로 스크롤(pane 내부 스크롤).
   useEffect(() => {
@@ -81,7 +84,9 @@ export function WorkspaceChat({
 
   const handleSend = useCallback(async () => {
     const text = input.trim()
-    if (!text || sending) return
+    // 빈/공백 금지 + 동기 ref 로 이중 진입 차단(state 의 sending 보다 먼저 잠금).
+    if (!text || sendingRef.current) return
+    sendingRef.current = true
 
     const userMsg: ChatMessage = {
       id: `u-${Date.now()}`,
@@ -154,9 +159,10 @@ export function WorkspaceChat({
         err instanceof Error ? err.message : '대화 응답 중 오류가 발생했습니다.'
       toast.error(msg)
     } finally {
+      sendingRef.current = false
       setSending(false)
     }
-  }, [input, sending, projectId, stage, contextSummary, sessions, onOps])
+  }, [input, projectId, stage, contextSummary, sessions, onOps])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
