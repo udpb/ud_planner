@@ -38,18 +38,53 @@ import { OPERATING_TYPES } from '@/lib/program-design/plan-types'
 //    텍스트에서 탐지하기 위한 키워드 사전. 어떤 회차수·코칭수도 여기 없다.
 // ─────────────────────────────────────────────────────────────────
 
-/** T5 행사 운영형 신호 — 본체가 행사인 사업. */
-const T5_EVENT_KEYWORDS = [
-  '경진대회',
-  '박람회',
-  '공모전',
-  '데모데이',
-  '페스티벌',
-  '컨퍼런스',
+/**
+ * T5 강한 행사 신호 — 사업의 산출물 자체가 행사 운영(대행). 자동 T5.
+ * (교육 마일스톤으로 오해될 여지 없음 — 본체가 행사 운영 그 자체.)
+ */
+const T5_STRONG = [
   '운영 대행',
   '운영대행',
   '행사 운영',
   '행사운영',
+  '대행 용역',
+  '행사 대행',
+] as const
+
+/**
+ * T5 약한 행사어 — 행사어지만 교육 프로그램의 **마일스톤**일 수 있음.
+ * 교육 신호와 공존하면 충돌 → 게이트(PM 결정). 단독이면 순수 행사 → T5.
+ */
+const T5_WEAK_EVENT = [
+  '데모데이',
+  '경진대회',
+  '공모전',
+  '박람회',
+  '페스티벌',
+  '컨퍼런스',
+  '해커톤',
+] as const
+
+/**
+ * 교육 신호 — 본체가 교육/육성인 코호트임을 시사. 약한 행사어와 공존하면
+ * "행사 본체인가 / 교육의 마일스톤인가" 충돌 → 게이트로 위임.
+ */
+const EDUCATION_SIGNALS = [
+  '교육',
+  '육성',
+  '양성',
+  '과정',
+  '커리큘럼',
+  '역량',
+  '캠프',
+  '부트캠프',
+  '아카데미',
+  '코칭',
+  '멘토링',
+  '교육생',
+  '수강',
+  '워크숍',
+  '강좌',
 ] as const
 
 /** T4 개별 밀착형 신호 — 개별 사업체 단위(정기 모임 부적합). */
@@ -83,17 +118,33 @@ interface OperatingTypeSignal {
 function detectOperatingType(input: PlanInput): OperatingTypeSignal | null {
   const haystack = buildSignalText(input)
 
-  // 1순위 — 행사가 본체인가? (T5)
-  const t5hit = T5_EVENT_KEYWORDS.find((k) => haystack.includes(k))
-  if (t5hit) {
+  // 1순위 — 본체가 행사 운영 대행인가? (강한 신호 → 자동 T5)
+  const strongHit = T5_STRONG.find((k) => haystack.includes(k))
+  if (strongHit) {
     return {
       type: 'T5',
-      why: `RFP 신호 "${t5hit}" — 본체가 교육이 아니라 행사 설계(경진대회·박람회·공모전 운영 대행). v1.2 §04: 회차표를 강요하면 안 됨.`,
-      evidence: t5hit,
+      why: `RFP 신호 "${strongHit}" — 사업의 산출물 자체가 행사 운영(대행). 본체가 교육이 아니라 행사 설계. v1.2 §04: 회차표를 강요하면 안 됨.`,
+      evidence: strongHit,
     }
   }
 
-  // 2순위 — 개별 사업체 단위인가? (T4)
+  // 2순위 — 약한 행사어(데모데이·경진대회 등). 교육의 마일스톤일 수 있다.
+  const weakHit = T5_WEAK_EVENT.find((k) => haystack.includes(k))
+  if (weakHit) {
+    const eduHit = EDUCATION_SIGNALS.find((k) => haystack.includes(k))
+    if (eduHit) {
+      // 행사어 + 교육 신호 공존 → 충돌. 오분류 대신 사람에게 위임(게이트).
+      return null
+    }
+    // 교육 신호 전무 → 순수 행사 → 자동 T5.
+    return {
+      type: 'T5',
+      why: `RFP 신호 "${weakHit}" — 교육 신호가 없어 행사 본체로 판별. v1.2 §04: 회차표를 강요하면 안 됨.`,
+      evidence: weakHit,
+    }
+  }
+
+  // 3순위 — 개별 사업체 단위인가? (T4)
   const t4hit = T4_INDIVIDUAL_KEYWORDS.find((k) => haystack.includes(k))
   if (t4hit) {
     return {
