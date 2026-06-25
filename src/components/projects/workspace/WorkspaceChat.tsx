@@ -29,10 +29,21 @@ import {
   type WorkspaceStageId,
 } from './workspace-stages'
 
+/** BR-WS-17: assistant 카드 선택지 1개 — 클릭 시 ops 를 캔버스에 즉시 적용. */
+interface ChatChoice {
+  label: string
+  sub?: string
+  ops: SessionOp[]
+}
+
 interface ChatMessage {
   id: string
   role: 'assistant' | 'user'
   text: string
+  /** BR-WS-17: design 단계 카드 선택지(있으면 텍스트 아래 카드 렌더). */
+  choices?: ChatChoice[]
+  /** BR-WS-17: 이 메시지의 카드가 이미 한 번 적용됐는지(중복 적용 가드). */
+  choicePicked?: boolean
 }
 
 interface Props {
@@ -85,6 +96,9 @@ export function WorkspaceChat({
   // 이중 전송 가드(BR-WS-7): `sending` state 는 비동기 갱신이라 같은 tick 에 Enter+클릭이
   // 겹치면 둘 다 false 를 본다. ref 는 동기 — 전송 시작 즉시 잠그고 finally 에서 푼다.
   const sendingRef = useRef(false)
+  // BR-WS-17: history 스냅샷용 — handleSend 콜백을 안정적으로 유지(messages 를 deps 에서 제외).
+  const messagesRef = useRef<ChatMessage[]>(messages)
+  messagesRef.current = messages
 
   // 새 메시지마다 하단으로 스크롤(pane 내부 스크롤).
   useEffect(() => {
@@ -103,6 +117,11 @@ export function WorkspaceChat({
       role: 'user',
       text,
     }
+    // BR-WS-17: 직전 history(welcome 제외·최근 8턴)를 본문 전에 스냅샷 — 맥락 유지.
+    const history = messagesRef.current
+      .filter((m) => m.id !== 'welcome')
+      .slice(-8)
+      .map((m) => ({ role: m.role, text: m.text }))
     setMessages((prev) => [...prev, userMsg])
     setInput('')
     setSending(true)
@@ -115,6 +134,8 @@ export function WorkspaceChat({
           message: text,
           stage,
           contextSummary: contextSummary ?? '',
+          // BR-WS-17: 직전 대화 맥락(모든 단계 동봉 무방 — design 만 활용).
+          history,
           // BR-WS-6: design 단계만 현재 회차 목록(no·title·kind) 동봉 — 매칭 근거.
           ...(stage === 'design' && sessions
             ? {
@@ -144,6 +165,7 @@ export function WorkspaceChat({
         reply?: string
         action?: unknown
         ops?: SessionOp[] | null
+        choices?: ChatChoice[] | null
       }
       const reply = (data.reply ?? '').trim()
 
@@ -156,12 +178,26 @@ export function WorkspaceChat({
       const applyNote =
         appliedCount > 0 ? `\n\n✓ ${appliedCount}개 변경을 캔버스에 적용했어요.` : ''
 
+      // BR-WS-17: choices 가 있으면 카드로(클릭 시 그 ops 를 즉시 적용 — 서버 재호출 X).
+      // 카드는 onOps 가 있을 때(=design 단계)만 의미 있음. label·ops 형태만 통과.
+      const choices: ChatChoice[] | undefined =
+        onOps && Array.isArray(data.choices)
+          ? data.choices.filter(
+              (c): c is ChatChoice =>
+                !!c &&
+                typeof c.label === 'string' &&
+                Array.isArray(c.ops) &&
+                c.ops.length > 0,
+            )
+          : undefined
+
       setMessages((prev) => [
         ...prev,
         {
           id: `a-${Date.now()}`,
           role: 'assistant',
           text: (reply || '(응답이 비어 있습니다.)') + applyNote,
+          choices: choices && choices.length > 0 ? choices : undefined,
         },
       ])
     } catch (err) {
@@ -173,6 +209,33 @@ export function WorkspaceChat({
       setSending(false)
     }
   }, [input, projectId, stage, contextSummary, sessions, onOps])
+
+  /**
+   * BR-WS-17: 카드 클릭 → 그 카드의 ops 를 캔버스에 즉시 적용(서버 재호출 X).
+   * 중복 적용 가드: 해당 메시지의 choicePicked 가 이미 true 면 무시. 적용 후
+   * 그 메시지를 picked 로 잠그고(다른 카드 비활성) 확인 메시지를 append.
+   */
+  const handleChoice = useCallback(
+    (messageId: string, choice: ChatChoice) => {
+      if (!onOps) return
+      const target = messagesRef.current.find((m) => m.id === messageId)
+      if (!target || target.choicePicked) return // 이미 선택됨 — 중복 적용 차단.
+      if (!choice.ops.length) return
+
+      onOps(choice.ops)
+      setMessages((prev) => [
+        ...prev.map((m) =>
+          m.id === messageId ? { ...m, choicePicked: true } : m,
+        ),
+        {
+          id: `a-${Date.now()}`,
+          role: 'assistant',
+          text: `✓ ‘${choice.label}’ 적용 — ${choice.ops.length}개 변경을 캔버스에 반영했어요.`,
+        },
+      ])
+    },
+    [onOps],
+  )
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -214,15 +277,45 @@ export function WorkspaceChat({
                 <Sparkles className="h-3.5 w-3.5 text-brand" />
               </span>
             )}
-            <div
-              className={cn(
-                'max-w-[80%] whitespace-pre-wrap px-3 py-2 text-sm leading-relaxed',
-                m.role === 'user'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-foreground',
+            <div className="flex max-w-[80%] flex-col gap-2">
+              <div
+                className={cn(
+                  'whitespace-pre-wrap px-3 py-2 text-sm leading-relaxed',
+                  m.role === 'user'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-foreground',
+                )}
+              >
+                {m.text}
+              </div>
+
+              {/* BR-WS-17: 카드 선택지 — 클릭 시 그 ops 를 캔버스에 즉시 적용(서버 재호출 X). */}
+              {m.role === 'assistant' && m.choices && m.choices.length > 0 && (
+                <div className="flex flex-col gap-1.5">
+                  {m.choices.map((c, i) => (
+                    <button
+                      key={`${m.id}-c${i}`}
+                      type="button"
+                      onClick={() => handleChoice(m.id, c)}
+                      disabled={m.choicePicked}
+                      className={cn(
+                        'flex flex-col items-start gap-0.5 border border-brand/40 bg-background px-3 py-2 text-left text-sm transition-colors',
+                        m.choicePicked
+                          ? 'cursor-not-allowed opacity-50'
+                          : 'hover:border-brand hover:bg-brand/5',
+                      )}
+                    >
+                      <span className="font-medium text-foreground">{c.label}</span>
+                      {c.sub && (
+                        <span className="text-xs text-muted-foreground">{c.sub}</span>
+                      )}
+                    </button>
+                  ))}
+                  {m.choicePicked && (
+                    <span className="text-xs text-muted-foreground">선택 완료</span>
+                  )}
+                </div>
               )}
-            >
-              {m.text}
             </div>
           </div>
         ))}
