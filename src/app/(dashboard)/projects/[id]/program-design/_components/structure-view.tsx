@@ -166,8 +166,20 @@ function SessionTimeline({
   const edit = (index: number, patch: Partial<PlanSession>) =>
     onChange(sessions.map((s, i) => (i === index ? { ...s, ...patch } : s)))
 
+  // 총 교육시간 — Σ hours (null 회차 제외). 전부 null이면 "시간 미정".
+  const hoursSum = sessions.reduce(
+    (acc, s) => (typeof s.hours === 'number' && Number.isFinite(s.hours) ? acc + s.hours : acc),
+    0,
+  )
+  const hasHours = sessions.some((s) => typeof s.hours === 'number' && Number.isFinite(s.hours))
+
   return (
     <div style={{ display: 'grid', gap: 12 }}>
+      {/* 총 교육시간 요약 — Σ hours (null 제외) */}
+      <p style={{ fontSize: 11, color: 'var(--muted)', margin: 0 }}>
+        총 {sessions.length}회차 · {hasHours ? `약 ${hoursSum}h` : '시간 미정'}
+      </p>
+
       {/* 범례 */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, fontSize: 11, color: 'var(--muted)' }}>
         {Object.entries(SESSION_KIND).map(([k, v]) => (

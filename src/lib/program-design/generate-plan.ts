@@ -158,10 +158,27 @@ function serializeConstraints(
 
 // ── T1~T3: 회차표 ──
 
+/**
+ * 운영유형별 표준 회당 시간(h) — design-rules B-프로파일 실측 기반(T1 3.2 / T2 8 / T3 3)을
+ * 제안서 친화 정수로 미러(수정 아님 — 디자인룰 원본 불변, 여기는 프롬프트 기본값일 뿐).
+ *   - T1 정규강좌형 ≈ 3h (반일 강좌)
+ *   - T2 몰입캠프형 ≈ 6h (종일 — 합숙·캠프)
+ *   - T3 장기여정형 ≈ 3h (반일 정기회차)
+ * RFP에 확정 시간이 있으면 그것이 우선. 이 값은 "표준" 가정.
+ */
+const STANDARD_HOURS_PER_SESSION: Record<OperatingType, number | undefined> = {
+  T1: 3,
+  T2: 6,
+  T3: 3,
+  T4: undefined, // 회차표 없음 (NonSessionStructure)
+  T5: undefined, // 회차표 없음 (NonSessionStructure)
+}
+
 async function generateSessionTable(
   operatingType: OperatingType,
   constraints: string,
 ): Promise<{ structure: SessionTable; model?: string }> {
+  const std = STANDARD_HOURS_PER_SESSION[operatingType] ?? 3
   const prompt = `당신은 언더독스의 프로그램 기획 전문가입니다. 아래 확정 결정 위에서 **회차표(주차별 흐름)** 를 설계하세요.
 
 ${constraints}
@@ -173,7 +190,7 @@ ${constraints}
 
 [엄수 사항]
 - 위 "확정된 설계 결정"의 회차수·코칭수 등 **수치를 절대 바꾸지 마세요**. 그 수치에 맞춰 살만 붙입니다.
-- 확정 결정에 없는 수치는 **임의로 만들지 말고** rationale 에 "추정"이라고 표기하거나 hours 를 null 로 두세요.
+- 각 회차의 hours 는 이 운영 유형의 **표준 회당 시간(${std}h)** 을 기본으로 채우되, 회차 형식(온라인/합숙/반일 등)에 맞게 조정하세요. RFP에 확정 시간이 명시돼 있으면 그 값을 우선합니다. 정말 시간을 가늠할 수 없는 회차만 null 로 두세요. (표준 시간 가정은 rationale 에 장황히 적지 말 것 — rationale 은 사업 맥락 중심.)
 - 운영 유형 ${operatingType} 의 성격에 맞게 (정규강좌=매주 / 몰입캠프=몰아치기 / 장기여정=킥오프+퀘스트+발표 조합).
 
 [rationale 작성 지침]
@@ -188,8 +205,8 @@ ${constraints}
     {
       "no": "W1",
       "title": "회차 제목",
-      "hours": 3 또는 null,
-      "format": "오프라인 3h / 온라인 / 합숙 등",
+      "hours": ${std},
+      "format": "오프라인 ${std}h / 온라인 / 합숙 등",
       "kind": "theory" | "workshop" | "coaching" | "event" | "milestone" | "prelearning",
       "rationale": "이 회차가 이 사업의 목표·참여자에게 왜 필요한지 (제안서 언어 한 문장, 내부 코드·약어 금지)"
     }
