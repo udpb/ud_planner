@@ -1,22 +1,33 @@
 # HANDOFF — 세션 핸드오버 (라이브 문서)
 
 > 새 세션 읽는 순서: **HANDOFF → 메모리(MEMORY.md 인덱스) → [glossary](docs/glossary.md) → [decisions/README](docs/decisions/README.md) → 활성 브리프(.claude/agent-briefs/)**.
-> 최종 정리: **2026-06-22** — ⚠️ **전면 재정렬 국면**. 사용자가 compact 후 "최초 기획부터 현 구현까지 전부 재점검·align 후 진행" 요청. 아래 🔴 필독.
+> 최종 정리: **2026-06-25** — ✅ 재설계 빌드+검증 완료 · 서비스 개선 9/10 · 예산 지식화. 아래 🟢 현재 상태.
 
 ---
 
-## 🔴 지금 가장 중요한 것 — 전면 재정렬 요청 (2026-06-22)
+## 🟢 현재 상태 (2026-06-25) — 재설계·개선 대거 완료, #10만 남음
 
-사용자가 현재 구현(단일 3단계 워크스페이스, BR-WS-1)을 보고 **근본 피드백 5개**를 줬고, **"최초 기획부터 지금 구현까지 다시 모든 걸 점검하고 전체적으로 align한 후 일을 진행. 필요하면 모든 화면 세부 목업·저니맵·디테일 구조까지"** 를 지시. compact하고 다시 시작 예정.
+워크스페이스 재설계가 **빌드+프리뷰 라이브 검증**까지 끝났고, 서비스 개선 백로그도 9/10 완료. 검수 루프 확립(아래 ⚠️).
 
-### 사용자 피드백 5개 (= 현 구현의 갭 = 재정렬 입력) ⭐⭐⭐
-1. **PM 직접 편집 상실** — 옛 Deep 화면의 *커리큘럼 재배치* 등 PM이 직접 손보던 요소들이 통합하며 사라짐. **되살려야.**
-2. **진행 프로세스 가시화 부재** — 어디까지 왔는지 안 보임.
-3. **전체 목표·기획 방향 가시화 부재** — 무슨 목표로 무슨 기획을 가는지 모름.
-4. **임팩트측정 미동작** — P1 코드는 됐으나 impact-measurement 배포+SERVICE_API_TOKEN 미설정.
-5. ⭐ **챗봇형 원함** — "브레인으로 챗봇 형태로 대화하면서 자연스럽게 기획이 이끌어지도록." 현 아코디언/게이트 폼 → **대화형 공동기획자**.
+### 완료 (전부 `feat/sroi-integration` 푸시, 프리뷰 검증)
+- **전폭 2-pane 셸** (BR-WS-1/5): 좌 대화 + 우 캔버스 + 상단 5단계 파이프라인(RFP·프로그램기획·코치·예산·SROI). 세로 아코디언 폐기.
+- **대화→캔버스 직접 변경** (BR-WS-6): "성과 발표회 추가해줘" → 커리큘럼 실반영. (회차표 T1~T3만 — T4/T5는 #10 남음.)
+- **②기획의도** 하이브리드(strategicNotes) · **③커리큘럼 PM편집**(재배치·저장·복원) · 폼 벽/목표 중복 정리 (BR-WS-3/3s/4/4s/9).
+- **단계 라이브 연동** (BR-WS-15): 커리큘럼 회차 → 코치 필요수(estimateRequiredCoaches) → 예산 적산, **실시간**.
+- **서비스 개선 백로그 9/10** — [docs/architecture/service-improvements-backlog.md](docs/architecture/service-improvements-backlog.md). #10(T4/T5 대화 편집)만 🔲.
+- **예산 지식화** ⭐ — 29개 실예산+2026 단가표 → [data/program-design/budget-rules.json](data/program-design/budget-rules.json)(권위, coach-finder 정합) → 적산 엔진(BR-WS-14: 워터폴+단가 JSON출처+마진 경고).
 
-### ✅ 재정렬 완료 — 설계 정본 (2026-06-22)
+### 🔲 다음 (다음 세션)
+1. **#10 SI-nonsession-chat** — 대화→캔버스를 T4 단계·T5 행사(NonSessionStructure)로 확장(StageOp). 6파일(WorkspacePlanContext 포함). BR-WS-6 패턴 미러.
+2. **예산 적산 매핑 정교화** (ADR 후보) — 현재 회차당 보수적(2회씩)이라 마진 과대(77.7%). 회차별 수량·코치 등급(보조/특별)·FTE·투입률 차등화.
+3. (피드백 ④) impact-measurement 배포 + SERVICE_API_TOKEN — SROI 라이브.
+4. BR-WS-2 경쟁 라우트 제거(express·v2·brain) — 옛 셸 정리.
+
+### ⚠️ 검수 루프 (확립됨 — 06-25)
+- **Vercel 프리뷰 + Claude in Chrome** 으로 메인이 직접 시각 검수(로컬 docker DB 올리면 더 정확). 로그인=`pm@underdogs.co.kr`(Credentials). 프리뷰 URL=`ud-planner-git-feat-sroi-integration-…vercel.app` (Source=feat/sroi-integration 인 것).
+- ⚠️ 스텝 전환은 **클릭(setStage)** 으로 — URL navigate 하면 ctx in-memory sessions 리셋. AUTH_URL이 프로덕션 고정이라 로그인 후 프로덕션으로 튐(프리뷰 URL 재진입).
+
+### (과거) 재정렬 완료 — 설계 정본 (2026-06-22)
 - ⭐ **[docs/architecture/program-workspace-redesign-v1.md](docs/architecture/program-workspace-redesign-v1.md)** = 재설계 SSoT. 한 장만 읽으면 정의·정본플로우·3진단·UX원칙·데이터/지식 흐름·6화면 IA·현재→재설계 매핑·빌드순서(§7)·불변제약. 5개 피드백 전부 닫음.
 - 핵심 전환: **②기획의도 단계 신설(하이브리드: AI 초안 카드 + "?" 핀 + 대화)** = "맥락없이 딱딱"의 못. 6섹션 누적 워크스페이스, 점수판/게이트 후퇴, 모든 산출=초안+왜+출처+핸들, 단계 디벨롭 바. 6화면 목업 = 대화 위젯으로 사용자 확인 완료.
 - **빌드 = 엔진 0% 버림(자동지능 ~20종 재사용), UX/IA·컴포넌트 껍데기만 교체.**
