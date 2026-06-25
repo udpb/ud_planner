@@ -2,8 +2,11 @@
  * /api/projects/[id]/planning-intent — ②기획의도 (BR-WS-3, 재설계 v1 §5 ②)
  *
  * action 분기 (POST body.action):
- *   - "draft"  : RFP·프로파일·자산 → 4카드 초안 (draftPlanningIntent, Pro 티어)
- *   - "refine" : PM 답변을 한 필드 값으로 정제 (refineIntentField, Flash 티어 즉답)
+ *   - "draft"   : RFP·프로파일·자산 → 4카드 초안 (draftPlanningIntent, Pro 티어)
+ *   - "refine"  : PM 답변을 한 필드 값으로 정제 (refineIntentField, Flash 티어 즉답)
+ *   - "suggest" : 한 필드의 후보 2~3개 반환 (refine 미러, Flash 티어). PM 이 카드로 보고
+ *                 클릭 → 즉시 입력(서버 재호출 없이). 후보는 그 필드 값으로 바로 쓰일 완성 문장.
+ *                 (BR-WS-21 — 대화 → 후보 카드 → 클릭=채움)
  *
  * PUT: 확정 초안 → toStrategicNotes → prisma.project.update({ strategicNotes }).
  *   - 기존 strategicNotes 의 비매핑 필드(clientOfficialDoc·participationDecision)는 병합 보존.
@@ -17,6 +20,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireProjectAccess } from '@/lib/auth-helpers'
 import { prisma } from '@/lib/prisma'
+import { invokeAi } from '@/lib/ai-fallback'
+import { AI_TOKENS, FLASH_MODEL } from '@/lib/ai/config'
+import { safeParseJson } from '@/lib/ai/parser'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import { matchAssetsToRfp } from '@/lib/asset-registry'
@@ -41,7 +47,76 @@ const INTENT_FIELDS: IntentFieldKey[] = [
 ]
 
 // ─────────────────────────────────────────────────────────────────
-// POST — draft (초안 생성/재생성) · refine (대화 정제)
+// suggest — 한 필드의 후보 2~3개 (refine 미러, Flash 즉답)
+//   refineIntentField 와 동일 의미(PM 답변 정제)이되, 단일 값 대신 서로 다른 관점의
+//   후보 2~3개를 반환한다. 헬퍼를 planning-intent.ts 에 추가하지 않고(스코프 한정)
+//   route 내 인라인으로 둔다. invokeAi(Flash) + safeParseJson.
+// ─────────────────────────────────────────────────────────────────
+
+const FIELD_LABEL: Record<IntentFieldKey, string> = {
+  goalInterpretation: '목표 해석 (RFP 목표 재해석)',
+  yearOverYear: '작년 대비 무엇이 달라야 하나',
+  differentiation: '차별점 (우리 우위)',
+  risk: '리스크 (담당자 우려)',
+  winStrategy: '메인 솔루션·전략',
+}
+
+interface RawSuggest {
+  candidates?: unknown
+}
+
+/**
+ * 한 필드의 후보 2~3개 생성 (Flash 즉답). 후보는 그 필드 값으로 바로 쓰일 완성 문장.
+ * pmMessage 가 있으면 힌트로 반영, 없으면 RFP·현재 초안 맥락에서 AI 가 초안 후보.
+ * 점수·SROI 단정 금지(기존 규칙 유지).
+ */
+async function suggestIntentField(input: {
+  field: IntentFieldKey
+  pmMessage?: string
+  currentDraft: PlanningIntentDraft
+  rfp?: RfpParsed | null
+}): Promise<string[]> {
+  const { field, pmMessage, currentDraft, rfp } = input
+  const current = currentDraft[field]?.value ?? ''
+  const hint = pmMessage?.trim()
+
+  const prompt = `당신은 언더독스(교육·창업지원 전문) 기획 PM 의 보조입니다.
+"${FIELD_LABEL[field]}" 카드에 그대로 들어갈 **서로 다른 후보 2~3개**를 제안하세요.
+각 후보는 그 카드 값으로 바로 쓰일 1~2문장의 완성된 한국어 문장입니다(라벨·메타설명 아님).
+서로 다른 관점·강조점을 갖되, 기획의도로 읽히게 간결하게. 과장·새 사실 추가·점수/SROI 수치 단정 금지.
+${rfp?.projectName ? `\n[사업명] ${rfp.projectName}` : ''}
+[현재 카드 초안] ${current || '(비어있음)'}
+${hint ? `[PM 힌트] ${hint}` : '[PM 힌트] (없음 — RFP·현재 초안 맥락에서 초안 후보를 제안)'}
+
+반드시 아래 JSON 만 반환 (마크다운 없이):
+{ "candidates": ["후보 1", "후보 2", "후보 3"] }`
+
+  const result = await invokeAi({
+    prompt,
+    maxTokens: AI_TOKENS.LIGHT,
+    temperature: 0.6,
+    model: FLASH_MODEL,
+    label: 'planning-intent-suggest',
+  })
+
+  const raw = safeParseJson<RawSuggest>(result.raw, 'planning-intent-suggest')
+  const list = Array.isArray(raw.candidates) ? raw.candidates : []
+  // 검증: 문자열만·trim·빈 항목 drop·중복 제거·최대 3개.
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const c of list) {
+    if (typeof c !== 'string') continue
+    const v = c.trim()
+    if (!v || seen.has(v)) continue
+    seen.add(v)
+    out.push(v)
+    if (out.length >= 3) break
+  }
+  return out
+}
+
+// ─────────────────────────────────────────────────────────────────
+// POST — draft (초안 생성/재생성) · refine (대화 정제) · suggest (후보 2~3개)
 // ─────────────────────────────────────────────────────────────────
 
 export async function POST(
@@ -91,6 +166,21 @@ export async function POST(
       }
       const value = await refineIntentField({ field, pmMessage, currentDraft, rfp })
       return NextResponse.json({ field, value })
+    }
+
+    if (action === 'suggest') {
+      const field = (body as { field?: string }).field as IntentFieldKey | undefined
+      const pmMessage = (body as { pmMessage?: string }).pmMessage
+      const currentDraft = (body as { currentDraft?: PlanningIntentDraft }).currentDraft
+      if (!field || !INTENT_FIELDS.includes(field)) {
+        return NextResponse.json({ error: 'field 누락/유효하지 않음' }, { status: 400 })
+      }
+      if (!currentDraft) {
+        return NextResponse.json({ error: 'currentDraft 누락' }, { status: 400 })
+      }
+      // pmMessage 는 선택(빈 "대화로 채우기" 도 후보 제안). 후보 검증은 헬퍼 내부.
+      const candidates = await suggestIntentField({ field, pmMessage, currentDraft, rfp })
+      return NextResponse.json({ field, candidates })
     }
 
     // 기본 action = "draft"

@@ -7,6 +7,7 @@
  * 하이브리드:
  *   1. AI 가 4카드 초안(목표해석·작년대비·차별점·리스크)을 깐다 — 각 confidence.
  *   2. confidence=low(또는 빈) 카드 = "?" → PM 이 **대화**로 채운다.
+ *      (BR-WS-21) 대화 제출 = AI 후보 2~3개 카드 → PM 클릭 = 그 항목 즉시 입력(서버 재호출 없음).
  *   3. PM 은 카드를 직접 편집해도 된다(§3 원칙2 — AI 는 깔고 PM 이 결정).
  *   4. "확정 → 커리큘럼 반영" → PUT 저장(strategicNotes) → ③의 '왜'로 내려감.
  *
@@ -18,8 +19,9 @@
  *
  * 디자인킷 260529: accent #F05519 1개 · radius 0 · 틴트 그리드 · NanumHuman/Poppins.
  * 점수·게이트 없음(진단3). 강제값 0 — 전부 default.
- * **로직(generateDraft·handleEdit·handleChat·handleConfirm·자동초안 useEffect·setField·
- *   fetch 3종)은 BR-WS-3 그대로 — 바꾸는 건 렌더와 대화 열림 위치뿐.**
+ * **로직(generateDraft·handleEdit·handleSuggest·handleConfirm·자동초안 useEffect·setField·
+ *   fetch)은 BR-WS-3 골격 그대로 — BR-WS-21 에서 대화 정제(refine 단일값)를
+ *   후보 제안(suggest 2~3개 → 클릭=채움)으로 교체.**
  *
  * 마운트: ProgramWorkspace 의 'design' stage content 최상단(additive, ProgramDesignFlow 위).
  * 이 컴포넌트는 server-only planning-intent.ts 에서 **타입만** import(런타임 미포함).
@@ -124,6 +126,24 @@ const mutedLink: React.CSSProperties = {
   whiteSpace: 'nowrap',
 }
 
+/** 후보 카드(선택 버튼) — 차분한 선택지. 디자인킷: radius 0·accent 1포인트·틴트. */
+const candidateCard: React.CSSProperties = {
+  display: 'block',
+  width: '100%',
+  textAlign: 'left',
+  background: 'var(--paper, #fff)',
+  border: '1px solid var(--line)',
+  borderLeft: '3px solid var(--accent)',
+  borderRadius: 0,
+  padding: '10px 12px',
+  fontSize: 13,
+  lineHeight: 1.5,
+  color: 'var(--ink)',
+  cursor: 'pointer',
+  wordBreak: 'keep-all',
+  whiteSpace: 'pre-wrap',
+}
+
 // ─────────────────────────────────────────────────────────────────
 // 단일 카드 행 (§9.2 틴트 그리드 셀 — 차분한 한 줄)
 // ─────────────────────────────────────────────────────────────────
@@ -134,9 +154,11 @@ function IntentCardRow({
   busy,
   tint,
   chatOpen,
+  candidates,
   onToggleChat,
   onEdit,
   onChat,
+  onPickCandidate,
 }: {
   meta: CardMeta
   card: IntentCard
@@ -145,9 +167,14 @@ function IntentCardRow({
   tint: boolean
   /** 이 카드의 대화 입력이 열려 있는가 (부모 단일 상태). */
   chatOpen: boolean
+  /** 이 카드의 AI 후보(대화 → suggest 결과). 빈 배열이면 미표시. */
+  candidates: string[]
   onToggleChat: () => void
   onEdit: (value: string) => void
+  /** "→ 후보 보기" — pmMessage(빈 문자열 가능)로 후보 요청. */
   onChat: (message: string) => void
+  /** 후보 클릭 → 그 값으로 즉시 채움(서버 재호출 없음). */
+  onPickCandidate: (value: string) => void
 }) {
   const isLow = card.confidence === 'low' || !card.value.trim()
   const [chatText, setChatText] = useState('')
@@ -287,18 +314,41 @@ function IntentCardRow({
             disabled={busy}
             style={{ fontSize: 13 }}
           />
-          <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Button
               size="sm"
-              disabled={busy || !chatText.trim()}
+              disabled={busy}
               onClick={() => {
+                // pmMessage 는 선택 — 비어도 RFP·초안 맥락으로 후보 요청.
                 onChat(chatText.trim())
-                setChatText('')
               }}
             >
-              {busy ? '정제 중…' : '→ 채우기'}
+              {busy ? 'AI 후보 만드는 중…' : candidates.length ? '→ 후보 다시' : '→ 후보 보기'}
             </Button>
+            <span style={{ fontSize: 11, color: 'var(--muted, #999)' }}>
+              힌트는 선택 — 비워두면 RFP·맥락으로 제안합니다
+            </span>
           </div>
+
+          {/* AI 후보 카드 — 클릭 = 그 값으로 즉시 채움(서버 재호출 없음) */}
+          {candidates.length > 0 && (
+            <div style={{ display: 'grid', gap: 6, marginTop: 2 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--soft-ink, #555)' }}>
+                마음에 드는 후보를 누르면 이 카드에 바로 들어갑니다
+              </span>
+              {candidates.map((c, ci) => (
+                <button
+                  key={ci}
+                  type="button"
+                  disabled={busy}
+                  onClick={() => onPickCandidate(c)}
+                  style={candidateCard}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -332,6 +382,8 @@ export function PlanningIntent({
   const [saved, setSaved] = useState(false)
   // 대화 입력 열림 — 한 번에 1개만(§9.2 폼 벽 제거). 기본 닫힘.
   const [openKey, setOpenKey] = useState<IntentFieldKey | null>(null)
+  // 대화 → AI 후보(BR-WS-21). 열린 카드(openKey)의 후보만 표시 — 필드별 보관.
+  const [candidates, setCandidates] = useState<Partial<Record<IntentFieldKey, string[]>>>({})
   // 자동 초안 1회 가드 (저장된 의도 없을 때만)
   const autoTried = useRef(false)
 
@@ -383,7 +435,9 @@ export function PlanningIntent({
     [setField],
   )
 
-  const handleChat = useCallback(
+  // 대화 제출 → suggest(후보 2~3개) 요청. 단일 값으로 덮지 않고 PM 이 카드로 고른다.
+  // pmMessage 는 선택(빈 문자열 가능) — 비면 RFP·초안 맥락으로 후보 제안.
+  const handleSuggest = useCallback(
     async (key: IntentFieldKey, message: string) => {
       setBusyField(key)
       try {
@@ -391,26 +445,43 @@ export function PlanningIntent({
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
-            action: 'refine',
+            action: 'suggest',
             field: key,
-            pmMessage: message,
+            // 빈 힌트는 보내지 않음(undefined → 서버가 맥락 기반 제안).
+            ...(message ? { pmMessage: message } : {}),
             currentDraft: draft,
           }),
         })
         const data = await res.json()
         if (!res.ok) throw new Error(data?.error ?? `HTTP ${res.status}`)
-        const value = typeof data.value === 'string' ? data.value : message
-        // 대화로 채운 값 = PM 확정 → high.
-        setField(key, { value, confidence: 'high' })
-        toast.success('카드를 채웠습니다.')
+        const list: string[] = Array.isArray(data.candidates)
+          ? data.candidates.filter((c: unknown): c is string => typeof c === 'string' && !!c.trim())
+          : []
+        setCandidates((prev) => ({ ...prev, [key]: list }))
+        if (!list.length) toast.error('후보를 만들지 못했습니다 — 힌트를 더 적어 다시 시도해주세요.')
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err)
-        toast.error('정제 실패: ' + msg.slice(0, 160))
+        toast.error('후보 생성 실패: ' + msg.slice(0, 160))
       } finally {
         setBusyField(null)
       }
     },
-    [projectId, draft, setField],
+    [projectId, draft],
+  )
+
+  // 후보 클릭 → 그 값으로 즉시 채움(서버 재호출 없음). 대화 닫고 후보 비움.
+  const pickCandidate = useCallback(
+    (key: IntentFieldKey, value: string) => {
+      setField(key, { value, confidence: 'high' })
+      setCandidates((prev) => {
+        const next = { ...prev }
+        delete next[key]
+        return next
+      })
+      setOpenKey(null)
+      toast.success('✓ 채움 — 카드에 반영했습니다.')
+    },
+    [setField],
   )
 
   const handleConfirm = useCallback(async () => {
@@ -434,8 +505,19 @@ export function PlanningIntent({
   }, [projectId, draft])
 
   // 대화 입력 토글 — 한 번에 1개만(이미 열린 키 다시 누르면 닫기).
+  // 닫을 때 그 카드의 후보도 비운다(맥락 정리).
   const toggleChat = useCallback((key: IntentFieldKey) => {
-    setOpenKey((prev) => (prev === key ? null : key))
+    setOpenKey((prev) => {
+      if (prev === key) {
+        setCandidates((c) => {
+          const next = { ...c }
+          delete next[key]
+          return next
+        })
+        return null
+      }
+      return key
+    })
   }, [])
 
   // RFP 없으면 안내만.
@@ -500,9 +582,11 @@ export function PlanningIntent({
             busy={busyField === meta.key}
             tint={i % 2 === 1}
             chatOpen={openKey === meta.key}
+            candidates={candidates[meta.key] ?? []}
             onToggleChat={() => toggleChat(meta.key)}
             onEdit={(value) => handleEdit(meta.key, value)}
-            onChat={(message) => handleChat(meta.key, message)}
+            onChat={(message) => handleSuggest(meta.key, message)}
+            onPickCandidate={(value) => pickCandidate(meta.key, value)}
           />
         ))}
       </div>
