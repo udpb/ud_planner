@@ -51,6 +51,8 @@
 | [025](025-deck-first-html-substrate.md) | **Proposed** | 덱-우선 저작 + HTML 렌더 기질(→고해상 PDF) + 리치 컴포넌트 어휘 + 슬라이드별 비평 루프 (출력 20-30% 천장 구조 전환) |
 | [026](026-deck-as-planning-culmination.md) | **Proposed → ⚠️ 재검토 (ADR-027 supersede 예정, 2026-06-12)** | 덱 = 기획의 최종 산출물 — PipelineContext 소비. **단 사용자 2026-06-12: 덱이 PipelineContext를 재저작하는 "두 번째 생성기"면 안 되고, 정본 텍스트 제안서를 받아 변환하는 분리된 터미널 모듈이어야 함** → ADR-027 대기. |
 | [028](028-program-design-grammar.md) | **Accepted** | 프로그램 설계 문법 — 운영 변수 16축 추출 스키마(+VOD 분류 v5.4 정합 contentMix·validity) + JSON-first 추출 파이프라인 (WinningProposalDoc 148건 전수) |
+| [029](029-canonical-workspace.md) | **Accepted** | 단일 정본 워크스페이스 — 프로그램 기획 중심 3단계 통합 (경쟁 진입점 7→1) |
+| [030](030-budget-costing-calibration.md) | **Accepted** | 예산 적산 캘리브레이션 — 정직한 bottom-up + drSplitObserved 가드(강제 끼워맞춤 금지) + 매직넘버 데이터화 |
 
 ## 다음 ADR 후보 (예정)
 - ~~ADR-021 단일 엔진~~ → **작성됨 (Proposed, 2026-06-01)**
