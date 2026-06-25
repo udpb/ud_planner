@@ -175,10 +175,6 @@ export default async function ProjectWorkspacePage({
         initialOverrideStage={initialOverrideStage}
         doneFlags={doneFlags}
         summaries={summaries}
-        budgetSummary={{
-          totalBudgetVat: project.totalBudgetVat,
-          supplyPrice: project.supplyPrice,
-        }}
         stepRfpProps={{
           projectId: project.id,
           initialParsed: data.rfpParsed,
