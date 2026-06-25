@@ -256,6 +256,7 @@ export default async function ProjectWorkspacePage({
           handoffConfigured: data.impactHandoffConfigured,
         }}
         planContext={planContext}
+        initialChatMessages={data.workspaceChatMessages}
       />
     </div>
   )

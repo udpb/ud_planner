@@ -10,8 +10,10 @@
  * ⚠️ 이번 범위(BR-WS-5) = **대화 응답까지**. 브레인 응답이 우 캔버스를 직접 바꾸는
  * 연결은 BR-WS-6. assistant 응답의 action 자리는 비어 있음(`null`) — 후속 호환.
  *
- * ⚠️ 메시지는 **client state** 다. 이번엔 영속 X — 새로고침하면 리셋된다(서버 저장은
- * 다음 브리프 범위). 스키마 변경 0.
+ * ⚠️ BR-WS-20: 메시지는 client state 지만 **서버 영속**된다. 마운트 시 initialMessages
+ * (loadWorkspace 가 expressTurnsCache 에서 복원)로 시드 + 첫 사용자 전송 이후부터
+ * `PUT /api/projects/[id]/workspace-chat` 로 autosave(debounce). 스키마 변경 0
+ * (미사용 expressTurnsCache 재사용). welcome-only 초기상태·마운트 시엔 저장 안 함.
  *
  * 디자인킷 260529: accent #F05519 1개(브레인 아이콘·전송), radius 0, NanumHuman/Poppins.
  */
@@ -50,6 +52,40 @@ interface ChatMessage {
   choicePicked?: boolean
 }
 
+/**
+ * BR-WS-20: 서버 복원 메시지(loadWorkspace 가드 통과분). choices 는 형태 미검증
+ * (unknown)으로 들어와 — 시드 시 normalizeRestored 가 ChatChoice[] 로 재검증한다.
+ */
+interface RestoredChatMessage {
+  id: string
+  role: 'assistant' | 'user'
+  text: string
+  choices?: unknown
+  choicePicked?: boolean
+}
+
+/** unknown choices → 렌더 가능한 ChatChoice[] 로 재검증(handleSend 의 choices 필터와 동일 규칙). */
+function normalizeRestored(msgs: RestoredChatMessage[]): ChatMessage[] {
+  return msgs.map((m) => {
+    const choices = Array.isArray(m.choices)
+      ? (m.choices as unknown[]).filter(
+          (c): c is ChatChoice =>
+            !!c &&
+            typeof (c as ChatChoice).label === 'string' &&
+            Array.isArray((c as ChatChoice).ops) &&
+            (c as ChatChoice).ops.length > 0,
+        )
+      : undefined
+    return {
+      id: m.id,
+      role: m.role,
+      text: m.text,
+      ...(choices && choices.length > 0 ? { choices } : {}),
+      ...(m.choicePicked ? { choicePicked: true } : {}),
+    }
+  })
+}
+
 interface Props {
   projectId: string
   /** 현재 단계 — 응답을 단계 인지로 만들기 위해 전송에 포함. */
@@ -76,6 +112,12 @@ interface Props {
    * design 단계에서만 주입됨. sessions 구조면 SessionOp[], 비회차면 StageOp[].
    */
   onOps?: (ops: DesignOp[]) => void
+  /**
+   * BR-WS-20: 서버 복원 메시지(loadWorkspace 가 expressTurnsCache 에서 가드 통과분).
+   * 마운트 1회 시드에만 사용 — 있으면 welcome 대신 이 history 로 시작한다.
+   * 없거나 빈 배열이면 welcome 1개로 시작(기존 동작 유지).
+   */
+  initialMessages?: RestoredChatMessage[] | null
 }
 
 /**
@@ -103,9 +145,15 @@ export function WorkspaceChat({
   stages,
   structureKind = 'sessions',
   onOps,
+  initialMessages,
 }: Props) {
   // 마운트 시점 stage 로 1회 시드(lazy init). 이후 stage 변경 시 인사 재발급 안 함 — history 유지.
-  const [messages, setMessages] = useState<ChatMessage[]>(() => [welcomeFor(stage)])
+  // BR-WS-20: 서버 복원 메시지가 있으면 그걸로 시작(welcome 대신). 없으면 welcome 1개.
+  const [messages, setMessages] = useState<ChatMessage[]>(() =>
+    initialMessages && initialMessages.length > 0
+      ? normalizeRestored(initialMessages)
+      : [welcomeFor(stage)],
+  )
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -121,6 +169,36 @@ export function WorkspaceChat({
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [messages])
+
+  // ── BR-WS-20: 대화 서버 영속(autosave) ──
+  // 마운트/하이드레이션 시엔 저장 X(첫 effect run skip). welcome-only(=실제 교환 전)도
+  // 저장 X(dirty 가드). 실제 사용자/assistant 메시지가 있고, 변경됐을 때만 debounce 후
+  // PUT. 실패는 무음(console.warn) — 대화는 끊기지 않는다(토스트 X).
+  const didMountRef = useRef(false)
+  useEffect(() => {
+    // 1) 마운트 시 1회 skip — 복원 직후 불필요 저장 방지.
+    if (!didMountRef.current) {
+      didMountRef.current = true
+      return
+    }
+    // 2) dirty 가드 — welcome 외 실제 메시지가 하나도 없으면 저장 안 함.
+    const hasRealExchange = messages.some((m) => m.id !== 'welcome')
+    if (!hasRealExchange) return
+
+    // 3) debounce(~800ms) — 연속 setMessages(user+assistant)를 1회 PUT 으로.
+    const snapshot = messages
+    const t = setTimeout(() => {
+      void fetch(`/api/projects/${projectId}/workspace-chat`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: snapshot }),
+      }).catch((err) => {
+        // 무음 — 저장 실패가 대화 흐름을 막지 않게(토스트 남발 금지).
+        console.warn('[WorkspaceChat] 대화 저장 실패(무시):', err)
+      })
+    }, 800)
+    return () => clearTimeout(t)
+  }, [messages, projectId])
 
   const handleSend = useCallback(async () => {
     const text = input.trim()

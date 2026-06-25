@@ -61,6 +61,41 @@ export interface WorkspaceForecastSummary {
   breakdown: BreakdownEntry[]
 }
 
+/**
+ * BR-WS-20: 복원용 워크스페이스 대화 메시지(WorkspaceChat 의 ChatMessage 과 동일 형태).
+ * 저장처는 미사용 `Project.expressTurnsCache`(Json?) 재사용 — 스키마 변경 0.
+ * choices/choicePicked 는 보존하되 형태 검증은 클라이언트 렌더 가드에 맡긴다(여기선 보존만).
+ */
+export interface WorkspaceChatMessage {
+  id: string
+  role: 'assistant' | 'user'
+  text: string
+  choices?: unknown
+  choicePicked?: boolean
+}
+
+/**
+ * expressTurnsCache(Json?) → 복원 가능한 메시지 배열로 가드.
+ * 배열 + 각 항목 {id,role,text} 형태가 맞는 것만 통과. 불량이면 빈 배열(throw 금지 —
+ * 워크스페이스는 항상 떠야 함). 통과분이 0개면 null 반환(복원 없음 → welcome 시드).
+ */
+function guardChatMessages(raw: unknown): WorkspaceChatMessage[] | null {
+  if (!Array.isArray(raw)) return null
+  const out: WorkspaceChatMessage[] = []
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue
+    const m = item as Record<string, unknown>
+    if (typeof m.id !== 'string') continue
+    if (m.role !== 'user' && m.role !== 'assistant') continue
+    if (typeof m.text !== 'string') continue
+    const msg: WorkspaceChatMessage = { id: m.id, role: m.role, text: m.text }
+    if (m.choices !== undefined) msg.choices = m.choices
+    if (typeof m.choicePicked === 'boolean') msg.choicePicked = m.choicePicked
+    out.push(msg)
+  }
+  return out.length > 0 ? out : null
+}
+
 export interface WorkspaceData {
   project: {
     id: string
@@ -112,6 +147,10 @@ export interface WorkspaceData {
   // ── BR-WS-15: 단계 간 라이브 연동 ──
   /** 2026 단가표(budget-rules.json) — client live calcBudget 용. 로드 실패 시 null. */
   budgetRules: BudgetRules | null
+
+  // ── BR-WS-20: 대화 영속 복원 ──
+  /** expressTurnsCache 가드 통과분 — 없거나 불량이면 null(WorkspaceChat 이 welcome 시드). */
+  workspaceChatMessages: WorkspaceChatMessage[] | null
 
   // ── done 판정용 파생 ──
   hasRfp: boolean
@@ -175,6 +214,8 @@ export async function loadWorkspace(
       acceptedAssetIds: true,
       // ② 기획의도 (BR-WS-3)
       strategicNotes: true,
+      // BR-WS-20: 워크스페이스 대화 영속 복원(미사용 Json 필드 재사용)
+      expressTurnsCache: true,
       // ③ 임팩트
       sroiCountry: true,
       impactForecast: true,
@@ -270,6 +311,9 @@ export async function loadWorkspace(
       }
     : null
 
+  // BR-WS-20: 대화 복원 — 미사용 expressTurnsCache(Json?) 가드(불량 시 null, throw X).
+  const workspaceChatMessages = guardChatMessages(project.expressTurnsCache)
+
   const hasRfp = !!rfpParsed
   // 설계 진행 신호: programProfile 확정 또는 acceptedAssetIds 채움 또는 저장된 1차안 존재(BR-WS-4).
   const hasDesign = !!programProfile || acceptedAssetIds.length > 0 || !!savedPlan
@@ -315,6 +359,7 @@ export async function loadWorkspace(
     impactCategories,
     impactForecast,
     budgetRules,
+    workspaceChatMessages,
     hasRfp,
     hasDesign,
     hasCoach,

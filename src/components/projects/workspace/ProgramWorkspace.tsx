@@ -40,6 +40,7 @@ import { PlanningIntent } from './PlanningIntent'
 import { WorkspacePipeline } from './WorkspacePipeline'
 import { WorkspaceChat } from './WorkspaceChat'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
+import type { WorkspaceChatMessage } from '@/lib/projects/load-workspace'
 import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
@@ -80,6 +81,12 @@ interface Props {
   }
   /** SROI 예측 — ImpactForecastClient props */
   impactProps: ComponentProps<typeof ImpactForecastClient>
+
+  /**
+   * BR-WS-20: 서버 복원 대화 메시지(loadWorkspace 가 expressTurnsCache 에서 가드 통과분).
+   * WorkspaceChat 의 initialMessages 로 전달 — 마운트 1회 시드. 없으면 null(welcome 시작).
+   */
+  initialChatMessages: WorkspaceChatMessage[] | null
 
   /**
    * BR-WS-15: 단계 간 라이브 연동 초기값 (server 조립). WorkspacePlanProvider 가
@@ -146,6 +153,7 @@ function WorkspaceInner({
   designProps,
   intentProps,
   impactProps,
+  initialChatMessages,
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
   // BR-WS-19: 비회차(T4/T5) 단계(stages)도 동일 소스에서 — 대화 동봉 근거.
@@ -267,6 +275,8 @@ function WorkspaceInner({
             stages={stage === 'design' ? stages : null}
             structureKind={stage === 'design' && stages ? 'nonsession' : 'sessions'}
             onOps={stage === 'design' ? handleOps : undefined}
+            // BR-WS-20: 서버 복원 대화(마운트 1회 시드). 없으면 welcome 시작.
+            initialMessages={initialChatMessages}
           />
         </div>
 
