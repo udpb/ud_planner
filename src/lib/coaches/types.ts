@@ -18,14 +18,14 @@ import type { ProgramProfile } from '@/lib/program-profile'
  * 변경 시 반드시 ADR + 단위 테스트 갱신.
  */
 export const RECOMMENDER_WEIGHTS = {
-  /** RFP keywords ∩ coach.expertise/intro/career — 가장 직접적 매칭 */
-  keyword: 0.4,
+  /** RFP keywords ∩ coach.expertise/intro/career — 가장 직접적 매칭 (topic-fit, BR-WS-13 0.40→0.48) */
+  keyword: 0.48,
   /** RFP detectedTasks → EXPERTISE_OPTIONS hint 매핑 */
   task: 0.3,
-  /** RFP region ∩ coach.regions (exact 1 / 부분 0.7 / 0) */
-  region: 0.15,
-  /** TIER1=1.0, TIER2=0.6, TIER3=0.3 */
-  tier: 0.1,
+  /** RFP region ∩ coach.regions (exact 1 / 부분 0.7 / 0) (BR-WS-13 0.15→0.10) */
+  region: 0.1,
+  /** TIER1=1.0, TIER2=0.6, TIER3=0.3 (BR-WS-13 0.10→0.07 — 등급이 topic-fit을 누르지 않게) */
+  tier: 0.07,
   /** collaborationCount log + satisfactionAvg (UD 협업 history) */
   history: 0.05,
 } as const

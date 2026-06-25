@@ -3,8 +3,8 @@
  *
  * RFP + 715명 코치 풀 → 점수 desc 정렬 → 상위 N × POOL_MULTIPLIER 추출.
  *
- * 5축 가중치 (RECOMMENDER_WEIGHTS, 합 1.0):
- *   keyword 0.40 / task 0.30 / region 0.15 / tier 0.10 / history 0.05
+ * 5축 가중치 (RECOMMENDER_WEIGHTS, 합 1.0, BR-WS-13 topic-fit 재조정):
+ *   keyword 0.48 / task 0.30 / region 0.10 / tier 0.07 / history 0.05
  *
  * pure function — Prisma 호출 X. coachId / lectureRateMain / coachRateMain 는
  * 호출자(API route) 에서 prisma enrich.
