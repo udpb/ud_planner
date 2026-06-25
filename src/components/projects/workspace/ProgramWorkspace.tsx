@@ -25,12 +25,14 @@
  * 디자인킷 260529: accent #F05519 1개, radius 0, NanumHuman/Poppins.
  */
 
-import { useMemo, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 
 import { StageS1 } from '@/components/projects/stages/StageS1'
 import { ProgramDesignFlow } from '@/app/(dashboard)/projects/[id]/program-design/_components/program-design-flow'
 import { ImpactForecastClient } from '@/app/(dashboard)/projects/[id]/impact-forecast/forecast-client'
 import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
+import { SelectedTeamPanel } from '@/components/projects/coaches/SelectedTeamPanel'
+import { CoachAssign } from '@/app/(dashboard)/projects/[id]/coach-assign'
 import { BudgetCalcCanvas } from './BudgetCalcCanvas'
 import {
   WorkspacePlanProvider,
@@ -40,7 +42,10 @@ import { PlanningIntent } from './PlanningIntent'
 import { WorkspacePipeline } from './WorkspacePipeline'
 import { WorkspaceChat } from './WorkspaceChat'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
-import type { WorkspaceChatMessage } from '@/lib/projects/load-workspace'
+import type {
+  WorkspaceChatMessage,
+  CoachTeamMember,
+} from '@/lib/projects/load-workspace'
 import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
@@ -82,6 +87,12 @@ interface Props {
   }
   /** SROI 예측 — ImpactForecastClient props */
   impactProps: ComponentProps<typeof ImpactForecastClient>
+
+  /**
+   * BR-WS-23: 코치 선발팀(CoachAssignment 로스터) — SSR hydrate 초기값.
+   * SelectedTeamPanel 초기값 + assignedCoachIds 초기 파생. 배정/제거 후 client 재fetch.
+   */
+  coachTeam: CoachTeamMember[]
 
   /**
    * BR-WS-20: 서버 복원 대화 메시지(loadWorkspace 가 expressTurnsCache 에서 가드 통과분).
@@ -154,6 +165,7 @@ function WorkspaceInner({
   designProps,
   intentProps,
   impactProps,
+  coachTeam,
   initialChatMessages,
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
@@ -190,6 +202,24 @@ function WorkspaceInner({
     budgetOpsSeq.current += 1
     setBudgetIncomingOps({ id: `budget-ops-${budgetOpsSeq.current}`, ops })
   }
+
+  // ── BR-WS-23 배선: 코치 선발팀 ↔ 추천 풀 ──
+  // assignedCoachIds 는 SSR 로스터(coachTeam)에서 초기 파생 → 추천 풀 회색처리 실값.
+  // SelectedTeamPanel 이 제거/재fetch 후 onChange 로 최신 coachId 배열을 돌려준다.
+  const [assignedCoachIds, setAssignedCoachIds] = useState<string[]>(() =>
+    coachTeam.map((m) => m.coachId),
+  )
+  // 외부 트리거 — 추천/CoachAssign 모달에서 배정 후 패널 재fetch 신호. ++ 로 발화.
+  // router.refresh 비의존(워크스페이스는 client 셸). 모달이 닫혀 window 가 focus 를
+  // 되찾으면(=배정 종료 가능성) coach 단계에서 1회 재fetch — 무편집 비침투 배선.
+  const [coachRefreshSignal, setCoachRefreshSignal] = useState(0)
+  const bumpCoachRefresh = () => setCoachRefreshSignal((n) => n + 1)
+  useEffect(() => {
+    if (stage !== 'coach') return
+    const onFocus = () => bumpCoachRefresh()
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
+  }, [stage])
 
   // 단계별 우 캔버스 — 전부 기존 컴포넌트 조립/임베드만(내부 재구현 0).
   const canvas: Record<WorkspaceStageId, ReactNode> = useMemo(
@@ -234,15 +264,40 @@ function WorkspaceInner({
           <strong>RFP 분석</strong> 단계에서 RFP 를 먼저 업로드·분석한 뒤 진행하세요.
         </div>
       ),
-      // 코치 매칭 = AutoRecommendedPool (inline 모드, 자체 CTA)
+      // 코치 매칭 = 선발팀 패널(BR-WS-23) + 코치 배정 모달 + 추천 풀(inline).
+      // BR-WS-23: 선발팀(CoachAssignment 로스터)을 표시·제거 + 추천 풀에 실 assignedCoachIds.
       // BR-WS-15: requiredCountOverride=ctx.coachCount — 커리큘럼 회차 변경 즉시 반영.
       coach: (
-        <AutoRecommendedPool
-          projectId={projectId}
-          mode="inline"
-          assignedCoachIds={[]}
-          requiredCountOverride={coachCount}
-        />
+        <div className="space-y-4">
+          {/* 선발팀 — SSR hydrate 초기값 + 외부 신호/제거 시 GET 재fetch */}
+          <SelectedTeamPanel
+            projectId={projectId}
+            initialTeam={coachTeam}
+            requiredCount={coachCount}
+            refreshSignal={coachRefreshSignal}
+            onChange={setAssignedCoachIds}
+          />
+
+          {/* 코치 배정 모달(자체 트리거 버튼 + 검색·추천 풀 내장). 닫힌 뒤 window focus →
+              상단 effect 가 refreshSignal++ 로 선발팀 재fetch. CoachAssign 내부 무변경. */}
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs text-muted-foreground">
+              추천 풀에서 후보를 보고, <span className="font-medium text-foreground">코치 배정</span> 으로 역할·단가와 함께 선발하세요.
+            </p>
+            <CoachAssign
+              projectId={projectId}
+              assignedCoachIds={assignedCoachIds}
+            />
+          </div>
+
+          {/* AI 추천 풀 — 실 assignedCoachIds 전달(배정된 코치 회색처리). */}
+          <AutoRecommendedPool
+            projectId={projectId}
+            mode="inline"
+            assignedCoachIds={assignedCoachIds}
+            requiredCountOverride={coachCount}
+          />
+        </div>
       ),
       // 예산 자동화 — BR-WS-15: ctx(sessions·coachCount·예산·채널·기간·단가표)로 client
       // live calcBudget. 회차 변경 → 적산·마진 실시간 재계산(API fetch 제거).
@@ -262,6 +317,9 @@ function WorkspaceInner({
       setSessions,
       setStages,
       coachCount,
+      coachTeam,
+      assignedCoachIds,
+      coachRefreshSignal,
     ],
   )
 

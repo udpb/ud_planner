@@ -37,6 +37,9 @@ import type { RfpPreview } from '@/app/(dashboard)/projects/[id]/program-design/
 import { isImpactDbConfigured, listActiveCategories } from '@/lib/impact/db'
 import { isHandoffConfigured } from '@/lib/impact/handoff'
 import type { ForecastItemWithMeta, BreakdownEntry } from '@/lib/impact/types'
+import type { CoachTeamMember } from '@/app/api/projects/[id]/coach-assignments/route'
+
+export type { CoachTeamMember }
 
 // ─────────────────────────────────────────────────────────────────
 // 조립 결과 타입
@@ -152,6 +155,14 @@ export interface WorkspaceData {
   /** expressTurnsCache 가드 통과분 — 없거나 불량이면 null(WorkspaceChat 이 welcome 시드). */
   workspaceChatMessages: WorkspaceChatMessage[] | null
 
+  // ── BR-WS-23: 코치 선발팀 (CoachAssignment 로스터) ──
+  /**
+   * 이 프로젝트의 CoachAssignment rows(coach 메타 포함) — SSR 초기 hydrate.
+   * SelectedTeamPanel 이 초기값으로 받고, 배정/제거 후 GET 으로 재fetch 한다.
+   * 비었으면 빈 배열(패널이 "아직 선발된 코치 없음" 안내).
+   */
+  coachTeam: CoachTeamMember[]
+
   // ── done 판정용 파생 ──
   hasRfp: boolean
   hasDesign: boolean
@@ -219,8 +230,33 @@ export async function loadWorkspace(
       // ③ 임팩트
       sroiCountry: true,
       impactForecast: true,
-      // done 신호(BR-WS-7) — 가벼운 조회만: 코치 배정 수 + 예산 레코드 존재.
-      _count: { select: { coachAssignments: true } },
+      // BR-WS-23: 코치 선발팀 로스터(coach 메타 포함). hasCoach 도 이 길이로 파생
+      //   (별도 _count 불필요 — 로스터를 이미 로드). GET route 의 정제 형태와 동일.
+      coachAssignments: {
+        orderBy: { createdAt: 'asc' },
+        select: {
+          id: true,
+          coachId: true,
+          role: true,
+          sessions: true,
+          agreedRate: true,
+          totalFee: true,
+          netFee: true,
+          confirmed: true,
+          coach: {
+            select: {
+              id: true,
+              name: true,
+              tier: true,
+              expertise: true,
+              regions: true,
+              coachRateMain: true,
+              lectureRateMain: true,
+            },
+          },
+        },
+      },
+      // done 신호(BR-WS-7) — 예산 레코드 존재.
       budget: { select: { id: true } },
     },
   })
@@ -314,11 +350,34 @@ export async function loadWorkspace(
   // BR-WS-20: 대화 복원 — 미사용 expressTurnsCache(Json?) 가드(불량 시 null, throw X).
   const workspaceChatMessages = guardChatMessages(project.expressTurnsCache)
 
+  // BR-WS-23: 코치 선발팀 로스터 정제(GET route 와 동일 형태). 비면 빈 배열.
+  const coachTeam: CoachTeamMember[] = (project.coachAssignments ?? []).map(
+    (r) => ({
+      assignmentId: r.id,
+      coachId: r.coachId,
+      role: r.role,
+      sessions: r.sessions,
+      agreedRate: r.agreedRate,
+      totalFee: r.totalFee,
+      netFee: r.netFee,
+      confirmed: r.confirmed,
+      coach: {
+        id: r.coach.id,
+        name: r.coach.name,
+        tier: r.coach.tier,
+        expertise: r.coach.expertise,
+        regions: r.coach.regions,
+        coachRateMain: r.coach.coachRateMain,
+        lectureRateMain: r.coach.lectureRateMain,
+      },
+    }),
+  )
+
   const hasRfp = !!rfpParsed
   // 설계 진행 신호: programProfile 확정 또는 acceptedAssetIds 채움 또는 저장된 1차안 존재(BR-WS-4).
   const hasDesign = !!programProfile || acceptedAssetIds.length > 0 || !!savedPlan
-  // 코치 배정 1명 이상 / 예산 레코드 존재(BR-WS-7).
-  const hasCoach = (project._count?.coachAssignments ?? 0) > 0
+  // 코치 배정 1명 이상 / 예산 레코드 존재(BR-WS-7). 로스터 길이로 파생(_count 대체).
+  const hasCoach = coachTeam.length > 0
   const hasBudget = !!project.budget
   const hasImpact = !!impactForecast
 
@@ -360,6 +419,7 @@ export async function loadWorkspace(
     impactForecast,
     budgetRules,
     workspaceChatMessages,
+    coachTeam,
     hasRfp,
     hasDesign,
     hasCoach,

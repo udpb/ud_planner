@@ -255,6 +255,7 @@ export default async function ProjectWorkspacePage({
           configured: data.impactConfigured,
           handoffConfigured: data.impactHandoffConfigured,
         }}
+        coachTeam={data.coachTeam}
         planContext={planContext}
         initialChatMessages={data.workspaceChatMessages}
       />
