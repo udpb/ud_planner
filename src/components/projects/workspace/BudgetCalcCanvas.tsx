@@ -27,6 +27,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   calcBudget,
+  computeBudgetDiagnostics,
   type BudgetCalcInput,
   type BudgetLine,
 } from '@/lib/program-design/budget-calc'
@@ -216,55 +217,24 @@ export function BudgetCalcCanvas({
   )
 
   // 편집값으로 AC/PC/OR/마진 재계산 (워터폴 DR/R' 은 적산값 고정).
+  // 진단(split + warnings)은 엔진과 **동일 헬퍼**(computeBudgetDiagnostics, BR-WS-25)로
+  // 산출 — 중복 미러 제거. 같은 입력서 엔진/canvas 진단 동일.
   const recomputed = useMemo(() => {
-    if (!base) return null
+    if (!base || !budgetRules) return null
     const { waterfall } = base
     const ac = acLines.reduce((s, l) => s + l.amount, 0)
     const pc = pcLines.reduce((s, l) => s + l.amount, 0)
     const or = waterfall.DR - pc - ac
     const marginRate = waterfall.Rprime > 0 ? or / waterfall.Rprime : 0
-    // 경고 재산출 (편집 반영).
-    const warnings: string[] = []
-    if (!(totalBudget > 0)) {
-      warnings.push('총예산(R)이 없습니다 — RFP 분석에서 총 예산을 먼저 입력하세요.')
-    }
-    if (ac + pc > waterfall.DR) {
-      warnings.push('실비(AC)+인건비(PC)가 사업예산(DR)을 초과합니다 — 적자 위험.')
-    }
-    if (waterfall.Rprime > 0 && marginRate < 0.05) {
-      warnings.push(`마진율 ${(marginRate * 100).toFixed(1)}% — 권장 하한(5%) 미만.`)
-    } else if (waterfall.Rprime > 0 && marginRate > 0.2) {
-      warnings.push(`마진율 ${(marginRate * 100).toFixed(1)}% — 권장 상한(20%) 초과.`)
-    }
-    // DR 분할(각/DR) — 관찰값 비교용. 재분배 아님(진단만, ADR-030).
-    const split = {
-      pcRate: waterfall.DR > 0 ? pc / waterfall.DR : 0,
-      acRate: waterfall.DR > 0 ? ac / waterfall.DR : 0,
-      orRate: waterfall.DR > 0 ? or / waterfall.DR : 0,
-    }
-    // drSplitObserved 가드 진단 (편집 반영) — OR 이 관찰 range 밖이면 "왜"를 짚는다.
-    const observed = budgetRules?.waterfall?.drSplitObserved
-    if (waterfall.DR > 0 && observed?.orRate) {
-      const obsOr = observed.orRate
-      const obsAc = observed.acRate
-      const orRange = obsOr.range
-      const outOfRange =
-        (orRange
-          ? split.orRate < orRange[0] || split.orRate > orRange[1]
-          : false) || split.orRate > 0.2
-      if (outOfRange) {
-        const pct = (n: number) => (n * 100).toFixed(1)
-        const obsAcStr =
-          obsAc && typeof obsAc.median === 'number'
-            ? ` AC 계산 ${pct(split.acRate)}% vs 관찰 중앙 ${pct(obsAc.median)}% —`
-            : ` AC 계산 ${pct(split.acRate)}% —`
-        warnings.push(
-          `마진 ${pct(split.orRate)}% (DR 기준) — 관찰 중앙 ${pct(obsOr.median)}% 밖.${obsAcStr} 운영비/행사/회차/코치등급/투입률 점검. (강제 보정 없음 — 직접 조정)`,
-        )
-      }
-    }
+    const { split, warnings } = computeBudgetDiagnostics(budgetRules, {
+      Rprime: waterfall.Rprime,
+      DR: waterfall.DR,
+      ac,
+      pc,
+      R: waterfall.R,
+    })
     return { ac, pc, or, marginRate, split, warnings }
-  }, [base, acLines, pcLines, totalBudget, budgetRules])
+  }, [base, acLines, pcLines, budgetRules])
 
   // ── BR-WS-22: 현재 라인을 context 로 보고(대화 동봉 근거) — sessions 의 onSessionsChange 미러 ──
   // acLines/pcLines(편집 반영분)를 BudgetLineRef[] 로 평탄화해 setBudgetLines. 직렬화 가드로

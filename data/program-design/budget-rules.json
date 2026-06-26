@@ -135,17 +135,24 @@
   },
 
   "costingDefaults": {
-    "_desc": "ADR-030 — 적산 수량 기본값(가변·데이터화). 단가는 위 섹션(coachRates2026·designPrintPhoto2026·personnelRatesB2GB2B·acItemPatterns)이 SSoT, 여기는 투입률/수량만. 코드 매직넘버 이관(OPS_FTE·PC_RATE 등). 없으면 코드가 graceful fallback.",
+    "_desc": "ADR-030 + BR-WS-25 — 적산 수량 기본값(가변·데이터화). 단가는 위 섹션(coachRates2026·designPrintPhoto2026·personnelRatesB2GB2B·acItemPatterns)이 SSoT, 여기는 투입률/수량/믹스만. 코드 매직넘버 이관(OPS_FTE·PC_RATE 등). 없으면 코드가 graceful fallback. ⚠️ costingExamples(해커톤·아산두어스) 정합 근사 — 프로그램별 완전 정합은 실예산 전수 재분석 후속.",
     "opsFte": {
-      "_desc": "운영비(AC) 투입률(FTE) — 기간 비례. months >= shortMonths 이면 longFte, 미만이면 shortFte. 단기 집약형(해커톤 등)은 낮게, 장기 운영은 0.5.",
+      "_desc": "운영비(AC) 투입률(FTE) — 기간 베이스(months>=shortMonths면 longFte, 미만이면 shortFte) + 세션 밀도 가산(perSessionPerMonth × 회차/개월). [minFte,maxFte] 클램프. costingExamples 운영 ratio(해커톤 0.1~0.2 / 아산두어스 0.2) 정합 베이스 + 다회차일수록 가산으로 현실화. perSessionPerMonth=0이면 가산 없음(밀도 무시·기존 평탄 동작).",
       "shortMonths": 3,
-      "shortFte": 0.3,
-      "longFte": 0.5,
-      "minFte": 0.3
+      "shortFte": 0.2,
+      "longFte": 0.2,
+      "minFte": 0.1,
+      "maxFte": 0.6,
+      "perSessionPerMonth": 0.05
     },
     "pmInputRate": {
       "_desc": "PC PM 투입률 — B2G 5~50% 범위 내 보수적 기본. 기존 코드값 0.3 보존.",
       "default": 0.3
+    },
+    "coachGradeMix": {
+      "_desc": "코칭/강의 AC 유효 단가 배수(메인 perDay 대비). 단가 불변·비율만 데이터. 1.0=전부 메인(costingExamples 정합 — 두 예시 모두 코칭/강의 메인 단가 사용). 메인+보조 혼합 운영이면 <1.0 으로 낮춰 AC 현실화 가능(보조 단가↓). ⚠️ ADR-030 과대마진(AC 과소) 문제 방향상 기본은 1.0 유지 — 실예산 등급 분포 학습 후속 시 조정.",
+      "coachingMainEquivalent": 1.0,
+      "lectureMainEquivalent": 1.0
     },
     "coachingRatio": 1.0,
     "lectureRatio": 1.0,

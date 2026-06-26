@@ -69,11 +69,28 @@ interface CostingDefaults {
     shortFte?: number
     longFte?: number
     minFte?: number
+    /**
+     * 세션 밀도(회차/개월) 가산 — opsFte 베이스에 회차 밀도를 더해 다회차 운영을
+     * 현실화. 없으면 0(가산 없음 → 기존 동작). FTE 는 항상 [minFte, maxFte] 로 클램프.
+     */
+    perSessionPerMonth?: number
+    maxFte?: number
   }
   pmInputRate?: { default?: number }
   coachingRatio?: number
   lectureRatio?: number
   eventCountMultiplier?: number
+  /**
+   * 코치 등급 기본 믹스 — 코칭/강의 AC 산출 시 메인 단가에 곱하는 유효 배수(가중).
+   * 1.0 이면 전부 메인(기존 동작). 메인+보조 혼합을 반영하면 < 1.0 이 되어 AC 가
+   * 현실화된다(보조 단가가 메인보다 낮으므로). 단가 자체는 손대지 않고 비율만 데이터.
+   */
+  coachGradeMix?: {
+    /** 코칭 세션 유효 단가 배수 (메인 perDay 대비). 없으면 1(전부 메인). */
+    coachingMainEquivalent?: number
+    /** 강의 세션 유효 단가 배수 (메인 perDay 대비). 없으면 1(전부 메인). */
+    lectureMainEquivalent?: number
+  }
 }
 
 /** budget-rules.json 의 우리가 읽는 부분 (나머지 키는 무시 — passthrough). */
@@ -221,10 +238,14 @@ const COSTING_FALLBACK = {
   opsShortFte: 0.5,
   opsLongFte: 0.5,
   opsMinFte: 0,
+  opsPerSessionPerMonth: 0,
+  opsMaxFte: 1,
   pmInputRate: 0.3,
   coachingRatio: 1,
   lectureRatio: 1,
   eventCountMultiplier: 1,
+  coachingMainEquivalent: 1,
+  lectureMainEquivalent: 1,
 } as const
 
 /** 유한·음수 아닌 number 만 통과(NaN·undefined·음수 → fallback). */
@@ -236,11 +257,17 @@ function safeNum(v: unknown, fallback: number): number {
 function resolveCostingDefaults(rules: BudgetRules) {
   const cd = rules.costingDefaults
   const ops = cd?.opsFte
+  const mix = cd?.coachGradeMix
   return {
     opsShortMonths: safeNum(ops?.shortMonths, COSTING_FALLBACK.opsShortMonths),
     opsShortFte: safeNum(ops?.shortFte, COSTING_FALLBACK.opsShortFte),
     opsLongFte: safeNum(ops?.longFte, COSTING_FALLBACK.opsLongFte),
     opsMinFte: safeNum(ops?.minFte, COSTING_FALLBACK.opsMinFte),
+    opsPerSessionPerMonth: safeNum(
+      ops?.perSessionPerMonth,
+      COSTING_FALLBACK.opsPerSessionPerMonth,
+    ),
+    opsMaxFte: safeNum(ops?.maxFte, COSTING_FALLBACK.opsMaxFte),
     pmInputRate: safeNum(cd?.pmInputRate?.default, COSTING_FALLBACK.pmInputRate),
     coachingRatio: safeNum(cd?.coachingRatio, COSTING_FALLBACK.coachingRatio),
     lectureRatio: safeNum(cd?.lectureRatio, COSTING_FALLBACK.lectureRatio),
@@ -248,7 +275,104 @@ function resolveCostingDefaults(rules: BudgetRules) {
       cd?.eventCountMultiplier,
       COSTING_FALLBACK.eventCountMultiplier,
     ),
+    coachingMainEquivalent: safeNum(
+      mix?.coachingMainEquivalent,
+      COSTING_FALLBACK.coachingMainEquivalent,
+    ),
+    lectureMainEquivalent: safeNum(
+      mix?.lectureMainEquivalent,
+      COSTING_FALLBACK.lectureMainEquivalent,
+    ),
   }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 진단 (split + warnings) — 단일 소스 (ADR-030, BR-WS-25)
+// ─────────────────────────────────────────────────────────────────
+
+/** computeBudgetDiagnostics 입력 — 워터폴 산출 + (편집 반영) ac/pc. */
+export interface BudgetDiagnosticsInput {
+  /** 공급가 R'. 마진율·R<=0 경고용 (R'<=0 이면 총예산 미입력 간주). */
+  Rprime: number
+  /** 사업예산 DR. split·OR 기준. DR<=0 이면 split 0. */
+  DR: number
+  /** AC 합계 (편집 반영분). */
+  ac: number
+  /** PC 합계 (편집 반영분). */
+  pc: number
+  /**
+   * 총예산 R (VAT 포함). R<=0 경고 판정용. 없으면 Rprime 로 대체 판정
+   * (Rprime<=0 ⇔ R<=0). canvas 는 waterfall.R 를 넘긴다.
+   */
+  R?: number
+}
+
+/**
+ * ADR-030 진단 — DR 분할(split) + 경고(warnings)를 **단일 소스**로 산출한다.
+ * 엔진(calcBudget)과 캔버스(편집 후 재계산)가 둘 다 이 함수를 호출 → 중복 제거.
+ *
+ * **순수·결정론** — 재분배 없음(OR 잔차 그대로). drSplitObserved 는 가드/참조 앵커.
+ * graceful — observed 부재여도 던지지 않고 가드 경고만 생략.
+ */
+export function computeBudgetDiagnostics(
+  rules: BudgetRules,
+  input: BudgetDiagnosticsInput,
+): { split: BudgetResult['split']; warnings: string[] } {
+  const { Rprime, DR, ac, pc } = input
+  const R = typeof input.R === 'number' ? input.R : Rprime
+  const or = DR - pc - ac
+  const marginRate = Rprime > 0 ? or / Rprime : 0
+
+  // ── DR 분할 지표 (각/DR) — 관찰값 비교용. 재분배 아님(진단만). ──
+  const split = {
+    pcRate: DR > 0 ? pc / DR : 0,
+    acRate: DR > 0 ? ac / DR : 0,
+    orRate: DR > 0 ? or / DR : 0,
+  }
+
+  // ── 경고 ──
+  const warnings: string[] = []
+  if (R <= 0) {
+    warnings.push('총예산(R)이 없습니다 — RFP 분석에서 총 예산을 먼저 입력하세요.')
+  }
+  if (ac + pc > DR) {
+    warnings.push(
+      `실비(AC)+인건비(PC) 합계가 사업예산(DR)을 초과합니다 — 적자 위험. 항목 단가/투입률을 조정하세요.`,
+    )
+  }
+  if (Rprime > 0 && marginRate < 0.05) {
+    warnings.push(
+      `마진율 ${(marginRate * 100).toFixed(1)}% — 권장 하한(5%) 미만. 영업이익 부족.`,
+    )
+  } else if (Rprime > 0 && marginRate > 0.2) {
+    warnings.push(
+      `마진율 ${(marginRate * 100).toFixed(1)}% — 권장 상한(20%) 초과. 적산 재검토 권장.`,
+    )
+  }
+
+  // ── drSplitObserved 가드 진단 (ADR-030) ──
+  // OR 이 관찰 range 밖(또는 >0.20)이면 "왜"를 짚는다. **재분배 없음 — 진단만.**
+  const observed = rules.waterfall?.drSplitObserved
+  if (DR > 0 && observed?.orRate) {
+    const obsOr = observed.orRate
+    const obsAc = observed.acRate
+    const orRange = obsOr.range
+    const outOfRange =
+      (orRange ? split.orRate < orRange[0] || split.orRate > orRange[1] : false) ||
+      split.orRate > 0.2
+    if (outOfRange) {
+      const pct = (n: number) => (n * 100).toFixed(1)
+      const obsAcStr =
+        obsAc && typeof obsAc.median === 'number'
+          ? ` AC 계산 ${pct(split.acRate)}% vs 관찰 중앙 ${pct(obsAc.median)}% —`
+          : ` AC 계산 ${pct(split.acRate)}% —`
+      warnings.push(
+        `마진 ${pct(split.orRate)}% (DR 기준) — 관찰 중앙 ${pct(obsOr.median)}% 밖.${obsAcStr} 운영비/행사/회차/코치등급/투입률 점검. (강제 보정 없음 — 직접 조정)`,
+      )
+    }
+  }
+
+  return { split, warnings }
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -283,10 +407,16 @@ export function calcBudget(
 
   // ── 수량/투입률 기본값 (ADR-030 — costingDefaults, 매직넘버 제거) ──
   const cd = resolveCostingDefaults(rules)
-  // 운영 FTE: 기간 비례(짧으면 shortFte, 길면 longFte), 단 minFte 하한.
-  const opsFte = Math.max(
-    cd.opsMinFte,
-    months >= cd.opsShortMonths ? cd.opsLongFte : cd.opsShortFte,
+  const sessionCount = sessions.length
+  // 운영 FTE: 기간 비례(짧으면 shortFte, 길면 longFte) + 세션 밀도 가산
+  // (회차/개월 × perSessionPerMonth). [minFte, maxFte] 로 클램프. perSessionPerMonth=0
+  // 이면 가산 없음(기존 동작). 다회차·밀집 프로그램일수록 운영비(AC)가 현실화된다.
+  const opsBaseFte = months >= cd.opsShortMonths ? cd.opsLongFte : cd.opsShortFte
+  const sessionDensity = months > 0 ? sessionCount / months : 0
+  const opsDensityBump = sessionDensity * cd.opsPerSessionPerMonth
+  const opsFte = Math.min(
+    cd.opsMaxFte,
+    Math.max(cd.opsMinFte, opsBaseFte + opsDensityBump),
   )
 
   // ── AC(실비) bottom-up 초안 ──
@@ -348,23 +478,32 @@ export function calcBudget(
     }
   }
 
-  // 코칭료: 코칭 세션 × 메인 코치 perDay × 코치 수 × 투입비율(costingDefaults).
+  // 코칭료: 코칭 세션 × 메인 코치 perDay × 코치 수 × 투입비율 × 등급믹스(costingDefaults).
+  // 등급믹스(coachingMainEquivalent)=메인+보조 혼합 유효배수(단가 불변, 비율만 데이터).
   if (coachingCount > 0 && coachingMain > 0) {
-    const amount = round(coachingMain * coachingCount * coaches * cd.coachingRatio)
+    const amount = round(
+      coachingMain *
+        coachingCount *
+        coaches *
+        cd.coachingRatio *
+        cd.coachingMainEquivalent,
+    )
     acLines.push({
-      label: `코칭료 (메인 ${coaches}코치 × ${coachingCount}회)`,
+      label: `코칭료 (${coaches}코치 × ${coachingCount}회)`,
       amount,
-      basis: `2026 단가표 코칭.메인 perDay ${coachingMain.toLocaleString()}원 × ${coachingCount}회 × ${coaches}코치 × ${cd.coachingRatio} 비율`,
+      basis: `2026 단가표 코칭.메인 perDay ${coachingMain.toLocaleString()}원 × ${coachingCount}회 × ${coaches}코치 × ${cd.coachingRatio} 비율 × 등급믹스 ${cd.coachingMainEquivalent}`,
     })
   }
 
-  // 강의료: 강의/워크숍 세션 × 메인 강의 perDay × 투입비율(costingDefaults).
+  // 강의료: 강의/워크숍 세션 × 메인 강의 perDay × 투입비율 × 등급믹스(costingDefaults).
   if (lectureCount > 0 && lectureMain > 0) {
-    const amount = round(lectureMain * lectureCount * cd.lectureRatio)
+    const amount = round(
+      lectureMain * lectureCount * cd.lectureRatio * cd.lectureMainEquivalent,
+    )
     acLines.push({
-      label: `강의료 (메인 × ${lectureCount}회)`,
+      label: `강의료 (${lectureCount}회)`,
       amount,
-      basis: `2026 단가표 강의.메인 perDay ${lectureMain.toLocaleString()}원 × ${lectureCount}회 × ${cd.lectureRatio} 비율`,
+      basis: `2026 단가표 강의.메인 perDay ${lectureMain.toLocaleString()}원 × ${lectureCount}회 × ${cd.lectureRatio} 비율 × 등급믹스 ${cd.lectureMainEquivalent}`,
     })
   }
 
@@ -421,54 +560,14 @@ export function calcBudget(
   const or = DR - pc - ac
   const marginRate = Rprime > 0 ? or / Rprime : 0
 
-  // ── DR 분할 지표 (각/DR) — 관찰값 비교용. 재분배 아님(진단만). ──
-  const split = {
-    pcRate: DR > 0 ? pc / DR : 0,
-    acRate: DR > 0 ? ac / DR : 0,
-    orRate: DR > 0 ? or / DR : 0,
-  }
-
-  // ── 경고 ──
-  const warnings: string[] = []
-  if (R <= 0) {
-    warnings.push('총예산(R)이 없습니다 — RFP 분석에서 총 예산을 먼저 입력하세요.')
-  }
-  if (ac + pc > DR) {
-    warnings.push(
-      `실비(AC)+인건비(PC) 합계가 사업예산(DR)을 초과합니다 — 적자 위험. 항목 단가/투입률을 조정하세요.`,
-    )
-  }
-  if (Rprime > 0 && marginRate < 0.05) {
-    warnings.push(
-      `마진율 ${(marginRate * 100).toFixed(1)}% — 권장 하한(5%) 미만. 영업이익 부족.`,
-    )
-  } else if (Rprime > 0 && marginRate > 0.2) {
-    warnings.push(
-      `마진율 ${(marginRate * 100).toFixed(1)}% — 권장 상한(20%) 초과. 적산 재검토 권장.`,
-    )
-  }
-
-  // ── drSplitObserved 가드 진단 (ADR-030, 신규) ──
-  // OR 이 관찰 range 밖(또는 >0.20)이면 "왜"를 짚는다. **재분배 없음 — 진단만.**
-  const observed = rules.waterfall.drSplitObserved
-  if (DR > 0 && observed?.orRate) {
-    const obsOr = observed.orRate
-    const obsAc = observed.acRate
-    const orRange = obsOr.range
-    const outOfRange =
-      (orRange ? split.orRate < orRange[0] || split.orRate > orRange[1] : false) ||
-      split.orRate > 0.2
-    if (outOfRange) {
-      const pct = (n: number) => (n * 100).toFixed(1)
-      const obsAcStr =
-        obsAc && typeof obsAc.median === 'number'
-          ? ` AC 계산 ${pct(split.acRate)}% vs 관찰 중앙 ${pct(obsAc.median)}% —`
-          : ` AC 계산 ${pct(split.acRate)}% —`
-      warnings.push(
-        `마진 ${pct(split.orRate)}% (DR 기준) — 관찰 중앙 ${pct(obsOr.median)}% 밖.${obsAcStr} 운영비/행사/회차/코치등급/투입률 점검. (강제 보정 없음 — 직접 조정)`,
-      )
-    }
-  }
+  // ── 진단(split + warnings) — 단일 소스 헬퍼 (BR-WS-25, canvas 와 공유) ──
+  const { split, warnings } = computeBudgetDiagnostics(rules, {
+    Rprime,
+    DR,
+    ac,
+    pc,
+    R,
+  })
 
   return {
     waterfall,
