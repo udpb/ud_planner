@@ -67,5 +67,5 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   })
 
   revalidatePath('/projects')
-  redirect(`/projects/${project.id}/express`)
+  redirect(`/projects/${project.id}`)
 }

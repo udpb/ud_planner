@@ -43,7 +43,6 @@ type DockTab = 'assets' | 'patterns'
 export function BrainDock({
   open,
   onClose,
-  projectId,
   matchedAssets = [],
   similarPatterns = [],
   onAssetAccept,
@@ -139,16 +138,6 @@ export function BrainDock({
             <span>Brain Dashboard 열기</span>
             <span>→</span>
           </Link>
-          {projectId && (
-            <Link
-              href={`/projects/${projectId}/brain`}
-              className="mt-1 flex items-center justify-between bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.4px]"
-              style={{ color: 'var(--body-text, #333)', border: '1px solid var(--hairline-strong, #e4dfd6)' }}
-            >
-              <span>4+1 통합 패널</span>
-              <span>→</span>
-            </Link>
-          )}
           {/* Phase G1 — PM self-service 자산 제안 진입점 */}
           <Link
             href="/content-hub/submit"

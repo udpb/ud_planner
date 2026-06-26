@@ -940,7 +940,7 @@ export function ExpressShell(props: Props) {
                   : 'PM 보정'}
             </span>
             <Link
-              href={`/projects/${props.projectId}/impact-forecast`}
+              href={`/projects/${props.projectId}?stage=sroi`}
               className={cn(
                 ' border bg-background px-3 py-1 text-xs',
                 impactForecast.isStale

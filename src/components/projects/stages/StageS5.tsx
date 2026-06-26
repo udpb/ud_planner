@@ -72,7 +72,7 @@ export function StageS5({ projectId, impactForecast, proposalReady }: Props) {
               </div>
             </div>
             <Link
-              href={`/projects/${projectId}/impact-forecast`}
+              href={`/projects/${projectId}?stage=sroi`}
               className=" border bg-background px-3 py-1 text-xs hover:border-brand/40 hover:text-brand"
             >
               {impactForecast.isStale ? '재계산 →' : '상세·보정 →'}

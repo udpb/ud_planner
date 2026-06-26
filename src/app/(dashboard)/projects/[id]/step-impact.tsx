@@ -439,7 +439,7 @@ export function StepImpact({
               </div>
             </div>
             <Link
-              href={`/projects/${projectId}/impact-forecast`}
+              href={`/projects/${projectId}?stage=sroi`}
               className={cn(
                 'shrink-0 border bg-white px-2.5 py-1 text-[11px] font-medium',
                 impactForecast.isStale
@@ -463,7 +463,7 @@ export function StepImpact({
             </span>
           </div>
           <Link
-            href={`/projects/${projectId}/impact-forecast`}
+            href={`/projects/${projectId}?stage=sroi`}
             className="shrink-0 border border-violet-400 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
           >
             생성하기 →

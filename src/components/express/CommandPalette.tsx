@@ -156,7 +156,7 @@ export function CommandPalette(p: Props) {
             정밀 기획 (Deep) 으로 인계
           </CommandItem>
           <CommandItem
-            onSelect={navigateTo(`/projects/${p.projectId}/impact-forecast`)}
+            onSelect={navigateTo(`/projects/${p.projectId}?stage=sroi`)}
           >
             <BarChart3 className="mr-2 h-4 w-4 text-[color:var(--cyan)]" />
             임팩트 리포트 (SROI forecast)
