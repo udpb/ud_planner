@@ -33,17 +33,21 @@ BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영
 - **레이아웃 폴리시** (BR-WS-16) — 대화 pane 360px(캔버스 넓게) + 사이드바 접기 토글(localStorage). PC 전용. 시각 확인 ✓.
 - **대화 공동기획자화** ⭐⭐ (BR-WS-17) — design 단계 채팅: ① 대화 history 전송(맥락 유지) ② 행동우선 프롬프트(되묻기 X) ③ **choices 카드 → 클릭 시 캔버스 즉시 반영**. 라이브 검증: "6회차로 줄여줘"→3안 카드→클릭→8→6회차. (그동안 "멍청한 채팅" 해결.)
 
+### ✅ 2026-06-26 추가 완료 (코드✓ + 라이브✓)
+- **예산 적산 후속** (BR-WS-25, `c6385b3`) — 진단 단일 소스화(`computeBudgetDiagnostics` — 엔진/canvas 중복 제거) + costingDefaults 세션밀도 정교화(다회차일수록 AC↑). ADR-030 동결 준수. 라이브: 관찰분할 참조·단계 렌더 ✓.
+- **경쟁 라우트 제거** (BR-WS-2, `142ee98`) — ADR-029 마무리. express·brain·v2·program-design/page·impact-forecast/page 진입점 삭제, **재사용 컴포넌트(program-design/_components·forecast-client) 보존**, nav→정본 재지정(신규생성·?stage=sroi). 라이브: `/v2` 404·워크스페이스 5단계(sroi/budget/design 재사용분) 무크래시 ✓.
+- ⚠️ cleanup 잔여(후속): `(workspace)` 그룹 고아 layout · `load-express-props.ts` 등 미사용 lib · budget costingDefaults 실예산 전수 재분석.
+
 ### 🔲 다음 (다음 세션)
-0. ⭐ **2026-06-25 추가 5건 라이브 시각 검수** (코드✓·시각 미확인) — 프리뷰+Chrome 으로:
+0. ✅ ~~2026-06-25 추가 5건 라이브 검수~~ — **완료(06-26)**. (아래는 검수 항목 기록)
    - BR-WS-18 예산: 6회차+예산충분 → 마진 진단 warning·관찰분할 참조 카드 뜨는지 (마진이 현실 범위로 내려갔는지)
    - BR-WS-19 #10: T4/T5 플랜 → "단계 추가/수정해줘" → StageList 반영 (회차표 회귀 없는지)
    - BR-WS-20 영속: 대화 → 새로고침 → 메시지 복원 (⚠️ Vercel DB에 expressTurnsCache 컬럼 존재 가정 — 첫 저장 실동작 확인)
    - BR-WS-21 기획의도: "대화로 채우기" → 후보 카드 → 클릭 → 항목 채워짐
    - BR-WS-22 예산 카드: budget 단계 "마진 낮춰줘" → 카드 → 클릭 → 라인·마진 변화 (design 카드 회귀 없는지)
-1. ⭐ **SROI 라이브 연동** (이 브랜치 본래 목표 · 피드백 ④) — **사용자 액션 선행**: impact-measurement 앱 배포 + `SERVICE_API_TOKEN`(양쪽 env). 되면 핸드오프 배선(coefficients 읽기 + predict 호출 + 공식 리포트 임베드).
-2. **예산 적산 매핑 후속** (ADR-030 Negative) — costingDefaults 근사값을 추가 실예산 학습으로 프로그램별 정합. diagnostic 엔진/canvas 이중화 단일화.
-3. **BR-WS-2 경쟁 라우트 제거** (express·v2·brain·program-design) — ADR-029 정리 마무리, 단일 워크스페이스만.
-4. (선택) 코치 카드 후속 — `CoachAssign onAssigned` 정식 콜백(현재 window focus 재fetch 우회) · swap 부분실패 UX.
+1. ⭐ **SROI 라이브 연동** (이 브랜치 본래 목표 · 피드백 ④) — **코드 100% 완성·대기 중**(`src/lib/impact/handoff.ts` predict POST + `api/projects/[id]/impact-report` + forecast-client UI, 코드 갭 0). **사용자 액션만 남음**: ① measurement 레포 `feat/service-api` 배포(`impact-measurement-udi.vercel.app`, POST `/api/v1/measurements/predict`) ② `SERVICE_API_TOKEN`(양쪽 env, 고엔트로피) ③ ud-planner Vercel에 `SERVICE_API_TOKEN`·`IMPACT_MEASUREMENT_DATABASE_URL`(읽기)·(선택)`SROI_SERVICE_URL`. 게이트=`isHandoffConfigured()`(토큰 유무). 되면 "공식 리포트 생성" 버튼이 라이브 호출→SROI+iframe.
+2. (선택) 코치 카드 후속 — `CoachAssign onAssigned` 정식 콜백(현재 window focus 재fetch 우회) · swap 부분실패 UX.
+3. (선택) cleanup 잔여 — `(workspace)` 고아 layout · 미사용 lib(load-express-props 등) · budget costingDefaults 실예산 전수 재분석(프로그램타입 정합).
 
 ### ⚠️ 검수 루프 (확립됨 — 06-25)
 - **Vercel 프리뷰 + Claude in Chrome** 으로 메인이 직접 시각 검수(로컬 docker DB 올리면 더 정확). 로그인=`pm@underdogs.co.kr`(Credentials). 프리뷰 URL=`ud-planner-git-feat-sroi-integration-…vercel.app` (Source=feat/sroi-integration 인 것).
