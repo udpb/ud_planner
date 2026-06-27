@@ -243,7 +243,12 @@ export async function requestOfficialReport(
   const res = await postPredict(cfg, body, projectId)
   if (!res) return null
 
-  return { sroi: res.sroi, reportUrl: res.reportUrl, shareToken: res.shareToken }
+  // 서비스가 상대경로(`/view/{token}`)를 줄 수 있다 — measurement base(cfg.baseUrl)로
+  // 절대화한다. 안 하면 iframe src 가 ud-ops origin 에 붙어 리포트가 깨진다(라이브 검수 발견).
+  const reportUrl = /^https?:\/\//.test(res.reportUrl)
+    ? res.reportUrl
+    : `${cfg.baseUrl}/${res.reportUrl.replace(/^\/+/, '')}`
+  return { sroi: res.sroi, reportUrl, shareToken: res.shareToken }
 }
 
 // ─────────────────────────────────────────
