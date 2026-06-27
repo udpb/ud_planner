@@ -46,8 +46,8 @@ BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영
    - BR-WS-21 기획의도: "대화로 채우기" → 후보 카드 → 클릭 → 항목 채워짐
    - BR-WS-22 예산 카드: budget 단계 "마진 낮춰줘" → 카드 → 클릭 → 라인·마진 변화 (design 카드 회귀 없는지)
 1. ✅ **SROI 라이브 연동 — 완료(2026-06-27, 프리뷰 end-to-end 검증)**. measurement `feat/service-api` → 운영 브랜치 `main`에 cherry-pick·배포(predict 라이브). ud-planner `SERVICE_API_TOKEN`(Preview) + handoff URL 절대화 핫픽스(`ad7fe49`). 검증: impact-report 200 → SROI·공식 리포트 iframe(`impact-measurement-udi.vercel.app/view/...`) 렌더.
-   - ⚠️ **운영(master)에서 SROI 쓰려면 ud-planner Vercel `SERVICE_API_TOKEN`을 Production 스코프**에도 추가 필요(현재 Preview만). 없으면 graceful "연동 미설정"(앱 무손상).
-   - ⚠️ **SROI 수치 과대(8018배) = measurement 계수 데이터 버그**(연동 아님). `cat-seed-001`(창업멘토링)에 current 계수 중복 → measurement `runCalculation`이 ∏로 제곱(ud-planner db.ts는 dedup). 고칠 곳: measurement 중복 계수 제거 **또는** `run.ts` role=primary 필터/dedup.
+   - ✅ **운영(master) SROI 동작 확인(2026-06-27)** — `ud-planner.vercel.app` impact-report 200, SROI 0.1배, 리포트 iframe 절대URL 렌더. (Production 토큰 픽업 위해 재배포 필요했음 = env는 새 배포부터 적용.)
+   - ✅ **SROI 과대(8018배) 해결** — 원인=measurement `cat-seed-001`(창업멘토링) current primary 계수 중복 → `runCalculation` ∏ 제곱. **measurement `run.ts`에 dedup 추가**(최신 effectiveDate primary 1건 채택, adjustment 보존 — ud-planner db.ts 미러), main 배포(`b4f750c`). 검증: 창업멘토링 1.323조→4.41M, 총 17.9M, **SROI 8018배→0.1배**(로컬 엔진과 일치).
 2. (선택) 코치 카드 후속 — `CoachAssign onAssigned` 정식 콜백(현재 window focus 재fetch 우회) · swap 부분실패 UX.
 3. (선택) cleanup 잔여 — `(workspace)` 고아 layout · 미사용 lib(load-express-props 등) · budget costingDefaults 실예산 전수 재분석(프로그램타입 정합).
 
