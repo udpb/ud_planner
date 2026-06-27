@@ -45,7 +45,9 @@ BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영
    - BR-WS-20 영속: 대화 → 새로고침 → 메시지 복원 (⚠️ Vercel DB에 expressTurnsCache 컬럼 존재 가정 — 첫 저장 실동작 확인)
    - BR-WS-21 기획의도: "대화로 채우기" → 후보 카드 → 클릭 → 항목 채워짐
    - BR-WS-22 예산 카드: budget 단계 "마진 낮춰줘" → 카드 → 클릭 → 라인·마진 변화 (design 카드 회귀 없는지)
-1. ⭐ **SROI 라이브 연동** (이 브랜치 본래 목표 · 피드백 ④) — **코드 100% 완성·대기 중**(`src/lib/impact/handoff.ts` predict POST + `api/projects/[id]/impact-report` + forecast-client UI, 코드 갭 0). **사용자 액션만 남음**: ① measurement 레포 `feat/service-api` 배포(`impact-measurement-udi.vercel.app`, POST `/api/v1/measurements/predict`) ② `SERVICE_API_TOKEN`(양쪽 env, 고엔트로피) ③ ud-planner Vercel에 `SERVICE_API_TOKEN`·`IMPACT_MEASUREMENT_DATABASE_URL`(읽기)·(선택)`SROI_SERVICE_URL`. 게이트=`isHandoffConfigured()`(토큰 유무). 되면 "공식 리포트 생성" 버튼이 라이브 호출→SROI+iframe.
+1. ✅ **SROI 라이브 연동 — 완료(2026-06-27, 프리뷰 end-to-end 검증)**. measurement `feat/service-api` → 운영 브랜치 `main`에 cherry-pick·배포(predict 라이브). ud-planner `SERVICE_API_TOKEN`(Preview) + handoff URL 절대화 핫픽스(`ad7fe49`). 검증: impact-report 200 → SROI·공식 리포트 iframe(`impact-measurement-udi.vercel.app/view/...`) 렌더.
+   - ⚠️ **운영(master)에서 SROI 쓰려면 ud-planner Vercel `SERVICE_API_TOKEN`을 Production 스코프**에도 추가 필요(현재 Preview만). 없으면 graceful "연동 미설정"(앱 무손상).
+   - ⚠️ **SROI 수치 과대(8018배) = measurement 계수 데이터 버그**(연동 아님). `cat-seed-001`(창업멘토링)에 current 계수 중복 → measurement `runCalculation`이 ∏로 제곱(ud-planner db.ts는 dedup). 고칠 곳: measurement 중복 계수 제거 **또는** `run.ts` role=primary 필터/dedup.
 2. (선택) 코치 카드 후속 — `CoachAssign onAssigned` 정식 콜백(현재 window focus 재fetch 우회) · swap 부분실패 UX.
 3. (선택) cleanup 잔여 — `(workspace)` 고아 layout · 미사용 lib(load-express-props 등) · budget costingDefaults 실예산 전수 재분석(프로그램타입 정합).
 
@@ -80,7 +82,7 @@ BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영
 
 ## 📍 브랜치·배포
 - **작업 브랜치:** `feat/sroi-integration` (ud-ops, `feat/alpha-test-prep`에서 분기, auto-push). measurement: `feat/service-api`(로컬, 미배포).
-- ⚠️ **production = `master`, 미머지** → 운영 무손상. 신규 화면은 로컬 `localhost:3000`에서만. **그래서 과감히 정리·재정렬해도 안전 + 롤백 자유.**
+- ✅ **production = `master` = `ad7fe49` (2026-06-27 릴리스)** — feat/sroi-integration 전체(163커밋)를 ff 머지·푸시. **이제 이번 세션 작업 전부 운영 반영.** (과거: 미머지·운영무손상이었음.) 스키마 변경 0이라 운영 DB 호환. 롤백은 master reset.
 - 일하는 방식: 위임+검증+투명보고(ADR-020). 메인=구조/문서/기획, 기능코드=자급자족 브리프 서브 위임. **⚠️ 메인 로컬은 login authorize가 DB drift(별건)로 막혀 라이브 렌더 검증 불가 → 사용자 localhost 의존.**
 
 ## ✅ 이번 아크 빌드물 (전부 feat/sroi-integration 커밋·푸시)
