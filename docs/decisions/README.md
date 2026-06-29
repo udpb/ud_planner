@@ -53,6 +53,7 @@
 | [028](028-program-design-grammar.md) | **Accepted** | 프로그램 설계 문법 — 운영 변수 16축 추출 스키마(+VOD 분류 v5.4 정합 contentMix·validity) + JSON-first 추출 파이프라인 (WinningProposalDoc 148건 전수) |
 | [029](029-canonical-workspace.md) | **Accepted** | 단일 정본 워크스페이스 — 프로그램 기획 중심 3단계 통합 (경쟁 진입점 7→1) |
 | [030](030-budget-costing-calibration.md) | **Accepted** | 예산 적산 캘리브레이션 — 정직한 bottom-up + drSplitObserved 가드(강제 끼워맞춤 금지) + 매직넘버 데이터화 |
+| [031](031-concept-first-program-design.md) | **Accepted** | 컨셉-퍼스트 프로그램 기획 — 대화로 도출하는 컨셉/메시지 + 운영유형 축 재구성(T1~T5 박스 폐기) + 메시지 value-chain 관통 |
 
 ## 다음 ADR 후보 (예정)
 - ~~ADR-021 단일 엔진~~ → **작성됨 (Proposed, 2026-06-01)**
