@@ -5,6 +5,8 @@
  * PM이 직접 입력하거나, Planning Agent에서 자동 생성.
  */
 
+import type { ConceptShape } from '@/lib/program-design/concept-synth'
+
 export interface StrategicNotes {
   clientHiddenWants?: string   // 발주처가 RFP에 안 쓴 진짜 의도
   mustNotFail?: string         // 절대 실패하면 안 되는 것
@@ -29,6 +31,12 @@ export interface StrategicNotes {
     /** 마지막 추출 시각 */
     extractedAt?: string
   }
+  /**
+   * ADR-031 (컨셉-퍼스트, 2026-06-27): 좌측 대화로 도출한 프로그램 기획 컨셉.
+   * win-theme 한 줄 + 핵심 메시지 3 + 차별점 + 근거 + 좁혀온 경로. 기존 기획의도 키와 공존.
+   * concept-synth 엔진이 조립, /api/projects/[id]/concept PUT 이 merge 저장. (스키마 변경 0 — Json 재사용.)
+   */
+  concept?: ConceptShape
 }
 
 /**
