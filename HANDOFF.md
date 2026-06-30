@@ -17,6 +17,15 @@
 - **카드 UX·예산 항목** (BR-WS-22, `e3d9d7f`) — 예산 단계 대화→조정안 카드→클릭 시 적산 라인 즉시 반영(신규 `budget-ops.ts`, 라인 override만, 엔진 무변경). design 채널과 분리(회귀 방지).
 - **코치 단계 완성** ⭐ (BR-WS-23 `b0e43de` + BR-WS-24 `f999dd5`) — **라이브 검증 완료**. Phase 1=선발팀 배선(기존 `CoachAssignment` 재사용, 신규 GET 로스터 + `SelectedTeamPanel` 패널·역할·단가·제거·n/N, `assignedCoachIds` 하드코딩 제거, **스키마 변경 0**). Phase 2=`handleCoach` + 교체/추가 카드(신규 `coach-ops.ts`, 서버 영속 POST/DELETE→로스터 재fetch, knownIds 환각 필터). 검증: "2명 추천해서 넣어줘"→선발팀 0/3→2/3(메인·보조)·풀 "이미 배정됨". 코치 채널 분리(design/budget 회귀 0).
 
+### ⭐ 2026-06-27 컨셉-퍼스트 프로그램 기획 (ADR-031, W1~W4 완료)
+프로그램 기획 단계를 "T1-T5 박스 선택"에서 **컨셉-퍼스트**로 재정렬(사용자: "T1-5가 너무 정형 규칙 · 컨셉/메시지를 대화로 뾰족하게").
+- **W1 컨셉 엔진**(`d045e6b`) — `concept-synth.ts` + `/api/projects/[id]/concept`(step/assemble/save→strategicNotes.concept). **라이브 API 검증**: RFP+자산 그라운딩 카드·조립(win-theme+메시지3+차별점+근거+경로). 스키마 0.
+- **W2 컨셉 대화 UI**(`cc445af`) — `ConceptChat`(좌, 단계별 카드 좁힘) + `ConceptCanvas`(우, 맺힘). **라이브 검증**: design 진입→각도/차별점 카드→클릭→좁혀온 경로 캔버스 맺힘. WorkspaceChat 격리(무변경).
+- **W3 운영유형 축 재구성**(`3bcd69a`) — 게이트: 박스 → 컨셉 추천 배너 + 축 슬라이더(압축↔동행·팀↔개별·교육↔행사·시간) + 실측 앵커 + nearestType resolve. `concept-to-axes.ts`. **엔진/enum/post(T1~T5) 동결** — 코드✓·축 게이트 라이브검수는 컨셉 확정 후 흐름서 대기.
+- **W4 메시지 value-chain 관통**(`48e13ad`) — `concept-context.ts` → 커리큘럼(generate-plan)·SROI(forecast)·제안서(proposal-ai) 프롬프트에 컨셉/메시지 주입. 출력 스키마·엔진 무변경·graceful. 코드✓·라이브(생성물 메시지 반영)는 대기.
+- 승인 목업: concept_first_program_design · concept_derivation_via_chat (대화 위젯).
+- 🔲 다음(컨셉 후속): W3 축 게이트 + W4 메시지반영 풀플로우 라이브검수 · 당선패턴 임베딩 검색(현 채널필터 best-effort) · 컨셉 draft autosave(확정 전 비영속).
+
 ### ✅ 2026-06-26 라이브 시각 검수 완료 (Vercel 프리뷰 + Chrome, 직접 클릭·DOM)
 BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영속 저장/복원(Vercel DB expressTurnsCache 컬럼 존재 확인) · 예산 관찰분할 참조·진단·가드 · 예산 카드→마진 재계산 · #10 비회차 단계 추가 · design 카드 회귀 0(15→10회차) · 코치 선발팀+카드 배정. 크래시 0.
 ⚠️ 검수 중 테스트 흔적: 안산(cmpcgyyx7)에 T3 회차표·코치 2명 배정, 카카오(cmopf5xqv…tzw7dei)에 T4 구조·채팅 probe 남음(원하면 정리).
