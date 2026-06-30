@@ -64,6 +64,11 @@ export async function buildPlanInputFromProject(
     input.decisions = extra.decisions
   }
 
+  // ADR-031 W4 — 컨셉 운반 (strategicNotes.concept). 프롬프트 컨텍스트 전용 — 결정·수치 무영향.
+  // 부재 시 미포함(graceful).
+  const concept = ctx.strategicNotes?.concept
+  if (concept) input.concept = concept
+
   return input
 }
 

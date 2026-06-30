@@ -30,6 +30,8 @@ import {
   isImpactDbConfigured,
 } from './db'
 import { calculateImpactSafe, type SafeCalculationResult } from './engine'
+import { conceptContextBlock } from '@/lib/program-design/concept-context'
+import type { ConceptShape } from '@/lib/program-design/concept-synth'
 import type {
   ImpactCategory,
   ForecastItemWithMeta,
@@ -120,6 +122,12 @@ export interface ForecastInput {
   country?: string
   /** Conservative 모드 (estimated 항목 0.7 factor) — 기본 true */
   conservative?: boolean
+  /**
+   * ADR-031 W4 — 프로그램 컨셉(strategicNotes.concept). 있으면 SROI 내러티브 프롬프트에
+   * 컨셉 블록을 주입해 메시지를 일관 관통시킨다. 호출자가 안 넘기면 forecastImpact 가
+   * Project.strategicNotes 에서 best-effort 로 읽는다. 부재 시 블록 생략(graceful).
+   */
+  concept?: ConceptShape
 }
 
 export interface ForecastOutput {
@@ -149,6 +157,9 @@ export async function forecastImpact(
 
   const country = toImpactCountry(input.country)
 
+  // ADR-031 W4 — 컨셉을 best-effort 로 확보 (호출자가 안 넘기면 strategicNotes 에서).
+  const concept = await resolveConcept(input)
+
   // 1) impact-measurement 데이터 로드 (캐시)
   const [categories, coefficients] = await Promise.all([
     listActiveCategories(),
@@ -156,7 +167,7 @@ export async function forecastImpact(
   ])
 
   // 2) AI 매핑
-  const aiResp = await callAiForecastMapper(input, categories)
+  const aiResp = await callAiForecastMapper(input, categories, concept)
 
   // 3) Conservative factor 적용 + ForecastItemWithMeta 변환
   const conservative = input.conservative ?? true
@@ -295,11 +306,32 @@ export async function updateForecastItems(
 // 5. AI 호출
 // ─────────────────────────────────────────
 
+/**
+ * ADR-031 W4 — 컨셉 확보: 호출자가 명시하면 그대로, 아니면 Project.strategicNotes 에서 read.
+ * 부재/오류 → undefined (graceful, 블록 생략). 읽기 전용 — 스키마 변경 없음.
+ */
+async function resolveConcept(
+  input: ForecastInput,
+): Promise<ConceptShape | undefined> {
+  if (input.concept) return input.concept
+  try {
+    const project = await prisma.project.findUnique({
+      where: { id: input.projectId },
+      select: { strategicNotes: true },
+    })
+    const notes = project?.strategicNotes as { concept?: ConceptShape } | null
+    return notes?.concept ?? undefined
+  } catch {
+    return undefined
+  }
+}
+
 async function callAiForecastMapper(
   input: ForecastInput,
   categories: ImpactCategory[],
+  concept?: ConceptShape,
 ): Promise<{ items: AiForecastItem[]; calibrationNote: string | undefined }> {
-  const prompt = buildPrompt(input, categories)
+  const prompt = buildPrompt(input, categories, concept)
   const r = await invokeAi({
     prompt,
     maxTokens: AI_TOKENS.LARGE,
@@ -334,7 +366,11 @@ async function callAiForecastMapper(
 // 6. 프롬프트
 // ─────────────────────────────────────────
 
-function buildPrompt(input: ForecastInput, categories: ImpactCategory[]): string {
+function buildPrompt(
+  input: ForecastInput,
+  categories: ImpactCategory[],
+  concept?: ConceptShape,
+): string {
   const categoryList = categories
     .map((c) => {
       const formulaStr = c.formulaVariables.join(' × ')
@@ -359,6 +395,9 @@ function buildPrompt(input: ForecastInput, categories: ImpactCategory[]): string
         .map(([k, v]) => `### Section ${k}\n${v.slice(0, 600)}`)
         .join('\n\n')
     : ''
+
+  // ADR-031 W4 — 프로그램 컨셉 블록 (있으면 SROI 내러티브가 메시지를 일관 관통).
+  const conceptBlock = conceptContextBlock(concept, 'SROI 내러티브·근거(rationale)')
 
   // 예산 대비 sanity 가이드라인 — AI 가 부풀림 방지 자체 검증
   const totalBudget = input.budget?.totalAmount ?? input.rfp?.totalBudgetVat ?? null
@@ -406,7 +445,7 @@ ${categoryList}
   5. 위가 모두 없으면 보수적으로 작은 숫자 (예: 1회·20명)
 
 **컨텍스트**:
-
+${conceptBlock ? `\n${conceptBlock}\n` : ''}
 [정체성] ${input.draft.intent ?? '(미작성)'}
 
 [Before] ${input.draft.beforeAfter?.before ?? '(미작성)'}

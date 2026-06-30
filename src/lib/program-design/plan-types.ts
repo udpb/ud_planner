@@ -17,6 +17,7 @@
  */
 
 import type { RfpSlice } from '@/lib/pipeline-context'
+import type { ConceptShape } from '@/lib/program-design/concept-synth'
 
 // ─────────────────────────────────────────────────────────────────
 // 운영 유형 (v1.2 §04) — 회차표보다 먼저 정하는 첫 분기
@@ -215,6 +216,12 @@ export interface PlanInput {
   precedent?: PrecedentInput
   /** 담당자 운영 의도 — 있으면 1순위. */
   intent?: IntentInput
+  /**
+   * ADR-031 W4 — 프로그램 컨셉(strategicNotes.concept). **결정·수치에는 영향 없음**(엔진 로직 무변경).
+   * 회차/단계 rationale 프롬프트에 컨셉 블록을 주입해 메시지를 일관 관통시키는 컨텍스트 전용.
+   * 부재 시 블록 생략(graceful).
+   */
+  concept?: ConceptShape
   /**
    * 사람 게이트 응답 + RFP 외 명시 결정 (턴 기반 재호출 시 누적).
    * axis → 값. resolvePlan 이 이 값을 source='human'(게이트 응답)으로 채택.

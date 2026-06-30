@@ -35,6 +35,7 @@ import {
   formatAcceptedAssets,
   SECTION_NO_TO_KEY,
 } from '@/lib/asset-registry'
+import { conceptContextBlock } from '@/lib/program-design/concept-context'
 
 // ═════════════════════════════════════════════════════════════════
 // 1. 공개 타입 · 상수
@@ -208,6 +209,14 @@ function buildEvalStrategyNote(ctx: PipelineContext): string {
     for (const g of es.overallGuidance) lines.push(`  - ${g}`)
   }
   return lines.join('\n')
+}
+
+/**
+ * 프로그램 컨셉 블록 (ADR-031 W4) — strategicNotes.concept 의 winTheme·핵심 메시지·차별점을
+ * 모든 섹션 공통으로 주입해 7섹션이 한 컨셉을 일관 관통하게 한다. 컨셉 부재 시 '' (블록 생략).
+ */
+function buildConceptBlock(ctx: PipelineContext): string {
+  return conceptContextBlock(ctx.strategicNotes?.concept, '제안서 본문')
 }
 
 /** Strategy 슬라이스의 키 메시지 주입 (Planning Agent 산출물) */
@@ -528,6 +537,8 @@ async function buildSectionPrompt(
     buildBrandContext(),
     buildRfpBrief(ctx),
     buildChannelTone(ctx),
+    // ADR-031 W4 — 프로그램 컨셉(메시지 척추)을 모든 섹션 앞단에 주입(일관 관통).
+    buildConceptBlock(ctx),
     buildEvalStrategyNote(ctx),
     buildStrategyKeyMessages(ctx),
     // PM 이 각 스텝에서 수집한 티키타카 리서치 답변 — 모든 섹션 생성에 공통 주입

@@ -25,6 +25,7 @@ import { invokeAi } from '@/lib/ai-fallback'
 import { AI_TOKENS } from '@/lib/ai/config'
 import { safeParseJson } from '@/lib/ai/parser'
 
+import { conceptContextBlock } from '@/lib/program-design/concept-context'
 import { loadDesignRules } from '@/lib/program-design/design-rule'
 import { resolvePlan } from '@/lib/program-design/resolve-rules'
 import type {
@@ -151,6 +152,14 @@ function serializeConstraints(
   for (const d of decided) {
     if (d.axis === 'operatingType') continue
     lines.push(`- ${d.axis}: ${d.decision} (근거: ${d.evidence.source})`)
+  }
+
+  // ADR-031 W4 — 프로그램 컨셉(메시지 척추)을 rationale 작성 컨텍스트로 주입.
+  // 결정·수치에는 영향 없음 — 각 회차/단계 rationale 이 컨셉/메시지를 자연스럽게 반영하도록.
+  // 컨셉 부재 시 블록 생략(graceful).
+  const conceptBlock = conceptContextBlock(input.concept, '각 회차·단계의 설계 근거(rationale)')
+  if (conceptBlock) {
+    lines.push(`\n${conceptBlock}`)
   }
 
   return lines.join('\n')

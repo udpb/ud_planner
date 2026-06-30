@@ -469,6 +469,14 @@ export interface PipelineContext {
   meta: PipelineContextMeta
 
   /**
+   * 전략적 맥락 (Project.strategicNotes — Json). ADR-031 W4 에서 노출.
+   * `strategicNotes.concept`(컨셉-퍼스트 winTheme·keyMessages·differentiation)을
+   * 하류 프롬프트(제안서·커리큘럼)에서 읽어 메시지를 일관 관통시키기 위함.
+   * 부재 시 undefined (graceful — 블록 생략, 회귀 0). 읽기 전용 — 스키마 변경 없음.
+   */
+  strategicNotes?: StrategicNotes
+
+  /**
    * Impact Value Chain 상태 (ADR-008, 2026-04-23).
    * 5단계 논리 레이어(① Impact → ② Input → ③ Output → ④ Activity → ⑤ Outcome)
    * + 루프 얼라인 체크 결과.
@@ -691,6 +699,14 @@ export async function buildPipelineContext(
     ? (project.acceptedAssetIds as string[])
     : undefined
 
+  // ── strategicNotes (ADR-031 W4) ──
+  // Project.strategicNotes(Json) 를 그대로 노출 — concept(컨셉-퍼스트) 포함.
+  // 없거나 객체가 아니면 undefined (graceful).
+  const strategicNotes: StrategicNotes | undefined =
+    project.strategicNotes && typeof project.strategicNotes === 'object'
+      ? (project.strategicNotes as unknown as StrategicNotes)
+      : undefined
+
   return {
     projectId: project.id,
     version: 0,
@@ -703,6 +719,7 @@ export async function buildPipelineContext(
     impact: impactSlice,
     proposal: proposalSlice,
     meta,
+    strategicNotes,
     acceptedAssetIds,
   }
 }
