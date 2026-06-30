@@ -21,10 +21,11 @@
 프로그램 기획 단계를 "T1-T5 박스 선택"에서 **컨셉-퍼스트**로 재정렬(사용자: "T1-5가 너무 정형 규칙 · 컨셉/메시지를 대화로 뾰족하게").
 - **W1 컨셉 엔진**(`d045e6b`) — `concept-synth.ts` + `/api/projects/[id]/concept`(step/assemble/save→strategicNotes.concept). **라이브 API 검증**: RFP+자산 그라운딩 카드·조립(win-theme+메시지3+차별점+근거+경로). 스키마 0.
 - **W2 컨셉 대화 UI**(`cc445af`) — `ConceptChat`(좌, 단계별 카드 좁힘) + `ConceptCanvas`(우, 맺힘). **라이브 검증**: design 진입→각도/차별점 카드→클릭→좁혀온 경로 캔버스 맺힘. WorkspaceChat 격리(무변경).
-- **W3 운영유형 축 재구성**(`3bcd69a`) — 게이트: 박스 → 컨셉 추천 배너 + 축 슬라이더(압축↔동행·팀↔개별·교육↔행사·시간) + 실측 앵커 + nearestType resolve. `concept-to-axes.ts`. **엔진/enum/post(T1~T5) 동결** — 코드✓·축 게이트 라이브검수는 컨셉 확정 후 흐름서 대기.
-- **W4 메시지 value-chain 관통**(`48e13ad`) — `concept-context.ts` → 커리큘럼(generate-plan)·SROI(forecast)·제안서(proposal-ai) 프롬프트에 컨셉/메시지 주입. 출력 스키마·엔진 무변경·graceful. 코드✓·라이브(생성물 메시지 반영)는 대기.
+- **W3 운영유형 축 재구성**(`3bcd69a`) — 게이트: 박스 → 컨셉 추천 배너 + 축 슬라이더(압축↔동행·팀↔개별·교육↔행사·시간) + 실측 앵커 + nearestType resolve. `concept-to-axes.ts`. **엔진/enum/post(T1~T5) 동결**. **라이브✓**: "이 컨셉이면 → 몰입 캠프형" 배너+축+앵커(T2·n=22)+확정 렌더.
+- **W4 메시지 value-chain 관통**(`48e13ad`) — `concept-context.ts` → 커리큘럼(generate-plan)·SROI(forecast)·제안서(proposal-ai) 프롬프트에 컨셉/메시지 주입. 출력 스키마·엔진 무변경·graceful. **라이브✓**: 생성된 회차 rationale이 컨셉 메시지(10년 마인드셋·3만명/50%·지역 뿌리내림) 관통 확인.
+- **풀플로우 end-to-end 라이브 검증 완료(2026-06-27)**: design 진입→컨셉 대화 카드(각도→차별점)→확정 저장→ProgramDesignFlow 전환+컨셉 핀→축 게이트(컨셉 추천)→유형 확정→1차안 생성(메시지 관통). ⚠️ 검수로 안산/제주(cmpcgyyx7)에 컨셉 저장·T2 15회차 생성됨(테스트 흔적, 원하면 정리).
 - 승인 목업: concept_first_program_design · concept_derivation_via_chat (대화 위젯).
-- 🔲 다음(컨셉 후속): W3 축 게이트 + W4 메시지반영 풀플로우 라이브검수 · 당선패턴 임베딩 검색(현 채널필터 best-effort) · 컨셉 draft autosave(확정 전 비영속).
+- 🔲 다음(컨셉 후속): 운영 릴리스 결정(현 프리뷰만) · 당선패턴 임베딩 검색(현 채널필터 best-effort) · 컨셉 draft autosave(확정 전 비영속).
 
 ### ✅ 2026-06-26 라이브 시각 검수 완료 (Vercel 프리뷰 + Chrome, 직접 클릭·DOM)
 BR-WS-18~24 **전부 시각 검증**: 기획의도 후보 카드→채움 · 영속 저장/복원(Vercel DB expressTurnsCache 컬럼 존재 확인) · 예산 관찰분할 참조·진단·가드 · 예산 카드→마진 재계산 · #10 비회차 단계 추가 · design 카드 회귀 0(15→10회차) · 코치 선발팀+카드 배정. 크래시 0.
