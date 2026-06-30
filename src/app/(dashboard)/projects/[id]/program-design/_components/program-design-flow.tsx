@@ -25,6 +25,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { AutoRecommendedPool } from '@/components/projects/coaches/AutoRecommendedPool'
 import { MatchedAssetsPanel } from '@/components/projects/matched-assets-panel'
 import type { AssetMatch } from '@/lib/asset-registry-types'
+import type { ConceptShape } from '@/lib/program-design/concept-synth'
 import type {
   NonSessionStage,
   PlanSession,
@@ -146,6 +147,7 @@ export function ProgramDesignFlow({
   initialAcceptedAssetIds,
   initialPlan,
   intentContext,
+  savedConcept,
   onSessionsChange,
   onStagesChange,
   incomingOps,
@@ -162,6 +164,11 @@ export function ProgramDesignFlow({
   initialPlan?: ProgramPlan | null
   /** BR-WS-4 Task4: ②기획의도 유래 맥락(맥락 띠 + 토대잡기 prefill). */
   intentContext?: DesignIntentContext | null
+  /**
+   * ADR-031 W3: 확정 컨셉(strategicNotes.concept). operatingType 게이트의 축 추천
+   * 바이어스에 쓰인다(없으면 엔진 gate.recommended fallback). 셸이 라이브 concept 을 전달.
+   */
+  savedConcept?: ConceptShape | null
   /**
    * BR-WS-6 (additive 인렛 ①): effectiveStructure 변경 시 현재 회차 목록 보고.
    * sessions 구조가 아니거나 구조가 없으면 null. 셸(ProgramWorkspace)이 대화에 동봉.
@@ -459,6 +466,7 @@ export function ProgramDesignFlow({
                 pending={pendingAnswers[gate.axis]}
                 disabled={loading}
                 operatingTypeMeta={operatingTypeMeta}
+                concept={savedConcept ?? null}
                 onAnswer={handleAnswer}
               />
             ))}

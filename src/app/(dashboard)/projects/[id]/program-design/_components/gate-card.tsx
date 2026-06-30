@@ -18,7 +18,17 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import type { PlanGate } from '@/lib/program-design/plan-types'
+import type { ConceptShape } from '@/lib/program-design/concept-synth'
 import type { OperatingTypeMeta } from './operating-type-meta'
+import {
+  AXES,
+  anchorMetrics,
+  axisProfile,
+  biasTypeFromConcept,
+  nearestType,
+  roundedMetricValue,
+  type AxisVector,
+} from './concept-to-axes'
 
 const GATE_REASON_LABEL: Record<PlanGate['reason'], string> = {
   ask_human: '사람 결정',
@@ -161,6 +171,236 @@ function OperatingTypeChoice({
 }
 
 // ─────────────────────────────────────────────────────────────────
+// 운영 유형 축 컨트롤 (ADR-031 W3) — 박스 선택 → 축 조정 + 추천 + 실측 앵커
+//   ① 컨셉-도출 추천 배너  ② 3 슬라이더 + 시간 통째 토글  ③ 최근접 유형 실측 앵커
+//   확정 → onAnswer(axis, nearestType) — 기존 post 계약(T1~T5 값) 그대로.
+// ─────────────────────────────────────────────────────────────────
+
+/** 축 슬라이더 1개 (0~100, 좌/우 라벨). */
+function AxisSlider({
+  label,
+  left,
+  right,
+  value,
+  disabled,
+  onChange,
+}: {
+  label: string
+  left: string
+  right: string
+  value: number
+  disabled: boolean
+  onChange: (v: number) => void
+}) {
+  return (
+    <div style={{ display: 'grid', gap: 4 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: value < 50 ? 'var(--ink)' : 'var(--muted)',
+          }}
+        >
+          {left}
+        </span>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: 'var(--muted)' }}>
+          {label}
+        </span>
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: value > 50 ? 'var(--ink)' : 'var(--muted)',
+          }}
+        >
+          {right}
+        </span>
+      </div>
+      <input
+        type="range"
+        min={0}
+        max={100}
+        step={1}
+        value={value}
+        disabled={disabled}
+        onChange={(e) => onChange(Number(e.target.value))}
+        aria-label={label}
+        style={{ width: '100%', accentColor: 'var(--accent)', cursor: disabled ? 'default' : 'pointer' }}
+      />
+    </div>
+  )
+}
+
+function OperatingTypeAxes({
+  gate,
+  metas,
+  concept,
+  disabled,
+  pending,
+  onAnswer,
+}: {
+  gate: PlanGate
+  metas: OperatingTypeMeta[]
+  concept: ConceptShape | null
+  disabled: boolean
+  pending: unknown
+  onAnswer: (axis: string, value: unknown) => void
+}) {
+  // 추천 = 컨셉 바이어스(있으면) → fallback 엔진 gate.recommended → fallback 첫 유형.
+  const conceptBias = biasTypeFromConcept(concept, metas)
+  const engineRecType =
+    gate.recommended !== undefined && gate.recommended !== null
+      ? shortText(optionValue(gate.recommended))
+      : undefined
+  const engineRecMeta = metas.find((m) => m.type === engineRecType) ?? null
+  const recommendedMeta = conceptBias.recommended ?? engineRecMeta ?? metas[0] ?? null
+  const recommendedWhy = conceptBias.recommended
+    ? conceptBias.why
+    : engineRecMeta
+      ? `엔진이 RFP 신호로 ${engineRecMeta.name}을(를) 출발점으로 제안합니다`
+      : '실측 중앙값 프로파일을 출발점으로 시작합니다'
+
+  // 초기 축 = 추천 유형의 축 프로파일 (없으면 중립).
+  const initialAxes: AxisVector = recommendedMeta
+    ? axisProfile(recommendedMeta)
+    : { tempo: 50, cohort: 50, mode: 15, wholeTime: false }
+  const [axes, setAxes] = useState<AxisVector>(initialAxes)
+
+  const resolved = nearestType(axes, metas)
+  const isPending = pending !== undefined && resolved !== null && shortText(pending) === resolved.type
+
+  const set = (patch: Partial<AxisVector>) => setAxes((a) => ({ ...a, ...patch }))
+
+  return (
+    <div style={{ display: 'grid', gap: 14 }}>
+      {/* ① 컨셉-도출 추천 배너 */}
+      {recommendedMeta && (
+        <div
+          style={{
+            display: 'grid',
+            gap: 2,
+            border: '1px solid var(--accent)',
+            borderLeft: '3px solid var(--accent)',
+            background: 'var(--accent-88)',
+            padding: '10px 12px',
+          }}
+        >
+          <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--ink)', wordBreak: 'keep-all' }}>
+            <span style={{ color: 'var(--accent)' }}>
+              {concept ? '이 컨셉이면 → ' : '추천 → '}
+            </span>
+            {recommendedMeta.name}
+          </span>
+          <span style={{ fontSize: 11, color: 'var(--soft-ink)', lineHeight: 1.5, wordBreak: 'keep-all' }}>
+            {recommendedWhy}. 아래 축을 직접 조정하면 추천을 따르지 않아도 됩니다.
+          </span>
+        </div>
+      )}
+
+      {/* ② 축 슬라이더 3 + 시간 통째 토글 */}
+      <div style={{ display: 'grid', gap: 12, border: '1px solid var(--line)', padding: 14 }}>
+        {AXES.map((ax) => (
+          <AxisSlider
+            key={ax.key}
+            label={ax.key === 'tempo' ? '운영 호흡' : ax.key === 'cohort' ? '단위' : '본체'}
+            left={ax.left}
+            right={ax.right}
+            value={axes[ax.key]}
+            disabled={disabled}
+            onChange={(v) => set({ [ax.key]: v } as Partial<AxisVector>)}
+          />
+        ))}
+
+        {/* 시간 통째 토글 (대상이 종일·합숙 가능) */}
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            fontSize: 12,
+            fontWeight: 700,
+            color: 'var(--ink)',
+            cursor: disabled ? 'default' : 'pointer',
+            paddingTop: 4,
+            borderTop: '1px solid var(--line)',
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={axes.wholeTime}
+            disabled={disabled}
+            onChange={(e) => set({ wholeTime: e.target.checked })}
+            style={{ accentColor: 'var(--accent)', width: 16, height: 16 }}
+          />
+          대상이 시간을 통째로 낼 수 있음{' '}
+          <span style={{ fontWeight: 400, color: 'var(--muted)' }}>(청년·청소년 종일·합숙 등)</span>
+        </label>
+      </div>
+
+      {/* ③ 현재 축 → 최근접 유형 + 실측 앵커 */}
+      {resolved && (
+        <div style={{ display: 'grid', gap: 8, border: '1px solid var(--line)', borderLeft: '3px solid var(--ink)', padding: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--muted)' }}>{resolved.type}</span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--ink)', wordBreak: 'keep-all' }}>
+              {resolved.name}
+            </span>
+            <span style={{ fontSize: 10, color: 'var(--muted)' }}>
+              — 라벨은 지금 축 위치의 요약입니다
+            </span>
+          </div>
+
+          {/* 실측 앵커 칩 (기간·회차·예산 중앙 + n=) */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+            {anchorMetrics(resolved).map((m, i) => (
+              <span
+                key={i}
+                style={{
+                  fontSize: 11,
+                  color: 'var(--soft-ink)',
+                  background: 'var(--neutral-60)',
+                  padding: '3px 8px',
+                  whiteSpace: 'nowrap',
+                  wordBreak: 'keep-all',
+                }}
+              >
+                <span style={{ color: 'var(--muted)' }}>{m.label}</span>{' '}
+                <strong style={{ fontWeight: 700 }}>{roundedMetricValue(m.value)}</strong>
+              </span>
+            ))}
+            <span
+              style={{
+                fontSize: 11,
+                color: 'var(--muted)',
+                background: 'var(--neutral-60)',
+                padding: '3px 8px',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              실측 {resolved.source.label}
+              {typeof resolved.source.n === 'number' ? ` · n=${resolved.source.n}` : ''}
+            </span>
+          </div>
+
+          {/* 확정 — 현재 nearestType 으로 기존 post 계약(T1~T5). */}
+          <div style={{ paddingTop: 2 }}>
+            <Button
+              type="button"
+              size="sm"
+              disabled={disabled}
+              onClick={() => onAnswer(gate.axis, resolved.type)}
+            >
+              {isPending ? '진행 중…' : `${resolved.name}(${resolved.type})으로 진행`}
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────
 // GateCard — 게이트 1건
 // ─────────────────────────────────────────────────────────────────
 
@@ -169,6 +409,7 @@ export function GateCard({
   pending,
   disabled,
   operatingTypeMeta,
+  concept,
   onAnswer,
 }: {
   gate: PlanGate
@@ -176,9 +417,13 @@ export function GateCard({
   disabled: boolean
   /** axis==='operatingType' 일 때 이름·실측 lookup (design-rules B 프로파일에서). */
   operatingTypeMeta: OperatingTypeMeta[]
+  /** ADR-031 W3: 확정 컨셉 — operatingType 게이트 추천 바이어스용(없으면 엔진 fallback). */
+  concept?: ConceptShape | null
   onAnswer: (axis: string, value: unknown) => void
 }) {
   const [freeText, setFreeText] = useState('')
+  // ADR-031 W3 안전망: 축이 아니라 기존 5박스를 직접 보고 싶을 때 펼침.
+  const [showRawTypes, setShowRawTypes] = useState(false)
   const isAskHuman = gate.reason === 'ask_human'
   const isOperatingType = gate.axis === 'operatingType'
   const options = Array.isArray(gate.options) ? gate.options : []
@@ -231,25 +476,58 @@ export function GateCard({
         </div>
       )}
 
-      {/* ── 운영 유형: 이름+설명+실측 카드 ── */}
+      {/* ── 운영 유형: 축 재구성(ADR-031 W3) — 추천 배너 + 슬라이더 + 실측 앵커 ── */}
       {isOperatingType && operatingTypeMeta.length > 0 ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 8 }}>
-          {operatingTypeMeta.map((meta) => {
-            const recommended =
-              gate.recommended !== undefined &&
-              shortText(optionValue(gate.recommended)) === meta.type
-            const selected = pending !== undefined && shortText(pending) === meta.type
-            return (
-              <OperatingTypeChoice
-                key={meta.type}
-                meta={meta}
-                recommended={recommended}
-                selected={selected}
-                disabled={disabled}
-                onPick={() => onAnswer(gate.axis, meta.type)}
-              />
-            )
-          })}
+        <div style={{ display: 'grid', gap: 10 }}>
+          <OperatingTypeAxes
+            gate={gate}
+            metas={operatingTypeMeta}
+            concept={concept ?? null}
+            disabled={disabled}
+            pending={pending}
+            onAnswer={onAnswer}
+          />
+
+          {/* 안전망 — 기존 5유형 박스 직접 보기(접이식). 아무것도 잃지 않음. */}
+          <div style={{ display: 'grid', gap: 8 }}>
+            <button
+              type="button"
+              onClick={() => setShowRawTypes((v) => !v)}
+              style={{
+                justifySelf: 'start',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                fontSize: 11,
+                fontWeight: 700,
+                color: 'var(--muted)',
+                cursor: 'pointer',
+                textDecoration: 'underline',
+              }}
+            >
+              {showRawTypes ? '유형 직접 보기 닫기 ▲' : '유형 직접 보기 (5종 전체) ▼'}
+            </button>
+            {showRawTypes && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 8 }}>
+                {operatingTypeMeta.map((meta) => {
+                  const recommended =
+                    gate.recommended !== undefined &&
+                    shortText(optionValue(gate.recommended)) === meta.type
+                  const selected = pending !== undefined && shortText(pending) === meta.type
+                  return (
+                    <OperatingTypeChoice
+                      key={meta.type}
+                      meta={meta}
+                      recommended={recommended}
+                      selected={selected}
+                      disabled={disabled}
+                      onPick={() => onAnswer(gate.axis, meta.type)}
+                    />
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
       ) : options.length > 0 ? (
         // ── 일반 게이트: 선택지 칩 ──

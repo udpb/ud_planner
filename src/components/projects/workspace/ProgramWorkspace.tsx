@@ -432,6 +432,8 @@ function WorkspaceInner({
           )}
           <ProgramDesignFlow
             {...designProps}
+            // ADR-031 W3: 라이브 확정 컨셉을 운영유형 게이트 축 추천 바이어스로 전달.
+            savedConcept={concept}
             onSessionsChange={setSessions}
             onStagesChange={setStages}
             incomingOps={incomingOps}
