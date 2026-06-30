@@ -41,6 +41,8 @@ import {
 import { PlanningIntent } from './PlanningIntent'
 import { WorkspacePipeline } from './WorkspacePipeline'
 import { WorkspaceChat } from './WorkspaceChat'
+import { ConceptChat } from './ConceptChat'
+import { ConceptCanvas } from './ConceptCanvas'
 import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 import type {
   WorkspaceChatMessage,
@@ -51,6 +53,10 @@ import type { SessionOp } from '@/lib/program-design/session-ops'
 import type { StageOp } from '@/lib/program-design/stage-ops'
 import type { BudgetOp } from '@/lib/program-design/budget-ops'
 import type { CoachOp } from '@/lib/coaches/coach-ops'
+import type {
+  ConceptShape,
+  ConceptPick,
+} from '@/lib/program-design/concept-synth'
 import { toast } from 'sonner'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type {
@@ -101,6 +107,13 @@ interface Props {
    * WorkspaceChat 의 initialMessages 로 전달 — 마운트 1회 시드. 없으면 null(welcome 시작).
    */
   initialChatMessages: WorkspaceChatMessage[] | null
+
+  /**
+   * ADR-031 W2: 저장된 컨셉(strategicNotes.concept). null 이면 design 단계가 **컨셉부터**
+   * 열린다(좌 ConceptChat + 우 ConceptCanvas). 값이 있으면 확정됨 → 기존 구조(WorkspaceChat +
+   * ProgramDesignFlow) + 상단 win-theme 핀. client "다시 잡기"로 재진입 가능.
+   */
+  savedConcept: ConceptShape | null
 
   /**
    * BR-WS-15: 단계 간 라이브 연동 초기값 (server 조립). WorkspacePlanProvider 가
@@ -169,6 +182,7 @@ function WorkspaceInner({
   impactProps,
   coachTeam,
   initialChatMessages,
+  savedConcept,
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
   // BR-WS-19: 비회차(T4/T5) 단계(stages)도 동일 소스에서 — 대화 동봉 근거.
@@ -190,6 +204,18 @@ function WorkspaceInner({
     initialOverrideStage ?? currentStage,
   )
 
+  // ── ADR-031 W2: 컨셉-퍼스트 design 단계 배선 ──
+  // 확정 컨셉 = client state(저장된 것으로 시드 + 확정/재진입으로 갱신). null = 컨셉 단계 활성.
+  const [concept, setConcept] = useState<ConceptShape | null>(savedConcept)
+  // 좌 대화가 누적한 picks(우 ConceptCanvas 가 좁혀온 경로로 읽음) — lift.
+  const [conceptPicks, setConceptPicks] = useState<ConceptPick[]>([])
+  // 좌 대화가 조립(assemble)한 컨셉 — 확정 전 우 캔버스 표시용(저장 전 단계).
+  const [draftConcept, setDraftConcept] = useState<ConceptShape | null>(null)
+  // "다시 잡기" — 확정된 컨셉을 무시하고 컨셉 단계 재진입(client 토글). 저장은 그대로 둠.
+  const [reConcept, setReConcept] = useState(false)
+  // design 단계에서 컨셉 단계 활성 여부: 확정 컨셉 없음 또는 "다시 잡기" 토글.
+  const conceptPhaseActive = !concept || reConcept
+
   // ── BR-WS-6/19 배선: 대화 ↔ 기획 캔버스 (design 단계 한정) ──
   // 대화가 해석한 ops 를 ProgramDesignFlow 로 전달 — id 는 단조 증가 카운터(Date.now 금지).
   // sessions 구조면 SessionOp[], 비회차 구조면 StageOp[] (flow 가 effectiveStructure.kind 로 분기).
@@ -201,6 +227,19 @@ function WorkspaceInner({
   const handleOps = (ops: (SessionOp | StageOp)[]) => {
     opsSeq.current += 1
     setIncomingOps({ id: `ops-${opsSeq.current}`, ops })
+  }
+
+  // ADR-031 W2: 좌 ConceptCanvas 확정(PUT 성공) → 컨셉 단계 종료 → ProgramDesignFlow 진행.
+  const handleConceptConfirmed = (c: ConceptShape) => {
+    setConcept(c)
+    setReConcept(false)
+    setDraftConcept(null)
+  }
+  // "컨셉 다시 잡기" — 확정 컨셉 유지(저장은 그대로)하되 단계 재진입. 대화/캔버스 초기화.
+  const handleReConcept = () => {
+    setReConcept(true)
+    setConceptPicks([])
+    setDraftConcept(null)
   }
 
   // ── BR-WS-22 배선: 대화 ↔ 예산 캔버스 (budget 단계 한정) — design 과 **별도 채널** ──
@@ -332,12 +371,72 @@ function WorkspaceInner({
       // BR-WS-6: 회차 목록 보고(onSessionsChange) + 대화 ops 수신(incomingOps) 인렛 배선.
       // BR-WS-15: onSessionsChange → ctx.setSessions (Live Plan) → coachCount·예산 파생.
       design: designProps ? (
-        <ProgramDesignFlow
-          {...designProps}
-          onSessionsChange={setSessions}
-          onStagesChange={setStages}
-          incomingOps={incomingOps}
-        />
+        <div className="space-y-4">
+          {/* ADR-031 W2: 확정 컨셉 win-theme 한 줄 핀 + "다시 잡기". */}
+          {concept && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: 12,
+                border: '1px solid var(--line)',
+                borderLeft: '3px solid var(--accent)',
+                background: 'var(--neutral-90)',
+                padding: '10px 14px',
+                maxWidth: 880,
+              }}
+            >
+              <span
+                style={{
+                  flex: '0 0 auto',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'var(--accent)',
+                }}
+              >
+                컨셉
+              </span>
+              <span
+                style={{
+                  flex: '1 1 auto',
+                  minWidth: 0,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: 'var(--ink)',
+                  lineHeight: 1.5,
+                  wordBreak: 'keep-all',
+                }}
+              >
+                {concept.winTheme}
+              </span>
+              <button
+                type="button"
+                onClick={handleReConcept}
+                style={{
+                  flex: '0 0 auto',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: 'var(--accent)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                다시 잡기
+              </button>
+            </div>
+          )}
+          <ProgramDesignFlow
+            {...designProps}
+            onSessionsChange={setSessions}
+            onStagesChange={setStages}
+            incomingOps={incomingOps}
+          />
+        </div>
       ) : (
         <div
           style={{
@@ -428,6 +527,7 @@ function WorkspaceInner({
       coachTeam,
       assignedCoachIds,
       coachRefreshSignal,
+      concept,
     ],
   )
 
@@ -441,6 +541,30 @@ function WorkspaceInner({
       />
 
       {/* 본문 = 전폭 2-pane, 풀 높이 (페이지 스크롤 X, 각 pane 내부 스크롤) */}
+      {stage === 'design' && conceptPhaseActive ? (
+        // ── ADR-031 W2: design 단계가 컨셉부터 — 좌 ConceptChat / 우 ConceptCanvas ──
+        <div className="flex flex-1 overflow-hidden min-h-0">
+          <div className="hidden w-[360px] shrink-0 md:block">
+            <ConceptChat
+              projectId={projectId}
+              picks={conceptPicks}
+              onPicksChange={setConceptPicks}
+              onConcept={setDraftConcept}
+            />
+          </div>
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <CanvasHeader stage={stage} />
+            <div className="flex-1 min-h-0 overflow-y-auto p-6">
+              <ConceptCanvas
+                projectId={projectId}
+                picks={conceptPicks}
+                concept={draftConcept}
+                onConfirmed={handleConceptConfirmed}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* 좌 360px 고정 : 대화 (단계 넘어 이어짐) — 캔버스 flex-1 넓게 (BR-WS-16) */}
         <div className="hidden w-[360px] shrink-0 md:block">
@@ -485,6 +609,7 @@ function WorkspaceInner({
           </div>
         </div>
       </div>
+      )}
     </div>
   )
 }

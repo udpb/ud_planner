@@ -19,6 +19,7 @@ import { prisma } from '@/lib/prisma'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
+import type { ConceptShape } from '@/lib/program-design/concept-synth'
 import {
   fromStrategicNotes,
   type PlanningIntentDraft,
@@ -99,6 +100,47 @@ function guardChatMessages(raw: unknown): WorkspaceChatMessage[] | null {
   return out.length > 0 ? out : null
 }
 
+/**
+ * ADR-031 W2: strategicNotes.concept 읽기 가드. winTheme(문자열) + keyMessages(배열)이
+ * 있는 객체만 ConceptShape 로 통과(불량·구버전 무시 → null). throw X(워크스페이스는 떠야 함).
+ * grounding/derivationPath 는 누락 시 빈 배열로 보정(렌더 안전).
+ */
+function guardConcept(raw: unknown): ConceptShape | null {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null
+  const c = raw as Record<string, unknown>
+  if (typeof c.winTheme !== 'string' || !c.winTheme.trim()) return null
+  const keyMessages = Array.isArray(c.keyMessages)
+    ? (c.keyMessages as unknown[]).filter(
+        (m): m is string => typeof m === 'string' && !!m.trim(),
+      )
+    : []
+  const grounding = Array.isArray(c.grounding)
+    ? (c.grounding as unknown[]).filter(
+        (g): g is ConceptShape['grounding'][number] =>
+          !!g &&
+          typeof g === 'object' &&
+          typeof (g as { kind?: unknown }).kind === 'string' &&
+          typeof (g as { label?: unknown }).label === 'string',
+      )
+    : []
+  const derivationPath = Array.isArray(c.derivationPath)
+    ? (c.derivationPath as unknown[]).filter(
+        (s): s is string => typeof s === 'string' && !!s.trim(),
+      )
+    : []
+  return {
+    winTheme: c.winTheme,
+    keyMessages,
+    differentiation:
+      typeof c.differentiation === 'string' ? c.differentiation : '',
+    grounding,
+    derivationPath,
+    ...(typeof c.chosenAngle === 'string' && c.chosenAngle.trim()
+      ? { chosenAngle: c.chosenAngle }
+      : {}),
+  }
+}
+
 export interface WorkspaceData {
   project: {
     id: string
@@ -133,6 +175,12 @@ export interface WorkspaceData {
   planningIntentDraft: PlanningIntentDraft
   /** 저장된 기획의도가 이미 있는지 — false 면 컴포넌트가 자동 초안 1회. */
   hasSavedIntent: boolean
+
+  /**
+   * ADR-031 W2: 저장된 프로그램 기획 컨셉(strategicNotes.concept). 없으면 null →
+   * design 단계가 컨셉 대화부터 시작. 읽기 가드(winTheme 문자열 + keyMessages 배열만 통과).
+   */
+  savedConcept: ConceptShape | null
 
   // ── ② 설계 ──
   rfpPreview: RfpPreview | null
@@ -295,6 +343,8 @@ export async function loadWorkspace(
       strategicNotes.mustNotFail ||
       (Array.isArray(strategicNotes.riskFactors) && strategicNotes.riskFactors.length))
   )
+  // ADR-031 W2: 저장된 컨셉(strategicNotes.concept) 읽기 가드. 없으면 null → 컨셉 단계부터.
+  const savedConcept = guardConcept(strategicNotes?.concept)
 
   // ② 설계 — 운영 유형 메타 (design-rules.json B 프로파일). 실패해도 빈 메타로 진행.
   const rfpPreview = toRfpPreview(rfpParsed)
@@ -409,6 +459,7 @@ export async function loadWorkspace(
     acceptedAssetIds,
     planningIntentDraft,
     hasSavedIntent,
+    savedConcept,
     rfpPreview,
     operatingTypeMeta,
     savedPlan,
