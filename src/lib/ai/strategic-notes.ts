@@ -5,7 +5,10 @@
  * PM이 직접 입력하거나, Planning Agent에서 자동 생성.
  */
 
-import type { ConceptShape } from '@/lib/program-design/concept-synth'
+import type {
+  ConceptShape,
+  ConceptPick,
+} from '@/lib/program-design/concept-synth'
 
 export interface StrategicNotes {
   clientHiddenWants?: string   // 발주처가 RFP에 안 쓴 진짜 의도
@@ -37,6 +40,16 @@ export interface StrategicNotes {
    * concept-synth 엔진이 조립, /api/projects/[id]/concept PUT 이 merge 저장. (스키마 변경 0 — Json 재사용.)
    */
   concept?: ConceptShape
+  /**
+   * BR-CF-5 (2026-06-27): 확정 *전* 컨셉 대화 draft(autosave). 새로고침해도 이어가게.
+   * PUT {action:'saveDraft'} 가 picks(+조립 concept?)를 여기 저장, {action:'confirm'} 이
+   * concept 확정과 함께 이 키를 제거(draft 청소). 스키마 변경 0 — 동일 Json 재사용.
+   */
+  conceptDraft?: {
+    picks: ConceptPick[]
+    concept?: ConceptShape
+    updatedAt?: string
+  }
 }
 
 /**

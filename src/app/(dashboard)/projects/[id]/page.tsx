@@ -259,6 +259,7 @@ export default async function ProjectWorkspacePage({
         planContext={planContext}
         initialChatMessages={data.workspaceChatMessages}
         savedConcept={data.savedConcept}
+        savedConceptDraft={data.savedConceptDraft}
       />
     </div>
   )

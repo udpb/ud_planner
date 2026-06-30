@@ -19,7 +19,10 @@ import { prisma } from '@/lib/prisma'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import type { StrategicNotes } from '@/lib/ai/strategic-notes'
-import type { ConceptShape } from '@/lib/program-design/concept-synth'
+import type {
+  ConceptShape,
+  ConceptPick,
+} from '@/lib/program-design/concept-synth'
 import {
   fromStrategicNotes,
   type PlanningIntentDraft,
@@ -141,6 +144,42 @@ function guardConcept(raw: unknown): ConceptShape | null {
   }
 }
 
+/** 저장된 컨셉 draft 1건(복원용). */
+export interface SavedConceptDraft {
+  picks: ConceptPick[]
+  concept?: ConceptShape
+}
+
+/** ConceptChat picks 한 건 가드 — {stepKey,label,value} 문자열만 통과. */
+function guardPick(raw: unknown): ConceptPick | null {
+  if (!raw || typeof raw !== 'object') return null
+  const p = raw as Record<string, unknown>
+  const stepKey = typeof p.stepKey === 'string' ? p.stepKey : ''
+  const label = typeof p.label === 'string' ? p.label : ''
+  const value = typeof p.value === 'string' ? p.value : ''
+  if (!stepKey || (!label && !value)) return null
+  return { stepKey, label: label || value, value: value || label }
+}
+
+/**
+ * BR-CF-5 B: strategicNotes.conceptDraft 읽기 가드. picks 배열(가드 통과분)만 통과,
+ * 통과 picks 0개면 null(복원 없음 → 컨셉 첫 step 시드). concept 는 guardConcept 통과 시만.
+ * throw X(워크스페이스는 떠야 함).
+ */
+function guardConceptDraft(raw: unknown): SavedConceptDraft | null {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null
+  const d = raw as Record<string, unknown>
+  if (!Array.isArray(d.picks)) return null
+  const picks: ConceptPick[] = []
+  for (const item of d.picks) {
+    const p = guardPick(item)
+    if (p) picks.push(p)
+  }
+  if (picks.length === 0) return null
+  const concept = guardConcept(d.concept)
+  return { picks, ...(concept ? { concept } : {}) }
+}
+
 export interface WorkspaceData {
   project: {
     id: string
@@ -181,6 +220,13 @@ export interface WorkspaceData {
    * design 단계가 컨셉 대화부터 시작. 읽기 가드(winTheme 문자열 + keyMessages 배열만 통과).
    */
   savedConcept: ConceptShape | null
+
+  /**
+   * BR-CF-5 B: 저장된 컨셉 대화 draft(확정 전 autosave). 없으면 null → 컨셉 대화 첫 step
+   * 시드. 값 있으면 ConceptChat 이 picks/조립 concept 복원(새로고침해도 이어감). 읽기 가드
+   * (picks 배열만 통과). savedConcept(확정) 가 있으면 무관 — design 단계가 확정 구조로 진행.
+   */
+  savedConceptDraft: SavedConceptDraft | null
 
   // ── ② 설계 ──
   rfpPreview: RfpPreview | null
@@ -345,6 +391,8 @@ export async function loadWorkspace(
   )
   // ADR-031 W2: 저장된 컨셉(strategicNotes.concept) 읽기 가드. 없으면 null → 컨셉 단계부터.
   const savedConcept = guardConcept(strategicNotes?.concept)
+  // BR-CF-5 B: 저장된 컨셉 대화 draft(확정 전 autosave) 읽기 가드. 없으면 null → 첫 step 시드.
+  const savedConceptDraft = guardConceptDraft(strategicNotes?.conceptDraft)
 
   // ② 설계 — 운영 유형 메타 (design-rules.json B 프로파일). 실패해도 빈 메타로 진행.
   const rfpPreview = toRfpPreview(rfpParsed)
@@ -460,6 +508,7 @@ export async function loadWorkspace(
     planningIntentDraft,
     hasSavedIntent,
     savedConcept,
+    savedConceptDraft,
     rfpPreview,
     operatingTypeMeta,
     savedPlan,

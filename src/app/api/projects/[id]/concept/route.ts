@@ -14,7 +14,11 @@
  *
  * 그라운딩(ctx)은 route 가 조립해 엔진에 주입한다(엔진은 fetch 안 함):
  *   project.rfpParsed + strategicNotes(formatStrategicNotes) + matchAssetsToRfp(graceful)
- *   + best-effort 당선패턴(채널 일치 WinningProposalDoc 일부 — 임베딩 검색 미구현, ADR-031 W1).
+ *   + 당선패턴 임베딩 의미검색(retrieveWinningPassages — RFP 요약 질의로 cosine top-K, BR-CF-5 A).
+ *
+ * BR-CF-5 (2026-06-27):
+ *   A) 당선패턴 그라운딩을 채널필터(bestEffortWinning)에서 임베딩 의미검색으로 교체.
+ *   B) PUT 에 action 'saveDraft'(확정 전 autosave) / 'confirm'(기본·확정 시 draft 청소) 분기.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -23,6 +27,7 @@ import { prisma } from '@/lib/prisma'
 import type { RfpParsed } from '@/lib/ai/parse-rfp'
 import type { ProgramProfile } from '@/lib/program-profile'
 import { matchAssetsToRfp } from '@/lib/asset-registry'
+import { retrieveWinningPassages } from '@/lib/express/winning-reference'
 import {
   formatStrategicNotes,
   type StrategicNotes,
@@ -54,27 +59,37 @@ function summarizeRfp(rfp: RfpParsed): string {
   return parts.join(' · ').slice(0, 600)
 }
 
+/** retrieveWinningPassages 가 받는 채널 enum 으로 좁힌다(그 외/없음 → undefined = 전체 검색). */
+function narrowChannel(
+  channel: string | undefined,
+): 'B2G' | 'B2B' | 'renewal' | undefined {
+  if (channel === 'B2G' || channel === 'B2B' || channel === 'renewal') {
+    return channel
+  }
+  return undefined
+}
+
 /**
- * best-effort 당선패턴 그라운딩 (ADR-031 W1):
- *   임베딩 의미검색은 W1 범위 밖 — 채널(projectType) 일치 WinningProposalDoc 일부만 인용한다.
- *   매칭 함수가 없으므로 단순 channel·won 필터 + 최근순 소량. 실패/없으면 graceful 빈 배열.
+ * 당선패턴 그라운딩 (BR-CF-5 A) — 임베딩 의미검색:
+ *   RFP 요약 질의로 retrieveWinningPassages(여러 당선본 횡단 cosine top-K, doc당 2개 dedup)를
+ *   호출해 RFP 의미에 더 맞는 당선 근거를 끌어온다. label = "사업명 · 섹션힌트", ref = 사업명.
+ *   채널 enum(B2G/B2B/renewal)만 채널 필터, 그 외/없음이면 전체 검색.
+ *   임베딩/조회 실패·데이터 없음 → graceful 빈 배열(retrieveWinningPassages 가 내부 catch).
  */
-async function bestEffortWinning(
+async function embeddingWinning(
+  rfpSummary: string,
   channel: string | undefined,
 ): Promise<{ label: string; ref?: string }[]> {
-  if (!channel) return []
+  const query = rfpSummary?.trim()
+  if (!query) return []
   try {
-    const docs = await prisma.winningProposalDoc.findMany({
-      where: { channel, won: true },
-      select: { id: true, projectName: true, client: true, year: true },
-      orderBy: { year: 'desc' },
-      take: 3,
+    const passages = await retrieveWinningPassages(query, {
+      ...(narrowChannel(channel) ? { channel: narrowChannel(channel)! } : {}),
+      topK: 4,
     })
-    return docs.map((d) => ({
-      label: [d.projectName, d.client, d.year ? `${d.year}` : null]
-        .filter(Boolean)
-        .join(' · '),
-      ref: d.id,
+    return passages.map((p) => ({
+      label: `${p.projectName}${p.sectionHint ? ` · ${p.sectionHint}` : ''}`,
+      ref: p.projectName,
     }))
   } catch {
     return []
@@ -131,10 +146,12 @@ async function buildCtx(
     if (assets.length >= 6) break
   }
 
-  const winning = await bestEffortWinning(channel)
+  // BR-CF-5 A: 당선패턴 = RFP 요약 질의 임베딩 의미검색(채널·topK). graceful 빈 배열.
+  const rfpSummary = summarizeRfp(rfp)
+  const winning = await embeddingWinning(rfpSummary, channel)
 
   const grounding: ConceptGrounding = {
-    rfpSummary: summarizeRfp(rfp),
+    rfpSummary,
     ...(channel ? { channel } : {}),
     intentText: formatStrategicNotes(notes),
     assets,
@@ -209,7 +226,11 @@ export async function POST(
 }
 
 // ─────────────────────────────────────────────────────────────────
-// PUT — 확정 ConceptShape 저장 (strategicNotes.concept merge — planning-intent 미러)
+// PUT — strategicNotes merge 저장 (read-merge-write — planning-intent 미러)
+//   action 'confirm'(기본·하위호환): 확정 ConceptShape → strategicNotes.concept
+//                                    + conceptDraft 제거(확정 시 draft 청소).
+//   action 'saveDraft'(BR-CF-5 B): 대화 중 draft(picks + 조립 concept?) autosave
+//                                    → strategicNotes.conceptDraft (concept 키는 안 건드림).
 // ─────────────────────────────────────────────────────────────────
 
 export async function PUT(
@@ -226,9 +247,16 @@ export async function PUT(
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
+  // 기본 action = 'confirm' (하위호환 — action 없는 기존 확정 호출 그대로 동작).
+  const action = (body as { action?: string }).action ?? 'confirm'
   const concept = (body as { concept?: ConceptShape }).concept
-  if (!concept || typeof concept !== 'object') {
+
+  // confirm 은 concept 필수. saveDraft 는 concept 선택(picks 만으로도 저장 가능).
+  if (action === 'confirm' && (!concept || typeof concept !== 'object')) {
     return NextResponse.json({ error: 'concept 누락' }, { status: 400 })
+  }
+  if (action !== 'confirm' && action !== 'saveDraft') {
+    return NextResponse.json({ error: '알 수 없는 action' }, { status: 400 })
   }
 
   // 기존 strategicNotes 읽어 다른 키 보존 (read-merge-write — planning-intent 미러).
@@ -247,7 +275,26 @@ export async function PUT(
       ? (sn as unknown as StrategicNotes)
       : {}
 
-  const merged: StrategicNotes = { ...existing, concept }
+  let merged: StrategicNotes
+  if (action === 'confirm') {
+    // 확정 — concept 저장 + draft 청소(conceptDraft 제거). 나머지 키 보존.
+    const { conceptDraft: _drop, ...rest } = existing
+    void _drop
+    merged = { ...rest, concept: concept as ConceptShape }
+  } else {
+    // saveDraft — 확정 전 autosave. concept 키는 그대로 두고 conceptDraft 만 갱신.
+    const picks = coercePicks((body as { picks?: unknown }).picks)
+    const draftConcept =
+      concept && typeof concept === 'object' ? concept : undefined
+    merged = {
+      ...existing,
+      conceptDraft: {
+        picks,
+        ...(draftConcept ? { concept: draftConcept } : {}),
+        updatedAt: new Date().toISOString(),
+      },
+    }
+  }
 
   try {
     await prisma.project.update({

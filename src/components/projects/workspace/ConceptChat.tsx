@@ -49,15 +49,29 @@ interface Props {
   onPicksChange: (picks: ConceptPick[]) => void
   /** assemble 결과 ConceptShape — 우 캔버스로 올림(부모 state). */
   onConcept: (concept: ConceptShape) => void
+  /**
+   * BR-CF-5 B: 서버에 저장된 확정 *전* draft(새로고침 복원). picks 가 있으면 첫 step 시드 대신
+   * 복원(좁혀온 picks 를 user 버블로 재구성 + picks.length 단계의 다음 질문/카드 1회 요청).
+   * concept 가 있으면 부모로 올려 우 캔버스에 다시 맺음. 없으면(null) 평소대로 첫 step 시드.
+   */
+  savedConceptDraft?: { picks: ConceptPick[]; concept?: ConceptShape } | null
 }
 
-export function ConceptChat({ projectId, picks, onPicksChange, onConcept }: Props) {
+export function ConceptChat({
+  projectId,
+  picks,
+  onPicksChange,
+  onConcept,
+  savedConceptDraft,
+}: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   // step 로딩(다음 질문/카드 요청 중) — 입력·카드 비활성.
   const [stepping, setStepping] = useState(false)
   // assemble 로딩(컨셉 조립 중).
   const [assembling, setAssembling] = useState(false)
+  // BR-CF-5 B: 컨셉 조립 완료 신호 — autosave 가 조립된 concept 를 draft 에 동봉하도록 재발화.
+  const [conceptSavedTick, setConceptSavedTick] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   // 이중 진입 가드(동기) — state 보다 먼저 잠금.
   const busyRef = useRef(false)
@@ -66,6 +80,14 @@ export function ConceptChat({ projectId, picks, onPicksChange, onConcept }: Prop
   picksRef.current = picks
   // 마운트 시 첫 step 1회만 요청.
   const seededRef = useRef(false)
+  // BR-CF-5 B: 마운트 draft 를 1회 캡처(이후 prop 변동에도 재-하이드레이트 X — 무한루프 방지).
+  const draftSeedRef = useRef(savedConceptDraft ?? null)
+  // BR-CF-5 B: 직전에 조립된 컨셉(autosave 에 동봉). 복원 seed 가 있으면 그걸로 시드.
+  const lastConceptRef = useRef<ConceptShape | null>(
+    savedConceptDraft?.concept ?? null,
+  )
+  // autosave debounce 타이머.
+  const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // 새 메시지마다 하단 스크롤.
   useEffect(() => {
@@ -108,7 +130,10 @@ export function ConceptChat({ projectId, picks, onPicksChange, onConcept }: Prop
         if (!res.ok || !data.concept) {
           throw new Error(data?.error ?? `HTTP ${res.status}`)
         }
+        lastConceptRef.current = data.concept
         onConcept(data.concept)
+        // 조립된 concept 를 draft autosave 에 동봉하도록 재발화(picks 는 그대로라 tick 으로 트리거).
+        setConceptSavedTick((n) => n + 1)
         setMessages((prev) => [
           ...prev,
           {
@@ -170,16 +195,87 @@ export function ConceptChat({ projectId, picks, onPicksChange, onConcept }: Prop
     [projectId, appendStep, requestAssemble],
   )
 
-  // 마운트 시 첫 step 1회(picks 가 비어 있을 때만 — 재진입/HMR 중복 방지).
+  // 마운트 시 1회: draft 가 있으면 복원(resume), 없으면 첫 step 시드.
   useEffect(() => {
     if (seededRef.current) return
     seededRef.current = true
-    if (picksRef.current.length === 0 && messages.length === 0) {
+    if (messages.length > 0) return // 이미 대화 있음(HMR/재진입) — 건드리지 않음.
+
+    const seed = draftSeedRef.current
+    const seedPicks = Array.isArray(seed?.picks) ? seed!.picks : []
+
+    if (seedPicks.length > 0) {
+      // ── 복원 — 좁혀온 picks 를 user 버블로 재구성 + 안내 + 다음 단계 1회 요청. ──
+      setMessages([
+        {
+          id: `a-resume-${Date.now()}`,
+          role: 'assistant',
+          text: '이전에 좁혀오던 컨셉 대화를 이어갑니다.',
+        },
+        ...seedPicks.map((p, i) => ({
+          id: `u-resume-${i}-${Date.now()}`,
+          role: 'user' as const,
+          text: `✓ ${p.label}`,
+        })),
+      ])
+      // 부모 picks 는 이미 draft 로 시드됨(ProgramWorkspace) — 동기화 위해 한 번 더 보고.
+      onPicksChange(seedPicks)
+      if (seed?.concept) {
+        // 이미 조립된 컨셉이 있으면 우 캔버스에 그대로 다시 맺음(재조립 X — 저장본 보존).
+        onConcept(seed.concept)
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `a-resume-concept-${Date.now()}`,
+            role: 'assistant',
+            text:
+              '직전에 맺어둔 컨셉을 오른쪽 캔버스에 복원했어요. 확인하고 괜찮으면 ' +
+              '"컨셉 확정 → 구조 잡기"를 눌러주세요. 더 뾰족하게 밀고 싶으면 아래에 적어주셔도 됩니다.',
+          },
+        ])
+      } else {
+        // 아직 조립 전 — picks.length 단계의 다음 질문/카드를 1회 요청(done 이면 requestStep 이 assemble).
+        void requestStep(seedPicks)
+      }
+      return
+    }
+
+    // ── 평소 — 첫 step 1회(picks 비었을 때만). ──
+    if (picksRef.current.length === 0) {
       void requestStep([])
     }
-    // requestStep 은 mount 시 1회만 — deps 의도적으로 빈 배열.
+    // mount 시 1회만 — deps 의도적으로 빈 배열.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  /**
+   * BR-CF-5 B: picks 변경 시 debounce(~1.5s) autosave → PUT {action:'saveDraft', picks, concept?}.
+   * picks 가 비면 저장 안 함(빈 draft 생성 방지). 실패는 무음(.catch console.warn) — 대화 안 끊김.
+   * 확정(ConceptCanvas 의 confirm PUT)은 별도 — 거기서 conceptDraft 가 청소됨.
+   */
+  useEffect(() => {
+    if (picks.length === 0) return // 빈 draft 저장 안 함.
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current)
+    autosaveTimerRef.current = setTimeout(() => {
+      const concept = lastConceptRef.current
+      void fetch(`/api/projects/${projectId}/concept`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'saveDraft',
+          picks,
+          ...(concept ? { concept } : {}),
+        }),
+      }).catch((err) => {
+        // 무음 — autosave 실패가 대화를 끊지 않게.
+        console.warn('[ConceptChat] draft autosave 실패 → skip:', err)
+      })
+    }, 1500)
+    return () => {
+      if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current)
+    }
+    // conceptSavedTick: 조립 완료 후 concept 동봉 재저장 트리거(picks 불변이라 별도 dep).
+  }, [picks, projectId, conceptSavedTick])
 
   /**
    * 카드 클릭 → pick 누적 → 다음 step.

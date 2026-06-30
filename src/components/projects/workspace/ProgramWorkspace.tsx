@@ -47,6 +47,7 @@ import type { PlanningIntentDraft } from '@/lib/program-design/planning-intent'
 import type {
   WorkspaceChatMessage,
   CoachTeamMember,
+  SavedConceptDraft,
 } from '@/lib/projects/load-workspace'
 import type { PlanSession } from '@/lib/program-design/plan-types'
 import type { SessionOp } from '@/lib/program-design/session-ops'
@@ -116,6 +117,13 @@ interface Props {
   savedConcept: ConceptShape | null
 
   /**
+   * BR-CF-5 B: 저장된 컨셉 대화 draft(확정 전 autosave). null 이면 컨셉 단계가 첫 step 시드.
+   * 값 있으면 ConceptChat 이 picks/조립 concept 복원(새로고침해도 이어감). savedConcept(확정)이
+   * 우선 — 확정된 컨셉이 있으면 design 단계가 확정 구조로 열리고 draft 는 대기(재진입 시 활용).
+   */
+  savedConceptDraft: SavedConceptDraft | null
+
+  /**
    * BR-WS-15: 단계 간 라이브 연동 초기값 (server 조립). WorkspacePlanProvider 가
    * 받아 Live Plan 을 시드 — 커리큘럼 회차 변경 → 코치수·예산 적산 실시간 재계산.
    */
@@ -183,6 +191,7 @@ function WorkspaceInner({
   coachTeam,
   initialChatMessages,
   savedConcept,
+  savedConceptDraft,
 }: Props) {
   // BR-WS-15: 공유 Live Plan — 회차(sessions)/필요 코치 수(coachCount) 단일 소스.
   // BR-WS-19: 비회차(T4/T5) 단계(stages)도 동일 소스에서 — 대화 동봉 근거.
@@ -207,10 +216,16 @@ function WorkspaceInner({
   // ── ADR-031 W2: 컨셉-퍼스트 design 단계 배선 ──
   // 확정 컨셉 = client state(저장된 것으로 시드 + 확정/재진입으로 갱신). null = 컨셉 단계 활성.
   const [concept, setConcept] = useState<ConceptShape | null>(savedConcept)
-  // 좌 대화가 누적한 picks(우 ConceptCanvas 가 좁혀온 경로로 읽음) — lift.
-  const [conceptPicks, setConceptPicks] = useState<ConceptPick[]>([])
-  // 좌 대화가 조립(assemble)한 컨셉 — 확정 전 우 캔버스 표시용(저장 전 단계).
-  const [draftConcept, setDraftConcept] = useState<ConceptShape | null>(null)
+  // BR-CF-5 B: 확정 컨셉이 없을 때만 draft 로 컨셉 단계 시드(새로고침 복원). 확정본 우선.
+  const draftSeed = savedConcept ? null : savedConceptDraft
+  // 좌 대화가 누적한 picks(우 ConceptCanvas 가 좁혀온 경로로 읽음) — lift. draft 있으면 복원.
+  const [conceptPicks, setConceptPicks] = useState<ConceptPick[]>(
+    draftSeed?.picks ?? [],
+  )
+  // 좌 대화가 조립(assemble)한 컨셉 — 확정 전 우 캔버스 표시용(저장 전 단계). draft 있으면 복원.
+  const [draftConcept, setDraftConcept] = useState<ConceptShape | null>(
+    draftSeed?.concept ?? null,
+  )
   // "다시 잡기" — 확정된 컨셉을 무시하고 컨셉 단계 재진입(client 토글). 저장은 그대로 둠.
   const [reConcept, setReConcept] = useState(false)
   // design 단계에서 컨셉 단계 활성 여부: 확정 컨셉 없음 또는 "다시 잡기" 토글.
@@ -552,6 +567,8 @@ function WorkspaceInner({
               picks={conceptPicks}
               onPicksChange={setConceptPicks}
               onConcept={setDraftConcept}
+              // BR-CF-5 B: 확정 전 draft 복원(새로고침). "다시 잡기" 재진입 시엔 draft 무시(null).
+              savedConceptDraft={reConcept ? null : draftSeed}
             />
           </div>
           <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
